@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<project name="ihub-mirth-components" default="deploy" basedir=".">	
+
+	<!-- deployment properties  -->
+	<property name="mirth.home" value="C:/ext/mirth-1.8.2.4472" />
+	
+	
+	<property name="root.project.name" value="ihub-mirth-components" />
+
+	<property name="root" value="." />
+	<property name="lib.dir" value="${root}/lib" />
+	<property name="src.dir" value="${root}/java-src" />
+	<property name="target.dir" value="${root}/target" />
+	<property name="classes.dir" value="${target.dir}/classes" />
+	<property name="dist.dir" value="${target.dir}/dist" />
+
+	<property name="jar.module" value="${root.project.name}.jar" />
+
+	<path id="compile.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+			<include name="*.zip" />
+		</fileset>
+		<fileset dir="${lib.dir}/mirth_jars">
+			<include name="*.jar" />
+			<include name="*.zip" />
+		</fileset>
+	</path>
+
+	<target name="clean">
+		<delete dir="${target.dir}" />
+	</target>
+
+	<target name="compile" depends="clean">
+		<mkdir dir="${classes.dir}" />
+		<javac classpathref="compile.classpath" destdir="${classes.dir}" debug="on" optimize="on">
+			<src path="${src.dir}" />
+		</javac>
+	</target>
+
+	<target name="makejar" depends="compile">
+		<mkdir dir="${dist.dir}" />
+		<jar jarfile="${dist.dir}/${jar.module}">
+			<fileset dir="${classes.dir}">
+				<include name="**/*.class" />
+				<exclude name="test/*.class" />
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="mirth.clean">
+		<mkdir dir="${mirth.home}/undeployed-jars" />
+		<move file="${mirth.home}/lib/mule/axis-14.jar" tofile="${mirth.home}/undeployed-jars/lib/mule/axis-14.jar" failonerror="false" />
+		<move file="${mirth.home}/lib/mule/wsif.jar" tofile="${mirth.home}/undeployed-jars/lib/mule/wsif.jar" failonerror="false" />
+	</target>
+
+	<target name="deploy" depends="mirth.clean, makejar">
+		<copy todir="${mirth.home}/lib/custom" overwrite="true">
+			<fileset dir="${dist.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${mirth.home}/lib/custom">
+			<fileset dir="${lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+</project>
