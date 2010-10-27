@@ -1,0 +1,330 @@
+<com.webreach.mirth.model.Channel>
+  <id>cb1ff0aa-78b9-48db-ac61-3138461fd725</id>
+  <name>Database to HL7v3</name>
+  <description></description>
+  <enabled>true</enabled>
+  <version>1.8.2</version>
+  <lastModified>
+    <time>1286690791328</time>
+    <timezone>America/New_York</timezone>
+  </lastModified>
+  <revision>5</revision>
+  <sourceConnector>
+    <name>sourceConnector</name>
+    <properties>
+      <property name="ackScript"></property>
+      <property name="processResultsInOrder">1</property>
+      <property name="pollingType">interval</property>
+      <property name="pollingFrequency">5000</property>
+      <property name="username">mirthadmin</property>
+      <property name="DataType">Database Reader</property>
+      <property name="useAck">1</property>
+      <property name="useScript">0</property>
+      <property name="URL">jdbc:postgresql://localhost:5432/mirth</property>
+      <property name="query">SELECT patient.patient_id AS patient_patient_id, patient.assigning_authority AS patient_assigning_authority, patient.given_name AS patient_given_name, patient.family_name AS patient_family_name, patient.birth_date AS patient_birth_date, patient.gender AS patient_gender, patient.status AS patient_status
+FROM patient where status=&apos;OPEN&apos;;
+
+</property>
+      <property name="script"></property>
+      <property name="password">changeme</property>
+      <property name="host">query</property>
+      <property name="driver">org.postgresql.Driver</property>
+      <property name="ack">UPDATE PATIENT SET STATUS=&apos;PROCESSED&apos; WHERE PATIENT_ID=${patient_patient_id};</property>
+    </properties>
+    <transformer>
+      <steps/>
+      <inboundTemplate>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#x0D;
+&lt;result&gt;&#x0D;
+    &lt;patient_patient_id&gt;value&lt;/patient_patient_id&gt;&#x0D;
+    &lt;patient_assigning_authority&gt;value&lt;/patient_assigning_authority&gt;&#x0D;
+    &lt;patient_given_name&gt;value&lt;/patient_given_name&gt;&#x0D;
+    &lt;patient_family_name&gt;value&lt;/patient_family_name&gt;&#x0D;
+    &lt;patient_birth_date&gt;value&lt;/patient_birth_date&gt;&#x0D;
+    &lt;patient_gender&gt;value&lt;/patient_gender&gt;&#x0D;
+    &lt;patient_status&gt;value&lt;/patient_status&gt;&#x0D;
+&lt;/result&gt;&#x0D;
+</inboundTemplate>
+      <outboundTemplate></outboundTemplate>
+      <inboundProtocol>XML</inboundProtocol>
+      <outboundProtocol>XML</outboundProtocol>
+      <inboundProperties/>
+      <outboundProperties/>
+    </transformer>
+    <filter>
+      <rules/>
+    </filter>
+    <transportName>Database Reader</transportName>
+    <mode>SOURCE</mode>
+    <enabled>true</enabled>
+  </sourceConnector>
+  <destinationConnectors>
+    <com.webreach.mirth.model.Connector>
+      <name>HL7v3 File Writer</name>
+      <properties>
+        <property name="secure">1</property>
+        <property name="scheme">file</property>
+        <property name="binary">0</property>
+        <property name="username">anonymous</property>
+        <property name="outputPattern">HL7v3-converted-${UUID}.xml</property>
+        <property name="validateConnections">1</property>
+        <property name="DataType">File Writer</property>
+        <property name="FTPAnonymous">1</property>
+        <property name="charsetEncoding">DEFAULT_ENCODING</property>
+        <property name="password">anonymous</property>
+        <property name="passive">1</property>
+        <property name="template">${message.encodedData}</property>
+        <property name="outputAppend">1</property>
+        <property name="host">C:/projects_svn/ihub-mirth/trunk/software/smoke-test/ca-adapter/db-to-hl7v3/HL7v3-Converted</property>
+      </properties>
+      <transformer>
+        <steps>
+          <com.webreach.mirth.model.Step>
+            <sequenceNumber>0</sequenceNumber>
+            <name>patientPerson - name - given (out)</name>
+            <script>tmp[&apos;patientPerson&apos;][&apos;name&apos;][&apos;given&apos;] = validate(msg[&apos;patient_given_name&apos;].toString(), &apos;&apos;, new Array());</script>
+            <type>Message Builder</type>
+            <data class="map">
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;patient_given_name&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Variable</string>
+                <string>tmp[&apos;patientPerson&apos;][&apos;name&apos;][&apos;given&apos;]</string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+            </data>
+          </com.webreach.mirth.model.Step>
+          <com.webreach.mirth.model.Step>
+            <sequenceNumber>1</sequenceNumber>
+            <name>patientPerson - name - family (out)</name>
+            <script>tmp[&apos;patientPerson&apos;][&apos;name&apos;][&apos;family&apos;] = validate(msg[&apos;patient_family_name&apos;].toString(), &apos;&apos;, new Array());</script>
+            <type>Message Builder</type>
+            <data class="map">
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;patient_family_name&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Variable</string>
+                <string>tmp[&apos;patientPerson&apos;][&apos;name&apos;][&apos;family&apos;]</string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+            </data>
+          </com.webreach.mirth.model.Step>
+          <com.webreach.mirth.model.Step>
+            <sequenceNumber>2</sequenceNumber>
+            <name>patientPerson - birthTime - @value (out)</name>
+            <script>tmp[&apos;patientPerson&apos;][&apos;birthTime&apos;][&apos;@value&apos;] = validate(msg[&apos;patient_birth_date&apos;].toString(), &apos;&apos;, new Array());</script>
+            <type>Message Builder</type>
+            <data class="map">
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;patient_birth_date&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Variable</string>
+                <string>tmp[&apos;patientPerson&apos;][&apos;birthTime&apos;][&apos;@value&apos;]</string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+            </data>
+          </com.webreach.mirth.model.Step>
+          <com.webreach.mirth.model.Step>
+            <sequenceNumber>3</sequenceNumber>
+            <name>patientPerson - administrativeGenderCode - @code (out)</name>
+            <script>tmp[&apos;patientPerson&apos;][&apos;administrativeGenderCode&apos;][&apos;@code&apos;] = validate(msg[&apos;patient_gender&apos;].toString(), &apos;&apos;, new Array());</script>
+            <type>Message Builder</type>
+            <data class="map">
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;patient_gender&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Variable</string>
+                <string>tmp[&apos;patientPerson&apos;][&apos;administrativeGenderCode&apos;][&apos;@code&apos;]</string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+            </data>
+          </com.webreach.mirth.model.Step>
+          <com.webreach.mirth.model.Step>
+            <sequenceNumber>4</sequenceNumber>
+            <name>patientPerson - id - @assigningAuthorityName (out)</name>
+            <script>tmp[&apos;patientPerson&apos;][&apos;id&apos;][&apos;@assigningAuthorityName&apos;] = validate(msg[&apos;patient_assigning_authority&apos;].toString(), &apos;&apos;, new Array());</script>
+            <type>Message Builder</type>
+            <data class="map">
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;patient_assigning_authority&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Variable</string>
+                <string>tmp[&apos;patientPerson&apos;][&apos;id&apos;][&apos;@assigningAuthorityName&apos;]</string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+            </data>
+          </com.webreach.mirth.model.Step>
+        </steps>
+        <inboundTemplate>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#x0D;
+&lt;result&gt;&#x0D;
+    &lt;patient_patient_id&gt;value&lt;/patient_patient_id&gt;&#x0D;
+    &lt;patient_assigning_authority&gt;value&lt;/patient_assigning_authority&gt;&#x0D;
+    &lt;patient_given_name&gt;value&lt;/patient_given_name&gt;&#x0D;
+    &lt;patient_family_name&gt;value&lt;/patient_family_name&gt;&#x0D;
+    &lt;patient_birth_date&gt;value&lt;/patient_birth_date&gt;&#x0D;
+    &lt;patient_gender&gt;value&lt;/patient_gender&gt;&#x0D;
+    &lt;patient_status&gt;value&lt;/patient_status&gt;&#x0D;
+&lt;/result&gt;&#x0D;
+</inboundTemplate>
+        <outboundTemplate>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Patient xmlns=&quot;urn:hl7-org:v3&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; classCode=&quot;PAT&quot;&gt;
+    &lt;id root=&quot;2.16.840.1.113883.3.26.345&quot; assigningAuthorityName=&quot;NCI&quot; extension=&quot;78127-401&quot;/&gt;
+    &lt;statusCode code=&quot;canceled&quot;/&gt;
+    &lt;patientPerson classCode=&quot;PSN&quot; determinerCode=&quot;INSTANCE&quot;&gt;
+        &lt;id root=&quot;2.16.840.1.113883.3.26.359&quot; assigningAuthorityName=&quot;NCI&quot; extension=&quot;77367-722&quot;/&gt;
+        &lt;name use=&quot;L&quot;&gt;
+            &lt;given&gt;Telson&lt;/given&gt;
+            &lt;family&gt;Nolan&lt;/family&gt;
+        &lt;/name&gt;
+        &lt;administrativeGenderCode code=&quot;F&quot; codeSystemName=&quot;AdministrativeGender&quot; codeSystem=&quot;2.16.840.1.113883.5.1&quot; displayName=&quot;Female&quot;/&gt;
+        &lt;birthTime value=&quot;20100209121833&quot;/&gt;
+        &lt;birthPlace classCode=&quot;BIRTHPL&quot;&gt;
+            &lt;addr&gt;
+                &lt;state&gt;MD&lt;/state&gt;
+                &lt;streetName&gt;Durham St.&lt;/streetName&gt;
+                &lt;city&gt;Rockville&lt;/city&gt;
+                &lt;streetAddressLine&gt;96696&lt;/streetAddressLine&gt;
+            &lt;/addr&gt;
+            &lt;subjectOf typeCode=&quot;SBJ&quot;&gt;
+                &lt;position classCode=&quot;POS&quot; moodCode=&quot;EVN&quot;&gt;
+                    &lt;id root=&quot;2.16.840.1.113883.3.26.756&quot; assigningAuthorityName=&quot;NCI&quot; extension=&quot;49579-417&quot;/&gt;
+                    &lt;code code=&quot;NoData&quot; codeSystemName=&quot;PositionObservationCode&quot; codeSystem=&quot;2.16.840.1.113883.19.99999&quot; displayName=&quot;Domain not found&quot;/&gt;
+                    &lt;text representation=&quot;TXT&quot; mediaType=&quot;text/plain&quot; integrityCheckAlgorithm=&quot;SHA-1&quot;&gt;This is a sample text for test data generating...&lt;/text&gt;
+                    &lt;effectiveTime operator=&quot;I&quot; value=&quot;20100209121834&quot;/&gt;
+                    &lt;activityTime operator=&quot;I&quot; value=&quot;20100209121834&quot;/&gt;
+                    &lt;value&gt;This is Sample text for test 346&lt;/value&gt;
+                &lt;/position&gt;
+            &lt;/subjectOf&gt;
+        &lt;/birthPlace&gt;
+    &lt;/patientPerson&gt;
+    &lt;providerOrganization classCode=&quot;ORG&quot; determinerCode=&quot;INSTANCE&quot;&gt;
+        &lt;id root=&quot;2.16.840.1.113883.3.26.667&quot; assigningAuthorityName=&quot;NCI&quot; extension=&quot;49495-468&quot;/&gt;
+        &lt;code code=&quot;PACKT&quot; codeSystemName=&quot;EntityCode&quot; codeSystem=&quot;2.16.840.1.113883.5.1060&quot; displayName=&quot;Packet&quot;/&gt;
+        &lt;name use=&quot;L&quot;&gt;Time Def Ltd. Co.&lt;/name&gt;
+        &lt;contactParty classCode=&quot;CON&quot;&gt;
+            &lt;id root=&quot;2.16.840.1.113883.3.26.744&quot; assigningAuthorityName=&quot;NCI&quot; extension=&quot;17652-001&quot;/&gt;
+            &lt;code code=&quot;ERROR&quot; codeSystemName=&quot;ERROR&quot; codeSystem=&quot;ERROR&quot; displayName=&quot;ERROR&quot;/&gt;
+            &lt;addr&gt;
+                &lt;state&gt;MD&lt;/state&gt;
+                &lt;county&gt;Montgomery&lt;/county&gt;
+                &lt;streetName&gt;Durham St.&lt;/streetName&gt;
+                &lt;city&gt;Rockville&lt;/city&gt;
+                &lt;postalCode&gt;23456&lt;/postalCode&gt;
+                &lt;streetAddressLine&gt;95288&lt;/streetAddressLine&gt;
+            &lt;/addr&gt;
+            &lt;telecom use=&quot;HP&quot; value=&quot;tel:1-925-568-3373&quot;/&gt;
+            &lt;contactPerson classCode=&quot;PSN&quot; determinerCode=&quot;INSTANCE&quot;&gt;
+                &lt;name use=&quot;L&quot;&gt;Gordon P. Saxton&lt;/name&gt;
+            &lt;/contactPerson&gt;
+        &lt;/contactParty&gt;
+        &lt;contactParty classCode=&quot;CON&quot;&gt;
+            &lt;id root=&quot;2.16.840.1.113883.3.26.744&quot; assigningAuthorityName=&quot;NCI&quot; extension=&quot;17652-002&quot;/&gt;
+            &lt;code code=&quot;ERROR&quot; codeSystemName=&quot;ERROR&quot; codeSystem=&quot;ERROR&quot; displayName=&quot;ERROR&quot;/&gt;
+            &lt;addr&gt;
+                &lt;state&gt;MD&lt;/state&gt;
+                &lt;streetName&gt;Durham St.&lt;/streetName&gt;
+                &lt;city&gt;Rockville&lt;/city&gt;
+                &lt;postalCode&gt;24680&lt;/postalCode&gt;
+                &lt;streetAddressLine&gt;95288&lt;/streetAddressLine&gt;
+            &lt;/addr&gt;
+            &lt;telecom use=&quot;HP&quot; value=&quot;tel:1-925-568-3373&quot;/&gt;
+            &lt;contactPerson classCode=&quot;PSN&quot; determinerCode=&quot;INSTANCE&quot;&gt;
+                &lt;name use=&quot;L&quot;&gt;Gordon P. Saxton&lt;/name&gt;
+            &lt;/contactPerson&gt;
+        &lt;/contactParty&gt;
+        &lt;contactParty classCode=&quot;CON&quot;&gt;
+            &lt;id root=&quot;2.16.840.1.113883.3.26.744&quot; assigningAuthorityName=&quot;NCI&quot; extension=&quot;17652-003&quot;/&gt;
+            &lt;code code=&quot;ERROR&quot; codeSystemName=&quot;ERROR&quot; codeSystem=&quot;ERROR&quot; displayName=&quot;ERROR&quot;/&gt;
+            &lt;addr&gt;
+                &lt;state&gt;MD&lt;/state&gt;
+                &lt;county&gt;Montgomery&lt;/county&gt;
+                &lt;streetName&gt;Durham St.&lt;/streetName&gt;
+                &lt;city&gt;Rockville&lt;/city&gt;
+                &lt;postalCode&gt;23456&lt;/postalCode&gt;
+                &lt;streetAddressLine&gt;95288&lt;/streetAddressLine&gt;
+            &lt;/addr&gt;
+            &lt;telecom use=&quot;HP&quot; value=&quot;tel:1-925-568-3373&quot;/&gt;
+            &lt;contactPerson classCode=&quot;PSN&quot; determinerCode=&quot;INSTANCE&quot;&gt;
+                &lt;name use=&quot;L&quot;&gt;Gordon P. Saxton&lt;/name&gt;
+            &lt;/contactPerson&gt;
+        &lt;/contactParty&gt;
+    &lt;/providerOrganization&gt;
+&lt;/Patient&gt;</outboundTemplate>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>HL7V3</outboundProtocol>
+        <inboundProperties/>
+        <outboundProperties/>
+      </transformer>
+      <filter>
+        <rules/>
+      </filter>
+      <transportName>File Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+    </com.webreach.mirth.model.Connector>
+  </destinationConnectors>
+  <properties>
+    <property name="initialState">started</property>
+    <property name="synchronous">true</property>
+    <property name="store_messages">true</property>
+    <property name="encryptData">false</property>
+    <property name="transactional">false</property>
+    <property name="max_message_age">-1</property>
+    <property name="dont_store_filtered">false</property>
+    <property name="error_messages_only">false</property>
+  </properties>
+  <preprocessingScript>// Modify the message variable below to pre process data
+return message;</preprocessingScript>
+  <postprocessingScript>// This script executes once after a message has been processed
+return;</postprocessingScript>
+  <deployScript>// This script executes once when the mule engine is started
+// You only have access to the globalMap here to persist data
+return;</deployScript>
+  <shutdownScript>// This script executes once when the mule engine is stopped
+// You only have access to the globalMap here to persist data
+return;</shutdownScript>
+</com.webreach.mirth.model.Channel>
