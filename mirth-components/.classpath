@@ -234,5 +234,7 @@
 	<classpathentry kind="lib" path="lib/mirth_jars/xml-apis.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/xmlParserAPIs.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/activemq-core-5.3.2.jar"/>
+	<classpathentry kind="lib" path="lib/jboss-embedded-all.jar"/>
 	<classpathentry kind="output" path="target"/>
 </classpath>
