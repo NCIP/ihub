@@ -1,0 +1,724 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project name="Integration-Smoke-Test" default="version-check">
+
+       <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+         <classpath>
+           <pathelement location="./lib/ant-contrib-1.0b3.jar"/>
+         </classpath>
+       </taskdef>
+       <taskdef name="for" classname="net.sf.antcontrib.logic.ForTask">
+	  <classpath>
+	    <pathelement location="./lib/ant-contrib-1.0b3.jar"/>
+	  </classpath>       
+       </taskdef>
+       
+       <description>
+        This ant script contains the integration smoke tests for CCTS installation
+       </description>
+
+
+	<!-- PROPERTIES -->
+	<property environment="env" />
+	<property file="build.properties" />
+	<property name="integration_smoke_test_home" value="." />
+	<property name="lib.dir" value="${integration_smoke_test_home}/lib" />
+	<property name="log.dir" value="${integration_smoke_test_home}/logs" />
+	<property name="ext.globus.dir" value="${env.GLOBUS_LOCATION}" />
+	<property name="synchronous" value="false" />
+
+	<target name="assert">
+		<fail message="Not running ant with JDK 1.5 - this will result in differing class versions">
+			<condition>
+				<not>
+					<equals arg1="${ant.java.version}" arg2="1.5" />
+				</not>
+			</condition>
+		</fail>
+		<fail unless="env.GLOBUS_LOCATION" message="GLOBUS_LOCATION environment variable  has not been set!" />
+	</target>
+
+
+
+	<target name="version-check" depends="init,assert">
+		<echo message="###########################################" />
+		<echo message="#Integration smoke testing                #" />
+		<echo message="###########################################" />
+		<echo message="Current Setup: " />
+		<echo message="JDK Version       : ${java.version}" />
+		<echo message="ANT Version       : ${ant.version}" />
+		<echo message="JAVA_HOME is      : ${env.JAVA_HOME}" />
+		<echo message="ANT_HOME is       : ${env.ANT_HOME}" />
+		<echo message="GLOBUS_LOCATION is : ${env.GLOBUS_LOCATION}" />
+		<echo message="Type ant -p for targets available" />
+	</target>
+	<path id="globusClassPath">
+		<fileset dir="${ext.globus.dir}/lib">
+			<include name="*.jar" />
+			<include name="*.zip" />
+		</fileset>
+	</path>
+	<path id="resourcesClassPath">
+		<fileset dir="${integration_smoke_test_home}/resources">
+			<include name="*.*" />
+		</fileset>
+	</path>
+	<path id="payloadsClassPath">
+		<fileset dir="${integration_smoke_test_home}/payloads">
+			<include name="*.*" />
+		</fileset>
+	</path>
+	<path id="testClassPath">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+			<include name="*.zip" />
+		</fileset>
+		<path refid="globusClassPath" />
+		<path refid="resourcesClassPath" />
+		<path refid="payloadsClassPath" />
+	</path>
+	<path id="testClassPathNonGrid">
+		<fileset dir="${lib.dir}">
+			<include name="smoketest.jar" />
+		</fileset>
+		<fileset dir="${lib.dir}/nongrid">
+			<include name="*.jar" />
+			<include name="*.zip" />
+		</fileset>
+		<fileset dir="${ext.globus.dir}/lib">
+			<include name="junit.jar" />
+			<include name="commons-logging.jar" />
+		</fileset>
+		<path refid="resourcesClassPath" />
+		<path refid="payloadsClassPath" />
+	</path>
+
+
+	<!--Get current timestamp for the log creation-->
+	<tstamp>
+		<format property="touch.time" pattern="yyyy-MM-dd-HH-mm" />
+	</tstamp>
+
+	<!--Initializes the logs-->
+	<target name="init">
+		<mkdir dir="${log.dir}" />
+		<mkdir dir="${integration_smoke_test_home}/resources" />
+		<record name="${log.dir}/CaXchange-Integration-Test-${touch.time}.log" action="start" />
+		<mkdir dir="${integration_smoke_test_home}/${junit.results.dir}" />
+	</target>
+
+	<!-- replaces the tokens with the property values -->
+	<target name="replace" depends="init">
+		<delete includeemptydirs="true" quiet="true">
+			<fileset dir="${integration_smoke_test_home}/resources" includes="**/*" />
+		</delete>
+		<copy todir="${integration_smoke_test_home}/resources">
+			<fileset dir="${integration_smoke_test_home}/resources_org">
+				<include name="*.*" />
+			</fileset>
+		</copy>
+		<replace dir="${integration_smoke_test_home}/resources" propertyFile="${integration_smoke_test_home}/build.properties">
+			<replacefilter token="@ccts.grid.userName@" property="ccts.grid.userName" />
+			<replacefilter token="@ccts.grid.password@" property="ccts.grid.password" />
+			<replacefilter token="@dorian.url@" property="dorian.url" />
+			<replacefilter token="@cds.url@" property="cds.url" />
+			<replacefilter token="@authentication.url@" property="authentication.url" />
+			<replacefilter token="@app.node.identity@" property="app.node.identity" />
+		</replace>
+	</target>
+
+
+	<target name="testStudyCreation" depends="init,replace" description="Sends a STUDY_CREATION message to caXchange">
+		<mkdir dir="${integration_smoke_test_home}/${junit.results.dir}" />
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			<sysproperty key="caxchange.url" value="${caxchange.url}" />
+			<sysproperty key="synchronous" value="${synchronous}" />
+			<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+			<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+			<classpath refid="testClassPath" />
+			<formatter type="xml" />
+			<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestStudyCreation" />
+		</junit>
+	</target>
+
+	<target name="testRegisterSubject" depends="init,replace" description="Sends a REGISTER_SUBJECT message to caXchange">
+		<mkdir dir="${integration_smoke_test_home}/${junit.results.dir}" />
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			<sysproperty key="caxchange.url" value="${caxchange.url}" />
+			<sysproperty key="synchronous" value="${synchronous}" />
+			<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+			<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+			<classpath refid="testClassPath" />
+			<formatter type="xml" />
+			<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestRegisterSubject" />
+		</junit>
+	</target>
+
+	<target name="testLoadLab" depends="init,replace" description="Sends a LOAD_LAB_TO_CDMS message to caXchange">
+		<mkdir dir="${integration_smoke_test_home}/${junit.results.dir}" />
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			<sysproperty key="caxchange.url" value="${caxchange.url}" />
+			<sysproperty key="synchronous" value="${synchronous}" />
+			<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+			<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+			<classpath refid="testClassPath" />
+			<formatter type="xml" />
+			<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestLoadLab" />
+		</junit>
+	</target>
+
+	<target name="testAENotification" depends="init,replace" description="Sends a LAB_BASED_AE message to caXchange">
+		<mkdir dir="${integration_smoke_test_home}/${junit.results.dir}" />
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			<sysproperty key="caxchange.url" value="${caxchange.url}" />
+			<sysproperty key="synchronous" value="${synchronous}" />
+			<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+			<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+			<classpath refid="testClassPath" />
+			<formatter type="xml" />
+			<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestAENotification" />
+		</junit>
+	</target>
+
+
+
+	<target name="testCtLabData" depends="init,replace" description="Sends a CT_LAB_DATA message to caXchange">
+		<mkdir dir="${integration_smoke_test_home}/${junit.results.dir}" />
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			<sysproperty key="caxchange.url" value="${caxchange.url}" />
+			<sysproperty key="synchronous" value="${synchronous}" />
+			<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+			<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+			<classpath refid="testClassPath" />
+			<formatter type="xml" />
+			<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestCtLabData" />
+		</junit>
+	</target>
+
+
+	<target name="testScheduleModification" depends="init,replace" description="Sends a SCHEDULE_MODIFICATION message to caXchange">
+		<mkdir dir="${integration_smoke_test_home}/${junit.results.dir}" />
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			<sysproperty key="caxchange.url" value="${caxchange.url}" />
+			<sysproperty key="synchronous" value="${synchronous}" />
+			<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+			<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+			<classpath refid="testClassPath" />
+			<formatter type="xml" />
+			<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestScheduleModification" />
+		</junit>
+	</target>
+
+
+
+
+	<target name="testUnknownMessageType" depends="init,replace" description="Sends UNKNOWN_MSG_TYPE message to caXchange">
+		<mkdir dir="${integration_smoke_test_home}/${junit.results.dir}" />
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			<sysproperty key="caxchange.url" value="${caxchange.url}" />
+			<sysproperty key="synchronous" value="${synchronous}" />
+			<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+			<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+			<classpath refid="testClassPath" />
+			<formatter type="xml" />
+			<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestUnknownMessageType" />
+		</junit>
+	</target>
+
+
+	<target name="testNewServiceType" depends="init,replace" description="Sends a new message type message to caXchange">
+		<mkdir dir="${integration_smoke_test_home}/${junit.results.dir}" />
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			<sysproperty key="payload.file.name" value="${payload.file.name}" />
+			<sysproperty key="message.type" value="${service.type}" />
+			<sysproperty key="operation.name" value="${operation.name}" />
+			<sysproperty key="synchronous" value="${synchronous}" />
+			<sysproperty key="caxchange.url" value="${caxchange.url}" />
+			<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+			<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+			<classpath refid="testClassPath" />
+			<formatter type="xml" />
+			<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestNewMessageType" />
+		</junit>
+	</target>
+
+	<target name="testCoppaService" depends="init,replace" description="Sends a COPPA person service  type message to caXchange">
+		<mkdir dir="${integration_smoke_test_home}/${junit.results.dir}" />
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			<sysproperty key="multiple.payloads" value="${multiple.payloads}" />
+			<sysproperty key="payload.file.name" value="${payload.file.name}" />
+			<sysproperty key="message.type" value="${service.type}" />
+			<sysproperty key="operation.name" value="${operation.name}" />
+			<sysproperty key="synchronous" value="${synchronous}" />
+			<sysproperty key="caxchange.url" value="${caxchange.url}" />
+			<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+			<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+			<classpath refid="testClassPath" />
+			<formatter type="xml" />
+			<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestCoppaServices" />
+		</junit>
+	</target>
+
+	<target name="testCoppaServiceNonGrid" depends="init,replace" description="Sends a COPPA person service  type message to caXchange without using Grid Services">
+		<mkdir dir="${integration_smoke_test_home}/${junit.results.dir}" />
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			<sysproperty key="multiple.payloads" value="${multiple.payloads}" />
+			<sysproperty key="payload.file.name" value="${payload.file.name}" />
+			<sysproperty key="service.type" value="${service.type}" />
+			<sysproperty key="operation.name" value="${operation.name}" />
+			<sysproperty key="synchronous" value="${synchronous}" />
+			<sysproperty key="cxfappcontext.file.name" value="${cxfappcontext.file.name}" />
+			<classpath refid="testClassPathNonGrid" />
+			<formatter type="xml" />
+			<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestCoppaServicesNonGrid" />
+		</junit>
+	</target>
+
+	<target name="testInvokeCaTissue" depends="init,replace" description="Sends a CATISSUE service type message to caXchange without using Grid Services">
+		<mkdir dir="${integration_smoke_test_home}/${junit.results.dir}" />
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			<sysproperty key="multiple.payloads" value="${multiple.payloads}" />
+			<sysproperty key="payload.file.name" value="${payload.file.name}" />
+			<sysproperty key="service.type" value="${service.type}" />
+			<sysproperty key="operation.name" value="${operation.name}" />
+			<sysproperty key="synchronous" value="${synchronous}" />
+			<sysproperty key="cxfappcontext.file.name" value="${cxfappcontext.file.name}" />
+			<classpath refid="testClassPathNonGrid" />
+			<formatter type="xml" />
+			<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestCoppaServicesNonGrid" />
+		</junit>
+	</target>
+	
+	<target name="testHub"  depends="init,replace" description="Invokes the hub test cases as described in the Hub test plan document" >
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+				<sysproperty key="payload.file.name" value="CT_LAB_DATA.xml" />
+				<sysproperty key="message.type" value="CT_LAB_DATA" />
+				<sysproperty key="operation.name" value="${operation.name}" />
+				<sysproperty key="synchronous" value="false" />
+				<sysproperty key="caxchange.url" value="${caxchange.url}" />
+				<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+				<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+				<classpath refid="testClassPath" />
+				<formatter type="xml" />
+				<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestNewMessageType" outfile="IHUB-1" />
+		</junit>
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+				<sysproperty key="payload.file.name" value="CT_LAB_DATA.xml" />
+				<sysproperty key="message.type" value="CT_LAB_DATA" />
+				<sysproperty key="operation.name" value="${operation.name}" />
+				<sysproperty key="synchronous" value="true" />
+				<sysproperty key="caxchange.url" value="${caxchange.url}" />
+				<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+				<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+				<classpath refid="testClassPath" />
+				<formatter type="xml" />
+				<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestNewMessageType" outfile="IHUB-2" />
+		</junit>	
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+				<sysproperty key="payload.file.name" value="STUDY_CREATION.xml" />
+				<sysproperty key="message.type" value="STUDY_CREATION" />
+				<sysproperty key="operation.name" value="${operation.name}" />
+				<sysproperty key="synchronous" value="false" />
+				<sysproperty key="caxchange.url" value="${caxchange.url}" />
+				<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+				<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+				<classpath refid="testClassPath" />
+				<formatter type="xml" />
+				<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestNewMessageType" outfile="IHUB-3" />
+		</junit>
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+				<sysproperty key="payload.file.name" value="STUDY_CREATION.xml" />
+				<sysproperty key="message.type" value="STUDY_CREATION" />
+				<sysproperty key="operation.name" value="${operation.name}" />
+				<sysproperty key="synchronous" value="true" />
+				<sysproperty key="caxchange.url" value="${caxchange.url}" />
+				<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+				<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+				<classpath refid="testClassPath" />
+				<formatter type="xml" />
+				<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestNewMessageType" outfile="IHUB-4" />
+		</junit>
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+				<sysproperty key="payload.file.name" value="STUDY_CREATION_IPL.xml" />
+				<sysproperty key="message.type" value="STUDY_CREATION" />
+				<sysproperty key="operation.name" value="${operation.name}" />
+				<sysproperty key="synchronous" value="true" />
+				<sysproperty key="caxchange.url" value="${caxchange.url}" />
+				<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+				<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+				<classpath refid="testClassPath" />
+				<formatter type="xml" />
+				<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestNewMessageType" outfile="IHUB-6" />
+		</junit>
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+				<sysproperty key="payload.file.name" value="REGISTER_SUBJECT.xml" />
+				<sysproperty key="message.type" value="REGISTER_SUBJECT" />
+				<sysproperty key="operation.name" value="${operation.name}" />
+				<sysproperty key="synchronous" value="false" />
+				<sysproperty key="caxchange.url" value="${caxchange.url}" />
+				<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+				<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+				<classpath refid="testClassPath" />
+				<formatter type="xml" />
+				<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestNewMessageType" outfile="IHUB-7" />
+		</junit>
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+				<sysproperty key="payload.file.name" value="REGISTER_SUBJECT.xml" />
+				<sysproperty key="message.type" value="REGISTER_SUBJECT" />
+				<sysproperty key="operation.name" value="${operation.name}" />
+				<sysproperty key="synchronous" value="true" />
+				<sysproperty key="caxchange.url" value="${caxchange.url}" />
+				<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+				<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+				<classpath refid="testClassPath" />
+				<formatter type="xml" />
+				<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestNewMessageType" outfile="IHUB-8" />
+		</junit>
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+				<sysproperty key="payload.file.name" value="REGISTER_SUBJECT_IPL.xml" />
+				<sysproperty key="message.type" value="REGISTER_SUBJECT" />
+				<sysproperty key="operation.name" value="${operation.name}" />
+				<sysproperty key="synchronous" value="true" />
+				<sysproperty key="caxchange.url" value="${caxchange.url}" />
+				<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+				<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+				<classpath refid="testClassPath" />
+				<formatter type="xml" />
+				<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestNewMessageType" outfile="IHUB-10" />
+		</junit>	
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+				<sysproperty key="payload.file.name" value="LOAD_LAB_TO_CDMS.xml" />
+				<sysproperty key="message.type" value="LOAD_LAB_TO_CDMS" />
+				<sysproperty key="operation.name" value="${operation.name}" />
+				<sysproperty key="synchronous" value="false" />
+				<sysproperty key="caxchange.url" value="${caxchange.url}" />
+				<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+				<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+				<classpath refid="testClassPath" />
+				<formatter type="xml" />
+				<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestNewMessageType" outfile="IHUB-11" />
+		</junit>
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+				<sysproperty key="payload.file.name" value="LOAD_LAB_TO_CDMS_IPL.xml" />
+				<sysproperty key="message.type" value="LOAD_LAB_TO_CDMS" />
+				<sysproperty key="operation.name" value="${operation.name}" />
+				<sysproperty key="synchronous" value="false" />
+				<sysproperty key="caxchange.url" value="${caxchange.url}" />
+				<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+				<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+				<classpath refid="testClassPath" />
+				<formatter type="xml" />
+				<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestNewMessageType" outfile="IHUB-12" />
+		</junit>		
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+				<sysproperty key="payload.file.name" value="LOAD_LAB_TO_CDMS.xml" />
+				<sysproperty key="message.type" value="LOAD_LAB_TO_CDMS" />
+				<sysproperty key="operation.name" value="${operation.name}" />
+				<sysproperty key="synchronous" value="true" />
+				<sysproperty key="caxchange.url" value="${caxchange.url}" />
+				<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+				<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+				<classpath refid="testClassPath" />
+				<formatter type="xml" />
+				<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestNewMessageType" outfile="IHUB-13" />
+		</junit>
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+				<sysproperty key="payload.file.name" value="LAB_BASED_AE.xml" />
+				<sysproperty key="message.type" value="LAB_BASED_AE" />
+				<sysproperty key="operation.name" value="${operation.name}" />
+				<sysproperty key="synchronous" value="false" />
+				<sysproperty key="caxchange.url" value="${caxchange.url}" />
+				<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+				<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+				<classpath refid="testClassPath" />
+				<formatter type="xml" />
+				<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestNewMessageType" outfile="IHUB-14" />
+		</junit>
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+				<sysproperty key="payload.file.name" value="LOAD_LAB_TO_CDMS.xml" />
+				<sysproperty key="message.type" value="LOAD_LAB_TO_CDMS" />
+				<sysproperty key="operation.name" value="${operation.name}" />
+				<sysproperty key="synchronous" value="true" />
+				<sysproperty key="caxchange.url" value="${caxchange.url}" />
+				<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+				<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+				<classpath refid="testClassPath" />
+				<formatter type="xml" />
+				<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestNewMessageType" outfile="IHUB-15" />
+		</junit>		
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+				<sysproperty key="payload.file.name" value="SCHEDULE_MODIFICATION.xml" />
+				<sysproperty key="message.type" value="SCHEDULE_MODIFICATION" />
+				<sysproperty key="operation.name" value="${operation.name}" />
+				<sysproperty key="synchronous" value="false" />
+				<sysproperty key="caxchange.url" value="${caxchange.url}" />
+				<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+				<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+				<classpath refid="testClassPath" />
+				<formatter type="xml" />
+				<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestNewMessageType" outfile="IHUB-16" />
+		</junit>
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+				<sysproperty key="payload.file.name" value="SCHEDULE_MODIFICATION_IPL.xml" />
+				<sysproperty key="message.type" value="SCHEDULE_MODIFICATION" />
+				<sysproperty key="operation.name" value="${operation.name}" />
+				<sysproperty key="synchronous" value="false" />
+				<sysproperty key="caxchange.url" value="${caxchange.url}" />
+				<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+				<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+				<classpath refid="testClassPath" />
+				<formatter type="xml" />
+				<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestNewMessageType" outfile="IHUB-17" />
+		</junit>		
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+				<sysproperty key="payload.file.name" value="SCHEDULE_MODIFICATION.xml" />
+				<sysproperty key="message.type" value="SCHEDULE_MODIFICATION" />
+				<sysproperty key="operation.name" value="${operation.name}" />
+				<sysproperty key="synchronous" value="true" />
+				<sysproperty key="caxchange.url" value="${caxchange.url}" />
+				<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+				<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+				<classpath refid="testClassPath" />
+				<formatter type="xml" />
+				<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestNewMessageType" outfile="IHUB-18" />
+		</junit>
+		<property name="coppa.service.list" value="PERSON,ORGANIZATION,CLINICAL_RESEARCH_STAFF,HEALTH_CARE_FACILITY,HEALTH_CARE_PROVIDER,IDENTIFIED_ORGANIZATION,IDENTIFIED_PERSON,OVERSIGHT_COMMITTEE"/>		
+		<for list="${coppa.service.list}" param="coppa.service" delimiter=",">
+		     <sequential>
+			<junit dir="${basedir}" printsummary="yes" showoutput="true">
+				<sysproperty key="multiple.payloads" value="false" />
+				<sysproperty key="payload.file.name" value="@{coppa.service}_ID.xml" />
+				<sysproperty key="message.type" value="@{coppa.service}" />
+				<sysproperty key="operation.name" value="getById" />
+				<sysproperty key="synchronous" value="true" />
+				<sysproperty key="caxchange.url" value="${caxchange.url}" />
+				<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+				<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+				<classpath refid="testClassPath" />
+				<formatter type="xml" />
+				<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestCoppaServices" outfile="IHUB-19_@{coppa.service}"/>
+			</junit>
+                   </sequential>
+		</for>		
+		<property name="pa.service.list" value="ARM,DOCUMENT,DOCUMENT_WORKFLOW_STATUS,PLANNED_ACTIVITY,STUDY_CONTACT,STUDY_DISEASE,STUDY_IND_IDE,STUDY_ONHOLD,STUDY_OVERALL_STATUS,STUDY_SITE_CONTACT,STUDY_SITE,STUDY_PROTOCOL,STUDY_RECRUITMENT_STATUS,STUDY_REGULATORY_AUTHORITY,STUDY_RELATIONSHIP,STUDY_SITE_ACCRUAL_STATUS"/>		
+		<for list="${pa.service.list}" param="pa.service" delimiter=",">
+		     <sequential>
+			<junit dir="${basedir}" printsummary="yes" showoutput="true">
+				<sysproperty key="multiple.payloads" value="false" />
+				<sysproperty key="payload.file.name" value="@{pa.service}_ID.xml" />
+				<sysproperty key="message.type" value="@{pa.service}" />
+				<sysproperty key="operation.name" value="get" />
+				<sysproperty key="synchronous" value="true" />
+				<sysproperty key="caxchange.url" value="${caxchange.url}" />
+				<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+				<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+				<classpath refid="testClassPath" />
+				<formatter type="xml" />
+				<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestCoppaServices" outfile="IHUB-20_@{pa.service}"/>
+			</junit>
+                   </sequential>
+		</for>	
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			<sysproperty key="multiple.payloads" value="false" />
+			<sysproperty key="payload.file.name" value="CATISSUE_CREATE_PARTICIPANT.xml" />
+			<sysproperty key="message.type" value="CATISSUE" />
+			<sysproperty key="operation.name" value="createParticipant" />
+			<sysproperty key="synchronous" value="false" />
+			<sysproperty key="caxchange.url" value="${caxchange.url}" />
+			<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+			<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+			<classpath refid="testClassPath" />
+			<formatter type="xml" />
+			<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestCoppaServices" outfile="IHUB-21"/>
+                </junit>
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			<sysproperty key="multiple.payloads" value="false" />
+			<sysproperty key="payload.file.name" value="CATISSUE_CREATE_PARTICIPANT.xml" />
+			<sysproperty key="message.type" value="CATISSUE" />
+			<sysproperty key="operation.name" value="createParticipant" />
+			<sysproperty key="synchronous" value="true" />
+			<sysproperty key="caxchange.url" value="${caxchange.url}" />
+			<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+			<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+			<classpath refid="testClassPath" />
+			<formatter type="xml" />
+			<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestCoppaServices" outfile="IHUB-22"/>
+                </junit>		
+	</target>
+	
+	<target name="testHubRollbacks"  depends="init,replace" description="Invokes the hub test cases for verifying that rollbacks are initiated" >
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+					<sysproperty key="payload.file.name" value="STUDY_CREATION.xml" />
+					<sysproperty key="message.type" value="STUDY_CREATION" />
+					<sysproperty key="operation.name" value="${operation.name}" />
+					<sysproperty key="synchronous" value="true" />
+					<sysproperty key="caxchange.url" value="${caxchange.url}" />
+					<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+					<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+					<classpath refid="testClassPath" />
+					<formatter type="xml" />
+					<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestNewMessageType" outfile="IHUB-5" />
+		</junit>
+		<junit dir="${basedir}" printsummary="yes" showoutput="true">
+					<sysproperty key="payload.file.name" value="REGISTER_SUBJECT.xml" />
+					<sysproperty key="message.type" value="REGISTER_SUBJECT" />
+					<sysproperty key="operation.name" value="${operation.name}" />
+					<sysproperty key="synchronous" value="true" />
+					<sysproperty key="caxchange.url" value="${caxchange.url}" />
+					<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+					<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+					<classpath refid="testClassPath" />
+					<formatter type="xml" />
+					<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestNewMessageType" outfile="IHUB-9" />
+		</junit>
+	</target>
+	
+	<target name="testPOBusiness"  depends="init,replace" description="Invokes the hub test cases for PO Business service" >
+	                <mkdir dir="${integration_smoke_test_home}/${junit.results.dir}" />
+			<junit dir="${basedir}" printsummary="yes" showoutput="true">
+					<sysproperty key="payload.file.name" value="BS_IO_II.xml,BS_PLAYER_BL.xml,BS_SCOPER_BL.xml" />
+					<sysproperty key="message.type" value="PO_BUSINESS" />
+					<sysproperty key="operation.name" value="getCorrelationByIdWithEntities" />
+					<sysproperty key="synchronous" value="true" />
+					<sysproperty key="caxchange.url" value="${caxchange.url}" />
+					<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+					<sysproperty key="multiple.payloads" value="true" />
+					<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+					<classpath refid="testClassPath" />
+					<formatter type="xml" />
+					<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestCoppaServices" outfile="IHUB-PO-BUSINESS-1" />
+		        </junit>
+			<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			                <sysproperty key="multiple.payloads" value="true" />
+					<sysproperty key="payload.file.name" value="BS_IO_II.xml,BS_PLAYER_BL_FALSE.xml,BS_SCOPER_BL.xml" />
+					<sysproperty key="message.type" value="PO_BUSINESS" />
+					<sysproperty key="operation.name" value="getCorrelationByIdWithEntities" />
+					<sysproperty key="synchronous" value="true" />
+					<sysproperty key="caxchange.url" value="${caxchange.url}" />
+					<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+					<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+					<classpath refid="testClassPath" />
+					<formatter type="xml" />
+					<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestCoppaServices" outfile="IHUB-PO-BUSINESS-2" />
+		        </junit>
+			<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			                <sysproperty key="multiple.payloads" value="true" />
+					<sysproperty key="payload.file.name" value="BS_IO_II.xml,BS_PLAYER_BL.xml,BS_SCOPER_BL_FALSE.xml" />
+					<sysproperty key="message.type" value="PO_BUSINESS" />
+					<sysproperty key="operation.name" value="getCorrelationByIdWithEntities" />
+					<sysproperty key="synchronous" value="true" />
+					<sysproperty key="caxchange.url" value="${caxchange.url}" />
+					<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+					<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+					<classpath refid="testClassPath" />
+					<formatter type="xml" />
+					<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestCoppaServices" outfile="IHUB-PO-BUSINESS-3" />
+		        </junit>
+			<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			                <sysproperty key="multiple.payloads" value="true" />
+					<sysproperty key="payload.file.name" value="BS_IO_II.xml,BS_PLAYER_BL_FALSE.xml,BS_SCOPER_BL_FALSE.xml" />
+					<sysproperty key="message.type" value="PO_BUSINESS" />
+					<sysproperty key="operation.name" value="getCorrelationByIdWithEntities" />
+					<sysproperty key="synchronous" value="true" />
+					<sysproperty key="caxchange.url" value="${caxchange.url}" />
+					<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+					<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+					<classpath refid="testClassPath" />
+					<formatter type="xml" />
+					<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestCoppaServices" outfile="IHUB-PO-BUSINESS-4" />
+		        </junit>		        
+			<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			                <sysproperty key="multiple.payloads" value="true" />
+					<sysproperty key="payload.file.name" value="BS_IO_II.xml,BS_IO_II_1.xml,BS_PLAYER_BL.xml,BS_SCOPER_BL.xml" />
+					<sysproperty key="message.type" value="PO_BUSINESS" />
+					<sysproperty key="operation.name" value="getCorrelationsByIdsWithEntities" />
+					<sysproperty key="synchronous" value="true" />
+					<sysproperty key="caxchange.url" value="${caxchange.url}" />
+					<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+					<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+					<classpath refid="testClassPath" />
+					<formatter type="xml" />
+					<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestCoppaServices" outfile="IHUB-PO-BUSINESS-5" />
+		        </junit>
+			<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			                <sysproperty key="multiple.payloads" value="true" />
+					<sysproperty key="payload.file.name" value="BS_IO_II.xml,BS_IO_II_1.xml,BS_PLAYER_BL_FALSE.xml,BS_SCOPER_BL.xml" />
+					<sysproperty key="message.type" value="PO_BUSINESS" />
+					<sysproperty key="operation.name" value="getCorrelationsByIdsWithEntities" />
+					<sysproperty key="synchronous" value="true" />
+					<sysproperty key="caxchange.url" value="${caxchange.url}" />
+					<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+					<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+					<classpath refid="testClassPath" />
+					<formatter type="xml" />
+					<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestCoppaServices" outfile="IHUB-PO-BUSINESS-6" />
+		        </junit>
+			<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			                <sysproperty key="multiple.payloads" value="true" />
+					<sysproperty key="payload.file.name" value="BS_IO_CD.xml,BS_O_II.xml,BS_PLAYER_BL.xml,BS_SCOPER_BL.xml" />
+					<sysproperty key="message.type" value="PO_BUSINESS" />
+					<sysproperty key="operation.name" value="getCorrelationsByPlayerIdsWithEntities" />
+					<sysproperty key="synchronous" value="true" />
+					<sysproperty key="caxchange.url" value="${caxchange.url}" />
+					<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+					<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+					<classpath refid="testClassPath" />
+					<formatter type="xml" />
+					<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestCoppaServices" outfile="IHUB-PO-BUSINESS-6" />
+		        </junit>
+			<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			                <sysproperty key="multiple.payloads" value="true" />
+					<sysproperty key="payload.file.name" value="BS_IO_CD.xml,BS_O_II.xml,BS_PLAYER_BL_FALSE.xml,BS_SCOPER_BL.xml" />
+					<sysproperty key="message.type" value="PO_BUSINESS" />
+					<sysproperty key="operation.name" value="getCorrelationsByPlayerIdsWithEntities" />
+					<sysproperty key="synchronous" value="true" />
+					<sysproperty key="caxchange.url" value="${caxchange.url}" />
+					<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+					<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+					<classpath refid="testClassPath" />
+					<formatter type="xml" />
+					<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestCoppaServices" outfile="IHUB-PO-BUSINESS-7" />
+		        </junit>
+			<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			                <sysproperty key="multiple.payloads" value="true" />
+					<sysproperty key="payload.file.name" value="BS_IO_CD.xml,BS_O_II.xml,BS_PLAYER_BL.xml,BS_SCOPER_BL_FALSE.xml" />
+					<sysproperty key="message.type" value="PO_BUSINESS" />
+					<sysproperty key="operation.name" value="getCorrelationsByPlayerIdsWithEntities" />
+					<sysproperty key="synchronous" value="true" />
+					<sysproperty key="caxchange.url" value="${caxchange.url}" />
+					<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+					<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+					<classpath refid="testClassPath" />
+					<formatter type="xml" />
+					<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestCoppaServices" outfile="IHUB-PO-BUSINESS-8" />
+		        </junit>		        
+			<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			                <sysproperty key="multiple.payloads" value="true" />
+					<sysproperty key="payload.file.name" value="BS_IO_CD.xml,BS_O_II.xml,BS_O_II_1.xml,BS_PLAYER_BL.xml,BS_SCOPER_BL.xml" />
+					<sysproperty key="message.type" value="PO_BUSINESS" />
+					<sysproperty key="operation.name" value="getCorrelationsByPlayerIdsWithEntities" />
+					<sysproperty key="synchronous" value="true" />
+					<sysproperty key="caxchange.url" value="${caxchange.url}" />
+					<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+					<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+					<classpath refid="testClassPath" />
+					<formatter type="xml" />
+					<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestCoppaServices" outfile="IHUB-PO-BUSINESS-9" />
+		        </junit>
+		        
+			<junit dir="${basedir}" printsummary="yes" showoutput="true">
+			                <sysproperty key="multiple.payloads" value="true" />
+					<sysproperty key="payload.file.name" value="BS_O_II_1.xml,BS_CD_ARR.xml,BS_CD_ARR_1.xml" />
+					<sysproperty key="message.type" value="PO_BUSINESS" />
+					<sysproperty key="operation.name" value="getEntityByIdWithCorrelations" />
+					<sysproperty key="synchronous" value="true" />
+					<sysproperty key="caxchange.url" value="${caxchange.url}" />
+					<sysproperty key="GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
+					<sysproperty key="axis.ClientConfigFile" value="${env.GLOBUS_LOCATION}/client-config.wsdd" />
+					<classpath refid="testClassPath" />
+					<formatter type="xml" />
+					<test fork="yes" todir="${integration_smoke_test_home}/${junit.results.dir}" name="gov.nih.nci.cagrid.caxchange.test.TestCoppaServices" outfile="IHUB-PO-BUSINESS-10" />
+		        </junit>		        
+        </target>
+
+</project>
