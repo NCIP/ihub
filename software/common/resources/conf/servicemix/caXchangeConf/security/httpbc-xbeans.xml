@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:http="http://servicemix.apache.org/http/1.0"
+	xmlns:caxchange="http://nci.nih.gov/caXchange" xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://servicemix.apache.org/http/1.0 http://servicemix.apache.org/schema/servicemix-http-2008.01.xsd
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<value>classpath:caxchange.properties
+			</value>
+		</property>
+	</bean>
+
+	<http:endpoint service="caxchange:SynchronousRequestService"
+		endpoint="soap" role="consumer" authMethod="BASIC"
+		locationURI="https://${httpbc.caxchange.host}:${httpbc.caxchange.port}/synchronousRequest"
+		defaultMep="http://www.w3.org/2004/08/wsdl/in-out" wsdlResource="classpath:caXchangeSynchronousRequest.wsdl"
+		targetService="caxchange:synchronousAsyncBridge"  soap="true">
+		<http:ssl>
+			<http:sslParameters keyStoreType="JKS"
+				keyStore="classpath:/caXchangeConf/security/server_privatestore.jks"
+				keyStorePassword="keyStorePassword" keyPassword="smxServerPassword" />
+		</http:ssl>
+	</http:endpoint>
+
+</beans>
