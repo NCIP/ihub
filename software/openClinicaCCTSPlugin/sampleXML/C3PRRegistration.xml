@@ -1,0 +1,52 @@
+<registration xmlns="gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain" gridId="78ee3f7b-1ee1-4ea4-a819-c7e4721a199c">
+    <studySite gridId="390ffba8-371b-4f84-bda6-ce50319f11c8">
+     <healthcareSite>
+      <nciInstituteCode>AR006</nciInstituteCode>
+     </healthcareSite>
+     <irbApprovalDate>2009-03-06</irbApprovalDate>
+     <roleCode>Affiliate Site</roleCode>
+     <startDate>2009-03-09</startDate>
+    </studySite>
+    <studyRef gridId="e51a18b1-c7d7-40de-855b-b293af422aef">
+     <shortTitleText>Default Study</shortTitleText>
+     <longTitleText>Default Study</longTitleText>
+     <identifier xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="OrganizationAssignedIdentifierType">
+      <type>Coordinating Center Identifier</type>
+      <value>SMOKE_TEST</value>
+      <primaryIndicator>true</primaryIndicator>
+      <healthcareSite>
+       <nciInstituteCode>AR006</nciInstituteCode>
+      </healthcareSite>
+     </identifier>
+    </studyRef>
+    <participant gridId="24b25f48-fb19-4216-983e-3f6307aaeeaf">
+     <firstName>amber</firstName>
+     <lastName>smith</lastName>
+     <address/>
+     <administrativeGenderCode>Female</administrativeGenderCode>
+     <birthDate>1980-01-17</birthDate>
+     <ethnicGroupCode>Non Hispanic or Latino</ethnicGroupCode>
+     <raceCode>White</raceCode>
+     <identifier xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="OrganizationAssignedIdentifierType">
+      <type>MRN</type>
+      <value>123456</value>
+      <primaryIndicator>true</primaryIndicator>
+      <healthcareSite>
+       <nciInstituteCode>02008</nciInstituteCode>
+      </healthcareSite>
+     </identifier>
+    </participant>
+    <startDate>2009-03-18</startDate>
+    <informedConsentFormSignedDate>2009-03-18</informedConsentFormSignedDate>
+    <informedConsentVersion>03/03/2009</informedConsentVersion>
+    <regDataEntryStatus>COMPLETE</regDataEntryStatus>
+    <regWorkflowStatus>REGISTERED</regWorkflowStatus>
+    <scheduledEpoch xmlns:c3pr="gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" gridId="4d7e783f-454b-416e-bd11-78acc27ae657" xsi:type="ScheduledTreatmentEpochType">
+     <startDate>2009-03-18</startDate>
+     <epoch gridId="4d7e783f-454b-416e-bd11-78acc27ae657" xsi:type="TreatmentEpochType">
+      <name>Epoch</name>
+      <descriptionText/>
+     </epoch>
+     <eligibilityIndicator>true</eligibilityIndicator>
+    </scheduledEpoch>
+   </registration>

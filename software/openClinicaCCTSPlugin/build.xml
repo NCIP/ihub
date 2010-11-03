@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<project name="CodegenExample" default="main" basedir=".">
+	<property environment="env"/>
+	<property name="dist.dir" value="./dist" />
+	<property name="AXIS2_HOME" value="c:/axis2-1.4.1" />
+	
+	<target name="clean">
+		<delete dir="gend" />
+		<delete dir="classes" />
+		<delete dir="${dist.dir}" />
+	</target>
+	
+	<target name="prep" depends="clean">
+		<mkdir dir="gend"/>
+		<mkdir dir="classes"/>
+		<mkdir dir="${dist.dir}" />
+	</target>
+	
+	<path id="build.classpath">
+		<pathelement location="./classes" />
+	    <fileset dir="./lib">
+	    	<include name="**/*.jar" />
+	    </fileset>
+		<fileset dir="${AXIS2_HOME}/lib">
+			<include name="**/*.jar" />
+		</fileset>	    
+		<fileset dir="${env.GLOBUS_LOCATION}/lib">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="main" depends="prep, generate, compile, package"/>
+	
+	<target name="declare" >
+	    <taskdef name="codegen"
+	        classname="org.apache.axis2.tool.ant.AntCodegenTask"
+	    	
+	     classpathref="build.classpath"/>
+	</target>
+
+	<target name="generate" depends="prep, declare">
+		<codegen wsdlfilename="${basedir}/wsdl/createSubjectDefinition.wsdl"
+			     output="${basedir}/gend"
+			     packageName="edu.uams.caxchange.openclinica.subjectRegistration.output"
+		         classpathref="build.classpath"
+			     unpackclasses="true">
+		</codegen>		
+	</target>
+	
+	<target name="compile">
+		<javac classpathref="build.classpath"
+			   debug="true"
+			   destdir="${basedir}/classes"
+			   srcdir="${basedir}/gend/src;./src"
+		       includes="**/*.java"/>	
+	</target>
+	
+	<target name="package"
+	        depends="compile">
+		<jar basedir="${basedir}/classes"
+		     jarfile="${dist.dir}/OpenClinicaCCTSPlugin.jar"
+		     includes="**/*.class"/>
+		<copy todir="${dist.dir}" file="resources/OpenClinicaCCTSPlugin.properties"/>
+	</target>
+	
+	
+	
+		
+</project>
