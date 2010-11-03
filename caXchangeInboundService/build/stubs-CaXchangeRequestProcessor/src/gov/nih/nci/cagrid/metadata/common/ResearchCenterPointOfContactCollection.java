@@ -1,0 +1,135 @@
+/**
+ * ResearchCenterPointOfContactCollection.java
+ *
+ * This file was auto-generated from WSDL
+ * by the Apache Axis 1.2RC2 Apr 28, 2006 (12:42:00 EDT) WSDL2Java emitter.
+ */
+
+package gov.nih.nci.cagrid.metadata.common;
+
+public class ResearchCenterPointOfContactCollection  implements java.io.Serializable {
+    private gov.nih.nci.cagrid.metadata.common.PointOfContact[] pointOfContact;
+
+    public ResearchCenterPointOfContactCollection() {
+    }
+
+    public ResearchCenterPointOfContactCollection(
+           gov.nih.nci.cagrid.metadata.common.PointOfContact[] pointOfContact) {
+           this.pointOfContact = pointOfContact;
+    }
+
+
+    /**
+     * Gets the pointOfContact value for this ResearchCenterPointOfContactCollection.
+     * 
+     * @return pointOfContact
+     */
+    public gov.nih.nci.cagrid.metadata.common.PointOfContact[] getPointOfContact() {
+        return pointOfContact;
+    }
+
+
+    /**
+     * Sets the pointOfContact value for this ResearchCenterPointOfContactCollection.
+     * 
+     * @param pointOfContact
+     */
+    public void setPointOfContact(gov.nih.nci.cagrid.metadata.common.PointOfContact[] pointOfContact) {
+        this.pointOfContact = pointOfContact;
+    }
+
+    public gov.nih.nci.cagrid.metadata.common.PointOfContact getPointOfContact(int i) {
+        return this.pointOfContact[i];
+    }
+
+    public void setPointOfContact(int i, gov.nih.nci.cagrid.metadata.common.PointOfContact _value) {
+        this.pointOfContact[i] = _value;
+    }
+
+    private java.lang.Object __equalsCalc = null;
+    public synchronized boolean equals(java.lang.Object obj) {
+        if (!(obj instanceof ResearchCenterPointOfContactCollection)) return false;
+        ResearchCenterPointOfContactCollection other = (ResearchCenterPointOfContactCollection) obj;
+        if (obj == null) return false;
+        if (this == obj) return true;
+        if (__equalsCalc != null) {
+            return (__equalsCalc == obj);
+        }
+        __equalsCalc = obj;
+        boolean _equals;
+        _equals = true && 
+            ((this.pointOfContact==null && other.getPointOfContact()==null) || 
+             (this.pointOfContact!=null &&
+              java.util.Arrays.equals(this.pointOfContact, other.getPointOfContact())));
+        __equalsCalc = null;
+        return _equals;
+    }
+
+    private boolean __hashCodeCalc = false;
+    public synchronized int hashCode() {
+        if (__hashCodeCalc) {
+            return 0;
+        }
+        __hashCodeCalc = true;
+        int _hashCode = 1;
+        if (getPointOfContact() != null) {
+            for (int i=0;
+                 i<java.lang.reflect.Array.getLength(getPointOfContact());
+                 i++) {
+                java.lang.Object obj = java.lang.reflect.Array.get(getPointOfContact(), i);
+                if (obj != null &&
+                    !obj.getClass().isArray()) {
+                    _hashCode += obj.hashCode();
+                }
+            }
+        }
+        __hashCodeCalc = false;
+        return _hashCode;
+    }
+
+    // Type metadata
+    private static org.apache.axis.description.TypeDesc typeDesc =
+        new org.apache.axis.description.TypeDesc(ResearchCenterPointOfContactCollection.class, true);
+
+    static {
+        typeDesc.setXmlType(new javax.xml.namespace.QName("gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common", ">ResearchCenter>pointOfContactCollection"));
+        org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("pointOfContact");
+        elemField.setXmlName(new javax.xml.namespace.QName("gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common", "PointOfContact"));
+        elemField.setXmlType(new javax.xml.namespace.QName("gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common", "PointOfContact"));
+        elemField.setMinOccurs(0);
+        typeDesc.addFieldDesc(elemField);
+    }
+
+    /**
+     * Return type metadata object
+     */
+    public static org.apache.axis.description.TypeDesc getTypeDesc() {
+        return typeDesc;
+    }
+
+    /**
+     * Get Custom Serializer
+     */
+    public static org.apache.axis.encoding.Serializer getSerializer(
+           java.lang.String mechType, 
+           java.lang.Class _javaType,  
+           javax.xml.namespace.QName _xmlType) {
+        return 
+          new  org.apache.axis.encoding.ser.BeanSerializer(
+            _javaType, _xmlType, typeDesc);
+    }
+
+    /**
+     * Get Custom Deserializer
+     */
+    public static org.apache.axis.encoding.Deserializer getDeserializer(
+           java.lang.String mechType, 
+           java.lang.Class _javaType,  
+           javax.xml.namespace.QName _xmlType) {
+        return 
+          new  org.apache.axis.encoding.ser.BeanDeserializer(
+            _javaType, _xmlType, typeDesc);
+    }
+
+}
