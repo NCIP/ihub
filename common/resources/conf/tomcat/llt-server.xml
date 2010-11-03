@@ -1,0 +1,11 @@
+<Context path="/llt" docBase="llt">
+	<Resource name="CLMDS" auth="Container" type="javax.sql.DataSource"
+		className="org.apache.commons.dbcp.BasicDataSource" 
+		url="jdbc:mysql://@database.llt.host@:@database.llt.port@/@database.llt.name@" driverClassName="org.gjt.mm.mysql.Driver" username="@database.llt.username@" password="@database.llt.password@"/>
+	<Resource name="CLMCSMDS" auth="Container" type="javax.sql.DataSource"
+		className="org.apache.commons.dbcp.BasicDataSource" 
+		url="@database.csm.url@" driverClassName="@database.csm.driver@" username="@database.csm.username@" password="@database.csm.password@"/>
+
+</Context>
+
+     
