@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<antlib>
+    <typedef name="status"          classname="gov.nih.nci.ihub.util.ant.StatusTask"/>
+    <typedef name="start"           classname="gov.nih.nci.ihub.util.ant.StartTask"/>
+    <typedef name="stop"            classname="gov.nih.nci.ihub.util.ant.StopTask"/>
+    <typedef name="pause"           classname="gov.nih.nci.ihub.util.ant.PauseTask"/>
+    <typedef name="resume"          classname="gov.nih.nci.ihub.util.ant.ResumeTask"/>
+    <typedef name="list"            classname="gov.nih.nci.ihub.util.ant.ListTask"/>
+    <typedef name="deploy"          classname="gov.nih.nci.ihub.util.ant.DeployTask"/>
+    <typedef name="clear"           classname="gov.nih.nci.ihub.util.ant.ClearTask"/>
+    <typedef name="reset"           classname="gov.nih.nci.ihub.util.ant.ResetStatsTask"/>
+    <typedef name="dump"            classname="gov.nih.nci.ihub.util.ant.DumpTask"/>
+    <typedef name="import"          classname="gov.nih.nci.ihub.util.ant.ImportTask"/>
+    <typedef name="export"          classname="gov.nih.nci.ihub.util.ant.ExportTask"/>
+    <typedef name="channel-action"  classname="gov.nih.nci.ihub.util.ant.ChannelActionTask"/>
+    <typedef name="user-list"       classname="gov.nih.nci.ihub.util.ant.UserListTask"/>
+    <typedef name="user-add"        classname="gov.nih.nci.ihub.util.ant.UserAddTask"/>
+    <typedef name="user-remove"     classname="gov.nih.nci.ihub.util.ant.UserRemoveTask"/>
+    <typedef name="user-changepw"   classname="gov.nih.nci.ihub.util.ant.UserChangePasswordTask"/>
+</antlib>
+
