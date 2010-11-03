@@ -1,0 +1,321 @@
+<com.webreach.mirth.model.Channel>
+  <id>15aae903-e5ba-4208-9188-ef762046b59f</id>
+  <name>HL7v2 to HL7v3</name>
+  <description></description>
+  <enabled>true</enabled>
+  <version>1.8.2.4472</version>
+  <lastModified>
+    <time>1285017007875</time>
+    <timezone>America/New_York</timezone>
+  </lastModified>
+  <revision>13</revision>
+  <sourceConnector>
+    <name>sourceConnector</name>
+    <properties>
+      <property name="binary">0</property>
+      <property name="fileFilter">*</property>
+      <property name="password">anonymous</property>
+      <property name="regex">0</property>
+      <property name="username">anonymous</property>
+      <property name="moveToDirectory">C:/projects_svn/ihub-mirth/trunk/software/smoke-test/ca-adapter/hl7-v2-to-v3/Hl7v2-Processed</property>
+      <property name="moveToErrorDirectory">C:/projects_svn/ihub-mirth/trunk/software/smoke-test/ca-adapter/hl7-v2-to-v3/Hl7v2-Error</property>
+      <property name="pollingType">interval</property>
+      <property name="charsetEncoding">DEFAULT_ENCODING</property>
+      <property name="scheme">file</property>
+      <property name="host">C:/projects_svn/ihub-mirth/trunk/software/smoke-test/ca-adapter/hl7-v2-to-v3/HL7v2-Open</property>
+      <property name="secure">1</property>
+      <property name="pollingFrequency">1000</property>
+      <property name="validateConnections">1</property>
+      <property name="DataType">File Reader</property>
+      <property name="processBatchFiles">0</property>
+      <property name="checkFileAge">0</property>
+      <property name="passive">1</property>
+      <property name="fileAge">0</property>
+      <property name="sortAttribute">date</property>
+      <property name="FTPAnonymous">1</property>
+      <property name="moveToPattern">HL7v2-processed-${SYSTIME}.txt</property>
+      <property name="autoDelete">0</property>
+    </properties>
+    <transformer>
+      <steps/>
+      <inboundProtocol>HL7V2</inboundProtocol>
+      <outboundProtocol>HL7V2</outboundProtocol>
+    </transformer>
+    <filter>
+      <rules/>
+    </filter>
+    <transportName>File Reader</transportName>
+    <mode>SOURCE</mode>
+    <enabled>true</enabled>
+  </sourceConnector>
+  <destinationConnectors>
+    <com.webreach.mirth.model.Connector>
+      <name>HL7v3 File Writer</name>
+      <properties>
+        <property name="secure">1</property>
+        <property name="scheme">file</property>
+        <property name="binary">0</property>
+        <property name="username">anonymous</property>
+        <property name="outputPattern">HL7v3-converted-${SYSTIME}.xml</property>
+        <property name="validateConnections">1</property>
+        <property name="DataType">File Writer</property>
+        <property name="FTPAnonymous">1</property>
+        <property name="charsetEncoding">DEFAULT_ENCODING</property>
+        <property name="password">anonymous</property>
+        <property name="passive">1</property>
+        <property name="template">${message.encodedData}</property>
+        <property name="outputAppend">1</property>
+        <property name="host">C:/projects_svn/ihub-mirth/trunk/software/smoke-test/ca-adapter/hl7-v2-to-v3/HL7v3-Converted</property>
+      </properties>
+      <transformer>
+        <steps>
+          <com.webreach.mirth.model.Step>
+            <sequenceNumber>0</sequenceNumber>
+            <name>patientPerson - name - given (out)</name>
+            <script>tmp[&apos;patientPerson&apos;][&apos;name&apos;][&apos;given&apos;] = validate(msg[&apos;PID&apos;][&apos;PID.5&apos;][&apos;PID.5.2&apos;].toString(), &apos;&apos;, new Array());</script>
+            <type>Message Builder</type>
+            <data class="map">
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;PID&apos;][&apos;PID.5&apos;][&apos;PID.5.2&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Variable</string>
+                <string>tmp[&apos;patientPerson&apos;][&apos;name&apos;][&apos;given&apos;]</string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+            </data>
+          </com.webreach.mirth.model.Step>
+          <com.webreach.mirth.model.Step>
+            <sequenceNumber>1</sequenceNumber>
+            <name>patientPerson - name - family (out)</name>
+            <script>tmp[&apos;patientPerson&apos;][&apos;name&apos;][&apos;family&apos;] = validate(msg[&apos;PID&apos;][&apos;PID.5&apos;][&apos;PID.5.1&apos;].toString(), &apos;&apos;, new Array());</script>
+            <type>Message Builder</type>
+            <data class="map">
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;PID&apos;][&apos;PID.5&apos;][&apos;PID.5.1&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Variable</string>
+                <string>tmp[&apos;patientPerson&apos;][&apos;name&apos;][&apos;family&apos;]</string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+            </data>
+          </com.webreach.mirth.model.Step>
+          <com.webreach.mirth.model.Step>
+            <sequenceNumber>2</sequenceNumber>
+            <name>patientPerson - birthTime - @value (out)</name>
+            <script>tmp[&apos;patientPerson&apos;][&apos;birthTime&apos;][&apos;@value&apos;] = validate(msg[&apos;PID&apos;][&apos;PID.7&apos;][&apos;PID.7.1&apos;].toString(), &apos;&apos;, new Array());</script>
+            <type>Message Builder</type>
+            <data class="map">
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;PID&apos;][&apos;PID.7&apos;][&apos;PID.7.1&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Variable</string>
+                <string>tmp[&apos;patientPerson&apos;][&apos;birthTime&apos;][&apos;@value&apos;]</string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+            </data>
+          </com.webreach.mirth.model.Step>
+          <com.webreach.mirth.model.Step>
+            <sequenceNumber>3</sequenceNumber>
+            <name>patientPerson - administrativeGenderCode - @code (out)</name>
+            <script>tmp[&apos;patientPerson&apos;][&apos;administrativeGenderCode&apos;][&apos;@code&apos;] = validate(msg[&apos;PID&apos;][&apos;PID.8&apos;][&apos;PID.8.1&apos;].toString(), &apos;&apos;, new Array());</script>
+            <type>Message Builder</type>
+            <data class="map">
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;PID&apos;][&apos;PID.8&apos;][&apos;PID.8.1&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Variable</string>
+                <string>tmp[&apos;patientPerson&apos;][&apos;administrativeGenderCode&apos;][&apos;@code&apos;]</string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+            </data>
+          </com.webreach.mirth.model.Step>
+          <com.webreach.mirth.model.Step>
+            <sequenceNumber>4</sequenceNumber>
+            <name>patientPerson - id - @assigningAuthorityName (out)</name>
+            <script>tmp[&apos;patientPerson&apos;][&apos;id&apos;][&apos;@assigningAuthorityName&apos;] = validate(msg[&apos;PID&apos;][&apos;PID.3&apos;][&apos;PID.3.4&apos;].toString(), &apos;&apos;, new Array());</script>
+            <type>Message Builder</type>
+            <data class="map">
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;PID&apos;][&apos;PID.3&apos;][&apos;PID.3.4&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Variable</string>
+                <string>tmp[&apos;patientPerson&apos;][&apos;id&apos;][&apos;@assigningAuthorityName&apos;]</string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+            </data>
+          </com.webreach.mirth.model.Step>
+        </steps>
+        <inboundTemplate>MSH|^~\&amp;|KNU_DSMC|MISC^Medical Information Sharing Center|KNUMC|KNUMC^Kyungpook University Medical Center|20030809153902||ADT^A03^ADT_A03|KNU_DSMS20030303194529ADT_AO3-11122211|P^A|2.4|||||KOR|8859/1|^KOREAN
+EVN||20030809153902||03
+PID|1||11122211^^^KNUMC&amp;2.16.840.1.113883.13.13432&amp;UUID||Han^Deli^Spice||19790501|F|Deli||12-4B Ackme St.^^Telson^MD^20855^USA||240-123-1234|||S^Single^HL70002|CAT^Catholic^HL70006||442-32-4563
+PV1|1|I|534^5341^2|E|||34534^Kate&amp;Van^^^^Dr.^^^^^^^^&amp;General Surgery|||SUR|||||A0~A4~B3~B4|||||G2||||||||||||||||08||||||||20030210|20030220
+DG1|1||M12.3^Palindromic rheumatism^I10||20030215|F|||||||||1|32334^Cho^^^^Dr.^^^^^^^^&amp;General Surgery
+DG1|2||H20.2^Lens-induced iridocyclitis^I10||20030215|F|||||||||2|32334^Cho^^^^Dr.^^^^^^^^&amp;General Surgery
+DG1|3||J45.1^Nonallergic asthma^I10||20030215|F|||||||||3|32334^Cho^^^^Dr.^^^^^^^^&amp;General Surgery
+PR1|1||12.3^Iridoplasty and coreoplasty^I9C||20030214|D|||||||||J45.1^Nonallergic asthma^I10
+PR1|2||43.1^Gastrostomy^I9C||20030215|D||||||135764^Dr. Tomy|||H20.2^Lens-induced iridocyclitis^I10||||Just a Comment
+PR1|3||35.41^Enlargement of existing atrial septal defect^I9C||20030219|D||||||135764^Dr. Tomy|||H20.2^Lens-induced iridocyclitis^I10||||additional comment
+</inboundTemplate>
+        <outboundTemplate>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Patient xmlns=&quot;urn:hl7-org:v3&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; classCode=&quot;PAT&quot;&gt;
+    &lt;id root=&quot;2.16.840.1.113883.3.26.345&quot; assigningAuthorityName=&quot;NCI&quot; extension=&quot;78127-401&quot;/&gt;
+    &lt;statusCode code=&quot;canceled&quot;/&gt;
+    &lt;patientPerson classCode=&quot;PSN&quot; determinerCode=&quot;INSTANCE&quot;&gt;
+        &lt;id root=&quot;2.16.840.1.113883.3.26.359&quot; assigningAuthorityName=&quot;NCI&quot; extension=&quot;77367-722&quot;/&gt;
+        &lt;name use=&quot;L&quot;&gt;
+            &lt;given&gt;Telson&lt;/given&gt;
+            &lt;family&gt;Nolan&lt;/family&gt;
+        &lt;/name&gt;
+        &lt;administrativeGenderCode code=&quot;F&quot; codeSystemName=&quot;AdministrativeGender&quot; codeSystem=&quot;2.16.840.1.113883.5.1&quot; displayName=&quot;Female&quot;/&gt;
+        &lt;birthTime value=&quot;20100209121833&quot;/&gt;
+        &lt;birthPlace classCode=&quot;BIRTHPL&quot;&gt;
+            &lt;addr&gt;
+                &lt;state&gt;MD&lt;/state&gt;
+                &lt;streetName&gt;Durham St.&lt;/streetName&gt;
+                &lt;city&gt;Rockville&lt;/city&gt;
+                &lt;streetAddressLine&gt;96696&lt;/streetAddressLine&gt;
+            &lt;/addr&gt;
+            &lt;subjectOf typeCode=&quot;SBJ&quot;&gt;
+                &lt;position classCode=&quot;POS&quot; moodCode=&quot;EVN&quot;&gt;
+                    &lt;id root=&quot;2.16.840.1.113883.3.26.756&quot; assigningAuthorityName=&quot;NCI&quot; extension=&quot;49579-417&quot;/&gt;
+                    &lt;code code=&quot;NoData&quot; codeSystemName=&quot;PositionObservationCode&quot; codeSystem=&quot;2.16.840.1.113883.19.99999&quot; displayName=&quot;Domain not found&quot;/&gt;
+                    &lt;text representation=&quot;TXT&quot; mediaType=&quot;text/plain&quot; integrityCheckAlgorithm=&quot;SHA-1&quot;&gt;This is a sample text for test data generating...&lt;/text&gt;
+                    &lt;effectiveTime operator=&quot;I&quot; value=&quot;20100209121834&quot;/&gt;
+                    &lt;activityTime operator=&quot;I&quot; value=&quot;20100209121834&quot;/&gt;
+                    &lt;value&gt;This is Sample text for test 346&lt;/value&gt;
+                &lt;/position&gt;
+            &lt;/subjectOf&gt;
+        &lt;/birthPlace&gt;
+    &lt;/patientPerson&gt;
+    &lt;providerOrganization classCode=&quot;ORG&quot; determinerCode=&quot;INSTANCE&quot;&gt;
+        &lt;id root=&quot;2.16.840.1.113883.3.26.667&quot; assigningAuthorityName=&quot;NCI&quot; extension=&quot;49495-468&quot;/&gt;
+        &lt;code code=&quot;PACKT&quot; codeSystemName=&quot;EntityCode&quot; codeSystem=&quot;2.16.840.1.113883.5.1060&quot; displayName=&quot;Packet&quot;/&gt;
+        &lt;name use=&quot;L&quot;&gt;Time Def Ltd. Co.&lt;/name&gt;
+        &lt;contactParty classCode=&quot;CON&quot;&gt;
+            &lt;id root=&quot;2.16.840.1.113883.3.26.744&quot; assigningAuthorityName=&quot;NCI&quot; extension=&quot;17652-001&quot;/&gt;
+            &lt;code code=&quot;ERROR&quot; codeSystemName=&quot;ERROR&quot; codeSystem=&quot;ERROR&quot; displayName=&quot;ERROR&quot;/&gt;
+            &lt;addr&gt;
+                &lt;state&gt;MD&lt;/state&gt;
+                &lt;county&gt;Montgomery&lt;/county&gt;
+                &lt;streetName&gt;Durham St.&lt;/streetName&gt;
+                &lt;city&gt;Rockville&lt;/city&gt;
+                &lt;postalCode&gt;23456&lt;/postalCode&gt;
+                &lt;streetAddressLine&gt;95288&lt;/streetAddressLine&gt;
+            &lt;/addr&gt;
+            &lt;telecom use=&quot;HP&quot; value=&quot;tel:1-925-568-3373&quot;/&gt;
+            &lt;contactPerson classCode=&quot;PSN&quot; determinerCode=&quot;INSTANCE&quot;&gt;
+                &lt;name use=&quot;L&quot;&gt;Gordon P. Saxton&lt;/name&gt;
+            &lt;/contactPerson&gt;
+        &lt;/contactParty&gt;
+        &lt;contactParty classCode=&quot;CON&quot;&gt;
+            &lt;id root=&quot;2.16.840.1.113883.3.26.744&quot; assigningAuthorityName=&quot;NCI&quot; extension=&quot;17652-002&quot;/&gt;
+            &lt;code code=&quot;ERROR&quot; codeSystemName=&quot;ERROR&quot; codeSystem=&quot;ERROR&quot; displayName=&quot;ERROR&quot;/&gt;
+            &lt;addr&gt;
+                &lt;state&gt;MD&lt;/state&gt;
+                &lt;streetName&gt;Durham St.&lt;/streetName&gt;
+                &lt;city&gt;Rockville&lt;/city&gt;
+                &lt;postalCode&gt;24680&lt;/postalCode&gt;
+                &lt;streetAddressLine&gt;95288&lt;/streetAddressLine&gt;
+            &lt;/addr&gt;
+            &lt;telecom use=&quot;HP&quot; value=&quot;tel:1-925-568-3373&quot;/&gt;
+            &lt;contactPerson classCode=&quot;PSN&quot; determinerCode=&quot;INSTANCE&quot;&gt;
+                &lt;name use=&quot;L&quot;&gt;Gordon P. Saxton&lt;/name&gt;
+            &lt;/contactPerson&gt;
+        &lt;/contactParty&gt;
+        &lt;contactParty classCode=&quot;CON&quot;&gt;
+            &lt;id root=&quot;2.16.840.1.113883.3.26.744&quot; assigningAuthorityName=&quot;NCI&quot; extension=&quot;17652-003&quot;/&gt;
+            &lt;code code=&quot;ERROR&quot; codeSystemName=&quot;ERROR&quot; codeSystem=&quot;ERROR&quot; displayName=&quot;ERROR&quot;/&gt;
+            &lt;addr&gt;
+                &lt;state&gt;MD&lt;/state&gt;
+                &lt;county&gt;Montgomery&lt;/county&gt;
+                &lt;streetName&gt;Durham St.&lt;/streetName&gt;
+                &lt;city&gt;Rockville&lt;/city&gt;
+                &lt;postalCode&gt;23456&lt;/postalCode&gt;
+                &lt;streetAddressLine&gt;95288&lt;/streetAddressLine&gt;
+            &lt;/addr&gt;
+            &lt;telecom use=&quot;HP&quot; value=&quot;tel:1-925-568-3373&quot;/&gt;
+            &lt;contactPerson classCode=&quot;PSN&quot; determinerCode=&quot;INSTANCE&quot;&gt;
+                &lt;name use=&quot;L&quot;&gt;Gordon P. Saxton&lt;/name&gt;
+            &lt;/contactPerson&gt;
+        &lt;/contactParty&gt;
+    &lt;/providerOrganization&gt;
+&lt;/Patient&gt;</outboundTemplate>
+        <inboundProtocol>HL7V2</inboundProtocol>
+        <outboundProtocol>HL7V3</outboundProtocol>
+        <inboundProperties/>
+        <outboundProperties/>
+      </transformer>
+      <filter>
+        <rules/>
+      </filter>
+      <transportName>File Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+    </com.webreach.mirth.model.Connector>
+  </destinationConnectors>
+  <properties>
+    <property name="initialState">started</property>
+    <property name="synchronous">true</property>
+    <property name="store_messages">true</property>
+    <property name="encryptData">false</property>
+    <property name="transactional">false</property>
+    <property name="max_message_age">-1</property>
+    <property name="dont_store_filtered">false</property>
+    <property name="error_messages_only">false</property>
+  </properties>
+  <preprocessingScript>// Modify the message variable below to pre process data
+return message;</preprocessingScript>
+  <postprocessingScript>// This script executes once after a message has been processed
+return;</postprocessingScript>
+  <deployScript>// This script executes once when the mule engine is started
+// You only have access to the globalMap here to persist data
+return;</deployScript>
+  <shutdownScript>// This script executes once when the mule engine is stopped
+// You only have access to the globalMap here to persist data
+return;</shutdownScript>
+</com.webreach.mirth.model.Channel>

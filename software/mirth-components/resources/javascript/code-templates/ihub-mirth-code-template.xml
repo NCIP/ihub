@@ -1,0 +1,155 @@
+<list>
+  <com.webreach.mirth.model.CodeTemplate>
+    <id>cff8ac93-a738-452d-8b07-3fe56b4f23ea</id>
+    <name>Invoke Target Grid and Compile Response</name>
+    <tooltip></tooltip>
+    <code>// modify function_name and parameters as you wish.
+// one function per template is recommended. i.e.) create a new code template for each new function.
+function function_name() {
+	// write code here.
+}
+
+
+function delegateSingleTargetRequest(varPropertyPrefix, varTargetDetailsCode, varBusinessMessagePayload, varBusinessMessageXMLSchemaDefinition, varMessageID){
+	try{
+		//logger.info(varTargetDetailsCode+&quot; XML schema definition: &quot;+varBusinessMessageXMLSchemaDefinition);
+		if (varBusinessMessageXMLSchemaDefinition == undefined){
+			varBusinessMessageXMLSchemaDefinition = &quot;&quot;;
+		}
+		var invocationRegistrationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.business.RegistrationInvocationStrategy(
+				globalMap.get(&quot;subject&quot;+varMessageID), globalMap.get(varTargetDetailsCode+&quot;.&quot;+varPropertyPrefix+&quot;.url&quot;), varBusinessMessagePayload);	
+
+		var gridInvocationResult = invokeGridService(invocationRegistrationStrategy, false);
+
+		if(gridInvocationResult.isFault()){		
+			if(gridInvocationResult.isRetry()){
+				var retryAttempt=0;
+				var totalRetryAttempts = globalMap.get(&quot;target.grid.service.retry.attempts&quot;);
+				for (retryAttempt=0; retryAttempt&lt;totalRetryAttempts; retryAttempt++)
+				{
+					logger.info(varTargetDetailsCode+&quot; Retry Attempt: &quot;+retryAttempt);
+					gridInvocationResult = invokeGridService(invocationRegistrationStrategy);
+					if(gridInvocationResult.isFault()){
+						continue;
+					} else {
+						insertCompiledTargetResponse(createSuccessResponseXML(gridInvocationResult, varTargetDetailsCode, varBusinessMessageXMLSchemaDefinition), 
+							varTargetDetailsCode, globalMap.get(&quot;target.response.status.successful&quot;), varMessageID);
+						break;
+					}
+				}
+			} else {
+				insertCompiledTargetResponse(createErrorResponseXML(gridInvocationResult.getInvocationException(), varTargetDetailsCode), 
+					varTargetDetailsCode, globalMap.get(&quot;target.response.status.fault&quot;), varMessageID);
+			}
+		} else {
+			insertCompiledTargetResponse(createSuccessResponseXML(gridInvocationResult, varTargetDetailsCode, varBusinessMessageXMLSchemaDefinition), 
+					varTargetDetailsCode, globalMap.get(&quot;target.response.status.successful&quot;), varMessageID);
+		}
+		
+
+	} catch (error) {	
+		logger.error(&quot;EXCEPTION OCCURED IN MIRTH DURING &quot;+varTargetDetailsCode+&quot; INVOCATION: &quot;+error);
+		insertCompiledTargetResponse(createErrorResponseXML(new Packages.java.lang.Exception(error), varTargetDetailsCode), 
+			varTargetDetailsCode, globalMap.get(&quot;target.response.status.fault&quot;), messageID);
+	}
+}
+
+
+function delegateTargetRollbackRequest(varPropertyPrefix, varTargetDetailsCodeList, varBusinessMessagePayload, varMessageID){
+	for(i=0; i&lt;varTargetDetailsCodeList.size(); i++) {	
+		varTargetDetailsCode = varTargetDetailsCodeList.get(i);
+		logger.info(&quot;Sending &quot;+ varPropertyPrefix +&quot; ROLLBACK to &quot;+varTargetDetailsCode);
+		try{		
+			var invocationRegistrationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.business.RegistrationInvocationStrategy(
+					globalMap.get(&quot;subject&quot;+varMessageID), globalMap.get(varTargetDetailsCodeList.get(i)+&quot;.&quot;+varPropertyPrefix+&quot;.url&quot;), varBusinessMessagePayload);	
+
+			var gridInvocationResult = invokeGridService(invocationRegistrationStrategy, true);			
+
+		} catch (error) {	
+			logger.error(&quot;EXCEPTION OCCURED IN MIRTH DURING &quot;+varTargetDetailsCode+&quot; INVOCATION: &quot;+error);
+			insertCompiledTargetResponse(createErrorResponseXML(new Packages.java.lang.Exception(error), varTargetDetailsCode), 
+				varTargetDetailsCode, globalMap.get(&quot;target.response.status.fault&quot;), messageID);
+		}
+	}
+}
+
+
+function invokeGridService(varInvocationStrategy, varIsRollback){
+	return varInvocationStrategy.invokeGridService(varIsRollback);
+}
+
+//By using the varRequestXMLSchemaDefinition, and undefined value is getting set in the aggregated response. As a work around, replacing 
+// varRequestXMLSchemaDefinition with an empty string temporarily.
+function createSuccessResponseXML(varGridInvocationResult, varTargetDetailCode, varRequestXMLSchemaDefinition){
+	var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.business.GenerateResponseBean();
+	var gridInvocationResultDocument = generateResponseBean.createOutputDocument(varTargetDetailCode, new Packages.java.lang.String(&quot;&quot;),
+			varRequestXMLSchemaDefinition, varGridInvocationResult);
+	var successResponseXML = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(gridInvocationResultDocument);
+	return successResponseXML;
+}
+
+function createErrorResponseXML(varException, varTargetDetailCode){
+	var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.business.GenerateResponseBean();
+	var gridInvocationResultDocument = generateResponseBean.createErrorDocument(varTargetDetailCode, new Packages.java.lang.String(&quot;&quot;),
+			 varException);
+	var errorResponseXML = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(gridInvocationResultDocument);
+	return errorResponseXML;
+}
+
+function insertCompiledTargetResponse(varResponseXML, varTargetDetailCode, varTargetResponseStatus, varMessageID){
+	logger.info(varTargetDetailCode+ &quot; Response XML: &quot;+varResponseXML);		
+	var dbConn = DatabaseConnectionFactory.createDatabaseConnection(&apos;org.postgresql.Driver&apos;,&apos;jdbc:postgresql://localhost:5432/mirth&apos;,&apos;mirthadmin&apos;,&apos;changeme&apos;);
+
+	var prepStatement = &quot;INSERT INTO COMPILED_TARGET_RESPONSE (MESSAGE_ID, TARGET_DETAILS, COMPILED_RESPONSE, TARGET_RESPONSE_STATUS, TIME_COMPLETED) VALUES(?,?,?,?, now())&quot;;
+	var params = new Packages.java.util.ArrayList();
+	params.add(varMessageID);
+	params.add(varTargetDetailCode);
+	params.add(varResponseXML);
+	params.add(varTargetResponseStatus);
+
+	dbConn.executeUpdate(prepStatement, params);
+	dbConn.close();	
+}
+
+
+/*
+function invokeGridService(varInvocationStrategy){
+	return varInvocationStrategy.invokeGridService(false);
+}
+
+
+function createSuccessResponseXML(varGridInvocationResult, varTargetDetailCode, varMessageID, varRequestXMLSchemaDefinition){
+	var generateResponseBean = new Packages.gov.nih.nci.ihub.routing.GenerateResponseBean();
+	var gridInvocationResultDocument = generateResponseBean.createOutputDocument(varTargetDetailCode, new Packages.java.lang.String(&quot;&quot;),
+			varRequestXMLSchemaDefinition, varGridInvocationResult);
+	var successResponseXML = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(gridInvocationResultDocument);
+	return successResponseXML;
+}
+
+function createErrorResponseXML(varException, varTargetDetailCode){
+	var generateResponseBean = new Packages.gov.nih.nci.ihub.routing.GenerateResponseBean();
+	var gridInvocationResultDocument = generateResponseBean.createErrorDocument(varTargetDetailCode, new Packages.java.lang.String(&quot;&quot;),
+			 varException);
+	var errorResponseXML = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(gridInvocationResultDocument);
+	return errorResponseXML;
+}
+
+function insertCompiledTargetResponse(varResponseXML, varTargetDetailCode, varTargetResponseStatus, varMessageID){
+	logger.info(varTargetDetailCode+ &quot; Response XML: &quot;+varResponseXML);		
+	var dbConn = DatabaseConnectionFactory.createDatabaseConnection(&apos;org.postgresql.Driver&apos;,&apos;jdbc:postgresql://localhost:5432/mirth&apos;,&apos;mirthadmin&apos;,&apos;changeme&apos;);
+
+	var prepStatement = &quot;INSERT INTO COMPILED_TARGET_RESPONSE (MESSAGE_ID, TARGET_DETAILS, COMPILED_RESPONSE, TARGET_RESPONSE_STATUS, TIME_COMPLETED) VALUES(?,?,?,?, now())&quot;;
+	var params = new Packages.java.util.ArrayList();
+	params.add(varMessageID);
+	params.add(varTargetDetailCode);
+	params.add(varResponseXML);
+	params.add(varTargetResponseStatus);
+
+	dbConn.executeUpdate(prepStatement, params);
+	dbConn.close();	
+}
+*/</code>
+    <type>FUNCTION</type>
+    <scope>0</scope>
+  </com.webreach.mirth.model.CodeTemplate>
+</list>
