@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="CaXchangeConsumerService" targetNamespace="http://caxchange.nci.nih.gov/CaXchangeConsumerService/service" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:binding="http://caxchange.nci.nih.gov/CaXchangeConsumerService/bindings" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:import namespace="http://caxchange.nci.nih.gov/CaXchangeConsumerService/bindings" location="CaXchangeConsumerService_bindings.wsdl"/>
+  <wsdl:service name="CaXchangeConsumerService">
+    <wsdl:port name="CaXchangeConsumerServicePortTypePort" binding="binding:CaXchangeConsumerServicePortTypeSOAPBinding">
+      <soap:address location="http://localhost:8080/wsrf/services/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

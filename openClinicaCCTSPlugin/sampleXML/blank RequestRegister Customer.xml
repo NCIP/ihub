@@ -1,0 +1,164 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
+                  xmlns:reg="http://grid.ccts.nci.nih.gov/RegistrationConsumer" 
+                  xmlns:gov="gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <reg:RegisterRequest>
+         <reg:registration>
+            <gov:registration gridId="?">
+               <!--Optional:-->
+               <gov:studySite gridId="?">
+                  <!--Zero or more repetitions:-->
+                  <gov:healthcareSite gridId="?">
+                     <!--Optional:-->
+                     <gov:name>?</gov:name>
+                     <!--Optional:-->
+                     <gov:descriptionText>?</gov:descriptionText>
+                     <!--Optional:-->
+                     <gov:address>
+                        <!--Optional:-->
+                        <gov:streetAddress>?</gov:streetAddress>
+                        <!--Optional:-->
+                        <gov:city>?</gov:city>
+                        <!--Optional:-->
+                        <gov:stateCode>?</gov:stateCode>
+                        <!--Optional:-->
+                        <gov:postalCode>?</gov:postalCode>
+                        <!--Optional:-->
+                        <gov:countryCode>?</gov:countryCode>
+                     </gov:address>
+                     <!--Optional:-->
+                     <gov:nciInstituteCode>?</gov:nciInstituteCode>
+                  </gov:healthcareSite>
+                  <!--Zero or more repetitions:-->
+                  <gov:studyInvestigator>
+                     <!--Optional:-->
+                     <gov:roleCode>?</gov:roleCode>
+                     <!--Optional:-->
+                     <gov:statusCode>?</gov:statusCode>
+                     <!--Optional:-->
+                     <gov:startDate>?</gov:startDate>
+                     <!--Optional:-->
+                     <gov:endDate>?</gov:endDate>
+                     <!--Optional:-->
+                     <gov:healthcareSiteInvestigator>
+                        <!--Zero or more repetitions:-->
+                        <gov:investigator>
+                           <!--Optional:-->
+                           <gov:nciIdentifier>?</gov:nciIdentifier>
+                           <!--Optional:-->
+                           <gov:fullName>?</gov:fullName>
+                        </gov:investigator>
+                     </gov:healthcareSiteInvestigator>
+                  </gov:studyInvestigator>
+                  <!--Optional:-->
+                  <gov:irbApprovalDate>?</gov:irbApprovalDate>
+                  <!--Optional:-->
+                  <gov:roleCode>?</gov:roleCode>
+                  <!--Optional:-->
+                  <gov:startDate>?</gov:startDate>
+                  <!--Optional:-->
+                  <gov:siteStudyStatus>?</gov:siteStudyStatus>
+                  <!--Optional:-->
+                  <gov:endDate>?</gov:endDate>
+               </gov:studySite>
+               <!--Optional:-->
+               <gov:studyRef gridId="?">
+                  <!--Optional:-->
+                  <gov:shortTitleText>?</gov:shortTitleText>
+                  <!--Optional:-->
+                  <gov:longTitleText>?</gov:longTitleText>
+                  <!--Zero or more repetitions:-->
+                  <gov:identifier gridId="?">
+                     <!--Optional:-->
+                     <gov:source>?</gov:source>
+                     <!--Optional:-->
+                     <gov:type>?</gov:type>
+                     <!--Optional:-->
+                     <gov:value>?</gov:value>
+                     <!--Optional:-->
+                     <gov:primaryIndicator>false</gov:primaryIndicator>
+                  </gov:identifier>
+               </gov:studyRef>
+               <!--Optional:-->
+               <gov:participant gridId="?">
+                  <!--Optional:-->
+                  <gov:firstName>?</gov:firstName>
+                  <!--Optional:-->
+                  <gov:lastName>?</gov:lastName>
+                  <!--Optional:-->
+                  <gov:address>
+                     <!--Optional:-->
+                     <gov:streetAddress>?</gov:streetAddress>
+                     <!--Optional:-->
+                     <gov:city>?</gov:city>
+                     <!--Optional:-->
+                     <gov:stateCode>?</gov:stateCode>
+                     <!--Optional:-->
+                     <gov:postalCode>?</gov:postalCode>
+                     <!--Optional:-->
+                     <gov:countryCode>?</gov:countryCode>
+                  </gov:address>
+                  <!--Optional:-->
+                  <gov:administrativeGenderCode>?</gov:administrativeGenderCode>
+                  <!--Optional:-->
+                  <gov:birthDate>?</gov:birthDate>
+                  <!--Optional:-->
+                  <gov:ethnicGroupCode>?</gov:ethnicGroupCode>
+                  <!--Optional:-->
+                  <gov:maritalStatusCode>?</gov:maritalStatusCode>
+                  <!--Optional:-->
+                  <gov:raceCode>?</gov:raceCode>
+                  <!--Zero or more repetitions:-->
+                  <gov:identifier gridId="?">
+                     <!--Optional:-->
+                     <gov:source>?</gov:source>
+                     <!--Optional:-->
+                     <gov:type>?</gov:type>
+                     <!--Optional:-->
+                     <gov:value>?</gov:value>
+                     <!--Optional:-->
+                     <gov:primaryIndicator>false</gov:primaryIndicator>
+                  </gov:identifier>
+               </gov:participant>
+               <!--Optional:-->
+               <gov:startDate>?</gov:startDate>
+               <!--Optional:-->
+               <gov:informedConsentFormSignedDate>?</gov:informedConsentFormSignedDate>
+               <!--Optional:-->
+               <gov:informedConsentVersion>?</gov:informedConsentVersion>
+               <!--Zero or more repetitions:-->
+               <gov:identifier gridId="?">
+                  <!--Optional:-->
+                  <gov:source>?</gov:source>
+                  <!--Optional:-->
+                  <gov:type>?</gov:type>
+                  <!--Optional:-->
+                  <gov:value>?</gov:value>
+                  <!--Optional:-->
+                  <gov:primaryIndicator>false</gov:primaryIndicator>
+               </gov:identifier>
+               <!--Optional:-->
+               <gov:regDataEntryStatus>?</gov:regDataEntryStatus>
+               <!--Optional:-->
+               <gov:regWorkflowStatus>?</gov:regWorkflowStatus>
+               <gov:scheduledEpoch gridId="?">
+                  <gov:startDate>?</gov:startDate>
+                  <gov:epoch gridId="?">
+                     <!--Optional:-->
+                     <gov:name>?</gov:name>
+                     <!--Optional:-->
+                     <gov:descriptionText>?</gov:descriptionText>
+                  </gov:epoch>
+               </gov:scheduledEpoch>
+               <!--Optional:-->
+               <gov:stratumGroup>?</gov:stratumGroup>
+               <!--Optional:-->
+               <gov:offStudyReasonText>?</gov:offStudyReasonText>
+               <!--Optional:-->
+               <gov:offStudyDate>?</gov:offStudyDate>
+            </gov:registration>
+         </reg:registration>
+      </reg:RegisterRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
