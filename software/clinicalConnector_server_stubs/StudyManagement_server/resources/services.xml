@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file was auto-generated from WSDL -->
+<!-- by the Apache Axis2 version: 1.5  Built on : Apr 30, 2009 (06:07:24 EDT) -->
+<serviceGroup>
+    <service name="StudyManagementService">
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out" class="gov.nih.nci.clinicalconnector.StudyManagementServiceMessageReceiverInOut"/>
+        </messageReceivers>
+        <parameter name="ServiceClass">gov.nih.nci.clinicalconnector.StudyManagementServiceSkeleton</parameter>
+        <parameter name="useOriginalwsdl">true</parameter>
+        <parameter name="modifyUserWSDLPortAddress">true</parameter>
+        <operation name="rollbackCreateStudy" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://clinicalconnector.nci.nih.gov">
+            <actionMapping>rollbackCreateStudy</actionMapping>
+            <outputActionMapping>http://clinicalconnector.nci.nih.gov/StudyManagementPortType/RollbackCreateStudyResponseMessage</outputActionMapping>
+        </operation>
+        <operation name="createStudy" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://clinicalconnector.nci.nih.gov">
+            <actionMapping>createStudy</actionMapping>
+            <outputActionMapping>http://clinicalconnector.nci.nih.gov/StudyManagementPortType/CreateStudyResponseMessage</outputActionMapping>
+        </operation>
+    </service>
+</serviceGroup>
