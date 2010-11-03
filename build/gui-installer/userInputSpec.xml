@@ -1,0 +1,794 @@
+<!--
+$Id$
+$HeadURL$
+
+Guide to this file:
+	First off remember this is a template you will be changing it.  Our test project deploys both an application and a grid component on both Tomcat and JBoss.  You may only support JBoss and have no grid component, at which point you would delete Tomcat and grid related panels.  Or you have have 3 JBoss containers, two apps and one grid.  This would reuqire that you delete tomcat and copy the jboss sections 3 times.
+	Second the fields in this file should match the fields in your install.properties.  Excluding hard coding things in properties-template/* you should have one field in here for every field in install.properties.  Also not that the install and upgrade properties file under properties template should also have all the properties in your master install.properties.  Also dynamic variables in gui-installer/install.xml should be reviewed.
+	Third there is a correlation between the panels section in gui-installer/install.xml and this file.  A panel here should have a corresponding panel in the gui-installer/install.xml.  We also recommend putting acomment above the panel definition here and in the gui-installer/install.xml.  Also the panels seem to need to be sequential, when they are not numbered and called sequentially bad things seem to happen (not sure if this is only a problem with an older version or it happnes now).  So when you need insert a panel, you need to shift all panel numbers after the insertion down here and in the gui-installer/install.xml.  Let's say you have 5 panels and you want to insert  a new panel between 2 and 3.  You would insert the new panel as 3, then rename 3 to 4, 4 to 5 and 5 to 6 in both this file and the gui-installer/install.xml
+	Lastly the creation of the jar will be successfull but when you click through the gui some or none of the custom panels will come up.  I have found this to be two things un-escaped characters in fields (see below) or impropertly formated xml.  I commit regularly when working on the file so I can use svn diff to identify bad edits I have made.  And a few times I have had to comment out half the file, build, and test the gui-installer, uncomment half more of the file and repeat until I find the area where things are broken.  If you have questions don't hesitate to contact the bda team at ncicbiitbda@mail.nih.gov, good luck :)
+
+	quote (") 	&quot;
+	apostrophe (') 	&apos;
+	ampersand (&) 	&amp;
+	less than (<) 	&lt;
+	greater than (>) 	&gt;
+-->
+
+<userInput>
+	<panel order="0">
+		<field type="title" txt="Install or Upgrade software" bold="true" size="1" />
+		<field type="staticText" align="left" txt="Choose Install if you haven't installed this appliation on this machine before. Choose Upgrade if this application has previously been installed. WARNING: When choosing Install, the installer will remove any previously installed application servers or databases installed based on the information you provide in the following screens, so be sure to backup your application server and database instance if they exist."/>
+		<field type="divider" align="top"/>		
+		<field type="radio" variable="setup.type">
+			<description align="left" txt="Choose a new Install or Upgrade an existing installation"/>
+			<spec>
+				<choice txt="Install" value="install" set="true" />
+				<choice txt="Upgrade" value="upgrade" /> 
+			</spec>
+		</field>
+	</panel>
+
+	<!-- Upgrade, specify app homes and read properties -->
+	<panel order="1">
+		<field type="title" txt="Existing Locations" bold="true" size="1" />
+		<field type="staticText" align="left" txt="Select the locations of the existing components that are installed. These values will be used to read the existing configuration of the components and pre-populate the following screens with the values from the existing install.  New properties that are part of this installation will have default values."/>
+		<field type="divider" align="top"/>
+		<field type="dir" variable="application.base.path">
+			<spec txt="Application Root Directory:" size="25" set="c:/apps/ihub"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="Application Root Directory is a required field" />
+		</field>
+		<field type="text" variable="servicemix.relative.path">
+			<spec txt="Servicemix Relative Directory (Relative to Application Root Directory):" size="25" set="${servicemix.binaries.relative.dir}"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="Servicemix Relative Directory is a required field" />
+		</field>		
+		<field type="text" variable="tomcat.relative.path">
+			<spec txt="Tomcat Relative Directory (Relative to Application Root Directory):" size="25" set="${tomcat.binaries.relative.dir}"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="Tomcat Relative Directory is a required field" />
+		</field>		
+		<fileextractor>
+			<extractfile filename="pre-install" toDirName="."/>
+		</fileextractor>		
+	</panel>
+	
+	<!-- Readers -->
+	<panel order="2">
+		<field type="title" txt="Reading property values from installations specified in previous screen." bold="true" size="1" />
+		<panelreader classname="pre-install/install.xml" methodname="upgrade:common:init" language="ant">
+			<inpropertymap inpropertyname="application.base.path" inpropertyvalue="application.base.path"/>
+			<inpropertymap inpropertyname="tomcat.home" inpropertyvalue="tomcat.home"/>
+			<propertymap propertyname="authentication.type" mapname="authentication.type"/>
+			<propertymap propertyname="database.name" mapname="database.name"/>
+			<propertymap propertyname="database.password" mapname="database.password"/>
+			<propertymap propertyname="database.port" mapname="database.port"/>
+			<propertymap propertyname="database.schema" mapname="database.schema"/>
+			<propertymap propertyname="database.host" mapname="database.host"/>
+			<propertymap propertyname="database.type" mapname="database.type"/>
+			<propertymap propertyname="database.url" mapname="database.url"/>
+			<propertymap propertyname="database.username" mapname="database.username"/>
+			<propertymap propertyname="grid.index.url" mapname="grid.index.url"/>
+			<propertymap propertyname="tomcat.external.grid.secure.host" mapname="tomcat.external.grid.secure.host"/>
+			<propertymap propertyname="tomcat.external.grid.secure.port" mapname="tomcat.external.grid.secure.port"/>
+			<propertymap propertyname="tomcat.external.http.host" mapname="tomcat.external.http.host"/>
+			<propertymap propertyname="tomcat.external.http.port" mapname="tomcat.external.http.port"/>
+			<propertymap propertyname="tomcat.external.ssl.host" mapname="tomcat.external.ssl.host"/>
+			<propertymap propertyname="tomcat.external.ssl.port" mapname="tomcat.external.ssl.port"/>
+			<propertymap propertyname="tomcat.grid.secure.cert.file" mapname="tomcat.grid.secure.cert.file"/>
+			<propertymap propertyname="tomcat.grid.secure.enable" mapname="tomcat.grid.secure.enable"/>
+			<propertymap propertyname="tomcat.grid.secure.key.file" mapname="tomcat.grid.secure.key.file"/>
+			<propertymap propertyname="tomcat.grid.secure.port" mapname="tomcat.grid.secure.port"/>
+			<propertymap propertyname="tomcat.http-connector.remove" mapname="tomcat.http-connector.remove"/>
+			<propertymap propertyname="tomcat.hostname" mapname="tomcat.hostname"/>
+			<propertymap propertyname="tomcat.port.ajp" mapname="tomcat.port.ajp"/>
+			<propertymap propertyname="tomcat.port.http" mapname="tomcat.port.http"/>
+			<propertymap propertyname="tomcat.port.shutdown" mapname="tomcat.port.shutdown"/>
+			<propertymap propertyname="tomcat.port.ssl" mapname="tomcat.port.ssl"/>
+			<propertymap propertyname="tomcat.ssl.enable" mapname="tomcat.ssl.enable"/>
+			<propertymap propertyname="tomcat.ssl.fullyqualified.hostname" mapname="tomcat.ssl.fullyqualified.hostname"/>
+			<propertymap propertyname="tomcat.ssl.keystore.alias" mapname="tomcat.ssl.keystore.alias"/>
+			<propertymap propertyname="tomcat.ssl.keystore.file" mapname="tomcat.ssl.keystore.file"/>
+			<propertymap propertyname="tomcat.ssl.keystore.pass" mapname="tomcat.ssl.keystore.pass"/>
+			<propertymap propertyname="grid.poc.tech.researchCenter.displayname" mapname="grid.poc.tech.researchCenter.displayname"/>
+			<propertymap propertyname="grid.poc.tech.researchCenter.shortname" mapname="grid.poc.tech.researchCenter.shortname"/>
+			<propertymap propertyname="grid.poc.tech.addr.country" mapname="grid.poc.tech.addr.country"/>
+			<propertymap propertyname="grid.poc.tech.addr.locality" mapname="grid.poc.tech.addr.locality"/>
+			<propertymap propertyname="grid.poc.tech.addr.postalCode" mapname="grid.poc.tech.addr.postalCode"/>
+			<propertymap propertyname="grid.poc.tech.addr.stateProvince" mapname="grid.poc.tech.addr.stateProvince"/>
+			<propertymap propertyname="grid.poc.tech.addr.street1" mapname="grid.poc.tech.addr.street1"/>
+			<propertymap propertyname="grid.poc.tech.addr.street2" mapname="grid.poc.tech.addr.street2"/>
+			<propertymap propertyname="grid.poc.tech.affiliation" mapname="grid.poc.tech.affiliation"/>
+			<propertymap propertyname="grid.poc.tech.name.last" mapname="grid.poc.tech.name.last"/>
+			<propertymap propertyname="grid.poc.tech.name.first" mapname="grid.poc.tech.name.first"/>
+			<propertymap propertyname="grid.poc.tech.phone" mapname="grid.poc.tech.phone"/>
+			<propertymap propertyname="grid.poc.tech.email" mapname="grid.poc.tech.email"/>
+			<propertymap propertyname="grid.poc.tech.role" mapname="grid.poc.tech.role"/>
+			<propertymap propertyname="grid.poc.science.affiliation" mapname="grid.poc.science.affiliation"/>
+			<propertymap propertyname="grid.poc.science.name.last" mapname="grid.poc.science.name.last"/>
+			<propertymap propertyname="grid.poc.science.name.first" mapname="grid.poc.science.name.first"/>
+			<propertymap propertyname="grid.poc.science.phone" mapname="grid.poc.science.phone"/>
+			<propertymap propertyname="grid.poc.science.email" mapname="grid.poc.science.email"/>
+			<propertymap propertyname="grid.poc.science.role" mapname="grid.poc.science.role"/>			
+			<propertymap propertyname="tomcat.ssl.keystore.location" mapname="tomcat.ssl.keystore.location"/>
+			<propertymap propertyname="tomcat.grid.secure.cert.location" mapname="tomcat.grid.secure.cert.location"/>
+			<propertymap propertyname="tomcat.grid.secure.key.location" mapname="tomcat.grid.secure.key.location"/>
+		</panelreader>
+		
+		<!-- ADD SERVICEMIX PANEL READER ONCE IMPLEMENTED -->
+		
+		<variable name="validation.pre.port.list" value="${jboss.server.rmi.port},${jboss.server.jndi.port},${jboss.service.rmiobject.port},${jboss.server.port},${jboss.web.service.port}"/>
+		<variable name="validation.post.http.list" value="${jboss.server.port}"/>
+		<variable name="validation.post.socket.list" value="${jboss.server.rmi.port},${jboss.server.jndi.port},${jboss.service.rmiobject.port},${jboss.web.service.port}"/>
+	</panel>	
+	
+	<!-- Servicemix Configuration -->
+	<panel order="3">
+		<field type="title" txt="Servicemix Configuration" bold="true" size="1" />
+		<field type="staticText" align="left" txt="As part of this installation, Servicemix will be installed in ${UserPathPanelVariable}/${servicemix.binaries.relative.dir}.  It will be configured based on the values you enter below.  NOTE: The Hostname below (and on other panels of this installer) is the host name accesible from this machine and others on the local network."/>
+		<field type="divider" align="top"/>
+		<field type="text" align="left" variable="servicemix.relative.path">
+			<spec txt="Relative Directory for Servicemix (relative from ${UserPathPanelVariable}):" size="25" set="${servicemix.binaries.relative.dir}"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="Enter a value for Relative Directory for Servicemix (relative from ${UserPathPanelVariable})" />
+		</field>
+		<field type="text" align="left" variable="servicemix.hostname">
+			<spec txt="Hostname of this Server:" size="25" set="$HOST_NAME"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Hostname of this Server is a required field" />
+			<validator class="com.izforge.izpack.util.HostNameValidator" txt="Enter a valid Servicemix Host name or the Host is not reachable"/>
+		</field>
+		<field type="radio" variable="exclude.servicemix.backup">
+			<description align="left" txt="Exclude Servicemix Directory Backup (${UserPathPanelVariable}/${servicemix.binaries.relative.dir}):"/>
+			<spec>
+				<choice txt="True"  value="true" set="true"/>
+				<choice txt="False" value="false"/>
+			</spec>
+		</field>	
+		
+		<field type="space"/>
+		<field type="staticText" align="left" txt="CLM based Log Locater tool provides a web application to view the messages received by the caBIG Integration Hub caGrid service."/>
+		<field type="divider" align="top"/>		
+		<field type="radio" variable="llt.deploy">
+			<description align="left" txt="Deploy Log Locater Tool:"/>
+			<spec>
+				<choice txt="True"  value="true"/>
+				<choice txt="False" value="false" set="true"/>
+			</spec>
+		</field>
+	</panel>
+		
+	<!-- Servicemix Configuration Continued -->
+	<panel order="4">
+		<field type="title" txt="Servicemix Configuration Continued (Asynchronous and Synchronous)" bold="true" size="1" />
+		<field type="staticText" align="left" txt="Set the following properties for Asynchronous caGrid Interface. Some of these properties are set in the Servicemix and some are used by the caBIG Integration Hub's caGrid service."/>
+		<field type="divider" align="top"/>
+		<field type="text" align="left" variable="amq.caxchange.host">
+			<spec txt="Asynchronous Interface Host Name:" size="25" set="localhost"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="Asynchronous Interface Host Name is a required field" />
+			<validator class="com.izforge.izpack.util.HostNameValidator" txt="Enter a valid Asynchronous Interface Host Name or locahost"/>
+		</field>		
+		<field type="text" variable="amq.caxchange.port">
+			<spec txt="Asynchronous Interface ActiveMQ Port:" size="5" set="62618"/>
+			<validator class="com.izforge.izpack.util.PortValidator" txt="The AMQ port number is already in use"/>
+		</field>
+		<field type="text" variable="amq.caxchange.user">
+			<spec txt="Asynchronous Interface User:" size="15" set="caxchange"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="Asynchronous Interface user is a required field" />
+		</field>
+		<field type="password" align="left" variable="amq.caxchange.password">
+			<spec>
+				<pwd txt="Asynchronous Interface Password:" size="25" set="password"/>
+				<pwd txt="Confirm Asynchronous Interface Password:" size="25" set="password"/>
+			</spec>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="Asynchronous Interface Passwords are required fields" />
+			<validator class="com.izforge.izpack.util.PasswordEqualityValidator" txt="Passwords do not match. Please re-enter your Asynchronous Interface passwords"/>
+		</field>
+		<field type="radio" variable="jms.secured">
+			<description align="left" txt="Enable Channel Security between ${project.name} caGrid service and Servicemix ActiveMQ"/>
+			<spec>
+				<choice txt="True"  value="true" />
+				<choice txt="False" value="false" set="true"/>
+			</spec>
+		</field>		
+		
+		<field type="space"/>
+		<field type="staticText" align="left" txt="Set the following properties for Synchronous caGrid Interface. Some of these properties are set in the Servicemix and some are used by the caBIG Integration Hub's caGrid service."/>
+		<field type="divider" align="top"/>
+		<field type="text" align="left" variable="httpbc.caxchange.host">
+			<spec txt="Synchronous Interface Host Name:" size="25" set="localhost"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="Synchronous Interface Host Name is a required field" />
+			<validator class="com.izforge.izpack.util.HostNameValidator" txt="Enter a valid Synchronous Interface Host Name or locahost"/>
+		</field>		
+		<field type="text" variable="httpbc.caxchange.port">
+			<spec txt="Synchronous caGrid Interface HTTP Port:" size="5" set="8195"/>
+			<validator class="com.izforge.izpack.util.PortValidator" txt="The HTTP port number is already in use"/>
+		</field>		
+		<field type="text" variable="httpbc.caxchange.user">
+			<spec txt="Synchronous caGrid Interface User:" size="15" set="smx"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="Synchronous caGrid Interface user is a required field" />
+		</field>
+		<field type="password" align="left" variable="httpbc.caxchange.password">
+			<spec>
+				<pwd txt="Synchronous caGrid Interface Password:" size="25" set="smx"/>
+				<pwd txt="Confirm Synchronous caGrid Interface Password:" size="25" set="smx"/>
+			</spec>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="Synchronous caGrid Interface Passwords are required fields" />
+			<validator class="com.izforge.izpack.util.PasswordEqualityValidator" txt="Passwords do not match. Please re-enter your Synchronous caGrid Interface passwords"/>
+		</field>
+		<field type="text" variable="synchronous.caxchange.service.client.timeout">
+			<spec txt="Synchronous caGrid Interface Client Timeout in milliseconds:" size="15" set="1000000"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="Synchronous caGrid Interface Client Timeout is a required field" />
+		</field>
+		<field type="staticText" align="left" txt="SOAP Version Namespace can be one of 'http://www.w3.org/2003/05/soap-envelope' or 'http://schemas.xmlsoap.org/soap/envelope' depending on certain server configurations"/>
+		<field type="text" variable="soap.version.uri">
+			<spec txt="SOAP Version Namespace:" size="15" set="http://www.w3.org/2003/05/soap-envelope"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="SOAP Version Namespace is a required field" />
+		</field>
+
+		<field type="space"/>
+		<field type="staticText" align="left" txt="Set the following properties for Synchronous non-caGrid Interface."/>
+		<field type="divider" align="top"/>
+		<field type="text" variable="cxf.bc.port">
+			<spec txt="Synchronous non-caGrid Interface Port:" size="5" set="8194"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="Synchronous non-caGrid Interface Port is a required field" />
+			<validator class="com.izforge.izpack.util.PortValidator" txt="The HTTP port number is already in use"/>
+		</field>
+	</panel>
+	
+	<!-- Tomcat Base Config 0.9.0 -->
+	<panel order="5">
+		<field type="title" txt="Tomcat Configuration" bold="true" size="1" />
+		<field type="staticText" align="left" txt="As part of this installation, Tomcat will be installed in ${UserPathPanelVariable}/${tomcat.binaries.relative.dir}.  It will be configured based on the values you enter below and on the following screens.  NOTE: The Hostname below (and on other panels of this installer) is the host name accesible from this machine and others on the local network. To access this Tomcat application server from the Internet, you may need to provide the ports below and on the following page to your Network administrator to allow access through the firewall."/>
+		<field type="divider" align="top"/>
+		<field type="text" align="left" variable="tomcat.relative.path">
+			<spec txt="Relative Directory for Tomcat (relative from ${UserPathPanelVariable}):" size="25" set="${tomcat.binaries.relative.dir}"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="Enter a value for Relative Directory for Tomcat (relative from ${UserPathPanelVariable})" />
+		</field>
+		<field type="text" align="left" variable="tomcat.hostname">
+			<spec txt="Hostname of this Server:" size="20" set="$HOST_NAME"/>
+			<validator
+				class="com.izforge.izpack.util.HostNameValidator" txt="Enter a valid Host name or the Host is not reachable">
+			</validator>
+		</field>
+		<field type="radio" variable="exclude.tomcat.backup">
+			<description align="left" txt="Exclude Tomcat Directory Backup (${UserPathPanelVariable}/${tomcat.binaries.relative.dir}):"/>
+			<spec>
+				<choice txt="True"  value="true" set="true"/>
+				<choice txt="False" value="false"/>
+			</spec>
+		</field>
+		<field type="text" variable="tomcat.port.http">
+			<spec txt="Tomcat HTTP port:" size="5" set="28447"/>
+			<validator
+				class="com.izforge.izpack.util.PortValidator" txt="The http port number is already in use">
+			</validator>
+		</field>
+		<field type="text" variable="tomcat.port.ajp">
+			<spec txt="Tomcat AJP port:" size="5" set="21009"/>
+			<validator
+				class="com.izforge.izpack.util.PortValidator" txt="The port number is already in use">
+			</validator>
+		</field>
+		<field type="text" variable="tomcat.port.ssl">
+			<spec txt="Tomcat Re-direct port:" size="5" set="28444"/>
+			<validator
+				class="com.izforge.izpack.util.PortValidator" txt="The http port number is already in use">
+			</validator>
+		</field>
+		<field type="text" variable="tomcat.port.shutdown">
+			<spec txt="Tomcat Shutdown port:" size="5" set="21005"/>
+			<validator
+				class="com.izforge.izpack.util.PortValidator" txt="The http port number is already in use">
+			</validator>
+		</field>
+	</panel>
+
+	<!-- Tomcat SSL 0.9.0 -->
+	<panel order="6">
+		<field type="title" txt="Tomcat Secure Listener Configuration" bold="true" size="1" />
+		<field type="staticText" align="left" txt="For Tomcat SSL and Secure Grid configuration requires that you have requested and retrieved certificates already.  See https://wiki.nci.nih.gov/x/7xWy for details on SSL, see https://wiki.nci.nih.gov/x/8BWy for details on Secure Grid."/>
+		<field type="divider" align="top"/>
+
+		<!-- <field type="radio" variable="tomcat.ssl.enable">
+			<description align="left" txt="Enable Tomcat SSL Port (note requires SSL Certificate Keystore and Internet facing DNS "/>
+			<spec>
+				<choice txt="True"  value="true" />
+				<choice txt="False" value="false" set="true"/>
+			</spec>
+		</field>-->
+		<field type="text" variable="tomcat.ssl.keystore.location">
+			<spec txt="Keystore file location: "  size="75" set="C:\projects_svn\ihub\trunk\software\target\dist\exploded\common\resources\security\ncicb-test-ssl.keystore"/>
+		</field>
+		<field type="password" align="left" variable="tomcat.ssl.keystore.pass">
+			<spec>
+				<pwd txt="Keystore file password:" size="25" set="ncicb1!"/>
+				<pwd txt="Confirm keystore file password:" size="25" set="ncicb1!"/>
+			</spec>
+			<validator class="com.izforge.izpack.util.PasswordEqualityValidator" txt="Passwords do not match. Please re-enter your passwords."/>
+		</field>
+		<field type="text" variable="tomcat.ssl.keystore.alias">
+			<spec txt="Keystore alias name: "  size="25" set="ncicb-test-ssl-key"/>
+		</field>
+		<field type="text" variable="tomcat.ssl.fullyqualified.hostname">
+			<spec txt="Fully Qualified Host Name (FQHN) (ie, www.mydomain.com): "  size="50" set="localhost"/>
+		</field>
+		<field type="space" align="top"/>
+		<field type="staticText" align="left" txt="For Tomcat Grid SSL Port, values not required if not used."/>
+		<field type="divider" align="top"/>
+		<field type="radio" variable="tomcat.grid.secure.enable">
+			<description align="left" txt="Enable secure Grid"/>
+			<spec>
+				<choice txt="True"  value="true" set="true"/>
+				<choice txt="False" value="false" />
+			</spec>
+		</field>		
+		<field type="text" variable="tomcat.grid.secure.port">
+			<spec txt="Port to run the Grid service on Tomcat:"  size="5" set="58445"/>
+		</field>
+		<field type="text" variable="tomcat.grid.secure.cert.location">
+			<spec txt="caGrid certificate file location: "  size="75" set="C:\projects_svn\ihub\trunk\software\target\dist\exploded\common\resources\security\ncias-c278-v.nci.nih.gov-cert.pem"/>
+		</field>
+		<field type="text" variable="tomcat.grid.secure.key.location">
+			<spec txt="caGrid private key file location: "  size="75" set="C:\projects_svn\ihub\trunk\software\target\dist\exploded\common\resources\security\ncias-c278-v.nci.nih.gov-key.pem"/>
+		</field>
+
+	</panel>
+	<!-- External Host stuff for Tomcat -->
+	<panel order="7">
+		<field type="title" txt="Tomcat External Hostname Configuration" bold="true" size="1" />
+		<field type="staticText" align="left" txt="For Tomcat External Hostname configurations see https://wiki.nci.nih.gov/x/8hWy, values not required if not externally accessible"/>
+		<field type="divider" align="top"/>
+		<field type="text" variable="tomcat.external.ssl.host">
+			<spec txt="External Host Name for ssl port(generally same as FQHN): "  size="50" set=""/>
+		</field>
+		<field type="text" variable="tomcat.external.ssl.port">
+			<spec txt="External Port for ssl port"  size="5" set=""/>
+		</field>
+		<field type="text" variable="tomcat.external.http.host">
+			<spec txt="External Host Name for http port (generally same as FQHN): "  size="50" set=""/>
+		</field>
+		<field type="text" variable="tomcat.external.http.port">
+			<spec txt="External Port for http port"  size="5" set=""/>
+		</field>
+		<field type="text" variable="tomcat.external.grid.secure.host">
+			<spec txt="Grid External Hostname:" size="25" set=""/>
+		</field>
+		<field type="text" variable="tomcat.external.grid.secure.port">
+			<spec txt="Grid External Port Number:" size="5" set=""/>
+		</field>
+	</panel>
+	
+	<!-- Database Properties -->
+	<panel order="8">
+		<field type="title" txt="Database Configuration" bold="true" size="1" />
+		<field type="staticText" align="left" txt="The information you enter below will connect you to an existing database. It's highly recommended that 'Database Host Name' NOT be the machine from which you are currently installing. The 'Database User' must have full access to 'Database Name'. It's highly recommended you contact your database administrator to obtain this information. NOTE: All database objects for 'Database Name' will be dropped and recreated during the installation process, but will be preserved during database.  In either case we recommend backing up your database before proceeding."/>
+		<field type="divider" align="top"/>
+
+		<variable name="INSTALL_PATH"  value="${UserPathPanelVariable}"/>
+		
+		<field type="radio" variable="database.type">
+            <description align="left" txt="caBIG Integration Hub Database Type:"/>
+            <spec>
+                <choice txt="PostgreSQL"  value="postgresql" set="true"/>
+                <choice txt="MySQL"  value="mysql"/>
+            </spec>
+        </field>
+		<field type="text" variable="database.host">
+			<spec txt="Database Host Name:" size="25" set="$HOST_NAME"/>
+			<validator class="com.izforge.izpack.util.HostNameValidator" txt=" Enter a valid Host name or the Host is not reachable"/>
+		</field>
+		<field type="text" variable="database.port">
+			<spec txt="Database Port:" size="25" set="5432"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Database Port is a required field" />
+		</field>
+		<field type="text" variable="database.name">
+			<spec txt="Database Name:" size="25" set="ihub"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Database Name is a required field" />
+		</field>
+		<field type="text" variable="database.username">
+			<spec txt="Database Application Username:" size="25" set="ihubadmin"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Database Application User is a required field" />
+		</field>
+		<field type="password" allign="left" variable="database.password">
+			<spec>
+				 <pwd txt="Database Application User Password:" size="25" set="changeme"/>
+			</spec>
+			<!-- uncomment below line when PostgreSQL connection test works -->
+			<validator class="com.izforge.izpack.util.DBConnectionValidator" txt="Unable to connect to this database with the Database Application User and Password you have entered."/>
+		</field>
+	</panel>
+	
+	<!-- LLT Database Properties -->
+	<panel order="10">
+		<field type="title" txt="LLT Database Configuration" bold="true" size="1" />
+		<field type="staticText" align="left" txt="The information you enter below will connect you to an existing LLT database. It's highly recommended that 'Database Host Name' NOT be the machine from which you are currently installing. The 'Database User' must have full access to 'Database Name'. It's highly recommended you contact your database administrator to obtain this information. NOTE: All database objects for 'Database Name' will be dropped and recreated during the installation process, but will be preserved during database.  In either case we recommend backing up your database before proceeding."/>
+		<field type="divider" align="top"/>
+		<!-- <field type="radio" variable="database.llt.type">
+			<description align="left" txt="LLT Database Type"/>
+			<spec>
+				<choice txt="PostgreSQL" value="postgresql"/>
+				<choice txt="MySQL" value="mysql" set="true"/>
+			</spec>
+		</field>  -->
+		<field type="text" variable="database.llt.host">
+			<spec txt="LLT Database Host Name:" size="25" set="$HOST_NAME"/>
+			<validator class="com.izforge.izpack.util.HostNameValidator" txt="Enter a valid Host name or the Host is not reachable"/>
+		</field>
+		<field type="text" variable="database.llt.port">
+			<spec txt="LLT Database Port:" size="25" set="3306"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="LLT Database Port is a required field" />
+		</field>
+		<field type="text" variable="database.llt.name">
+			<spec txt="LLT Database Name:" size="25" set="llt"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="LLT Database Name is a required field" />
+		</field>
+		<field type="text" variable="database.llt.username">
+			<spec txt="LLT Database Application User:" size="25" set="lltadmin"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" LLT Database Application User is a required field" />
+		</field>
+		<field type="password" allign="left" variable="database.llt.password">
+			<spec>
+				 <pwd txt="LLT Database Application User Password:" size="25" set="changeme"/>
+			</spec>
+			<validator class="com.izforge.izpack.util.DBConnectionValidator" txt="Unable to connect to this LLT database with the Database Application User and Password you have entered."/>
+		</field>		
+	</panel>
+
+	<!-- Global Configuraiton Options -->
+	<panel order="11">
+		<field type="title" txt="Global Settings" bold="true" size="1" />
+		<field type="staticText" align="left" txt="These options are for properties that may be used by multiple applications."/>
+		<field type="divider" align="top"/>
+		<field type="text" variable="mail.smtp.server">
+			<spec txt="SMTP Relay Host:" size="25" set="mailfwd.nih.gov"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" SMTP Relay Host is a required field" />
+		</field>
+		
+		<field type="space"/>
+		<field type="staticText" align="left" txt="Set the following properties for Logging. These properties will be used by all the containers that are part of this installation."/>
+		<field type="divider" align="top"/>
+		<field type="text" align="left" variable="log4j.maxFileSize">
+			<spec txt="Size of log file before it is rolled:" size="25" set="100MB"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="Maximum File Size is a required field" />
+		</field>		
+		<field type="text" variable="log4j.maxDays">
+			<spec txt="Number of days of files to keep:" size="5" set="7"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt="Number of days of files to keep is a required field" />
+		</field>	
+		<field type="combo" variable="log4j.level">
+			<description align="left" txt="Log4j log level:"/>
+			<spec>
+				<choice txt="DEBUG"  value="DEBUG"/>
+				<choice txt="INFO" value="INFO"/>
+				<choice txt="WARN" value="WARN" set="true"/>
+				<choice txt="FATAL" value="FATAL"/>
+			</spec>
+		</field>
+	</panel>
+
+	<!-- Grid Global Configuration -->
+	<panel order="12">
+		<field type="title" txt="Grid Resource Locations Configuration" bold="true" size="1" />
+		<field type="staticText" align="left" txt="These options are for configuring Grid Resource Locations."/>
+		<field type="divider" align="top"/>
+		<field type="text" variable="grid.index.url">
+			<spec txt="Grid Index Url:" size="35" set="http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService"/>
+			<validator class="com.izforge.izpack.util.URLCheckValidator" txt="Please enter a valid Index URL"/>
+		</field>
+		<field type="radio" variable="grid.target">
+			<description align="left" txt="Which Grid do you want to Sync Certificates with?"/>
+			<spec>
+				<choice txt="Production" value="nci_prod-1.3" set="true" />
+				<choice txt="QA" value="nci_qa-1.3"/>
+				<choice txt="Staging" value="nci_stage-1.3"/>
+				<choice txt="Training" value="training-1.3"/>
+			</spec>
+		</field>
+	</panel>
+
+	<!-- Grid Research Center -->
+	<panel order="13">
+		<field type="title" txt="Grid Research Center Info" bold="true" size="1" />
+		<field type="staticText" align="left" txt="These options are for configuring contact/location information about your Research center."/>
+		<field type="divider" align="top"/>
+		<field type="text" variable="grid.poc.tech.researchCenter.displayname">
+			<spec txt="Research Center Display Name:" size="25" set=""/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Research Center Display Name is a required field" />
+		</field>
+		<field type="text" variable="grid.poc.tech.researchCenter.shortname">
+			<spec txt="Research Center Short Name:" size="25" set=""/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Research Center Short Name is a required field" />
+		</field>
+		<field type="text" variable="grid.poc.tech.addr.street1">
+			<spec txt="Street Address line 1:" size="35" set=""/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Street Address line 1 is a required field" />
+		</field>
+		<field type="text" variable="grid.poc.tech.addr.street2">
+			<spec txt="Street Address line 2:" size="35" set=""/>
+		</field>
+		<field type="text" variable="grid.poc.tech.addr.locality">
+			<spec txt="Locality:" size="25" set=""/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Locality is a required field" />
+		</field>
+		<field type="text" variable="grid.poc.tech.addr.stateProvince">
+			<spec txt="State:" size="2" set=""/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" State is a required field" />
+		</field>
+		<field type="text" variable="grid.poc.tech.addr.postalCode">
+			<spec txt="Zip code:" size="10" set=""/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Zip code is a required field" />
+		</field>
+		<field type="text" variable="grid.poc.tech.addr.country">
+			<spec txt="Country:" size="25" set="USA"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Country is a required field" />
+		</field>
+	</panel>
+
+	<!-- Grid Tech Contact -->
+	<panel order="14">
+
+		<field type="title" txt="Grid Tech Contact Info" bold="true" size="1" />
+		<field type="staticText" align="left" txt="These options are for configuring contact information for your Tech Contact."/>
+		<field type="divider" align="top"/>
+
+		<field type="text" variable="grid.poc.tech.affiliation">
+			<spec txt="Tech Contact Affiliation:" size="25" set=""/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Tech Contact Affiliation is a required field" />
+		</field>
+		<field type="text" variable="grid.poc.tech.name.last">
+			<spec txt="Last name:" size="25" set=""/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Last name is a required field" />
+		</field>
+		<field type="text" variable="grid.poc.tech.name.first">
+			<spec txt="First name:" size="25" set=""/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" First name is a required field" />
+		</field>
+		<field type="text" variable="grid.poc.tech.phone">
+			<spec txt="Phone Number:" size="25" set=""/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Phone Number is a required field" />
+		</field>
+		<field type="text" variable="grid.poc.tech.email">
+			<spec txt="Email Address:" size="25" set=""/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Email Address is a required field" />
+		</field>
+		<field type="text" variable="grid.poc.tech.role">
+			<spec txt="Role:" size="25" set=""/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Role is a required field" />
+		</field>
+	</panel>
+
+	<!-- Grid Science Contact -->
+	<panel order="15">
+		<field type="title" txt="Grid Science Contact Info" bold="true" size="1" />
+		<field type="staticText" align="left" txt="These options are for configuring contact information Science Contact."/>
+		<field type="divider" align="top"/>
+		<field type="text" variable="grid.poc.science.affiliation">
+			<spec txt="Science Contact Affiliation :" size="25" set=""/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Science Contact Affiliation  is a required field" />
+		</field>
+		<field type="text" variable="grid.poc.science.name.last">
+			<spec txt="Last name:" size="25" set=""/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Last name is a required field" />
+		</field>
+		<field type="text" variable="grid.poc.science.name.first">
+			<spec txt="First name:" size="25" set=""/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" First name is a required field" />
+		</field>
+		<field type="text" variable="grid.poc.science.phone">
+			<spec txt="Phone Number:" size="25" set=""/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Phone Number is a required field" />
+		</field>
+		<field type="text" variable="grid.poc.science.email">
+			<spec txt="Email Address:" size="25" set=""/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Email Address is a required field" />
+		</field>
+		<field type="text" variable="grid.poc.science.role">
+			<spec txt="Role:" size="25" set=""/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Role is a required field" />
+		</field>
+	</panel>
+	
+	<!-- Target Grid -->
+	<panel order="16">
+		<field type="title" txt="Target Grid Configuration" bold="true" size="1" />
+		<field type="staticText" align="left" txt="The following properties should be from the primary target caGrid that your environment is configured to."/>
+		<field type="divider" align="top"/>
+		<field type="text" variable="dorian.service.url">
+			<spec txt="Dorian Service URL: "  size="75" set="https://cagrid-dorian-stage.nci.nih.gov:8443/wsrf/services/cagrid/Dorian"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Dorian Service URL is a required field" />
+		</field>		
+		<field type="text" variable="delegation.service.url">
+			<spec txt="Delegation Service URL: "  size="75" set="https://cagrid-cds-stage.nci.nih.gov:8443/wsrf/services/cagrid/CredentialDelegationService"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Delegation Service URL is a required field" />
+		</field>
+		<field type="text" variable="authentication.service.url">
+			<spec txt="Authentication Service URL: "  size="75" set="https://cagrid-dorian-stage.nci.nih.gov:8443/wsrf/services/cagrid/Dorian"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Authentication Service URL is a required field" />
+		</field>		
+		<field type="text" variable="app.host.identity">
+			<spec txt="caGrid Host Identity where caBIG Integration Hub is installed: "  size="75" set="/O=caBIG/OU=caGrid/OU=Stage LOA1/OU=Dorian/CN=cctsdev1"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" caGrid Host Identity is a required field" />
+		</field>		
+		<field type="text" variable="websso.host.identity">
+			<spec txt="Host Identity for host where webSSO is installed: "  size="75" set="/O=caBIG/OU=caGrid/OU=Stage LOA1/OU=Dorian/CN=cctsdev1"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Host Identity for host where webSSO is installed is a required field" />
+		</field>		
+		<field type="text" variable="gme.service.url">
+			<spec txt="GME Service URL: "  size="75" set="https://cagrid-gme-stage.nci.nih.gov:8443/wsrf/services/cagrid/GlobalModelExchange"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" GME Service URL is a required field" />
+		</field>		
+		<field type="text" variable="ccts.grid.test.userName">
+			<spec txt="Target grid username for Integration Smoke Test: "  size="75" set="cctsdev1"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Target grid username for Integration Smoke Test is a required field" />
+		</field>		
+		<field type="password" align="left" variable="ccts.grid.test.password">
+			<spec>
+				<pwd txt="Target grid password for Integration Smoke Test:" size="25" set="An010101!!"/>
+				<pwd txt="Confirm Target grid password for Integration Smoke Test:" size="25" set="An010101!!"/>
+			</spec>
+			<validator class="com.izforge.izpack.util.PasswordEqualityValidator" txt="Passwords do not match. Please re-enter your passwords."/>
+		</field>
+	</panel>	
+	
+	<!-- Service Providers and Service Provider Grid -->
+	<panel order="17">
+		<field type="title" txt="Service Providers and Service Provider Grid Configuration" bold="true" size="1" />
+		<field type="staticText" align="left" txt="Configuration of the target service providers and the Service Provider target grid. The service provider target grid can be the same or different from the target grid of this installation"/>
+		<field type="divider" align="top"/>		
+		<field type="text" variable="suite.gridsvc.host">
+			<spec txt="Suite grid services host: "  size="75" set="${tomcat.hostname}"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Suite grid services host is a required field" />
+		</field>
+		<field type="text" variable="suite.gridsvc.port">
+			<spec txt="Suite grid services port: "  size="75" set="${tomcat.grid.secure.port}"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Suite grid services port is a required field" />
+		</field>		
+		<field type="text" variable="c3d.registration.url">
+			<spec txt="C3D Registration URL: "  size="75" set="https://ncias-c279-v.nci.nih.gov:58445/clinicalConnector/services/cagrid/RegistrationConsumer"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" C3D Registration URL is a required field" />
+		</field>
+		<field type="text" variable="load.lab.url">
+			<spec txt="Load Lab URL: "  size="75" set="https://ncias-c279-v.nci.nih.gov:58445/clinicalConnector/services/cagrid/LoadLabService"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Load Lab URL is a required field" />
+		</field>		
+		<field type="text" variable="clinicalconnector.registration.url">
+			<spec txt="Clinical Connector Registration URL: "  size="75" set="https://ncias-c278-v.nci.nih.gov:17443/axis2/services/SubjectRegistrationService"/>
+		</field>		
+		<field type="text" variable="clinicalconnector.registration.username">
+			<spec txt="Clinical Connector Registration Username: "  size="75" set="ccts"/>			
+		</field>		
+		<field type="password" align="left" variable="clinicalconnector.registration.password">
+			<spec>
+				<pwd txt="Clinical Connector Registration Password:" size="25" set="welcome"/>
+				<pwd txt="Confirm Target grid password for Integration Smoke Test:" size="25" set="welcome"/>
+			</spec>
+			<validator class="com.izforge.izpack.util.PasswordEqualityValidator" txt="Passwords do not match. Please re-enter your passwords."/>
+		</field>
+		<field type="text" variable="clinicalconnector.datacapture.url">
+			<spec txt="Clinical Connector Data Capture URL: "  size="75" set="https://ncias-c278-v.nci.nih.gov:17443/axis2/services/DataCaptureService"/>
+		</field>
+		<field type="text" variable="clinicalconnector.datacapture.username">
+			<spec txt="Clinical Connector Datacapture Username: "  size="75" set="ccts"/>
+		</field>
+		<field type="password" align="left" variable="clinicalconnector.datacapture.password">
+			<spec>
+				<pwd txt="Clinical Connector Datacapture Password:" size="25" set="welcome"/>
+				<pwd txt="Confirm Clinical Connector Datacapture Password:" size="25" set="welcome"/>
+			</spec>
+			<validator class="com.izforge.izpack.util.PasswordEqualityValidator" txt="Clinical Connector Datacapture Passwords do not match. Please re-enter your passwords."/>
+		</field>
+		<field type="text" variable="openclinica.registersubject.url">
+			<spec txt="Openclinica Register Subject URL: "  size="75" set="https://ncias-c278-v.nci.nih.gov:28943/OpenClinica/ws/ccts/subject/v1/subject"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Openclinica Register Subject URL is a required field" />
+		</field>
+		<field type="text" variable="openclinica.consumer.url">
+			<spec txt="Openclinica Consumer URL: "  size="75" set="https://ncias-c278-v.nci.nih.gov:58445/wsrf-openclinica-consumer/services/cagrid/CaXchangeConsumerService"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" Openclinica Consumer URL is a required field" />
+		</field>
+		
+		<field type="space"/>
+		<field type="staticText" align="left" txt="COPPA Grid Services Configuration" />
+		<field type="divider" align="top"/>	
+		<field type="text" variable="coppa.services.po.protocol">
+			<spec txt="PO Grid Services Protocol: "  size="75" set="https"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" PO Grid Services Protocol is a required field" />
+		</field>
+		<field type="text" variable="coppa.services.po.host">
+			<spec txt="PO Grid Services Host: "  size="75" set="ctms-services-po-3-1-integration.nci.nih.gov"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" PO Grid Services Host is a required field" />
+		</field>
+		<field type="text" variable="coppa.services.po.port">
+			<spec txt="PO Grid Services PORT: "  size="75" set="19543"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" PO Grid Services PORT is a required field" />
+		</field>
+		<field type="text" variable="coppa.services.pa.protocol">
+			<spec txt="PA Grid Services Protocol: "  size="75" set="https"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" PA Grid Services Protocol is a required field" />
+		</field>
+		<field type="text" variable="coppa.services.pa.host">
+			<spec txt="PA Grid Services Host: "  size="75" set="ctms-services-pa-3-1-integration.nci.nih.gov"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" PA Grid Services Host" />
+		</field>
+		<field type="text" variable="coppa.services.pa.port">
+			<spec txt="PA Grid Services PORT: "  size="75" set="19343"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" PA Grid Services PORT is a required field" />
+		</field>		
+		<field type="text" variable="coppa.dorian.url">
+			<spec txt="COPPA Target grid Dorian URL: "  size="75" set="https://cagrid-dorian-stage.nci.nih.gov:8443/wsrf/services/cagrid/Dorian"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" COPPA Target grid Dorian URL is a required field" />
+		</field>
+		<field type="text" variable="coppa.authentication.url">
+			<spec txt="COPPA Target grid Authentication Service URL: "  size="75" set="https://cagrid-dorian-stage.nci.nih.gov:8443/wsrf/services/cagrid/Dorian"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" COPPA Target grid Authentication Service URL is a required field" />
+		</field>
+		<field type="text" variable="coppa.authentication.user">
+			<spec txt="COPPA Target Grid Credentials-Username: "  size="75" set="coppagridtest"/>
+			<validator class="com.izforge.izpack.util.NotEmptyValidator" txt=" COPPA Target Grid Credentials Username is a required field" />
+		</field>
+		<field type="password" align="left" variable="coppa.authentication.password">
+			<spec>
+				<pwd txt="COPPA Target Grid Credentials Password" size="25" set="Coppa#12345"/>
+				<pwd txt="Confirm COPPA Target Grid Credentials-Password:" size="25" set="Coppa#12345"/>
+			</spec>
+			<validator class="com.izforge.izpack.util.PasswordEqualityValidator" txt="COPPA Target Grid Credentials Passwords do not match. Please re-enter your passwords."/>
+		</field>		
+	</panel>
+	
+	<!-- Jar Signing -->
+	<panel order="18">
+		<field type="title" txt="Jar Signging configuration" bold="true" size="1" />
+		<field type="staticText" align="left" txt="This application can sign jars.  This page allows you to use your own java keystore to sign the jars or to have a self-signed one generated for you.  If you have an existing one put the full path to the file, the alias and password."/>
+		<field type="divider" align="top"/>
+
+		<field type="radio" variable="jar-signing.execution.time">
+			<description align="left" txt="If or when to sign jars"/>
+			<spec>
+				<choice txt="Disabled"  value="false" set="true"/>
+				<choice txt="InstallTime" value="install"/>
+			</spec>
+		</field>
+		<field type="radio" variable="jar-signing.generate-selfsigned">
+			<description align="left" txt="Auto generate the certificate"/>
+			<spec>
+				<choice txt="False"  value="false" set="true"/>
+				<choice txt="True" value="true"/>
+			</spec>
+		</field>
+		<field type="text" variable="jar-signing.keystore.location">
+			<spec txt="Keystore file location: "  size="75" set=""/>
+		</field>
+		<field type="text" variable="jar-signing.keystore.alias">
+			<spec txt="Keystore alias: "  size="75" set=""/>
+		</field>
+		<field type="password" align="left" variable="jar-signing.keystore.password">
+			<spec>
+				<pwd txt="Jar-signing Keystore Password:" size="25" set=""/>
+				<pwd txt="Jar-signing Keystore Password Confirm:" size="25" set=""/>
+			</spec>
+			<validator class="com.izforge.izpack.util.PasswordEqualityValidator" txt="Passwords do not match. Please re-enter your passwords."/>
+		</field>
+	</panel>
+	
+	<panel order="19">
+		<field type="title" txt="Installation Summary" bold="true" size="1" />
+		<field type="staticText" align="left" txt="Below are "/>
+		<field type="divider" align="top"/>
+		<field type="staticText" align="left" txt="Servicemix Home [${application.base.path}/${servicemix.relative.path}] - This is where Servicemix is installed."/>
+		<field type="space"/>
+		<field type="staticText" align="left" txt="Tomcat Home [${application.base.path}/${tomcat.relative.path}] - This is where Tomcat is installed."/>
+		<field type="space"/>
+		<field type="staticText" align="left" txt="Tomcat Server HOST [${tomcat.hostname}] - This is the hostname where tomcat is running.  If you want to make this Application avaliable from the internet you may need to provide this to your network administrator."/>
+		<field type="space"/>
+		<field type="staticText" align="left" txt="Tomcat Server Secure PORT [${tomcat.port.ssl}] - This is the secure HTTP port for Tomcat.  If you want to make this Application avaliable from the internet you may need to provide this to your network administrator."/>
+		<field type="space"/>
+		<field type="staticText" align="left" txt="caBIG Integration Hub caGrid Service URL [https://${tomcat.hostname}:${tomcat.port.ssl}/wsrf-ihub/services/cagrid/CaXchangeRequestProcessor] - This will be the url to reach your caGrid service interface when the install is finished."/>
+		<field type="space"/>
+		<field type="staticText" align="left" txt="caBIG Integration Hub non-caGrid Service URL [https://${servicemix.hostname}:${cxf.bc.port}/CaXchangeRequestService?wsdl] - This will be the url to reach your non-caGrid service interface  when the install is finished."/>
+		<field type="space"/>
+		<field type="staticText" align="left" txt="Servicemix Log Dir [${application.base.path}/${servicemix.relative.path}/log] - This is where the Servicemix logs can be found."/>
+		<field type="space"/>
+		<field type="staticText" align="left" txt="Tomcat Log Dir [${application.base.path}/${tomcat.relative.path}/logs] - This is where the Tomcat logs can be found."/>		
+		<field type="space"/>
+		<field type="staticText" align="left" txt="Database URL [jdbc:postgresql://${database.host}:${database.port}/${database.name}] "/>
+		<field type="space"/>
+		<field type="staticText" align="left" txt="Database User [${database.username}] "/>		
+		<variable name="baseDir" value="$INSTALL_PATH"/>
+	</panel>
+</userInput>
