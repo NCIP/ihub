@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file was auto-generated from WSDL -->
+<!-- by the Apache Axis2 version: 1.5  Built on : Apr 30, 2009 (06:07:24 EDT) -->
+<serviceGroup>
+    <service name="DataCaptureService">
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out" class="gov.nih.nci.clinicalconnector.DataCaptureServiceMessageReceiverInOut"/>
+        </messageReceivers>
+        <parameter name="ServiceClass">gov.nih.nci.clinicalconnector.DataCaptureServiceSkeleton</parameter>
+        <parameter name="useOriginalwsdl">true</parameter>
+        <parameter name="modifyUserWSDLPortAddress">true</parameter>
+        <operation name="loadLabs" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://clinicalconnector.nci.nih.gov">
+            <actionMapping>loadLabs</actionMapping>
+            <outputActionMapping>http://clinicalconnector.nci.nih.gov/DataCapturePortType/LoadLabsResponseMessage</outputActionMapping>
+        </operation>
+        <operation name="rollbackLoadLabs" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://clinicalconnector.nci.nih.gov">
+            <actionMapping>rollbackLoadLabs</actionMapping>
+            <outputActionMapping>http://clinicalconnector.nci.nih.gov/DataCapturePortType/RollbackLoadLabsResponseMessage</outputActionMapping>
+        </operation>
+    </service>
+</serviceGroup>
