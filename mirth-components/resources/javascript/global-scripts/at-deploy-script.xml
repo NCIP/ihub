@@ -1,0 +1,67 @@
+<map>
+  <entry>
+    <string>Preprocessor</string>
+    <string>// Modify the message variable below to pre process data
+// This script applies across all channels
+return message;</string>
+  </entry>
+  <entry>
+    <string>Deploy</string>
+    <string>// This script executes once when the mule engine is started
+// You only have access to the globalMap here to persist data
+
+globalMap.put(&quot;delegation.certificate.file.path&quot;,&quot;C:/projects_svn/caBIGIntegrationHub/common/resources/ihub/ncias-c278-v.nci.nih.gov-cert.pem&quot;);
+globalMap.put(&quot;delegation.key.file.path&quot;,&quot;C:/projects_svn/caBIGIntegrationHub/common/resources/ihub/ncias-c278-v.nci.nih.gov-key.pem&quot;);
+globalMap.put(&quot;user.proxy.cache.time.to.live&quot;,600);
+
+globalMap.put(&quot;caAERS.registration.url&quot;,&quot;https://ncias-d282-v.nci.nih.gov:29543/wsrf-caaers/services/cagrid/RegistrationConsumer&quot;);
+globalMap.put(&quot;CTOM.registration.url&quot;,&quot;https://ncias-d282-v.nci.nih.gov:29543/ctom-wsrf/services/cagrid/RegistrationConsumer&quot;);
+globalMap.put(&quot;PSC.registration.url&quot;,&quot;https://ncias-d282-v.nci.nih.gov:29543/wsrf-psc/services/cagrid/RegistrationConsumer&quot;);
+
+globalMap.put(&quot;caAERS.study.url&quot;,&quot;https://ncias-d282-v.nci.nih.gov:29543/wsrf-caaers/services/cagrid/StudyConsumer&quot;);
+globalMap.put(&quot;CTOM.study.url&quot;,&quot;https://ncias-d282-v.nci.nih.gov:29543/ctom-wsrf/services/cagrid/StudyConsumer&quot;);
+globalMap.put(&quot;PSC.study.url&quot;,&quot;https://ncias-d282-v.nci.nih.gov:29543/wsrf-psc/services/cagrid/StudyConsumer&quot;);
+
+globalMap.put(&quot;target.grid.service.retry.attempts&quot;,3);
+
+//UPDATE THE COUNT IF THE DESTINATION BROADCAST COUNT IS CHANGED FROM DEFAULT
+globalMap.put(&quot;register.subject.active.destination.count&quot;,3);
+
+// ####### START VARIABLES REQUIRED FOR SUITE AND NOT CONFIGURABLE ######
+//request message status
+globalMap.put(&quot;request.message.status.open&quot;,&quot;OPEN&quot;);
+globalMap.put(&quot;request.message.status.inprocess&quot;,&quot;IN_PROCESS&quot;);
+globalMap.put(&quot;request.message.status.processed&quot;,&quot;PROCESSED&quot;);
+globalMap.put(&quot;request.message.status.responsereturned&quot;,&quot;RESPONSE_RETURNED&quot;);
+//target details - name
+globalMap.put(&quot;target.detail.code.caaers&quot;,&quot;caAERS&quot;);
+globalMap.put(&quot;target.detail.code.psc&quot;,&quot;PSC&quot;);
+globalMap.put(&quot;target.detail.code.ctom&quot;,&quot;CTOM&quot;);
+globalMap.put(&quot;target.detail.code.c3pr&quot;,&quot;C3PR&quot;);
+globalMap.put(&quot;target.detail.code.delegation&quot;,&quot;DELEGATION&quot;);
+
+//target response status
+globalMap.put(&quot;target.response.status.successful&quot;,&quot;SUCCESSFUL&quot;);
+globalMap.put(&quot;target.response.status.fault&quot;,&quot;FAULT&quot;);
+globalMap.put(&quot;target.response.status.timeout&quot;,&quot;TIMEOUT&quot;);
+//overall response status
+globalMap.put(&quot;overall.response.status.success&quot;,&quot;SUCCESS&quot;);
+globalMap.put(&quot;overall.response.status.failure&quot;,&quot;FAILURE&quot;);
+
+// ######## END VARIABLES REQUIRED FOR SUITE AND NOT CONFIGURABLE ########
+
+return;</string>
+  </entry>
+  <entry>
+    <string>Shutdown</string>
+    <string>// This script executes once when the mule engine is stopped
+// You only have access to the globalMap here to persist data
+return;</string>
+  </entry>
+  <entry>
+    <string>Postprocessor</string>
+    <string>// This script executes once after a message has been processed
+// This script applies across all channels
+return;</string>
+  </entry>
+</map>
