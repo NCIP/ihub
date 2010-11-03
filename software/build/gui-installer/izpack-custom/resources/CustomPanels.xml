@@ -1,0 +1,6 @@
+        <build-panel name="MySQLDatabaseInfoExtractionPanel">
+            <include name="com/izforge/izpack/panels/MySQLDatabaseInfoExtractionPanel.java"/>
+        </build-panel>
+        <build-panel name="MySQLColumnValueAnalyzerPanel">
+            <include name="com/izforge/izpack/panels/MySQLColumnValueAnalyzerPanel.java"/>
+        </build-panel>
