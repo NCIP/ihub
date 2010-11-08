@@ -5,18 +5,65 @@
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1287638362765</time>
+    <time>1288808138703</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>11</revision>
+  <revision>15</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
       <property name="DataType">Channel Reader</property>
     </properties>
     <transformer>
-      <steps/>
-      <inboundTemplate></inboundTemplate>
+      <steps>
+        <com.webreach.mirth.model.Step>
+          <sequenceNumber>0</sequenceNumber>
+          <name>metadata_uid</name>
+          <script>var mapping;try { mapping = msg[&apos;metadata&apos;][&apos;uid&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;metadata_uid&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+          <type>Mapper</type>
+          <data class="map">
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;metadata&apos;][&apos;uid&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>Variable</string>
+              <string>metadata_uid</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>isGlobal</string>
+              <string>channel</string>
+            </entry>
+          </data>
+        </com.webreach.mirth.model.Step>
+        <com.webreach.mirth.model.Step>
+          <sequenceNumber>1</sequenceNumber>
+          <name>Modify Outgoing Message</name>
+          <script>msg = msg[&apos;payload&apos;];
+
+
+//msg = new XML(msg[&apos;payload&apos;].toString());</script>
+          <type>JavaScript</type>
+          <data class="map">
+            <entry>
+              <string>Script</string>
+              <string>msg = msg[&apos;payload&apos;];
+
+
+//msg = new XML(msg[&apos;payload&apos;].toString());</string>
+            </entry>
+          </data>
+        </com.webreach.mirth.model.Step>
+      </steps>
+      <inboundTemplate>&lt;request&gt;&lt;metadata&gt;&lt;uid&gt;66b20b26-dc51-11df-9972-ddc780619c0d&lt;/uid&gt;&lt;sourceformat&gt;XML&lt;/sourceformat&gt;&lt;targetformat&gt;HL7V3&lt;/targetformat&gt;&lt;/metadata&gt;&lt;payload&gt;&lt;patient&gt;&lt;assigning_authority&gt;NCI&lt;/assigning_authority&gt;&lt;given_name&gt;John&lt;/given_name&gt;&lt;family_name&gt;Doe&lt;/family_name&gt;&lt;birth_date&gt;1965-09-16&lt;/birth_date&gt;&lt;gender&gt;Male&lt;/gender&gt;&lt;/patient&gt;&lt;/payload&gt;&lt;/request&gt;</inboundTemplate>
       <outboundTemplate></outboundTemplate>
       <inboundProtocol>XML</inboundProtocol>
       <outboundProtocol>XML</outboundProtocol>
@@ -34,7 +81,8 @@
     <com.webreach.mirth.model.Connector>
       <name>Channel Writer</name>
       <properties>
-        <property name="script">globalMap.put(&apos;TransformedData&apos;, messageObject.getEncodedData());
+        <property name="script">//globalMap.put(&apos;TransformedData&apos;, messageObject.getEncodedData());
+globalMap.put($(&apos;metadata_uid&apos;), messageObject.getEncodedData());
 //globalMap.put(messageObject.getId(), messageObject.getEncodedData());</property>
         <property name="DataType">JavaScript Writer</property>
         <property name="host">sink</property>

@@ -1,14 +1,14 @@
 <com.webreach.mirth.model.Channel>
   <id>ab844eb1-6945-4114-99d0-0f2eb366076c</id>
-  <name>TransformationService</name>
+  <name>TS TransformationService</name>
   <description></description>
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1287677541875</time>
+    <time>1288843159265</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>41</revision>
+  <revision>42</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
