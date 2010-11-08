@@ -1,14 +1,14 @@
 <com.webreach.mirth.model.Channel>
   <id>e9bbc6b7-cbac-413d-9b64-5dbe390a2739</id>
-  <name>1 - Suite Inbound JMS Reader</name>
+  <name>SUITE__A_SYNC__JMSReader</name>
   <description></description>
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1284668742734</time>
+    <time>1289239854390</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>110</revision>
+  <revision>132</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -443,15 +443,14 @@
     <com.webreach.mirth.model.Connector>
       <name>Persist Message In Database</name>
       <properties>
-        <property name="username">mirthadmin</property>
+        <property name="username"></property>
         <property name="DataType">Database Writer</property>
-        <property name="useScript">0</property>
-        <property name="URL">jdbc:postgresql://localhost:5432/mirth</property>
-        <property name="query">INSERT INTO message (message_id, payload, message_status, time_received, schema_definition, metadata)
-VALUES (${ns1metadata_ns1caxchangeidentifier}, ${ns1request_ns1businessmessagepayload}, &apos;IN_PROCESS&apos;, now(), ${ns1request_ns1businessmessagepayload_ns1xmlschemadefinition}, ${ns1metadata});
-</property>
-        <property name="script"></property>
-        <property name="password">changeme</property>
+        <property name="useScript">1</property>
+        <property name="URL">jdbc:postgresql://host:port/dbname</property>
+        <property name="query"></property>
+        <property name="script">insertIncomingMessageInDB($(&apos;ns1metadata_ns1caxchangeidentifier&apos;), $(&apos;ns1request_ns1businessmessagepayload&apos;), 
+	globalMap.get(&apos;request.message.status.inprocess&apos;), $(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;), $(&apos;ns1metadata&apos;));</property>
+        <property name="password"></property>
         <property name="host">query</property>
         <property name="driver">org.postgresql.Driver</property>
       </properties>

@@ -1,14 +1,14 @@
 <com.webreach.mirth.model.Channel>
   <id>afe931ad-7ed6-4894-b755-aaf7d5c2a492</id>
-  <name>3 - Suite Registration Broadcaster</name>
+  <name>SUITE__A_SYNC__BROADCASTER</name>
   <description></description>
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1285010737515</time>
+    <time>1289239864062</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>429</revision>
+  <revision>502</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -436,8 +436,15 @@ channelMap.put(&quot;registration_prefix&quot;,&apos;registration&apos;);</strin
     <com.webreach.mirth.model.Connector>
       <name>caAERS</name>
       <properties>
-        <property name="script">delegateSingleTargetRequest($(&apos;registration_prefix&apos;), globalMap.get(&quot;target.detail.code.caaers&quot;), $(&apos;ns1request_ns1businessmessagepayload&apos;),
-									$(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));	</property>
+        <property name="script">var targetInvocationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.business.RegistrationInvocationStrategy(
+	globalMap.get(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)), 
+	globalMap.get(globalMap.get(&quot;target.detail.code.caaers&quot;)+&quot;.&quot;+$(&apos;ns1metadata_ns1servicetype&apos;)+&quot;.url&quot;), 
+	$(&apos;ns1request_ns1businessmessagepayload&apos;), globalMap.get(&quot;target.detail.code.caaers&quot;));
+
+
+delegateSingleTargetRequest($(&apos;ns1metadata_ns1servicetype&apos;), targetInvocationStrategy, 
+	$(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));	
+</property>
         <property name="DataType">JavaScript Writer</property>
         <property name="host">sink</property>
       </properties>
@@ -504,8 +511,15 @@ return false;</script>
     <com.webreach.mirth.model.Connector>
       <name>CTOM</name>
       <properties>
-        <property name="script">delegateSingleTargetRequest($(&apos;registration_prefix&apos;), globalMap.get(&quot;target.detail.code.ctom&quot;), $(&apos;ns1request_ns1businessmessagepayload&apos;),
-									$(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));	</property>
+        <property name="script">var targetInvocationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.business.RegistrationInvocationStrategy(
+	globalMap.get(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)), 
+	globalMap.get(globalMap.get(&quot;target.detail.code.ctom&quot;)+&quot;.&quot;+$(&apos;ns1metadata_ns1servicetype&apos;)+&quot;.url&quot;), 
+	$(&apos;ns1request_ns1businessmessagepayload&apos;), globalMap.get(&quot;target.detail.code.ctom&quot;));
+
+
+delegateSingleTargetRequest($(&apos;ns1metadata_ns1servicetype&apos;), targetInvocationStrategy, 
+	$(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));	
+</property>
         <property name="DataType">JavaScript Writer</property>
         <property name="host">sink</property>
       </properties>
@@ -568,59 +582,14 @@ return false;</script>
     <com.webreach.mirth.model.Connector>
       <name>PSC</name>
       <properties>
-        <property name="script">delegateSingleTargetRequest($(&apos;registration_prefix&apos;), globalMap.get(&quot;target.detail.code.psc&quot;), $(&apos;ns1request_ns1businessmessagepayload&apos;),
-									$(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));	
+        <property name="script">var targetInvocationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.business.RegistrationInvocationStrategy(
+	globalMap.get(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)), 
+	globalMap.get(globalMap.get(&quot;target.detail.code.psc&quot;)+&quot;.&quot;+$(&apos;ns1metadata_ns1servicetype&apos;)+&quot;.url&quot;), 
+	$(&apos;ns1request_ns1businessmessagepayload&apos;), globalMap.get(&quot;target.detail.code.psc&quot;));
 
 
-/*
-try{
-	var targetDetailsCode = globalMap.get(&quot;target.detail.code.psc&quot;);
-	var registrationURL = globalMap.get(&quot;psc.registration.url&quot;);
-
-	
-	
-// ######   THE CODE BELOW THIS IS COMMON TO ALL THE SUITE DESTINATIONS. COPY AND PASTE UNTIL AN IMPORT MECHANISM IS IMPLEMENTED   #######
-
-	var subject = globalMap.get(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
-	//logger.info(&quot;Subject in &quot;+ targetDetailsCode +&quot; is: &quot;+subject);
-
-
-	var invocationRegistrationStrategy = new Packages.gov.nih.nci.ihub.outbound.service.RegistrationInvocationStrategy(
-			subject, registrationURL, $(&apos;ns1request_ns1businessmessagepayload&apos;));	
-
-	var gridInvocationResult = invokeGridService(invocationRegistrationStrategy);
-
-	if(gridInvocationResult.isFault()){		
-		if(gridInvocationResult.isRetry()){
-			var retryAttempt=0;
-			var totalRetryAttempts = globalMap.get(&quot;target.grid.service.retry.attempts&quot;);
-			for (retryAttempt=0; retryAttempt&lt;totalRetryAttempts; retryAttempt++)
-			{
-				logger.info(targetDetailsCode+&quot; Retry Attempt: &quot;+retryAttempt);
-				gridInvocationResult = invokeGridService(invocationRegistrationStrategy);
-				if(gridInvocationResult.isFault()){
-					continue;
-				} else {
-					insertCompiledTargetResponse(createSuccessResponseXML(gridInvocationResult, targetDetailsCode, $(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;)), 
-						targetDetailsCode, globalMap.get(&quot;target.response.status.successful&quot;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
-					break;
-				}
-			}
-		} else {
-			insertCompiledTargetResponse(createErrorResponseXML(gridInvocationResult.getInvocationException(), targetDetailsCode), 
-				targetDetailsCode, globalMap.get(&quot;target.response.status.fault&quot;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
-		}
-	} else {
-		insertCompiledTargetResponse(createSuccessResponseXML(gridInvocationResult, targetDetailsCode, $(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;)), 
-				targetDetailsCode, globalMap.get(&quot;target.response.status.successful&quot;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
-	}
-	
-} catch (error) {	
-	logger.error(&quot;EXCEPTION OCCURED IN MIRTH DURING &quot;+targetDetailsCode+&quot; INVOCATION: &quot;+error);
-	insertCompiledTargetResponse(createErrorResponseXML(new Packages.java.lang.Exception(error), targetDetailsCode), 
-		targetDetailsCode, globalMap.get(&quot;target.response.status.fault&quot;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
-}
-*/</property>
+delegateSingleTargetRequest($(&apos;ns1metadata_ns1servicetype&apos;), targetInvocationStrategy, 
+	$(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));	</property>
         <property name="DataType">JavaScript Writer</property>
         <property name="host">sink</property>
       </properties>
@@ -685,89 +654,14 @@ return false;</script>
     <com.webreach.mirth.model.Connector>
       <name>Response Aggregator</name>
       <properties>
-        <property name="script">try{
-	var activeDestinationCount = globalMap.get(&quot;register.subject.active.destination.count&quot;);
-	//logger.info(&quot;Active Destination Count: &quot;+activeDestinationCount);
-	
-	var compiledResponseResultSet = getCompiledResponseResults();
-
-	var totalSecondsElapsed = 0;
-	while (compiledResponseResultSet.size() &lt; activeDestinationCount) {
-		Packages.java.lang.Thread.sleep(1000);
-		compiledResponseResultSet = getCompiledResponseResults();
-		totalSecondsElapsed++;
-		if(totalSecondsElapsed &gt;= 60){
-			//initiate the code for timeout here
-			break;
-		}
-	}
-	
-	var responseArrayList = new Packages.java.util.ArrayList();
-	var potentialRollbackTargetList = new Packages.java.util.ArrayList();
-	var isFailureOverallResponse = false;
-	while(compiledResponseResultSet.next()){
-		var compiledResponseStringToDOMDocument = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.stringToDOMDocument(
-			compiledResponseResultSet.getString(&quot;compiled_target_response_compiled_response&quot;));
-		responseArrayList.add(compiledResponseStringToDOMDocument);
-		var compiledTargetResponseStatus = compiledResponseResultSet.getString(&quot;compiled_target_response_target_response_status&quot;);
-		if(compiledTargetResponseStatus == globalMap.get(&quot;target.response.status.fault&quot;)){
-			isFailureOverallResponse = true;
-		} else {
-			potentialRollbackTargetList.add(compiledResponseResultSet.getString(&quot;compiled_target_response_target_details&quot;));
-		}
-	}
-
-	if(isFailureOverallResponse){
-		//send rollbacks to targets that executed successfully
-		delegateTargetRollbackRequest($(&apos;registration_prefix&apos;), potentialRollbackTargetList, $(&apos;ns1request_ns1businessmessagepayload&apos;),
-									$(&apos;ns1metadata_ns1caxchangeidentifier&apos;));	
-	}
-
-	var aggregatedResponseBuilder = new Packages.gov.nih.nci.ihub.writer.ncies.business.AggregatedResponseBuilder();
-	var aggregatedResponse = aggregatedResponseBuilder.buildAggregatedDocument(responseArrayList, false);
-	var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.business.GenerateResponseBean();
-	var overallResponse = generateResponseBean.generateResponseFromAggregatedResponse($(&apos;ns1metadata_ns1externalidentifier&apos;), 
-							$(&apos;ns1metadata_ns1caxchangeidentifier&apos;), aggregatedResponse);
-	var overallResponseString = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(overallResponse);
-	updateMessageServiceResponse(isFailureOverallResponse, overallResponseString);
-	return overallResponseString;
-
-} catch (error) {	
-	logger.error(&quot;EXCEPTION OCCURED IN MIRTH RESPONSE AGGREGATOR &quot;+error);
-}
-
-
-function getCompiledResponseResults(){	
-	var dbConn = DatabaseConnectionFactory.createDatabaseConnection(&apos;org.postgresql.Driver&apos;,&apos;jdbc:postgresql://localhost:5432/mirth&apos;,&apos;mirthadmin&apos;,&apos;changeme&apos;);
-	var resultSet = dbConn.executeCachedQuery(&quot;SELECT compiled_target_response.compiled_target_response_id AS compiled_target_response_compiled_target_response_id, compiled_target_response.message_id AS compiled_target_response_message_id, compiled_target_response.target_details AS compiled_target_response_target_details, compiled_target_response.compiled_response AS compiled_target_response_compiled_response, compiled_target_response.target_response_status AS compiled_target_response_target_response_status, compiled_target_response.time_completed AS compiled_target_response_time_completed FROM compiled_target_response where message_id=&apos;&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)+&quot;&apos;&quot;);
-	//logger.info(&quot;Compiled Result Set Size: &quot;+resultSet.size());
-	dbConn.close();
-	return resultSet;
-}
- 
-function updateMessageServiceResponse(varIsFailureOverallResponse, varOverallResponseString){
-	var overallResponseStatus = globalMap.get(&quot;overall.response.status.success&quot;);
-	if(varIsFailureOverallResponse){
-		overallResponseStatus = globalMap.get(&quot;overall.response.status.failure&quot;);
-	}
-	//var overallResponseString = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(varOverallResponse);
-	logger.info(&quot;Overall Response in Aggregator: &quot;+varOverallResponseString);
-	var dbConn = DatabaseConnectionFactory.createDatabaseConnection(&apos;org.postgresql.Driver&apos;,&apos;jdbc:postgresql://localhost:5432/mirth&apos;,&apos;mirthadmin&apos;,&apos;changeme&apos;);
-
-
-	var prepStatement = &quot;UPDATE MESSAGE SET MESSAGE_STATUS=?, OVERALL_RESPONSE_DATA=?, OVERALL_RESPONSE_STATUS=?, TIME_COMPLETED=now() WHERE MESSAGE_ID=?&quot;;
-	var params = new Packages.java.util.ArrayList();
-	params.add(globalMap.get(&quot;request.message.status.processed&quot;));
-	params.add(varOverallResponseString);
-	params.add(overallResponseStatus);
-	params.add($(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
-
-	dbConn.executeUpdate(prepStatement, params);
-	dbConn.close();	
-	//var updateSQL = &quot;UPDATE MESSAGE SET MESSAGE_STATUS=&apos;PROCESSED&apos;, OVERALL_RESPONSE_DATA=&apos;&quot;+ varOverallResponseString +&quot;&apos;, OVERALL_RESPONSE_STATUS=&apos;&quot;+ overallResponseStatus +&quot;&apos;, TIME_COMPLETED=now() WHERE MESSAGE_ID=&apos;&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)+&quot;&apos;&quot;;
-	//dbConn.executeUpdate(updateSQL);
-	//dbConn.close();
-}</property>
+        <property name="script">var targetInvocationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.business.RegistrationInvocationStrategy();
+aggregateBroadcastResponse(
+	$(&apos;ns1metadata_ns1servicetype&apos;),
+	targetInvocationStrategy,
+	$(&apos;ns1request_ns1businessmessagepayload&apos;),
+	$(&apos;ns1metadata_ns1externalidentifier&apos;),
+	$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)
+	);</property>
         <property name="DataType">JavaScript Writer</property>
         <property name="host">sink</property>
       </properties>
