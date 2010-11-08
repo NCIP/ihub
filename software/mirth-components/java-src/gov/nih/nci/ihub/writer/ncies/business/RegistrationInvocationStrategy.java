@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.ccts.domain.Registration;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.ccts.grid.client.RegistrationConsumerClient;
 import gov.nih.nci.ihub.util.IntegrationHubUtil;
+import gov.nih.nci.ihub.writer.ncies.common.GridInvocationResult;
 import gov.nih.nci.ihub.writer.ncies.exception.GridInvocationException;
 
 import java.io.InputStream;
@@ -32,13 +33,19 @@ public class RegistrationInvocationStrategy {
 	private Subject subject;
 	private String serviceURL;
 	private String payload;
+	private String serviceProviderName;	
+	
+	public RegistrationInvocationStrategy() {
+		super();
+	}
 
 	public RegistrationInvocationStrategy(Subject subject, String serviceURL,
-			String payload) {
+			String payload, String serviceProviderName) {
 		super();
 		this.subject = subject;
 		this.serviceURL = serviceURL;
 		this.payload = payload;
+		this.serviceProviderName = serviceProviderName;
 	}
 
 	public GridInvocationResult invokeGridService(boolean isRollback)
@@ -115,5 +122,38 @@ public class RegistrationInvocationStrategy {
 			throw new GridInvocationException(e.getMessage(), e);
 		}
 	}
+	
+	public Subject getSubject() {
+		return subject;
+	}
+
+	public void setSubject(Subject subject) {
+		this.subject = subject;
+	}
+
+	public String getServiceURL() {
+		return serviceURL;
+	}
+
+	public void setServiceURL(String serviceURL) {
+		this.serviceURL = serviceURL;
+	}
+
+	public String getPayload() {
+		return payload;
+	}
+
+	public void setPayload(String payload) {
+		this.payload = payload;
+	}
+	
+	public String getServiceProviderName() {
+		return serviceProviderName;
+	}
+
+	public void setServiceProviderName(String serviceProviderName) {
+		this.serviceProviderName = serviceProviderName;
+	}
+	
 
 }
