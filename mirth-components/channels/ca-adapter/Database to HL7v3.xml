@@ -1,92 +1,100 @@
 <com.webreach.mirth.model.Channel>
-  <id>cb1ff0aa-78b9-48db-ac61-3138461fd725</id>
-  <name>Database to HL7v3</name>
+  <id>d42931fd-8269-433c-874e-2caeea9f9e4b</id>
+  <name>TS Delimited to HL7v3</name>
   <description></description>
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1286690791328</time>
+    <time>1288815508031</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>5</revision>
+  <revision>41</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
-      <property name="ackScript"></property>
-      <property name="processResultsInOrder">1</property>
-      <property name="pollingType">interval</property>
-      <property name="pollingFrequency">5000</property>
-      <property name="username">mirthadmin</property>
-      <property name="DataType">Database Reader</property>
-      <property name="useAck">1</property>
-      <property name="useScript">0</property>
-      <property name="URL">jdbc:postgresql://localhost:5432/mirth</property>
-      <property name="query">SELECT patient.patient_id AS patient_patient_id, patient.assigning_authority AS patient_assigning_authority, patient.given_name AS patient_given_name, patient.family_name AS patient_family_name, patient.birth_date AS patient_birth_date, patient.gender AS patient_gender, patient.status AS patient_status
-FROM patient where status=&apos;OPEN&apos;;
-
-</property>
-      <property name="script"></property>
-      <property name="password">changeme</property>
-      <property name="host">query</property>
-      <property name="driver">org.postgresql.Driver</property>
-      <property name="ack">UPDATE PATIENT SET STATUS=&apos;PROCESSED&apos; WHERE PATIENT_ID=${patient_patient_id};</property>
+      <property name="DataType">Channel Reader</property>
     </properties>
     <transformer>
-      <steps/>
-      <inboundTemplate>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#x0D;
-&lt;result&gt;&#x0D;
-    &lt;patient_patient_id&gt;value&lt;/patient_patient_id&gt;&#x0D;
-    &lt;patient_assigning_authority&gt;value&lt;/patient_assigning_authority&gt;&#x0D;
-    &lt;patient_given_name&gt;value&lt;/patient_given_name&gt;&#x0D;
-    &lt;patient_family_name&gt;value&lt;/patient_family_name&gt;&#x0D;
-    &lt;patient_birth_date&gt;value&lt;/patient_birth_date&gt;&#x0D;
-    &lt;patient_gender&gt;value&lt;/patient_gender&gt;&#x0D;
-    &lt;patient_status&gt;value&lt;/patient_status&gt;&#x0D;
-&lt;/result&gt;&#x0D;
-</inboundTemplate>
+      <steps>
+        <com.webreach.mirth.model.Step>
+          <sequenceNumber>0</sequenceNumber>
+          <name>metadata_uid</name>
+          <script>var mapping;try { mapping = msg[&apos;row&apos;][&apos;column1&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;metadata_uid&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+          <type>Mapper</type>
+          <data class="map">
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;row&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>Variable</string>
+              <string>metadata_uid</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>isGlobal</string>
+              <string>channel</string>
+            </entry>
+          </data>
+        </com.webreach.mirth.model.Step>
+      </steps>
+      <inboundTemplate>66b20b26-dc51-11df-9972-ddc780619c0d,Santosh,Giambi,08/20/1968,Male,Duke</inboundTemplate>
       <outboundTemplate></outboundTemplate>
-      <inboundProtocol>XML</inboundProtocol>
-      <outboundProtocol>XML</outboundProtocol>
+      <inboundProtocol>DELIMITED</inboundProtocol>
+      <outboundProtocol>DELIMITED</outboundProtocol>
       <inboundProperties/>
-      <outboundProperties/>
+      <outboundProperties>
+        <property name="columnWidths"></property>
+        <property name="recordDelimiter">\n</property>
+        <property name="escapeWithDoubleQuote">true</property>
+        <property name="numberedRows">false</property>
+        <property name="batchSkipRecords">0</property>
+        <property name="quoteChar">&quot;</property>
+        <property name="ignoreCR">true</property>
+        <property name="batchMessageDelimiter"></property>
+        <property name="batchGroupingColumn"></property>
+        <property name="batchMessageDelimiterIncluded">false</property>
+        <property name="columnNames"></property>
+        <property name="batchSplitByRecord">true</property>
+        <property name="batchScript"></property>
+        <property name="columnDelimiter">,</property>
+        <property name="quoteEscapeChar">\</property>
+      </outboundProperties>
     </transformer>
     <filter>
       <rules/>
     </filter>
-    <transportName>Database Reader</transportName>
+    <transportName>Channel Reader</transportName>
     <mode>SOURCE</mode>
     <enabled>true</enabled>
   </sourceConnector>
   <destinationConnectors>
     <com.webreach.mirth.model.Connector>
-      <name>HL7v3 File Writer</name>
+      <name>Channel Writer</name>
       <properties>
-        <property name="secure">1</property>
-        <property name="scheme">file</property>
-        <property name="binary">0</property>
-        <property name="username">anonymous</property>
-        <property name="outputPattern">HL7v3-converted-${UUID}.xml</property>
-        <property name="validateConnections">1</property>
-        <property name="DataType">File Writer</property>
-        <property name="FTPAnonymous">1</property>
-        <property name="charsetEncoding">DEFAULT_ENCODING</property>
-        <property name="password">anonymous</property>
-        <property name="passive">1</property>
-        <property name="template">${message.encodedData}</property>
-        <property name="outputAppend">1</property>
-        <property name="host">C:/projects_svn/ihub-mirth/trunk/software/smoke-test/ca-adapter/db-to-hl7v3/HL7v3-Converted</property>
+        <property name="script">//globalMap.put(&apos;TransformedData&apos;, messageObject.getEncodedData());
+globalMap.put($(&apos;metadata_uid&apos;), messageObject.getEncodedData());</property>
+        <property name="DataType">JavaScript Writer</property>
+        <property name="host">sink</property>
       </properties>
       <transformer>
         <steps>
           <com.webreach.mirth.model.Step>
             <sequenceNumber>0</sequenceNumber>
             <name>patientPerson - name - given (out)</name>
-            <script>tmp[&apos;patientPerson&apos;][&apos;name&apos;][&apos;given&apos;] = validate(msg[&apos;patient_given_name&apos;].toString(), &apos;&apos;, new Array());</script>
+            <script>tmp[&apos;patientPerson&apos;][&apos;name&apos;][&apos;given&apos;] = validate(msg[&apos;row&apos;][&apos;column2&apos;].toString(), &apos;&apos;, new Array());</script>
             <type>Message Builder</type>
             <data class="map">
               <entry>
                 <string>Mapping</string>
-                <string>msg[&apos;patient_given_name&apos;].toString()</string>
+                <string>msg[&apos;row&apos;][&apos;column2&apos;].toString()</string>
               </entry>
               <entry>
                 <string>Variable</string>
@@ -105,12 +113,12 @@ FROM patient where status=&apos;OPEN&apos;;
           <com.webreach.mirth.model.Step>
             <sequenceNumber>1</sequenceNumber>
             <name>patientPerson - name - family (out)</name>
-            <script>tmp[&apos;patientPerson&apos;][&apos;name&apos;][&apos;family&apos;] = validate(msg[&apos;patient_family_name&apos;].toString(), &apos;&apos;, new Array());</script>
+            <script>tmp[&apos;patientPerson&apos;][&apos;name&apos;][&apos;family&apos;] = validate(msg[&apos;row&apos;][&apos;column3&apos;].toString(), &apos;&apos;, new Array());</script>
             <type>Message Builder</type>
             <data class="map">
               <entry>
                 <string>Mapping</string>
-                <string>msg[&apos;patient_family_name&apos;].toString()</string>
+                <string>msg[&apos;row&apos;][&apos;column3&apos;].toString()</string>
               </entry>
               <entry>
                 <string>Variable</string>
@@ -129,12 +137,12 @@ FROM patient where status=&apos;OPEN&apos;;
           <com.webreach.mirth.model.Step>
             <sequenceNumber>2</sequenceNumber>
             <name>patientPerson - birthTime - @value (out)</name>
-            <script>tmp[&apos;patientPerson&apos;][&apos;birthTime&apos;][&apos;@value&apos;] = validate(msg[&apos;patient_birth_date&apos;].toString(), &apos;&apos;, new Array());</script>
+            <script>tmp[&apos;patientPerson&apos;][&apos;birthTime&apos;][&apos;@value&apos;] = validate(msg[&apos;row&apos;][&apos;column4&apos;].toString(), &apos;&apos;, new Array());</script>
             <type>Message Builder</type>
             <data class="map">
               <entry>
                 <string>Mapping</string>
-                <string>msg[&apos;patient_birth_date&apos;].toString()</string>
+                <string>msg[&apos;row&apos;][&apos;column4&apos;].toString()</string>
               </entry>
               <entry>
                 <string>Variable</string>
@@ -153,12 +161,12 @@ FROM patient where status=&apos;OPEN&apos;;
           <com.webreach.mirth.model.Step>
             <sequenceNumber>3</sequenceNumber>
             <name>patientPerson - administrativeGenderCode - @code (out)</name>
-            <script>tmp[&apos;patientPerson&apos;][&apos;administrativeGenderCode&apos;][&apos;@code&apos;] = validate(msg[&apos;patient_gender&apos;].toString(), &apos;&apos;, new Array());</script>
+            <script>tmp[&apos;patientPerson&apos;][&apos;administrativeGenderCode&apos;][&apos;@code&apos;] = validate(msg[&apos;row&apos;][&apos;column5&apos;].toString(), &apos;&apos;, new Array());</script>
             <type>Message Builder</type>
             <data class="map">
               <entry>
                 <string>Mapping</string>
-                <string>msg[&apos;patient_gender&apos;].toString()</string>
+                <string>msg[&apos;row&apos;][&apos;column5&apos;].toString()</string>
               </entry>
               <entry>
                 <string>Variable</string>
@@ -177,12 +185,12 @@ FROM patient where status=&apos;OPEN&apos;;
           <com.webreach.mirth.model.Step>
             <sequenceNumber>4</sequenceNumber>
             <name>patientPerson - id - @assigningAuthorityName (out)</name>
-            <script>tmp[&apos;patientPerson&apos;][&apos;id&apos;][&apos;@assigningAuthorityName&apos;] = validate(msg[&apos;patient_assigning_authority&apos;].toString(), &apos;&apos;, new Array());</script>
+            <script>tmp[&apos;patientPerson&apos;][&apos;id&apos;][&apos;@assigningAuthorityName&apos;] = validate(msg[&apos;row&apos;][&apos;column6&apos;].toString(), &apos;&apos;, new Array());</script>
             <type>Message Builder</type>
             <data class="map">
               <entry>
                 <string>Mapping</string>
-                <string>msg[&apos;patient_assigning_authority&apos;].toString()</string>
+                <string>msg[&apos;row&apos;][&apos;column6&apos;].toString()</string>
               </entry>
               <entry>
                 <string>Variable</string>
@@ -199,17 +207,7 @@ FROM patient where status=&apos;OPEN&apos;;
             </data>
           </com.webreach.mirth.model.Step>
         </steps>
-        <inboundTemplate>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#x0D;
-&lt;result&gt;&#x0D;
-    &lt;patient_patient_id&gt;value&lt;/patient_patient_id&gt;&#x0D;
-    &lt;patient_assigning_authority&gt;value&lt;/patient_assigning_authority&gt;&#x0D;
-    &lt;patient_given_name&gt;value&lt;/patient_given_name&gt;&#x0D;
-    &lt;patient_family_name&gt;value&lt;/patient_family_name&gt;&#x0D;
-    &lt;patient_birth_date&gt;value&lt;/patient_birth_date&gt;&#x0D;
-    &lt;patient_gender&gt;value&lt;/patient_gender&gt;&#x0D;
-    &lt;patient_status&gt;value&lt;/patient_status&gt;&#x0D;
-&lt;/result&gt;&#x0D;
-</inboundTemplate>
+        <inboundTemplate>Jason,Doe,08/20/1968,Male,NCI</inboundTemplate>
         <outboundTemplate>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;Patient xmlns=&quot;urn:hl7-org:v3&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; classCode=&quot;PAT&quot;&gt;
     &lt;id root=&quot;2.16.840.1.113883.3.26.345&quot; assigningAuthorityName=&quot;NCI&quot; extension=&quot;78127-401&quot;/&gt;
@@ -294,15 +292,31 @@ FROM patient where status=&apos;OPEN&apos;;
         &lt;/contactParty&gt;
     &lt;/providerOrganization&gt;
 &lt;/Patient&gt;</outboundTemplate>
-        <inboundProtocol>XML</inboundProtocol>
+        <inboundProtocol>DELIMITED</inboundProtocol>
         <outboundProtocol>HL7V3</outboundProtocol>
-        <inboundProperties/>
+        <inboundProperties>
+          <property name="columnWidths"></property>
+          <property name="recordDelimiter">\n</property>
+          <property name="escapeWithDoubleQuote">true</property>
+          <property name="numberedRows">false</property>
+          <property name="batchSkipRecords">0</property>
+          <property name="quoteChar">&quot;</property>
+          <property name="ignoreCR">true</property>
+          <property name="batchMessageDelimiter"></property>
+          <property name="batchGroupingColumn"></property>
+          <property name="batchMessageDelimiterIncluded">false</property>
+          <property name="columnNames"></property>
+          <property name="batchSplitByRecord">true</property>
+          <property name="batchScript"></property>
+          <property name="columnDelimiter">,</property>
+          <property name="quoteEscapeChar">\</property>
+        </inboundProperties>
         <outboundProperties/>
       </transformer>
       <filter>
         <rules/>
       </filter>
-      <transportName>File Writer</transportName>
+      <transportName>JavaScript Writer</transportName>
       <mode>DESTINATION</mode>
       <enabled>true</enabled>
     </com.webreach.mirth.model.Connector>
@@ -314,7 +328,7 @@ FROM patient where status=&apos;OPEN&apos;;
     <property name="encryptData">false</property>
     <property name="transactional">false</property>
     <property name="max_message_age">-1</property>
-    <property name="dont_store_filtered">false</property>
+    <property name="dont_store_filtered">true</property>
     <property name="error_messages_only">false</property>
   </properties>
   <preprocessingScript>// Modify the message variable below to pre process data
