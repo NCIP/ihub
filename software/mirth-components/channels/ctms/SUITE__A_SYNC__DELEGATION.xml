@@ -1,14 +1,14 @@
 <com.webreach.mirth.model.Channel>
-  <id>b5146b95-5701-42eb-84b9-cdb6b6d88749</id>
-  <name>4 - Suite Outbound JMSWriter</name>
+  <id>f00b06e9-ab34-49b6-8573-cbed5b56bf2a</id>
+  <name>SUITE__A_SYNC__DELEGATION</name>
   <description></description>
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1284668765406</time>
+    <time>1289239884640</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>43</revision>
+  <revision>45</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -18,7 +18,7 @@
       <steps>
         <com.webreach.mirth.model.Step>
           <sequenceNumber>0</sequenceNumber>
-          <name>Namespace Setter</name>
+          <name>Namespace Setting</name>
           <script>default xml namespace = &quot;http://caXchange.nci.nih.gov/messaging&quot;</script>
           <type>JavaScript</type>
           <data class="map">
@@ -58,107 +58,57 @@
         </com.webreach.mirth.model.Step>
         <com.webreach.mirth.model.Step>
           <sequenceNumber>2</sequenceNumber>
-          <name>Retrieve Response From Database</name>
-          <script>try{
-	var overallResponseResults = getOverallResponse();
-
-	var totalSecondsElapsed = 0;
-	while (overallResponseResults.size() &lt; 1) {
-		Packages.java.lang.Thread.sleep(1000);
-		overallResponseResults = getOverallResponse();
-		totalSecondsElapsed++;
-		if(totalSecondsElapsed &gt;= 62){			
-			break;
-		}
-	}
-
-	if(overallResponseResults.next()){
-		var overallResponseString = overallResponseResults.getString(&quot;message_overall_response_data&quot;);
-		channelMap.put(&quot;message_overall_response&quot;,overallResponseString);
-		updateMessageServiceStatus();
-	} else {
-		//initiate code to put some error response message back in the queue
-	}
-
-} catch (error) {
-	logger.error(&quot;Error occured in Retrieve Response From Database: &quot;+error);
-}
-
-
-function getOverallResponse(){	
-	var dbConn = DatabaseConnectionFactory.createDatabaseConnection(&apos;org.postgresql.Driver&apos;,&apos;jdbc:postgresql://localhost:5432/mirth&apos;,&apos;mirthadmin&apos;,&apos;changeme&apos;);
-	var resultSet = dbConn.executeCachedQuery(&quot;SELECT message.overall_response_data AS message_overall_response_data FROM message WHERE message.message_id=&apos;&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)+&quot;&apos; AND message.message_status=&apos;PROCESSED&apos;&quot;);
-	//logger.info(&quot;Overall Result Set Size: &quot;+resultSet.size());
-	dbConn.close();
-	return resultSet;
-}
-
-
-
-function updateMessageServiceStatus(){
-	var dbConn = DatabaseConnectionFactory.createDatabaseConnection(&apos;org.postgresql.Driver&apos;,&apos;jdbc:postgresql://localhost:5432/mirth&apos;,&apos;mirthadmin&apos;,&apos;changeme&apos;);
-	var updateSQL = &quot;UPDATE MESSAGE SET MESSAGE_STATUS=&apos;RESPONSE_RETURNED&apos; WHERE MESSAGE_ID=&apos;&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)+&quot;&apos;&quot;;
-	dbConn.executeUpdate(updateSQL);
-	dbConn.close();
-}</script>
-          <type>JavaScript</type>
+          <name>ns1metadata_ns1credentials_ns1grididentifier</name>
+          <script>var mapping;try { mapping = msg[&apos;metadata&apos;][&apos;credentials&apos;][&apos;gridIdentifier&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;ns1metadata_ns1credentials_ns1grididentifier&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+          <type>Mapper</type>
           <data class="map">
             <entry>
-              <string>Script</string>
-              <string>try{
-	var overallResponseResults = getOverallResponse();
-
-	var totalSecondsElapsed = 0;
-	while (overallResponseResults.size() &lt; 1) {
-		Packages.java.lang.Thread.sleep(1000);
-		overallResponseResults = getOverallResponse();
-		totalSecondsElapsed++;
-		if(totalSecondsElapsed &gt;= 62){			
-			break;
-		}
-	}
-
-	if(overallResponseResults.next()){
-		var overallResponseString = overallResponseResults.getString(&quot;message_overall_response_data&quot;);
-		channelMap.put(&quot;message_overall_response&quot;,overallResponseString);
-		updateMessageServiceStatus();
-	} else {
-		//initiate code to put some error response message back in the queue
-	}
-
-} catch (error) {
-	logger.error(&quot;Error occured in Retrieve Response From Database: &quot;+error);
-}
-
-
-function getOverallResponse(){	
-	var dbConn = DatabaseConnectionFactory.createDatabaseConnection(&apos;org.postgresql.Driver&apos;,&apos;jdbc:postgresql://localhost:5432/mirth&apos;,&apos;mirthadmin&apos;,&apos;changeme&apos;);
-	var resultSet = dbConn.executeCachedQuery(&quot;SELECT message.overall_response_data AS message_overall_response_data FROM message WHERE message.message_id=&apos;&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)+&quot;&apos; AND message.message_status=&apos;PROCESSED&apos;&quot;);
-	//logger.info(&quot;Overall Result Set Size: &quot;+resultSet.size());
-	dbConn.close();
-	return resultSet;
-}
-
-
-
-function updateMessageServiceStatus(){
-	var dbConn = DatabaseConnectionFactory.createDatabaseConnection(&apos;org.postgresql.Driver&apos;,&apos;jdbc:postgresql://localhost:5432/mirth&apos;,&apos;mirthadmin&apos;,&apos;changeme&apos;);
-	var updateSQL = &quot;UPDATE MESSAGE SET MESSAGE_STATUS=&apos;RESPONSE_RETURNED&apos; WHERE MESSAGE_ID=&apos;&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)+&quot;&apos;&quot;;
-	dbConn.executeUpdate(updateSQL);
-	dbConn.close();
-}</string>
+              <string>Mapping</string>
+              <string>msg[&apos;metadata&apos;][&apos;credentials&apos;][&apos;gridIdentifier&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>Variable</string>
+              <string>ns1metadata_ns1credentials_ns1grididentifier</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>isGlobal</string>
+              <string>channel</string>
             </entry>
           </data>
         </com.webreach.mirth.model.Step>
         <com.webreach.mirth.model.Step>
           <sequenceNumber>3</sequenceNumber>
-          <name>Clear Message Specific Global Map Contents</name>
-          <script>globalMap.remove(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;));</script>
-          <type>JavaScript</type>
+          <name>ns1metadata_ns1credentials_ns1delegatedcredentialreference</name>
+          <script>var mapping;try { mapping = msg[&apos;metadata&apos;][&apos;credentials&apos;][&apos;delegatedCredentialReference&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;ns1metadata_ns1credentials_ns1delegatedcredentialreference&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+          <type>Mapper</type>
           <data class="map">
             <entry>
-              <string>Script</string>
-              <string>globalMap.remove(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;));</string>
+              <string>Mapping</string>
+              <string>msg[&apos;metadata&apos;][&apos;credentials&apos;][&apos;delegatedCredentialReference&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>Variable</string>
+              <string>ns1metadata_ns1credentials_ns1delegatedcredentialreference</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>isGlobal</string>
+              <string>channel</string>
             </entry>
           </data>
         </com.webreach.mirth.model.Step>
@@ -394,34 +344,82 @@ function updateMessageServiceStatus(){
   </sourceConnector>
   <destinationConnectors>
     <com.webreach.mirth.model.Connector>
-      <name>caxchangeOutboundQueue</name>
+      <name>Delegation Service</name>
       <properties>
-        <property name="useJndi">0</property>
-        <property name="connectionFactoryClass">org.apache.activemq.ActiveMQConnectionFactory</property>
-        <property name="username">user</property>
-        <property name="specification">1.1</property>
-        <property name="connectionFactoryProperties">&lt;properties&gt;
-  &lt;property name=&quot;brokerURL&quot;&gt;tcp://localhost:61616&lt;/property&gt;
-&lt;/properties&gt;</property>
-        <property name="DataType">JMS Writer</property>
-        <property name="acknowledgementMode">1</property>
-        <property name="password">password</property>
-        <property name="template">${message_overall_response}</property>
-        <property name="host">caxchangeOutboundQueue</property>
+        <property name="script">try{
+	var targetDetailsCode = globalMap.get(&quot;target.detail.code.delegation&quot;);
+	var delegateServiceBean = new Packages.gov.nih.nci.ihub.writer.ncies.infrastructure.InvokeDelegationServiceBean($(&apos;ns1metadata_ns1credentials_ns1grididentifier&apos;), 
+					$(&apos;ns1metadata_ns1credentials_ns1delegatedcredentialreference&apos;), globalMap.get(&quot;delegation.certificate.file.path&quot;), 
+					globalMap.get(&quot;delegation.key.file.path&quot;), globalMap.get(&quot;user.proxy.cache.time.to.live&quot;));
+	var subject = delegateServiceBean.invokeDelegationService();
+	logger.info(&quot;Subject in DELEGATION service: &quot;+subject);	
+	globalMap.put(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;), subject);
+
+} catch (error) {	
+	logger.error(&quot;EXCEPTION OCCURED IN MIRTH DURING &quot;+targetDetailsCode+&quot; INVOCATION: &quot;+error);
+	insertCompiledTargetResponse(createErrorResponseXML(new Packages.java.lang.Exception(error)), targetDetailsCode, globalMap.get(&quot;target.response.status.fault&quot;));
+	throw error;
+}
+
+function createErrorResponseXML(varException){
+	var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.business.GenerateResponseBean();
+	var gridInvocationResultDocument = generateResponseBean.createErrorDocument(targetDetailsCode, new Packages.java.lang.String(&quot;&quot;),
+			 varException);
+	var errorResponseXML = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(gridInvocationResultDocument);
+	return errorResponseXML;
+}
+
+function insertCompiledTargetResponse(varResponseXML, varTargetDetailCode, varTargetResponseStatus){	
+	logger.info(varTargetDetailCode+ &quot; Response XML: &quot;+varResponseXML);	
+	var dbConn = DatabaseConnectionFactory.createDatabaseConnection(&apos;org.postgresql.Driver&apos;,&apos;jdbc:postgresql://localhost:5432/mirth&apos;,&apos;mirthadmin&apos;,&apos;changeme&apos;);
+	var vSQL = &quot;INSERT INTO COMPILED_TARGET_RESPONSE (MESSAGE_ID, TARGET_DETAILS, COMPILED_RESPONSE, TARGET_RESPONSE_STATUS, TIME_COMPLETED) VALUES(&apos;&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)+&quot;&apos;,&apos;&quot;+ varTargetDetailCode +&quot;&apos;,&apos;&quot;+ varResponseXML +&quot;&apos;, &apos;&quot;+ varTargetResponseStatus +&quot;&apos;, now())&quot;;
+	logger.info(&quot;SQL: &quot;+vSQL);
+	dbConn.executeUpdate(vSQL);
+	dbConn.close();
+}
+
+/*
+function createErrorResponseXML(varException, varTargetDetailCode){
+	var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.business.GenerateResponseBean();
+	var gridInvocationResultDocument = generateResponseBean.createErrorDocument(varTargetDetailCode, new Packages.java.lang.String(&quot;&quot;),
+			 varException);
+	var errorResponseXML = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(gridInvocationResultDocument);
+	return errorResponseXML;
+}
+
+function insertCompiledTargetResponse(varResponseXML, varTargetDetailCode, varTargetResponseStatus, varMessageID){
+	logger.info(varTargetDetailCode+ &quot; Response XML: &quot;+varResponseXML);		
+	var dbConn = DatabaseConnectionFactory.createDatabaseConnection(&apos;org.postgresql.Driver&apos;,&apos;jdbc:postgresql://localhost:5432/mirth&apos;,&apos;mirthadmin&apos;,&apos;changeme&apos;);
+
+	var prepStatement = &quot;INSERT INTO COMPILED_TARGET_RESPONSE (MESSAGE_ID, TARGET_DETAILS, COMPILED_RESPONSE, TARGET_RESPONSE_STATUS, TIME_COMPLETED) VALUES(?,?,?,?, now())&quot;;
+	var params = new Packages.java.util.ArrayList();
+	params.add(varMessageID);
+	params.add(varTargetDetailCode);
+	params.add(varResponseXML);
+	params.add(varTargetResponseStatus);
+
+	dbConn.executeUpdate(prepStatement, params);
+	dbConn.close();	
+}
+*/</property>
+        <property name="DataType">JavaScript Writer</property>
+        <property name="host">sink</property>
       </properties>
       <transformer>
         <steps/>
         <inboundTemplate></inboundTemplate>
+        <outboundTemplate></outboundTemplate>
         <inboundProtocol>XML</inboundProtocol>
         <outboundProtocol>XML</outboundProtocol>
         <inboundProperties>
           <property name="stripNamespaces">false</property>
         </inboundProperties>
+        <outboundProperties/>
       </transformer>
       <filter>
         <rules/>
       </filter>
-      <transportName>JMS Writer</transportName>
+      <transportName>JavaScript Writer</transportName>
       <mode>DESTINATION</mode>
       <enabled>true</enabled>
     </com.webreach.mirth.model.Connector>
@@ -442,6 +440,14 @@ return message;</preprocessingScript>
 return;</postprocessingScript>
   <deployScript>// This script executes once when the mule engine is started
 // You only have access to the globalMap here to persist data
+/*
+globalMap.put(&quot;delegation.certificate.file.path&quot;,&quot;C:/projects_svn/caBIGIntegrationHub/common/resources/ihub/ncias-c278-v.nci.nih.gov-cert.pem&quot;);
+globalMap.put(&quot;delegation.key.file.path&quot;,&quot;C:/projects_svn/caBIGIntegrationHub/common/resources/ihub/ncias-c278-v.nci.nih.gov-key.pem&quot;);
+globalMap.put(&quot;user.proxy.cache.time.to.live&quot;,600);
+globalMap.put(&quot;caaers.registration.url&quot;,&quot;https://ncias-d282-v.nci.nih.gov:29543/wsrf-caaers/services/cagrid/RegistrationConsumer&quot;);
+globalMap.put(&quot;ctom.registration.url&quot;,&quot;https://ncias-d282-v.nci.nih.gov:29543/ctom-wsrf/services/cagrid/RegistrationConsumer&quot;);
+globalMap.put(&quot;psc.registration.url&quot;,&quot;https://ncias-d282-v.nci.nih.gov:29543/wsrf-psc/services/cagrid/RegistrationConsumer&quot;);
+*/
 return;</deployScript>
   <shutdownScript>// This script executes once when the mule engine is stopped
 // You only have access to the globalMap here to persist data
