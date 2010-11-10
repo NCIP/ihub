@@ -36,7 +36,7 @@ public class CaGridAuthenticationManager {
 			password,
 			authenticationServiceURL,
 			dorianServiceURL = "https://cagrid-dorian-stage.nci.nih.gov:8443/wsrf/services/cagrid/Dorian",
-			credentialDelegationServiceURL;
+			credentialDelegationServiceURL, hostIdentity;
 
 	private int proxyLifetimeHours = 12, proxyLifetimeMinutes,
 			proxyLifetimeSeconds, delegationPathLength;
@@ -49,10 +49,10 @@ public class CaGridAuthenticationManager {
 	public static Logger logger = LogManager
 			.getLogger(CaGridAuthenticationManager.class);
 
-	public CaGridAuthenticationManager(String username,
-			String password, String authenticationServiceURL,
-			String dorianServiceURL, String credentialDelegationServiceURL,
-			int proxyLifetimeHours) {
+	public CaGridAuthenticationManager(String username, String password,
+			String authenticationServiceURL, String dorianServiceURL,
+			String credentialDelegationServiceURL, int proxyLifetimeHours,
+			String hostIdentity) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -60,6 +60,7 @@ public class CaGridAuthenticationManager {
 		this.dorianServiceURL = dorianServiceURL;
 		this.credentialDelegationServiceURL = credentialDelegationServiceURL;
 		this.proxyLifetimeHours = proxyLifetimeHours;
+		this.hostIdentity = hostIdentity;
 	}
 
 	/**
@@ -93,7 +94,7 @@ public class CaGridAuthenticationManager {
 					proxyLifetimeMinutes, proxyLifetimeSeconds);
 			hostIdentities = new ArrayList<String>();
 			hostIdentities
-					.add("/O=caBIG/OU=caGrid/OU=Stage LOA1/OU=Services/CN=ncias-c278-v.nci.nih.gov");
+					.add(hostIdentity);
 			String serializedDelegatedCredentialReference = gridCredentialDelegator
 					.delegateGridCredential(userCredential, proxyLifetime,
 							hostIdentities);
@@ -408,5 +409,15 @@ public class CaGridAuthenticationManager {
 	public void setProxyLifetime(ProxyLifetime proxyLifetime) {
 		this.proxyLifetime = proxyLifetime;
 	}
+	
+	public String getHostIdentity() {
+		return hostIdentity;
+	}
+
+	public void setHostIdentity(String hostIdentity) {
+		this.hostIdentity = hostIdentity;
+	}
+
+
 
 }
