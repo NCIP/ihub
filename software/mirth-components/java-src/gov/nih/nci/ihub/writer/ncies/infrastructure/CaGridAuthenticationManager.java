@@ -14,28 +14,29 @@ import gov.nih.nci.cagrid.dorian.stubs.types.InvalidProxyFault;
 import gov.nih.nci.cagrid.dorian.stubs.types.PermissionDeniedFault;
 import gov.nih.nci.cagrid.dorian.stubs.types.UserPolicyFault;
 import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
-import gov.nih.nci.caxchange.security.CaXchangePrincipal;
 import gov.nih.nci.ihub.writer.ncies.exception.AuthenticationConfigurationException;
 import gov.nih.nci.ihub.writer.ncies.exception.AuthenticationErrorException;
 
 import java.rmi.RemoteException;
-import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import javax.security.auth.Subject;
 
 import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.cagrid.gaards.websso.authentication.helper.GridCredentialDelegator;
+import org.cagrid.gaards.websso.authentication.helper.impl.GridCredentialDelegatorImpl;
 import org.globus.gsi.GlobusCredential;
 import org.globus.gsi.GlobusCredentialException;
 
-public class GetSubjectUsingCaGridCredentialsBean {
+public class CaGridAuthenticationManager {
 	private String username,
 			password,
 			authenticationServiceURL,
-			dorianServiceURL = "https://cagrid-dorian-stage.nci.nih.gov:8443/wsrf/services/cagrid/Dorian";
+			dorianServiceURL = "https://cagrid-dorian-stage.nci.nih.gov:8443/wsrf/services/cagrid/Dorian",
+			credentialDelegationServiceURL;
 
 	private int proxyLifetimeHours = 12, proxyLifetimeMinutes,
 			proxyLifetimeSeconds, delegationPathLength;
@@ -44,23 +45,36 @@ public class GetSubjectUsingCaGridCredentialsBean {
 
 	private static Map<String, GlobusCredential> cache = new HashMap<String, GlobusCredential>(
 			2);
+	private List<String> hostIdentities;
 	public static Logger logger = LogManager
-			.getLogger(GetSubjectUsingCaGridCredentialsBean.class);
+			.getLogger(CaGridAuthenticationManager.class);
 
-	public GetSubjectUsingCaGridCredentialsBean(String username,
+	public CaGridAuthenticationManager(String username,
 			String password, String authenticationServiceURL,
-			String dorianServiceURL, int proxyLifetimeHours) {
+			String dorianServiceURL, String credentialDelegationServiceURL,
+			int proxyLifetimeHours) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.authenticationServiceURL = authenticationServiceURL;
 		this.dorianServiceURL = dorianServiceURL;
+		this.credentialDelegationServiceURL = credentialDelegationServiceURL;
 		this.proxyLifetimeHours = proxyLifetimeHours;
 	}
 
-	public Subject getSubjectUsingCaGridCredentials() throws Exception {
-		long timeBefore = new java.util.Date().getTime();
-
+	/**
+	 * Authenticate the user credentials and retrieve samlAssertion for
+	 * authentication Service Obtain the GlobusCredential for the Authenticated
+	 * User from Dorian Validate the Proxy or GlobusCredential Delegate the
+	 * Globus Credentials
+	 * 
+	 * @return String - delegated credential reference
+	 * @throws Exception
+	 */
+	public String getDelegatedCredentialReference() throws Exception {
+		if (logger.isDebugEnabled()) {
+			logger.debug("getDelegatedCredentialReference() - start");
+		}
 		try {
 			verifyUserCredential(dorianServiceURL, authenticationServiceURL,
 					username, password);
@@ -69,33 +83,38 @@ public class GetSubjectUsingCaGridCredentialsBean {
 					password);
 			if (userCredential == null) {
 				logger.debug("User credential not set or is expired.");
-
-				// Authenticate the user credentials and retrieve
-				SAMLAssertion samlAssertion = authenticate(
-						authenticationServiceURL, username, password);
-
-				// Obtained the GlobusCredential for the Authenticated User
+				SAMLAssertion samlAssertion = authenticate();
 				userCredential = obtainProxy(samlAssertion);
 				setCachedCredential(dorianServiceURL, authenticationServiceURL,
 						username, password, userCredential);
 			}
+			GridCredentialDelegator gridCredentialDelegator = new GridCredentialDelegatorImpl(
+					credentialDelegationServiceURL, proxyLifetimeHours,
+					proxyLifetimeMinutes, proxyLifetimeSeconds);
+			hostIdentities = new ArrayList<String>();
+			hostIdentities
+					.add("/O=caBIG/OU=caGrid/OU=Stage LOA1/OU=Services/CN=ncias-c278-v.nci.nih.gov");
+			String serializedDelegatedCredentialReference = gridCredentialDelegator
+					.delegateGridCredential(userCredential, proxyLifetime,
+							hostIdentities);
+			logger.info("Delegated Credential Reference: "
+					+ serializedDelegatedCredentialReference);
+			return serializedDelegatedCredentialReference;
 
-			Subject subject = new Subject();
+			// Subject subject = new Subject();
+			// CaXchangePrincipal principal = new CaXchangePrincipal();
+			// principal.setName(userCredential.getIdentity());
+			// subject.getPrincipals().add((Principal) principal);
+			// subject.getPrivateCredentials().add(userCredential);
+			// logger.info("usercredential=" + userCredential.toString());
+			// return subject;
 
-			CaXchangePrincipal principal = new CaXchangePrincipal();
-			principal.setName(userCredential.getIdentity());
-			subject.getPrincipals().add((Principal) principal);
-
-			subject.getPrivateCredentials().add(userCredential);			
-			logger.info("usercredential=" + userCredential.toString());
-			return subject;
 		} catch (Exception e) {
 			logger.error("Error authenticating", e);
 			throw e;
 		}
 	}
 
-	
 	/**
 	 * Using a specific username, password and autnenticationServiceURL, creates
 	 * and returns a SAMLAssertion
@@ -107,13 +126,15 @@ public class GetSubjectUsingCaGridCredentialsBean {
 	 * @throws AuthenticationErrorException
 	 * @throws AuthenticationConfigurationException
 	 */
-	public SAMLAssertion authenticate(String authenticationServiceURL,
-			String userName, String password)
-			throws AuthenticationErrorException,
+	public SAMLAssertion authenticate() throws AuthenticationErrorException,
 			AuthenticationConfigurationException {
+		if (logger.isDebugEnabled()) {
+			logger.debug("authenticate() - start");
+		}
+
 		SAMLAssertion samlAssertion = null;
 		BasicAuthenticationCredential basicAuthenticationCredential = new BasicAuthenticationCredential();
-		basicAuthenticationCredential.setUserId(userName);
+		basicAuthenticationCredential.setUserId(username);
 		basicAuthenticationCredential.setPassword(password);
 		Credential credential = new Credential();
 		credential
@@ -124,9 +145,13 @@ public class GetSubjectUsingCaGridCredentialsBean {
 			authenticationClient = new AuthenticationClient(
 					authenticationServiceURL, credential);
 		} catch (MalformedURIException e) {
+			logger.error("authenticate()", e);
+
 			throw new AuthenticationConfigurationException(
 					"Invalid Authentication Service URL : " + e.getMessage());
 		} catch (RemoteException e) {
+			logger.error("authenticate()", e);
+
 			throw new AuthenticationConfigurationException(
 					"Error accessing the Authentication Service : "
 							+ e.getMessage());
@@ -134,20 +159,32 @@ public class GetSubjectUsingCaGridCredentialsBean {
 		try {
 			samlAssertion = authenticationClient.authenticate();
 		} catch (InvalidCredentialFault e) {
+			logger.error("authenticate()", e);
+
 			throw new AuthenticationErrorException("Invalid Credentials : "
 					+ e.getMessage());
 		} catch (InsufficientAttributeFault e) {
+			logger.error("authenticate()", e);
+
 			throw new AuthenticationConfigurationException(
 					"Insufficient Attribute configured for the Authentication Service : "
 							+ e.getMessage());
 		} catch (AuthenticationProviderFault e) {
+			logger.error("authenticate()", e);
+
 			throw new AuthenticationConfigurationException(
 					"Error accessing the Authentication Service : "
 							+ e.getMessage());
 		} catch (RemoteException e) {
+			logger.error("authenticate()", e);
+
 			throw new AuthenticationConfigurationException(
 					"Error accessing the Authentication Service : "
 							+ e.getMessage());
+		}
+
+		if (logger.isDebugEnabled()) {
+			logger.debug("authenticate() - end");
 		}
 		return samlAssertion;
 	}
@@ -163,15 +200,23 @@ public class GetSubjectUsingCaGridCredentialsBean {
 	public GlobusCredential obtainProxy(SAMLAssertion samlAssertion)
 			throws AuthenticationConfigurationException,
 			AuthenticationErrorException {
+		if (logger.isDebugEnabled()) {
+			logger.debug("obtainProxy(SAMLAssertion) - start");
+		}
+
 		GlobusCredential globusCredential = null;
 
 		IFSUserClient ifsUserClient = null;
 		try {
 			ifsUserClient = new IFSUserClient(dorianServiceURL);
 		} catch (MalformedURIException e) {
+			logger.error("obtainProxy(SAMLAssertion)", e);
+
 			throw new AuthenticationConfigurationException(
 					"Invalid Dorian Service URL : " + e.getMessage());
 		} catch (RemoteException e) {
+			logger.error("obtainProxy(SAMLAssertion)", e);
+
 			throw new AuthenticationConfigurationException(
 					"Error accessing the Dorian Service : " + e.getMessage());
 		}
@@ -184,37 +229,74 @@ public class GetSubjectUsingCaGridCredentialsBean {
 			globusCredential = ifsUserClient.createProxy(samlAssertion,
 					proxyLifetime, getDelegationPathLength());
 		} catch (DorianFault e) {
+			logger.error("obtainProxy(SAMLAssertion)", e);
+
 			throw new AuthenticationConfigurationException(
 					"Error accessing the Dorian Service : " + e.getMessage());
 		} catch (gov.nih.nci.cagrid.dorian.stubs.types.DorianInternalFault e) {
+			logger.error("obtainProxy(SAMLAssertion)", e);
+
 			throw new AuthenticationConfigurationException(
 					"Error accessing the Dorian Service : " + e.getMessage());
 		} catch (InvalidAssertionFault e) {
+			logger.error("obtainProxy(SAMLAssertion)", e);
+
 			throw new AuthenticationConfigurationException(
 					"Invalid SAML Assertion : " + e.getMessage());
 		} catch (InvalidProxyFault e) {
+			logger.error("obtainProxy(SAMLAssertion)", e);
+
 			throw new AuthenticationConfigurationException(
 					"Error accessing the Dorian Service : " + e.getMessage());
 		} catch (UserPolicyFault e) {
+			logger.error("obtainProxy(SAMLAssertion)", e);
+
 			throw new AuthenticationConfigurationException(
 					"Error accessing the Dorian Service : " + e.getMessage());
 		} catch (PermissionDeniedFault e) {
+			logger.error("obtainProxy(SAMLAssertion)", e);
+
 			throw new AuthenticationErrorException(
 					"Permission denied while obtaining Grid Credentials : "
 							+ e.getMessage());
 		}
+
+		if (logger.isDebugEnabled()) {
+			logger.debug("obtainProxy(SAMLAssertion) - end");
+		}
 		return globusCredential;
-	}	
+	}
 
 	protected GlobusCredential getCachedCredential(String dorianServiceUrl,
 			String authenticationServiceUrl, String user, String password) {
-		return cache.get(authenticationServiceUrl + user);
+		if (logger.isDebugEnabled()) {
+			logger
+					.debug("getCachedCredential(String, String, String, String) - start");
+		}
+
+		GlobusCredential returnGlobusCredential = cache
+				.get(authenticationServiceUrl + user);
+		if (logger.isDebugEnabled()) {
+			logger
+					.debug("getCachedCredential(String, String, String, String) - end");
+		}
+		return returnGlobusCredential;
 	}
 
 	protected void setCachedCredential(String dorianServiceUrl,
 			String authenticationServiceUrl, String user, String password,
 			GlobusCredential userCreds) {
+		if (logger.isDebugEnabled()) {
+			logger
+					.debug("setCachedCredential(String, String, String, String, GlobusCredential) - start");
+		}
+
 		cache.put(authenticationServiceUrl + user, userCreds);
+
+		if (logger.isDebugEnabled()) {
+			logger
+					.debug("setCachedCredential(String, String, String, String, GlobusCredential) - end");
+		}
 	}
 
 	/**
@@ -223,6 +305,11 @@ public class GetSubjectUsingCaGridCredentialsBean {
 	 */
 	private void verifyUserCredential(String dorianServiceUrl,
 			String authenticationServiceUrl, String user, String password) {
+		if (logger.isDebugEnabled()) {
+			logger
+					.debug("verifyUserCredential(String, String, String, String) - start");
+		}
+
 		try {
 			GlobusCredential userCredential = getCachedCredential(
 					dorianServiceUrl, authenticationServiceUrl, user, password);
@@ -233,6 +320,11 @@ public class GetSubjectUsingCaGridCredentialsBean {
 			logger.error("Error verifying globus credential:", gce);
 			setCachedCredential(dorianServiceUrl, authenticationServiceUrl,
 					user, password, null);
+		}
+
+		if (logger.isDebugEnabled()) {
+			logger
+					.debug("verifyUserCredential(String, String, String, String) - end");
 		}
 	}
 
@@ -266,6 +358,15 @@ public class GetSubjectUsingCaGridCredentialsBean {
 
 	public void setDorianServiceURL(String dorianServiceURL) {
 		this.dorianServiceURL = dorianServiceURL;
+	}
+
+	public String getCredentialDelegationServiceURL() {
+		return credentialDelegationServiceURL;
+	}
+
+	public void setCredentialDelegationServiceURL(
+			String credentialDelegationServiceURL) {
+		this.credentialDelegationServiceURL = credentialDelegationServiceURL;
 	}
 
 	public int getProxyLifetimeHours() {
