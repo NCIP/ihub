@@ -322,11 +322,11 @@
 	</target>
 
 	<target name="importscript" depends="init" description="Imports the named global script from the file specified by path" >
-		<echo>Importing Scripts: ${resources.dir}/test.js</echo>
-		<mirth:import user="${user}" password="${password}" server="${server}" type="script" script="deploy" filename="${resources.dir}/deploy.js"/>
-		<mirth:import user="${user}" password="${password}" server="${server}" type="script" script="preprocessor" filename="${resources.dir}/preprocessor.js"/>
+		<echo>Importing Scripts: ${deployScript_name}</echo>
+		<mirth:import user="${user}" password="${password}" server="${server}" type="script" script="deploy" filename="${deployScript_name}"/>
+		<!--<mirth:import user="${user}" password="${password}" server="${server}" type="script" script="preprocessor" filename="${resources.dir}/preprocessor.js"/>
 		<mirth:import user="${user}" password="${password}" server="${server}" type="script" script="postprocessor" filename="${resources.dir}/postprocessor.js"/>
-		<mirth:import user="${user}" password="${password}" server="${server}" type="script" script="shutdown" filename="${resources.dir}/shutdown.js"/>
+		<mirth:import user="${user}" password="${password}" server="${server}" type="script" script="shutdown" filename="${resources.dir}/shutdown.js"/>-->
 		<echo/>
 	</target>
 
