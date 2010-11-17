@@ -2,35 +2,19 @@ package gov.nih.nci.cagrid.caxchange.service;
 
 import gov.nih.nci.caXchange.CaxchangeErrors;
 import gov.nih.nci.cagrid.caxchange.context.service.globus.resource.CaXchangeResponseServiceResource;
-import gov.nih.nci.cagrid.caxchange.context.service.globus.resource.CaXchangeResponseServiceResourceHome;
 import gov.nih.nci.cagrid.caxchange.listener.CaxchangeResponseExceptionListener;
 import gov.nih.nci.cagrid.caxchange.listener.CaxchangeResponseListener;
 import gov.nih.nci.cagrid.caxchange.listener.ResponseHandler;
 import gov.nih.nci.cagrid.caxchange.stubs.types.CaXchangeFault;
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.caxchange.ErrorDetails;
-import gov.nih.nci.caxchange.MessageStatuses;
-import gov.nih.nci.caxchange.Response;
 import gov.nih.nci.caxchange.ResponseMessage;
-import gov.nih.nci.caxchange.ResponseMetadata;
-import gov.nih.nci.caxchange.Statuses;
-import gov.nih.nci.caxchange.TargetResponseMessage;
-import gov.nih.nci.caxchange.synchronous.SynchronousRequestServiceStub;
-import gov.nih.nci.caxchange.synchronous.SynchronousRequestServiceStub.CaXchangeRequestMessage;
-import gov.nih.nci.caxchange.synchronous.SynchronousRequestServiceStub.CaXchangeResponseMessage;
-import gov.nih.nci.caxchange.synchronous.SynchronousRequestServiceStub.Credentials;
-import gov.nih.nci.caxchange.synchronous.SynchronousRequestServiceStub.CredentialsChoice_type0;
-import gov.nih.nci.caxchange.synchronous.SynchronousRequestServiceStub.Message;
-import gov.nih.nci.caxchange.synchronous.SynchronousRequestServiceStub.MessagePayload;
-import gov.nih.nci.caxchange.synchronous.SynchronousRequestServiceStub.Metadata;
-import gov.nih.nci.caxchange.synchronous.SynchronousRequestServiceStub.Request;
-import gov.nih.nci.caxchange.synchronous.SynchronousRequestServiceStub.TransactionControls;
+import gov.nih.nci.ihub.writer.ncies.infrastructure.CaGridAuthenticationManager;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.HashMap;
@@ -47,28 +31,16 @@ import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamReader;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
-import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axis.message.MessageElement;
-import org.apache.axis2.databinding.types.URI;
-import org.apache.axis2.transport.http.HTTPConstants;
-import org.apache.axis2.transport.http.HttpTransportProperties;
-import org.apache.axis2.util.XMLUtils;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.globus.wsrf.ResourceKey;
 import org.globus.wsrf.security.SecurityManager;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 
 /**
  *
@@ -78,13 +50,12 @@ import org.xml.sax.SAXException;
 public class CaXchangeRequestProcessorImpl extends
 		CaXchangeRequestProcessorImplBase {
 	protected static Pattern emptyNamespacePattern = Pattern.compile("xmlns:[a-zA-Z0-9].[a-zA-Z0-9]*=\"\"|xmlns=\"\"");
-	protected static String brokerURL = null; // "tcp://localhost:61618";
+	protected static String brokerURL = "tcp://localhost:61618";
 	protected static String destinationName = "caxchangeInboundQueue";
 	protected static String replyDestinationName = "caxchangeOutboundQueue";
 	protected static Destination destination = null;
 	protected static Destination replyDestination = null;
-	protected static Logger logger = LogManager
-			.getLogger(CaXchangeRequestProcessorImpl.class.getName());
+	protected static Logger logger = LogManager.getLogger(CaXchangeRequestProcessorImpl.class.getName());
 	protected static ConnectionFactory connectionFactory = null;
 	protected static Connection connection = null;
 	public static Map<CaxchangeResponseExceptionListener, Connection> responseListeners = null;
@@ -110,8 +81,7 @@ public class CaXchangeRequestProcessorImpl extends
 					+ ","
 					+ caXchangeRequestMessage.getMetadata().getServiceType()
 					+ "," + new java.util.Date().getTime());
-			caXchangeRequestMessage.getMetadata().setCaXchangeIdentifier(
-					resKey.getValue().toString());
+			caXchangeRequestMessage.getMetadata().setCaXchangeIdentifier(resKey.getValue().toString());
 			String caller = SecurityManager.getManager().getCaller();
 			logger.debug("The caller is:'" + caller +"'");
 			if ((caller == null)||("".equals(caller)) || ("<anonymous>".equals(caller.trim()))) {
@@ -125,17 +95,14 @@ public class CaXchangeRequestProcessorImpl extends
 			if (caXchangeRequestMessage.getMetadata().getCredentials() == null){
 				caXchangeRequestMessage.getMetadata().setCredentials(new gov.nih.nci.caxchange.Credentials());
 			}
-			caXchangeRequestMessage.getMetadata().getCredentials()
-					.setGridIdentifier(caller);
+			caXchangeRequestMessage.getMetadata().getCredentials().setGridIdentifier(caller);
 			try { // Sending the request to the caXchange inbound queue
 				logger.info("Before sending messge " + new Date().getTime());
 				sendMessage(caXchangeRequestMessage);
 				logger.info("Before sending messge " + new Date().getTime());
 			} catch (Exception e) {
-				updateErrorResponse(caXchangeRequestMessage, resKey,
-						CaxchangeErrors.UNKNOWN,
-						"An error occured sending message to the caXchange hub."
-								+ e.getMessage());
+				updateErrorResponse(caXchangeRequestMessage, resKey,CaxchangeErrors.UNKNOWN,
+						"An error occured sending message to the caXchange hub."+ e.getMessage());
 			}
 
 			if ((responseListeners == null) || (responseListeners.size() == 0)) {
@@ -147,9 +114,7 @@ public class CaXchangeRequestProcessorImpl extends
 		} catch (Exception e) {
 			logger.error("Error processing message request.", e);
 			CaXchangeFault caXchangeFault = new CaXchangeFault();
-			caXchangeFault
-					.setFaultDetailString("Error processing message request."
-							+ e.getMessage());
+			caXchangeFault.setFaultDetailString("Error processing message request."+ e.getMessage());
 			caXchangeFault.setStackTrace(e.getStackTrace());
 			throw caXchangeFault;
 		}
@@ -167,21 +132,15 @@ public class CaXchangeRequestProcessorImpl extends
 		Session session = null;
 		try {
 			CaXchangeRequestProcessorConfiguration configuration = getConfiguration();
-			CaXchangeExternalProperties properties = CaXchangeExternalProperties
-					.getInstance();
-			String inboundJmsBrokerUrl = properties
-					.getProperty("inbound.jms.brokerURL");
-			String jmsUserName = properties
-			.getProperty("amq.caxchange.user");
-			String jmsUserPassword = properties
-			.getProperty("amq.caxchange.password");
+			CaXchangeExternalProperties properties = CaXchangeExternalProperties.getInstance();
+			String inboundJmsBrokerUrl = properties.getProperty("inbound.jms.brokerURL");
+			String jmsUserName = properties.getProperty("amq.caxchange.user");
+			String jmsUserPassword = properties.getProperty("amq.caxchange.password");
 			if (inboundJmsBrokerUrl == null) {
-				inboundJmsBrokerUrl = configuration
-						.getCaXchangeInboundBrokerURL();
+				inboundJmsBrokerUrl = configuration.getCaXchangeInboundBrokerURL();
 			}
 			if (connectionFactory == null) {
-				connectionFactory = new ActiveMQConnectionFactory(jmsUserName,jmsUserPassword,
-						inboundJmsBrokerUrl);
+				connectionFactory = new ActiveMQConnectionFactory(jmsUserName,jmsUserPassword,inboundJmsBrokerUrl);
 			}
 			if (destination == null) {
 				destination = new ActiveMQQueue(destinationName);
@@ -195,8 +154,7 @@ public class CaXchangeRequestProcessorImpl extends
 			} catch (JMSException connectionFailed) {
 				// Connection may have failed try to create a new connection:
 				connection = connectionFactory.createConnection();
-				session = connection.createSession(false,
-						Session.AUTO_ACKNOWLEDGE);
+				session = connection.createSession(false,Session.AUTO_ACKNOWLEDGE);
 			}
 			MessageProducer producer = session.createProducer(destination);
 			RequestGeneratorHelper rgh = new RequestGeneratorHelper();
@@ -258,17 +216,12 @@ public class CaXchangeRequestProcessorImpl extends
 	public void registerResponseListeners() throws Exception {
 		try {
 			CaXchangeRequestProcessorConfiguration configuration = getConfiguration();
-			CaXchangeExternalProperties properties = CaXchangeExternalProperties
-					.getInstance();
-			String outboundJmsBrokerUrl = properties
-					.getProperty("outbound.jms.brokerURL");
-			String jmsUserName = properties
-			.getProperty("amq.caxchange.user");
-			String jmsUserPassword = properties
-			.getProperty("amq.caxchange.password");
+			CaXchangeExternalProperties properties = CaXchangeExternalProperties.getInstance();
+			String outboundJmsBrokerUrl = properties.getProperty("outbound.jms.brokerURL");
+			String jmsUserName = properties.getProperty("amq.caxchange.user");
+			String jmsUserPassword = properties.getProperty("amq.caxchange.password");
 			if (outboundJmsBrokerUrl == null) {
-				outboundJmsBrokerUrl = configuration
-						.getCaXchangeInboundBrokerURL();
+				outboundJmsBrokerUrl = configuration.getCaXchangeInboundBrokerURL();
 			}
 			if (connectionFactory == null) {
 				connectionFactory = new ActiveMQConnectionFactory(jmsUserName, jmsUserPassword,
@@ -281,15 +234,12 @@ public class CaXchangeRequestProcessorImpl extends
 			connection.start();
 			Session session = connection.createSession(false,
 					Session.AUTO_ACKNOWLEDGE);
-			if ((responseListeners == null)
-					|| (responseListeners.entrySet().size() == 0)) {
+			if ((responseListeners == null) || (responseListeners.entrySet().size() == 0)) {
 				logger.info("Listener initiated.");
-				responseListeners = new HashMap(1);
-				MessageConsumer consumer = session
-						.createConsumer(replyDestination);
+				responseListeners = new HashMap<CaxchangeResponseExceptionListener, Connection>(1);
+				MessageConsumer consumer = session.createConsumer(replyDestination);
 				CaxchangeResponseListener listener = new CaxchangeResponseListener();
-				listener
-						.setResourceHome(getCaXchangeResponseServiceResourceHome());
+				listener.setResourceHome(getCaXchangeResponseServiceResourceHome());
 				consumer.setMessageListener(listener);
 				CaxchangeResponseExceptionListener el = new CaxchangeResponseExceptionListener();
 				connection.setExceptionListener(el);
@@ -309,241 +259,118 @@ public class CaXchangeRequestProcessorImpl extends
 	 * @throws RemoteException
 	 * @throws gov.nih.nci.cagrid.caxchange.stubs.types.CaXchangeFault
 	 */
-  public gov.nih.nci.caxchange.ResponseMessage processRequestSynchronously(gov.nih.nci.caxchange.Message caXchangeRequestMessage) throws RemoteException, gov.nih.nci.cagrid.caxchange.stubs.types.CaXchangeFault {
-		logger.debug("Request in processRequestSynchronously: "
-				+ caXchangeRequestMessage);
+  public gov.nih.nci.caxchange.ResponseMessage processRequestSynchronously(gov.nih.nci.caxchange.Message caXchangeRequestMessage)
+												throws RemoteException, gov.nih.nci.cagrid.caxchange.stubs.types.CaXchangeFault {
+		logger.debug("Request in processRequestSynchronously: "+ caXchangeRequestMessage);
 
+		logger.debug("Request in processRequestSynchronously: "+ caXchangeRequestMessage);
+		CaXchangeExternalProperties properties = CaXchangeExternalProperties.getInstance();
 		try {
-			CaXchangeResponseServiceResourceHome ctxResourceHome = getCaXchangeResponseServiceResourceHome();
+			gov.nih.nci.cagrid.caxchange.context.service.globus.resource.CaXchangeResponseServiceResourceHome ctxResourceHome = getCaXchangeResponseServiceResourceHome();
 			ResourceKey resKey = ctxResourceHome.createResource();
+			logger.info("Performance Request Received," + resKey.getValue()
+					+ ","
+					+ caXchangeRequestMessage.getMetadata().getServiceType()
+					+ "," + new java.util.Date().getTime());
 
-			caXchangeRequestMessage.getMetadata().setCaXchangeIdentifier(
-					resKey.getValue().toString());
+			caXchangeRequestMessage.getMetadata().setCaXchangeIdentifier(resKey.getValue().toString());
 
 			String caller = SecurityManager.getManager().getCaller();
-			logger.debug("The caller is:'" + caller +"'");
-			if ((caller == null)||("".equals(caller)) || ("<anonymous>".equals(caller.trim()))) {
-				return buildErrorResponse(caXchangeRequestMessage,
-						CaxchangeErrors.PERMISSION_DENIED_FAULT,
-						"Unable to get the identity of the caller.Caller identity:"
-								+ caller);
+			logger.debug("The caller is:'" + caller + "'");
+			if ((caller == null) || ("".equals(caller))	|| ("<anonymous>".equals(caller.trim()))) {
+				return buildErrorResponse(caXchangeRequestMessage, CaxchangeErrors.PERMISSION_DENIED_FAULT,
+						"Unable to get the identity of the caller.Caller identity:"+ caller);
 			}
-			logger.debug("Sending message for the caller:'" + caller +"'");
-			if (caXchangeRequestMessage.getMetadata().getCredentials() == null){
+			logger.debug("Sending message for the caller:'" + caller + "'");
+			if (caXchangeRequestMessage.getMetadata().getCredentials() == null) {
 				caXchangeRequestMessage.getMetadata().setCredentials(new gov.nih.nci.caxchange.Credentials());
 			}
-			caXchangeRequestMessage.getMetadata().getCredentials()
-					.setGridIdentifier(caller);
+			caXchangeRequestMessage.getMetadata().getCredentials().setGridIdentifier(caller);
+
+			HttpClient client = new HttpClient();
+			BufferedReader br = null;
+			String credential = "";			
+			String gridUser = properties.getProperty("coppa.authentication.user");			
+			String gridUserPassword = properties.getProperty("coppa.authentication.password");			
+			String authenticationServiceUrl = properties.getProperty("coppa.authentication.url");			
+			String dorianServiceUrl = properties.getProperty("coppa.dorian.url");			
+			String delegationServiceUrl = properties.getProperty("coppa.delegation.url");
+			String mirthHostIdentity = properties.getProperty("coppa.mirth.cagrid.host.identity");
+			try {
+				CaGridAuthenticationManager caGridAuthenticationManager = new CaGridAuthenticationManager(
+						gridUser, gridUserPassword, authenticationServiceUrl, dorianServiceUrl, delegationServiceUrl, 12, mirthHostIdentity);
+				credential = caGridAuthenticationManager.getDelegatedCredentialReference();
+				System.out.println("Grid Credentials: "+credential);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			ResponseMessage responseMessageToClient = new ResponseMessage();
+
+			PostMethod method = new PostMethod("http://localhost:8195");
+						
+			String synchronousMsg = caXchangeRequestMessage.toString();
+			//System.out.println("synchronousMsg: "+synchronousMsg);
+			method.addParameter("synchronous_msg", synchronousMsg);
+			method.addParameter("coppa_delegated_credential_ref", credential);
+			method.addRequestHeader("mirth.http.user", "tomcatuser");
+			method.addRequestHeader("mirth.http.password", "changeme");
 
 			try {
-				CaXchangeRequestProcessorConfiguration configuration = getConfiguration();
-				CaXchangeExternalProperties properties = CaXchangeExternalProperties
-						.getInstance();
-				String caXchangeSynchronousServiceURL = properties
-						.getProperty("synchronous.caxchange.serviceURL");
+				int returnCode = client.executeMethod(method);
 
-				if (caXchangeSynchronousServiceURL == null) {
-					caXchangeSynchronousServiceURL = configuration
-							.getCaXchangeSynchronousServiceURL();
-				}
-
-				if (synchronousServiceClientTimeout == null){
-					String syncTimeout = properties.getProperty("synchronous.caxchange.service.client.timeout");
-					if (syncTimeout != null) {
-						synchronousServiceClientTimeout = new Long(syncTimeout);
-					}else {
-						synchronousServiceClientTimeout = new Long(300000);
+				if (returnCode == HttpStatus.SC_NOT_IMPLEMENTED) {
+					System.err.println("The Post method is not implemented by this URI");					
+					method.getResponseBodyAsString();
+				} else {
+					br = new BufferedReader(new InputStreamReader(method.getResponseBodyAsStream()));
+					String readLine;
+					while (((readLine = br.readLine()) != null)) {
+						System.out.println(readLine);
+						/*test only*/
+						//readLine = "<ns1:caXchangeResponseMessage xmlns:ns1=\"http://caXchange.nci.nih.gov/messaging \"> <ns1:responseMetadata> <ns1:externalIdentifier>myExternalIdentifier</ns1:externalIdentifier>                <ns1:caXchangeIdentifier>d7e4ab10-eb51-11df-80b0-dfdad11835a9</ns1:caXchangeIdentifier>             </ns1:responseMetadata>             <ns1:response>                <ns1:responseStatus>SUCCESS</ns1:responseStatus>                <ns1:targetResponse>                   <ns1:targetServiceIdentifier>PERSON</ns1:targetServiceIdentifier>                   <ns1:targetServiceOperation>search</ns1:targetServiceOperation>                   <ns1:targetMessageStatus>RESPONSE</ns1:targetMessageStatus>                   <ns1:targetBusinessMessage>                      <ns1:xmlSchemaDefinition>http://po.coppa.nci.nih.gov</ns1:xmlSchemaDefinition>                      <soapenc:Array xmlns:soapenc=\"http://schemas.xmlsoap.org/soap/encoding/ \">                         <ns1:Person xmlns:ns1=\"http://po.coppa.nci.nih.gov \">                            <ns1:identifier displayable=\"true\" extension=\"272810\" identifierName=\"NCI person entity identifier\" reliability=\"ISS\" root=\"2.16.840.1.113883.3.26.4.1\" scope=\"OBJ\"/>                            <ns1:name>                               <ns2:part type=\"FAM\" value=\"Gaasch Smith\" xmlns:ns2=\"uri:iso.org:21090\"/>                               <ns3:part type=\"GIV\" value=\"Adriana\" xmlns:ns3=\"uri:iso.org:21090\"/>                               <ns4:part type=\"PFX\" value=\"Ms.\" xmlns:ns4=\"uri:iso.org:21090\"/>                            </ns1:name>                            <ns1:postalAddress>                               <ns5:part type=\"AL\" value=\"9500 Gilman Drive\" xmlns:ns5=\"uri:iso.org:21090\"/>                               <ns6:part type=\"ADL\" value=\"Clinical Trials Office MC 0698\" xmlns:ns6=\"uri:iso.org:21090\"/>                               <ns7:part type=\"CTY\" value=\"La Jolla\" xmlns:ns7=\"uri:iso.org:21090\"/>                               <ns8:part type=\"STA\" value=\"CA\" xmlns:ns8=\"uri:iso.org:21090\"/>                               <ns9:part type=\"ZIP\" value=\"92037-0698\" xmlns:ns9=\"uri:iso.org:21090\"/>                               <ns10:part code=\"USA\" codeSystem=\"ISO 3166-1 alpha-3 code\" type=\"CNT\" value=\"United States\" xmlns:ns10=\"uri:iso.org:21090\"/>                            </ns1:postalAddress>                            <ns1:statusCode code=\"active\"/>                            <ns1:telecomAddress>                               <ns11:item value=\"mailto:a8smith@ucsd.edu\" xmlns:ns11=\"uri:iso.org:21090\"/>                               <ns12:item value=\"x-text-fax:(858)-657-7025\" xmlns:ns12=\"uri:iso.org:21090\"/>                               <ns13:item value=\"tel:(858)-657-7019\" xmlns:ns13=\"uri:iso.org:21090\"/>                            </ns1:telecomAddress>                            <ns1:raceCode nullFlavor=\"NI\"/>                            <ns1:sexCode nullFlavor=\"NI\"/>                            <ns1:ethnicGroupCode nullFlavor=\"NI\"/>                            <ns1:birthDate nullFlavor=\"NI\"/>                         </ns1:Person>                      </soapenc:Array>                   </ns1:targetBusinessMessage>                </ns1:targetResponse>             </ns1:response>          </ns1:caXchangeResponseMessage>"; //For test only
+				
+						Reader reader = new StringReader(readLine);
+						responseMessageToClient = (ResponseMessage) Utils.deserializeObject(reader,ResponseMessage.class);
 					}
 				}
-
-				CaXchangeRequestMessage caXchangeRequestMessageToESB = new CaXchangeRequestMessage();
-				Message requestMessageToESB = buildRequestMessageToESB(caXchangeRequestMessage);
-
-				caXchangeRequestMessageToESB
-						.setCaXchangeRequestMessage(requestMessageToESB);
-
-				logger.info("Before sending messge " + new Date().getTime());
-				if (logger.isDebugEnabled()) {
-					   StringWriter sWriter = new StringWriter();
-					   Utils.serializeObject(caXchangeRequestMessage, new QName(
-						    	"http://caXchange.nci.nih.gov/messaging",
-							    "caXchangeRequestMessage"), sWriter);
-					   logger.debug(sWriter);
-					}
-				SynchronousRequestServiceStub synchronousRequestServiceStub = new SynchronousRequestServiceStub(
-						caXchangeSynchronousServiceURL);
-				synchronousRequestServiceStub._getServiceClient().getOptions().setTimeOutInMilliSeconds(synchronousServiceClientTimeout.longValue());
-				synchronousRequestServiceStub._getServiceClient().getOptions().setProperty(HTTPConstants.CONNECTION_TIMEOUT, new Integer((int)synchronousServiceClientTimeout.longValue()));
-				synchronousRequestServiceStub._getServiceClient().getOptions().setProperty(HTTPConstants.SO_TIMEOUT, new Integer((int)synchronousServiceClientTimeout.longValue()));
-				synchronousRequestServiceStub._getServiceClient().getOptions().setProperty(HTTPConstants.REUSE_HTTP_CLIENT, "true");
-				synchronousRequestServiceStub._getServiceClient().getOptions().setSoapVersionURI(properties.getProperty("soap.version.uri"));
-
-				HttpTransportProperties.Authenticator authenticator = new HttpTransportProperties.Authenticator();
-				authenticator.setUsername(properties.getProperty("httpbc.caxchange.user"));
-				authenticator.setPassword(properties.getProperty("httpbc.caxchange.password"));
-				synchronousRequestServiceStub._getServiceClient().getOptions().setProperty(HTTPConstants.AUTHENTICATE, authenticator);
-
-				CaXchangeResponseMessage caXchangeResponseMessageFromESB = synchronousRequestServiceStub
-						.processRequestSynchronously(caXchangeRequestMessageToESB);
-				logger.debug("After sending messge " + new Date().getTime());
-				ResponseMessage responseMessageToClient = buildResponseMessageToClient(caXchangeResponseMessageFromESB
-						.getCaXchangeResponseMessage());
-				StringWriter stringWriter = new StringWriter();
-				if (logger.isDebugEnabled()) {
-				   Utils.serializeObject(responseMessageToClient, new QName(
-					    	"http://caXchange.nci.nih.gov/messaging",
-						    "caXchangeResponseMessage"), stringWriter);
-				   logger.debug(stringWriter);
-				}
-				return responseMessageToClient;
-
 			} catch (Exception e) {
-				logger
-						.error(
-								"An error occured sending message to the caXchange hub.",
-								e);
-				return buildErrorResponse(caXchangeRequestMessage,
-						CaxchangeErrors.UNKNOWN,
-						"An error occured sending message to the caXchange hub."
-								+ e.getMessage());
+				e.printStackTrace();
+			} finally {
+				method.releaseConnection();
+				if (br != null)
+					try {
+						br.close();
+					} catch (Exception fe) {
+						fe.printStackTrace();
+					}
 			}
 
+			logger.debug("After sending message " + new Date().getTime());
+			StringWriter stringWriter = new StringWriter();
+			if (logger.isDebugEnabled()) {
+				Utils.serializeObject(responseMessageToClient, new QName(
+						"http://caXchange.nci.nih.gov/messaging",
+						"caXchangeResponseMessage"), stringWriter);
+				logger.debug(stringWriter);
+			}
+			return responseMessageToClient;
 		} catch (Exception e) {
-			logger.error("Error processing message request.", e);
-			CaXchangeFault caXchangeFault = new CaXchangeFault();
-			caXchangeFault
-					.setFaultDetailString("Error processing message request."
-							+ e.getMessage());
-			caXchangeFault.setStackTrace(e.getStackTrace());
-			throw caXchangeFault;
-		}
-	}
-
-	/**
-	 * Builds the Message object to be sent to the ESB, from the Message object
-	 * sent by the client
-	 *
-	 * @param reqMsgFromClient
-	 * @return gov.nih.nci.caxchange.synchronous.Message
-	 */
-	private Message buildRequestMessageToESB(
-			gov.nih.nci.caxchange.Message reqMsgFromClient) throws Exception {
-		logger.debug("In - buildRequestMessageToESB method");
-        if (logger.isDebugEnabled()) {
-
-        }
-		Message requestMessageToESB = new Message();
-		try {
-			// Create and set the metadata
-			Metadata metadata = new Metadata();
-			metadata.setTransactionControl(TransactionControls.PROCESS);
-
-			// build the credentials object. Only one of the credential choices
-			// can be set the last choice values will reset the other choices in
-			// the group
-			Credentials credentials = new SynchronousRequestServiceStub.Credentials();
-			CredentialsChoice_type0 credentialsChoice_type0 = new SynchronousRequestServiceStub.CredentialsChoice_type0();
-			if (reqMsgFromClient.getMetadata().getCredentials()
-					.getGridIdentifier() != null) {
-				if (credentialsChoice_type0 == null) {
-				}
-				credentialsChoice_type0.setGridIdentifier(reqMsgFromClient
-						.getMetadata().getCredentials().getGridIdentifier());
-			} else if (reqMsgFromClient.getMetadata().getCredentials()
-					.getGroupName() != null) {
-				credentialsChoice_type0.setGroupName(reqMsgFromClient
-						.getMetadata().getCredentials().getGroupName());
-			} else {
-				credentialsChoice_type0.setUserName(reqMsgFromClient
-						.getMetadata().getCredentials().getUserName());
+			logger.error("An error occured sending Synchronous message to the caXchange hub.",e);
+			try {
+				return buildErrorResponse(caXchangeRequestMessage,CaxchangeErrors.UNKNOWN,
+						"An error occured sending message to the caXchange hub."+ e.getMessage());
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				return null;
 			}
-			credentials.setCredentialsChoice_type0(credentialsChoice_type0);
-			credentials.setDelegatedCredentialReference(reqMsgFromClient
-					.getMetadata().getCredentials()
-					.getDelegatedCredentialReference());
-
-			credentials.setPassword(reqMsgFromClient.getMetadata()
-					.getCredentials().getPassword());
-
-			metadata.setCredentials(credentials);
-			metadata.setCaXchangeIdentifier(reqMsgFromClient.getMetadata()
-					.getCaXchangeIdentifier());
-			metadata.setExternalIdentifier(reqMsgFromClient.getMetadata()
-					.getExternalIdentifier());
-			metadata.setOperationName(reqMsgFromClient.getMetadata()
-					.getOperationName());
-			metadata.setServiceType(reqMsgFromClient.getMetadata()
-					.getServiceType());
-			requestMessageToESB.setMetadata(metadata);
-
-			// Create and set the request
-			Request request = new Request();
-			MessagePayload messagePayload = new MessagePayload();
-
-			URI uri = new URI(reqMsgFromClient.getRequest()
-					.getBusinessMessagePayload().getXmlSchemaDefinition().toString()
-					);
-			messagePayload.setXmlSchemaDefinition(uri);
-
-			MessageElement[] messageElement = reqMsgFromClient.getRequest()
-					.getBusinessMessagePayload().get_any();
-
-			if (messageElement != null && messageElement.length > 0) {
-			    OMElement[] payloads = new OMElement[messageElement.length];
-			    int i=0;
-				for (MessageElement messageEl:messageElement){
-			        payloads[i++] = XMLUtils.toOM(messageEl.getAsDOM());
-			        /*
-				    String msgElementString = ((MessageElement) messageElement[0])
-			  			      .getAsString();
-				    XMLStreamReader parser = XMLInputFactory.newInstance()
-					  	.createXMLStreamReader(
-								new ByteArrayInputStream(msgElementString
-										.getBytes()));
-				     StAXOMBuilder builder = new StAXOMBuilder(parser);
-				    OMElement documentElement = builder.getDocumentElement();
-				    */
-				}
-				messagePayload.setExtraElement(payloads);
-			}
-
-			request.setBusinessMessagePayload(messagePayload);
-
-			requestMessageToESB.setRequest(request);
-			logger.debug("Out - buildRequestMessageToESB method");
-
-		} catch (Exception e) {
-			logger.error("Error converting to the synchronous stub.",e);
-			throw e;
- 		}
-		return requestMessageToESB;
+		}		
 	}
-
+		
 	protected String replaceEmptyNamespaces(String documentAsString) {
 		Matcher matcher = emptyNamespacePattern.matcher(documentAsString);
 		return matcher.replaceAll("");
 	}
-	/**
-	 * Builds the ResponseMessage object to be sent to the client, from the
-	 * Message object returned by the ESB
-	 *
-	 * @param respMsgFromESB
-	 * @return
-	 * @throws Exception
-	 */
-	private ResponseMessage buildResponseMessageToClient(
-			gov.nih.nci.caxchange.synchronous.SynchronousRequestServiceStub.ResponseMessage respMsgFromESB)
-			throws Exception {
-		logger.debug("In - buildResponseMessageToClient method");
-        OMElement element =  respMsgFromESB.getOMElement(new QName("http://caXchange.nci.nih.gov/messaging","caXchangeResponseMessage"), OMAbstractFactory.getOMFactory());
-        if (logger.isDebugEnabled()) {
-	         logger.debug("Response from servicemix- "+element.toString());
-	    }
-        ResponseHandler responseHandler = new ResponseHandler();
-        responseHandler.setResponseText(element.toString());
-        return responseHandler.getResponse();
-     }
-
 	/**
 	 * If there is an error in the processing, this method gets called which
 	 * builds the ResponseMessage object using caXchangeRequestmessage,
