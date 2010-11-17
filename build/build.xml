@@ -430,18 +430,19 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		validate:pre:build,
  		clean,
  		init,
+		build:mirth-components,
 		build:caXchangeInboundService,
 		build:OpenClinicaConsumerService,
 		build:integration-smoke-test,
 		build:OpenClinicaWebSSOClient,
-		build:CaXchangeConsumerService,
- 		build:mirth-components,
+		build:CaXchangeConsumerService, 		
 		build:OpenClinicaPlugin,
  		database:prep
 		">
+	<!--	-->
 	</target>
 
-	<target name="build:mirth-components" depends="init" description="Call mirth-components build target to produce artifiacts">
+	<target name="build:mirth-components" depends="init" description="Call mirth-components build target to produce artifiacts">		
 		<ant inheritAll="false" inheritRefs="false" antfile="${mirth-components.build.file}" target="${mirth-components.build.target}" dir="${mirth-components.base.dir}">
 			<property name="dist.dir" value="${mirth-components.dist.dir}" />			
 			<property name="env.GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
@@ -450,6 +451,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<property name="globus.webapp" value="${caXchange.wsrf.war.name}" />
 			<property name="build.compiler" value="extJavac" />
 		</ant>
+		<copy todir="${caXchangeInboundService.base.dir}/lib" overwrite="true" file="${mirth-components.dist.dir}/ihub-mirth-components.jar" />		
 	</target>
 
 	<target name="build:caXchangeInboundService" depends="init" description="Call caXchangeInboundService sub-project's build target to produce artifiacts">
