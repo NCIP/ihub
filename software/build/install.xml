@@ -180,7 +180,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 				<property name="database.dialect" value="org.hibernate.dialect.OracleDialect" />
 				<property name="database.driver.file" value="${bda-utils.dir}/ojdbc14-10.2.0.4.0.jar" />
 				<property name="database.driver" value="oracle.jdbc.driver.OracleDriver" />
-                                <property name="db.install.create.file.list" value="${db.caxchange.install.create.oracle.file.list}"/>
+                <property name="db.install.create.file.list" value="${db.caxchange.install.create.oracle.file.list}"/>
 				<property name="db.csm.install.create.file.list" value="${db.csm.install.create.oracle.file.list}"/>				
 				<property name="database.schema" value="${database.name}" />
 				<property name="sql.delimiter" value="/" />
@@ -237,8 +237,8 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<filter token="database.url" value="${database.url}" />
 			<filter token="database.driver" value="${database.driver}" />
 			<filter token="database.csm.url" value="${database.csm.url}" />
-		        <filter token="database.csm.host" value="${database.csm.host}" />
-		        <filter token="database.csm.port" value="${database.csm.port}" />
+		    <filter token="database.csm.host" value="${database.csm.host}" />
+		    <filter token="database.csm.port" value="${database.csm.port}" />
 			<filter token="database.csm.name" value="${database.csm.name}" />
 			<filter token="database.csm.username" value="${database.csm.username}" />
 			<filter token="database.csm.password" value="${database.csm.password}" />
@@ -434,7 +434,8 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		install:mirth:mirth-components,
 		install:post:mirth,
  		install:mirth:start,
-		install:mirth:channels
+		install:mirth:channels,
+		install:mirth:javascripts
 		">
 	</target>
 	
@@ -461,12 +462,13 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
  		install:clean,
  		install:init,
  		install:database,
-		install:activemq,
+		install:activemq,		
+ 		install:tomcat,
 		install:mirth,
- 		install:tomcat,		
  		install:post,
  		install:validation:post-install
 		">
+		<!--		-->
 	</target>
 
 	<target name="upgrade:tomcat" description="Wrapper target to call all targets required to upgrade tomcat container." unless="exclude.tomcat" depends="init:upgrade:tomcat,init:common,upgrade-ncm:tomcat">
@@ -910,8 +912,8 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		<copy file="${database.driver.file}" todir="${tomcat.home}/common/lib" overwrite="true" />
 		<copy file="${database.llt.driver.file}" todir="${tomcat.home}/common/lib" overwrite="true" />
 
-		<!--<mkdir dir="${tomcat.home}/conf/caXchange" />
-		<copy file="${common.resource.dir.dest}/conf/mirth/caxchange.properties" todir="${tomcat.home}/conf/caXchange" overwrite="true" />-->
+		<mkdir dir="${tomcat.home}/conf/caXchange" />
+		<copy file="${common.resource.dir.dest}/conf/servicemix/caxchange.properties" todir="${tomcat.home}/conf/caXchange" overwrite="true" />
 		<if>
 			<equals arg1="${llt.deploy}" arg2="true" />
 			<then>
@@ -1168,6 +1170,20 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		</ant>		
 	</target>
 
+	<target name="install:mirth:javascripts" description="Imports the named global script for mirth channels" unless="exclude.tomcat" depends="init:install,init:common">
+		<echo message="Filtering java script"/>
+		<copy todir="${mirth-components.dir.dist}\javascript\" filtering="true" overwrite="true" file="${mirth-components.dir.dist}\javascript\global-scripts\at-deploy-script.xml" >
+			<filterset refid="embedded.filterset" />
+			<filterset>
+				<filtersfile file="${properties.file}" />				
+			</filterset>			
+		</copy>
+		<ant inheritAll="false" inheritRefs="false" antfile="${mirth-components.dir.dist}/shellAnt.xml" target="importscript">
+			<property name="mirth_home" value="${mirth.home}" />
+			<property name="deployScript_name" value="${mirth-components.dir.dist}\javascript\at-deploy-script.xml" />
+		</ant>		
+	</target>
+	
 	<target name="upgrade-ncm:mirth:mirth-components" description="Deploy mirth-components and common libraries to mirth installation" unless="exclude.tomcat" depends="init:install,init:common,install:mirth:mirth-components">
 		
 	</target>
@@ -1311,7 +1327,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 				<env key="NOPAUSE" value="true" />
 				<arg line="-d -i -w @{mirth.home} @{mirth.home}/Mirth.exe" />
 			</exec>			
-			<sleep seconds="5" />
+			<sleep seconds="10" />
 		</sequential>
 	</macrodef>
 
