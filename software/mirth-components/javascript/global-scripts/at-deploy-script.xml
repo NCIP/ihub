@@ -26,6 +26,8 @@ globalMap.put(&quot;PSC.STUDY_CREATION.url&quot;,&quot;https://ncias-d282-v.nci.
 //UPDATE THE COUNT IF THE DESTINATION BROADCAST COUNT IS CHANGED FROM DEFAULT
 globalMap.put(&quot;STUDY_CREATION.active.destination.count&quot;,3);
 
+globalMap.put(&quot;coppa.person.url&quot;,&quot;https://ctms-services-po-3-1-integration.nci.nih.gov:1521/wsrf/services/cagrid/Person&quot;);
+
 globalMap.put(&quot;target.grid.service.retry.attempts&quot;,3);
 
 globalMap.put(&quot;mirth.http.user.tomcat&quot;,&quot;tomcatuser&quot;);
@@ -72,7 +74,13 @@ globalMap.put(&quot;target.response.status.timeout&quot;,&quot;TIMEOUT&quot;);
 //overall response status
 globalMap.put(&quot;overall.response.status.success&quot;,&quot;SUCCESS&quot;);
 globalMap.put(&quot;overall.response.status.failure&quot;,&quot;FAILURE&quot;);
-
+/*
+var coppaPersonStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaPersonStrategy.setServiceUrl(globalMap.get(&quot;coppa.person.url&quot;));
+coppaPersonStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.entities.person.client.PersonClient&quot;);
+coppaPersonStrategy.init();
+globalMap.put(&quot;coppaPersonStrategy&quot;, coppaPersonStrategy);
+*/
 // ######## END :- VARIABLES REQUIRED FOR SUITE AND NOT CONFIGURABLE ########
 
 
