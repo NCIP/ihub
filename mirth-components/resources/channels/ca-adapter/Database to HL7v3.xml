@@ -1,83 +1,100 @@
 <com.webreach.mirth.model.Channel>
-  <id>15aae903-e5ba-4208-9188-ef762046b59f</id>
-  <name>HL7v2 to HL7v3</name>
+  <id>d42931fd-8269-433c-874e-2caeea9f9e4b</id>
+  <name>TS Delimited to HL7v3</name>
   <description></description>
   <enabled>true</enabled>
-  <version>1.8.2.4472</version>
+  <version>1.8.2</version>
   <lastModified>
-    <time>1285017007875</time>
+    <time>1288815508031</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>13</revision>
+  <revision>41</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
-      <property name="binary">0</property>
-      <property name="fileFilter">*</property>
-      <property name="password">anonymous</property>
-      <property name="regex">0</property>
-      <property name="username">anonymous</property>
-      <property name="moveToDirectory">C:/projects_svn/ihub-mirth/trunk/software/smoke-test/ca-adapter/hl7-v2-to-v3/Hl7v2-Processed</property>
-      <property name="moveToErrorDirectory">C:/projects_svn/ihub-mirth/trunk/software/smoke-test/ca-adapter/hl7-v2-to-v3/Hl7v2-Error</property>
-      <property name="pollingType">interval</property>
-      <property name="charsetEncoding">DEFAULT_ENCODING</property>
-      <property name="scheme">file</property>
-      <property name="host">C:/projects_svn/ihub-mirth/trunk/software/smoke-test/ca-adapter/hl7-v2-to-v3/HL7v2-Open</property>
-      <property name="secure">1</property>
-      <property name="pollingFrequency">1000</property>
-      <property name="validateConnections">1</property>
-      <property name="DataType">File Reader</property>
-      <property name="processBatchFiles">0</property>
-      <property name="checkFileAge">0</property>
-      <property name="passive">1</property>
-      <property name="fileAge">0</property>
-      <property name="sortAttribute">date</property>
-      <property name="FTPAnonymous">1</property>
-      <property name="moveToPattern">HL7v2-processed-${SYSTIME}.txt</property>
-      <property name="autoDelete">0</property>
+      <property name="DataType">Channel Reader</property>
     </properties>
     <transformer>
-      <steps/>
-      <inboundProtocol>HL7V2</inboundProtocol>
-      <outboundProtocol>HL7V2</outboundProtocol>
+      <steps>
+        <com.webreach.mirth.model.Step>
+          <sequenceNumber>0</sequenceNumber>
+          <name>metadata_uid</name>
+          <script>var mapping;try { mapping = msg[&apos;row&apos;][&apos;column1&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;metadata_uid&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+          <type>Mapper</type>
+          <data class="map">
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;row&apos;][&apos;column1&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>Variable</string>
+              <string>metadata_uid</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>isGlobal</string>
+              <string>channel</string>
+            </entry>
+          </data>
+        </com.webreach.mirth.model.Step>
+      </steps>
+      <inboundTemplate>66b20b26-dc51-11df-9972-ddc780619c0d,Santosh,Giambi,08/20/1968,Male,Duke</inboundTemplate>
+      <outboundTemplate></outboundTemplate>
+      <inboundProtocol>DELIMITED</inboundProtocol>
+      <outboundProtocol>DELIMITED</outboundProtocol>
+      <inboundProperties/>
+      <outboundProperties>
+        <property name="columnWidths"></property>
+        <property name="recordDelimiter">\n</property>
+        <property name="escapeWithDoubleQuote">true</property>
+        <property name="numberedRows">false</property>
+        <property name="batchSkipRecords">0</property>
+        <property name="quoteChar">&quot;</property>
+        <property name="ignoreCR">true</property>
+        <property name="batchMessageDelimiter"></property>
+        <property name="batchGroupingColumn"></property>
+        <property name="batchMessageDelimiterIncluded">false</property>
+        <property name="columnNames"></property>
+        <property name="batchSplitByRecord">true</property>
+        <property name="batchScript"></property>
+        <property name="columnDelimiter">,</property>
+        <property name="quoteEscapeChar">\</property>
+      </outboundProperties>
     </transformer>
     <filter>
       <rules/>
     </filter>
-    <transportName>File Reader</transportName>
+    <transportName>Channel Reader</transportName>
     <mode>SOURCE</mode>
     <enabled>true</enabled>
   </sourceConnector>
   <destinationConnectors>
     <com.webreach.mirth.model.Connector>
-      <name>HL7v3 File Writer</name>
+      <name>Channel Writer</name>
       <properties>
-        <property name="secure">1</property>
-        <property name="scheme">file</property>
-        <property name="binary">0</property>
-        <property name="username">anonymous</property>
-        <property name="outputPattern">HL7v3-converted-${SYSTIME}.xml</property>
-        <property name="validateConnections">1</property>
-        <property name="DataType">File Writer</property>
-        <property name="FTPAnonymous">1</property>
-        <property name="charsetEncoding">DEFAULT_ENCODING</property>
-        <property name="password">anonymous</property>
-        <property name="passive">1</property>
-        <property name="template">${message.encodedData}</property>
-        <property name="outputAppend">1</property>
-        <property name="host">C:/projects_svn/ihub-mirth/trunk/software/smoke-test/ca-adapter/hl7-v2-to-v3/HL7v3-Converted</property>
+        <property name="script">//globalMap.put(&apos;TransformedData&apos;, messageObject.getEncodedData());
+globalMap.put($(&apos;metadata_uid&apos;), messageObject.getEncodedData());</property>
+        <property name="DataType">JavaScript Writer</property>
+        <property name="host">sink</property>
       </properties>
       <transformer>
         <steps>
           <com.webreach.mirth.model.Step>
             <sequenceNumber>0</sequenceNumber>
             <name>patientPerson - name - given (out)</name>
-            <script>tmp[&apos;patientPerson&apos;][&apos;name&apos;][&apos;given&apos;] = validate(msg[&apos;PID&apos;][&apos;PID.5&apos;][&apos;PID.5.2&apos;].toString(), &apos;&apos;, new Array());</script>
+            <script>tmp[&apos;patientPerson&apos;][&apos;name&apos;][&apos;given&apos;] = validate(msg[&apos;row&apos;][&apos;column2&apos;].toString(), &apos;&apos;, new Array());</script>
             <type>Message Builder</type>
             <data class="map">
               <entry>
                 <string>Mapping</string>
-                <string>msg[&apos;PID&apos;][&apos;PID.5&apos;][&apos;PID.5.2&apos;].toString()</string>
+                <string>msg[&apos;row&apos;][&apos;column2&apos;].toString()</string>
               </entry>
               <entry>
                 <string>Variable</string>
@@ -96,12 +113,12 @@
           <com.webreach.mirth.model.Step>
             <sequenceNumber>1</sequenceNumber>
             <name>patientPerson - name - family (out)</name>
-            <script>tmp[&apos;patientPerson&apos;][&apos;name&apos;][&apos;family&apos;] = validate(msg[&apos;PID&apos;][&apos;PID.5&apos;][&apos;PID.5.1&apos;].toString(), &apos;&apos;, new Array());</script>
+            <script>tmp[&apos;patientPerson&apos;][&apos;name&apos;][&apos;family&apos;] = validate(msg[&apos;row&apos;][&apos;column3&apos;].toString(), &apos;&apos;, new Array());</script>
             <type>Message Builder</type>
             <data class="map">
               <entry>
                 <string>Mapping</string>
-                <string>msg[&apos;PID&apos;][&apos;PID.5&apos;][&apos;PID.5.1&apos;].toString()</string>
+                <string>msg[&apos;row&apos;][&apos;column3&apos;].toString()</string>
               </entry>
               <entry>
                 <string>Variable</string>
@@ -120,12 +137,12 @@
           <com.webreach.mirth.model.Step>
             <sequenceNumber>2</sequenceNumber>
             <name>patientPerson - birthTime - @value (out)</name>
-            <script>tmp[&apos;patientPerson&apos;][&apos;birthTime&apos;][&apos;@value&apos;] = validate(msg[&apos;PID&apos;][&apos;PID.7&apos;][&apos;PID.7.1&apos;].toString(), &apos;&apos;, new Array());</script>
+            <script>tmp[&apos;patientPerson&apos;][&apos;birthTime&apos;][&apos;@value&apos;] = validate(msg[&apos;row&apos;][&apos;column4&apos;].toString(), &apos;&apos;, new Array());</script>
             <type>Message Builder</type>
             <data class="map">
               <entry>
                 <string>Mapping</string>
-                <string>msg[&apos;PID&apos;][&apos;PID.7&apos;][&apos;PID.7.1&apos;].toString()</string>
+                <string>msg[&apos;row&apos;][&apos;column4&apos;].toString()</string>
               </entry>
               <entry>
                 <string>Variable</string>
@@ -144,12 +161,12 @@
           <com.webreach.mirth.model.Step>
             <sequenceNumber>3</sequenceNumber>
             <name>patientPerson - administrativeGenderCode - @code (out)</name>
-            <script>tmp[&apos;patientPerson&apos;][&apos;administrativeGenderCode&apos;][&apos;@code&apos;] = validate(msg[&apos;PID&apos;][&apos;PID.8&apos;][&apos;PID.8.1&apos;].toString(), &apos;&apos;, new Array());</script>
+            <script>tmp[&apos;patientPerson&apos;][&apos;administrativeGenderCode&apos;][&apos;@code&apos;] = validate(msg[&apos;row&apos;][&apos;column5&apos;].toString(), &apos;&apos;, new Array());</script>
             <type>Message Builder</type>
             <data class="map">
               <entry>
                 <string>Mapping</string>
-                <string>msg[&apos;PID&apos;][&apos;PID.8&apos;][&apos;PID.8.1&apos;].toString()</string>
+                <string>msg[&apos;row&apos;][&apos;column5&apos;].toString()</string>
               </entry>
               <entry>
                 <string>Variable</string>
@@ -168,12 +185,12 @@
           <com.webreach.mirth.model.Step>
             <sequenceNumber>4</sequenceNumber>
             <name>patientPerson - id - @assigningAuthorityName (out)</name>
-            <script>tmp[&apos;patientPerson&apos;][&apos;id&apos;][&apos;@assigningAuthorityName&apos;] = validate(msg[&apos;PID&apos;][&apos;PID.3&apos;][&apos;PID.3.4&apos;].toString(), &apos;&apos;, new Array());</script>
+            <script>tmp[&apos;patientPerson&apos;][&apos;id&apos;][&apos;@assigningAuthorityName&apos;] = validate(msg[&apos;row&apos;][&apos;column6&apos;].toString(), &apos;&apos;, new Array());</script>
             <type>Message Builder</type>
             <data class="map">
               <entry>
                 <string>Mapping</string>
-                <string>msg[&apos;PID&apos;][&apos;PID.3&apos;][&apos;PID.3.4&apos;].toString()</string>
+                <string>msg[&apos;row&apos;][&apos;column6&apos;].toString()</string>
               </entry>
               <entry>
                 <string>Variable</string>
@@ -190,17 +207,7 @@
             </data>
           </com.webreach.mirth.model.Step>
         </steps>
-        <inboundTemplate>MSH|^~\&amp;|KNU_DSMC|MISC^Medical Information Sharing Center|KNUMC|KNUMC^Kyungpook University Medical Center|20030809153902||ADT^A03^ADT_A03|KNU_DSMS20030303194529ADT_AO3-11122211|P^A|2.4|||||KOR|8859/1|^KOREAN
-EVN||20030809153902||03
-PID|1||11122211^^^KNUMC&amp;2.16.840.1.113883.13.13432&amp;UUID||Han^Deli^Spice||19790501|F|Deli||12-4B Ackme St.^^Telson^MD^20855^USA||240-123-1234|||S^Single^HL70002|CAT^Catholic^HL70006||442-32-4563
-PV1|1|I|534^5341^2|E|||34534^Kate&amp;Van^^^^Dr.^^^^^^^^&amp;General Surgery|||SUR|||||A0~A4~B3~B4|||||G2||||||||||||||||08||||||||20030210|20030220
-DG1|1||M12.3^Palindromic rheumatism^I10||20030215|F|||||||||1|32334^Cho^^^^Dr.^^^^^^^^&amp;General Surgery
-DG1|2||H20.2^Lens-induced iridocyclitis^I10||20030215|F|||||||||2|32334^Cho^^^^Dr.^^^^^^^^&amp;General Surgery
-DG1|3||J45.1^Nonallergic asthma^I10||20030215|F|||||||||3|32334^Cho^^^^Dr.^^^^^^^^&amp;General Surgery
-PR1|1||12.3^Iridoplasty and coreoplasty^I9C||20030214|D|||||||||J45.1^Nonallergic asthma^I10
-PR1|2||43.1^Gastrostomy^I9C||20030215|D||||||135764^Dr. Tomy|||H20.2^Lens-induced iridocyclitis^I10||||Just a Comment
-PR1|3||35.41^Enlargement of existing atrial septal defect^I9C||20030219|D||||||135764^Dr. Tomy|||H20.2^Lens-induced iridocyclitis^I10||||additional comment
-</inboundTemplate>
+        <inboundTemplate>Jason,Doe,08/20/1968,Male,NCI</inboundTemplate>
         <outboundTemplate>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;Patient xmlns=&quot;urn:hl7-org:v3&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; classCode=&quot;PAT&quot;&gt;
     &lt;id root=&quot;2.16.840.1.113883.3.26.345&quot; assigningAuthorityName=&quot;NCI&quot; extension=&quot;78127-401&quot;/&gt;
@@ -285,15 +292,31 @@ PR1|3||35.41^Enlargement of existing atrial septal defect^I9C||20030219|D||||||1
         &lt;/contactParty&gt;
     &lt;/providerOrganization&gt;
 &lt;/Patient&gt;</outboundTemplate>
-        <inboundProtocol>HL7V2</inboundProtocol>
+        <inboundProtocol>DELIMITED</inboundProtocol>
         <outboundProtocol>HL7V3</outboundProtocol>
-        <inboundProperties/>
+        <inboundProperties>
+          <property name="columnWidths"></property>
+          <property name="recordDelimiter">\n</property>
+          <property name="escapeWithDoubleQuote">true</property>
+          <property name="numberedRows">false</property>
+          <property name="batchSkipRecords">0</property>
+          <property name="quoteChar">&quot;</property>
+          <property name="ignoreCR">true</property>
+          <property name="batchMessageDelimiter"></property>
+          <property name="batchGroupingColumn"></property>
+          <property name="batchMessageDelimiterIncluded">false</property>
+          <property name="columnNames"></property>
+          <property name="batchSplitByRecord">true</property>
+          <property name="batchScript"></property>
+          <property name="columnDelimiter">,</property>
+          <property name="quoteEscapeChar">\</property>
+        </inboundProperties>
         <outboundProperties/>
       </transformer>
       <filter>
         <rules/>
       </filter>
-      <transportName>File Writer</transportName>
+      <transportName>JavaScript Writer</transportName>
       <mode>DESTINATION</mode>
       <enabled>true</enabled>
     </com.webreach.mirth.model.Connector>
@@ -305,7 +328,7 @@ PR1|3||35.41^Enlargement of existing atrial septal defect^I9C||20030219|D||||||1
     <property name="encryptData">false</property>
     <property name="transactional">false</property>
     <property name="max_message_age">-1</property>
-    <property name="dont_store_filtered">false</property>
+    <property name="dont_store_filtered">true</property>
     <property name="error_messages_only">false</property>
   </properties>
   <preprocessingScript>// Modify the message variable below to pre process data
