@@ -676,10 +676,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		<delete dir="${mirth.home}" />
 		<dirname file="${mirth.home}" property="mirth.base.dir" />
 		<!--<unzip dest="${mirth.base.dir}/mirth" src="${tools.dir}/${mirth.binaries.file}" />-->
-		<unzip dest="${mirth.home}" src="${tools.dir}/${mirth.binaries.file}" />
-		<!-- This two lines of code required for proper channel deployment. In future release remove it-->
-		<move file="${mirth.home}/lib/mule/axis-14.jar" tofile="${mirth.home}/undeployed-jars/lib/mule/axis-14.jar" failonerror="false" />
-		<move file="${mirth.home}/lib/mule/wsif.jar" tofile="${mirth.home}/undeployed-jars/lib/mule/wsif.jar" failonerror="false" />
+		<unzip dest="${mirth.home}" src="${tools.dir}/${mirth.binaries.file}" />		
 		<if>
 			<os family="unix" />
 			<then>
@@ -1163,7 +1160,14 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	<target name="install:mirth:mirth-components" description="Deploy mirth-components and common libraries to mirth installation" unless="exclude.tomcat" depends="init:install,init:common">
 		
 		<copy todir="${mirth.home}/lib/custom" overwrite="true" file="${mirth-components.dir.dist}/ihub-mirth-components.jar" />
-		
+		<copy todir="${mirth.home}/lib/custom" overwrite="true" >
+			<fileset dir="${mirth-components.dir.dist}/lib">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<!-- This two lines of code required for proper channel deployment. In future release remove it-->
+		<move file="${mirth.home}/lib/mule/axis-14.jar" tofile="${mirth.home}/undeployed-jars/lib/mule/axis-14.jar" failonerror="false" />
+		<move file="${mirth.home}/lib/mule/wsif.jar" tofile="${mirth.home}/undeployed-jars/lib/mule/wsif.jar" failonerror="false" />		
 	</target>
 	
 	<target name="install:mirth:channels" description="Import, deploy and starts channels in mirth" unless="exclude.tomcat" depends="init:install,init:common">
