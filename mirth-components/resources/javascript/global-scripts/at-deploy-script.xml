@@ -1,82 +1,74 @@
-<map>
-	<entry>
-		<string>Deploy</string>
-		<string>// This script executes once when the mule engine is started
-			// You only have access to the globalMap here to persist data
+// This script executes once when the mule engine is started
+// You only have access to the globalMap here to persist data
 
-			globalMap.put("delegation.certificate.file.path","@delegation.certificate.file.path@");
-			globalMap.put("delegation.key.file.path","@delegation.key.file.path@");
-			globalMap.put("user.proxy.cache.time.to.live",600);
+globalMap.put("delegation.certificate.file.path","@delegation.certificate.file.path@");
+globalMap.put("delegation.key.file.path","@delegation.key.file.path@");
+globalMap.put("user.proxy.cache.time.to.live",600);
 
-			globalMap.put("caAERS.registration.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-caaers/services/cagrid/registrationconsumer");
-			globalMap.put("CTOM.registration.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/ctom-wsrf/services/cagrid/registrationconsumer");
-			globalMap.put("PSC.registration.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-psc/services/cagrid/registrationconsumer");
-			globalMap.put("register.subject.active.destination.count",3);
-			
-			globalMap.put("caAERS.study.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-caaers/services/cagrid/studyconsumer");
-			globalMap.put("CTOM.study.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/ctom-wsrf/services/cagrid/studyconsumer");
-			globalMap.put("PSC.study.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-psc/services/cagrid/studyconsumer");
-			globalMap.put("STUDY_CREATION.active.destination.count",3);
-			
-			globalMap.put("coppa.person.url","@coppa.services.po.protocol@://@coppa.services.po.host@:@coppa.services.po.port@/wsrf/services/cagrid/Person");
-			
-			globalMap.put("target.grid.service.retry.attempts",3);
-			
-			globalMap.put("mirth.http.user.tomcat","tomcatuser");
-			globalMap.put("mirth.http.password.tomcat","changeme");
+globalMap.put("caAERS.registration.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-caaers/services/cagrid/registrationconsumer");
+globalMap.put("CTOM.registration.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/ctom-wsrf/services/cagrid/registrationconsumer");
+globalMap.put("PSC.registration.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-psc/services/cagrid/registrationconsumer");
+globalMap.put("register.subject.active.destination.count",3);
 
-			//UPDATE THE COUNT IF THE DESTINATION BROADCAST COUNT IS CHANGED FROM DEFAULT
-			globalMap.put("register.subject.active.destination.count",3);
+globalMap.put("caAERS.study.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-caaers/services/cagrid/studyconsumer");
+globalMap.put("CTOM.study.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/ctom-wsrf/services/cagrid/studyconsumer");
+globalMap.put("PSC.study.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-psc/services/cagrid/studyconsumer");
+globalMap.put("STUDY_CREATION.active.destination.count",3);
 
-			
+globalMap.put("coppa.person.url","@coppa.services.po.protocol@://@coppa.services.po.host@:@coppa.services.po.port@/wsrf/services/cagrid/Person");
 
-			// #########  ACTIVE MQ PROPERTIES - NEED NOT BE TOKENIZED SINCE CHANNELS CANNOT GET THESE VALUES USING VARIABLES ##########
-			globalMap.put("amq.ihub.host","localhost");
-			globalMap.put("amq.ihub.port","61616");
-			globalMap.put("amq.ihub.user","user");
-			globalMap.put("amq.ihub.password","password");
-			globalMap.put("amq.ihub.inbound.queue.name","caxchangeInboundQueue");
-			globalMap.put("amq.ihub.outbound.queue.name","caxchangeOutboundQueue");
+globalMap.put("target.grid.service.retry.attempts",3);
 
-			// #########  DATABASE PROPERTIES ##########
-			globalMap.put("database.driver","org.postgresql.Driver");
-			globalMap.put("database.url","jdbc:postgresql://localhost:5432/mirth");
-			globalMap.put("database.username","mirthadmin");
-			globalMap.put("database.password","changeme");
-			globalMap.put("database.date.function","now()");
+globalMap.put("mirth.http.user.tomcat","tomcatuser");
+globalMap.put("mirth.http.password.tomcat","changeme");
 
-			
-			// ####### START VARIABLES REQUIRED FOR SUITE AND NOT CONFIGURABLE ######
-			//request message status
-			globalMap.put("request.message.status.open","OPEN");
-			globalMap.put("request.message.status.inprocess","IN_PROCESS");
-			globalMap.put("request.message.status.processed","PROCESSED");
-			globalMap.put("request.message.status.responsereturned","RESPONSE_RETURNED");
-			//target details - name
-			globalMap.put("target.detail.code.caaers","caAERS");
-			globalMap.put("target.detail.code.psc","PSC");
-			globalMap.put("target.detail.code.ctom","CTOM");
-			globalMap.put("target.detail.code.c3pr","C3PR");
-			globalMap.put("target.detail.code.delegation","DELEGATION");
+//UPDATE THE COUNT IF THE DESTINATION BROADCAST COUNT IS CHANGED FROM DEFAULT
+globalMap.put("register.subject.active.destination.count",3);
 
-			//target response status
-			globalMap.put("target.response.status.successful","SUCCESSFUL");
-			globalMap.put("target.response.status.fault","FAULT");
-			globalMap.put("target.response.status.timeout","TIMEOUT");
-			//overall response status
-			globalMap.put("overall.response.status.success","SUCCESS");
-			globalMap.put("overall.response.status.failure","FAILURE");
+// #########  ACTIVE MQ PROPERTIES - NEED NOT BE TOKENIZED SINCE CHANNELS CANNOT GET THESE VALUES USING VARIABLES ##########
+globalMap.put("amq.ihub.host","localhost");
+globalMap.put("amq.ihub.port","61616");
+globalMap.put("amq.ihub.user","user");
+globalMap.put("amq.ihub.password","password");
+globalMap.put("amq.ihub.inbound.queue.name","caxchangeInboundQueue");
+globalMap.put("amq.ihub.outbound.queue.name","caxchangeOutboundQueue");
 
-			/*
-			var coppaPersonStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
-			coppaPersonStrategy.setServiceUrl(globalMap.get("coppa.person.url"));
-			coppaPersonStrategy.setGridClientClassName("gov.nih.nci.coppa.services.entities.person.client.PersonClient");
-			coppaPersonStrategy.init();
-			globalMap.put("coppaPersonStrategy", coppaPersonStrategy);
-			*/
-			// ######## END VARIABLES REQUIRED FOR SUITE AND NOT CONFIGURABLE ########
+// #########  DATABASE PROPERTIES ##########
+globalMap.put("database.driver","org.postgresql.Driver");
+globalMap.put("database.url","jdbc:postgresql://localhost:5432/mirth");
+globalMap.put("database.username","mirthadmin");
+globalMap.put("database.password","changeme");
+globalMap.put("database.date.function","now()");
 
-			return;
-	   </string>
-  </entry>
-</map>
+
+// ####### START VARIABLES REQUIRED FOR SUITE AND NOT CONFIGURABLE ######
+//request message status
+globalMap.put("request.message.status.open","OPEN");
+globalMap.put("request.message.status.inprocess","IN_PROCESS");
+globalMap.put("request.message.status.processed","PROCESSED");
+globalMap.put("request.message.status.responsereturned","RESPONSE_RETURNED");
+//target details - name
+globalMap.put("target.detail.code.caaers","caAERS");
+globalMap.put("target.detail.code.psc","PSC");
+globalMap.put("target.detail.code.ctom","CTOM");
+globalMap.put("target.detail.code.c3pr","C3PR");
+globalMap.put("target.detail.code.delegation","DELEGATION");
+
+//target response status
+globalMap.put("target.response.status.successful","SUCCESSFUL");
+globalMap.put("target.response.status.fault","FAULT");
+globalMap.put("target.response.status.timeout","TIMEOUT");
+//overall response status
+globalMap.put("overall.response.status.success","SUCCESS");
+globalMap.put("overall.response.status.failure","FAILURE");
+
+/*
+var coppaPersonStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaPersonStrategy.setServiceUrl(globalMap.get("coppa.person.url"));
+coppaPersonStrategy.setGridClientClassName("gov.nih.nci.coppa.services.entities.person.client.PersonClient");
+coppaPersonStrategy.init();
+globalMap.put("coppaPersonStrategy", coppaPersonStrategy);
+*/
+// ######## END VARIABLES REQUIRED FOR SUITE AND NOT CONFIGURABLE ########
+
+return;
