@@ -677,6 +677,9 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		<dirname file="${mirth.home}" property="mirth.base.dir" />
 		<!--<unzip dest="${mirth.base.dir}/mirth" src="${tools.dir}/${mirth.binaries.file}" />-->
 		<unzip dest="${mirth.home}" src="${tools.dir}/${mirth.binaries.file}" />
+		<!-- This two lines of code required for proper channel deployment. In future release remove it-->
+		<move file="${mirth.home}/lib/mule/axis-14.jar" tofile="${mirth.home}/undeployed-jars/lib/mule/axis-14.jar" failonerror="false" />
+		<move file="${mirth.home}/lib/mule/wsif.jar" tofile="${mirth.home}/undeployed-jars/lib/mule/wsif.jar" failonerror="false" />
 		<if>
 			<os family="unix" />
 			<then>
