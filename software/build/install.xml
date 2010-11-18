@@ -1166,7 +1166,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	<target name="install:mirth:channels" description="Import, deploy and starts channels in mirth" unless="exclude.tomcat" depends="init:install,init:common">
 		<ant inheritAll="false" inheritRefs="false" antfile="${mirth-components.dir.dist}/shellAnt.xml" target="import">
 			<property name="mirth_home" value="${mirth.home}" />
-			<property name="channels_dir" value="${mirth-components.dir.dist}/channels" />
+			<property name="channels_dir" value="${mirth-components.dir.dist}/channels/ctms" />
 		</ant>		
 	</target>
 
