@@ -47,8 +47,7 @@ import org.globus.wsrf.security.SecurityManager;
  * @created by Introduce Toolkit version 1.1
  *
  */
-public class CaXchangeRequestProcessorImpl extends
-		CaXchangeRequestProcessorImplBase {
+public class CaXchangeRequestProcessorImpl extends CaXchangeRequestProcessorImplBase {
 	protected static Pattern emptyNamespacePattern = Pattern.compile("xmlns:[a-zA-Z0-9].[a-zA-Z0-9]*=\"\"|xmlns=\"\"");
 	protected static String brokerURL = "tcp://localhost:61618";
 	protected static String destinationName = "caxchangeInboundQueue";
@@ -60,7 +59,18 @@ public class CaXchangeRequestProcessorImpl extends
 	protected static Connection connection = null;
 	public static Map<CaxchangeResponseExceptionListener, Connection> responseListeners = null;
 	protected static Long synchronousServiceClientTimeout = null;
-
+	
+	private static final String MIRTH_HTTP_USER = "mirth.http.user";
+	private static final String MIRTH_HTTP_PASSWORD = "mirth.http.password";
+	private static final String MIRTH_HTTP_URL = "mirth.http.url";
+	private static final String COPPA_AUTH_USER ="coppa.authentication.user";			
+	private static final String COPPA_AUTH_PASS = "coppa.authentication.password";			
+	private static final String COPPA_AUTH_URL = "coppa.authentication.url";			
+	private static final String COPPA_DORIAN_URL = "coppa.dorian.url";			
+	private static final String COPPA_DELEG_URL = "coppa.delegation.url";
+	private static final String COPPA_HOST_IDENT = "coppa.mirth.cagrid.host.identity";
+	
+	
 	public CaXchangeRequestProcessorImpl() throws RemoteException {
 		super();
 	}
@@ -290,12 +300,15 @@ public class CaXchangeRequestProcessorImpl extends
 			HttpClient client = new HttpClient();
 			BufferedReader br = null;
 			String credential = "";			
-			String gridUser = properties.getProperty("coppa.authentication.user");			
-			String gridUserPassword = properties.getProperty("coppa.authentication.password");			
-			String authenticationServiceUrl = properties.getProperty("coppa.authentication.url");			
-			String dorianServiceUrl = properties.getProperty("coppa.dorian.url");			
-			String delegationServiceUrl = properties.getProperty("coppa.delegation.url");
-			String mirthHostIdentity = properties.getProperty("coppa.mirth.cagrid.host.identity");
+			String gridUser = properties.getProperty(COPPA_AUTH_USER);			
+			String gridUserPassword = properties.getProperty(COPPA_AUTH_PASS);			
+			String authenticationServiceUrl = properties.getProperty(COPPA_AUTH_URL);			
+			String dorianServiceUrl = properties.getProperty(COPPA_DORIAN_URL);			
+			String delegationServiceUrl = properties.getProperty(COPPA_DELEG_URL);
+			String mirthHostIdentity = properties.getProperty(COPPA_HOST_IDENT);
+			String mirthHttpUrl = properties.getProperty(MIRTH_HTTP_URL);
+			String mirthHttpUser = properties.getProperty(MIRTH_HTTP_USER);
+			String mirthHttpPassowrd = properties.getProperty(MIRTH_HTTP_PASSWORD);
 			try {
 				CaGridAuthenticationManager caGridAuthenticationManager = new CaGridAuthenticationManager(
 						gridUser, gridUserPassword, authenticationServiceUrl, dorianServiceUrl, delegationServiceUrl, 12, mirthHostIdentity);
@@ -307,14 +320,14 @@ public class CaXchangeRequestProcessorImpl extends
 			
 			ResponseMessage responseMessageToClient = new ResponseMessage();
 
-			PostMethod method = new PostMethod("http://localhost:8195");
+			PostMethod method = new PostMethod(mirthHttpUrl);
 						
 			String synchronousMsg = caXchangeRequestMessage.toString();
-			//System.out.println("synchronousMsg: "+synchronousMsg);
+			
 			method.addParameter("synchronous_msg", synchronousMsg);
 			method.addParameter("coppa_delegated_credential_ref", credential);
-			method.addRequestHeader("mirth.http.user", "tomcatuser");
-			method.addRequestHeader("mirth.http.password", "changeme");
+			method.addRequestHeader(MIRTH_HTTP_USER, mirthHttpUser);
+			method.addRequestHeader(MIRTH_HTTP_PASSWORD, mirthHttpPassowrd);
 
 			try {
 				int returnCode = client.executeMethod(method);
