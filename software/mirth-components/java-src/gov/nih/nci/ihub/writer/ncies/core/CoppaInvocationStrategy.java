@@ -1,10 +1,10 @@
 package gov.nih.nci.ihub.writer.ncies.core;
 
-import gov.nih.nci.caXchange.outbound.GridInvocationException;
-import gov.nih.nci.caXchange.outbound.GridInvocationResult;
-import gov.nih.nci.caXchange.outbound.GridMessage;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.ihub.writer.ncies.common.GenericInvocationStrategy;
+import gov.nih.nci.ihub.writer.ncies.common.GridInvocationResult;
+import gov.nih.nci.ihub.writer.ncies.common.GridMessage;
+import gov.nih.nci.ihub.writer.ncies.exception.GridInvocationException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -23,8 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.jbi.messaging.DeliveryChannel;
-import javax.jbi.messaging.MessageExchange;
 import javax.security.auth.Subject;
 import javax.xml.namespace.QName;
 import javax.xml.transform.TransformerException;
@@ -70,7 +68,6 @@ public class CoppaInvocationStrategy extends GenericInvocationStrategy {
 						.getTypeMappingRegistry().getTypeMapping("");
 				typeMappings.put(getGridClientClassName(), typeMapping);
 			}
-
 		} catch (Exception e) {
 			logger.error("Error initializing coppa invocation bean.", e);
 			throw new IllegalStateException(
@@ -79,15 +76,12 @@ public class CoppaInvocationStrategy extends GenericInvocationStrategy {
 
 	}
 
-	public GridInvocationResult invokeGridService(DeliveryChannel channel,
-			MessageExchange exchange, GridMessage message)
+	public GridInvocationResult invokeGridService(boolean isRollback)
 			throws GridInvocationException {
 		try {
-			operationName = message.getOperationName();
 			useCredentials = true;
-
 			GlobusCredential cred = null;
-			Subject subject = exchange.getMessage("in").getSecuritySubject();
+
 			Set<GlobusCredential> globusCredentials = new HashSet<GlobusCredential>();
 			if (subject != null) {
 				globusCredentials = subject
@@ -101,16 +95,15 @@ public class CoppaInvocationStrategy extends GenericInvocationStrategy {
 			}
 
 			Object client = getNewGridClient(serviceUrl, cred);
-			requestPayloadClassses = getRequestPayloadClass(client, message);
-			QName typeDesc = getReturnTypeDescription(client, message);
+			requestPayloadClassses = getRequestPayloadClass(client);
+			QName typeDesc = getReturnTypeDescription(client);
 			if (typeDesc != null) {
 				returnTypeNameSpace = typeDesc.getNamespaceURI();
 				returnTypeElement = typeDesc.getLocalPart();
 			}
-			Object[] requestPayloads = getRequestPayload(client, message);
+			Object[] requestPayloads = getRequestPayload(client);
 			logger.info("Invoking grid operation:" + new Date());
-			Object returnObject = invokeGridOperation(client, message,
-					requestPayloads);
+			Object returnObject = invokeGridOperation(client, requestPayloads);
 			logger.info("After Invoking grid operation:" + new Date());
 			// commented to remove commit
 			// client.commit(request);
@@ -126,28 +119,27 @@ public class CoppaInvocationStrategy extends GenericInvocationStrategy {
 			}
 			return result;
 		} catch (AxisFault af) {
-			logger.error("Failed to invoke grid service. " + serviceUrl, af);
-			GridInvocationException gie = new GridInvocationException(af
-					.getFaultString(), af);
+			logger.error("Failed to invoke registration service.", af);
 			if (af.getCause() instanceof ConnectException) {
-				gie.setCanRetry(true);
+				return new GridInvocationResult(true, null, true, af);
+			} else {
+				return new GridInvocationResult(true, null, false, af);
 			}
-			throw gie;
 		} catch (Exception e) {
 			logger.error("Failed to invoke grid service." + serviceUrl, e);
 			throw new GridInvocationException(e.getMessage(), e);
 		}
 	}
 
-	public Class[] getRequestPayloadClass(Object client, GridMessage message)
+	public Class[] getRequestPayloadClass(Object client)
 			throws GridInvocationException {
-		String operationName = message.getOperationName();
+		// String operationName = message.getOperationName();
 		if ("".equals(operationName)) {
 			throw new GridInvocationException(
 					"No operation name specified for COPPA service:"
-							+ message.getServiceType());
+							+ serviceType);
 		}
-		Method invocationMethod = getClientMethod(client, message);
+		Method invocationMethod = getClientMethod(client);
 		Class[] parameterTypes = invocationMethod.getParameterTypes();
 		logger.debug("Request payload class name:"
 				+ parameterTypes[0].getName());
@@ -155,14 +147,13 @@ public class CoppaInvocationStrategy extends GenericInvocationStrategy {
 
 	}
 
-	public Method getClientMethod(Object client, GridMessage message)
-			throws GridInvocationException {
+	public Method getClientMethod(Object client) throws GridInvocationException {
 		try {
-			String operationName = message.getOperationName();
+			// String operationName = message.getOperationName();
 			if ("".equals(operationName)) {
 				throw new GridInvocationException(
 						"No operation name specified for COPPA service:"
-								+ message.getServiceType());
+								+ serviceType);
 			}
 			Method[] methods = client.getClass().getMethods();
 			Method invocationMethod = null;
@@ -175,7 +166,7 @@ public class CoppaInvocationStrategy extends GenericInvocationStrategy {
 			if (invocationMethod == null) {
 				throw new GridInvocationException("Not found operation name "
 						+ operationName + " specified for COPPA service:"
-						+ message.getServiceType());
+						+ serviceType);
 			}
 			return invocationMethod;
 		} catch (Exception e) {
@@ -185,10 +176,10 @@ public class CoppaInvocationStrategy extends GenericInvocationStrategy {
 		}
 	}
 
-	public QName getReturnTypeDescription(Object client, GridMessage message)
+	public QName getReturnTypeDescription(Object client)
 			throws GridInvocationException {
 		try {
-			Method invocationMethod = getClientMethod(client, message);
+			Method invocationMethod = getClientMethod(client);
 			Class returnType = invocationMethod.getReturnType();
 			TypeMapping typeMapping = typeMappings
 					.get(getGridClientClassName());
@@ -201,7 +192,7 @@ public class CoppaInvocationStrategy extends GenericInvocationStrategy {
 		}
 	}
 
-	public Object[] getRequestPayload(Object client, GridMessage message)
+	public Object[] getRequestPayload(Object client)
 			throws GridInvocationException {
 		try {
 			Object[] requestPayloads = new Object[requestPayloadClassses.length];
@@ -219,16 +210,17 @@ public class CoppaInvocationStrategy extends GenericInvocationStrategy {
 			}
 			byte[] clientConfigAsBytes = clientConfig.toString().getBytes();
 			bais = new ByteArrayInputStream(clientConfigAsBytes);
-			List<Element> payloads = message.getPayloads();
+			List<Element> payloads = getPayloads();
 			if (logger.isDebugEnabled()) {
-				if (payloads == null){
+				if (payloads == null) {
 					logger.debug("Payload Elements list is null.");
-				}else {
-					logger.debug("Payload Elements size:"+payloads.size());
+				} else {
+					logger.debug("Payload Elements size:" + payloads.size());
 					Iterator<Element> payloadIterator = payloads.iterator();
-					for(Element payloadElement;payloadIterator.hasNext();) {
+					for (Element payloadElement; payloadIterator.hasNext();) {
 						payloadElement = payloadIterator.next();
-						logger.debug("Payload Element:"+transformer.toString(payloadElement));
+						logger.debug("Payload Element:"
+								+ transformer.toString(payloadElement));
 					}
 				}
 			}
@@ -243,37 +235,45 @@ public class CoppaInvocationStrategy extends GenericInvocationStrategy {
 					ArrayList<Object> paramPayloads = new ArrayList<Object>(
 							payloads.size());
 					Element arrayElement = payloads.get(payloadsIndex);
-					logger.debug("The array payload is:"+transformer.toString(arrayElement));
+					logger.debug("The array payload is:"
+							+ transformer.toString(arrayElement));
 					if ("Array".equals(arrayElement.getLocalName())) {
-						//The element is an array.
-						logger.debug("Looking for nodes:"+requestPayloadClass.getSimpleName());
+						// The element is an array.
+						logger.debug("Looking for nodes:"
+								+ requestPayloadClass.getSimpleName());
 						NodeList nodeList = arrayElement.getChildNodes();
-						if (nodeList!=null){
-							requestPayload = Array.newInstance(requestPayloadClass
-									.getComponentType(), nodeList.getLength());	
-						    for (int k=0;k<nodeList.getLength();k++){
-							   Node node = nodeList.item(k);
-							   logger.debug("Simple Name:"+requestPayloadClass.getSimpleName()+" local:"+node.getLocalName());
-							   if ((node.getLocalName()!=null)&&(requestPayloadClass.getSimpleName().startsWith(
-										node.getLocalName()))) {
-								   String payload = transformer.toString(node);
-								   logger.debug("The message payload is:" + payload);
-								   StringReader reader = new StringReader(payload);
-								   Object obj = Utils.deserializeObject(reader,
-											requestPayloadClass, bais);
-								   Array.set(requestPayload, k, obj);
-								   bais = new ByteArrayInputStream(clientConfigAsBytes);
-							   }
-						    }
-						}else {
+						if (nodeList != null) {
+							requestPayload = Array.newInstance(
+									requestPayloadClass.getComponentType(),
+									nodeList.getLength());
+							for (int k = 0; k < nodeList.getLength(); k++) {
+								Node node = nodeList.item(k);
+								logger.debug("Simple Name:"
+										+ requestPayloadClass.getSimpleName()
+										+ " local:" + node.getLocalName());
+								if ((node.getLocalName() != null)
+										&& (requestPayloadClass.getSimpleName()
+												.startsWith(node.getLocalName()))) {
+									String payload = transformer.toString(node);
+									logger.debug("The message payload is:"
+											+ payload);
+									StringReader reader = new StringReader(
+											payload);
+									Object obj = Utils.deserializeObject(
+											reader, requestPayloadClass, bais);
+									Array.set(requestPayload, k, obj);
+									bais = new ByteArrayInputStream(
+											clientConfigAsBytes);
+								}
+							}
+						} else {
 							logger.debug("No nodes found setting empty array.");
-						   requestPayload =	Array.newInstance(requestPayloadClass
-									.getComponentType(), 0);
+							requestPayload = Array.newInstance(
+									requestPayloadClass.getComponentType(), 0);
 						}
 						payloadsIndex++;
-					}
-					else { 
-						//Process a non array payload
+					} else {
+						// Process a non array payload
 						int i = 0;
 						while ((payloadsIndex < payloads.size())) {
 							Element element = payloads.get(payloadsIndex++);
@@ -285,13 +285,15 @@ public class CoppaInvocationStrategy extends GenericInvocationStrategy {
 							if (requestPayloadClass.getSimpleName().startsWith(
 									element.getLocalName())) {
 								String payload = transformer.toString(element);
-								logger.debug("The message payload is:" + payload);
+								logger.debug("The message payload is:"
+										+ payload);
 								StringReader reader = new StringReader(payload);
 								Object obj = Utils.deserializeObject(reader,
 										requestPayloadClass, bais);
 								paramPayloads.add(obj);
 								i++;
-								bais = new ByteArrayInputStream(clientConfigAsBytes);
+								bais = new ByteArrayInputStream(
+										clientConfigAsBytes);
 							} else {
 								payloadsIndex--;
 								break;
@@ -338,12 +340,12 @@ public class CoppaInvocationStrategy extends GenericInvocationStrategy {
 		}
 	}
 
-	public Object invokeGridOperation(Object client, GridMessage message,
-			Object[] requestPayload) throws GridInvocationException {
+	public Object invokeGridOperation(Object client, Object[] requestPayload)
+			throws GridInvocationException {
 		String operationName = "";
 		try {
-			operationName = message.getOperationName();
-			Method gridOperation = getClientMethod(client, message);
+			// operationName = message.getOperationName();
+			Method gridOperation = getClientMethod(client);
 			logger.debug("Operation Name:" + operationName);
 			Object returnObject = gridOperation.invoke(client, requestPayload);
 			return returnObject;
@@ -361,5 +363,4 @@ public class CoppaInvocationStrategy extends GenericInvocationStrategy {
 					+ errorDetails, ite);
 		}
 	}
-
 }

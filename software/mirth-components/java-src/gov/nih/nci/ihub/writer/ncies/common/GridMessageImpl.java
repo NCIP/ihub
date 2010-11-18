@@ -46,7 +46,7 @@ public class GridMessageImpl implements GridMessage {
 		NodeList elements = message.getDocumentElement()
 				.getElementsByTagNameNS(HubConstants.NS,
 						HubConstants.META_DATA_ELEMENT);
-
+		//System.out.println(message.getDocumentElement().getElementsByTagName("ns1:metadata").getLength());
 		if (elements.getLength() == 1) {
 			return (Element) elements.item(0);
 		} else {
@@ -66,7 +66,7 @@ public class GridMessageImpl implements GridMessage {
 		NodeList nodes = getBusinessPayload().getChildNodes();
 		for (int i = 0; i < nodes.getLength(); i++) {
 			Node node = nodes.item(i);
-			if (node instanceof Element) {
+			if (node instanceof Element) {				
 				if (HubConstants.SCHEMA_DEFINITION_ELEMENT.equals(node
 						.getLocalName())) {
 					continue;
@@ -86,6 +86,24 @@ public class GridMessageImpl implements GridMessage {
 			if (node instanceof Element) {
 				if (HubConstants.SCHEMA_DEFINITION_ELEMENT.equals(node
 						.getLocalName())) {
+					continue;
+				} else {
+					els.add((Element) node);
+				}
+			}
+		}
+		return els;
+	}
+	
+	public List<Element> getPayloads(Element payload) {
+		NodeList nodes = payload.getChildNodes();
+		List<Element> els = new ArrayList<Element>();
+		for (int i = 0; i < nodes.getLength(); i++) {
+			Node node = nodes.item(i);			
+			if (node instanceof Element) {
+				System.out.println("Node Name: "+node.getNodeName());
+				if (("ns1:"+HubConstants.SCHEMA_DEFINITION_ELEMENT).equals(node
+						.getNodeName())) {
 					continue;
 				} else {
 					els.add((Element) node);

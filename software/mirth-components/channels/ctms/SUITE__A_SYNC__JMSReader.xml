@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1289239854390</time>
+    <time>1289940057796</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>132</revision>
+  <revision>134</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -194,6 +194,34 @@
             <entry>
               <string>Variable</string>
               <string>ns1metadata_ns1externalidentifier</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>isGlobal</string>
+              <string>channel</string>
+            </entry>
+          </data>
+        </com.webreach.mirth.model.Step>
+        <com.webreach.mirth.model.Step>
+          <sequenceNumber>7</sequenceNumber>
+          <name>ns1metadata_ns1credentials_ns1delegatedcredentialreference</name>
+          <script>var mapping;try { mapping = msg[&apos;metadata&apos;][&apos;credentials&apos;][&apos;delegatedCredentialReference&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;ns1metadata_ns1credentials_ns1delegatedcredentialreference&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+          <type>Mapper</type>
+          <data class="map">
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;metadata&apos;][&apos;credentials&apos;][&apos;delegatedCredentialReference&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>Variable</string>
+              <string>ns1metadata_ns1credentials_ns1delegatedcredentialreference</string>
             </entry>
             <entry>
               <string>RegularExpressions</string>
@@ -473,12 +501,14 @@
       <enabled>true</enabled>
     </com.webreach.mirth.model.Connector>
     <com.webreach.mirth.model.Connector>
-      <name>Delegation Service Invoker</name>
+      <name>Retrieve Security Subject</name>
       <properties>
-        <property name="DataType">Channel Writer</property>
-        <property name="synchronised">1</property>
-        <property name="template">${message.encodedData}</property>
-        <property name="host">f00b06e9-ab34-49b6-8573-cbed5b56bf2a</property>
+        <property name="script">var subject = invokeDelegationService($(&apos;ns1metadata_ns1credentials_ns1delegatedcredentialreference&apos;), globalMap.get(&quot;delegation.certificate.file.path&quot;),
+	 globalMap.get(&quot;delegation.key.file.path&quot;), globalMap.get(&quot;target.detail.code.delegation&quot;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
+
+globalMap.put(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;), subject);</property>
+        <property name="DataType">JavaScript Writer</property>
+        <property name="host">sink</property>
       </properties>
       <transformer>
         <steps/>
@@ -532,7 +562,7 @@ return false;</script>
           </com.webreach.mirth.model.Rule>
         </rules>
       </filter>
-      <transportName>Channel Writer</transportName>
+      <transportName>JavaScript Writer</transportName>
       <mode>DESTINATION</mode>
       <enabled>true</enabled>
     </com.webreach.mirth.model.Connector>

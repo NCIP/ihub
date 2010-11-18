@@ -1,10 +1,8 @@
 package gov.nih.nci.ihub.writer.ncies.common;
 
-import gov.nih.nci.caXchange.outbound.GridInvocationException;
-import gov.nih.nci.caXchange.outbound.GridInvocationResult;
-import gov.nih.nci.caXchange.outbound.GridInvocationStrategy;
-import gov.nih.nci.caXchange.outbound.GridMessage;
 import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.ihub.util.HubConstants;
+import gov.nih.nci.ihub.writer.ncies.exception.GridInvocationException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -16,6 +14,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.ConnectException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -40,6 +39,7 @@ import org.globus.wsrf.encoding.DeserializationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -59,10 +59,23 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 	protected String returnTypeNameSpace;
 	protected String returnTypeElement;
 	protected boolean useCredentials = true;
+	protected String serviceType;
+	protected Element payload;
+	protected Subject subject;
+	private String serviceProviderName;
 
 	private static Logger logger = LogManager
 			.getLogger(GenericInvocationStrategy.class);
 
+	public void setStrategySpecificVariables(String operationName,
+			String serviceType, Element payload, Subject subject, String serviceProviderName){
+		this.operationName = operationName;
+		this.serviceType = serviceType;
+		this.payload = payload;
+		this.subject = subject;
+		this.serviceProviderName = serviceProviderName;
+	}
+	
 	@Override
 	public GridInvocationResult invokeGridService(DeliveryChannel channel,
 			MessageExchange exchange, GridMessage message)
@@ -322,16 +335,8 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 	public GridInvocationResult getSuccessResult() throws Exception {
 		final Document resp = new SourceTransformer()
 				.toDOMDocument(new StringSource("<result>success</result>"));
-		return new GridInvocationResult() {
-			public Node getResult() {
-				return resp.getDocumentElement();
-			}
-
-			public boolean isFault() {
-				return false;
-			}
-
-		};
+		return new GridInvocationResult(false, resp
+				.getDocumentElement(), false);		
 	}
 
 	public GridInvocationResult getServiceResponsePayload(Object client,
@@ -346,20 +351,30 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 			serviceResponsePayload = writer.getBuffer().toString();
 			final Document resp = new SourceTransformer()
 					.toDOMDocument(new StringSource(serviceResponsePayload));
-			return new GridInvocationResult() {
-				public Node getResult() {
-					return resp.getDocumentElement();
-				}
-
-				public boolean isFault() {
-					return false;
-				}
-			};
+			return new GridInvocationResult(false, resp
+					.getDocumentElement(), false);	
 		} catch (Exception e) {
 			logger.error("Error transforming response payload to string.", e);
 			throw e;
 		}
 
+	}
+	
+	public List<Element> getPayloads() {
+		NodeList nodes = payload.getChildNodes();
+		List<Element> els = new ArrayList<Element>();
+		for (int i = 0; i < nodes.getLength(); i++) {
+			Node node = nodes.item(i);			
+			if (node instanceof Element) {				
+				if (("ns1:"+HubConstants.SCHEMA_DEFINITION_ELEMENT).equals(node
+						.getNodeName())) {
+					continue;
+				} else {
+					els.add((Element) node);
+				}
+			}
+		}
+		return els;
 	}
 
 	public Properties getCaxchangeProps() {
@@ -418,4 +433,37 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 		this.useCredentials = useCredentials;
 	}
 
+	public String getServiceType() {
+		return serviceType;
+	}
+
+	public void setServiceType(String serviceType) {
+		this.serviceType = serviceType;
+	}
+
+	public Element getPayload() {
+		return payload;
+	}
+
+	public void setPayload(Element payload) {
+		this.payload = payload;
+	}
+
+	public Subject getSubject() {
+		return subject;
+	}
+
+	public void setSubject(Subject subject) {
+		this.subject = subject;
+	}
+	
+	public String getServiceProviderName() {
+		return serviceProviderName;
+	}
+
+	public void setServiceProviderName(String serviceProviderName) {
+		this.serviceProviderName = serviceProviderName;
+	}
+
+	
 }

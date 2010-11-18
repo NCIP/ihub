@@ -27,42 +27,18 @@ public class InvokeMirthHttpListenerTest {
 		method.addParameter("synchronous_msg", synchronousMsg);
 		//method.addParameter("synchronous_msg", "<request><metadata><uid>66b20b26-dc51-11df-9972-ddc780619c0d</uid><sourceformat>XML</sourceformat><targetformat>HL7V3</targetformat></metadata><payload><patient><assigning_authority>NCI</assigning_authority><given_name>John</given_name><family_name>Doe</family_name><birth_date>1965-09-16</birth_date><gender>Male</gender></patient></payload></request>");
 		
-		String coppaCredential = "-----BEGIN CERTIFICATE-----\n"+
-		"MIIDPTCCAiWgAwIBAgIGASwsDWO2MA0GCSqGSIb3DQEBBQUAMGgxDjAMBgNVBAoT\n"+
-		"BWNhQklHMQ8wDQYDVQQLEwZjYUdyaWQxEzARBgNVBAsTClN0YWdlIExPQTExMDAu\n"+
-		"BgNVBAMTJ2NhR3JpZCBTdGFnZSBMT0ExIENlcnRpZmljYXRlIEF1dGhvcml0eTAe\n"+
-		"Fw0xMDExMDgxNTE0MTNaFw0xMDExMDkwMzE0MjNaMF8xDjAMBgNVBAoTBWNhQklH\n"+
-		"MQ8wDQYDVQQLEwZjYUdyaWQxEzARBgNVBAsTClN0YWdlIExPQTExDzANBgNVBAsT\n"+
-		"BkRvcmlhbjEWMBQGA1UEAxMNY29wcGFncmlkdGVzdDCBnzANBgkqhkiG9w0BAQEF\n"+
-		"AAOBjQAwgYkCgYEAu8+faSk5w8Uu5pxusKDXw25rTIq2F7YPZTvGQY5f5kvlbDdP\n"+
-		"GZGHwnMF9nTY+F7wx2mG4poNUKiN0q1AYckI8GO2e+2SjISVKqHi80vblkYe/en0\n"+
-		"fcYVYNWeoKaGQEx0Ra/32q7KjaXXTdC1ECAihxBJ/NH4EZ6e4zaxf5UmFnMCAwEA\n"+
-		"AaN6MHgwDAYDVR0TAQH/BAIwADAOBgNVHQ8BAf8EBAMCBPAwHQYDVR0OBBYEFGlc\n"+
-		"pFuW2kbVrU3CBXsVeZiwvZgLMB8GA1UdIwQYMBaAFKNUEKgFN6of0E6hNwbGH9gZ\n"+
-		"XseyMBgGA1UdIAQRMA8wDQYLYIZIAYb5WwMaAwIwDQYJKoZIhvcNAQEFBQADggEB\n"+
-		"ADhHQCeabWFEbGRxteE/Ukv6+DIuolsQhDs5PPbl5iHiEEYHw/yHvZc5x46r9v2W\n"+
-		"4sUT5GppJYBFmbwGfTbbx2+Qqrq27S4IEWrQNu7FJXdGSghH4AkgrMibCvFyxf0n\n"+
-		"3OAa/JML/VKbeq28ZKddV72CwcNFQQxC5iIj9zAcLUVkTCRxvsP6+v/6P2XKaU9A\n"+
-		"+SXb2yCXn2rP3KZ6JMiGE6D5aIk6JVLYitnVz9LCbG8ly0hj+5zc4Sp7dIf3Nz3n\n"+
-		"wimDzVOMp6eEEakRIDXqMX5vPZB0X/32PXn2Rzn6jJ/dPExEzr++BR/EY/egwRyK\n"+
-		"hZAcNdgTus00/4/hSxp3GE4=\n"+
-		"-----END CERTIFICATE-----\n"+
-		"-----BEGIN RSA PRIVATE KEY-----\n"+
-		"MIICXgIBAAKBgQC7z59pKTnDxS7mnG6woNfDbmtMirYXtg9lO8ZBjl/mS+VsN08Z\n"+
-		"kYfCcwX2dNj4XvDHaYbimg1QqI3SrUBhyQjwY7Z77ZKMhJUqoeLzS9uWRh796fR9\n"+
-		"xhVg1Z6gpoZATHRFr/farsqNpddN0LUQICKHEEn80fgRnp7jNrF/lSYWcwIDAQAB\n"+
-		"AoGBAJ82xccaodOq57WsS9IEqKUOiHvc4716I9cIM2wDzJypHpb81FuymcpoRFfI\n"+
-		"et8jbS8/8I9NVZhZK9G7+eZrzNy5hSnngx0atO0BVoTHfySCSnfTEWZxGLFq7alF\n"+
-		"UVnS8cmyqXQq90pX25ueJOPjS7YVW4JS10WfYEfL3BKV1u7xAkEA2+WpQ32/4jEG\n"+
-		"eYBfkPzWg0iokpXFf0R5uSQTe2LzubFeXgxHHyziEhdBhAUp8J3mXE/vUsAcDtCA\n"+
-		"YSFUn/glHwJBANqlX8CEO0JYmsn0fwp3LycPwVTuctD/pq/QCyjb2GjLmaPCNCsf\n"+
-		"UYICqSjKPxQRESpMM7ZgM5t7mNPnqvZ2cC0CQQCj/odZmjK8kitt+dtL2gRxLILr\n"+
-		"r173Jy5QcSNGZem2lxz1rtpr2aFQNJ/bwa4hkOD3/3VQlY1XTxAvYBgopXupAkEA\n"+
-		"nByhzmpbiVaMRpAcuRM6BpDYQFT0g8dVc4h+v1ChJsngTC1YZEW7Q7G0qBwnh6Nb\n"+
-		"9zBrZ9cuYeCQ0RRDXDBajQJAE4loW2Ee+NeoCnwWAlCJ4aLpK+Qzw+GIVhJK35UY\n"+
-		"0sLhJ7Yg+ZlrnRon7XU4xeIMh/OHmcKgn6klrxea60UYKA==\n"+
-		"-----END RSA PRIVATE KEY-----";
-		method.addParameter("coppa_user_credential", coppaCredential);
+		String coppaCredential = "<ns1:DelegatedCredentialReference xmlns:ns1=\"http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types\">" +
+		"<ns2:EndpointReference xsi:type=\"ns2:EndpointReferenceType\" xmlns:ns2=\"http://schemas.xmlsoap.org/ws/2004/03/addressing\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">" +
+		"<ns2:Address xsi:type=\"ns2:AttributedURI\">https://cagrid-cds-stage.nci.nih.gov:8443/wsrf/services/cagrid/DelegatedCredential</ns2:Address>" +
+		"<ns2:ReferenceProperties xsi:type=\"ns2:ReferencePropertiesType\">" +
+		"<ns2:DelegatedCredentialKey xmlns:ns2=\"http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential\">" +
+		"<ns3:delegationId xmlns:ns3=\"http://gaards.cagrid.org/cds\">11909</ns3:delegationId>" +
+		"</ns2:DelegatedCredentialKey>" +
+		"</ns2:ReferenceProperties>" +
+		"<ns2:ReferenceParameters xsi:type=\"ns2:ReferenceParametersType\"/>" +
+		"</ns2:EndpointReference>" +
+		"</ns1:DelegatedCredentialReference>";
+		method.addParameter("coppa_delegated_credential_ref", coppaCredential);
 		method.addRequestHeader("mirth.http.user", "tomcatuser");
 		method.addRequestHeader("mirth.http.password", "changeme");
 

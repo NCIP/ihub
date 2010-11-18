@@ -57,5 +57,9 @@ public class HubConstants {
 	public static final String PERMISSION_DENIED_FAULT = "503";
 	public static final String PAYLOAD_VALIDATION_EXCEPTION = "600";
 	public static final String ERROR_GETTING_METADATA = "650";
+	
+	//service types
+	public static final String SERVICE_TYPE_PERSON = "PERSON";
+	public static final String SERVICE_YYPE_ORGANIZATION = "ORGANIZATION";
 
 }
