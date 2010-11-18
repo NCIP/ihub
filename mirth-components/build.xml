@@ -3,7 +3,7 @@
 
 	<!-- deployment properties  -->
 	<property file="local.build.properties"/>
-	<property name="mirth.home" value="C:/Tools/Mirth" />
+	<property name="mirth.home" value="${mirth.home}" />
 	
 	<property name="root.project.name" value="ihub-mirth-components" />
 
@@ -50,11 +50,11 @@
 		</copy>
 		
 		<!-- copy the Mirth Log4J properties so they will be included in jar -->
-		<copy todir="${classes.dir}">
+		<!--<copy todir="${classes.dir}">
 		    <fileset dir="${mirth.home}/conf">
 		        <include name="log4j.properties" />
 		    </fileset>
-		</copy>
+		</copy>-->
 	</target>	
 
 	<target name="makejar" depends="compile" description="Create ihub-mirth-components.jar ">		
