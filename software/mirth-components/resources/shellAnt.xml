@@ -306,11 +306,10 @@
 			</path>
 			<sequential>
 				<echo message="Importing Channel @{file}"/>
-				<mirth:import user="${user}" password="${password}" server="${server}" type="channel" filename="@{file}"/>
-				<mirth:deploy user="${user}" password="${password}" server="${server}" timeout="${timeout}"/>
+				<mirth:import user="${user}" password="${password}" server="${server}" type="channel" filename="@{file}"/>				
 			</sequential>
 		</for>
-				
+		<mirth:deploy user="${user}" password="${password}" server="${server}" timeout="${timeout}"/>		
 		<mirth:status user="${user}" password="${password}" server="${server}"/>
 		<echo/>
 	</target>
