@@ -121,8 +121,8 @@ tomcat.grid.secure.key.location=Location of the host key file
 ## SYNCHRONOUS INTERFACE ######
 ###############################
 #Connection information for caXchange http binding component basic authentication. Values should exist on the server side in <SERVICEMIX_HOME>/conf/users-passwords and <SERVICEMIX_HOME>/conf/users-credentials files
-httpbc.caxchange.user=User name
-httpbc.caxchange.password=Password
+#httpbc.caxchange.user=User name
+#httpbc.caxchange.password=Password
 #URL, timeout and soap version for the synchronous communication between the caGrid inbound service and Apache Servicemix.
 #synchronous.caxchange.serviceURL=The url for the http binding component used for synchronous invocation.
 synchronous.caxchange.service.client.timeout=Timeout for synchronous invocation
