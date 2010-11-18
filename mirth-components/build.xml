@@ -74,6 +74,11 @@
 				<include name="**/*.*" />				
 			</fileset>
 		</copy>
+		<copy todir="${dist.dir}/lib">
+			<fileset dir="${lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
 	</target>
 
 	<target name="mirth.clean">
