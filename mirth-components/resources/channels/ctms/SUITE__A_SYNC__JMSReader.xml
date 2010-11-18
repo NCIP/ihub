@@ -1,0 +1,714 @@
+<com.webreach.mirth.model.Channel>
+  <id>e9bbc6b7-cbac-413d-9b64-5dbe390a2739</id>
+  <name>SUITE__A_SYNC__JMSReader</name>
+  <description></description>
+  <enabled>true</enabled>
+  <version>1.8.2</version>
+  <lastModified>
+    <time>1289940057796</time>
+    <timezone>America/New_York</timezone>
+  </lastModified>
+  <revision>134</revision>
+  <sourceConnector>
+    <name>sourceConnector</name>
+    <properties>
+      <property name="clientId"></property>
+      <property name="useJndi">0</property>
+      <property name="durable">0</property>
+      <property name="selector"></property>
+      <property name="connectionFactoryClass">org.apache.activemq.ActiveMQConnectionFactory</property>
+      <property name="username">user</property>
+      <property name="specification">1.1</property>
+      <property name="connectionFactoryProperties">&lt;properties&gt;
+  &lt;property name=&quot;brokerURL&quot;&gt;tcp://localhost:61616&lt;/property&gt;
+&lt;/properties&gt;</property>
+      <property name="acknowledgementMode">1</property>
+      <property name="DataType">JMS Reader</property>
+      <property name="password">password</property>
+      <property name="host">caxchangeInboundQueue</property>
+    </properties>
+    <transformer>
+      <steps>
+        <com.webreach.mirth.model.Step>
+          <sequenceNumber>0</sequenceNumber>
+          <name>Namespace setting</name>
+          <script>default xml namespace = &quot;http://caXchange.nci.nih.gov/messaging&quot;</script>
+          <type>JavaScript</type>
+          <data class="map">
+            <entry>
+              <string>Script</string>
+              <string>default xml namespace = &quot;http://caXchange.nci.nih.gov/messaging&quot;</string>
+            </entry>
+          </data>
+        </com.webreach.mirth.model.Step>
+        <com.webreach.mirth.model.Step>
+          <sequenceNumber>1</sequenceNumber>
+          <name>ns1metadata_ns1caxchangeidentifier</name>
+          <script>var mapping;try { mapping = msg[&apos;metadata&apos;][&apos;caXchangeIdentifier&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;ns1metadata_ns1caxchangeidentifier&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+          <type>Mapper</type>
+          <data class="map">
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;metadata&apos;][&apos;caXchangeIdentifier&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>Variable</string>
+              <string>ns1metadata_ns1caxchangeidentifier</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>isGlobal</string>
+              <string>channel</string>
+            </entry>
+          </data>
+        </com.webreach.mirth.model.Step>
+        <com.webreach.mirth.model.Step>
+          <sequenceNumber>2</sequenceNumber>
+          <name>ns1metadata</name>
+          <script>var mapping;try { mapping = msg[&apos;metadata&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;ns1metadata&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+          <type>Mapper</type>
+          <data class="map">
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;metadata&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>Variable</string>
+              <string>ns1metadata</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>isGlobal</string>
+              <string>channel</string>
+            </entry>
+          </data>
+        </com.webreach.mirth.model.Step>
+        <com.webreach.mirth.model.Step>
+          <sequenceNumber>3</sequenceNumber>
+          <name>ns1request_ns1businessmessagepayload_ns1xmlschemadefinition</name>
+          <script>var mapping;try { mapping = msg[&apos;request&apos;][&apos;businessMessagePayload&apos;][&apos;xmlSchemaDefinition&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+          <type>Mapper</type>
+          <data class="map">
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;request&apos;][&apos;businessMessagePayload&apos;][&apos;xmlSchemaDefinition&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>Variable</string>
+              <string>ns1request_ns1businessmessagepayload_ns1xmlschemadefinition</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>isGlobal</string>
+              <string>channel</string>
+            </entry>
+          </data>
+        </com.webreach.mirth.model.Step>
+        <com.webreach.mirth.model.Step>
+          <sequenceNumber>4</sequenceNumber>
+          <name>ns1request_ns1businessmessagepayload</name>
+          <script>var mapping;try { mapping = msg[&apos;request&apos;][&apos;businessMessagePayload&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;ns1request_ns1businessmessagepayload&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+          <type>Mapper</type>
+          <data class="map">
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;request&apos;][&apos;businessMessagePayload&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>Variable</string>
+              <string>ns1request_ns1businessmessagepayload</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>isGlobal</string>
+              <string>channel</string>
+            </entry>
+          </data>
+        </com.webreach.mirth.model.Step>
+        <com.webreach.mirth.model.Step>
+          <sequenceNumber>5</sequenceNumber>
+          <name>ns1metadata_ns1servicetype</name>
+          <script>var mapping;try { mapping = msg[&apos;metadata&apos;][&apos;serviceType&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;ns1metadata_ns1servicetype&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+          <type>Mapper</type>
+          <data class="map">
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;metadata&apos;][&apos;serviceType&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>Variable</string>
+              <string>ns1metadata_ns1servicetype</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>isGlobal</string>
+              <string>channel</string>
+            </entry>
+          </data>
+        </com.webreach.mirth.model.Step>
+        <com.webreach.mirth.model.Step>
+          <sequenceNumber>6</sequenceNumber>
+          <name>ns1metadata_ns1externalidentifier</name>
+          <script>var mapping;try { mapping = msg[&apos;metadata&apos;][&apos;externalIdentifier&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;ns1metadata_ns1externalidentifier&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+          <type>Mapper</type>
+          <data class="map">
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;metadata&apos;][&apos;externalIdentifier&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>Variable</string>
+              <string>ns1metadata_ns1externalidentifier</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>isGlobal</string>
+              <string>channel</string>
+            </entry>
+          </data>
+        </com.webreach.mirth.model.Step>
+        <com.webreach.mirth.model.Step>
+          <sequenceNumber>7</sequenceNumber>
+          <name>ns1metadata_ns1credentials_ns1delegatedcredentialreference</name>
+          <script>var mapping;try { mapping = msg[&apos;metadata&apos;][&apos;credentials&apos;][&apos;delegatedCredentialReference&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;ns1metadata_ns1credentials_ns1delegatedcredentialreference&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+          <type>Mapper</type>
+          <data class="map">
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;metadata&apos;][&apos;credentials&apos;][&apos;delegatedCredentialReference&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>Variable</string>
+              <string>ns1metadata_ns1credentials_ns1delegatedcredentialreference</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>isGlobal</string>
+              <string>channel</string>
+            </entry>
+          </data>
+        </com.webreach.mirth.model.Step>
+      </steps>
+      <inboundTemplate>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#x0D;
+&lt;ns1:caXchangeRequestMessage xmlns:ns1=&quot;http://caXchange.nci.nih.gov/messaging&quot;&gt;&#x0D;
+ &lt;ns1:metadata&gt;&#x0D;
+  &lt;ns1:transactionControl xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:nil=&quot;true&quot;/&gt;&#x0D;
+  &lt;ns1:serviceType&gt;REGISTER_SUBJECT&lt;/ns1:serviceType&gt;&#x0D;
+  &lt;ns1:externalIdentifier&gt;myExternalIdentifier&lt;/ns1:externalIdentifier&gt;&#x0D;
+  &lt;ns1:caXchangeIdentifier&gt;d9491370-ac8f-11df-bdb2-e8f0d13a300b&lt;/ns1:caXchangeIdentifier&gt;&#x0D;
+  &lt;ns1:credentials&gt;&#x0D;
+   &lt;ns1:userName&gt;cctsdev1&lt;/ns1:userName&gt;&#x0D;
+   &lt;ns1:gridIdentifier&gt;/O=caBIG/OU=caGrid/OU=Stage LOA1/OU=Dorian/CN=cctsdev1&lt;/ns1:gridIdentifier&gt;&#x0D;
+   &lt;ns1:password&gt;An010101!!&lt;/ns1:password&gt;&#x0D;
+   &lt;ns1:delegatedCredentialReference&gt;&amp;lt;ns1:DelegatedCredentialReference xmlns:ns1=&quot;http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types&quot;&amp;gt;&#x0D;
+ &amp;lt;ns2:EndpointReference xsi:type=&quot;ns2:EndpointReferenceType&quot; xmlns:ns2=&quot;http://schemas.xmlsoap.org/ws/2004/03/addressing&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&amp;gt;&#x0D;
+  &amp;lt;ns2:Address xsi:type=&quot;ns2:AttributedURI&quot;&amp;gt;https://cagrid-cds-stage.nci.nih.gov:8443/wsrf/services/cagrid/DelegatedCredential&amp;lt;/ns2:Address&amp;gt;&#x0D;
+  &amp;lt;ns2:ReferenceProperties xsi:type=&quot;ns2:ReferencePropertiesType&quot;&amp;gt;&#x0D;
+   &amp;lt;ns2:DelegatedCredentialKey xmlns:ns2=&quot;http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential&quot;&amp;gt;&#x0D;
+    &amp;lt;ns3:delegationId xmlns:ns3=&quot;http://gaards.cagrid.org/cds&quot;&amp;gt;7898&amp;lt;/ns3:delegationId&amp;gt;&#x0D;
+   &amp;lt;/ns2:DelegatedCredentialKey&amp;gt;&#x0D;
+  &amp;lt;/ns2:ReferenceProperties&amp;gt;&#x0D;
+  &amp;lt;ns2:ReferenceParameters xsi:type=&quot;ns2:ReferenceParametersType&quot;/&amp;gt;&#x0D;
+ &amp;lt;/ns2:EndpointReference&amp;gt;&#x0D;
+&amp;lt;/ns1:DelegatedCredentialReference&amp;gt;&#x0D;
+&lt;/ns1:delegatedCredentialReference&gt;&#x0D;
+  &lt;/ns1:credentials&gt;&#x0D;
+ &lt;/ns1:metadata&gt;&#x0D;
+ &lt;ns1:request&gt;&#x0D;
+  &lt;ns1:businessMessagePayload&gt;&#x0D;
+   &lt;ns1:xmlSchemaDefinition&gt;gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain&lt;/ns1:xmlSchemaDefinition&gt;&#x0D;
+   &lt;registration xmlns=&quot;gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain&quot; xmlns:c3pr=&quot;gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; gridId=&quot;d9a8e595-d0b1-4404-8eab-1bc2238cec35&quot;&gt;&#x0D;
+				   &lt;studySite&gt;&#x0D;
+					   &lt;healthcareSite&gt;&#x0D;
+						   &lt;name&gt;National Cancer Institute&lt;/name&gt;&#x0D;
+&#x0D;
+						   &lt;address&gt;&#x0D;
+							   &lt;streetAddress&gt;6116 Executive Boulevard&lt;/streetAddress&gt;&#x0D;
+&#x0D;
+							   &lt;city&gt;Bethesda&lt;/city&gt;&#x0D;
+&#x0D;
+							   &lt;stateCode&gt;MD&lt;/stateCode&gt;&#x0D;
+&#x0D;
+							   &lt;postalCode&gt;20892&lt;/postalCode&gt;&#x0D;
+&#x0D;
+							   &lt;countryCode&gt;USA&lt;/countryCode&gt;&#x0D;
+&#x0D;
+						&lt;/address&gt;&#x0D;
+&#x0D;
+						   &lt;nciInstituteCode&gt;NCI&lt;/nciInstituteCode&gt;&#x0D;
+&#x0D;
+					&lt;/healthcareSite&gt;&#x0D;
+&#x0D;
+				&lt;/studySite&gt;&#x0D;
+&#x0D;
+				   &lt;studyRef&gt;&#x0D;
+					   &lt;identifier xsi:type=&quot;OrganizationAssignedIdentifierType&quot;&gt;&#x0D;
+						   &lt;type&gt;Coordinating Center Identifier&lt;/type&gt;&#x0D;
+&#x0D;
+						   &lt;value&gt;SMOKE_TEST&lt;/value&gt;&#x0D;
+&#x0D;
+						   &lt;primaryIndicator&gt;true&lt;/primaryIndicator&gt;&#x0D;
+&#x0D;
+						   &lt;healthcareSite&gt;&#x0D;
+							   &lt;name&gt;National Cancer Institute&lt;/name&gt;&#x0D;
+&#x0D;
+							   &lt;address&gt;&#x0D;
+								   &lt;streetAddress&gt;6116 Executive Boulevard&lt;/streetAddress&gt;&#x0D;
+&#x0D;
+								   &lt;city&gt;Bethesda&lt;/city&gt;&#x0D;
+&#x0D;
+								   &lt;stateCode&gt;MD&lt;/stateCode&gt;&#x0D;
+&#x0D;
+								   &lt;postalCode&gt;20892&lt;/postalCode&gt;&#x0D;
+&#x0D;
+								   &lt;countryCode&gt;USA&lt;/countryCode&gt;&#x0D;
+&#x0D;
+							&lt;/address&gt;&#x0D;
+&#x0D;
+							   &lt;nciInstituteCode&gt;NCI&lt;/nciInstituteCode&gt;&#x0D;
+&#x0D;
+						&lt;/healthcareSite&gt;&#x0D;
+&#x0D;
+					&lt;/identifier&gt;&#x0D;
+&#x0D;
+				&lt;/studyRef&gt;&#x0D;
+&#x0D;
+				   &lt;participant gridId=&quot;87615e61-a900-47bc-8d62-3db4c9fa3659&quot;&gt;&#x0D;
+					   &lt;firstName&gt;Saurabh&lt;/firstName&gt;&#x0D;
+&#x0D;
+					   &lt;lastName&gt;Ganguly&lt;/lastName&gt;&#x0D;
+&#x0D;
+					   &lt;address/&gt;&#x0D;
+&#x0D;
+					   &lt;administrativeGenderCode&gt;Male&lt;/administrativeGenderCode&gt;&#x0D;
+&#x0D;
+					   &lt;birthDate&gt;2001-01-01&lt;/birthDate&gt;&#x0D;
+&#x0D;
+					   &lt;ethnicGroupCode&gt;Non Hispanic or Latino&lt;/ethnicGroupCode&gt;&#x0D;
+&#x0D;
+					   &lt;raceCode&gt;Asian : White&lt;/raceCode&gt;&#x0D;
+&#x0D;
+					   &lt;identifier xsi:type=&quot;OrganizationAssignedIdentifierType&quot;&gt;&#x0D;
+						   &lt;type&gt;MRN&lt;/type&gt;&#x0D;
+&#x0D;
+						   &lt;value&gt;6-5-43-43-2&lt;/value&gt;&#x0D;
+&#x0D;
+						   &lt;primaryIndicator&gt;true&lt;/primaryIndicator&gt;&#x0D;
+&#x0D;
+						   &lt;healthcareSite&gt;&#x0D;
+							   &lt;name&gt;M D Anderson Cancer Center&lt;/name&gt;&#x0D;
+&#x0D;
+							   &lt;address&gt;&#x0D;
+								   &lt;city&gt;Houston&lt;/city&gt;&#x0D;
+&#x0D;
+								   &lt;stateCode&gt;TX&lt;/stateCode&gt;&#x0D;
+&#x0D;
+								   &lt;countryCode&gt;USA&lt;/countryCode&gt;&#x0D;
+&#x0D;
+							&lt;/address&gt;&#x0D;
+&#x0D;
+							   &lt;nciInstituteCode&gt;MDA&lt;/nciInstituteCode&gt;&#x0D;
+&#x0D;
+						&lt;/healthcareSite&gt;&#x0D;
+&#x0D;
+					&lt;/identifier&gt;&#x0D;
+&#x0D;
+				&lt;/participant&gt;&#x0D;
+&#x0D;
+				   &lt;startDate&gt;2010-04-16&lt;/startDate&gt;&#x0D;
+&#x0D;
+				   &lt;informedConsentFormSignedDate&gt;2010-04-16&lt;/informedConsentFormSignedDate&gt;&#x0D;
+&#x0D;
+				   &lt;informedConsentVersion&gt;234asdf&lt;/informedConsentVersion&gt;&#x0D;
+&#x0D;
+				   &lt;identifier xsi:type=&quot;SystemAssignedIdentifierType&quot;&gt;&#x0D;
+					   &lt;type&gt;Study Subject Identifier&lt;/type&gt;&#x0D;
+&#x0D;
+					   &lt;value&gt;c3882907-ac9e-4a00-8ab5-c2b219c005c8&lt;/value&gt;&#x0D;
+&#x0D;
+					   &lt;primaryIndicator&gt;false&lt;/primaryIndicator&gt;&#x0D;
+&#x0D;
+					   &lt;systemName&gt;C3PR&lt;/systemName&gt;&#x0D;
+&#x0D;
+				&lt;/identifier&gt;&#x0D;
+&#x0D;
+				   &lt;identifier xsi:type=&quot;OrganizationAssignedIdentifierType&quot;&gt;&#x0D;
+					   &lt;type&gt;COORDINATING_CENTER_ASSIGNED_STUDY_SUBJECT_IDENTIFIER&lt;/type&gt;&#x0D;
+&#x0D;
+					   &lt;value&gt;8&lt;/value&gt;&#x0D;
+&#x0D;
+					   &lt;primaryIndicator&gt;false&lt;/primaryIndicator&gt;&#x0D;
+&#x0D;
+					   &lt;healthcareSite&gt;&#x0D;
+						   &lt;name&gt;National Cancer Institute&lt;/name&gt;&#x0D;
+&#x0D;
+						   &lt;address&gt;&#x0D;
+							   &lt;streetAddress&gt;6116 Executive Boulevard&lt;/streetAddress&gt;&#x0D;
+&#x0D;
+							   &lt;city&gt;Bethesda&lt;/city&gt;&#x0D;
+&#x0D;
+							   &lt;stateCode&gt;MD&lt;/stateCode&gt;&#x0D;
+&#x0D;
+							   &lt;postalCode&gt;20892&lt;/postalCode&gt;&#x0D;
+&#x0D;
+							   &lt;countryCode&gt;USA&lt;/countryCode&gt;&#x0D;
+&#x0D;
+						&lt;/address&gt;&#x0D;
+&#x0D;
+						   &lt;nciInstituteCode&gt;NCI&lt;/nciInstituteCode&gt;&#x0D;
+&#x0D;
+					&lt;/healthcareSite&gt;&#x0D;
+&#x0D;
+				&lt;/identifier&gt;&#x0D;
+&#x0D;
+				   &lt;scheduledEpoch gridId=&quot;866bb881-e2cb-444d-ad21-54d95e5f5d7e&quot; xsi:type=&quot;ScheduledTreatmentEpochType&quot;&gt;&#x0D;
+					   &lt;startDate&gt;2010-04-16&lt;/startDate&gt;&#x0D;
+&#x0D;
+					   &lt;epoch gridId=&quot;866bb881-e2cb-444d-ad21-54d95e5f5d7e&quot; xsi:type=&quot;TreatmentEpochType&quot;&gt;&#x0D;
+						   &lt;name&gt;Ep1&lt;/name&gt;&#x0D;
+&#x0D;
+						   &lt;descriptionText/&gt;&#x0D;
+&#x0D;
+						   &lt;arm gridId=&quot;0914c482-27c0-4ca5-b08a-48e98737d0f3&quot;&gt;&#x0D;
+							   &lt;name&gt;Arm A&lt;/name&gt;&#x0D;
+&#x0D;
+							   &lt;descriptionText/&gt;&#x0D;
+&#x0D;
+							   &lt;targetAccrualNumber&gt;50&lt;/targetAccrualNumber&gt;&#x0D;
+&#x0D;
+						&lt;/arm&gt;&#x0D;
+&#x0D;
+					&lt;/epoch&gt;&#x0D;
+&#x0D;
+					   &lt;scheduledArm&gt;&#x0D;
+						   &lt;arm gridId=&quot;0914c482-27c0-4ca5-b08a-48e98737d0f3&quot;&gt;&#x0D;
+							   &lt;name&gt;Arm A&lt;/name&gt;&#x0D;
+&#x0D;
+							   &lt;descriptionText/&gt;&#x0D;
+&#x0D;
+							   &lt;targetAccrualNumber&gt;50&lt;/targetAccrualNumber&gt;&#x0D;
+&#x0D;
+						&lt;/arm&gt;&#x0D;
+&#x0D;
+					&lt;/scheduledArm&gt;&#x0D;
+&#x0D;
+					   &lt;eligibilityIndicator&gt;true&lt;/eligibilityIndicator&gt;&#x0D;
+&#x0D;
+				&lt;/scheduledEpoch&gt;&#x0D;
+&#x0D;
+			&lt;/registration&gt;&#x0D;
+  &lt;/ns1:businessMessagePayload&gt;&#x0D;
+ &lt;/ns1:request&gt;&#x0D;
+&lt;/ns1:caXchangeRequestMessage&gt;&#x0D;
+</inboundTemplate>
+      <outboundTemplate></outboundTemplate>
+      <inboundProtocol>XML</inboundProtocol>
+      <outboundProtocol>XML</outboundProtocol>
+      <inboundProperties>
+        <property name="stripNamespaces">false</property>
+      </inboundProperties>
+      <outboundProperties>
+        <property name="stripNamespaces">false</property>
+      </outboundProperties>
+    </transformer>
+    <filter>
+      <rules/>
+    </filter>
+    <transportName>JMS Reader</transportName>
+    <mode>SOURCE</mode>
+    <enabled>true</enabled>
+  </sourceConnector>
+  <destinationConnectors>
+    <com.webreach.mirth.model.Connector>
+      <name>Persist Message In Database</name>
+      <properties>
+        <property name="username"></property>
+        <property name="DataType">Database Writer</property>
+        <property name="useScript">1</property>
+        <property name="URL">jdbc:postgresql://host:port/dbname</property>
+        <property name="query"></property>
+        <property name="script">insertIncomingMessageInDB($(&apos;ns1metadata_ns1caxchangeidentifier&apos;), $(&apos;ns1request_ns1businessmessagepayload&apos;), 
+	globalMap.get(&apos;request.message.status.inprocess&apos;), $(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;), $(&apos;ns1metadata&apos;));</property>
+        <property name="password"></property>
+        <property name="host">query</property>
+        <property name="driver">org.postgresql.Driver</property>
+      </properties>
+      <transformer>
+        <steps/>
+        <inboundTemplate></inboundTemplate>
+        <outboundTemplate></outboundTemplate>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">false</property>
+        </inboundProperties>
+        <outboundProperties/>
+      </transformer>
+      <filter>
+        <rules/>
+      </filter>
+      <transportName>Database Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+    </com.webreach.mirth.model.Connector>
+    <com.webreach.mirth.model.Connector>
+      <name>Retrieve Security Subject</name>
+      <properties>
+        <property name="script">var subject = invokeDelegationService($(&apos;ns1metadata_ns1credentials_ns1delegatedcredentialreference&apos;), globalMap.get(&quot;delegation.certificate.file.path&quot;),
+	 globalMap.get(&quot;delegation.key.file.path&quot;), globalMap.get(&quot;target.detail.code.delegation&quot;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
+
+globalMap.put(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;), subject);</property>
+        <property name="DataType">JavaScript Writer</property>
+        <property name="host">sink</property>
+      </properties>
+      <transformer>
+        <steps/>
+        <inboundTemplate></inboundTemplate>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">false</property>
+        </inboundProperties>
+      </transformer>
+      <filter>
+        <rules>
+          <com.webreach.mirth.model.Rule>
+            <sequenceNumber>0</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;ns1metadata_ns1servicetype&apos;)&quot; equals &quot;REGISTER_SUBJECT&quot;</name>
+            <data class="map">
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>&quot;REGISTER_SUBJECT&quot;</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;ns1metadata_ns1servicetype&apos;)</string>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Accept</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;ns1metadata_ns1servicetype&apos;) == &quot;REGISTER_SUBJECT&quot;)
+{
+return true;
+}
+return false;</script>
+            <operator>NONE</operator>
+          </com.webreach.mirth.model.Rule>
+        </rules>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+    </com.webreach.mirth.model.Connector>
+    <com.webreach.mirth.model.Connector>
+      <name>Suite Broadcaster</name>
+      <properties>
+        <property name="DataType">Channel Writer</property>
+        <property name="synchronised">1</property>
+        <property name="template">${message.encodedData}</property>
+        <property name="host">afe931ad-7ed6-4894-b755-aaf7d5c2a492</property>
+      </properties>
+      <transformer>
+        <steps/>
+        <inboundTemplate></inboundTemplate>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">false</property>
+        </inboundProperties>
+      </transformer>
+      <filter>
+        <rules>
+          <com.webreach.mirth.model.Rule>
+            <sequenceNumber>0</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;ns1metadata_ns1servicetype&apos;)&quot; equals &quot;REGISTER_SUBJECT&quot;</name>
+            <data class="map">
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>&quot;REGISTER_SUBJECT&quot;</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;ns1metadata_ns1servicetype&apos;)</string>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Accept</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;ns1metadata_ns1servicetype&apos;) == &quot;REGISTER_SUBJECT&quot;)
+{
+return true;
+}
+return false;</script>
+            <operator>NONE</operator>
+          </com.webreach.mirth.model.Rule>
+        </rules>
+      </filter>
+      <transportName>Channel Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+    </com.webreach.mirth.model.Connector>
+    <com.webreach.mirth.model.Connector>
+      <name>Suite Outbound JMS Writer</name>
+      <properties>
+        <property name="DataType">Channel Writer</property>
+        <property name="synchronised">1</property>
+        <property name="template">${message.encodedData}</property>
+        <property name="host">b5146b95-5701-42eb-84b9-cdb6b6d88749</property>
+      </properties>
+      <transformer>
+        <steps/>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">false</property>
+        </inboundProperties>
+      </transformer>
+      <filter>
+        <rules/>
+      </filter>
+      <transportName>Channel Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+    </com.webreach.mirth.model.Connector>
+  </destinationConnectors>
+  <properties>
+    <property name="initialState">started</property>
+    <property name="synchronous">true</property>
+    <property name="store_messages">true</property>
+    <property name="encryptData">false</property>
+    <property name="transactional">false</property>
+    <property name="max_message_age">-1</property>
+    <property name="dont_store_filtered">false</property>
+    <property name="error_messages_only">false</property>
+  </properties>
+  <preprocessingScript>// Modify the message variable below to pre process data
+return message;</preprocessingScript>
+  <postprocessingScript>// This script executes once after a message has been processed
+return;</postprocessingScript>
+  <deployScript>// This script executes once when the mule engine is started
+// You only have access to the globalMap here to persist data
+/*
+globalMap.put(&quot;delegation.certificate.file.path&quot;,&quot;C:/projects_svn/caBIGIntegrationHub/common/resources/ihub/ncias-c278-v.nci.nih.gov-cert.pem&quot;);
+globalMap.put(&quot;delegation.key.file.path&quot;,&quot;C:/projects_svn/caBIGIntegrationHub/common/resources/ihub/ncias-c278-v.nci.nih.gov-key.pem&quot;);
+globalMap.put(&quot;user.proxy.cache.time.to.live&quot;,600);
+globalMap.put(&quot;caaers.registration.url&quot;,&quot;https://ncias-d282-v.nci.nih.gov:29543/wsrf-caaers/services/cagrid/RegistrationConsumer&quot;);
+globalMap.put(&quot;ctom.registration.url&quot;,&quot;https://ncias-d282-v.nci.nih.gov:29543/ctom-wsrf/services/cagrid/RegistrationConsumer&quot;);
+globalMap.put(&quot;psc.registration.url&quot;,&quot;https://ncias-d282-v.nci.nih.gov:29543/wsrf-psc/services/cagrid/RegistrationConsumer&quot;);
+globalMap.put(&quot;target.grid.service.retry.attempts&quot;,3);
+
+//UPDATE THE COUNT IF THE DESTINATION BROADCAST COUNT IS CHANGED FROM DEFAULT
+globalMap.put(&quot;register.subject.active.destination.count&quot;,2);
+
+// ####### START VARIABLES REQUIRED FOR SUITE AND NOT CONFIGURABLE ######
+//request message status
+globalMap.put(&quot;request.message.status.open&quot;,&quot;OPEN&quot;);
+globalMap.put(&quot;request.message.status.inprocess&quot;,&quot;IN_PROCESS&quot;);
+globalMap.put(&quot;request.message.status.processed&quot;,&quot;PROCESSED&quot;);
+globalMap.put(&quot;request.message.status.responsereturned&quot;,&quot;RESPONSE_RETURNED&quot;);
+//target details - name
+globalMap.put(&quot;target.detail.code.caaers&quot;,&quot;caAERS&quot;);
+globalMap.put(&quot;target.detail.code.psc&quot;,&quot;PSC&quot;);
+globalMap.put(&quot;target.detail.code.ctom&quot;,&quot;CTOM&quot;);
+globalMap.put(&quot;target.detail.code.c3pr&quot;,&quot;C3PR&quot;);
+globalMap.put(&quot;target.detail.code.delegation&quot;,&quot;DELEGATION&quot;);
+
+//target response status
+globalMap.put(&quot;target.response.status.successful&quot;,&quot;SUCCESSFUL&quot;);
+globalMap.put(&quot;target.response.status.fault&quot;,&quot;FAULT&quot;);
+globalMap.put(&quot;target.response.status.timeout&quot;,&quot;TIMEOUT&quot;);
+//overall response status
+globalMap.put(&quot;overall.response.status.success&quot;,&quot;SUCCESS&quot;);
+globalMap.put(&quot;overall.response.status.failure&quot;,&quot;FAILURE&quot;);
+
+// ######## END VARIABLES REQUIRED FOR SUITE AND NOT CONFIGURABLE ########
+
+*/
+
+return;</deployScript>
+  <shutdownScript>// This script executes once when the mule engine is stopped
+// You only have access to the globalMap here to persist data
+return;</shutdownScript>
+</com.webreach.mirth.model.Channel>
