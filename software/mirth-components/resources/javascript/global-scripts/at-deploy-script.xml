@@ -11,7 +11,7 @@
 			globalMap.put("caAERS.registration.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-caaers/services/cagrid/registrationconsumer");
 			globalMap.put("CTOM.registration.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/ctom-wsrf/services/cagrid/registrationconsumer");
 			globalMap.put("PSC.registration.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-psc/services/cagrid/registrationconsumer");
-			globalMap.put("register.subject.active.destination.count";,3);
+			globalMap.put("register.subject.active.destination.count",3);
 			
 			globalMap.put("caAERS.study.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-caaers/services/cagrid/studyconsumer");
 			globalMap.put("CTOM.study.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/ctom-wsrf/services/cagrid/studyconsumer");
@@ -31,19 +31,19 @@
 			
 
 			// #########  ACTIVE MQ PROPERTIES - NEED NOT BE TOKENIZED SINCE CHANNELS CANNOT GET THESE VALUES USING VARIABLES ##########
-			globalMap.put(&quot;amq.ihub.host&quot;,&quot;localhost&quot;);
-			globalMap.put(&quot;amq.ihub.port&quot;,&quot;61616&quot;);
-			globalMap.put(&quot;amq.ihub.user&quot;,&quot;user&quot;);
-			globalMap.put(&quot;amq.ihub.password&quot;,&quot;password&quot;);
-			globalMap.put(&quot;amq.ihub.inbound.queue.name&quot;,&quot;caxchangeInboundQueue&quot;);
-			globalMap.put(&quot;amq.ihub.outbound.queue.name&quot;,&quot;caxchangeOutboundQueue&quot;);
+			globalMap.put("amq.ihub.host","localhost");
+			globalMap.put("amq.ihub.port","61616");
+			globalMap.put("amq.ihub.user","user");
+			globalMap.put("amq.ihub.password","password");
+			globalMap.put("amq.ihub.inbound.queue.name","caxchangeInboundQueue");
+			globalMap.put("amq.ihub.outbound.queue.name","caxchangeOutboundQueue");
 
 			// #########  DATABASE PROPERTIES ##########
-			globalMap.put(&quot;database.driver&quot;,&quot;org.postgresql.Driver&quot;);
-			globalMap.put(&quot;database.url&quot;,&quot;jdbc:postgresql://localhost:5432/mirth&quot;);
-			globalMap.put(&quot;database.username&quot;,&quot;mirthadmin&quot;);
-			globalMap.put(&quot;database.password&quot;,&quot;changeme&quot;);
-			globalMap.put(&quot;database.date.function&quot;,&quot;now()&quot;);
+			globalMap.put("database.driver","org.postgresql.Driver");
+			globalMap.put("database.url","jdbc:postgresql://localhost:5432/mirth");
+			globalMap.put("database.username","mirthadmin");
+			globalMap.put("database.password","changeme");
+			globalMap.put("database.date.function","now()");
 
 			
 			// ####### START VARIABLES REQUIRED FOR SUITE AND NOT CONFIGURABLE ######
@@ -69,10 +69,10 @@
 
 			/*
 			var coppaPersonStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
-			coppaPersonStrategy.setServiceUrl(globalMap.get(&quot;coppa.person.url&quot;));
-			coppaPersonStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.entities.person.client.PersonClient&quot;);
+			coppaPersonStrategy.setServiceUrl(globalMap.get("coppa.person.url"));
+			coppaPersonStrategy.setGridClientClassName("gov.nih.nci.coppa.services.entities.person.client.PersonClient");
 			coppaPersonStrategy.init();
-			globalMap.put(&quot;coppaPersonStrategy&quot;, coppaPersonStrategy);
+			globalMap.put("coppaPersonStrategy", coppaPersonStrategy);
 			*/
 			// ######## END VARIABLES REQUIRED FOR SUITE AND NOT CONFIGURABLE ########
 
