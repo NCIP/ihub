@@ -1,0 +1,540 @@
+<com.webreach.mirth.model.Channel>
+  <id>70715630-e956-40af-aecc-43ec08dec773</id>
+  <name>HttpTransformationService</name>
+  <description></description>
+  <enabled>false</enabled>
+  <version>1.8.2</version>
+  <lastModified>
+    <time>1289231274750</time>
+    <timezone>America/New_York</timezone>
+  </lastModified>
+  <revision>17</revision>
+  <sourceConnector>
+    <name>sourceConnector</name>
+    <properties>
+      <property name="payloadEncoding">None</property>
+      <property name="bufferSize">65536</property>
+      <property name="port">80</property>
+      <property name="appendPayload">0</property>
+      <property name="DataType">HTTP Listener</property>
+      <property name="keepAliveTimeout">5000</property>
+      <property name="extendedPayload">1</property>
+      <property name="host">127.0.0.1</property>
+      <property name="keepAlive">0</property>
+      <property name="responseValue">SOAPResponse</property>
+    </properties>
+    <transformer>
+      <steps>
+        <com.webreach.mirth.model.Step>
+          <sequenceNumber>0</sequenceNumber>
+          <name>Extract Message</name>
+          <script>var nonencodedSyncMsg = Packages.java.net.URLDecoder.decode(msg[&apos;synchronous_msg&apos;].toString());
+
+//var reqXML = SerializerFactory.getHL7Serializer(false, false, false).toXML(nonencodedhl7);
+msg = new XML(nonencodedSyncMsg);</script>
+          <type>JavaScript</type>
+          <data class="map">
+            <entry>
+              <string>Script</string>
+              <string>var nonencodedSyncMsg = Packages.java.net.URLDecoder.decode(msg[&apos;synchronous_msg&apos;].toString());
+
+//var reqXML = SerializerFactory.getHL7Serializer(false, false, false).toXML(nonencodedhl7);
+msg = new XML(nonencodedSyncMsg);</string>
+            </entry>
+          </data>
+        </com.webreach.mirth.model.Step>
+      </steps>
+      <inboundTemplate>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#x0D;
+&lt;message&gt;&#x0D;
+    &lt;synchronous_msg&gt;%3Crequest%3E%3Cmetadata%3E%3Cuid%3E66b20b26-dc51-11df-9972-ddc780619c0d%3C%2Fuid%3E%3Csourceformat%3EDELIMITED%3C%2Fsourceformat%3E%3Ctargetformat%3EHL7V3%3C%2Ftargetformat%3E%3C%2Fmetadata%3E%3Cpayload%3ESantosh%2CGiambi%2C08%2F20%2F1968%2CMale%2CDuke%3C%2Fpayload%3E%3C%2Frequest%3E&lt;/synchronous_msg&gt;&#x0D;
+    &lt;http.version&gt;HTTP/1.1&lt;/http.version&gt;&#x0D;
+    &lt;Content-Length&gt;301&lt;/Content-Length&gt;&#x0D;
+    &lt;User-Agent&gt;Test Client&lt;/User-Agent&gt;&#x0D;
+    &lt;Host&gt;localhost&lt;/Host&gt;&#x0D;
+    &lt;http.method&gt;POST&lt;/http.method&gt;&#x0D;
+    &lt;http.request&gt;/&lt;/http.request&gt;&#x0D;
+    &lt;Content-Type&gt;application/x-www-form-urlencoded&lt;/Content-Type&gt;&#x0D;
+    &lt;mirth.http.password&gt;changeme&lt;/mirth.http.password&gt;&#x0D;
+    &lt;mirth.http.user&gt;tomcatuser&lt;/mirth.http.user&gt;&#x0D;
+&lt;/message&gt;</inboundTemplate>
+      <outboundTemplate></outboundTemplate>
+      <inboundProtocol>XML</inboundProtocol>
+      <outboundProtocol>XML</outboundProtocol>
+      <inboundProperties/>
+      <outboundProperties/>
+    </transformer>
+    <filter>
+      <rules>
+        <com.webreach.mirth.model.Rule>
+          <sequenceNumber>0</sequenceNumber>
+          <name>Accept message if &quot;mirth.http.user&quot; equals globalMap.get(&apos;mirth.http.user.tomcat&apos;)</name>
+          <data class="map">
+            <entry>
+              <string>OriginalField</string>
+              <string>msg[&apos;mirth.http.user&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>Values</string>
+              <list>
+                <string>globalMap.get(&apos;mirth.http.user.tomcat&apos;)</string>
+              </list>
+            </entry>
+            <entry>
+              <string>Equals</string>
+              <string>1</string>
+            </entry>
+            <entry>
+              <string>Field</string>
+              <string>msg[&apos;mirth.http.user&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>Name</string>
+              <string>mirth.http.user</string>
+            </entry>
+            <entry>
+              <string>Accept</string>
+              <string>1</string>
+            </entry>
+          </data>
+          <type>Rule Builder</type>
+          <script>if(msg[&apos;mirth.http.user&apos;].toString() == globalMap.get(&apos;mirth.http.user.tomcat&apos;))
+{
+return true;
+}
+return false;</script>
+          <operator>NONE</operator>
+        </com.webreach.mirth.model.Rule>
+        <com.webreach.mirth.model.Rule>
+          <sequenceNumber>1</sequenceNumber>
+          <name>Accept message if &quot;mirth.http.password&quot; equals globalMap.get(&apos;mirth.http.password.tomcat&apos;)</name>
+          <data class="map">
+            <entry>
+              <string>OriginalField</string>
+              <string>msg[&apos;mirth.http.password&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>Values</string>
+              <list>
+                <string>globalMap.get(&apos;mirth.http.password.tomcat&apos;)</string>
+              </list>
+            </entry>
+            <entry>
+              <string>Equals</string>
+              <string>1</string>
+            </entry>
+            <entry>
+              <string>Field</string>
+              <string>msg[&apos;mirth.http.password&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>Name</string>
+              <string>mirth.http.password</string>
+            </entry>
+            <entry>
+              <string>Accept</string>
+              <string>1</string>
+            </entry>
+          </data>
+          <type>Rule Builder</type>
+          <script>if(msg[&apos;mirth.http.password&apos;].toString() == globalMap.get(&apos;mirth.http.password.tomcat&apos;))
+{
+return true;
+}
+return false;</script>
+          <operator>AND</operator>
+        </com.webreach.mirth.model.Rule>
+      </rules>
+    </filter>
+    <transportName>HTTP Listener</transportName>
+    <mode>SOURCE</mode>
+    <enabled>true</enabled>
+  </sourceConnector>
+  <destinationConnectors>
+    <com.webreach.mirth.model.Connector>
+      <name>DELIMITED TO HL7V3</name>
+      <properties>
+        <property name="DataType">Channel Writer</property>
+        <property name="synchronised">1</property>
+        <property name="template">${metadata_uid},${payload}</property>
+        <property name="host">d42931fd-8269-433c-874e-2caeea9f9e4b</property>
+      </properties>
+      <transformer>
+        <steps>
+          <com.webreach.mirth.model.Step>
+            <sequenceNumber>0</sequenceNumber>
+            <name>metadata_uid</name>
+            <script>var mapping;try { mapping = msg[&apos;metadata&apos;][&apos;uid&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;metadata_uid&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data class="map">
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;metadata&apos;][&apos;uid&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Variable</string>
+                <string>metadata_uid</string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </com.webreach.mirth.model.Step>
+          <com.webreach.mirth.model.Step>
+            <sequenceNumber>1</sequenceNumber>
+            <name>payload</name>
+            <script>var mapping;try { mapping = msg[&apos;payload&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;payload&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data class="map">
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;payload&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Variable</string>
+                <string>payload</string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </com.webreach.mirth.model.Step>
+        </steps>
+        <inboundTemplate>&lt;request&gt;&lt;metadata&gt;&lt;uid&gt;66b20b26-dc51-11df-9972-ddc780619c0d&lt;/uid&gt;&lt;sourceformat&gt;DELIMITED&lt;/sourceformat&gt;&lt;targetformat&gt;HL7V3&lt;/targetformat&gt;&lt;/metadata&gt;&lt;payload&gt;Santosh,Giambi,08/20/1968,Male,Duke&lt;/payload&gt;&lt;/request&gt;</inboundTemplate>
+        <outboundTemplate></outboundTemplate>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties/>
+        <outboundProperties/>
+      </transformer>
+      <filter>
+        <rules>
+          <com.webreach.mirth.model.Rule>
+            <sequenceNumber>0</sequenceNumber>
+            <name>Accept message if &quot;metadata - sourceformat&quot; equals &apos;DELIMITED&apos;</name>
+            <data class="map">
+              <entry>
+                <string>OriginalField</string>
+                <string>msg[&apos;metadata&apos;][&apos;sourceformat&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>&apos;DELIMITED&apos;</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>msg[&apos;metadata&apos;][&apos;sourceformat&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string>metadata - sourceformat</string>
+              </entry>
+              <entry>
+                <string>Accept</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if(msg[&apos;metadata&apos;][&apos;sourceformat&apos;].toString() == &apos;DELIMITED&apos;)
+{
+return true;
+}
+return false;</script>
+            <operator>NONE</operator>
+          </com.webreach.mirth.model.Rule>
+          <com.webreach.mirth.model.Rule>
+            <sequenceNumber>1</sequenceNumber>
+            <name>Accept message if &quot;metadata - targetformat&quot; equals &apos;HL7V3&apos;</name>
+            <data class="map">
+              <entry>
+                <string>OriginalField</string>
+                <string>msg[&apos;metadata&apos;][&apos;targetformat&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>&apos;HL7V3&apos;</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>msg[&apos;metadata&apos;][&apos;targetformat&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string>metadata - targetformat</string>
+              </entry>
+              <entry>
+                <string>Accept</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if(msg[&apos;metadata&apos;][&apos;targetformat&apos;].toString() == &apos;HL7V3&apos;)
+{
+return true;
+}
+return false;</script>
+            <operator>AND</operator>
+          </com.webreach.mirth.model.Rule>
+        </rules>
+      </filter>
+      <transportName>Channel Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+    </com.webreach.mirth.model.Connector>
+    <com.webreach.mirth.model.Connector>
+      <name>XML TO HL7V3</name>
+      <properties>
+        <property name="DataType">Channel Writer</property>
+        <property name="synchronised">1</property>
+        <property name="template">${message.encodedData}</property>
+        <property name="host">17dd3c56-3cc1-4eaa-8fcc-a955048c84b8</property>
+      </properties>
+      <transformer>
+        <steps>
+          <com.webreach.mirth.model.Step>
+            <sequenceNumber>0</sequenceNumber>
+            <name>payload</name>
+            <script>var mapping;try { mapping = msg[&apos;payload&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;payload&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data class="map">
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;payload&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Variable</string>
+                <string>payload</string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </com.webreach.mirth.model.Step>
+        </steps>
+        <inboundTemplate>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#x0D;
+&lt;request&gt;&#x0D;
+    &lt;metadata&gt;&#x0D;
+        &lt;sourceformat&gt;DELIMITED&lt;/sourceformat&gt;&#x0D;
+        &lt;targetformat&gt;HL7V3&lt;/targetformat&gt;&#x0D;
+    &lt;/metadata&gt;&#x0D;
+    &lt;payload&gt;Tiger,Woods,08/20/1968,Male,Duke&lt;/payload&gt;&#x0D;
+&lt;/request&gt;&#x0D;</inboundTemplate>
+        <outboundTemplate></outboundTemplate>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties/>
+        <outboundProperties/>
+      </transformer>
+      <filter>
+        <rules>
+          <com.webreach.mirth.model.Rule>
+            <sequenceNumber>0</sequenceNumber>
+            <name>Accept message if &quot;metadata - sourceformat&quot; equals &apos;XML&apos;</name>
+            <data class="map">
+              <entry>
+                <string>OriginalField</string>
+                <string>msg[&apos;metadata&apos;][&apos;sourceformat&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>&apos;XML&apos;</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>msg[&apos;metadata&apos;][&apos;sourceformat&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string>metadata - sourceformat</string>
+              </entry>
+              <entry>
+                <string>Accept</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if(msg[&apos;metadata&apos;][&apos;sourceformat&apos;].toString() == &apos;XML&apos;)
+{
+return true;
+}
+return false;</script>
+            <operator>NONE</operator>
+          </com.webreach.mirth.model.Rule>
+          <com.webreach.mirth.model.Rule>
+            <sequenceNumber>1</sequenceNumber>
+            <name>Accept message if &quot;metadata - targetformat&quot; equals &apos;HL7V3&apos;</name>
+            <data class="map">
+              <entry>
+                <string>OriginalField</string>
+                <string>msg[&apos;metadata&apos;][&apos;targetformat&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>&apos;HL7V3&apos;</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>msg[&apos;metadata&apos;][&apos;targetformat&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string>metadata - targetformat</string>
+              </entry>
+              <entry>
+                <string>Accept</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if(msg[&apos;metadata&apos;][&apos;targetformat&apos;].toString() == &apos;HL7V3&apos;)
+{
+return true;
+}
+return false;</script>
+            <operator>AND</operator>
+          </com.webreach.mirth.model.Rule>
+        </rules>
+      </filter>
+      <transportName>Channel Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+    </com.webreach.mirth.model.Connector>
+    <com.webreach.mirth.model.Connector>
+      <name>Write Response</name>
+      <properties>
+        <property name="script">//responseMap.put(&apos;SOAPResponse&apos;, ResponseFactory.getSuccessResponse(globalMap.get(messageObject.getId())));
+//globalMap.remove(messageObject.getId());
+
+
+
+//responseMap.put(&apos;SOAPResponse&apos;, ResponseFactory.getSuccessResponse(globalMap.get(&apos;TransformedData&apos;)));
+
+responseMap.put(&apos;SOAPResponse&apos;, ResponseFactory.getSuccessResponse(globalMap.get($(&apos;metadata_uid&apos;))));
+globalMap.remove($(&apos;metadata_uid&apos;));
+
+//responseMap.put(&apos;SOAPResponse&apos;, ResponseFactory.getSuccessResponse(&apos;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;&apos;+globalMap.get(&apos;TransformedData&apos;)+&apos;&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;&apos;));
+
+//globalMap.remove(&apos;TransformedData&apos;);
+
+//responseMap.put(&apos;SOAPResponse&apos;, ResponseFactory.getSuccessResponse(responseMap.get($(&apos;DELIMITED TO HL7V3&apos;))));
+</property>
+        <property name="DataType">JavaScript Writer</property>
+        <property name="host">sink</property>
+      </properties>
+      <transformer>
+        <steps>
+          <com.webreach.mirth.model.Step>
+            <sequenceNumber>0</sequenceNumber>
+            <name>metadata_uid</name>
+            <script>var mapping;try { mapping = msg[&apos;metadata&apos;][&apos;uid&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;metadata_uid&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data class="map">
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;metadata&apos;][&apos;uid&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Variable</string>
+                <string>metadata_uid</string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </com.webreach.mirth.model.Step>
+        </steps>
+        <inboundTemplate>&lt;request&gt;&lt;metadata&gt;&lt;uid&gt;66b20b26-dc51-11df-9972-ddc780619c0d&lt;/uid&gt;&lt;sourceformat&gt;DELIMITED&lt;/sourceformat&gt;&lt;targetformat&gt;HL7V3&lt;/targetformat&gt;&lt;/metadata&gt;&lt;payload&gt;Santosh,Giambi,08/20/1968,Male,Duke&lt;/payload&gt;&lt;/request&gt;</inboundTemplate>
+        <outboundTemplate></outboundTemplate>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties/>
+        <outboundProperties/>
+      </transformer>
+      <filter>
+        <rules/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+    </com.webreach.mirth.model.Connector>
+  </destinationConnectors>
+  <properties>
+    <property name="initialState">started</property>
+    <property name="synchronous">true</property>
+    <property name="store_messages">true</property>
+    <property name="encryptData">false</property>
+    <property name="transactional">false</property>
+    <property name="max_message_age">-1</property>
+    <property name="dont_store_filtered">false</property>
+    <property name="error_messages_only">false</property>
+  </properties>
+  <preprocessingScript>// Modify the message variable below to pre process data
+return message;</preprocessingScript>
+  <postprocessingScript>// This script executes once after a message has been processed
+return;</postprocessingScript>
+  <deployScript>// This script executes once when the mule engine is started
+// You only have access to the globalMap here to persist data
+return;</deployScript>
+  <shutdownScript>// This script executes once when the mule engine is stopped
+// You only have access to the globalMap here to persist data
+return;</shutdownScript>
+</com.webreach.mirth.model.Channel>
