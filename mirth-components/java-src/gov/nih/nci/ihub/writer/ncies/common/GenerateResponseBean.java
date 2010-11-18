@@ -199,7 +199,7 @@ public class GenerateResponseBean {
 	 * @throws Exception
 	 */
 	public Node generateResponseFromTargetResponse(String consumerIdentifier,
-			long messageServiceRequestID, Document compiledTargetResponse)
+			String messageServiceRequestID, Document compiledTargetResponse)
 			throws Exception {
 		XmlOptions xmlOptions = new XmlOptions();
 		HashMap<String, String> ns = new HashMap<String, String>();
@@ -211,8 +211,7 @@ public class GenerateResponseBean {
 				.addNewCaXchangeResponseMessage();
 		ResponseMetadata responseMetaData = responseMessage
 				.addNewResponseMetadata();
-		responseMetaData.setCaXchangeIdentifier(new Long(
-				messageServiceRequestID).toString());
+		responseMetaData.setCaXchangeIdentifier(messageServiceRequestID);
 		responseMetaData.setExternalIdentifier(consumerIdentifier);
 		Response response = responseMessage.addNewResponse();
 		response.setResponseStatus(Statuses.SUCCESS);

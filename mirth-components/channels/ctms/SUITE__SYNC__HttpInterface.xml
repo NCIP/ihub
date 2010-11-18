@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1289241401843</time>
+    <time>1290059878125</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>16</revision>
+  <revision>153</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -21,7 +21,7 @@
       <property name="extendedPayload">1</property>
       <property name="host">127.0.0.1</property>
       <property name="keepAlive">0</property>
-      <property name="responseValue">SOAPResponse</property>
+      <property name="responseValue">SuiteSynchronousResponse</property>
     </properties>
     <transformer>
       <steps>
@@ -29,11 +29,9 @@
           <sequenceNumber>0</sequenceNumber>
           <name>Extract Message</name>
           <script>var nonencodedSyncMsg = Packages.java.net.URLDecoder.decode(msg[&apos;synchronous_msg&apos;].toString());
-var coppaCredentialString = Packages.java.net.URLDecoder.decode(msg[&apos;coppa_user_credential&apos;].toString());
+var coppaDelegatedCredentialRefFromMsg = Packages.java.net.URLDecoder.decode(msg[&apos;coppa_delegated_credential_ref&apos;].toString());
 
-var coppaSubject = new Packages.org.globus.gsi.GlobusCredential(
-					new Packages.java.io.ByteArrayInputStream(coppaCredentialString.getBytes()));
-channelMap.put(&apos;coppaSubject&apos;, coppaSubject);
+channelMap.put(&apos;coppaDelegatedCredentialRef&apos;, coppaDelegatedCredentialRefFromMsg);
 
 //var reqXML = SerializerFactory.getHL7Serializer(false, false, false).toXML(nonencodedhl7);
 msg = new XML(nonencodedSyncMsg);</script>
@@ -42,11 +40,9 @@ msg = new XML(nonencodedSyncMsg);</script>
             <entry>
               <string>Script</string>
               <string>var nonencodedSyncMsg = Packages.java.net.URLDecoder.decode(msg[&apos;synchronous_msg&apos;].toString());
-var coppaCredentialString = Packages.java.net.URLDecoder.decode(msg[&apos;coppa_user_credential&apos;].toString());
+var coppaDelegatedCredentialRefFromMsg = Packages.java.net.URLDecoder.decode(msg[&apos;coppa_delegated_credential_ref&apos;].toString());
 
-var coppaSubject = new Packages.org.globus.gsi.GlobusCredential(
-					new Packages.java.io.ByteArrayInputStream(coppaCredentialString.getBytes()));
-channelMap.put(&apos;coppaSubject&apos;, coppaSubject);
+channelMap.put(&apos;coppaDelegatedCredentialRef&apos;, coppaDelegatedCredentialRefFromMsg);
 
 //var reqXML = SerializerFactory.getHL7Serializer(false, false, false).toXML(nonencodedhl7);
 msg = new XML(nonencodedSyncMsg);</string>
@@ -70,8 +66,12 @@ msg = new XML(nonencodedSyncMsg);</string>
       <outboundTemplate></outboundTemplate>
       <inboundProtocol>XML</inboundProtocol>
       <outboundProtocol>XML</outboundProtocol>
-      <inboundProperties/>
-      <outboundProperties/>
+      <inboundProperties>
+        <property name="stripNamespaces">true</property>
+      </inboundProperties>
+      <outboundProperties>
+        <property name="stripNamespaces">false</property>
+      </outboundProperties>
     </transformer>
     <filter>
       <rules>
@@ -161,27 +161,277 @@ return false;</script>
   </sourceConnector>
   <destinationConnectors>
     <com.webreach.mirth.model.Connector>
-      <name>Validation</name>
+      <name>Persist Message In the Database</name>
       <properties>
-        <property name="script">logger.info(&apos;COPPA Subject: &apos;+$(&apos;coppaSubject&apos;).getIdentity());</property>
+        <property name="script">insertIncomingMessageInDB($(&apos;ns1metadata_ns1caxchangeidentifier&apos;), $(&apos;ns1request_ns1businessmessagepayload&apos;), 
+	globalMap.get(&apos;request.message.status.inprocess&apos;), $(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;), $(&apos;ns1metadata&apos;));</property>
         <property name="DataType">JavaScript Writer</property>
         <property name="host">sink</property>
       </properties>
       <transformer>
-        <steps/>
+        <steps>
+          <com.webreach.mirth.model.Step>
+            <sequenceNumber>0</sequenceNumber>
+            <name>Settings</name>
+            <script>default xml namespace = &quot;http://caXchange.nci.nih.gov/messaging&quot;</script>
+            <type>JavaScript</type>
+            <data class="map">
+              <entry>
+                <string>Script</string>
+                <string>default xml namespace = &quot;http://caXchange.nci.nih.gov/messaging&quot;</string>
+              </entry>
+            </data>
+          </com.webreach.mirth.model.Step>
+          <com.webreach.mirth.model.Step>
+            <sequenceNumber>1</sequenceNumber>
+            <name>ns1metadata_ns1servicetype</name>
+            <script>var mapping;try { mapping = msg[&apos;metadata&apos;][&apos;serviceType&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;ns1metadata_ns1servicetype&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data class="map">
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;metadata&apos;][&apos;serviceType&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Variable</string>
+                <string>ns1metadata_ns1servicetype</string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </com.webreach.mirth.model.Step>
+          <com.webreach.mirth.model.Step>
+            <sequenceNumber>2</sequenceNumber>
+            <name>ns1metadata_ns1caxchangeidentifier</name>
+            <script>var mapping;try { mapping = msg[&apos;metadata&apos;][&apos;caXchangeIdentifier&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;ns1metadata_ns1caxchangeidentifier&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data class="map">
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;metadata&apos;][&apos;caXchangeIdentifier&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Variable</string>
+                <string>ns1metadata_ns1caxchangeidentifier</string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </com.webreach.mirth.model.Step>
+          <com.webreach.mirth.model.Step>
+            <sequenceNumber>3</sequenceNumber>
+            <name>ns1request_ns1businessmessagepayload</name>
+            <script>var mapping;try { mapping = msg[&apos;request&apos;][&apos;businessMessagePayload&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;ns1request_ns1businessmessagepayload&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data class="map">
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;request&apos;][&apos;businessMessagePayload&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Variable</string>
+                <string>ns1request_ns1businessmessagepayload</string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </com.webreach.mirth.model.Step>
+          <com.webreach.mirth.model.Step>
+            <sequenceNumber>4</sequenceNumber>
+            <name>ns1request_ns1businessmessagepayload_ns1xmlschemadefinition</name>
+            <script>var mapping;try { mapping = msg[&apos;request&apos;][&apos;businessMessagePayload&apos;][&apos;xmlSchemaDefinition&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data class="map">
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;request&apos;][&apos;businessMessagePayload&apos;][&apos;xmlSchemaDefinition&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Variable</string>
+                <string>ns1request_ns1businessmessagepayload_ns1xmlschemadefinition</string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </com.webreach.mirth.model.Step>
+          <com.webreach.mirth.model.Step>
+            <sequenceNumber>5</sequenceNumber>
+            <name>ns1metadata</name>
+            <script>var mapping;try { mapping = msg[&apos;metadata&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;ns1metadata&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data class="map">
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;metadata&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Variable</string>
+                <string>ns1metadata</string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </com.webreach.mirth.model.Step>
+          <com.webreach.mirth.model.Step>
+            <sequenceNumber>6</sequenceNumber>
+            <name>ns1metadata_ns1operationname</name>
+            <script>var mapping;try { mapping = msg[&apos;metadata&apos;][&apos;operationName&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;ns1metadata_ns1operationname&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data class="map">
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;metadata&apos;][&apos;operationName&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Variable</string>
+                <string>ns1metadata_ns1operationname</string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </com.webreach.mirth.model.Step>
+          <com.webreach.mirth.model.Step>
+            <sequenceNumber>7</sequenceNumber>
+            <name>ns1metadata_ns1externalidentifier</name>
+            <script>var mapping;try { mapping = msg[&apos;metadata&apos;][&apos;externalIdentifier&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;ns1metadata_ns1externalidentifier&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data class="map">
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;metadata&apos;][&apos;externalIdentifier&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>Variable</string>
+                <string>ns1metadata_ns1externalidentifier</string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </com.webreach.mirth.model.Step>
+          <com.webreach.mirth.model.Step>
+            <sequenceNumber>8</sequenceNumber>
+            <name>Create Grid Message</name>
+            <script>logger.info(&quot;iHub Message: &quot;+$(&apos;ns1request_ns1businessmessagepayload&apos;));
+var ihubBusinessMessagePayloadDocument = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.
+	stringToDOMDocument($(&apos;ns1request_ns1businessmessagepayload&apos;)).getDocumentElement();
+channelMap.put(&quot;ihubBusinessMessagePayloadDocument&quot;, ihubBusinessMessagePayloadDocument);</script>
+            <type>JavaScript</type>
+            <data class="map">
+              <entry>
+                <string>Script</string>
+                <string>logger.info(&quot;iHub Message: &quot;+$(&apos;ns1request_ns1businessmessagepayload&apos;));
+var ihubBusinessMessagePayloadDocument = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.
+	stringToDOMDocument($(&apos;ns1request_ns1businessmessagepayload&apos;)).getDocumentElement();
+channelMap.put(&quot;ihubBusinessMessagePayloadDocument&quot;, ihubBusinessMessagePayloadDocument);</string>
+              </entry>
+            </data>
+          </com.webreach.mirth.model.Step>
+        </steps>
         <inboundTemplate>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#x0D;
-&lt;request&gt;&#x0D;
-    &lt;metadata&gt;&#x0D;
-        &lt;sourceformat&gt;DELIMITED&lt;/sourceformat&gt;&#x0D;
-        &lt;targetformat&gt;HL7V3&lt;/targetformat&gt;&#x0D;
-    &lt;/metadata&gt;&#x0D;
-    &lt;payload&gt;Tiger,Woods,08/20/1968,Male,Duke&lt;/payload&gt;&#x0D;
-&lt;/request&gt;&#x0D;</inboundTemplate>
+&lt;ns1:caXchangeRequestMessage xmlns:ns1=&quot;http://caXchange.nci.nih.gov/messaging&quot;&gt;&#x0D;
+    &lt;ns1:metadata&gt;&#x0D;
+        &lt;ns1:transactionControl xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:nil=&quot;true&quot;/&gt;&#x0D;
+        &lt;ns1:serviceType&gt;PERSON&lt;/ns1:serviceType&gt;&#x0D;
+        &lt;ns1:operationName&gt;search&lt;/ns1:operationName&gt;&#x0D;
+        &lt;ns1:caXchangeIdentifier&gt;d1f6f8b0-eb57-11df-b0a6-857449edcfa9&lt;/ns1:caXchangeIdentifier&gt;&#x0D;
+        &lt;ns1:externalIdentifier&gt;myExternalIdentifier&lt;/ns1:externalIdentifier&gt;&#x0D;
+        &lt;ns1:credentials&gt;&#x0D;
+            &lt;ns1:userName&gt;dev2_sm_reg&lt;/ns1:userName&gt;&#x0D;
+            &lt;ns1:password&gt;D3v2@nc1.gov&lt;/ns1:password&gt;&#x0D;
+            &lt;ns1:delegatedCredentialReference&gt;&amp;lt;ns1:DelegatedCredentialReference xmlns:ns1=&quot;http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types&quot;&amp;gt; &amp;lt;ns2:EndpointReference xsi:type=&quot;ns2:EndpointReferenceType&quot; xmlns:ns2=&quot;http://schemas.xmlsoap.org/ws/2004/03/addressing&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&amp;gt;  &amp;lt;ns2:Address xsi:type=&quot;ns2:AttributedURI&quot;&amp;gt;https://cagrid-cds-stage.nci.nih.gov:8443/wsrf/services/cagrid/DelegatedCredential&amp;lt;/ns2:Address&amp;gt;  &amp;lt;ns2:ReferenceProperties xsi:type=&quot;ns2:ReferencePropertiesType&quot;&amp;gt;   &amp;lt;ns2:DelegatedCredentialKey xmlns:ns2=&quot;http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential&quot;&amp;gt;    &amp;lt;ns3:delegationId xmlns:ns3=&quot;http://gaards.cagrid.org/cds&quot;&amp;gt;11765&amp;lt;/ns3:delegationId&amp;gt;   &amp;lt;/ns2:DelegatedCredentialKey&amp;gt;  &amp;lt;/ns2:ReferenceProperties&amp;gt;  &amp;lt;ns2:ReferenceParameters xsi:type=&quot;ns2:ReferenceParametersType&quot;/&amp;gt; &amp;lt;/ns2:EndpointReference&amp;gt;&amp;lt;/ns1:DelegatedCredentialReference&amp;gt;&lt;/ns1:delegatedCredentialReference&gt;&#x0D;
+        &lt;/ns1:credentials&gt;&#x0D;
+    &lt;/ns1:metadata&gt;&#x0D;
+    &lt;ns1:request&gt;&#x0D;
+        &lt;ns1:businessMessagePayload&gt;&#x0D;
+            &lt;ns1:xmlSchemaDefinition&gt;http://po.coppa.nci.nih.gov&lt;/ns1:xmlSchemaDefinition&gt;&#x0D;
+            &lt;ns1:Person xmlns:ns1=&quot;http://po.coppa.nci.nih.gov&quot; xmlns:ns2=&quot;uri:iso.org:21090&quot;&gt;&#x0D;
+                &lt;ns1:name&gt;&#x0D;
+                    &lt;ns2:part type=&quot;FAM&quot; value=&quot;smith&quot;/&gt;&#x0D;
+                    &lt;ns2:part type=&quot;GIV&quot; value=&quot;Adriana&quot;/&gt;&#x0D;
+                &lt;/ns1:name&gt;&#x0D;
+            &lt;/ns1:Person&gt;&#x0D;
+        &lt;/ns1:businessMessagePayload&gt;&#x0D;
+    &lt;/ns1:request&gt;&#x0D;
+&lt;/ns1:caXchangeRequestMessage&gt;&#x0D;</inboundTemplate>
         <outboundTemplate></outboundTemplate>
         <inboundProtocol>XML</inboundProtocol>
         <outboundProtocol>XML</outboundProtocol>
-        <inboundProperties/>
-        <outboundProperties/>
+        <inboundProperties>
+          <property name="stripNamespaces">false</property>
+        </inboundProperties>
+        <outboundProperties>
+          <property name="stripNamespaces">true</property>
+        </outboundProperties>
       </transformer>
       <filter>
         <rules/>
@@ -191,21 +441,138 @@ return false;</script>
       <enabled>true</enabled>
     </com.webreach.mirth.model.Connector>
     <com.webreach.mirth.model.Connector>
+      <name>Retrieve Security Subject</name>
+      <properties>
+        <property name="script">//var subject = invokeDelegationService($(&apos;coppaDelegatedCredentialRef&apos;), globalMap.get(&quot;delegation.certificate.file.path&quot;),
+//	 globalMap.get(&quot;delegation.key.file.path&quot;), globalMap.get(&quot;target.detail.code.delegation&quot;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
+
+//channelMap.put(&quot;coppaSubject&quot;, subject);
+return;</property>
+        <property name="DataType">JavaScript Writer</property>
+        <property name="host">sink</property>
+      </properties>
+      <transformer>
+        <steps>
+          <com.webreach.mirth.model.Step>
+            <sequenceNumber>0</sequenceNumber>
+            <name>Retrieve Security Subject</name>
+            <script>var subject = invokeDelegationService($(&apos;coppaDelegatedCredentialRef&apos;), globalMap.get(&quot;delegation.certificate.file.path&quot;),
+	 globalMap.get(&quot;delegation.key.file.path&quot;), globalMap.get(&quot;target.detail.code.delegation&quot;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
+
+channelMap.put(&quot;coppaSubject&quot;, subject);</script>
+            <type>JavaScript</type>
+            <data class="map">
+              <entry>
+                <string>Script</string>
+                <string>var subject = invokeDelegationService($(&apos;coppaDelegatedCredentialRef&apos;), globalMap.get(&quot;delegation.certificate.file.path&quot;),
+	 globalMap.get(&quot;delegation.key.file.path&quot;), globalMap.get(&quot;target.detail.code.delegation&quot;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
+
+channelMap.put(&quot;coppaSubject&quot;, subject);</string>
+              </entry>
+            </data>
+          </com.webreach.mirth.model.Step>
+        </steps>
+        <inboundTemplate></inboundTemplate>
+        <outboundTemplate></outboundTemplate>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">false</property>
+        </inboundProperties>
+        <outboundProperties>
+          <property name="stripNamespaces">false</property>
+        </outboundProperties>
+      </transformer>
+      <filter>
+        <rules/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+    </com.webreach.mirth.model.Connector>
+    <com.webreach.mirth.model.Connector>
+      <name>PERSON</name>
+      <properties>
+        <property name="script">var targetInvocationStrategy = globalMap.get($(&apos;ns1metadata_ns1servicetype&apos;)+&quot;_Strategy&quot;);
+targetInvocationStrategy.setStrategySpecificVariables($(&apos;ns1metadata_ns1operationname&apos;), 
+							$(&apos;ns1metadata_ns1servicetype&apos;), $(&apos;ihubBusinessMessagePayloadDocument&apos;), $(&apos;coppaSubject&apos;), $(&apos;ns1metadata_ns1servicetype&apos;));
+
+
+var overallResponseString = delegateSynchronousRequest($(&apos;ns1metadata_ns1servicetype&apos;), targetInvocationStrategy, 
+								$(&apos;ns1metadata_ns1caxchangeidentifier&apos;), $(&apos;ns1metadata_ns1externalidentifier&apos;), 
+								$(&apos;ns1metadata_ns1operationname&apos;), $(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;));
+channelMap.put(&quot;overallResponseString&quot;, overallResponseString);</property>
+        <property name="DataType">JavaScript Writer</property>
+        <property name="host">sink</property>
+      </properties>
+      <transformer>
+        <steps/>
+        <inboundTemplate></inboundTemplate>
+        <outboundTemplate></outboundTemplate>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">false</property>
+        </inboundProperties>
+        <outboundProperties/>
+      </transformer>
+      <filter>
+        <rules>
+          <com.webreach.mirth.model.Rule>
+            <sequenceNumber>0</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;ns1metadata_ns1servicetype&apos;)&quot; equals &apos;PERSON&apos;</name>
+            <data class="map">
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>&apos;PERSON&apos;</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;ns1metadata_ns1servicetype&apos;)</string>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Accept</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;ns1metadata_ns1servicetype&apos;) == &apos;PERSON&apos;)
+{
+return true;
+}
+return false;</script>
+            <operator>NONE</operator>
+          </com.webreach.mirth.model.Rule>
+        </rules>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+    </com.webreach.mirth.model.Connector>
+    <com.webreach.mirth.model.Connector>
       <name>Write Response</name>
       <properties>
         <property name="script">//responseMap.put(&apos;SOAPResponse&apos;, ResponseFactory.getSuccessResponse(globalMap.get(messageObject.getId())));
-//globalMap.remove(messageObject.getId());
+//var overallResponseString = retrieveOverallBroadcastResponseFromDB($(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
+//channelMap.put(&quot;message_overall_response&quot;,overallResponseString);
+
+responseMap.put(&apos;SuiteSynchronousResponse&apos;, ResponseFactory.getSuccessResponse(channelMap.get(&quot;overallResponseString&quot;)));
 
 
-
-//responseMap.put(&apos;SOAPResponse&apos;, ResponseFactory.getSuccessResponse(globalMap.get(&apos;TransformedData&apos;)));
-
-
-
-
-responseMap.put(&apos;SOAPResponse&apos;, ResponseFactory.getSuccessResponse(&apos;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;&apos;+globalMap.get(&apos;TransformedData&apos;)+&apos;&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;&apos;));
-
-globalMap.remove(&apos;TransformedData&apos;);
 
 //responseMap.put(&apos;SOAPResponse&apos;, ResponseFactory.getSuccessResponse(responseMap.get($(&apos;DELIMITED TO HL7V3&apos;))));
 </property>
@@ -214,9 +581,16 @@ globalMap.remove(&apos;TransformedData&apos;);
       </properties>
       <transformer>
         <steps/>
+        <inboundTemplate></inboundTemplate>
+        <outboundTemplate></outboundTemplate>
         <inboundProtocol>XML</inboundProtocol>
         <outboundProtocol>XML</outboundProtocol>
-        <inboundProperties/>
+        <inboundProperties>
+          <property name="stripNamespaces">false</property>
+        </inboundProperties>
+        <outboundProperties>
+          <property name="stripNamespaces">false</property>
+        </outboundProperties>
       </transformer>
       <filter>
         <rules/>
@@ -240,7 +614,21 @@ globalMap.remove(&apos;TransformedData&apos;);
 return message;</preprocessingScript>
   <postprocessingScript>// This script executes once after a message has been processed
 return;</postprocessingScript>
-  <deployScript>// This script executes once when the mule engine is started
+  <deployScript>var coppaPersonStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaPersonStrategy.setServiceUrl(globalMap.get(&quot;PERSON.url&quot;));
+coppaPersonStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.entities.person.client.PersonClient&quot;);
+coppaPersonStrategy.init();
+globalMap.put(&quot;PERSON_Strategy&quot;, coppaPersonStrategy);
+
+
+var coppaOrganizationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaOrganizationStrategy.setServiceUrl(globalMap.get(&quot;ORGANIZATION.url&quot;));
+coppaOrganizationStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.entities.organization.client.OrganizationClient&quot;);
+coppaOrganizationStrategy.init();
+globalMap.put(&quot;ORGANIZATION_Strategy&quot;, coppaOrganizationStrategy);
+
+
+// This script executes once when the mule engine is started
 // You only have access to the globalMap here to persist data
 return;</deployScript>
   <shutdownScript>// This script executes once when the mule engine is stopped

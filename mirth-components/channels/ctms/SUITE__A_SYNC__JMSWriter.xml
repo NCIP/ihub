@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1289239873171</time>
+    <time>1290030678687</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>57</revision>
+  <revision>58</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -64,7 +64,7 @@ channelMap.put(&quot;message_overall_response&quot;,overallResponseString);
 
 
 
-
+/*
 function getOverallResponseFromDB(){	
 	var dbConn = DatabaseConnectionFactory.createDatabaseConnection(&apos;org.postgresql.Driver&apos;,&apos;jdbc:postgresql://localhost:5432/mirth&apos;,&apos;mirthadmin&apos;,&apos;changeme&apos;);
 	var resultSet = dbConn.executeCachedQuery(&quot;SELECT message.overall_response_data AS message_overall_response_data FROM message WHERE message.message_id=&apos;&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)+&quot;&apos; AND message.message_status=&apos;PROCESSED&apos;&quot;);
@@ -80,7 +80,8 @@ function updateMessageServiceStatus(){
 	var updateSQL = &quot;UPDATE MESSAGE SET MESSAGE_STATUS=&apos;RESPONSE_RETURNED&apos; WHERE MESSAGE_ID=&apos;&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)+&quot;&apos;&quot;;
 	dbConn.executeUpdate(updateSQL);
 	dbConn.close();
-}</script>
+}
+*/</script>
           <type>JavaScript</type>
           <data class="map">
             <entry>
@@ -90,7 +91,7 @@ channelMap.put(&quot;message_overall_response&quot;,overallResponseString);
 
 
 
-
+/*
 function getOverallResponseFromDB(){	
 	var dbConn = DatabaseConnectionFactory.createDatabaseConnection(&apos;org.postgresql.Driver&apos;,&apos;jdbc:postgresql://localhost:5432/mirth&apos;,&apos;mirthadmin&apos;,&apos;changeme&apos;);
 	var resultSet = dbConn.executeCachedQuery(&quot;SELECT message.overall_response_data AS message_overall_response_data FROM message WHERE message.message_id=&apos;&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)+&quot;&apos; AND message.message_status=&apos;PROCESSED&apos;&quot;);
@@ -106,7 +107,8 @@ function updateMessageServiceStatus(){
 	var updateSQL = &quot;UPDATE MESSAGE SET MESSAGE_STATUS=&apos;RESPONSE_RETURNED&apos; WHERE MESSAGE_ID=&apos;&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)+&quot;&apos;&quot;;
 	dbConn.executeUpdate(updateSQL);
 	dbConn.close();
-}</string>
+}
+*/</string>
             </entry>
           </data>
         </com.webreach.mirth.model.Step>
