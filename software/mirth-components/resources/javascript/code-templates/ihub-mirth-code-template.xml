@@ -348,7 +348,7 @@ function retrieveOverallBroadcastResponseFromDB(varMessageID){
     <id>a6e2cab3-3709-486f-a2b6-3192c9709c0b</id>
     <name>invokeDelegationService</name>
     <tooltip>Invokes the caGrid Credential Delegation Service and returns a security Subject</tooltip>
-    <code>function invokeDelegationService(varDelegatedCredentialReference, varCertFilePath, varKeyFilePath, varTargetDetailCode, varMessageID){
+    <code>function invokeDelegationService(varDelegatedCredentialReference, varCertFilePath, varKeyFilePath, varTargetDetailsCode, varMessageID){
 	try{		
 		var delegateServiceBean = new Packages.gov.nih.nci.ihub.writer.ncies.infrastructure.InvokeDelegationServiceBean($(&apos;ns1metadata_ns1credentials_ns1grididentifier&apos;), 
 						varDelegatedCredentialReference, varCertFilePath, varKeyFilePath, globalMap.get(&quot;user.proxy.cache.time.to.live&quot;));
