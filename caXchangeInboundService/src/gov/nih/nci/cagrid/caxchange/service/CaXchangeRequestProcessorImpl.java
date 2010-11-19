@@ -272,8 +272,7 @@ public class CaXchangeRequestProcessorImpl extends CaXchangeRequestProcessorImpl
   public gov.nih.nci.caxchange.ResponseMessage processRequestSynchronously(gov.nih.nci.caxchange.Message caXchangeRequestMessage)
 												throws RemoteException, gov.nih.nci.cagrid.caxchange.stubs.types.CaXchangeFault {
 		logger.debug("Request in processRequestSynchronously: "+ caXchangeRequestMessage);
-
-		logger.debug("Request in processRequestSynchronously: "+ caXchangeRequestMessage);
+		
 		CaXchangeExternalProperties properties = CaXchangeExternalProperties.getInstance();
 		try {
 			gov.nih.nci.cagrid.caxchange.context.service.globus.resource.CaXchangeResponseServiceResourceHome ctxResourceHome = getCaXchangeResponseServiceResourceHome();
@@ -281,17 +280,17 @@ public class CaXchangeRequestProcessorImpl extends CaXchangeRequestProcessorImpl
 			logger.info("Performance Request Received," + resKey.getValue()
 					+ ","
 					+ caXchangeRequestMessage.getMetadata().getServiceType()
-					+ "," + new java.util.Date().getTime());
-
+					+ "," + new java.util.Date().getTime());			
 			caXchangeRequestMessage.getMetadata().setCaXchangeIdentifier(resKey.getValue().toString());
 
 			String caller = SecurityManager.getManager().getCaller();
-			logger.debug("The caller is:'" + caller + "'");
+			logger.debug("The caller is:'" + caller + "'");			
 			if ((caller == null) || ("".equals(caller))	|| ("<anonymous>".equals(caller.trim()))) {
+				logger.debug("Error occured: Unable to get the identity of the caller.Caller identity");
 				return buildErrorResponse(caXchangeRequestMessage, CaxchangeErrors.PERMISSION_DENIED_FAULT,
 						"Unable to get the identity of the caller.Caller identity:"+ caller);
 			}
-			logger.debug("Sending message for the caller:'" + caller + "'");
+			logger.debug("Sending message for the caller:'" + caller + "'");			
 			if (caXchangeRequestMessage.getMetadata().getCredentials() == null) {
 				caXchangeRequestMessage.getMetadata().setCredentials(new gov.nih.nci.caxchange.Credentials());
 			}
@@ -309,22 +308,23 @@ public class CaXchangeRequestProcessorImpl extends CaXchangeRequestProcessorImpl
 			String mirthHttpUrl = properties.getProperty(MIRTH_HTTP_URL);
 			String mirthHttpUser = properties.getProperty(MIRTH_HTTP_USER);
 			String mirthHttpPassowrd = properties.getProperty(MIRTH_HTTP_PASSWORD);
-			try {
-				CaGridAuthenticationManager caGridAuthenticationManager = new CaGridAuthenticationManager(
+
+			CaGridAuthenticationManager caGridAuthenticationManager = new CaGridAuthenticationManager(
 						gridUser, gridUserPassword, authenticationServiceUrl, dorianServiceUrl, delegationServiceUrl, 12, mirthHostIdentity);
-				credential = caGridAuthenticationManager.getDelegatedCredentialReference();
-				System.out.println("Grid Credentials: "+credential);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
+			credential = caGridAuthenticationManager.getDelegatedCredentialReference();				
+			logger.debug("Delegated credentials are: "+credential);
+						
 			ResponseMessage responseMessageToClient = new ResponseMessage();
 
 			PostMethod method = new PostMethod(mirthHttpUrl);
 						
-			String synchronousMsg = caXchangeRequestMessage.toString();
+			RequestGeneratorHelper rgh = new RequestGeneratorHelper();
+			rgh.setCaxchangeRequest(caXchangeRequestMessage);
+			String reqMessage = rgh.getRequestForCaxchange();
 			
-			method.addParameter("synchronous_msg", synchronousMsg);
+			logger.debug("Synchronous Message: "+reqMessage);
+			
+			method.addParameter("synchronous_msg", reqMessage);
 			method.addParameter("coppa_delegated_credential_ref", credential);
 			method.addRequestHeader(MIRTH_HTTP_USER, mirthHttpUser);
 			method.addRequestHeader(MIRTH_HTTP_PASSWORD, mirthHttpPassowrd);
@@ -332,17 +332,13 @@ public class CaXchangeRequestProcessorImpl extends CaXchangeRequestProcessorImpl
 			try {
 				int returnCode = client.executeMethod(method);
 
-				if (returnCode == HttpStatus.SC_NOT_IMPLEMENTED) {
-					System.err.println("The Post method is not implemented by this URI");					
+				if (returnCode == HttpStatus.SC_NOT_IMPLEMENTED) {										
 					method.getResponseBodyAsString();
 				} else {
 					br = new BufferedReader(new InputStreamReader(method.getResponseBodyAsStream()));
 					String readLine;
-					while (((readLine = br.readLine()) != null)) {
-						System.out.println(readLine);
-						/*test only*/
-						//readLine = "<ns1:caXchangeResponseMessage xmlns:ns1=\"http://caXchange.nci.nih.gov/messaging \"> <ns1:responseMetadata> <ns1:externalIdentifier>myExternalIdentifier</ns1:externalIdentifier>                <ns1:caXchangeIdentifier>d7e4ab10-eb51-11df-80b0-dfdad11835a9</ns1:caXchangeIdentifier>             </ns1:responseMetadata>             <ns1:response>                <ns1:responseStatus>SUCCESS</ns1:responseStatus>                <ns1:targetResponse>                   <ns1:targetServiceIdentifier>PERSON</ns1:targetServiceIdentifier>                   <ns1:targetServiceOperation>search</ns1:targetServiceOperation>                   <ns1:targetMessageStatus>RESPONSE</ns1:targetMessageStatus>                   <ns1:targetBusinessMessage>                      <ns1:xmlSchemaDefinition>http://po.coppa.nci.nih.gov</ns1:xmlSchemaDefinition>                      <soapenc:Array xmlns:soapenc=\"http://schemas.xmlsoap.org/soap/encoding/ \">                         <ns1:Person xmlns:ns1=\"http://po.coppa.nci.nih.gov \">                            <ns1:identifier displayable=\"true\" extension=\"272810\" identifierName=\"NCI person entity identifier\" reliability=\"ISS\" root=\"2.16.840.1.113883.3.26.4.1\" scope=\"OBJ\"/>                            <ns1:name>                               <ns2:part type=\"FAM\" value=\"Gaasch Smith\" xmlns:ns2=\"uri:iso.org:21090\"/>                               <ns3:part type=\"GIV\" value=\"Adriana\" xmlns:ns3=\"uri:iso.org:21090\"/>                               <ns4:part type=\"PFX\" value=\"Ms.\" xmlns:ns4=\"uri:iso.org:21090\"/>                            </ns1:name>                            <ns1:postalAddress>                               <ns5:part type=\"AL\" value=\"9500 Gilman Drive\" xmlns:ns5=\"uri:iso.org:21090\"/>                               <ns6:part type=\"ADL\" value=\"Clinical Trials Office MC 0698\" xmlns:ns6=\"uri:iso.org:21090\"/>                               <ns7:part type=\"CTY\" value=\"La Jolla\" xmlns:ns7=\"uri:iso.org:21090\"/>                               <ns8:part type=\"STA\" value=\"CA\" xmlns:ns8=\"uri:iso.org:21090\"/>                               <ns9:part type=\"ZIP\" value=\"92037-0698\" xmlns:ns9=\"uri:iso.org:21090\"/>                               <ns10:part code=\"USA\" codeSystem=\"ISO 3166-1 alpha-3 code\" type=\"CNT\" value=\"United States\" xmlns:ns10=\"uri:iso.org:21090\"/>                            </ns1:postalAddress>                            <ns1:statusCode code=\"active\"/>                            <ns1:telecomAddress>                               <ns11:item value=\"mailto:a8smith@ucsd.edu\" xmlns:ns11=\"uri:iso.org:21090\"/>                               <ns12:item value=\"x-text-fax:(858)-657-7025\" xmlns:ns12=\"uri:iso.org:21090\"/>                               <ns13:item value=\"tel:(858)-657-7019\" xmlns:ns13=\"uri:iso.org:21090\"/>                            </ns1:telecomAddress>                            <ns1:raceCode nullFlavor=\"NI\"/>                            <ns1:sexCode nullFlavor=\"NI\"/>                            <ns1:ethnicGroupCode nullFlavor=\"NI\"/>                            <ns1:birthDate nullFlavor=\"NI\"/>                         </ns1:Person>                      </soapenc:Array>                   </ns1:targetBusinessMessage>                </ns1:targetResponse>             </ns1:response>          </ns1:caXchangeResponseMessage>"; //For test only
-				
+					while (((readLine = br.readLine()) != null)) {						
+						logger.debug(readLine);				
 						Reader reader = new StringReader(readLine);
 						responseMessageToClient = (ResponseMessage) Utils.deserializeObject(reader,ResponseMessage.class);
 					}
@@ -358,13 +354,10 @@ public class CaXchangeRequestProcessorImpl extends CaXchangeRequestProcessorImpl
 						fe.printStackTrace();
 					}
 			}
-
 			logger.debug("After sending message " + new Date().getTime());
 			StringWriter stringWriter = new StringWriter();
 			if (logger.isDebugEnabled()) {
-				Utils.serializeObject(responseMessageToClient, new QName(
-						"http://caXchange.nci.nih.gov/messaging",
-						"caXchangeResponseMessage"), stringWriter);
+				Utils.serializeObject(responseMessageToClient, new QName("http://caXchange.nci.nih.gov/messaging","caXchangeResponseMessage"), stringWriter);
 				logger.debug(stringWriter);
 			}
 			return responseMessageToClient;
