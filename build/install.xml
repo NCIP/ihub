@@ -867,6 +867,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		<copy file="${caXchangeInboundService.dir.dist}/${caXchangeInboundService.war.file}" tofile="${caXchangeInboundService.dir.dist}/${caXchangeInboundService.war.file}.back" overwrite="true" />
 		<unwar src="${caXchangeInboundService.dir.dist}/${caXchangeInboundService.war.file}" dest="${working.dir}/${caXchangeInboundService.name}">
 		</unwar>
+		<delete file="${working.dir}/${caXchangeInboundService.name}/WEB-INF/lib/CaXchangeRequestProcessor-tests.jar" />
 		<copy todir="${temp.dir}/${caXchangeInboundService.name}" overwrite="true">
 			<fileset dir="${working.dir}/${caXchangeInboundService.name}/WEB-INF/etc/cagrid_${grid.application.name}">
 				<include name="*" />
