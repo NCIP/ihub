@@ -4,6 +4,8 @@
 globalMap.put("delegation.certificate.file.path","@delegation.certificate.file.path@");
 globalMap.put("delegation.key.file.path","@delegation.key.file.path@");
 globalMap.put("user.proxy.cache.time.to.live",600);
+globalMap.put("coppa.mirth.delegation.certificate.file.path","@coppa.mirth.delegation.certificate.file.path@");
+globalMap.put("coppa.mirth.delegation.key.file.path","@coppa.mirth.delegation.key.file.path@");
 
 globalMap.put("caAERS.registration.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-caaers/services/cagrid/registrationconsumer");
 globalMap.put("CTOM.registration.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/ctom-wsrf/services/cagrid/registrationconsumer");
@@ -15,7 +17,42 @@ globalMap.put("CTOM.study.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:
 globalMap.put("PSC.study.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-psc/services/cagrid/studyconsumer");
 globalMap.put("STUDY_CREATION.active.destination.count",3);
 
-globalMap.put("coppa.person.url","@coppa.services.po.protocol@://@coppa.services.po.host@:@coppa.services.po.port@/wsrf/services/cagrid/Person");
+// PO services
+globalMap.put("PERSON.url","@coppa.services.po.protocol@://@coppa.services.po.host@:@coppa.services.po.port@/wsrf/services/cagrid/Person");
+globalMap.put("ORGANIZATION.url","@coppa.services.po.protocol@://@coppa.services.po.host@:@coppa.services.po.port@/wsrf/services/cagrid/Organization");
+globalMap.put("CLINICAL_RESEARCH_STAFF.url","@coppa.services.po.protocol@://@coppa.services.po.host@:@coppa.services.po.port@/wsrf/services/cagrid/ClinicalResearchStaff");
+globalMap.put("IDENTIFIED_ORGANIZATION.url","@coppa.services.po.protocol@://@coppa.services.po.host@:@coppa.services.po.port@/wsrf/services/cagrid/IdentifiedOrganization");
+globalMap.put("HEALTH_CARE_PROVIDER.url","@coppa.services.po.protocol@://@coppa.services.po.host@:@coppa.services.po.port@/wsrf/services/cagrid/HealthCareProvider");
+globalMap.put("HEALTH_CARE_FACILITY.url","@coppa.services.po.protocol@://@coppa.services.po.host@:@coppa.services.po.port@/wsrf/services/cagrid/HealthCareFacility");
+globalMap.put("IDENTIFIED_PERSON.url","@coppa.services.po.protocol@://@coppa.services.po.host@:@coppa.services.po.port@/wsrf/services/cagrid/IdentifiedPerson");
+globalMap.put("OVERSIGHT_COMMITTEE.url","@coppa.services.po.protocol@://@coppa.services.po.host@:@coppa.services.po.port@/wsrf/services/cagrid/OversightCommittee");
+globalMap.put("ORGANIZATIONAL_CONTACT.url","@coppa.services.po.protocol@://@coppa.services.po.host@:@coppa.services.po.port@/wsrf/services/cagrid/OrganizationalContact");
+globalMap.put("RESEARCH_ORGANIZATION.url","@coppa.services.po.protocol@://@coppa.services.po.host@:@coppa.services.po.port@/wsrf/services/cagrid/ResearchOrganization");
+globalMap.put("PO_BUSINESS.url","@coppa.services.po.protocol@://@coppa.services.po.host@:@coppa.services.po.port@/wsrf/services/cagrid/Business");
+
+// PA services
+globalMap.put("STUDY_PROTOCOL.url","@coppa.services.pa.protocol@://@coppa.services.pa.host@:@coppa.services.pa.port@/wsrf/services/cagrid/StudyProtocolService");
+globalMap.put("ARM.url","@coppa.services.pa.protocol@://@coppa.services.pa.host@:@coppa.services.pa.port@/wsrf/services/cagrid/ArmService");
+//need clarification on study_participation, since client is not available and not configured in servicemix based iHub
+//globalMap.put("STUDY_PARTICIPATION.url","@coppa.services.pa.protocol@://@coppa.services.pa.host@:@coppa.services.pa.port@/wsrf/services/cagrid/StudyParticipationService");
+globalMap.put("STUDY_SITE.url","@coppa.services.pa.protocol@://@coppa.services.pa.host@:@coppa.services.pa.port@/wsrf/services/cagrid/StudySiteService");
+globalMap.put("PLANNED_ACTIVITY.url","@coppa.services.pa.protocol@://@coppa.services.pa.host@:@coppa.services.pa.port@/wsrf/services/cagrid/PlannedActivityService");
+globalMap.put("STUDY_CONTACT.url","@coppa.services.pa.protocol@://@coppa.services.pa.host@:@coppa.services.pa.port@/wsrf/services/cagrid/StudyContactService");
+globalMap.put("STUDY_DISEASE.url","@coppa.services.pa.protocol@://@coppa.services.pa.host@:@coppa.services.pa.port@/wsrf/services/cagrid/StudyDiseaseService");
+globalMap.put("STUDY_OVERALL_STATUS.url","@coppa.services.pa.protocol@://@coppa.services.pa.host@:@coppa.services.pa.port@/wsrf/services/cagrid/StudyOverallStatusService");
+//need clarification on study_participation, since client is not available and not configured in servicemix based iHub
+//globalMap.put("STUDY_PARTICIPATION_CONTACT.url","@coppa.services.pa.protocol@://@coppa.services.pa.host@:@coppa.services.pa.port@/wsrf/services/cagrid/StudyParticipationContactService");
+globalMap.put("STUDY_SITE_CONTACT.url","@coppa.services.pa.protocol@://@coppa.services.pa.host@:@coppa.services.pa.port@/wsrf/services/cagrid/StudySiteContactService");
+globalMap.put("STUDY_RELATIONSHIP.url","@coppa.services.pa.protocol@://@coppa.services.pa.host@:@coppa.services.pa.port@/wsrf/services/cagrid/StudyRelationshipService");
+globalMap.put("STUDY_RESOURCING.url","@coppa.services.pa.protocol@://@coppa.services.pa.host@:@coppa.services.pa.port@/wsrf/services/cagrid/StudyResourcingService");
+globalMap.put("STUDY_IND_IDE.url","@coppa.services.pa.protocol@://@coppa.services.pa.host@:@coppa.services.pa.port@/wsrf/services/cagrid/StudyIndIdeService");
+globalMap.put("STUDY_ONHOLD.url","@coppa.services.pa.protocol@://@coppa.services.pa.host@:@coppa.services.pa.port@/wsrf/services/cagrid/StudyOnholdService");
+globalMap.put("STUDY_OUTCOME_MEASURE.url","@coppa.services.pa.protocol@://@coppa.services.pa.host@:@coppa.services.pa.port@/wsrf/services/cagrid/StudyOutcomeMeasureService");
+globalMap.put("STUDY_RECRUITMENT_STATUS.url","@coppa.services.pa.protocol@://@coppa.services.pa.host@:@coppa.services.pa.port@/wsrf/services/cagrid/StudyRecruitmentStatusService");
+globalMap.put("STUDY_REGULATORY_AUTHORITY.url","@coppa.services.pa.protocol@://@coppa.services.pa.host@:@coppa.services.pa.port@/wsrf/services/cagrid/StudyRegulatoryAuthorityService");
+globalMap.put("STUDY_SITE_ACCRUAL_STATUS.url","@coppa.services.pa.protocol@://@coppa.services.pa.host@:@coppa.services.pa.port@/wsrf/services/cagrid/StudySiteAccrualStatusService");
+globalMap.put("DOCUMENT.url","@coppa.services.pa.protocol@://@coppa.services.pa.host@:@coppa.services.pa.port@/wsrf/services/cagrid/DocumentService");
+globalMap.put("DOCUMENT_WORKFLOW_STATUS.url","@coppa.services.pa.protocol@://@coppa.services.pa.host@:@coppa.services.pa.port@/wsrf/services/cagrid/DocumentWorkflowStatusService");
 
 globalMap.put("target.grid.service.retry.attempts",3);
 
