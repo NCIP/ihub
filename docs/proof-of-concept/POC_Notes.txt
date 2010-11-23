@@ -392,3 +392,265 @@ SAXParseException during deployment to the downloaded mirth distribution
 
 Removed xalan-2.7.0.jar from the lib/custom folder.
 
+
+
+
+
+
+
+
+
+
+
+Stress Test Results
+----------------------------------------------------------------------
+
+1663 2KB HL7v2 messages to be converted to HL7v3 fromat.
+
+Total Input v2 Files size: 6.49 MB
+
+Total Output v3 Files size: 6.49 MB
+
+Total time: 75 sec
+
+
+
+
+
+caAdapter POC
+------------------------------------------------------------------------
+Complete the POC demo
+
+For adding SOAP Listener endpoint, need to remove Axis based jars from custom folder
+
+Removed axis-1.2RC2.jar and axis-url-1.2RC2.jar
+Added mule/axis-14.jar
+
+
+Level of Effort for Mirth migration
+------------------------------------------------
+ARC and Provision requests
+	ARC
+	Provision Target Tier
+	
+Build and Deployment
+	
+CXF based service on Tomcat to support syscnronous and non-grid based use cases
+Move all the business components. Break them down into Suite and non-suite.
+Documentation Migration
+Unit and Integration Testing
+
+
+
+
+
+
+
+java.lang.Exception: java.lang.NoClassDefFoundError
+	at com.webreach.mirth.connectors.js.JavaScriptMessageDispatcher.doDispatch(JavaScriptMessageDispatcher.java:91)
+------------------------------------------------------------------------------------------------------------------------
+1. Added axis-1.2RC2.jar and axis-url-1.2RC2.jar. 
+	Removed .mule/axis-14.jar
+
+2. Subject Registration broadcaset worked but the Transformer Service didn't start.
+
+3. Added mule/axis-14.jar. Still the same result as item 2 above.
+
+
+
+
+
+
+
+On adding COPPA COMMONS AND COPPA-PA RELATED JARS - org.jboss.security.jndi.JndiLoginInitialContextFactory class not found exception
+------------------------------------------------------------------------------------------------------------------------------------
+1. Resolved by adding jboss-embedded-all.jar to the lib/custom folder.
+
+
+
+
+
+
+SAXParseException while trying to add xalan.4.0.3.jar, that is required in getting subject using the
+	COPPA credentials
+-----------------------------------------------------------------------------------------------------------
+1. Test code works with xalan.4.0.3.jar and gets the subject.
+2. Test code fails with java.lang.NoClassDefFoundError: org/apache/xpath/compiler/FuncLoader when
+	xalan.4.0.3.jar is removed.or if xalan 2.7.0.jar is added to the test classpath.
+3. SAXParseException remains even after remoging xercesimpl.jar and xalan-4.0.3.jar and by adding
+	xerces-2.8.1.jar and xalan-2.7.0.jar.
+
+
+
+
+
+
+Error getting DelegatedCredentialReference on Tomcat:
+java.lang.AbstractMethodError: javax.xml.parsers.DocumentBuilderFactory.setFeature(Ljava/lang/String;Z)V
+	at gov.nih.nci.cagrid.opensaml.XML$ParserPool.&lt;init>(Unknown Source)
+----------------------------------------
+1. Removed cagrid 1.2 authentication jars and replacing with 1.3 jars.
+	By doing this, request is sent to Mirth. But the credential delegation ref is blank and
+	sysnchronous message is sent as an object name.
+    
+	Even while getting the delegatedcredential exception, on getting a SAMLSerializerFactory.class not found error,
+	the message was still sent to Mirth. This should NOT be sent. Do not catch an exception there., 
+2. After the above step, to get rid of the SAMLSerializerFactory class not found error, 
+	added caGrid-gaards-core-1.3.jar to wsrf-ihub/lib folder
+	
+3. Removed xercesimpl.jar and added xercesImpl-2.8.1.jar.
+	Error message changed to java.lang.NoClassDefFoundError: gov/nih/nci/cagrid/gridca/common/KeyUtil
+4. Upgraded Dorian stubs also to 1.3
+	Error changed to PermissionDeniedFault no class definition error.
+5. Added cds 1.3 related jars
+	Error changed to NoClassDefFoundError: org/jasig/cas/authentication/handler/AuthenticationException
+6. Added "cas-server-core-3.1.jar".
+	After adding above jar, got the "java.lang.NoSuchMethodError: 
+	org.cagrid.gaards.websso.authentication.helper.impl.GridCredentialDelegatorImpl.&lt;init>(Ljava/lang/String;III)V"
+	
+	
+----------------------------------------------
+Trying to troubleshoot the above error without upgrading the cagrid jars to 1.3
+-----------------------------
+1. Removed xercesimpl.jar and added xercesImpl-2.8.1.jar.
+	Error message changed to java.lang.NoClassDefFoundError: gov/nih/nci/cagrid/gridca/common/KeyUtil
+2. Added caGrid-gridca-1.2.jar, caGrid-cds-stubs-1.2.jar, cas-server-3.0.5.jar from C:\ext\caGrid\projects\websso-client\ext\dependencies\default\jars
+	After adding above jars, got the "java.lang.NoSuchMethodError: 
+	org.cagrid.gaards.websso.authentication.helper.impl.GridCredentialDelegatorImpl.&lt;init>(Ljava/lang/String;III)V"
+3. Removed CaXchangeRequestProcessor-tests.jar from wsrf-ihub/lib folder.
+	NosuchMethodError reported above went away. But got NoClassDefFoundError: org/cagrid/gaards/cds/client/DelegationUserClient
+4. Added "caGrid-cds-client-1.2.jar".
+	Error occured: java.lang.NoClassDefFoundError: org/cagrid/gaards/cds/common/CredentialDelegationService
+5. Added caGrid-cds-common-1.2.jar.
+	Error occured: 2010-11-19 10:36:27,312 ERROR infrastructure.CaGridAuthenticationManager [http-58445-Processor25,getDelegatedCredentialReference:100] Error authentica
+	ting. Error accessing the Delegation Service : The AXIS engine could not find a target service to invoke!  targetService is cagrid/credentialdelegationservi
+	ce
+6. Figured out that the URL typed in for Credential Delegation Service is incorrect. 
+	BAD URL with lower case: https://cagrid-cds-stage.nci.nih.gov:8443/wsrf/services/cagrid/credentialdelegationservice
+	GOOD URL: https://cagrid-cds-stage.nci.nih.gov:8443/wsrf/services/cagrid/CredentialDelegationService
+
+
+	
+
+
+Code deployed to distributed version of Mirth resulted in 
+org.w3c.dom.DOMException: NOT_SUPPORTED_ERR: The implementation does not support
+ the requested type of object or operation.
+ -----------------------------------------------------------------------------------
+ 1. Removed xercesImpl-2.8.1.jar, xml-apis-1.3.04.jar, XmlSchema-1.4.2.jar from mirth_distribution/lib folder.
+ 	Error remained the same.
+ 2. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Bugs Identified
+---------------------------------------------------------
+1. On broadcast of subject registration, when all the targets fail, a successful aggregated response is sent back where as an
+	Error message is expected.
+	
+	
+	
+	
+	
+	
+
+Things to Do
+-----------------------------------------------------------
+1. For the JMS Reader and Writer Channels, Tokenize the values, user, password, inbound/ outbound queue names, host and port in the exported 
+	channel XML code. Derive the values from the properties file during deployment. This should be the second option because the tokens will
+	be erased when channels are re-exported. The first option should be to set the global variables and use the variables where ever needed.
+
+2. Move any database specific (example: PostgreSQL, MySQL, etc) into global scripts section.
+
+3. Look into configuration to increase the java heap size for Mirth
+
+4. In advanced configuration (Admin guide), if Mirth and Tomcat are deployed on a different box or if COPPA is deployed to a different
+	target grid than the rest of the applications, "coppa.mirth.delegation.certificate.file.path" and "coppa.mirth.delegation.key.file.path"
+	need to be updated in the Global Scripts using Mirth Administrator. Also the referenced cert and key files need to be downloaded and
+	saved to the location specified above.
+	
+
+
+
+Http Listener:
+---------------------------------------------------------------
+Request from a Firefox browser's address bar:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<message>
+    <synchronous_msg>%3Crequest%3E%3Cmetadata%3E%3Cuid%3E66b20b26-dc51-11df-9972-ddc780619c0d%3C/uid%3E%3Csourceformat%3EDELIMITED%3C/sourceformat%3E%3Ctargetformat%3EHL7V3%3C/targetformat%3E%3C/metadata%3E%3Cpayload%3ESantosh,Giambi,08/20/1968,Male,Duke%3C/payload%3E%3C/request%3E</synchronous_msg>
+    <http.version>HTTP/1.1</http.version>
+    <Connection>keep-alive</Connection>
+    <User-Agent>Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.10) Gecko/20100914 Firefox/3.6.10</User-Agent>
+    <Host>localhost</Host>
+    <Accept-Encoding>gzip,deflate</Accept-Encoding>
+    <http.method>GET</http.method>
+    <Accept-Language>en-us,en;q</Accept-Language>
+    <Accept-Charset>ISO-8859-1,utf-8;q</Accept-Charset>
+    <Keep-Alive>115</Keep-Alive>
+    <http.request>/</http.request>
+    <Accept>text/html,application/xhtml+xml,application/xml;q</Accept>
+</message>
+
+
+
+Request using Apache Commons HttpClient:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<message>
+    <synchronous_msg>%3Crequest%3E%3Cmetadata%3E%3Cuid%3E66b20b26-dc51-11df-9972-ddc780619c0d%3C%2Fuid%3E%3Csourceformat%3EDELIMITED%3C%2Fsourceformat%3E%3Ctargetformat%3EHL7V3%3C%2Ftargetformat%3E%3C%2Fmetadata%3E%3Cpayload%3ESantosh%2CGiambi%2C08%2F20%2F1968%2CMale%2CDuke%3C%2Fpayload%3E%3C%2Frequest%3E</synchronous_msg>
+    <Content-Length>301</Content-Length>
+    <http.version>HTTP/1.1</http.version>
+    <Host>localhost</Host>
+    <User-Agent>Test Client</User-Agent>
+    <http.method>POST</http.method>
+    <http.request>/</http.request>
+    <Content-Type>application/x-www-form-urlencoded</Content-Type>
+</message>
+
+
+
+
+
+Find PID for a particular port in use
+----------------------------------------------
+Netstat -a -n -o | findstr 1099
+
+
+
+
+COPPA smoke test command
+---------------------------------------
+ant testCoppaService -Dpayload.file.name=PERSON_SEARCH.xml -Dservice.type=PERSON -Doperation.name=search -Dsynchronous=true
+
+
+
+
+Kill Windows Update Restart Popup
+---------------------------------------
+sc stop wuauserv
