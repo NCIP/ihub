@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1290059878125</time>
+    <time>1290552828359</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>153</revision>
+  <revision>201</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -32,6 +32,7 @@
 var coppaDelegatedCredentialRefFromMsg = Packages.java.net.URLDecoder.decode(msg[&apos;coppa_delegated_credential_ref&apos;].toString());
 
 channelMap.put(&apos;coppaDelegatedCredentialRef&apos;, coppaDelegatedCredentialRefFromMsg);
+channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, false);
 
 //var reqXML = SerializerFactory.getHL7Serializer(false, false, false).toXML(nonencodedhl7);
 msg = new XML(nonencodedSyncMsg);</script>
@@ -43,6 +44,7 @@ msg = new XML(nonencodedSyncMsg);</script>
 var coppaDelegatedCredentialRefFromMsg = Packages.java.net.URLDecoder.decode(msg[&apos;coppa_delegated_credential_ref&apos;].toString());
 
 channelMap.put(&apos;coppaDelegatedCredentialRef&apos;, coppaDelegatedCredentialRefFromMsg);
+channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, false);
 
 //var reqXML = SerializerFactory.getHL7Serializer(false, false, false).toXML(nonencodedhl7);
 msg = new XML(nonencodedSyncMsg);</string>
@@ -456,18 +458,78 @@ return;</property>
           <com.webreach.mirth.model.Step>
             <sequenceNumber>0</sequenceNumber>
             <name>Retrieve Security Subject</name>
-            <script>var subject = invokeDelegationService($(&apos;coppaDelegatedCredentialRef&apos;), globalMap.get(&quot;delegation.certificate.file.path&quot;),
-	 globalMap.get(&quot;delegation.key.file.path&quot;), globalMap.get(&quot;target.detail.code.delegation&quot;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
+            <script>logger.info(&quot;Invoking Delegation Service&quot;);
+var subject = invokeDelegationService($(&apos;coppaDelegatedCredentialRef&apos;), globalMap.get(&quot;coppa.mirth.delegation.certificate.file.path&quot;),
+	 globalMap.get(&quot;coppa.mirth.delegation.key.file.path&quot;), globalMap.get(&quot;target.detail.code.delegation&quot;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
+logger.info(&quot;Subject: &quot;+subject);
+channelMap.put(&quot;coppaSubject&quot;, subject);
 
-channelMap.put(&quot;coppaSubject&quot;, subject);</script>
+
+
+
+
+
+
+//use this function to replace success and error response XML functions
+function createResponseXML(varGridInvocationResult, varTargetDetailCode, varRequestXMLSchemaDefinition, varIsError){
+	var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenerateResponseBean();
+	if(varIsError){
+		var gridInvocationResultDocument = generateResponseBean.createErrorDocument(varTargetDetailCode, new Packages.java.lang.String(&quot;&quot;),
+			 varException);
+	} else{
+		var gridInvocationResultDocument = generateResponseBean.createOutputDocument(varTargetDetailCode, new Packages.java.lang.String(&quot;&quot;),
+			varRequestXMLSchemaDefinition, varGridInvocationResult);
+	}	
+	var successResponseXML = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(gridInvocationResultDocument);
+	return successResponseXML;
+}
+
+
+function createErrorResponseXML(varException, varTargetDetailCode){
+	var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenerateResponseBean();
+	var gridInvocationResultDocument = generateResponseBean.createErrorDocument(varTargetDetailCode, new Packages.java.lang.String(&quot;&quot;),
+			 varException);
+	var errorResponseXML = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(gridInvocationResultDocument);
+	return errorResponseXML;
+}</script>
             <type>JavaScript</type>
             <data class="map">
               <entry>
                 <string>Script</string>
-                <string>var subject = invokeDelegationService($(&apos;coppaDelegatedCredentialRef&apos;), globalMap.get(&quot;delegation.certificate.file.path&quot;),
-	 globalMap.get(&quot;delegation.key.file.path&quot;), globalMap.get(&quot;target.detail.code.delegation&quot;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
+                <string>logger.info(&quot;Invoking Delegation Service&quot;);
+var subject = invokeDelegationService($(&apos;coppaDelegatedCredentialRef&apos;), globalMap.get(&quot;coppa.mirth.delegation.certificate.file.path&quot;),
+	 globalMap.get(&quot;coppa.mirth.delegation.key.file.path&quot;), globalMap.get(&quot;target.detail.code.delegation&quot;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
+logger.info(&quot;Subject: &quot;+subject);
+channelMap.put(&quot;coppaSubject&quot;, subject);
 
-channelMap.put(&quot;coppaSubject&quot;, subject);</string>
+
+
+
+
+
+
+//use this function to replace success and error response XML functions
+function createResponseXML(varGridInvocationResult, varTargetDetailCode, varRequestXMLSchemaDefinition, varIsError){
+	var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenerateResponseBean();
+	if(varIsError){
+		var gridInvocationResultDocument = generateResponseBean.createErrorDocument(varTargetDetailCode, new Packages.java.lang.String(&quot;&quot;),
+			 varException);
+	} else{
+		var gridInvocationResultDocument = generateResponseBean.createOutputDocument(varTargetDetailCode, new Packages.java.lang.String(&quot;&quot;),
+			varRequestXMLSchemaDefinition, varGridInvocationResult);
+	}	
+	var successResponseXML = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(gridInvocationResultDocument);
+	return successResponseXML;
+}
+
+
+function createErrorResponseXML(varException, varTargetDetailCode){
+	var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenerateResponseBean();
+	var gridInvocationResultDocument = generateResponseBean.createErrorDocument(varTargetDetailCode, new Packages.java.lang.String(&quot;&quot;),
+			 varException);
+	var errorResponseXML = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(gridInvocationResultDocument);
+	return errorResponseXML;
+}</string>
               </entry>
             </data>
           </com.webreach.mirth.model.Step>
@@ -491,9 +553,10 @@ channelMap.put(&quot;coppaSubject&quot;, subject);</string>
       <enabled>true</enabled>
     </com.webreach.mirth.model.Connector>
     <com.webreach.mirth.model.Connector>
-      <name>PERSON</name>
+      <name>COPPA Invoker</name>
       <properties>
-        <property name="script">var targetInvocationStrategy = globalMap.get($(&apos;ns1metadata_ns1servicetype&apos;)+&quot;_Strategy&quot;);
+        <property name="script">logger.debug(&quot;Processing COPPA Invoker destination&quot;);
+var targetInvocationStrategy = globalMap.get($(&apos;ns1metadata_ns1servicetype&apos;)+&quot;_Strategy&quot;);
 targetInvocationStrategy.setStrategySpecificVariables($(&apos;ns1metadata_ns1operationname&apos;), 
 							$(&apos;ns1metadata_ns1servicetype&apos;), $(&apos;ihubBusinessMessagePayloadDocument&apos;), $(&apos;coppaSubject&apos;), $(&apos;ns1metadata_ns1servicetype&apos;));
 
@@ -520,7 +583,7 @@ channelMap.put(&quot;overallResponseString&quot;, overallResponseString);</prope
         <rules>
           <com.webreach.mirth.model.Rule>
             <sequenceNumber>0</sequenceNumber>
-            <name>Accept message if &quot;$(&apos;ns1metadata_ns1servicetype&apos;)&quot; equals &apos;PERSON&apos;</name>
+            <name>Reject message if &quot;$(&apos;IS_IHUB_PROCESSING_ERROR&apos;)&quot; equals true</name>
             <data class="map">
               <entry>
                 <string>OriginalField</string>
@@ -529,7 +592,7 @@ channelMap.put(&quot;overallResponseString&quot;, overallResponseString);</prope
               <entry>
                 <string>Values</string>
                 <list>
-                  <string>&apos;PERSON&apos;</string>
+                  <string>true</string>
                 </list>
               </entry>
               <entry>
@@ -538,7 +601,7 @@ channelMap.put(&quot;overallResponseString&quot;, overallResponseString);</prope
               </entry>
               <entry>
                 <string>Field</string>
-                <string>$(&apos;ns1metadata_ns1servicetype&apos;)</string>
+                <string>$(&apos;IS_IHUB_PROCESSING_ERROR&apos;)</string>
               </entry>
               <entry>
                 <string>Name</string>
@@ -546,15 +609,15 @@ channelMap.put(&quot;overallResponseString&quot;, overallResponseString);</prope
               </entry>
               <entry>
                 <string>Accept</string>
-                <string>1</string>
+                <string>0</string>
               </entry>
             </data>
             <type>Rule Builder</type>
-            <script>if($(&apos;ns1metadata_ns1servicetype&apos;) == &apos;PERSON&apos;)
+            <script>if($(&apos;IS_IHUB_PROCESSING_ERROR&apos;) == true)
 {
-return true;
+return false;
 }
-return false;</script>
+return true;</script>
             <operator>NONE</operator>
           </com.webreach.mirth.model.Rule>
         </rules>
@@ -614,7 +677,10 @@ responseMap.put(&apos;SuiteSynchronousResponse&apos;, ResponseFactory.getSuccess
 return message;</preprocessingScript>
   <postprocessingScript>// This script executes once after a message has been processed
 return;</postprocessingScript>
-  <deployScript>var coppaPersonStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+  <deployScript>/*********************************************************
+*****************   PO SERVICES   ************************
+*********************************************************/
+var coppaPersonStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
 coppaPersonStrategy.setServiceUrl(globalMap.get(&quot;PERSON.url&quot;));
 coppaPersonStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.entities.person.client.PersonClient&quot;);
 coppaPersonStrategy.init();
@@ -626,6 +692,213 @@ coppaOrganizationStrategy.setServiceUrl(globalMap.get(&quot;ORGANIZATION.url&quo
 coppaOrganizationStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.entities.organization.client.OrganizationClient&quot;);
 coppaOrganizationStrategy.init();
 globalMap.put(&quot;ORGANIZATION_Strategy&quot;, coppaOrganizationStrategy);
+
+
+var coppaClinicalResearchStaffStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaClinicalResearchStaffStrategy.setServiceUrl(globalMap.get(&quot;CLINICAL_RESEARCH_STAFF.url&quot;));
+coppaClinicalResearchStaffStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.structuralroles.clinicalresearchstaff.client.ClinicalResearchStaffClient&quot;);
+coppaClinicalResearchStaffStrategy.init();
+globalMap.put(&quot;CLINICAL_RESEARCH_STAFF_Strategy&quot;, coppaClinicalResearchStaffStrategy);
+
+
+var coppaIdentifiedOrganizationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaIdentifiedOrganizationStrategy.setServiceUrl(globalMap.get(&quot;IDENTIFIED_ORGANIZATION.url&quot;));
+coppaIdentifiedOrganizationStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.structuralroles.identifiedorganization.client.IdentifiedOrganizationClient&quot;);
+coppaIdentifiedOrganizationStrategy.init();
+globalMap.put(&quot;IDENTIFIED_ORGANIZATION_Strategy&quot;, coppaIdentifiedOrganizationStrategy);
+
+
+var coppaHealthCareProviderStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaHealthCareProviderStrategy.setServiceUrl(globalMap.get(&quot;HEALTH_CARE_PROVIDER.url&quot;));
+coppaHealthCareProviderStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.structuralroles.healthcareprovider.client.HealthCareProviderClient&quot;);
+coppaHealthCareProviderStrategy.init();
+globalMap.put(&quot;HEALTH_CARE_PROVIDER_Strategy&quot;, coppaHealthCareProviderStrategy);
+
+
+var coppaHealthCareFacilityStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaHealthCareFacilityStrategy.setServiceUrl(globalMap.get(&quot;HEALTH_CARE_FACILITY.url&quot;));
+coppaHealthCareFacilityStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.structuralroles.healthcarefacility.client.HealthCareFacilityClient&quot;);
+coppaHealthCareFacilityStrategy.init();
+globalMap.put(&quot;HEALTH_CARE_FACILITY_Strategy&quot;, coppaHealthCareFacilityStrategy);
+
+
+var coppaIdentifiedPersonStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaIdentifiedPersonStrategy.setServiceUrl(globalMap.get(&quot;IDENTIFIED_PERSON.url&quot;));
+coppaIdentifiedPersonStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.structuralroles.identifiedperson.client.IdentifiedPersonClient&quot;);
+coppaIdentifiedPersonStrategy.init();
+globalMap.put(&quot;IDENTIFIED_PERSON_Strategy&quot;, coppaIdentifiedPersonStrategy);
+
+
+var coppaOversightCommitteeStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaOversightCommitteeStrategy.setServiceUrl(globalMap.get(&quot;OVERSIGHT_COMMITTEE.url&quot;));
+coppaOversightCommitteeStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.structuralroles.oversightcommittee.client.OversightCommitteeClient&quot;);
+coppaOversightCommitteeStrategy.init();
+globalMap.put(&quot;OVERSIGHT_COMMITTEE_Strategy&quot;, coppaOversightCommitteeStrategy);
+
+
+var coppaOrganizationalContactStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaOrganizationalContactStrategy.setServiceUrl(globalMap.get(&quot;ORGANIZATIONAL_CONTACT.url&quot;));
+coppaOrganizationalContactStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.structuralroles.organizationalcontact.client.OrganizationalContactClient&quot;);
+coppaOrganizationalContactStrategy.init();
+globalMap.put(&quot;ORGANIZATIONAL_CONTACT_Strategy&quot;, coppaOrganizationalContactStrategy);
+
+
+var coppaResearchOrganizationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaResearchOrganizationStrategy.setServiceUrl(globalMap.get(&quot;RESEARCH_ORGANIZATION.url&quot;));
+coppaResearchOrganizationStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.structuralroles.researchorganization.client.ResearchOrganizationClient&quot;);
+coppaResearchOrganizationStrategy.init();
+globalMap.put(&quot;RESEARCH_ORGANIZATION_Strategy&quot;, coppaResearchOrganizationStrategy);
+
+
+var coppaPOBusinessStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaPOBusinessStrategy.setServiceUrl(globalMap.get(&quot;PO_BUSINESS.url&quot;));
+coppaPOBusinessStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.business.business.client.BusinessClient&quot;);
+coppaPOBusinessStrategy.init();
+globalMap.put(&quot;PO_BUSINESS_Strategy&quot;, coppaPOBusinessStrategy);
+
+
+/*********************************************************
+*****************   PA SERVICES   ************************
+*********************************************************/
+
+var coppaStudyProtocolStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaStudyProtocolStrategy.setServiceUrl(globalMap.get(&quot;STUDY_PROTOCOL.url&quot;));
+coppaStudyProtocolStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.pa.studyprotocolservice.client.StudyProtocolServiceClient&quot;);
+coppaStudyProtocolStrategy.init();
+globalMap.put(&quot;STUDY_PROTOCOL_Strategy&quot;, coppaStudyProtocolStrategy);
+
+
+var coppaArmStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaArmStrategy.setServiceUrl(globalMap.get(&quot;ARM.url&quot;));
+coppaArmStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.pa.armservice.client.ArmServiceClient&quot;);
+coppaArmStrategy.init();
+globalMap.put(&quot;ARM_Strategy&quot;, coppaArmStrategy);
+
+
+//var coppaStudyParticipationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+//coppaStudyParticipationStrategy.setServiceUrl(globalMap.get(&quot;STUDY_PARTICIPATION.url&quot;));
+//coppaStudyParticipationStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.entities.organization.client.OrganizationClient&quot;);
+//coppaStudyParticipationStrategy.init();
+//globalMap.put(&quot;STUDY_PARTICIPATION_Strategy&quot;, coppaStudyParticipationStrategy);
+
+
+var coppaStudySiteStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaStudySiteStrategy.setServiceUrl(globalMap.get(&quot;STUDY_SITE.url&quot;));
+coppaStudySiteStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.pa.studysiteservice.client.StudySiteServiceClient&quot;);
+coppaStudySiteStrategy.init();
+globalMap.put(&quot;STUDY_SITE_Strategy&quot;, coppaStudySiteStrategy);
+
+
+var coppaPlannedActivityStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaPlannedActivityStrategy.setServiceUrl(globalMap.get(&quot;PLANNED_ACTIVITY.url&quot;));
+coppaPlannedActivityStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.pa.plannedactivityservice.client.PlannedActivityServiceClient&quot;);
+coppaPlannedActivityStrategy.init();
+globalMap.put(&quot;PLANNED_ACTIVITY_Strategy&quot;, coppaPlannedActivityStrategy);
+
+
+var coppaStudyContactStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaStudyContactStrategy.setServiceUrl(globalMap.get(&quot;STUDY_CONTACT.url&quot;));
+coppaStudyContactStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.pa.studycontactservice.client.StudyContactServiceClient&quot;);
+coppaStudyContactStrategy.init();
+globalMap.put(&quot;STUDY_CONTACT_Strategy&quot;, coppaStudyContactStrategy);
+
+
+var coppaStudyDiseaseStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaStudyDiseaseStrategy.setServiceUrl(globalMap.get(&quot;STUDY_DISEASE.url&quot;));
+coppaStudyDiseaseStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.pa.studydiseaseservice.client.StudyDiseaseServiceClient&quot;);
+coppaStudyDiseaseStrategy.init();
+globalMap.put(&quot;STUDY_DISEASE_Strategy&quot;, coppaStudyDiseaseStrategy);
+
+
+var coppaStudyOverallStatusStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaStudyOverallStatusStrategy.setServiceUrl(globalMap.get(&quot;STUDY_OVERALL_STATUS.url&quot;));
+coppaStudyOverallStatusStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.pa.studyoverallstatusservice.client.StudyOverallStatusServiceClient&quot;);
+coppaStudyOverallStatusStrategy.init();
+globalMap.put(&quot;STUDY_OVERALL_STATUS_Strategy&quot;, coppaStudyOverallStatusStrategy);
+
+
+//var coppaStudyParticipationContactStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+//coppaStudyParticipationContactStrategy.setServiceUrl(globalMap.get(&quot;STUDY_PARTICIPATION_CONTACT.url&quot;));
+//coppaStudyParticipationContactStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.entities.organization.client.OrganizationClient&quot;);
+//coppaStudyParticipationContactStrategy.init();
+//globalMap.put(&quot;STUDY_PARTICIPATION_CONTACT_Strategy&quot;, coppaStudyParticipationContactStrategy);
+
+
+var coppaStudySiteContactStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaStudySiteContactStrategy.setServiceUrl(globalMap.get(&quot;STUDY_SITE_CONTACT.url&quot;));
+coppaStudySiteContactStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.pa.studysitecontactservice.client.StudySiteContactServiceClient&quot;);
+coppaStudySiteContactStrategy.init();
+globalMap.put(&quot;STUDY_SITE_CONTACT_Strategy&quot;, coppaStudySiteContactStrategy);
+
+
+var coppaStudyRelationshipStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaStudyRelationshipStrategy.setServiceUrl(globalMap.get(&quot;STUDY_RELATIONSHIP.url&quot;));
+coppaStudyRelationshipStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.pa.studyrelationshipservice.client.StudyRelationshipServiceClient&quot;);
+coppaStudyRelationshipStrategy.init();
+globalMap.put(&quot;STUDY_RELATIONSHIP_Strategy&quot;, coppaStudyRelationshipStrategy);
+
+
+var coppaStudyResourcingStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaStudyResourcingStrategy.setServiceUrl(globalMap.get(&quot;STUDY_RESOURCING.url&quot;));
+coppaStudyResourcingStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.pa.studyresourcingservice.client.StudyResourcingServiceClient&quot;);
+coppaStudyResourcingStrategy.init();
+globalMap.put(&quot;STUDY_RESOURCING_Strategy&quot;, coppaStudyResourcingStrategy);
+
+
+var coppaStudyIndIdeStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaStudyIndIdeStrategy.setServiceUrl(globalMap.get(&quot;STUDY_IND_IDE.url&quot;));
+coppaStudyIndIdeStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.pa.studyindideservice.client.StudyIndIdeServiceClient&quot;);
+coppaStudyIndIdeStrategy.init();
+globalMap.put(&quot;STUDY_IND_IDE_Strategy&quot;, coppaStudyIndIdeStrategy);
+
+
+var coppaStudyOnholdStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaStudyOnholdStrategy.setServiceUrl(globalMap.get(&quot;STUDY_ONHOLD.url&quot;));
+coppaStudyOnholdStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.pa.studyonholdservice.client.StudyOnholdServiceClient&quot;);
+coppaStudyOnholdStrategy.init();
+globalMap.put(&quot;STUDY_ONHOLD_Strategy&quot;, coppaStudyOnholdStrategy);
+
+
+var coppaStudyOutcomeMeasureStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaStudyOutcomeMeasureStrategy.setServiceUrl(globalMap.get(&quot;STUDY_OUTCOME_MEASURE.url&quot;));
+coppaStudyOutcomeMeasureStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.pa.studyoutcomemeasureservice.client.StudyOutcomeMeasureServiceClient&quot;);
+coppaStudyOutcomeMeasureStrategy.init();
+globalMap.put(&quot;STUDY_OUTCOME_MEASURE_Strategy&quot;, coppaStudyOutcomeMeasureStrategy);
+
+
+var coppaStudyRecruitmentStatusStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaStudyRecruitmentStatusStrategy.setServiceUrl(globalMap.get(&quot;STUDY_RECRUITMENT_STATUS.url&quot;));
+coppaStudyRecruitmentStatusStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.pa.studyrecruitmentstatusservice.client.StudyRecruitmentStatusServiceClient&quot;);
+coppaStudyRecruitmentStatusStrategy.init();
+globalMap.put(&quot;STUDY_RECRUITMENT_STATUS_Strategy&quot;, coppaStudyRecruitmentStatusStrategy);
+
+
+var coppaStudyRegulatoryAuthorityStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaStudyRegulatoryAuthorityStrategy.setServiceUrl(globalMap.get(&quot;STUDY_REGULATORY_AUTHORITY.url&quot;));
+coppaStudyRegulatoryAuthorityStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.pa.studyregulatoryauthorityservice.client.StudyRegulatoryAuthorityServiceClient&quot;);
+coppaStudyRegulatoryAuthorityStrategy.init();
+globalMap.put(&quot;STUDY_REGULATORY_AUTHORITY_Strategy&quot;, coppaStudyRegulatoryAuthorityStrategy);
+
+
+var coppaStudySiteAccrualStatusStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaStudySiteAccrualStatusStrategy.setServiceUrl(globalMap.get(&quot;STUDY_SITE_ACCRUAL_STATUS.url&quot;));
+coppaStudySiteAccrualStatusStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.pa.studysiteaccrualstatusservice.client.StudySiteAccrualStatusServiceClient&quot;);
+coppaStudySiteAccrualStatusStrategy.init();
+globalMap.put(&quot;STUDY_SITE_ACCRUAL_STATUS_Strategy&quot;, coppaStudySiteAccrualStatusStrategy);
+
+
+var coppaDocumentStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaDocumentStrategy.setServiceUrl(globalMap.get(&quot;DOCUMENT.url&quot;));
+coppaDocumentStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.pa.documentservice.client.DocumentServiceClient&quot;);
+coppaDocumentStrategy.init();
+globalMap.put(&quot;DOCUMENT_Strategy&quot;, coppaDocumentStrategy);
+
+
+var coppaDocumentWorkflowStatusStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
+coppaDocumentWorkflowStatusStrategy.setServiceUrl(globalMap.get(&quot;DOCUMENT_WORKFLOW_STATUS.url&quot;));
+coppaDocumentWorkflowStatusStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.pa.documentworkflowstatusservice.client.DocumentWorkflowStatusServiceClient&quot;);
+coppaDocumentWorkflowStatusStrategy.init();
+globalMap.put(&quot;DOCUMENT_WORKFLOW_STATUS_Strategy&quot;, coppaDocumentWorkflowStatusStrategy);
 
 
 // This script executes once when the mule engine is started

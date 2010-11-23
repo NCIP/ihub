@@ -78,20 +78,15 @@ function delegateSynchronousRequest(varServiceType, varTargetInvocationStrategy,
 				isFailureOverallResponse = true;
 			}
 		}		
-		var overallResponse = generateResponseBean.generateResponseFromTargetResponse(varExternalID, 
-								varMessageID, generateResponseBean.createOutputDocument(varTargetDetailsCode, varOperationName, varBusinessMessageXMLSchemaDefinition, gridInvocationResult));
-		//var overallResponse = generateResponseBean.createOutputDocument(varTargetDetailsCode, varOperationName, varBusinessMessageXMLSchemaDefinition, gridInvocationResult)	
-		overallResponseString = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(overallResponse);
+		overallResponseString = generateResponseBean.generateResponseFromTargetResponse(varExternalID, 
+								varMessageID, generateResponseBean.createOutputDocument(varTargetDetailsCode, varOperationName, varBusinessMessageXMLSchemaDefinition, gridInvocationResult));		
 		updateMessageServiceResponseInDB(isFailureOverallResponse, &quot;&quot;, varMessageID, globalMap.get(&quot;request.message.status.responsereturned&quot;));
 
 	} catch (error) {	
 		logger.error(&quot;EXCEPTION OCCURED IN MIRTH DURING &quot;+varTargetDetailsCode+&quot; INVOCATION: &quot;+error);
-		
 		gridInvocationResult = new Packages.gov.nih.nci.ihub.writer.ncies.common.GridInvocationResult(true, createErrorResponseNode(new Packages.java.lang.Exception(error), varTargetDetailsCode), false);
-		
-		var overallResponse = generateResponseBean.generateResponseFromTargetResponse(varExternalID, 
+		overallResponseString = generateResponseBean.generateResponseFromTargetResponse(varExternalID, 
 								varMessageID, generateResponseBean.createOutputDocument(varTargetDetailsCode, varOperationName, varBusinessMessageXMLSchemaDefinition, gridInvocationResult));		
-		overallResponseString = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(overallResponse);
 		updateMessageServiceResponseInDB(true, &quot;&quot;, varMessageID, globalMap.get(&quot;request.message.status.responsereturned&quot;));
 	}
 	return overallResponseString;
@@ -357,9 +352,11 @@ function retrieveOverallBroadcastResponseFromDB(varMessageID){
 		return subject;
 	} catch (error) {	
 		logger.error(&quot;EXCEPTION OCCURED IN MIRTH DURING &quot;+varTargetDetailsCode+&quot; INVOCATION: &quot;+error);
-		insertCompiledTargetResponse(createErrorResponseXML(new Packages.java.lang.Exception(error), varTargetDetailsCode), 
-			varTargetDetailsCode, globalMap.get(&quot;target.response.status.fault&quot;), varMessageID);
-		throw error;
+		var errorMessage = createErrorResponseXML(new Packages.java.lang.Exception(error), varTargetDetailsCode);
+		insertCompiledTargetResponse(errorMessage, varTargetDetailsCode, globalMap.get(&quot;target.response.status.fault&quot;), varMessageID);
+		
+		channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, true);
+		return &quot;&quot;;
 	}
 }</code>
     <type>FUNCTION</type>
