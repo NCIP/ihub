@@ -80,14 +80,14 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	<property name="caXchangeInboundService.name" value="${caXchange.wsrf.war.name}" />
 	<property name="caXchangeInboundService.war.file" value="${caXchangeInboundService.name}.war" />
 	<property name="application.url" value="https://${amq.caxchange.host}:${tomcat.port.ssl}/${caXchange.wsrf.war.name}/services/cagrid/CaXchangeRequestProcessor" />
-	
+
 	<property name="openclinicaConsumerService.dir.dist" location="${basedir}/${OpenClinicaConsumerService.dist.relative.dir}" />
 	<property name="openclinicaConsumerService.name" value="${openclinica.consumer.wsrf.war.name}" />
-	<property name="openclinicaConsumerService.war.file" value="${openclinicaConsumerService.name}.war" />	
+	<property name="openclinicaConsumerService.war.file" value="${openclinicaConsumerService.name}.war" />
 
 	<!-- mirth-components and assemblies -->
 	<property name="mirth-components.dir.dist" location="${basedir}/${mirth-components.dist.relative.dir}" />
-		
+
 	<!-- Grid related properties -->
 	<property name="grid.resource.dir" location="${basedir}/${tools.dist.relative.dir}" />
 	<property name="grid.dir.dest" value="${caXchange.wsrf.war.name}" />
@@ -142,60 +142,60 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		<property name="database.csm.type" value="${database.type}" />
 		<property name="database.csm.drop-schema" value="${database.drop-schema}" />
 		<property name="database.csm.re-create" value="${database.re-create}" />
-		
+
 		<if>
-		<equals arg1="${suite.mode}" arg2="true" />
+			<equals arg1="${suite.mode}" arg2="true" />
 			<then>
 				<var name="suite.gridsvc.host" unset="true" />
 				<var name="suite.gridsvc.port" unset="true" />
 				<property name="suite.gridsvc.host" value="${tomcat.hostname}" />
 				<property name="suite.gridsvc.port" value="${tomcat.grid.secure.port}" />
 			</then>
-	        </if>
-		
+		</if>
+
 		<switch value="${database.type}">
 			<case value="mysql">
 				<property name="database.dialect" value="org.hibernate.dialect.MySQLDialect" />
 				<property name="database.driver.file" value="${bda-utils.dir}/mysql-connector-java-5.0.8.jar" />
-				<property name="db.install.create.file.list" value="${db.caxchange.install.create.mysql.file.list}"/>
+				<property name="db.install.create.file.list" value="${db.caxchange.install.create.mysql.file.list}" />
 				<property name="db.csm.install.create.file.list" value="${db.csm.install.create.mysql.file.list}" />
 				<property name="database.driver" value="com.mysql.jdbc.Driver" />
 				<property name="sql.delimiter" value=";" />
 				<property name="database.schema" value="${database.name}" />
 				<property name="database.url" value="jdbc:${database.type}://${database.host}:${database.port}/${database.name}" />
-				<property name="database.csm.url" value="jdbc:${database.csm.type}://${database.csm.host}:${database.csm.port}/${database.csm.name}"/>
+				<property name="database.csm.url" value="jdbc:${database.csm.type}://${database.csm.host}:${database.csm.port}/${database.csm.name}" />
 			</case>
 			<case value="postgresql">
 				<property name="database.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
 				<property name="database.driver.file" value="${bda-utils.dir}/postgresql-jdbc3-8.4-701.jar" />
 				<property name="database.driver" value="org.postgresql.Driver" />
-				<property name="db.install.create.file.list" value="${db.caxchange.install.create.postgresql.file.list}"/>
-				<property name="db.csm.install.create.file.list" value="${db.csm.install.create.postgresql.file.list}"/>
+				<property name="db.install.create.file.list" value="${db.caxchange.install.create.postgresql.file.list}" />
+				<property name="db.csm.install.create.file.list" value="${db.csm.install.create.postgresql.file.list}" />
 				<property name="database.schema" value="public" />
 				<property name="sql.delimiter" value="/" />
 				<property name="database.url" value="jdbc:${database.type}://${database.host}:${database.port}/${database.name}" />
-				<property name="database.csm.url" value="jdbc:${database.csm.type}://${database.csm.host}:${database.csm.port}/${database.csm.name}"/>
-			</case>	
+				<property name="database.csm.url" value="jdbc:${database.csm.type}://${database.csm.host}:${database.csm.port}/${database.csm.name}" />
+			</case>
 			<case value="oracle">
 				<property name="database.dialect" value="org.hibernate.dialect.OracleDialect" />
 				<property name="database.driver.file" value="${bda-utils.dir}/ojdbc14-10.2.0.4.0.jar" />
 				<property name="database.driver" value="oracle.jdbc.driver.OracleDriver" />
-                <property name="db.install.create.file.list" value="${db.caxchange.install.create.oracle.file.list}"/>
-				<property name="db.csm.install.create.file.list" value="${db.csm.install.create.oracle.file.list}"/>				
+				<property name="db.install.create.file.list" value="${db.caxchange.install.create.oracle.file.list}" />
+				<property name="db.csm.install.create.file.list" value="${db.csm.install.create.oracle.file.list}" />
 				<property name="database.schema" value="${database.name}" />
 				<property name="sql.delimiter" value="/" />
 				<property name="database.url" value="jdbc:${database.type}:thin://${database.host}:${database.port}/${database.name}" />
-				<property name="database.csm.url" value="jdbc:${database.csm.type}:thin://${database.csm.host}:${database.csm.port}/${database.csm.name}"/>
-			</case>				
+				<property name="database.csm.url" value="jdbc:${database.csm.type}:thin://${database.csm.host}:${database.csm.port}/${database.csm.name}" />
+			</case>
 			<default>
 				<fail message="Invalid database type ${database.type}" />
 			</default>
 		</switch>
-		
-                
-        <property name="database.csm.driver" value="${database.driver}" />		
+
+
+		<property name="database.csm.driver" value="${database.driver}" />
 		<property name="database.llt.driver.file" value="${bda-utils.dir}/mysql-connector-java-5.0.8.jar" />
-		<property name="database.llt.driver" value="com.mysql.jdbc.Driver"/>
+		<property name="database.llt.driver" value="com.mysql.jdbc.Driver" />
 		<property name="database.llt.type" value="mysql" />
 
 		<path id="jdbc.driver.classpath">
@@ -224,21 +224,21 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<filter token="httpbc.caxchange.password" value="${httpbc.caxchange.password}" />
 			<filter token="clinicalconnector.registration.password" value="${clinicalconnector.registration.password}" />
 			<filter token="clinicalconnector.datacapture.password" value="${clinicalconnector.datacapture.password}" />
-			<filter token="coppa.authentication.password" value="${coppa.authentication.password}"/>
+			<filter token="coppa.authentication.password" value="${coppa.authentication.password}" />
 			<filter token="suite.gridsvc.host" value="${suite.gridsvc.host}" />
-			<filter token="suite.gridsvc.port" value="${suite.gridsvc.port}" />			
+			<filter token="suite.gridsvc.port" value="${suite.gridsvc.port}" />
 
 			<!--<filter token="database.url" value="${database.url}" />
 			<filter token="database.user" value="${database.user}" />
 			<filter token="database.password" value="${database.password}" />
 			<filter token="database.system.url" value="${database.system.url}" /> -->
-			
+
 			<filter token="database.password" value="${database.password}" />
 			<filter token="database.url" value="${database.url}" />
 			<filter token="database.driver" value="${database.driver}" />
 			<filter token="database.csm.url" value="${database.csm.url}" />
-		    <filter token="database.csm.host" value="${database.csm.host}" />
-		    <filter token="database.csm.port" value="${database.csm.port}" />
+			<filter token="database.csm.host" value="${database.csm.host}" />
+			<filter token="database.csm.port" value="${database.csm.port}" />
 			<filter token="database.csm.name" value="${database.csm.name}" />
 			<filter token="database.csm.username" value="${database.csm.username}" />
 			<filter token="database.csm.password" value="${database.csm.password}" />
@@ -246,7 +246,10 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<filter token="database.csm.type" value="${database.csm.type}" />
 			<filter token="database.csm.drop-schema" value="${database.csm.drop-schema}" />
 			<filter token="database.csm.re-create" value="${database.csm.re-create}" />
-		    <filter token="database.csm.driver" value="${database.csm.driver}" />						
+			<filter token="database.csm.driver" value="${database.csm.driver}" />
+
+			<filter token="coppa.mirth.delegation.certificate.file.path" value="${mirth.home}/conf/${host.cert.file.name}" />
+			<filter token="coppa.mirth.delegation.key.file.path" value="${mirth.home}/conf/${host.key.file.name}" />
 			<filter token="" value="" />
 		</filterset>
 
@@ -314,7 +317,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		</if>
 		<delete dir="${mirth.home}" />
 	</target>
-	
+
 	<target name="install:clean:activemq" unless="exclude.activemq" depends="init:install,init:common">
 		<delete dir="${activemq.home}" />
 		<sleep seconds="5" />
@@ -350,7 +353,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 				<filtersfile file="${properties.file}" />
 				<filtersfile file="project.properties" />
 			</filterset>
-		</copy>		
+		</copy>
 	</target>
 
 	<target name="install:database" description="Runs database creation scripts then calls uprade database." unless="exclude.database" depends="
@@ -358,28 +361,28 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		init:common,
 		install:database:prep
 		">
-		        <echo message="${database.url}" />
-			<database-clean database.schema="${database.schema}" database.url="${database.url}" database.user="${database.username}" database.password="${database.password}" database.name="${database.name}" database.server="${database.host}" />
-	                <database-install database.url="${database.url}" database.user="${database.username}" database.password="${database.password}" db.install.create.file.list="${db.install.create.file.list}" db-install.dir="${db.caxchange-install.dir.dest}"  sql.delimiter="${sql.delimiter}" sql.delimitertype="row"  />
-			<database-upgrade database.url="${database.url}" database.user="${database.username}" database.password="${database.password}" database.schema="${database.schema}" database.changelog.file="${db.caxchange-upgrade.dir.dest}/db-upgrade.xml" />
-			<database-tag database.url="${database.url}" database.user="${database.username}" database.password="${database.password}" database.schema="${database.schema}" />
-			<if>
+		<echo message="${database.url}" />
+		<database-clean database.schema="${database.schema}" database.url="${database.url}" database.user="${database.username}" database.password="${database.password}" database.name="${database.name}" database.server="${database.host}" />
+		<database-install database.url="${database.url}" database.user="${database.username}" database.password="${database.password}" db.install.create.file.list="${db.install.create.file.list}" db-install.dir="${db.caxchange-install.dir.dest}" sql.delimiter="${sql.delimiter}" sql.delimitertype="row" />
+		<database-upgrade database.url="${database.url}" database.user="${database.username}" database.password="${database.password}" database.schema="${database.schema}" database.changelog.file="${db.caxchange-upgrade.dir.dest}/db-upgrade.xml" />
+		<database-tag database.url="${database.url}" database.user="${database.username}" database.password="${database.password}" database.schema="${database.schema}" />
+		<if>
 			<equals arg1="${llt.deploy}" arg2="true" />
-				<then>
+			<then>
 				<if>
-				<equals arg1="${suite.mode}" arg2="false" />
-				        <then>
-				        <!-- CSM Database -->
-				        <database-install database.url="${database.url}" database.user="${database.username}" database.password="${database.password}" db.install.create.file.list="${db.csm.install.create.file.list}" db-install.dir="${db.csm-install.dir.dest}"  sql.delimiter="${sql.delimiter}" sql.delimitertype="row"  />
-				        <database-upgrade database.url="${database.url}" database.user="${database.username}" database.password="${database.password}" database.schema="${database.schema}" database.changelog.file="${db.csm-upgrade.dir.dest}/db-upgrade.xml" />
-				        </then>
+					<equals arg1="${suite.mode}" arg2="false" />
+					<then>
+						<!-- CSM Database -->
+						<database-install database.url="${database.url}" database.user="${database.username}" database.password="${database.password}" db.install.create.file.list="${db.csm.install.create.file.list}" db-install.dir="${db.csm-install.dir.dest}" sql.delimiter="${sql.delimiter}" sql.delimitertype="row" />
+						<database-upgrade database.url="${database.url}" database.user="${database.username}" database.password="${database.password}" database.schema="${database.schema}" database.changelog.file="${db.csm-upgrade.dir.dest}/db-upgrade.xml" />
+					</then>
 				</if>
 				<!-- LLT Database -->
-				<database-clean database.schema="${database.llt.name}" database.url="${database.llt.url}" database.user="${database.llt.username}" database.password="${database.llt.password}" database.name="${database.llt.name}" database.server="${database.llt.host}" database.driver.file="${database.llt.driver.file}" database.driver="${database.llt.driver}" database.drop-schema="${database.llt.drop-schema}" database.re-create="${database.llt.re-create}" database.type="${database.llt.type}"/>
-				<database-install database.url="${database.llt.url}" database.user="${database.llt.username}" database.password="${database.llt.password}" db.install.create.file.list="${db.llt.install.create.mysql.file.list}" db-install.dir="${db.llt-install.dir.dest}"  database.type="${database.llt.type}" database.driver.file="${database.llt.driver.file}" database.driver="${database.llt.driver}"/>
-				<database-upgrade database.url="${database.llt.url}" database.user="${database.llt.username}" database.password="${database.llt.password}" database.schema="${database.llt.name}" database.changelog.file="${db.llt-upgrade.dir.dest}/db-upgrade.xml"  database.driver.file="${database.llt.driver.file}" database.driver="${database.llt.driver}"/>
-				</then>
-			</if>
+				<database-clean database.schema="${database.llt.name}" database.url="${database.llt.url}" database.user="${database.llt.username}" database.password="${database.llt.password}" database.name="${database.llt.name}" database.server="${database.llt.host}" database.driver.file="${database.llt.driver.file}" database.driver="${database.llt.driver}" database.drop-schema="${database.llt.drop-schema}" database.re-create="${database.llt.re-create}" database.type="${database.llt.type}" />
+				<database-install database.url="${database.llt.url}" database.user="${database.llt.username}" database.password="${database.llt.password}" db.install.create.file.list="${db.llt.install.create.mysql.file.list}" db-install.dir="${db.llt-install.dir.dest}" database.type="${database.llt.type}" database.driver.file="${database.llt.driver.file}" database.driver="${database.llt.driver}" />
+				<database-upgrade database.url="${database.llt.url}" database.user="${database.llt.username}" database.password="${database.llt.password}" database.schema="${database.llt.name}" database.changelog.file="${db.llt-upgrade.dir.dest}/db-upgrade.xml" database.driver.file="${database.llt.driver.file}" database.driver="${database.llt.driver}" />
+			</then>
+		</if>
 	</target>
 
 	<target name="install:validation:pre-install" description="Runs pre-install validation checks bda-utils" depends="init:install,init:common">
@@ -438,7 +441,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		install:mirth:javascripts
 		">
 	</target>
-	
+
 	<target name="install:activemq" description="Install and starts ActiveMQ" unless="exclude.activemq" depends="
 		init:install,
  		init:common,
@@ -625,21 +628,21 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		init:common,
 		install:database:prep
 		">
-            <database-upgrade database.url="${database.url}" database.user="${database.username}" database.password="${database.password}" database.schema="${database.schema}" database.changelog.file="${db.caxchange-upgrade.dir.dest}/db-upgrade.xml" />
-            <database-tag database.url="${database.url}" database.user="${database.username}" database.password="${database.password}" database.schema="${database.schema}" />
-	    <if>
-		<equals arg1="${llt.deploy}" arg2="true" />
-		<then>
-			<if>
-			<equals arg1="${suite.mode}" arg2="false" />
+		<database-upgrade database.url="${database.url}" database.user="${database.username}" database.password="${database.password}" database.schema="${database.schema}" database.changelog.file="${db.caxchange-upgrade.dir.dest}/db-upgrade.xml" />
+		<database-tag database.url="${database.url}" database.user="${database.username}" database.password="${database.password}" database.schema="${database.schema}" />
+		<if>
+			<equals arg1="${llt.deploy}" arg2="true" />
 			<then>
-			<database-upgrade database.url="${database.url}" database.user="${database.username}" database.password="${database.password}" database.schema="${database.schema}" database.changelog.file="${db.csm-upgrade.dir.dest}/db-upgrade.xml" />			        
+				<if>
+					<equals arg1="${suite.mode}" arg2="false" />
+					<then>
+						<database-upgrade database.url="${database.url}" database.user="${database.username}" database.password="${database.password}" database.schema="${database.schema}" database.changelog.file="${db.csm-upgrade.dir.dest}/db-upgrade.xml" />
+					</then>
+				</if>
+				<database-upgrade database.url="${database.llt.url}" database.user="${database.llt.username}" database.password="${database.llt.password}" database.schema="${database.llt.name}" database.changelog.file="${db.llt-upgrade.dir.dest}/db-upgrade.xml" database.driver.file="${database.llt.driver.file}" database.driver="${database.llt.driver}" />
+				<database-tag database.url="${database.llt.url}" database.user="${database.llt.username}" database.password="${database.llt.password}" database.schema="${database.llt.name}" database.driver="${database.llt.driver}" />
 			</then>
-			</if>				        
-			<database-upgrade database.url="${database.llt.url}" database.user="${database.llt.username}" database.password="${database.llt.password}" database.schema="${database.llt.name}" database.changelog.file="${db.llt-upgrade.dir.dest}/db-upgrade.xml"  database.driver.file="${database.llt.driver.file}" database.driver="${database.llt.driver}"/>
-			<database-tag database.url="${database.llt.url}" database.user="${database.llt.username}" database.password="${database.llt.password}" database.schema="${database.llt.name}" database.driver="${database.llt.driver}" />
-		</then>
-	    </if>		
+		</if>
 	</target>
 
 	<target name="upgrade:database:tag" description="Tags current state of database with a tag to allow for rollback of database to previous versions." unless="exclude.database" depends="
@@ -676,7 +679,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		<delete dir="${mirth.home}" />
 		<dirname file="${mirth.home}" property="mirth.base.dir" />
 		<!--<unzip dest="${mirth.base.dir}/mirth" src="${tools.dir}/${mirth.binaries.file}" />-->
-		<unzip dest="${mirth.home}" src="${tools.dir}/${mirth.binaries.file}" />		
+		<unzip dest="${mirth.home}" src="${tools.dir}/${mirth.binaries.file}" />
 		<if>
 			<os family="unix" />
 			<then>
@@ -684,10 +687,10 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			</then>
 		</if>
 	</target>
-	
+
 	<target name="install:activemq:binaries" description="Install activemq binaries" unless="exclude.activemq" depends="init:install,init:common">
 		<delete dir="${activemq.home}" />
-		<dirname file="${activemq.home}" property="activemq.base.dir" />		
+		<dirname file="${activemq.home}" property="activemq.base.dir" />
 		<unzip dest="${application.base.path}" src="${tools.dir}/${activemq.binaries.file}" />
 		<if>
 			<os family="unix" />
@@ -726,7 +729,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			</else>
 		</if>
 	</target>
-	
+
 	<target name="install:activemq:stop" description="Stop active" unless="exclude.activemq" depends="init:install,init:common">
 		<if>
 			<available file="${activemq.home}/activemq-start-stop.bat" />
@@ -758,11 +761,11 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			</not>
 			<then>
 				<echo message="Starting mirth" />
-				<mirth-start mirth.home="${mirth.home}" />				
+				<mirth-start mirth.home="${mirth.home}" />
 			</then>
 		</if>
 	</target>
-	
+
 	<target name="install:activemq:start" description="Start activemq" unless="exclude.activemq" depends="init:install,init:common">
 		<if>
 			<not>
@@ -868,6 +871,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		<unwar src="${caXchangeInboundService.dir.dist}/${caXchangeInboundService.war.file}" dest="${working.dir}/${caXchangeInboundService.name}">
 		</unwar>
 		<delete file="${working.dir}/${caXchangeInboundService.name}/WEB-INF/lib/CaXchangeRequestProcessor-tests.jar" />
+		<delete file="${working.dir}/${caXchangeInboundService.name}/WEB-INF/lib/xercesImpl.jar" />
 		<copy todir="${temp.dir}/${caXchangeInboundService.name}" overwrite="true">
 			<fileset dir="${working.dir}/${caXchangeInboundService.name}/WEB-INF/etc/cagrid_${grid.application.name}">
 				<include name="*" />
@@ -882,23 +886,23 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<fileset dir="${temp.dir}/${caXchangeInboundService.name}">
 			</fileset>
 		</copy>
-		
+
 		<xmltask preservetype="true" source="${working.dir}/${caXchangeInboundService.name}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd" dest="${working.dir}/${caXchangeInboundService.name}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd">
-			<xmlcatalog refid="bda.xml.catalog"/>
-			<insert  path="//*[local-name()='globalConfiguration']" >
+			<xmlcatalog refid="bda.xml.catalog" />
+			<insert path="//*[local-name()='globalConfiguration']">
 				<![CDATA[
 					<parameter name="disableDNS" value="true"/>
-					<parameter name="logicalHost" value="${tomcat.hostname}"/>
+				<parameter name="logicalHost" value="${tomcat.hostname}"/>
 				]]>
 			</insert>
-		</xmltask>		
+		</xmltask>
 
 		<copy todir="${tomcat.home}/webapps/${caXchangeInboundService.name}">
 			<fileset dir="${working.dir}/${caXchangeInboundService.name}">
 			</fileset>
 		</copy>
-                <delete dir="${tomcat.home}/webapps/${caXchange.wsrf.old.war.name}" />
-                
+		<delete dir="${tomcat.home}/webapps/${caXchange.wsrf.old.war.name}" />
+
 		<!-- <zip destfile="${caXchangeInboundService.dir.dist}/${caXchangeInboundService.name}.zip" basedir="${working.dir}/${caXchangeInboundService.name}">
 		</zip>
 		<unzip dest="${tomcat.home}/webapps/${caXchangeInboundService.name}" src="${caXchangeInboundService.dir.dist}/${caXchangeInboundService.name}.zip" /> -->
@@ -919,15 +923,15 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<equals arg1="${llt.deploy}" arg2="true" />
 			<then>
 				<copy file="${common.resource.dir.src}/llt-war/llt.war" todir="${tomcat.home}/webapps" overwrite="true" />
-				<loadproperties  srcFile="${tomcat.home}/conf/catalina.properties">
-				     <filterchain>
-					<tokenfilter>
-					    <replacestring from="${catalina.base}" to="${tomcat.home}"/>
-					</tokenfilter>				     
-					 <linecontains>
-					   <contains value="java.security.auth.login.config"/>
-					 </linecontains>
-				     </filterchain>
+				<loadproperties srcFile="${tomcat.home}/conf/catalina.properties">
+					<filterchain>
+						<tokenfilter>
+							<replacestring from="${catalina.base}" to="${tomcat.home}" />
+						</tokenfilter>
+						<linecontains>
+							<contains value="java.security.auth.login.config" />
+						</linecontains>
+					</filterchain>
 				</loadproperties>
 				<groovy>
 				  def ant = new AntBuilder()
@@ -960,11 +964,10 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 				   }
 				</groovy>
 				<xmltask preservetype="true" source="${tomcat.home}/conf/server.xml" dest="${tomcat.home}/conf/server.xml">
-					<xmlcatalog refid="bda.xml.catalog"/>
-					<remove path="/Server/Service[@name='Catalina']/Engine[@name='Catalina']/Host[@appBase='webapps']/Context[@path='/llt']"/>
-					<insert path="/Server/Service[@name='Catalina']/Engine[@name='Catalina']/Host[@appBase='webapps']"
-					        file="${common.resource.dir.dest}/conf/tomcat/llt-server.xml" />
-			        </xmltask>
+					<xmlcatalog refid="bda.xml.catalog" />
+					<remove path="/Server/Service[@name='Catalina']/Engine[@name='Catalina']/Host[@appBase='webapps']/Context[@path='/llt']" />
+					<insert path="/Server/Service[@name='Catalina']/Engine[@name='Catalina']/Host[@appBase='webapps']" file="${common.resource.dir.dest}/conf/tomcat/llt-server.xml" />
+				</xmltask>
 			</then>
 		</if>
 	</target>
@@ -993,27 +996,27 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		</copy>
 
 		<copy todir="${temp.dir}/${openclinicaConsumerService.name}/classes" overwrite="true">
-		        <fileset dir="${working.dir}/${openclinicaConsumerService.name}/WEB-INF/classes">
+			<fileset dir="${working.dir}/${openclinicaConsumerService.name}/WEB-INF/classes">
 				<include name="*" />
 			</fileset>
 			<filterset>
 				<filtersfile file="${properties.file}" />
 				<filtersfile file="project.properties" />
-			</filterset>			
+			</filterset>
 		</copy>
-		
+
 		<copy todir="${working.dir}/${openclinicaConsumerService.name}/WEB-INF/classes" overwrite="true">
 			<fileset dir="${temp.dir}/${openclinicaConsumerService.name}/classes">
 			</fileset>
 		</copy>
-		
+
 		<copy todir="${tomcat.home}/webapps/${openclinicaConsumerService.name}">
 			<fileset dir="${working.dir}/${openclinicaConsumerService.name}">
 			</fileset>
 		</copy>
 
 	</target>
-	
+
 	<target name="upgrade-ncm:tomcat:openClinicaConsumerService" description="Deploy openClinicaConsumerService and common libraries to tomcat installation" unless="exclude.tomcat" depends="init:install,init:common">
 		<!--
 		<delete dir="${tomcat.home}/temp" />
@@ -1040,20 +1043,20 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		</copy>
 
 		<copy todir="${temp.dir}/${openclinicaConsumerService.name}/classes" overwrite="true">
-		        <fileset dir="${working.dir}/${openclinicaConsumerService.name}/WEB-INF/classes">
+			<fileset dir="${working.dir}/${openclinicaConsumerService.name}/WEB-INF/classes">
 				<include name="*" />
 			</fileset>
 			<filterset>
 				<filtersfile file="${properties.file}" />
 				<filtersfile file="project.properties" />
-			</filterset>			
+			</filterset>
 		</copy>
-		
+
 		<copy todir="${working.dir}/${openclinicaConsumerService.name}/WEB-INF/classes" overwrite="true">
 			<fileset dir="${temp.dir}/${openclinicaConsumerService.name}/classes">
 			</fileset>
 		</copy>
-		
+
 		<copy todir="${tomcat.home}/webapps/${openclinicaConsumerService.name}">
 			<fileset dir="${working.dir}/${openclinicaConsumerService.name}">
 			</fileset>
@@ -1084,22 +1087,22 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<fileset dir="${temp.dir}/${caXchangeInboundService.name}">
 			</fileset>
 		</copy>
-		
-		<xmltask preservetype="true"  source="${working.dir}/${caXchangeInboundService.name}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd" dest="${working.dir}/${caXchangeInboundService.name}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd">
-			<xmlcatalog refid="bda.xml.catalog"/>
-			<insert  path="//*[local-name()='globalConfiguration']" >
+
+		<xmltask preservetype="true" source="${working.dir}/${caXchangeInboundService.name}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd" dest="${working.dir}/${caXchangeInboundService.name}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd">
+			<xmlcatalog refid="bda.xml.catalog" />
+			<insert path="//*[local-name()='globalConfiguration']">
 				<![CDATA[
 					<parameter name="disableDNS" value="true"/>
-					<parameter name="logicalHost" value="${tomcat.hostname}"/>
+				<parameter name="logicalHost" value="${tomcat.hostname}"/>
 				]]>
 			</insert>
-		</xmltask>		
+		</xmltask>
 
 		<copy todir="${tomcat.home}/webapps/${caXchangeInboundService.name}">
 			<fileset dir="${working.dir}/${caXchangeInboundService.name}">
 			</fileset>
 		</copy>
-		
+
 		<delete dir="${tomcat.home}/webapps/${caXchange.wsrf.old.war.name}" />
 
 		<copy file="${common.resource.dir.dest}/conf/mirth/caxchange.properties" todir="${tomcat.home}/conf/caXchange" overwrite="true" />
@@ -1107,16 +1110,16 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<equals arg1="${llt.deploy}" arg2="true" />
 			<then>
 				<copy file="${common.resource.dir.src}/llt-war/llt.war" todir="${tomcat.home}/webapps" overwrite="true" />
-				<loadproperties  srcFile="${tomcat.home}/conf/catalina.properties">
-				     <filterchain>
-					<tokenfilter>
-					    <replacestring from="${catalina.base}" to="${tomcat.home}"/>
-					</tokenfilter>				     
-					 <linecontains>
-					   <contains value="java.security.auth.login.config"/>
-					 </linecontains>
-				     </filterchain>
-                               </loadproperties>
+				<loadproperties srcFile="${tomcat.home}/conf/catalina.properties">
+					<filterchain>
+						<tokenfilter>
+							<replacestring from="${catalina.base}" to="${tomcat.home}" />
+						</tokenfilter>
+						<linecontains>
+							<contains value="java.security.auth.login.config" />
+						</linecontains>
+					</filterchain>
+				</loadproperties>
 				<groovy>
 				  def ant = new AntBuilder()
 				  if (properties['java.security.auth.login.config'] == null) {
@@ -1148,52 +1151,55 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 				   }
 				</groovy>
 				<xmltask preservetype="true" source="${tomcat.home}/conf/server.xml" dest="${tomcat.home}/conf/server.xml">
-					<xmlcatalog refid="bda.xml.catalog"/>
-					<remove path="/Server/Service[@name='Catalina']/Engine[@name='Catalina']/Host[@appBase='webapps']/Context[@path='/llt']"/>
-					<insert path="/Server/Service[@name='Catalina']/Engine[@name='Catalina']/Host[@appBase='webapps']"
-					        file="${common.resource.dir.dest}/conf/tomcat/llt-server.xml" />
-			        </xmltask>                               
+					<xmlcatalog refid="bda.xml.catalog" />
+					<remove path="/Server/Service[@name='Catalina']/Engine[@name='Catalina']/Host[@appBase='webapps']/Context[@path='/llt']" />
+					<insert path="/Server/Service[@name='Catalina']/Engine[@name='Catalina']/Host[@appBase='webapps']" file="${common.resource.dir.dest}/conf/tomcat/llt-server.xml" />
+				</xmltask>
 			</then>
 		</if>
 
 	</target>
 
 	<target name="install:mirth:mirth-components" description="Deploy mirth-components and common libraries to mirth installation" unless="exclude.tomcat" depends="init:install,init:common">
-		
+
 		<copy todir="${mirth.home}/lib/custom" overwrite="true" file="${mirth-components.dir.dist}/ihub-mirth-components.jar" />
-		<copy todir="${mirth.home}/lib/custom" overwrite="true" >
+		<copy todir="${mirth.home}/lib/custom" overwrite="true">
 			<fileset dir="${mirth-components.dir.dist}/lib">
 				<include name="*.jar" />
 			</fileset>
 		</copy>
-		<!-- This two lines of code required for proper channel deployment. In future release remove it-->
+		
+		<copy file="${tomcat.grid.secure.cert.location}" todir="${mirth.home}/conf" overwrite="true" />
+		<copy file="${tomcat.grid.secure.key.location}" todir="${mirth.home}/conf" overwrite="true" />
+		
+		<!-- This two lines of code required for proper channel deployment. In future release consider removing it-->
 		<move file="${mirth.home}/lib/mule/axis-14.jar" tofile="${mirth.home}/undeployed-jars/lib/mule/axis-14.jar" failonerror="false" />
-		<move file="${mirth.home}/lib/mule/wsif.jar" tofile="${mirth.home}/undeployed-jars/lib/mule/wsif.jar" failonerror="false" />		
+		<move file="${mirth.home}/lib/mule/wsif.jar" tofile="${mirth.home}/undeployed-jars/lib/mule/wsif.jar" failonerror="false" />
 	</target>
-	
+
 	<target name="install:mirth:channels" description="Import, deploy and starts channels in mirth" unless="exclude.tomcat" depends="init:install,init:common">
 		<ant inheritAll="false" inheritRefs="false" antfile="${mirth-components.dir.dist}/shellAnt.xml" target="import">
 			<property name="mirth_home" value="${mirth.home}" />
 			<property name="channels_dir" value="${mirth-components.dir.dist}/channels/ctms" />
-		</ant>		
+		</ant>
 	</target>
 
 	<target name="install:mirth:javascripts" description="Imports the named global script for mirth channels" unless="exclude.tomcat" depends="init:install,init:common">
-		<echo message="Filtering java script"/>
-		<copy todir="${mirth-components.dir.dist}\javascript\" filtering="true" overwrite="true" file="${mirth-components.dir.dist}\javascript\global-scripts\at-deploy-script.xml" >
+		<echo message="Filtering java script" />
+		<copy todir="${mirth-components.dir.dist}\javascript\" filtering="true" overwrite="true" file="${mirth-components.dir.dist}\javascript\global-scripts\at-deploy-script.xml">
 			<filterset refid="embedded.filterset" />
 			<filterset>
-				<filtersfile file="${properties.file}" />				
-			</filterset>			
+				<filtersfile file="${properties.file}" />
+			</filterset>
 		</copy>
 		<ant inheritAll="false" inheritRefs="false" antfile="${mirth-components.dir.dist}/shellAnt.xml" target="importscript">
 			<property name="mirth_home" value="${mirth.home}" />
 			<property name="deployScript_name" value="${mirth-components.dir.dist}\javascript\at-deploy-script.xml" />
-		</ant>		
+		</ant>
 	</target>
-	
+
 	<target name="upgrade-ncm:mirth:mirth-components" description="Deploy mirth-components and common libraries to mirth installation" unless="exclude.tomcat" depends="init:install,init:common,install:mirth:mirth-components">
-		
+
 	</target>
 
 
@@ -1330,11 +1336,11 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<exec executable="sh" osfamily="unix" dir="@{mirth.home}" spawn="true">
 				<arg line="mirth.sh start" />
 			</exec>
-			<echo message="executing ${bda-utils.dir}/resource/psexec.exe"/>
-			<exec osfamily="windows" executable="${bda-utils.dir}/resource/psexec.exe" dir="@{mirth.home}" spawn="true" >
+			<echo message="executing ${bda-utils.dir}/resource/psexec.exe" />
+			<exec osfamily="windows" executable="${bda-utils.dir}/resource/psexec.exe" dir="@{mirth.home}" spawn="true">
 				<env key="NOPAUSE" value="true" />
 				<arg line="-d -i -w @{mirth.home} @{mirth.home}/Mirth.exe" />
-			</exec>			
+			</exec>
 			<sleep seconds="10" />
 		</sequential>
 	</macrodef>
@@ -1361,15 +1367,15 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<exec executable="sh" osfamily="unix" dir="@{activemq.home}/bin" spawn="true">
 				<arg line="activemq" />
 			</exec>
-			<echo message="executing ${bda-utils.dir}/resource/psexec.exe"/>
-			<exec osfamily="windows" executable="${bda-utils.dir}/resource/psexec.exe" dir="@{activemq.home}/bin" spawn="true" >
+			<echo message="executing ${bda-utils.dir}/resource/psexec.exe" />
+			<exec osfamily="windows" executable="${bda-utils.dir}/resource/psexec.exe" dir="@{activemq.home}/bin" spawn="true">
 				<env key="NOPAUSE" value="true" />
 				<arg line="-d -i -w @{activemq.home}/bin @{activemq.home}/bin/activemq.bat" />
-			</exec>			
+			</exec>
 			<sleep seconds="5" />
 		</sequential>
 	</macrodef>
-	
+
 	<!-- NEW TARGETS FROM CAXCHANGE INSTALL SCRIPT -->
 
 	<!--Verifies if there were any error in the routing-->
