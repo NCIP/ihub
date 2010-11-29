@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -13,6 +14,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
@@ -37,11 +39,19 @@ public class IntegrationHubUtil {
 	 * @return
 	 */
 	public static String xmlToString(Node node) {
-		try {
+		try {			
 			Source source = new DOMSource(node);
+			
 			StringWriter stringWriter = new StringWriter();
 			Result result = new StreamResult(stringWriter);
-			TransformerFactory factory = TransformerFactory.newInstance();
+			
+			//TODO move the below lines of code to at deployment
+			//Properties props = System.getProperties();
+		    //props.put("javax.xml.transform.TransformerFactory",
+		      //  "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl");
+		    //System.setProperties(props);
+		    
+			TransformerFactory factory = TransformerFactory.newInstance();			
 			Transformer transformer = factory.newTransformer();
 			transformer.transform(source, result);
 			return stringWriter.getBuffer().toString();
@@ -76,13 +86,15 @@ public class IntegrationHubUtil {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Returns the consumer sent payload from business payload
+	 * 
 	 * @param xmlToStrip
 	 * @return
 	 */
-	public static String getPayloadFromBusinessPayload(String businessPayloadXMLString) {
+	public static String getPayloadFromBusinessPayload(
+			String businessPayloadXMLString) {
 		String payloadXMLString = null;
 		try {
 			XPath xpath = XPathFactory.newInstance().newXPath();
@@ -94,7 +106,7 @@ public class IntegrationHubUtil {
 			NodeList nodes = (NodeList) expression.evaluate(xmlToStripNode,
 					XPathConstants.NODESET);
 			payloadXMLString = IntegrationHubUtil.xmlToString(nodes.item(0)
-					.getLastChild());			
+					.getLastChild());
 		} catch (XPathExpressionException e) {
 			e.printStackTrace();
 		}

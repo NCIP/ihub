@@ -31,6 +31,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.servicemix.jbi.jaxp.SourceTransformer;
 import org.apache.xmlbeans.XmlOptions;
+import org.apache.xmlbeans.impl.values.XmlComplexContentImpl;
 import org.globus.wsrf.encoding.DeserializationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -198,7 +199,7 @@ public class GenerateResponseBean {
 	 * @return org.w3c.dom.Node
 	 * @throws Exception
 	 */
-	public Node generateResponseFromTargetResponse(String consumerIdentifier,
+	public String generateResponseFromTargetResponse(String consumerIdentifier,
 			String messageServiceRequestID, Document compiledTargetResponse)
 			throws Exception {
 		XmlOptions xmlOptions = new XmlOptions();
@@ -218,7 +219,7 @@ public class GenerateResponseBean {
 		buildTargetResponse(compiledTargetResponse.getFirstChild(), response);
 
 		logger.debug(responseDocument.xmlText());
-		return responseDocument.getDomNode();
+		return responseDocument.xmlText();
 		// return targetResponseMessage.getDomNode();
 	}
 
@@ -310,7 +311,7 @@ public class GenerateResponseBean {
 	 * @return CaXchangeResponseMessageDocument
 	 * @throws Exception
 	 */
-	public Node generateResponseFromAggregatedResponse(
+	public String generateResponseFromAggregatedResponse(
 			String consumerIdentifier, String messageID,
 			Document aggregatedTargetResponse) throws Exception {
 		CaXchangeResponseMessageDocument responseDocument = CaXchangeResponseMessageDocument.Factory
@@ -324,7 +325,7 @@ public class GenerateResponseBean {
 		Response response = responseMessage.addNewResponse();
 		response = buildResponse(aggregatedTargetResponse, response);
 
-		return responseDocument.getDomNode();
+		return responseDocument.xmlText();
 	}
 
 	/**

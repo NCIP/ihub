@@ -32,7 +32,7 @@ public class InvokeMirthHttpListenerTest {
 		"<ns2:Address xsi:type=\"ns2:AttributedURI\">https://cagrid-cds-stage.nci.nih.gov:8443/wsrf/services/cagrid/DelegatedCredential</ns2:Address>" +
 		"<ns2:ReferenceProperties xsi:type=\"ns2:ReferencePropertiesType\">" +
 		"<ns2:DelegatedCredentialKey xmlns:ns2=\"http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential\">" +
-		"<ns3:delegationId xmlns:ns3=\"http://gaards.cagrid.org/cds\">11909</ns3:delegationId>" +
+		"<ns3:delegationId xmlns:ns3=\"http://gaards.cagrid.org/cds\">12022</ns3:delegationId>" +
 		"</ns2:DelegatedCredentialKey>" +
 		"</ns2:ReferenceProperties>" +
 		"<ns2:ReferenceParameters xsi:type=\"ns2:ReferenceParametersType\"/>" +

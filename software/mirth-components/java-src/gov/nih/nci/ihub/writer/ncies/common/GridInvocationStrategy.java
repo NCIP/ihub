@@ -23,8 +23,7 @@ public abstract class GridInvocationStrategy {
      * @return
      * @throws GridInvocationException
      */
-    public abstract GridInvocationResult invokeGridService(DeliveryChannel channel,
-	    MessageExchange exchange, GridMessage message)
+    public abstract GridInvocationResult invokeGridService(boolean isRollback)
 	    throws GridInvocationException;
     
 	/**
