@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1289239864062</time>
+    <time>1291067296031</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>502</revision>
+  <revision>521</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -436,11 +436,30 @@ channelMap.put(&quot;registration_prefix&quot;,&apos;registration&apos;);</strin
     <com.webreach.mirth.model.Connector>
       <name>caAERS</name>
       <properties>
-        <property name="script">var targetInvocationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.business.RegistrationInvocationStrategy(
+        <property name="script">/*
+var targetInvocationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.business.RegistrationInvocationStrategy(
 	globalMap.get(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)), 
 	globalMap.get(globalMap.get(&quot;target.detail.code.caaers&quot;)+&quot;.&quot;+$(&apos;ns1metadata_ns1servicetype&apos;)+&quot;.url&quot;), 
 	$(&apos;ns1request_ns1businessmessagepayload&apos;), globalMap.get(&quot;target.detail.code.caaers&quot;));
+*/
 
+var targetInvocationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenericInvocationStrategy();
+targetInvocationStrategy.setServiceUrl(globalMap.get(&quot;caAERS.REGISTER_SUBJECT.url&quot;));
+targetInvocationStrategy.setGridClientClassName(&quot;gov.nih.nci.ccts.grid.client.RegistrationConsumerClient&quot;);
+targetInvocationStrategy.setRequestPayloadClassName(&quot;gov.nih.nci.cabig.ccts.domain.Registration&quot;);
+targetInvocationStrategy.setReturnTypeNameSpace(&quot;gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain&quot;);
+targetInvocationStrategy.setReturnTypeElement(&quot;registration&quot;);
+
+
+var ihubBusinessMessagePayloadDocument = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.
+	stringToDOMDocument($(&apos;ns1request_ns1businessmessagepayload&apos;)).getDocumentElement();
+
+
+
+targetInvocationStrategy.setStrategySpecificVariables(&quot;register&quot;,
+							$(&apos;ns1metadata_ns1servicetype&apos;), ihubBusinessMessagePayloadDocument, 
+							globalMap.get(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)), &quot;caAERS&quot;);
+	
 
 delegateSingleTargetRequest($(&apos;ns1metadata_ns1servicetype&apos;), targetInvocationStrategy, 
 	$(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));	
@@ -511,10 +530,30 @@ return false;</script>
     <com.webreach.mirth.model.Connector>
       <name>CTOM</name>
       <properties>
-        <property name="script">var targetInvocationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.business.RegistrationInvocationStrategy(
+        <property name="script">/*
+var targetInvocationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.business.RegistrationInvocationStrategy(
 	globalMap.get(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)), 
 	globalMap.get(globalMap.get(&quot;target.detail.code.ctom&quot;)+&quot;.&quot;+$(&apos;ns1metadata_ns1servicetype&apos;)+&quot;.url&quot;), 
 	$(&apos;ns1request_ns1businessmessagepayload&apos;), globalMap.get(&quot;target.detail.code.ctom&quot;));
+*/
+
+
+var targetInvocationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenericInvocationStrategy();
+targetInvocationStrategy.setServiceUrl(globalMap.get(&quot;CTOM.REGISTER_SUBJECT.url&quot;));
+targetInvocationStrategy.setGridClientClassName(&quot;gov.nih.nci.ccts.grid.client.RegistrationConsumerClient&quot;);
+targetInvocationStrategy.setRequestPayloadClassName(&quot;gov.nih.nci.cabig.ccts.domain.Registration&quot;);
+targetInvocationStrategy.setReturnTypeNameSpace(&quot;gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain&quot;);
+targetInvocationStrategy.setReturnTypeElement(&quot;registration&quot;);
+
+
+var ihubBusinessMessagePayloadDocument = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.
+	stringToDOMDocument($(&apos;ns1request_ns1businessmessagepayload&apos;)).getDocumentElement();
+
+
+
+targetInvocationStrategy.setStrategySpecificVariables(&quot;register&quot;,
+							$(&apos;ns1metadata_ns1servicetype&apos;), ihubBusinessMessagePayloadDocument, 
+							globalMap.get(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)), &quot;CTOM&quot;);
 
 
 delegateSingleTargetRequest($(&apos;ns1metadata_ns1servicetype&apos;), targetInvocationStrategy, 
@@ -582,10 +621,30 @@ return false;</script>
     <com.webreach.mirth.model.Connector>
       <name>PSC</name>
       <properties>
-        <property name="script">var targetInvocationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.business.RegistrationInvocationStrategy(
+        <property name="script">/*
+var targetInvocationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.business.RegistrationInvocationStrategy(
 	globalMap.get(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)), 
 	globalMap.get(globalMap.get(&quot;target.detail.code.psc&quot;)+&quot;.&quot;+$(&apos;ns1metadata_ns1servicetype&apos;)+&quot;.url&quot;), 
 	$(&apos;ns1request_ns1businessmessagepayload&apos;), globalMap.get(&quot;target.detail.code.psc&quot;));
+*/
+
+
+var targetInvocationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenericInvocationStrategy();
+targetInvocationStrategy.setServiceUrl(globalMap.get(&quot;PSC.REGISTER_SUBJECT.url&quot;));
+targetInvocationStrategy.setGridClientClassName(&quot;gov.nih.nci.ccts.grid.client.RegistrationConsumerClient&quot;);
+targetInvocationStrategy.setRequestPayloadClassName(&quot;gov.nih.nci.cabig.ccts.domain.Registration&quot;);
+targetInvocationStrategy.setReturnTypeNameSpace(&quot;gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain&quot;);
+targetInvocationStrategy.setReturnTypeElement(&quot;registration&quot;);
+
+
+var ihubBusinessMessagePayloadDocument = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.
+	stringToDOMDocument($(&apos;ns1request_ns1businessmessagepayload&apos;)).getDocumentElement();
+
+
+
+targetInvocationStrategy.setStrategySpecificVariables(&quot;register&quot;,
+							$(&apos;ns1metadata_ns1servicetype&apos;), ihubBusinessMessagePayloadDocument, 
+							globalMap.get(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)), &quot;PSC&quot;);
 
 
 delegateSingleTargetRequest($(&apos;ns1metadata_ns1servicetype&apos;), targetInvocationStrategy, 

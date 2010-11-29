@@ -42,7 +42,7 @@
 	} catch (error) {	
 		logger.error(&quot;EXCEPTION OCCURED IN MIRTH DURING &quot;+varTargetDetailsCode+&quot; INVOCATION: &quot;+error);
 		insertCompiledTargetResponse(createErrorResponseXML(new Packages.java.lang.Exception(error), varTargetDetailsCode), 
-			varTargetDetailsCode, globalMap.get(&quot;target.response.status.fault&quot;), messageID);
+			varTargetDetailsCode, globalMap.get(&quot;target.response.status.fault&quot;), varMessageID);
 	}
 }
 
@@ -105,7 +105,7 @@ function delegateTargetRollbackRequest(varServiceType, varTargetInvocationStrate
 		} catch (error) {	
 			logger.error(&quot;EXCEPTION OCCURED IN MIRTH DURING &quot;+varTargetDetailsCode+&quot; INVOCATION: &quot;+error);
 			insertCompiledTargetResponse(createErrorResponseXML(new Packages.java.lang.Exception(error), varTargetDetailsCode), 
-				varTargetDetailsCode, globalMap.get(&quot;target.response.status.fault&quot;), messageID);
+				varTargetDetailsCode, globalMap.get(&quot;target.response.status.fault&quot;), varMessageID);
 		}
 	}
 }
@@ -254,8 +254,9 @@ function retrieveOverallBroadcastResponseFromDB(varMessageID){
     <tooltip>Generic Aggregator Function that aggregates responses from one or more suite target services</tooltip>
     <code>function aggregateBroadcastResponse(varServiceType, varTargetInvocationStrategy, varBusinessMessagePayload, varConsumerIdentifier, varMessageID){
 	try{
+		logger.debug(&quot;aggregateBroadcastResponse() - start&quot;);
 		var activeDestinationCount = globalMap.get(varServiceType+&quot;.active.destination.count&quot;);
-		//logger.info(&quot;Active Destination Count: &quot;+activeDestinationCount);
+		logger.debug(&quot;Active Destination Count in : &quot;+activeDestinationCount);
 
 		var compiledResponseResultSet = getCompiledResponseResultsFromDB(varMessageID);
 
@@ -301,12 +302,17 @@ function retrieveOverallBroadcastResponseFromDB(varMessageID){
 		}
 
 		var aggregatedResponseBuilder = new Packages.gov.nih.nci.ihub.writer.ncies.common.AggregatedResponseBuilder();
-		var aggregatedResponse = aggregatedResponseBuilder.buildAggregatedDocument(responseArrayList, false);
+		var aggregatedResponse = aggregatedResponseBuilder.buildAggregatedDocument(responseArrayList, false);		
 		var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenerateResponseBean();
-		var overallResponse = generateResponseBean.generateResponseFromAggregatedResponse(varConsumerIdentifier, 
+		//var overallResponse = generateResponseBean.generateResponseFromAggregatedResponse(varConsumerIdentifier, 
+		//						varMessageID, aggregatedResponse);
+		var overallResponseString = generateResponseBean.generateResponseFromAggregatedResponse(varConsumerIdentifier, 
 								varMessageID, aggregatedResponse);
-		var overallResponseString = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(overallResponse);
+		//logger.error(&quot;OverallResponse in aggregateBroadcastResponse(): &quot;+overallResponse);
+		//var overallResponseString = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(overallResponse);
+		logger.info(&quot;OverallResponseString in aggregateBroadcastResponse(): &quot;+overallResponseString);
 		updateMessageServiceResponseInDB(isFailureOverallResponse, overallResponseString, varMessageID, globalMap.get(&quot;request.message.status.processed&quot;));
+		logger.debug(&quot;aggregateBroadcastResponse() - end&quot;);
 		return overallResponseString;
 
 	} catch (error) {	

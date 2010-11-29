@@ -3,6 +3,7 @@ package gov.nih.nci.ihub.test;
 import static org.junit.Assert.*;
 import gov.nih.nci.ihub.util.IntegrationHubUtil;
 import gov.nih.nci.ihub.writer.ncies.common.GenericInvocationStrategy;
+import gov.nih.nci.ihub.writer.ncies.common.GridInvocationResult;
 import gov.nih.nci.ihub.writer.ncies.infrastructure.InvokeDelegationServiceBean;
 
 import javax.security.auth.Subject;
@@ -31,13 +32,14 @@ public class GenericInvocationStrategyTest {
 			targetInvocationStrategy.setRequestPayloadClassName("gov.nih.nci.cabig.ccts.domain.Registration");
 			targetInvocationStrategy.setReturnTypeNameSpace("gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain");
 			targetInvocationStrategy.setReturnTypeElement("registration");
-			
+						
 			Element ihubBusinessMessagePayloadDocument = IntegrationHubUtil.
 			stringToDOMDocument(TestConstants.REGISTER_SUBJECT_PAYLOAD).getDocumentElement();
 			targetInvocationStrategy.setStrategySpecificVariables("register", 
 									"REGISTER_SUBJECT", ihubBusinessMessagePayloadDocument, 
 									subject, "caAERS");
-			targetInvocationStrategy.invokeGridService(false);
+			GridInvocationResult gridInvocationResult = targetInvocationStrategy.invokeGridService(false);
+			System.out.println("Grid Invocation Result: "+IntegrationHubUtil.xmlToString(gridInvocationResult.getResult()));
 			
 		} catch (Exception e) {
 			e.printStackTrace();

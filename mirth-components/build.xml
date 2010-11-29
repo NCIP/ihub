@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
-<project name="ihub-mirth-components" default="deploy" basedir="." xmlns:mirth="http://ihub.nci.nih.gov/mirth/ant">	
+<project name="ihub-mirth-components" default="deploy" basedir="." xmlns:mirth="http://ihub.nci.nih.gov/mirth/ant">
 
 	<!-- deployment properties  -->
-	<property file="local.build.properties"/>
-	<property name="mirth.home" value="${mirth.home}" />
-	
+	<property file="local.build.properties" />
+	<property name="mirth.home" value="C:/projects_svn/mirth/tags/1.8.2/server" />
+
 	<property name="root.project.name" value="ihub-mirth-components" />
 
 	<property name="root" value="." />
 	<property name="lib.dir" value="${root}/lib" />
 	<property name="src.dir" value="${root}/java-src" />
 	<property name="target.dir" value="${root}/target" />
-	<property name="resources.dir" value="${root}/resources"/>
+	<property name="resources.dir" value="${root}/resources" />
 	<property name="classes.dir" value="${target.dir}/classes" />
 	<property name="dist.dir" value="${target.dir}/dist" />
 
@@ -29,49 +29,43 @@
 	</path>
 
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="compile.classpath" />
-	
+
 	<target name="clean" description="Clean all build directories">
 		<delete dir="${target.dir}" />
 		<mkdir dir="${classes.dir}" />
 		<mkdir dir="${dist.dir}" />
 	</target>
 
-	<target name="compile" depends="clean" description="Compile Mirth custom components" >		
+	<target name="compile" depends="clean" description="Compile Mirth custom components">
 		<javac classpathref="compile.classpath" destdir="${classes.dir}" debug="on" optimize="on">
 			<src path="${src.dir}" />
 		</javac>
-		
-		<!-- copy the xml files so they will be included in jar -->
-		<copy todir="${classes.dir}">
-			<fileset dir="${src.dir}">
-	            <include name="**/*.xml" />
-				<exclude name="**/*.java"/>
-			</fileset>
-		</copy>
-		
+
+		<!-- copy other files so they will be included in jar -->
+		<copydir dest="${classes.dir}" src="${src.dir}">
+			<exclude name="**/*.java" />
+		</copydir>
+
 		<!-- copy the Mirth Log4J properties so they will be included in jar -->
 		<!--<copy todir="${classes.dir}">
 		    <fileset dir="${mirth.home}/conf">
 		        <include name="log4j.properties" />
 		    </fileset>
 		</copy>-->
-	</target>	
+	</target>
 
-	<target name="makejar" depends="compile" description="Create ihub-mirth-components.jar ">		
+	<target name="makejar" depends="compile" description="Create ihub-mirth-components.jar ">
 		<jar jarfile="${dist.dir}/${jar.module}">
 			<fileset dir="${classes.dir}">
-				<include name="**/*.class" />
-				<include name="**/*.xml" />
-				<include name="**/*.properties" />
-				<exclude name="test/*.class" />
+				<exclude name="**/*Test*.class" />
 			</fileset>
 		</jar>
 	</target>
-	
+
 	<target name="dist" depends="makejar" description="Creates a distribution package">
 		<copy todir="${dist.dir}" overwrite="true">
 			<fileset dir="${resources.dir}">
-				<include name="**/*.*" />				
+				<include name="**/*.*" />
 			</fileset>
 		</copy>
 		<copy todir="${dist.dir}/lib">
@@ -99,7 +93,7 @@
 			</fileset>
 		</copy>
 	</target>
-	
+
 	<target name="startMirth">
 		<echo message="Starting Mirth" />
 		<exec osfamily="windows" executable="${mirth.home}/Mirth.exe" dir="${mirth.home}" spawn="true">
@@ -109,5 +103,5 @@
 	<!--<target name="importChannels" depends="startMirth">
 		<echo message="Importing Channels" />		
 	</target>-->
-	
+
 </project>

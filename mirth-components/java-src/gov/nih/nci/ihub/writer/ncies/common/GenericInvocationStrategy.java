@@ -23,13 +23,15 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.jbi.messaging.DeliveryChannel;
-import javax.jbi.messaging.MessageExchange;
 import javax.security.auth.Subject;
 import javax.xml.namespace.QName;
 import javax.xml.transform.TransformerException;
 
 import org.apache.axis.AxisFault;
+import org.apache.axis.MessageContext;
+import org.apache.axis.configuration.FileProvider;
+import org.apache.axis.encoding.TypeMapping;
+import org.apache.axis.server.AxisServer;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.servicemix.jbi.jaxp.SourceTransformer;
@@ -51,6 +53,8 @@ import org.xml.sax.SAXException;
  */
 public class GenericInvocationStrategy extends GridInvocationStrategy {
 
+	private static Map<String, TypeMapping> typeMappings = new HashMap<String, TypeMapping>(
+			1);
 	static protected Map<String, Class> clientClasses = new HashMap<String, Class>();
 	protected Properties caxchangeProps;
 	protected String gridClientClassName;
@@ -66,7 +70,7 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 
 	private static Logger logger = LogManager
 			.getLogger(GenericInvocationStrategy.class);
-
+	
 	public void setStrategySpecificVariables(String operationName,
 			String serviceType, Element payload, Subject subject,
 			String serviceProviderName) {
@@ -229,12 +233,9 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 							+ requestPayloadClassName);
 		}
 		SourceTransformer transformer = new SourceTransformer();
-		//InputStream deseralizeStream = client.getClass().getResourceAsStream(
-			//	"client-config.wsdd");
-		
-		
+				
 		InputStream deseralizeStream = client.getClass().getClassLoader()
-		.getResourceAsStream("client-config.wsdd");
+		.getResourceAsStream(serviceType+"/client-config.wsdd");
 		
 		Object requestPayload = null;
 		try {			
@@ -345,8 +346,8 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 	public GridInvocationResult getServiceResponsePayload(Object client,
 			Object reply, QName returnType) throws Exception {
 		SourceTransformer transformer = new SourceTransformer();
-		InputStream seralizeStream = client.getClass().getResourceAsStream(
-				"client-config.wsdd");
+		InputStream seralizeStream = client.getClass().getClassLoader()
+		.getResourceAsStream(serviceType+"/client-config.wsdd");
 		String serviceResponsePayload = null;
 		try {
 			StringWriter writer = new StringWriter();
