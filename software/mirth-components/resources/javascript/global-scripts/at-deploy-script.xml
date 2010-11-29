@@ -7,14 +7,16 @@ globalMap.put("user.proxy.cache.time.to.live",600);
 globalMap.put("coppa.mirth.delegation.certificate.file.path","@coppa.mirth.delegation.certificate.file.path@");
 globalMap.put("coppa.mirth.delegation.key.file.path","@coppa.mirth.delegation.key.file.path@");
 
-globalMap.put("caAERS.registration.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-caaers/services/cagrid/registrationconsumer");
-globalMap.put("CTOM.registration.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/ctom-wsrf/services/cagrid/registrationconsumer");
-globalMap.put("PSC.registration.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-psc/services/cagrid/registrationconsumer");
-globalMap.put("register.subject.active.destination.count",3);
+globalMap.put("caAERS.REGISTER_SUBJECT.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-caaers/services/cagrid/RegistrationConsumer");
+globalMap.put("CTOM.REGISTER_SUBJECT.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/ctom-wsrf/services/cagrid/RegistrationConsumer");
+globalMap.put("PSC.REGISTER_SUBJECT.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-psc/services/cagrid/RegistrationConsumer");
+//UPDATE THE COUNT IF THE DESTINATION BROADCAST COUNT IS CHANGED FROM DEFAULT
+globalMap.put("REGISTER_SUBJECT.active.destination.count",3);
 
-globalMap.put("caAERS.study.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-caaers/services/cagrid/studyconsumer");
-globalMap.put("CTOM.study.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/ctom-wsrf/services/cagrid/studyconsumer");
-globalMap.put("PSC.study.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-psc/services/cagrid/studyconsumer");
+globalMap.put("caAERS.STUDY_CREATION.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-caaers/services/cagrid/StudyConsumer");
+globalMap.put("CTOM.STUDY_CREATION.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/ctom-wsrf/services/cagrid/StudyConsumer");
+globalMap.put("PSC.STUDY_CREATION.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-psc/services/cagrid/StudyConsumer");
+//UPDATE THE COUNT IF THE DESTINATION BROADCAST COUNT IS CHANGED FROM DEFAULT
 globalMap.put("STUDY_CREATION.active.destination.count",3);
 
 // PO services
@@ -56,11 +58,8 @@ globalMap.put("DOCUMENT_WORKFLOW_STATUS.url","@coppa.services.pa.protocol@://@co
 
 globalMap.put("target.grid.service.retry.attempts",3);
 
-globalMap.put("mirth.http.user.tomcat","tomcatuser");
-globalMap.put("mirth.http.password.tomcat","changeme");
-
-//UPDATE THE COUNT IF THE DESTINATION BROADCAST COUNT IS CHANGED FROM DEFAULT
-globalMap.put("register.subject.active.destination.count",3);
+globalMap.put("mirth.http.user.tomcat","@mirth.http.user@");
+globalMap.put("mirth.http.password.tomcat","@mirth.http.password@");
 
 // #########  ACTIVE MQ PROPERTIES - NEED NOT BE TOKENIZED SINCE CHANNELS CANNOT GET THESE VALUES USING VARIABLES ##########
 globalMap.put("amq.ihub.host","localhost");
@@ -99,13 +98,6 @@ globalMap.put("target.response.status.timeout","TIMEOUT");
 globalMap.put("overall.response.status.success","SUCCESS");
 globalMap.put("overall.response.status.failure","FAILURE");
 
-/*
-var coppaPersonStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
-coppaPersonStrategy.setServiceUrl(globalMap.get("coppa.person.url"));
-coppaPersonStrategy.setGridClientClassName("gov.nih.nci.coppa.services.entities.person.client.PersonClient");
-coppaPersonStrategy.init();
-globalMap.put("coppaPersonStrategy", coppaPersonStrategy);
-*/
 // ######## END VARIABLES REQUIRED FOR SUITE AND NOT CONFIGURABLE ########
 
 return;
