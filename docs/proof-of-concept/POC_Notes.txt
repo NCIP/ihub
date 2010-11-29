@@ -539,7 +539,116 @@ org.w3c.dom.DOMException: NOT_SUPPORTED_ERR: The implementation does not support
  -----------------------------------------------------------------------------------
  1. Removed xercesImpl-2.8.1.jar, xml-apis-1.3.04.jar, XmlSchema-1.4.2.jar from mirth_distribution/lib folder.
  	Error remained the same.
- 2. 
+ 2. Upon debugging the code, found out that the property set in the global scripts is different from the one read 
+ 	in the channels
+ 	
+ 	
+javax.xml.transform.TransformerException: java.lang.RuntimeException: DOM Level 3 Not implemented
+------------------------------------------------------------------------------------------------------
+1. Removed xercesImpl-2.8.1.jar, xml-apis-1.3.04.jar and XmlSchema-1.4.2.jar from lib/custom folder
+ 	Error message did not change.
+2. Removed xmlbeans-2.3.0.jar from lib/custom folder
+3. Tried to use saxon net.sf.saxon.TransformerFactoryImpl and copied saxon9.jar intu lib/custom folder.
+ 	However, on Mirth startup, the following exception occured and Mirth didn't start successfully.
+ 	
+ 	ERROR 2010-11-23 10:40:34,687 [Thread-1] com.webreach.mirth.model.converters.DocumentSerializer: Unknown configuration option indent-number
+	Exception in thread "Thread-1" java.lang.RuntimeException: java.lang.RuntimeException: Error occurred.  Cause: com.ibatis.common.xml.Nodelet
+	Exception: Error parsing XML.  Cause: org.xml.sax.SAXParseException: Premature end of file.
+
+4. For synchronous COPPA, resolved the issue by changing GenerateResponseBean return type for generateResponseFromTargetResponse method from Node to String (xml representation)
+	No need to call IntegrationHubUtil's xmlToString and stringToDOMDocument document methods.
+
+5. Ran into the same issue during asynchronous broadcasting. After detailed debugging, found out that the issue is happening during the IntegrationHubUtil.xmlToString method 
+	invocation of the CaXchangeResponseMessageDocument to string conversion. Not happening during other document conversion. Resolved the issue by calling
+	CaXchangeResponseMessageDocument.xmlText() in the GenerateResponseBean.generateResponseFromAggregatedResponse() and returning a String instead of a Node.
+ 
+ 
+Response COPPA on Mirth Distribution:
+--------------------------------------------
+<mes:caXchangeResponseMessage xmlns:mes="http://caXchange.nci.nih.gov/messaging"><mes:responseMetadata><mes:externalIdentifier>myExternalIdentifier</mes:externalIdentifier><mes:caXchangeIdentifier>a2b4a8c0-f72a-11df-9468-b40e30b6a36f</mes:caXchangeIdentifier></mes:responseMetadata><mes:response><mes:responseStatus>SUCCESS</mes:responseStatus><mes:targetResponse><mes:targetServiceIdentifier>PERSON</mes:targetServiceIdentifier><mes:targetServiceOperation>search</mes:targetServiceOperation><mes:targetMessageStatus>RESPONSE</mes:targetMessageStatus><mes:targetBusinessMessage><mes:xmlSchemaDefinition>http://po.coppa.nci.nih.gov</mes:xmlSchemaDefinition><soapenc:Array xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+ <ns1:Person xmlns:ns1="http://po.coppa.nci.nih.gov">
+  <ns1:identifier displayable="true" extension="272810" identifierName="NCI person entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.1" scope="OBJ"/>
+  <ns1:name>
+   <ns2:part type="FAM" value="Gaasch Smith" xmlns:ns2="uri:iso.org:21090"/>
+   <ns3:part type="GIV" value="Adriana" xmlns:ns3="uri:iso.org:21090"/>
+   <ns4:part type="PFX" value="Ms." xmlns:ns4="uri:iso.org:21090"/>
+  </ns1:name>
+  <ns1:postalAddress>
+   <ns5:part type="AL" value="9500 Gilman Drive" xmlns:ns5="uri:iso.org:21090"/>
+   <ns6:part type="ADL" value="Clinical Trials Office MC 0698" xmlns:ns6="uri:iso.org:21090"/>
+   <ns7:part type="CTY" value="La Jolla" xmlns:ns7="uri:iso.org:21090"/>
+   <ns8:part type="STA" value="CA" xmlns:ns8="uri:iso.org:21090"/>
+   <ns9:part type="ZIP" value="92037-0698" xmlns:ns9="uri:iso.org:21090"/>
+   <ns10:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States" xmlns:ns10="uri:iso.org:21090"/>
+  </ns1:postalAddress>
+  <ns1:statusCode code="active"/>
+  <ns1:telecomAddress>
+   <ns11:item value="mailto:a8smith@ucsd.edu" xmlns:ns11="uri:iso.org:21090"/>
+   <ns12:item value="x-text-fax:(858)-657-7025" xmlns:ns12="uri:iso.org:21090"/>
+   <ns13:item value="tel:(858)-657-7019" xmlns:ns13="uri:iso.org:21090"/>
+  </ns1:telecomAddress>
+  <ns1:raceCode nullFlavor="NI"/>
+  <ns1:sexCode nullFlavor="NI"/>
+  <ns1:ethnicGroupCode nullFlavor="NI"/>
+  <ns1:birthDate nullFlavor="NI"/>
+ </ns1:Person>
+</soapenc:Array></mes:targetBusinessMessage></mes:targetResponse></mes:response></mes:caXchangeResponseMessage>
+
+Error in Tomcat Log:
+2010-11-23 12:53:53,484 WARN  handlers.FaultHandler [http-58445-Processor24,getFrom:114] The WS-Addressing ''To'' request header is missing
+org.xml.sax.SAXException: Fatal Error: URI=null Line=1: XML document structures must start and end within the same entity.
+        at org.apache.axis.utils.XMLUtils$ParserErrorHandler.fatalError(XMLUtils.java:716)
+        at org.apache.xerces.util.ErrorHandlerWrapper.fatalError(Unknown Source)
+        at org.apache.xerces.impl.XMLErrorReporter.reportError(Unknown Source)
+        at org.apache.xerces.impl.XMLErrorReporter.reportError(Unknown Source)
+        at org.apache.xerces.impl.XMLScanner.reportFatalError(Unknown Source)
+        at org.apache.xerces.impl.XMLDocumentFragmentScannerImpl.endEntity(Unknown Source)
+        at org.apache.xerces.impl.XMLDocumentScannerImpl.endEntity(Unknown Source)
+        at org.apache.xerces.impl.XMLEntityManager.endEntity(Unknown Source)
+
+
+
+
+Response COPPA using Mirth Server From Source
+----------------------------------------------
+<?xml version="1.0" encoding="UTF-8"?><caXchangeResponseMessage xmlns="http://caXchange.nci.nih.gov/messaging"><responseMetadata><externalIdentifier>myExternalIdentifier</externalIdentifier><caXchangeIdentifier>48acc510-f72f-11df-9468-b40e30b6a36f</caXchangeIdentifier></responseMetadata><response><responseStatus>SUCCESS</responseStatus><targetResponse><targetServiceIdentifier>PERSON</targetServiceIdentifier><targetServiceOperation>search</targetServiceOperation><targetMessageStatus>RESPONSE</targetMessageStatus><targetBusinessMessage><xmlSchemaDefinition>http://po.coppa.nci.nih.gov</xmlSchemaDefinition><soapenc:Array xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+ <ns1:Person xmlns:ns1="http://po.coppa.nci.nih.gov">
+  <ns1:identifier displayable="true" extension="272810" identifierName="NCI person entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.1" scope="OBJ"/>
+  <ns1:name>
+   <ns2:part xmlns:ns2="uri:iso.org:21090" type="FAM" value="Gaasch Smith"/>
+   <ns3:part xmlns:ns3="uri:iso.org:21090" type="GIV" value="Adriana"/>
+   <ns4:part xmlns:ns4="uri:iso.org:21090" type="PFX" value="Ms."/>
+  </ns1:name>
+  <ns1:postalAddress>
+   <ns5:part xmlns:ns5="uri:iso.org:21090" type="AL" value="9500 Gilman Drive"/>
+   <ns6:part xmlns:ns6="uri:iso.org:21090" type="ADL" value="Clinical Trials Office MC 0698"/>
+   <ns7:part xmlns:ns7="uri:iso.org:21090" type="CTY" value="La Jolla"/>
+   <ns8:part xmlns:ns8="uri:iso.org:21090" type="STA" value="CA"/>
+   <ns9:part xmlns:ns9="uri:iso.org:21090" type="ZIP" value="92037-0698"/>
+   <ns10:part xmlns:ns10="uri:iso.org:21090" code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States"/>
+  </ns1:postalAddress>
+  <ns1:statusCode code="active"/>
+  <ns1:telecomAddress>
+   <ns11:item xmlns:ns11="uri:iso.org:21090" value="mailto:a8smith@ucsd.edu"/>
+   <ns12:item xmlns:ns12="uri:iso.org:21090" value="x-text-fax:(858)-657-7025"/>
+   <ns13:item xmlns:ns13="uri:iso.org:21090" value="tel:(858)-657-7019"/>
+  </ns1:telecomAddress>
+  <ns1:raceCode nullFlavor="NI"/>
+  <ns1:sexCode nullFlavor="NI"/>
+  <ns1:ethnicGroupCode nullFlavor="NI"/>
+  <ns1:birthDate nullFlavor="NI"/>
+ </ns1:Person>
+</soapenc:Array></targetBusinessMessage></targetResponse></response></caXchangeResponseMessage>
+
+Error in Tomcat Log:
+2010-11-23 13:27:09,906 WARN  handlers.FaultHandler [http-58445-Processor24,getFrom:114] The WS-Addressing ''To'' request header is missing
+org.xml.sax.SAXException: Fatal Error: URI=null Line=1: XML document structures must start and end within the same entity.
+        at org.apache.axis.utils.XMLUtils$ParserErrorHandler.fatalError(XMLUtils.java:716)
+        at org.apache.xerces.util.ErrorHandlerWrapper.fatalError(Unknown Source)
+        at org.apache.xerces.impl.XMLErrorReporter.reportError(Unknown Source)
+        at org.apache.xerces.impl.XMLErrorReporter.reportError(Unknown Source)
+        at org.apache.xerces.impl.XMLScanner.reportFatalError(Unknown Source)
+        at org.apache.xerces.impl.XMLDocumentFragmentScannerImpl.endEntity(Unknown Source)
 
 
 
@@ -551,6 +660,82 @@ org.w3c.dom.DOMException: NOT_SUPPORTED_ERR: The implementation does not support
 
 
 
+
+
+
+
+
+
+
+function aggregateBroadcastResponse(varServiceType, varTargetInvocationStrategy, varBusinessMessagePayload, varConsumerIdentifier, varMessageID){
+	try{
+		var activeDestinationCount = globalMap.get(varServiceType+".active.destination.count");
+		logger.info("Active Destination Count: "+activeDestinationCount);
+
+		var compiledResponseResultSet = getCompiledResponseResultsFromDB(varMessageID);
+
+		var totalSecondsElapsed = 0;
+		while (compiledResponseResultSet.size() < activeDestinationCount) {
+			Packages.java.lang.Thread.sleep(1000);
+			compiledResponseResultSet = getCompiledResponseResultsFromDB(varMessageID);
+			totalSecondsElapsed++;
+			if(totalSecondsElapsed >= 60){
+				//initiate the code for timeout here
+				break;
+			}
+		}
+
+		var responseArrayList = new Packages.java.util.ArrayList();
+		var potentialRollbackInvocationStrategyList = new Packages.java.util.ArrayList();
+		var isFailureOverallResponse = false;
+		if (compiledResponseResultSet.size() == 0){
+			isFailureOverallResponse = true;
+		}
+		while(compiledResponseResultSet.next()){
+			logger.error("Before calling string to DOM in the aggregateBroadcastResponse()");
+			var compiledResponseStringToDOMDocument = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.stringToDOMDocument(
+				compiledResponseResultSet.getString("compiled_target_response_compiled_response"));
+			logger.error("After calling string to DOM in the aggregateBroadcastResponse(): "+compiledResponseStringToDOMDocument);
+			responseArrayList.add(compiledResponseStringToDOMDocument);
+			var compiledTargetResponseStatus = compiledResponseResultSet.getString("compiled_target_response_target_response_status");
+			if(compiledTargetResponseStatus == globalMap.get("target.response.status.fault")){
+				isFailureOverallResponse = true;
+			} else {			
+				varTargetInvocationStrategy.setSubject(globalMap.get("subject"+varMessageID));
+				varTargetInvocationStrategy.setServiceURL(globalMap.get(compiledResponseResultSet.getString("compiled_target_response_target_details")+"."+varServiceType+".url"));
+				varTargetInvocationStrategy.setPayload(varBusinessMessagePayload);
+				varTargetInvocationStrategy.setServiceProviderName(compiledResponseResultSet.getString("compiled_target_response_target_details"));
+
+				potentialRollbackInvocationStrategyList.add(varTargetInvocationStrategy);
+
+				varTargetInvocationStrategy = varTargetInvocationStrategy.getClass().newInstance();
+			}
+		}
+
+		if(isFailureOverallResponse){
+			//send rollbacks to targets that executed successfully
+			delegateTargetRollbackRequest(varServiceType, potentialRollbackInvocationStrategyList, varMessageID);	
+		}
+
+		var aggregatedResponseBuilder = new Packages.gov.nih.nci.ihub.writer.ncies.common.AggregatedResponseBuilder();
+		var aggregatedResponse = aggregatedResponseBuilder.buildAggregatedDocument(responseArrayList, false);
+		logger.error("AggregatedResponse in aggregateBroadcastResponse(): "+aggregatedResponse);
+		var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenerateResponseBean();
+		//var overallResponse = generateResponseBean.generateResponseFromAggregatedResponse(varConsumerIdentifier, 
+		//						varMessageID, aggregatedResponse);
+		var overallResponseString = generateResponseBean.generateResponseFromAggregatedResponse(varConsumerIdentifier, 
+								varMessageID, aggregatedResponse);
+		//logger.error("OverallResponse in aggregateBroadcastResponse(): "+overallResponse);
+		//var overallResponseString = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(overallResponse);
+		logger.error("OverallResponseString in aggregateBroadcastResponse(): "+overallResponseString);
+		updateMessageServiceResponseInDB(isFailureOverallResponse, overallResponseString, varMessageID, globalMap.get("request.message.status.processed"));
+		return overallResponseString;
+
+	} catch (error) {	
+		logger.error("EXCEPTION OCCURED IN MIRTH RESPONSE AGGREGATOR "+error);
+	}
+
+}
 
 
 
@@ -593,6 +778,12 @@ Things to Do
 	target grid than the rest of the applications, "coppa.mirth.delegation.certificate.file.path" and "coppa.mirth.delegation.key.file.path"
 	need to be updated in the Global Scripts using Mirth Administrator. Also the referenced cert and key files need to be downloaded and
 	saved to the location specified above.
+
+5. ORGANIZATION_BUSINESS_SERVICE, and PERSON_BUSINESS_SERVICE service type use cases for Labveiwer need to be implemented in a special approach.
+
+6. Exception Handling Implementation
+
+7. Implement easier way to change the log level.
 	
 
 
