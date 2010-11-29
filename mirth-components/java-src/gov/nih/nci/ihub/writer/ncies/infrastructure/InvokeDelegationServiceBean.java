@@ -87,8 +87,7 @@ public class InvokeDelegationServiceBean {
 
 			subject.getPrivateCredentials().add(userCredential);
 
-			logger.info("usercredential=" + userCredential.toString());
-			System.out.println("UserCredential: " + userCredential.toString());
+			logger.info("usercredential=" + userCredential.toString());			
 			return subject;
 
 		} catch (Exception e) {
@@ -140,41 +139,33 @@ public class InvokeDelegationServiceBean {
 			DelegatedCredentialReference delegatedCredentialReference = null;
 			try {
 				logger.info("**** Delegated EPR:" + delegatedCredentialRef);
-				System.out.println("PROCESS 1: " + delegatedCredentialRef);
 				delegatedCredentialReference = (DelegatedCredentialReference) Utils
 						.deserializeObject(
 								new StringReader(delegatedCredentialRef),
 								DelegatedCredentialReference.class,
 								DelegatedCredentialUserClient.class
 										.getResourceAsStream("client-config.wsdd"));
-				System.out.println("PROCESS 2");
 			} catch (DeserializationException e) {
 				throw new GridInvocationException(
 						"Unable to deserialize the Delegation Reference", e);
 			}
 			DelegatedCredentialUserClient delegatedCredentialUserClient = null;
 			try {
-				System.out.println("PROCESS 2.1");
 				logger
 						.debug("**** delegatedCredentialReference.getEndpointReference"
 								+ delegatedCredentialReference
 										.getEndpointReference());
-				System.out.println("PROCESS 2.2");
 				delegatedCredentialUserClient = new DelegatedCredentialUserClient(
 						delegatedCredentialReference, hostCredential);
-				System.out.println("PROCESS 2.3");
 			} catch (Exception e) {
-				System.out.println("PROCESS 2.4: " + e.getMessage());
 				throw new GridInvocationException(
 						"Unable to Initialize the Delegation Lookup Client", e);
 			}
 			GlobusCredential userCredential;
-			System.out.println("PROCESS 3");
 			try {
 				long startTime = new java.util.Date().getTime();
 				userCredential = delegatedCredentialUserClient
 						.getDelegatedCredential();
-				System.out.println("PROCESS 4");
 				long endTime = new java.util.Date().getTime();
 				logger.debug("Time for delegation service:"
 						+ (endTime - startTime));
@@ -250,7 +241,7 @@ public class InvokeDelegationServiceBean {
 		// ClassPathXmlApplicationContext("gov/nih/nci/ihub/config/beans-config.xml");
 		// UserProxyCache userProxyCache =
 		// (UserProxyCache)context.getBean("userProxyCache");
-		InvokeDelegationServiceBean delegationServiceBean = new InvokeDelegationServiceBean(
+		/*InvokeDelegationServiceBean delegationServiceBean = new InvokeDelegationServiceBean(
 				"/O=caBIG/OU=caGrid/OU=Stage LOA1/OU=Dorian/CN=dev2_ld_user",
 
 				"<ns1:DelegatedCredentialReference xmlns:ns1=\"http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types\">      <ns2:EndpointReference xsi:type=\"ns2:EndpointReferenceType\" xmlns:ns2=\"http://schemas.xmlsoap.org/ws/2004/03/addressing\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">       <ns2:Address xsi:type=\"ns2:AttributedURI\">https://cagrid-cds-stage.nci.nih.gov:8443/wsrf/services/cagrid/DelegatedCredential</ns2:Address>       <ns2:ReferenceProperties xsi:type=\"ns2:ReferencePropertiesType\">        <ns2:DelegatedCredentialKey xmlns:ns2=\"http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential\">         <ns3:delegationId xmlns:ns3=\"http://gaards.cagrid.org/cds\">7690</ns3:delegationId>        </ns2:DelegatedCredentialKey>       </ns2:ReferenceProperties>       <ns2:ReferenceParameters xsi:type=\"ns2:ReferenceParametersType\"/></ns2:EndpointReference></ns1:DelegatedCredentialReference>",
@@ -313,7 +304,7 @@ public class InvokeDelegationServiceBean {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 
 	}
 

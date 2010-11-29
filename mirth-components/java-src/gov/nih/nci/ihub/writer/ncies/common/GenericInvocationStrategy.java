@@ -68,21 +68,20 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 			.getLogger(GenericInvocationStrategy.class);
 
 	public void setStrategySpecificVariables(String operationName,
-			String serviceType, Element payload, Subject subject, String serviceProviderName){
+			String serviceType, Element payload, Subject subject,
+			String serviceProviderName) {
 		this.operationName = operationName;
 		this.serviceType = serviceType;
 		this.payload = payload;
 		this.subject = subject;
 		this.serviceProviderName = serviceProviderName;
 	}
-	
+
 	@Override
-	public GridInvocationResult invokeGridService(DeliveryChannel channel,
-			MessageExchange exchange, GridMessage message)
+	public GridInvocationResult invokeGridService(boolean isRollback)
 			throws GridInvocationException {
 		try {
 			GlobusCredential cred = null;
-			Subject subject = exchange.getMessage("in").getSecuritySubject();
 			Set<GlobusCredential> globusCredentials = new HashSet<GlobusCredential>();
 			if (subject != null) {
 				globusCredentials = subject
@@ -97,7 +96,7 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 			String url = getServiceUrl();
 			logger.debug("The service url is:" + url);
 			Object client = getNewGridClient(url, cred);
-			Object requestPayload = getRequestPayload(client, message);
+			Object requestPayload = getRequestPayload(client);
 			logger.info("Invoking grid operation:" + new Date());
 			Object returnObject = invokeGridOperation(client, requestPayload,
 					operationName);
@@ -217,7 +216,7 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 		return client;
 	}
 
-	public Object getRequestPayload(Object client, GridMessage message)
+	public Object getRequestPayload(Object client)
 			throws GridInvocationException {
 		Class requestPayloadClass = null;
 		try {
@@ -230,12 +229,17 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 							+ requestPayloadClassName);
 		}
 		SourceTransformer transformer = new SourceTransformer();
-		InputStream deseralizeStream = client.getClass().getResourceAsStream(
-				"client-config.wsdd");
+		//InputStream deseralizeStream = client.getClass().getResourceAsStream(
+			//	"client-config.wsdd");
+		
+		
+		InputStream deseralizeStream = client.getClass().getClassLoader()
+		.getResourceAsStream("client-config.wsdd");
+		
 		Object requestPayload = null;
-		try {
+		try {			
 			if (requestPayloadClass.isArray()) {
-				List<Element> payloads = message.getPayloads();
+				List<Element> payloads = getPayloads();
 				requestPayload = Array.newInstance(requestPayloadClass
 						.getComponentType(), payloads.size());
 				byte[] arr = new byte[1024];
@@ -258,9 +262,9 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 					Array.set(requestPayload, i++, obj);
 				}
 			} else {
-				String payload = transformer.toString(message.getPayload());
-				logger.debug("The message payload is:" + payload);
-				StringReader reader = new StringReader(payload);
+				String payloadString = transformer.toString(getPayload());
+				logger.debug("The message payload is:" + payloadString);
+				StringReader reader = new StringReader(payloadString);
 				requestPayload = Utils.deserializeObject(reader,
 						requestPayloadClass, deseralizeStream);
 			}
@@ -335,8 +339,7 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 	public GridInvocationResult getSuccessResult() throws Exception {
 		final Document resp = new SourceTransformer()
 				.toDOMDocument(new StringSource("<result>success</result>"));
-		return new GridInvocationResult(false, resp
-				.getDocumentElement(), false);		
+		return new GridInvocationResult(false, resp.getDocumentElement(), false);
 	}
 
 	public GridInvocationResult getServiceResponsePayload(Object client,
@@ -351,23 +354,23 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 			serviceResponsePayload = writer.getBuffer().toString();
 			final Document resp = new SourceTransformer()
 					.toDOMDocument(new StringSource(serviceResponsePayload));
-			return new GridInvocationResult(false, resp
-					.getDocumentElement(), false);	
+			return new GridInvocationResult(false, resp.getDocumentElement(),
+					false);
 		} catch (Exception e) {
 			logger.error("Error transforming response payload to string.", e);
 			throw e;
 		}
 
 	}
-	
+
 	public List<Element> getPayloads() {
 		NodeList nodes = payload.getChildNodes();
 		List<Element> els = new ArrayList<Element>();
 		for (int i = 0; i < nodes.getLength(); i++) {
-			Node node = nodes.item(i);			
-			if (node instanceof Element) {				
-				if (("ns1:"+HubConstants.SCHEMA_DEFINITION_ELEMENT).equals(node
-						.getNodeName())) {
+			Node node = nodes.item(i);
+			if (node instanceof Element) {
+				if (("ns1:" + HubConstants.SCHEMA_DEFINITION_ELEMENT)
+						.equals(node.getNodeName())) {
 					continue;
 				} else {
 					els.add((Element) node);
@@ -442,9 +445,27 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 	}
 
 	public Element getPayload() {
-		return payload;
+		NodeList nodes = payload.getChildNodes();
+		for (int i = 0; i < nodes.getLength(); i++) {
+			Node node = nodes.item(i);
+			if (node instanceof Element) {
+				if (("ns1:" + HubConstants.SCHEMA_DEFINITION_ELEMENT)
+						.equals(node.getNodeName())) {
+					continue;
+				} else {
+					return (Element) node;
+				}
+			}
+		}
+		return null;		
 	}
 
+	/**
+	 * Strips the XML Schema element from the incoming payload and sets the
+	 * payload
+	 * 
+	 * @param payload
+	 */
 	public void setPayload(Element payload) {
 		this.payload = payload;
 	}
@@ -456,7 +477,7 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 	public void setSubject(Subject subject) {
 		this.subject = subject;
 	}
-	
+
 	public String getServiceProviderName() {
 		return serviceProviderName;
 	}
@@ -465,5 +486,4 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 		this.serviceProviderName = serviceProviderName;
 	}
 
-	
 }
