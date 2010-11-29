@@ -336,12 +336,17 @@ public class CaXchangeRequestProcessorImpl extends CaXchangeRequestProcessorImpl
 					method.getResponseBodyAsString();
 				} else {
 					br = new BufferedReader(new InputStreamReader(method.getResponseBodyAsStream()));
-					String readLine;
-					while (((readLine = br.readLine()) != null)) {						
-						logger.debug(readLine);				
-						Reader reader = new StringReader(readLine);
-						responseMessageToClient = (ResponseMessage) Utils.deserializeObject(reader,ResponseMessage.class);
+					StringBuffer responseStringBuffer = new StringBuffer();
+					String readLine = "";
+					while ((readLine = br.readLine()) != null) {			
+						responseStringBuffer.append(readLine);
 					}
+					//Reader reader = new StringReader(readLine);
+					//responseMessageToClient = (ResponseMessage) Utils.deserializeObject(reader,ResponseMessage.class);
+					
+					ResponseHandler responseHandler = new ResponseHandler();
+			        responseHandler.setResponseText(responseStringBuffer.toString());
+			        return responseHandler.getResponse();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
