@@ -61,5 +61,9 @@ public class HubConstants {
 	//service types
 	public static final String SERVICE_TYPE_PERSON = "PERSON";
 	public static final String SERVICE_YYPE_ORGANIZATION = "ORGANIZATION";
+	
+	//client-config.wsdd location
+	public static final String WSDD_FILE_LOCATION_PREFIX = "wsdd";
+	public static final String WSDD_FILE_LOCATION_SUFFIX = "/client-config.wsdd";
 
 }

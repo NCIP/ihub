@@ -28,10 +28,7 @@ import javax.xml.namespace.QName;
 import javax.xml.transform.TransformerException;
 
 import org.apache.axis.AxisFault;
-import org.apache.axis.MessageContext;
-import org.apache.axis.configuration.FileProvider;
 import org.apache.axis.encoding.TypeMapping;
-import org.apache.axis.server.AxisServer;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.servicemix.jbi.jaxp.SourceTransformer;
@@ -53,8 +50,6 @@ import org.xml.sax.SAXException;
  */
 public class GenericInvocationStrategy extends GridInvocationStrategy {
 
-	private static Map<String, TypeMapping> typeMappings = new HashMap<String, TypeMapping>(
-			1);
 	static protected Map<String, Class> clientClasses = new HashMap<String, Class>();
 	protected Properties caxchangeProps;
 	protected String gridClientClassName;
@@ -70,7 +65,7 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 
 	private static Logger logger = LogManager
 			.getLogger(GenericInvocationStrategy.class);
-	
+
 	public void setStrategySpecificVariables(String operationName,
 			String serviceType, Element payload, Subject subject,
 			String serviceProviderName) {
@@ -101,33 +96,40 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 			logger.debug("The service url is:" + url);
 			Object client = getNewGridClient(url, cred);
 			Object requestPayload = getRequestPayload(client);
-			logger.info("Invoking grid operation:" + new Date());
-			Object returnObject = invokeGridOperation(client, requestPayload,
-					operationName);
-			logger.info("After Invoking grid operation:" + new Date());
-			// commented to remove commit
-			// client.commit(request);
-			GridInvocationResult result = null;
-			if ((returnTypeNameSpace != null) && (returnTypeElement != null)) {
-				QName returnType = new QName(returnTypeNameSpace,
-						returnTypeElement);
-				result = getServiceResponsePayload(client, returnObject,
-						returnType);
+
+			if (isRollback) {
+				invokeGridOperation(client, requestPayload, "rollback");
+				System.out.println("Registeration ROLLBACK called");
+				return new GridInvocationResult(false, null, false);
 			} else {
-				result = getSuccessResult();
+				logger.info("Invoking grid operation:" + new Date());
+				Object returnObject = invokeGridOperation(client,
+						requestPayload, operationName);
+				logger.info("After Invoking grid operation:" + new Date());
+				// commented to remove commit
+				// client.commit(request);
+				GridInvocationResult result = null;
+				if ((returnTypeNameSpace != null)
+						&& (returnTypeElement != null)) {
+					QName returnType = new QName(returnTypeNameSpace,
+							returnTypeElement);
+					result = getServiceResponsePayload(client, returnObject,
+							returnType);
+				} else {
+					result = getSuccessResult();
+				}
+				return result;
 			}
-			return result;
 		} catch (AxisFault af) {
-			logger.error("Failed to invoke grid service. " + serviceUrl, af);
-			GridInvocationException gie = new GridInvocationException(af
-					.getFaultString(), af);
+			logger.error("Failed to invoke grid service, " + serviceUrl, af);
 			if (af.getCause() instanceof ConnectException) {
-				gie.setCanRetry(true);
+				return new GridInvocationResult(true, null, true, af);
+			} else {
+				return new GridInvocationResult(true, null, false, af);
 			}
-			throw gie;
 		} catch (Exception e) {
 			logger.error("Failed to invoke grid service." + serviceUrl, e);
-			throw new GridInvocationException(e.getMessage(), e);
+			return new GridInvocationResult(true, null, false, e);
 		}
 	}
 
@@ -233,12 +235,14 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 							+ requestPayloadClassName);
 		}
 		SourceTransformer transformer = new SourceTransformer();
-				
+
 		InputStream deseralizeStream = client.getClass().getClassLoader()
-		.getResourceAsStream(serviceType+"/client-config.wsdd");
-		
+				.getResourceAsStream(
+						HubConstants.WSDD_FILE_LOCATION_PREFIX + serviceType
+								+ HubConstants.WSDD_FILE_LOCATION_SUFFIX);
+
 		Object requestPayload = null;
-		try {			
+		try {
 			if (requestPayloadClass.isArray()) {
 				List<Element> payloads = getPayloads();
 				requestPayload = Array.newInstance(requestPayloadClass
@@ -345,9 +349,11 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 
 	public GridInvocationResult getServiceResponsePayload(Object client,
 			Object reply, QName returnType) throws Exception {
-		SourceTransformer transformer = new SourceTransformer();
 		InputStream seralizeStream = client.getClass().getClassLoader()
-		.getResourceAsStream(serviceType+"/client-config.wsdd");
+				.getResourceAsStream(
+						HubConstants.WSDD_FILE_LOCATION_PREFIX + serviceType
+								+ HubConstants.WSDD_FILE_LOCATION_SUFFIX);
+
 		String serviceResponsePayload = null;
 		try {
 			StringWriter writer = new StringWriter();
@@ -458,7 +464,7 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 				}
 			}
 		}
-		return null;		
+		return null;
 	}
 
 	/**
