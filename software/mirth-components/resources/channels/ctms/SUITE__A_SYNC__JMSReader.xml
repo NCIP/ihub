@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1289940057796</time>
+    <time>1291225801796</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>134</revision>
+  <revision>136</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -520,47 +520,7 @@ globalMap.put(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apo
         </inboundProperties>
       </transformer>
       <filter>
-        <rules>
-          <com.webreach.mirth.model.Rule>
-            <sequenceNumber>0</sequenceNumber>
-            <name>Accept message if &quot;$(&apos;ns1metadata_ns1servicetype&apos;)&quot; equals &quot;REGISTER_SUBJECT&quot;</name>
-            <data class="map">
-              <entry>
-                <string>OriginalField</string>
-                <string></string>
-              </entry>
-              <entry>
-                <string>Values</string>
-                <list>
-                  <string>&quot;REGISTER_SUBJECT&quot;</string>
-                </list>
-              </entry>
-              <entry>
-                <string>Equals</string>
-                <string>1</string>
-              </entry>
-              <entry>
-                <string>Field</string>
-                <string>$(&apos;ns1metadata_ns1servicetype&apos;)</string>
-              </entry>
-              <entry>
-                <string>Name</string>
-                <string></string>
-              </entry>
-              <entry>
-                <string>Accept</string>
-                <string>1</string>
-              </entry>
-            </data>
-            <type>Rule Builder</type>
-            <script>if($(&apos;ns1metadata_ns1servicetype&apos;) == &quot;REGISTER_SUBJECT&quot;)
-{
-return true;
-}
-return false;</script>
-            <operator>NONE</operator>
-          </com.webreach.mirth.model.Rule>
-        </rules>
+        <rules/>
       </filter>
       <transportName>JavaScript Writer</transportName>
       <mode>DESTINATION</mode>
@@ -584,47 +544,7 @@ return false;</script>
         </inboundProperties>
       </transformer>
       <filter>
-        <rules>
-          <com.webreach.mirth.model.Rule>
-            <sequenceNumber>0</sequenceNumber>
-            <name>Accept message if &quot;$(&apos;ns1metadata_ns1servicetype&apos;)&quot; equals &quot;REGISTER_SUBJECT&quot;</name>
-            <data class="map">
-              <entry>
-                <string>OriginalField</string>
-                <string></string>
-              </entry>
-              <entry>
-                <string>Values</string>
-                <list>
-                  <string>&quot;REGISTER_SUBJECT&quot;</string>
-                </list>
-              </entry>
-              <entry>
-                <string>Equals</string>
-                <string>1</string>
-              </entry>
-              <entry>
-                <string>Field</string>
-                <string>$(&apos;ns1metadata_ns1servicetype&apos;)</string>
-              </entry>
-              <entry>
-                <string>Name</string>
-                <string></string>
-              </entry>
-              <entry>
-                <string>Accept</string>
-                <string>1</string>
-              </entry>
-            </data>
-            <type>Rule Builder</type>
-            <script>if($(&apos;ns1metadata_ns1servicetype&apos;) == &quot;REGISTER_SUBJECT&quot;)
-{
-return true;
-}
-return false;</script>
-            <operator>NONE</operator>
-          </com.webreach.mirth.model.Rule>
-        </rules>
+        <rules/>
       </filter>
       <transportName>Channel Writer</transportName>
       <mode>DESTINATION</mode>
