@@ -102,7 +102,7 @@ public class IntegrationHubUtil {
 			Node xmlToStripNode = IntegrationHubUtil
 					.stringToDOMDocument(businessPayloadXMLString);
 			XPathExpression expression = xpath
-					.compile("/businessMessagePayload");
+					.compile("/"+HubConstants.REQUEST_PAYLOAD_ELEMENT);
 			NodeList nodes = (NodeList) expression.evaluate(xmlToStripNode,
 					XPathConstants.NODESET);
 			payloadXMLString = IntegrationHubUtil.xmlToString(nodes.item(0)
@@ -111,6 +111,15 @@ public class IntegrationHubUtil {
 			e.printStackTrace();
 		}
 		return payloadXMLString;
+	}
+	
+	/**
+	 * Converts payload (ex. clinical connector payload) into business message payload
+	 * @param payload
+	 * @return
+	 */
+	public static String convertPayloadIntoBusinessPayload(String payload){
+		return "<"+HubConstants.REQUEST_PAYLOAD_ELEMENT+">"+payload+"</"+HubConstants.REQUEST_PAYLOAD_ELEMENT+">";
 	}
 
 }

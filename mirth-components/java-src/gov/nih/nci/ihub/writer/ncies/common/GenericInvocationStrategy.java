@@ -28,7 +28,6 @@ import javax.xml.namespace.QName;
 import javax.xml.transform.TransformerException;
 
 import org.apache.axis.AxisFault;
-import org.apache.axis.encoding.TypeMapping;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.servicemix.jbi.jaxp.SourceTransformer;
@@ -74,6 +73,15 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 		this.payload = payload;
 		this.subject = subject;
 		this.serviceProviderName = serviceProviderName;
+	}
+	
+	public void copyCommonContents(GenericInvocationStrategy genericInvocationStrategy){
+		this.serviceType = genericInvocationStrategy.getServiceType();
+		this.gridClientClassName = genericInvocationStrategy.getGridClientClassName();
+		this.requestPayloadClassName = genericInvocationStrategy.getRequestPayloadClassName();
+		this.returnTypeNameSpace = genericInvocationStrategy.getReturnTypeNameSpace();
+		this.returnTypeElement = genericInvocationStrategy.getReturnTypeElement();
+		this.operationName = genericInvocationStrategy.getOperationName();		
 	}
 
 	@Override
@@ -259,6 +267,7 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 				int i = 0;
 				for (Element element : payloads) {
 					String payload = transformer.toString(element);
+					System.out.println("Payload in GenericInvocationStrategy: "+payload);
 					logger.debug("The message payload is:" + payload);
 					StringReader reader = new StringReader(payload);
 					bais = new ByteArrayInputStream(clientConfigAsBytes);
@@ -268,6 +277,7 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 				}
 			} else {
 				String payloadString = transformer.toString(getPayload());
+				System.out.println("Payload in GenericInvocationStrategy: "+payloadString);
 				logger.debug("The message payload is:" + payloadString);
 				StringReader reader = new StringReader(payloadString);
 				requestPayload = Utils.deserializeObject(reader,
