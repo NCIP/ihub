@@ -284,15 +284,18 @@ function retrieveOverallBroadcastResponseFromDB(varMessageID){
 			var compiledTargetResponseStatus = compiledResponseResultSet.getString(&quot;compiled_target_response_target_response_status&quot;);
 			if(compiledTargetResponseStatus == globalMap.get(&quot;target.response.status.fault&quot;)){
 				isFailureOverallResponse = true;
-			} else {			
-				varTargetInvocationStrategy.setSubject(globalMap.get(&quot;subject&quot;+varMessageID));
-				varTargetInvocationStrategy.setServiceURL(globalMap.get(compiledResponseResultSet.getString(&quot;compiled_target_response_target_details&quot;)+&quot;.&quot;+varServiceType+&quot;.url&quot;));
-				varTargetInvocationStrategy.setPayload(varBusinessMessagePayload);
-				varTargetInvocationStrategy.setServiceProviderName(compiledResponseResultSet.getString(&quot;compiled_target_response_target_details&quot;));
+			} else {				
+				var targetInvocationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenericInvocationStrategy();
+				targetInvocationStrategy.copyCommonContents(varTargetInvocationStrategy);
 
-				potentialRollbackInvocationStrategyList.add(varTargetInvocationStrategy);
+				targetInvocationStrategy.setServiceUrl(globalMap.get(compiledResponseResultSet.getString(&quot;compiled_target_response_target_details&quot;)+&quot;.&quot;+varServiceType+&quot;.url&quot;));
+				targetInvocationStrategy.setSubject(globalMap.get(&quot;subject&quot;+varMessageID));
+				targetInvocationStrategy.setServiceProviderName(compiledResponseResultSet.getString(&quot;compiled_target_response_target_details&quot;));
+				targetInvocationStrategy.setPayload(varBusinessMessagePayload);
 
-				varTargetInvocationStrategy = varTargetInvocationStrategy.getClass().newInstance();
+				potentialRollbackInvocationStrategyList.add(targetInvocationStrategy);
+
+				//varTargetInvocationStrategy = varTargetInvocationStrategy.getClass().newInstance();
 			}
 		}
 

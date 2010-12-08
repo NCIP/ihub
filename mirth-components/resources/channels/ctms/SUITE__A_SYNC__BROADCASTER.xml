@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1291067296031</time>
+    <time>1291814368031</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>521</revision>
+  <revision>613</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -199,6 +199,22 @@ channelMap.put(&quot;registration_prefix&quot;,&apos;registration&apos;);</strin
             <entry>
               <string>isGlobal</string>
               <string>channel</string>
+            </entry>
+          </data>
+        </com.webreach.mirth.model.Step>
+        <com.webreach.mirth.model.Step>
+          <sequenceNumber>7</sequenceNumber>
+          <name>Set Variables</name>
+          <script>var ihubBusinessMessagePayloadDocument = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.
+	stringToDOMDocument($(&apos;ns1request_ns1businessmessagepayload&apos;)).getDocumentElement();
+channelMap.put(&apos;ihubBusinessMessagePayloadDocument&apos;, ihubBusinessMessagePayloadDocument);</script>
+          <type>JavaScript</type>
+          <data class="map">
+            <entry>
+              <string>Script</string>
+              <string>var ihubBusinessMessagePayloadDocument = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.
+	stringToDOMDocument($(&apos;ns1request_ns1businessmessagepayload&apos;)).getDocumentElement();
+channelMap.put(&apos;ihubBusinessMessagePayloadDocument&apos;, ihubBusinessMessagePayloadDocument);</string>
             </entry>
           </data>
         </com.webreach.mirth.model.Step>
@@ -436,30 +452,18 @@ channelMap.put(&quot;registration_prefix&quot;,&apos;registration&apos;);</strin
     <com.webreach.mirth.model.Connector>
       <name>caAERS</name>
       <properties>
-        <property name="script">/*
-var targetInvocationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.business.RegistrationInvocationStrategy(
-	globalMap.get(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)), 
-	globalMap.get(globalMap.get(&quot;target.detail.code.caaers&quot;)+&quot;.&quot;+$(&apos;ns1metadata_ns1servicetype&apos;)+&quot;.url&quot;), 
-	$(&apos;ns1request_ns1businessmessagepayload&apos;), globalMap.get(&quot;target.detail.code.caaers&quot;));
-*/
+        <property name="script">logger.debug(&quot;Invoking caAERS Broadcast Destination&quot;);
+var targetGlobalInvocationStrategy = globalMap.get($(&apos;ns1metadata_ns1servicetype&apos;)+&quot;_Strategy&quot;);
 
 var targetInvocationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenericInvocationStrategy();
-targetInvocationStrategy.setServiceUrl(globalMap.get(&quot;caAERS.REGISTER_SUBJECT.url&quot;));
-targetInvocationStrategy.setGridClientClassName(&quot;gov.nih.nci.ccts.grid.client.RegistrationConsumerClient&quot;);
-targetInvocationStrategy.setRequestPayloadClassName(&quot;gov.nih.nci.cabig.ccts.domain.Registration&quot;);
-targetInvocationStrategy.setReturnTypeNameSpace(&quot;gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain&quot;);
-targetInvocationStrategy.setReturnTypeElement(&quot;registration&quot;);
+targetInvocationStrategy.copyCommonContents(targetGlobalInvocationStrategy);
 
+targetInvocationStrategy.setServiceUrl(globalMap.get(globalMap.get(&quot;target.detail.code.caaers&quot;)+&quot;.&quot;+$(&apos;ns1metadata_ns1servicetype&apos;)+&quot;.url&quot;));
+targetInvocationStrategy.setServiceProviderName(globalMap.get(&quot;target.detail.code.caaers&quot;));
+targetInvocationStrategy.setSubject(globalMap.get(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)));
+targetInvocationStrategy.setPayload($(&apos;ihubBusinessMessagePayloadDocument&apos;));
 
-var ihubBusinessMessagePayloadDocument = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.
-	stringToDOMDocument($(&apos;ns1request_ns1businessmessagepayload&apos;)).getDocumentElement();
-
-
-
-targetInvocationStrategy.setStrategySpecificVariables(&quot;register&quot;,
-							$(&apos;ns1metadata_ns1servicetype&apos;), ihubBusinessMessagePayloadDocument, 
-							globalMap.get(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)), &quot;caAERS&quot;);
-	
+//Packages.java.lang.Thread.sleep(5000);
 
 delegateSingleTargetRequest($(&apos;ns1metadata_ns1servicetype&apos;), targetInvocationStrategy, 
 	$(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));	
@@ -484,7 +488,7 @@ delegateSingleTargetRequest($(&apos;ns1metadata_ns1servicetype&apos;), targetInv
         <rules>
           <com.webreach.mirth.model.Rule>
             <sequenceNumber>0</sequenceNumber>
-            <name>Accept message if &quot;$(&apos;ns1metadata_ns1servicetype&apos;)&quot; equals &quot;REGISTER_SUBJECT&quot;</name>
+            <name>Accept message if &quot;$(&apos;ns1metadata_ns1servicetype&apos;)&quot; equals Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_REGISTER_SUBJECT</name>
             <data class="map">
               <entry>
                 <string>OriginalField</string>
@@ -493,7 +497,7 @@ delegateSingleTargetRequest($(&apos;ns1metadata_ns1servicetype&apos;), targetInv
               <entry>
                 <string>Values</string>
                 <list>
-                  <string>&quot;REGISTER_SUBJECT&quot;</string>
+                  <string>Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_REGISTER_SUBJECT</string>
                 </list>
               </entry>
               <entry>
@@ -514,12 +518,90 @@ delegateSingleTargetRequest($(&apos;ns1metadata_ns1servicetype&apos;), targetInv
               </entry>
             </data>
             <type>Rule Builder</type>
-            <script>if($(&apos;ns1metadata_ns1servicetype&apos;) == &quot;REGISTER_SUBJECT&quot;)
+            <script>if($(&apos;ns1metadata_ns1servicetype&apos;) == Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_REGISTER_SUBJECT)
 {
 return true;
 }
 return false;</script>
             <operator>NONE</operator>
+          </com.webreach.mirth.model.Rule>
+          <com.webreach.mirth.model.Rule>
+            <sequenceNumber>1</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;ns1metadata_ns1servicetype&apos;)&quot; equals Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_STUDY_CREATION</name>
+            <data class="map">
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_STUDY_CREATION</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;ns1metadata_ns1servicetype&apos;)</string>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Accept</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;ns1metadata_ns1servicetype&apos;) == Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_STUDY_CREATION)
+{
+return true;
+}
+return false;</script>
+            <operator>OR</operator>
+          </com.webreach.mirth.model.Rule>
+          <com.webreach.mirth.model.Rule>
+            <sequenceNumber>2</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;ns1metadata_ns1servicetype&apos;)&quot; equals Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_LAB_BASED_AE</name>
+            <data class="map">
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_LAB_BASED_AE</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;ns1metadata_ns1servicetype&apos;)</string>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Accept</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;ns1metadata_ns1servicetype&apos;) == Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_LAB_BASED_AE)
+{
+return true;
+}
+return false;</script>
+            <operator>OR</operator>
           </com.webreach.mirth.model.Rule>
         </rules>
       </filter>
@@ -530,30 +612,16 @@ return false;</script>
     <com.webreach.mirth.model.Connector>
       <name>CTOM</name>
       <properties>
-        <property name="script">/*
-var targetInvocationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.business.RegistrationInvocationStrategy(
-	globalMap.get(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)), 
-	globalMap.get(globalMap.get(&quot;target.detail.code.ctom&quot;)+&quot;.&quot;+$(&apos;ns1metadata_ns1servicetype&apos;)+&quot;.url&quot;), 
-	$(&apos;ns1request_ns1businessmessagepayload&apos;), globalMap.get(&quot;target.detail.code.ctom&quot;));
-*/
-
+        <property name="script">logger.debug(&quot;Invoking CTOM Broadcast Destination&quot;);
+var targetGlobalInvocationStrategy = globalMap.get($(&apos;ns1metadata_ns1servicetype&apos;)+&quot;_Strategy&quot;);
 
 var targetInvocationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenericInvocationStrategy();
-targetInvocationStrategy.setServiceUrl(globalMap.get(&quot;CTOM.REGISTER_SUBJECT.url&quot;));
-targetInvocationStrategy.setGridClientClassName(&quot;gov.nih.nci.ccts.grid.client.RegistrationConsumerClient&quot;);
-targetInvocationStrategy.setRequestPayloadClassName(&quot;gov.nih.nci.cabig.ccts.domain.Registration&quot;);
-targetInvocationStrategy.setReturnTypeNameSpace(&quot;gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain&quot;);
-targetInvocationStrategy.setReturnTypeElement(&quot;registration&quot;);
+targetInvocationStrategy.copyCommonContents(targetGlobalInvocationStrategy);
 
-
-var ihubBusinessMessagePayloadDocument = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.
-	stringToDOMDocument($(&apos;ns1request_ns1businessmessagepayload&apos;)).getDocumentElement();
-
-
-
-targetInvocationStrategy.setStrategySpecificVariables(&quot;register&quot;,
-							$(&apos;ns1metadata_ns1servicetype&apos;), ihubBusinessMessagePayloadDocument, 
-							globalMap.get(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)), &quot;CTOM&quot;);
+targetInvocationStrategy.setServiceUrl(globalMap.get(Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_DETAIL_CTOM+&quot;.&quot;+$(&apos;ns1metadata_ns1servicetype&apos;)+&quot;.url&quot;));
+targetInvocationStrategy.setServiceProviderName(Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_DETAIL_CTOM);
+targetInvocationStrategy.setSubject(globalMap.get(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)));
+targetInvocationStrategy.setPayload($(&apos;ihubBusinessMessagePayloadDocument&apos;));
 
 
 delegateSingleTargetRequest($(&apos;ns1metadata_ns1servicetype&apos;), targetInvocationStrategy, 
@@ -575,7 +643,7 @@ delegateSingleTargetRequest($(&apos;ns1metadata_ns1servicetype&apos;), targetInv
         <rules>
           <com.webreach.mirth.model.Rule>
             <sequenceNumber>0</sequenceNumber>
-            <name>Accept message if &quot;$(&apos;ns1metadata_ns1servicetype&apos;)&quot; equals &quot;REGISTER_SUBJECT&quot;</name>
+            <name>Accept message if &quot;$(&apos;ns1metadata_ns1servicetype&apos;)&quot; equals Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_REGISTER_SUBJECT</name>
             <data class="map">
               <entry>
                 <string>OriginalField</string>
@@ -584,7 +652,7 @@ delegateSingleTargetRequest($(&apos;ns1metadata_ns1servicetype&apos;), targetInv
               <entry>
                 <string>Values</string>
                 <list>
-                  <string>&quot;REGISTER_SUBJECT&quot;</string>
+                  <string>Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_REGISTER_SUBJECT</string>
                 </list>
               </entry>
               <entry>
@@ -605,12 +673,90 @@ delegateSingleTargetRequest($(&apos;ns1metadata_ns1servicetype&apos;), targetInv
               </entry>
             </data>
             <type>Rule Builder</type>
-            <script>if($(&apos;ns1metadata_ns1servicetype&apos;) == &quot;REGISTER_SUBJECT&quot;)
+            <script>if($(&apos;ns1metadata_ns1servicetype&apos;) == Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_REGISTER_SUBJECT)
 {
 return true;
 }
 return false;</script>
             <operator>NONE</operator>
+          </com.webreach.mirth.model.Rule>
+          <com.webreach.mirth.model.Rule>
+            <sequenceNumber>1</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;ns1metadata_ns1servicetype&apos;)&quot; equals Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_STUDY_CREATION</name>
+            <data class="map">
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_STUDY_CREATION</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;ns1metadata_ns1servicetype&apos;)</string>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Accept</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;ns1metadata_ns1servicetype&apos;) == Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_STUDY_CREATION)
+{
+return true;
+}
+return false;</script>
+            <operator>OR</operator>
+          </com.webreach.mirth.model.Rule>
+          <com.webreach.mirth.model.Rule>
+            <sequenceNumber>2</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;ns1metadata_ns1servicetype&apos;)&quot; equals Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_CT_LAB_DATA</name>
+            <data class="map">
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_CT_LAB_DATA</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;ns1metadata_ns1servicetype&apos;)</string>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Accept</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;ns1metadata_ns1servicetype&apos;) == Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_CT_LAB_DATA)
+{
+return true;
+}
+return false;</script>
+            <operator>OR</operator>
           </com.webreach.mirth.model.Rule>
         </rules>
       </filter>
@@ -628,27 +774,21 @@ var targetInvocationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.busine
 	$(&apos;ns1request_ns1businessmessagepayload&apos;), globalMap.get(&quot;target.detail.code.psc&quot;));
 */
 
+logger.debug(&quot;Invoking PSC Broadcast Destination&quot;);
+var targetGlobalInvocationStrategy = globalMap.get($(&apos;ns1metadata_ns1servicetype&apos;)+&quot;_Strategy&quot;);
 
 var targetInvocationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenericInvocationStrategy();
-targetInvocationStrategy.setServiceUrl(globalMap.get(&quot;PSC.REGISTER_SUBJECT.url&quot;));
-targetInvocationStrategy.setGridClientClassName(&quot;gov.nih.nci.ccts.grid.client.RegistrationConsumerClient&quot;);
-targetInvocationStrategy.setRequestPayloadClassName(&quot;gov.nih.nci.cabig.ccts.domain.Registration&quot;);
-targetInvocationStrategy.setReturnTypeNameSpace(&quot;gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain&quot;);
-targetInvocationStrategy.setReturnTypeElement(&quot;registration&quot;);
+targetInvocationStrategy.copyCommonContents(targetGlobalInvocationStrategy);
 
-
-var ihubBusinessMessagePayloadDocument = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.
-	stringToDOMDocument($(&apos;ns1request_ns1businessmessagepayload&apos;)).getDocumentElement();
-
-
-
-targetInvocationStrategy.setStrategySpecificVariables(&quot;register&quot;,
-							$(&apos;ns1metadata_ns1servicetype&apos;), ihubBusinessMessagePayloadDocument, 
-							globalMap.get(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)), &quot;PSC&quot;);
+targetInvocationStrategy.setServiceUrl(globalMap.get(globalMap.get(&quot;target.detail.code.psc&quot;)+&quot;.&quot;+$(&apos;ns1metadata_ns1servicetype&apos;)+&quot;.url&quot;));
+targetInvocationStrategy.setServiceProviderName(globalMap.get(&quot;target.detail.code.psc&quot;));
+targetInvocationStrategy.setSubject(globalMap.get(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)));
+targetInvocationStrategy.setPayload($(&apos;ihubBusinessMessagePayloadDocument&apos;));
 
 
 delegateSingleTargetRequest($(&apos;ns1metadata_ns1servicetype&apos;), targetInvocationStrategy, 
-	$(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));	</property>
+	$(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));	
+</property>
         <property name="DataType">JavaScript Writer</property>
         <property name="host">sink</property>
       </properties>
@@ -667,7 +807,7 @@ delegateSingleTargetRequest($(&apos;ns1metadata_ns1servicetype&apos;), targetInv
         <rules>
           <com.webreach.mirth.model.Rule>
             <sequenceNumber>0</sequenceNumber>
-            <name>Accept message if &quot;$(&apos;ns1metadata_ns1servicetype&apos;)&quot; equals &quot;REGISTER_SUBJECT&quot;</name>
+            <name>Accept message if &quot;$(&apos;ns1metadata_ns1servicetype&apos;)&quot; equals Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_SCHEDULE_MODIFICATION</name>
             <data class="map">
               <entry>
                 <string>OriginalField</string>
@@ -676,7 +816,7 @@ delegateSingleTargetRequest($(&apos;ns1metadata_ns1servicetype&apos;), targetInv
               <entry>
                 <string>Values</string>
                 <list>
-                  <string>&quot;REGISTER_SUBJECT&quot;</string>
+                  <string>Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_SCHEDULE_MODIFICATION</string>
                 </list>
               </entry>
               <entry>
@@ -697,12 +837,215 @@ delegateSingleTargetRequest($(&apos;ns1metadata_ns1servicetype&apos;), targetInv
               </entry>
             </data>
             <type>Rule Builder</type>
-            <script>if($(&apos;ns1metadata_ns1servicetype&apos;) == &quot;REGISTER_SUBJECT&quot;)
+            <script>if($(&apos;ns1metadata_ns1servicetype&apos;) == Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_SCHEDULE_MODIFICATION)
 {
 return true;
 }
 return false;</script>
             <operator>NONE</operator>
+          </com.webreach.mirth.model.Rule>
+          <com.webreach.mirth.model.Rule>
+            <sequenceNumber>1</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;ns1metadata_ns1servicetype&apos;)&quot; equals Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_REGISTER_SUBJECT</name>
+            <data class="map">
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_REGISTER_SUBJECT</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;ns1metadata_ns1servicetype&apos;)</string>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Accept</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;ns1metadata_ns1servicetype&apos;) == Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_REGISTER_SUBJECT)
+{
+return true;
+}
+return false;</script>
+            <operator>OR</operator>
+          </com.webreach.mirth.model.Rule>
+          <com.webreach.mirth.model.Rule>
+            <sequenceNumber>2</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;ns1metadata_ns1servicetype&apos;)&quot; equals Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_STUDY_CREATION</name>
+            <data class="map">
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_STUDY_CREATION</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;ns1metadata_ns1servicetype&apos;)</string>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Accept</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;ns1metadata_ns1servicetype&apos;) == Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_STUDY_CREATION)
+{
+return true;
+}
+return false;</script>
+            <operator>OR</operator>
+          </com.webreach.mirth.model.Rule>
+        </rules>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+    </com.webreach.mirth.model.Connector>
+    <com.webreach.mirth.model.Connector>
+      <name>C3D</name>
+      <properties>
+        <property name="script">logger.debug(&quot;Invoking PSC Broadcast Destination&quot;);
+var targetGlobalInvocationStrategy = globalMap.get($(&apos;ns1metadata_ns1servicetype&apos;)+&quot;_Strategy&quot;);
+
+var targetInvocationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenericInvocationStrategy();
+targetInvocationStrategy.copyCommonContents(targetGlobalInvocationStrategy);
+
+targetInvocationStrategy.setServiceUrl(globalMap.get(Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_DETAIL_C3D+&quot;.&quot;+$(&apos;ns1metadata_ns1servicetype&apos;)+&quot;.url&quot;));
+targetInvocationStrategy.setServiceProviderName(Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_DETAIL_C3D);
+targetInvocationStrategy.setSubject(globalMap.get(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)));
+
+var payloadString = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.getPayloadFromBusinessPayload($(&apos;ns1request_ns1businessmessagepayload&apos;));
+var ccTransformer = globalMap.get($(&apos;ns1metadata_ns1servicetype&apos;)+&quot;_Transformer&quot;);
+ccTransformer = ccTransformer.getClass().newInstance();
+var ccTransformedString = ccTransformer.convert2RequestString(payloadString);
+var ccBusinessString = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.convertPayloadIntoBusinessPayload(ccTransformedString);
+
+targetInvocationStrategy.setPayload(Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.stringToDOMDocument(ccBusinessString).getDocumentElement());
+
+
+delegateSingleTargetRequest($(&apos;ns1metadata_ns1servicetype&apos;), targetInvocationStrategy, 
+	$(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));	
+</property>
+        <property name="DataType">JavaScript Writer</property>
+        <property name="host">sink</property>
+      </properties>
+      <transformer>
+        <steps/>
+        <inboundTemplate></inboundTemplate>
+        <outboundTemplate></outboundTemplate>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">false</property>
+        </inboundProperties>
+        <outboundProperties/>
+      </transformer>
+      <filter>
+        <rules>
+          <com.webreach.mirth.model.Rule>
+            <sequenceNumber>0</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;ns1metadata_ns1servicetype&apos;)&quot; equals Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_REGISTER_SUBJECT</name>
+            <data class="map">
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_REGISTER_SUBJECT</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;ns1metadata_ns1servicetype&apos;)</string>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Accept</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;ns1metadata_ns1servicetype&apos;) == Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_REGISTER_SUBJECT)
+{
+return true;
+}
+return false;</script>
+            <operator>NONE</operator>
+          </com.webreach.mirth.model.Rule>
+          <com.webreach.mirth.model.Rule>
+            <sequenceNumber>1</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;ns1metadata_ns1servicetype&apos;)&quot; equals Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_LOAD_LAB_TO_CDMS</name>
+            <data class="map">
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_LOAD_LAB_TO_CDMS</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;ns1metadata_ns1servicetype&apos;)</string>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Accept</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;ns1metadata_ns1servicetype&apos;) == Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_LOAD_LAB_TO_CDMS)
+{
+return true;
+}
+return false;</script>
+            <operator>OR</operator>
           </com.webreach.mirth.model.Rule>
         </rules>
       </filter>
@@ -713,11 +1056,12 @@ return false;</script>
     <com.webreach.mirth.model.Connector>
       <name>Response Aggregator</name>
       <properties>
-        <property name="script">var targetInvocationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.business.RegistrationInvocationStrategy();
+        <property name="script">var targetInvocationStrategy = globalMap.get($(&apos;ns1metadata_ns1servicetype&apos;)+&quot;_Strategy&quot;);
+
 aggregateBroadcastResponse(
 	$(&apos;ns1metadata_ns1servicetype&apos;),
 	targetInvocationStrategy,
-	$(&apos;ns1request_ns1businessmessagepayload&apos;),
+	$(&apos;ihubBusinessMessagePayloadDocument&apos;),
 	$(&apos;ns1metadata_ns1externalidentifier&apos;),
 	$(&apos;ns1metadata_ns1caxchangeidentifier&apos;)
 	);</property>
@@ -754,30 +1098,71 @@ aggregateBroadcastResponse(
 return message;</preprocessingScript>
   <postprocessingScript>// This script executes once after a message has been processed
 return;</postprocessingScript>
-  <deployScript>// This script executes once when the mule engine is started
-// You only have access to the globalMap here to persist data
-/*
-globalMap.put(&quot;delegation.certificate.file.path&quot;,&quot;C:/projects_svn/caBIGIntegrationHub/common/resources/ihub/ncias-c278-v.nci.nih.gov-cert.pem&quot;);
-globalMap.put(&quot;delegation.key.file.path&quot;,&quot;C:/projects_svn/caBIGIntegrationHub/common/resources/ihub/ncias-c278-v.nci.nih.gov-key.pem&quot;);
-globalMap.put(&quot;user.proxy.cache.time.to.live&quot;,600);
-globalMap.put(&quot;caaers.registration.url&quot;,&quot;https://ncias-d282-v.nci.nih.gov:29543/wsrf-caaers/services/cagrid/RegistrationConsumer&quot;);
-globalMap.put(&quot;ctom.registration.url&quot;,&quot;https://ncias-d282-v.nci.nih.gov:29543/ctom-wsrf/services/cagrid/RegistrationConsumer&quot;);
-globalMap.put(&quot;psc.registration.url&quot;,&quot;https://ncias-d282-v.nci.nih.gov:29543/wsrf-psc/services/cagrid/RegistrationConsumer&quot;);
-globalMap.put(&quot;target.grid.service.retry.attempts&quot;,3);
+  <deployScript>var registrationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenericInvocationStrategy();
+registrationStrategy.setServiceType(&quot;REGISTER_SUBJECT&quot;);
+registrationStrategy.setGridClientClassName(&quot;gov.nih.nci.ccts.grid.client.RegistrationConsumerClient&quot;);
+registrationStrategy.setRequestPayloadClassName(&quot;gov.nih.nci.cabig.ccts.domain.Registration&quot;);
+registrationStrategy.setReturnTypeNameSpace(&quot;gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain&quot;);
+registrationStrategy.setReturnTypeElement(&quot;registration&quot;);
+registrationStrategy.setOperationName(&quot;register&quot;);
+globalMap.put(&quot;REGISTER_SUBJECT_Strategy&quot;, registrationStrategy);
+var subjectRegistrationTransformer = new Packages.gov.nih.nci.ihub.writer.ncies.capability.cdm.transformer.sr.SubjectRegistrationTransformer();
+globalMap.put(&quot;REGISTER_SUBJECT_Transformer&quot;, subjectRegistrationTransformer);
 
-// ###### START VARIABLES REQUIRED FOR SUITE AND NOT CONFIGURABLE ######
-//target details
-globalMap.put(&quot;target.detail.id.caaers&quot;,1300);
-globalMap.put(&quot;target.detail.id.psc&quot;,1301);
-globalMap.put(&quot;target.detail.id.labviewer&quot;,1302);
-globalMap.put(&quot;target.detail.id.c3pr&quot;,1303);
-//target response status
-globalMap.put(&quot;target.response.status.id.success&quot;,1200);
-globalMap.put(&quot;target.response.status.id.fault&quot;,1201);
-globalMap.put(&quot;target.response.status.id.timeout&quot;,1202);
 
-// ###### END VARIABLES REQUIRED FOR SUITE AND NOT CONFIGURABLE ######
-*/
+
+var studyCreationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenericInvocationStrategy();
+studyCreationStrategy.setServiceType(&quot;STUDY_CREATION&quot;);
+studyCreationStrategy.setGridClientClassName(&quot;gov.nih.nci.ccts.grid.studyconsumer.client.StudyConsumerClient&quot;);
+studyCreationStrategy.setRequestPayloadClassName(&quot;gov.nih.nci.cabig.ccts.domain.Study&quot;);
+studyCreationStrategy.setReturnTypeNameSpace(&quot;gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain&quot;);
+studyCreationStrategy.setReturnTypeElement(&quot;study&quot;);	
+studyCreationStrategy.setOperationName(&quot;createStudy&quot;);
+globalMap.put(&quot;STUDY_CREATION_Strategy&quot;, studyCreationStrategy);
+
+
+var adverseEventStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenericInvocationStrategy();
+adverseEventStrategy.setServiceType(&quot;SCHEDULE_MODIFICATION&quot;);
+adverseEventStrategy.setGridClientClassName(&quot;gov.nih.nci.cabig.ctms.grid.ae.client.AdverseEventConsumerClient&quot;);
+adverseEventStrategy.setRequestPayloadClassName(&quot;gov.nih.nci.cabig.ccts.ae.domain.AENotificationType&quot;);
+adverseEventStrategy.setReturnTypeNameSpace(&quot;gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.ae.domain&quot;);
+adverseEventStrategy.setReturnTypeElement(&quot;&quot;);
+adverseEventStrategy.setOperationName(&quot;register&quot;);
+globalMap.put(&quot;SCHEDULE_MODIFICATION_Strategy&quot;, adverseEventStrategy);
+
+
+var labBasedAEStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenericInvocationStrategy();
+labBasedAEStrategy.setServiceType(&quot;LAB_BASED_AE&quot;);
+labBasedAEStrategy.setGridClientClassName(&quot;gov.nih.nci.ccts.grid.client.LabConsumerServiceClient&quot;);
+labBasedAEStrategy.setRequestPayloadClassName(&quot;gov.nih.nci.cabig.ccts.domain.loadlabs.LoadLabsRequest&quot;);
+labBasedAEStrategy.setReturnTypeNameSpace(&quot;gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain.loadlabs&quot;);
+labBasedAEStrategy.setReturnTypeElement(&quot;Acknowledgement&quot;);
+labBasedAEStrategy.setOperationName(&quot;loadLabs&quot;);
+globalMap.put(&quot;LAB_BASED_AE_Strategy&quot;, labBasedAEStrategy);
+
+
+var loadLabToCDMSStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenericInvocationStrategy();
+loadLabToCDMSStrategy.setServiceType(&quot;LOAD_LAB_TO_CDMS&quot;);
+loadLabToCDMSStrategy.setGridClientClassName(&quot;gov.nih.nci.clinicalconnector.client.ClinicalConnectorClient&quot;);
+loadLabToCDMSStrategy.setRequestPayloadClassName(&quot;clinicalconnector.nci.nih.gov.LoadLabsRequest&quot;);
+loadLabToCDMSStrategy.setReturnTypeNameSpace(&quot;gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain.loadlabs&quot;);
+loadLabToCDMSStrategy.setReturnTypeElement(&quot;LoadLabsResponse&quot;);
+loadLabToCDMSStrategy.setOperationName(&quot;loadLabs&quot;);
+globalMap.put(&quot;LOAD_LAB_TO_CDMS_Strategy&quot;, loadLabToCDMSStrategy);
+var dataCaptureTransformer = new Packages.gov.nih.nci.ihub.writer.ncies.capability.cdm.transformer.dc.DataCaptureTransformer();
+globalMap.put(&quot;LOAD_LAB_TO_CDMS_Transformer&quot;, dataCaptureTransformer);
+
+
+var ctLabDataStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenericInvocationStrategy();
+ctLabDataStrategy.setServiceType(&quot;CT_LAB_DATA&quot;);
+ctLabDataStrategy.setGridClientClassName(&quot;gov.nih.nci.cagrid.labviewer.client.LabLoaderClient&quot;);
+ctLabDataStrategy.setRequestPayloadClassName(&quot;java.lang.String&quot;);
+ctLabDataStrategy.setReturnTypeNameSpace(&quot;http://labviewer.cagrid.nci.nih.gov/LabLoader/types&quot;);
+ctLabDataStrategy.setReturnTypeElement(&quot;LoadLabResponse&quot;);
+ctLabDataStrategy.setOperationName(&quot;loadLab&quot;);
+globalMap.put(&quot;CT_LAB_DATA_Strategy&quot;, ctLabDataStrategy);
+
+
 return;</deployScript>
   <shutdownScript>// This script executes once when the mule engine is stopped
 // You only have access to the globalMap here to persist data
