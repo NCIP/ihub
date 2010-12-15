@@ -126,23 +126,27 @@ tomcat.grid.secure.key.location=Location of the host key file
 #URL, timeout and soap version for the synchronous communication between the caGrid inbound service and Apache Servicemix.
 #synchronous.caxchange.serviceURL=The url for the http binding component used for synchronous invocation.
 synchronous.caxchange.service.client.timeout=Timeout for synchronous invocation
-soap.version.uri=Soap version for the message send from the caGrid Inbound Service to the ESB for synchronous invocation
+#soap.version.uri=Soap version for the message send from the caGrid Inbound Service to the ESB for synchronous invocation
 
 ##########################
 ## Non-caGrid Interface ##
 ##########################
 #Port for the CXF Service. If this property is changed then the cxf-config.xml file under caXchangeConf/security should be updated with the appropriate value
-cxf.bc.port=Port for the CXF Service. If this property is changed then the cxf-config.xml file under caXchangeConf/security should be updated with the appropriate value
+#cxf.bc.port=Port for the CXF Service. If this property is changed then the cxf-config.xml file under caXchangeConf/security should be updated with the appropriate value
 
 ##################################################
 #ActiveMQ Message Broker properties		 #		
 ##################################################
-amq.caxchange.host=Host name of the server where activeMQ is installed. Servicemix comes with a default activeMQ built in which is configured by default.
-amq.caxchange.port=Port for activeMQ
+#amq.caxchange.host=Host name of the server where activeMQ is installed. Servicemix comes with a default activeMQ built in which is configured by default.
+#amq.caxchange.port=Port for activeMQ
 #Connection information for caXchange embedded activemq. The user name and password given here would be used to secure the inbound and outbound jms queues
-amq.caxchange.user=User name used to connect to activeMQ broker
-amq.caxchange.password=Password used to connect to actveMQ broker
-jms.secured=Whether the activeMQ should be configured for security. Default installation is unsecured. The port used for activeMQ can be secured at the network level.
+#amq.caxchange.user=User name used to connect to activeMQ broker
+#amq.caxchange.password=Password used to connect to actveMQ broker
+#jms.secured=Whether the activeMQ should be configured for security. Default installation is unsecured. The port used for activeMQ can be secured at the network level.
+
+amq.ihub.host=Host name of the server where activeMQ is installed. Servicemix comes with a default activeMQ built in which is configured by default.
+amq.ihub.port=Port for activeMQ
+
 
 ##################################################
 #Target Grid Properties     #        
@@ -220,44 +224,6 @@ suite.gridsvc.protocol=Protocol for connecting to Suite grid services (https)
 suite.gridsvc.host=Host for connecting to Suite grid services
 suite.gridsvc.port=Port for connecting to Suite grid services
 
-#The following urls are derived from the above suite.gridsv.* properties above. If required these can be updated in the caxchange.properties.
-#ctom.registration.url=URL for the CTOM register consumer service. Message type REGISTER_SUBJECT are routed to this service.
-#ctom.registration.rollback.url=URL for the CTOM rollback register consumer service. Message type REGISTER_SUBJECT an operation ROLLBACK are routed to this service.
-#ctom.study.url=URL for the CTOM study consumer service.Message type STUDY_CREATION are routed to this service.
-#ctom.study.rollback.url=URL for the rollback of the CTOM study consumer service.Message type STUDY_CREATION, and operation ROLLBACK are routed to this service.
-#ctom.lab.loader.url=URL for the CTOM lab loader service. Message type CT_LAB_DATA are routed to this service.
-
-#psc.registration.url=URL for the PSC register consumer service.Message type REGISTER_SUBJECT are routed to this service.
-#psc.registration.rollback.url=URL for the PSC register consumer service.Message type REGISTER_SUBJECT and operation ROLLBACK are routed to this service.
-#psc.study.url=URL for the PSC study consumer service.Message type STUDY_CREATION are routed to this service.
-#psc.study.rollback.url=URL for the PSC study consumer service.Message type STUDY_CREATION and operation ROLLBACK are routed to this service.
-#psc.adverse.event.url=URL for the PSC schedule modification service.Message type SCHEDULE_MODIFICATION are routed to this service.
-
-#caaers.registration.url=URL for the caAERS register consumer service.Message type REGISTER_SUBJECT are routed to this service. 
-#caaers.registration.rollback.url=URL for the caAERS register consumer service.Message type REGISTER_SUBJECT and operation ROLLBACK are routed to this service.
-#caaers.study.url=URL for the caAERS study consumer service.Message type STUDY_CREATION are routed to this service.
-#caaers.study.rollback.url=URL for the caAERS study consumer service.Message type STUDY_CREATION and operation ROLLBACK are routed to this service.
-#caaers.lab.loader.url=URL for the caAERS lab viewer consumer service. Message type LAB_BASED_AE are routed to this service.
-
-#c3d.registration.url=URL for the C3D register consumer service.Message type REGISTER_SUBJECT are routed to this service.
-#load.lab.url=URL for the cdms load lab service. Message type LOAD_LAB_TO_CDMS are routed to this service.
-
-#URL, username and password for the Clinical Connector service implementation for Subject Registrations.
-#clinicalconnector.registration.url=URL, for the Clinical Connector service implementation for Subject Registrations
-#clinicalconnector.registration.username=username for the Clinical Connector service implementation for Subject Registrations
-#clinicalconnector.registration.password=password for the Clinical Connector service implementation for Subject Registrations
-#clinicalconnector.registration.timeout=Timeout for the Clinical Connector service implementation for Subject Registrations in milliseconds
-
-#URL, username and password for the Clinical Connector service implementation for Load Labs.
-#clinicalconnector.datacapture.url=URL for the Clinical Connector service implementation for Load Labs.
-#clinicalconnector.datacapture.username=username for the Clinical Connector service implementation for Load Labs.
-#clinicalconnector.datacapture.password=password for the Clinical Connector service implementation for Load Labs.
-#clinicalconnector.datacapture.timeout=Timeout for invoking the clinical connector data capture service in milliseconds
-
-#URL for the OpenClinica register subject service.
-#openclinica.registersubject.url=URL for the OpenClinica register subject service.
-#openclinica.consumer.url=URL for the caBIG Integration Hub Consumer service for OpenClinica integration.
-
 #COPPA Grid Services
 coppa.services.po.protocol=Protocol for connecting to PO grid services (https)
 coppa.services.po.host=Host for connecting to PO grid services 
@@ -265,41 +231,6 @@ coppa.services.po.port=Port for connecting to PO grid services
 coppa.services.pa.protocol=Protocol for connecting to PA grid services (https)
 coppa.services.pa.host=Host for connecting to PA grid services 
 coppa.services.pa.port=Port for connecting to PA grid services
-
-#The following COPPA service url properties are derived from the above coppa.services.* properties.
-#If required these properties can be updated in the caxchange,properties file.
-#coppa.person.grid.service.url=COPPA Grid Services Person URL
-#coppa.organization.grid.service.url=COPPA Grid Services Organization URL
-#coppa.clinilcal.research.staff.grid.service.url=COPPA Grid Services  URL
-#coppa.identified.organization.grid.service.url=COPPA Grid Services URL
-#coppa.health.care.provider.grid.service.url=COPPA Grid Services URL
-#coppa.health.care.facility.grid.service.url=COPPA Grid Services URL
-#coppa.identified.person.grid.service.url=COPPA Grid Services URL
-#coppa.oversightcommittee.grid.service.url=COPPA Grid Services URL
-#coppa.organization.contact.grid.service.url=COPPA Grid Services URL
-#coppa.research.organization.grid.service.url=COPPA Grid Services URL
-
-
-#coppa.studyprotocol.grid.service.url=COPPA Grid Services URL
-#coppa.arm.grid.service.url=COPPA Grid Services URL
-#coppa.studyparticipation.grid.service.url=COPPA Grid Services URL
-#coppa.studysite.grid.service.url=COPPA Grid Services URL
-#coppa.plannedactivity.grid.service.url=COPPA Grid Services URL
-#coppa.studycontact.grid.service.url=COPPA Grid Services URL
-#coppa.studydisease.grid.service.url=COPPA Grid Services URL
-#coppa.studyoverallstatus.grid.service.url=COPPA Grid Services URL
-#coppa.studyparticipationcontact.grid.service.url=COPPA Grid Services URL
-#coppa.studysitecontact.grid.service.url=COPPA Grid Services URL
-#coppa.studyrelationship.grid.service.url=COPPA Grid Services URL
-#coppa.studyresourcing.grid.service.url=COPPA Grid Services URL
-#coppa.studyindide.grid.service.url=COPPA Grid Services URL
-#coppa.studyonhold.grid.service.url=COPPA Grid Services URL
-#coppa.studyoutcomemeasure.grid.service.url=COPPA Grid Services URL
-#coppa.studyrecruitmentstatus.grid.service.url=COPPA Grid Services URL
-#coppa.studyregulatoryauthority.grid.service.url=COPPA Grid Services URL
-#coppa.studysiteaccrualstatus.grid.service.url=COPPA Grid Services URL
-#coppa.document.grid.service.url=COPPA Grid Services URL
-#coppa.documentworkflowstatus.grid.service.url=COPPA Grid Services URL
 
 coppa.dorian.url=Dorian url for authenticating to the  COPPA caGrid services
 coppa.authentication.url=Authentication service url for connecting to the COPPA caGrid services
