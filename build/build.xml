@@ -51,7 +51,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	<property name="software.dir" location=".." />
 	<property name="common.dir" location="${software.dir}/common" />
 	<property name="local.repo.dir" location="${software.dir}/local-ivy-repo" />
-	<property name="target.dir" location="${software.dir}/target" />
+	<property name="target.dir" location="${software.dir}/tg" />
 	<property name="bda-download.dir" location="${common.dir}/bda-download" />
 	<property name="ivy.settings.dir" location="${common.dir}/ivy" />
 	<property name="lib.dir" location="${target.dir}/lib" />
@@ -61,7 +61,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	<property name="log.dir" location="${target.dir}/logs" />
 	<property name="dist.dir" location="${target.dir}/dist" />
 	<property name="download.dir" location="${target.dir}/download" />
-	<property name="pt.dir" location="${target.dir}/persistent-transient" />
+	<property name="pt.dir" location="${target.dir}/pt" />
 	<property name="working.dir" location="${target.dir}/working" />
 	<property name="cacore-sdk.dir" location="${target.dir}/${cacore-sdk.binaries.relative.dir}" />
 	<property name="gui-installer-build.dir" location="${build.dir}/gui-installer" />
