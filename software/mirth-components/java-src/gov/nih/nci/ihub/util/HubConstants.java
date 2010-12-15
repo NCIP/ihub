@@ -105,9 +105,25 @@ public class HubConstants {
 	public static final String TARGET_DETAIL_C3PR = "C3PR";
 	public static final String TARGET_DETAIL_DELEGATION = "DELEGATION";
 	public static final String TARGET_DETAIL_C3D = "C3D";
+	public static final String TARGET_DETAIL_MEDIDATA_RAVE = "MEDIDATA_RAVE";
 	
 	//client-config.wsdd location
 	public static final String WSDD_FILE_LOCATION_PREFIX = "wsdd/";
 	public static final String WSDD_FILE_LOCATION_SUFFIX = "/client-config.wsdd";
-
+	
+	public static final String CC_MRN_NAME = "MRN";
+	public static final String CC_COOPERATIVE_GROUP_IDENTIFIER_NAME = "COOPERATIVE_GROUP_IDENTIFIER";
+	public static final String CC_CLINICAL_CONNECTOR_ROOT = "2.16.840.1.113883.3.26.7";
+	public static final String CC_MRN_ROOT = CC_CLINICAL_CONNECTOR_ROOT+ ".1";
+	public static final String CC_COOPERATIVE_GROUP_IDENTIFIER_ROOOT = CC_CLINICAL_CONNECTOR_ROOT+".5";
+	public static final String CC_STUDY_IDENTIFIER_NAME = "Study Identifier";
+	public static final String CC_STUDY_IDENTIFIER_ROOT = CC_CLINICAL_CONNECTOR_ROOT+ ".2";
+	public static final String CC_STUDY_SITE_IDENTIFIER_NAME = "Study Site Identifier";
+	public static final String CC_STUDY_SITE_IDENTIFIER_ROOT = CC_CLINICAL_CONNECTOR_ROOT+ ".3";
+	public static final String CC_REGISTRATION_SITE_IDENTIFIER_NAME = "nciInstituteCode";
+	public static final String CC_REGISTRATION_SITE_IDENTIFIER_ROOT = CC_CLINICAL_CONNECTOR_ROOT+ ".4";
+	public static final String CC_PATIENT_POSITION_IDENTIFIER_NAME = "Patient Position";
+	public static final String CC_PATIENT_POSITION_IDENTIFIER_ROOT = ".6";
+	public static final String CC_STUDY_PROTOCOL_IDENTIFIER_NAME = "Study Protocol";
+	public static final String CC_STUDY_PROTOCOL_IDENTIFIER_ROOT = ".7";
 }

@@ -16,6 +16,8 @@ import gov.nih.nci.caxchange.servicemix.bean.clinicalconnector.SubjectRegistrati
 import gov.nih.nci.caxchange.servicemix.bean.clinicalconnector.SubjectRegistrationServiceStub.StudySubject;
 import gov.nih.nci.caxchange.servicemix.bean.clinicalconnector.SubjectRegistrationServiceStub.TS;
 import gov.nih.nci.caxchange.servicemix.bean.clinicalconnector.SubjectRegistrationServiceStub.Uid;
+import gov.nih.nci.ihub.util.HubConstants;
+import gov.nih.nci.ihub.writer.ncies.capability.cdm.InsertPatientPositionException;
 import gov.nih.nci.ihub.writer.ncies.capability.cdm.transformer.CCTransformException;
 import gov.nih.nci.ihub.writer.ncies.capability.cdm.transformer.CCTransformer;
 import gov.nih.nci.ihub.writer.ncies.capability.cdm.transformer.CCTransformerConstants;
@@ -29,7 +31,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-public class SubjectRegistrationTransformer implements CCTransformer {
+public class SubjectRegistrationTransformer extends CCTransformer {
 	Logger logger = LogManager.getLogger(SubjectRegistrationTransformer.class);
 
 	public Object convert2Request(String xml) throws CCTransformException {
@@ -126,7 +128,7 @@ public class SubjectRegistrationTransformer implements CCTransformer {
 	}
 
 	public Node insertPatientPosition(Document input, String position,
-			String targetSystemName) throws Exception {
+			String targetSystemName) throws InsertPatientPositionException {
 		Document output = input;
 		Element root = output.getDocumentElement();
 		String namespace = root.getNamespaceURI();
@@ -143,13 +145,14 @@ public class SubjectRegistrationTransformer implements CCTransformer {
 		Element type = output.createElementNS(namespace, "type");
 		type.setTextContent("Patient Position");
 
-		Attr attr = output.createAttributeNS(namespace, "type");
+		Attr attr = output.createAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "type");
+		//Attr attr = output.createAttributeNS(namespace, "type");
 		attr.setValue("SystemAssignedIdentifierType");
 		attr.setPrefix("xsi");
 
-		ppNode.appendChild(positionValue);
-		ppNode.appendChild(systemName);
 		ppNode.appendChild(type);
+		ppNode.appendChild(positionValue);
+		ppNode.appendChild(systemName);		
 		ppNode.setAttribute("xmlns:xsi",
 				"http://www.w3.org/2001/XMLSchema-instance");
 		ppNode.setAttributeNode(attr);
@@ -163,7 +166,7 @@ public class SubjectRegistrationTransformer implements CCTransformer {
 			attr.setValue(prefix + ":" + "SystemAssignedIdentifierType");
 		}
 
-		return output;
+		return output.getDocumentElement();
 	}
 
 	protected StudySubject createStudySubject(XRegisterSubjectRequest xrequest) {
@@ -205,11 +208,11 @@ public class SubjectRegistrationTransformer implements CCTransformer {
 
 		studySubject.setStudyIdentifier(getIdentifier(
 				xStudySubject.studyIdentifier,
-				CCTransformerConstants.STUDY_IDENTIFIER_NAME));
+				HubConstants.CC_STUDY_IDENTIFIER_NAME));
 
 		studySubject.setStudySiteIdentifier(getIdentifier(
 				xStudySubject.studySiteIdentifier,
-				CCTransformerConstants.STUDY_SITE_IDENTIFIER_NAME));
+				HubConstants.CC_STUDY_SITE_IDENTIFIER_NAME));
 
 		return studySubject;
 	}
@@ -308,7 +311,7 @@ public class SubjectRegistrationTransformer implements CCTransformer {
 			identifier.setIdentifierName(identifierName);
 			Uid uid = new Uid();
 			uid
-					.setUid(CCTransformerConstants.NAME_ROOT_MAP
+					.setUid(NAME_ROOT_MAP
 							.get(identifierName));
 			identifier.setRoot(uid);
 			identifier.setExtension(checkEmpty(extension));
@@ -344,7 +347,7 @@ public class SubjectRegistrationTransformer implements CCTransformer {
 				.read("ccts:registration/ccts:startDate"));
 		performedSubjectMilestone.registrationSiteIdentifier = reader
 				.read("ccts:registration/ccts:participant/ccts:identifier/ccts:healthcareSite/ccts:nciInstituteCode");
-		performedSubjectMilestone.registrationSiteIdentifierName = CCTransformerConstants.REGISTRATION_SITE_IDENTIFIER_NAME;
+		performedSubjectMilestone.registrationSiteIdentifierName = HubConstants.CC_REGISTRATION_SITE_IDENTIFIER_NAME;
 
 		studySubject.birthDate = checkDate(reader
 				.read("ccts:registration/ccts:participant/ccts:birthDate"));

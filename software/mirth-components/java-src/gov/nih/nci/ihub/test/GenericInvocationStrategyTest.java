@@ -3,7 +3,11 @@ package gov.nih.nci.ihub.test;
 import static org.junit.Assert.*;
 import gov.nih.nci.ihub.util.HubConstants;
 import gov.nih.nci.ihub.util.IntegrationHubUtil;
+import gov.nih.nci.ihub.writer.ncies.capability.cdm.C3DDataCaptureInvocationStrategy;
+import gov.nih.nci.ihub.writer.ncies.capability.cdm.C3DRegistrationInvocationStrategy;
 import gov.nih.nci.ihub.writer.ncies.capability.cdm.transformer.dc.DataCaptureTransformer;
+import gov.nih.nci.ihub.writer.ncies.capability.cdm.transformer.sr.SubjectRegistrationTransformer;
+import gov.nih.nci.ihub.writer.ncies.common.GenerateResponseBean;
 import gov.nih.nci.ihub.writer.ncies.common.GenericInvocationStrategy;
 import gov.nih.nci.ihub.writer.ncies.common.GridInvocationResult;
 import gov.nih.nci.ihub.writer.ncies.infrastructure.InvokeDelegationServiceBean;
@@ -31,7 +35,57 @@ public class GenericInvocationStrategyTest {
 			Subject subject = delegationServiceBean.invokeDelegationService();
 			System.out.println("SUBJECT: "+subject.toString());
 			
-			GenericInvocationStrategy loadLabToCDMSStrategy = new GenericInvocationStrategy();
+			
+			C3DRegistrationInvocationStrategy registrationC3DStrategy = new C3DRegistrationInvocationStrategy();
+			registrationC3DStrategy.setServiceType("REGISTER_SUBJECT");
+			registrationC3DStrategy.setServiceUrl(TestConstants.REGISTER_SUBJECT_C3D_URL);
+			registrationC3DStrategy.setGridClientClassName("gov.nih.nci.clinicalconnector.client.ClinicalConnectorClient");
+			registrationC3DStrategy.setRequestPayloadClassName("clinicalconnector.nci.nih.gov.RegisterSubjectRequest");
+			registrationC3DStrategy.setReturnTypeNameSpace("http://gov.nci.nih.clinicalconnector/ClinicalConnector");
+			registrationC3DStrategy.setReturnTypeElement("RegisterSubjectResponse");
+			registrationC3DStrategy.setOperationName("registerSubject");
+			
+			Element labBasedAEPayloadDocument = IntegrationHubUtil.
+			stringToDOMDocument(TestConstants.REGISTER_SUBJECT_PAYLOAD).getDocumentElement();
+			
+			registrationC3DStrategy.setSubject(subject);
+			registrationC3DStrategy.setServiceProviderName("C3D");
+			registrationC3DStrategy.setPayload(labBasedAEPayloadDocument);
+			
+			GridInvocationResult registerSubjectResponse = registrationC3DStrategy.invokeGridService(false);			
+			System.out.println(" C3D Transformed Response: "+IntegrationHubUtil.xmlToString(registerSubjectResponse.getResult()));
+			
+			GenerateResponseBean generateResponseBean = new GenerateResponseBean();
+			Document gridInvocationResultDocument = generateResponseBean.createOutputDocument("C3D", "",
+					"gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain", registerSubjectResponse);
+			
+			String successResponseXML = IntegrationHubUtil.xmlToString(gridInvocationResultDocument);			
+			System.out.println(" Response: "+successResponseXML);
+			
+			
+			/*
+			GenericInvocationStrategy ctLabDataStrategy = new GenericInvocationStrategy();
+			ctLabDataStrategy.setServiceType("CT_LAB_DATA");
+			ctLabDataStrategy.setServiceUrl(TestConstants.CT_LAB_DATA_CTOM_UTL);
+			ctLabDataStrategy.setGridClientClassName("gov.nih.nci.cagrid.labviewer.client.LabLoaderClient");
+			ctLabDataStrategy.setRequestPayloadClassName("java.lang.String");
+			ctLabDataStrategy.setReturnTypeNameSpace("http://labviewer.cagrid.nci.nih.gov/LabLoader/types");
+			ctLabDataStrategy.setReturnTypeElement("LoadLabResponse");
+			ctLabDataStrategy.setOperationName("loadLab");
+			
+			Element labBasedAEPayloadDocument = IntegrationHubUtil.
+			stringToDOMDocument(TestConstants.CT_LAB_DATA_PAYLOAD).getDocumentElement();
+			
+			ctLabDataStrategy.setSubject(subject);
+			ctLabDataStrategy.setServiceProviderName("CTOM");
+			ctLabDataStrategy.setPayload(labBasedAEPayloadDocument);
+			
+			GridInvocationResult studyCreationResponse = ctLabDataStrategy.invokeGridService(false);
+			System.out.println(" Response: "+IntegrationHubUtil.xmlToString(studyCreationResponse.getResult()));
+			*/
+			
+			/*
+			C3DDataCaptureInvocationStrategy loadLabToCDMSStrategy = new C3DDataCaptureInvocationStrategy();
 			loadLabToCDMSStrategy.setServiceType("LOAD_LAB_TO_CDMS");
 			loadLabToCDMSStrategy.setServiceUrl(TestConstants.LOAD_LAB_TO_CDMS_C3D_UTL);
 			loadLabToCDMSStrategy.setGridClientClassName("gov.nih.nci.clinicalconnector.client.ClinicalConnectorClient");
@@ -40,20 +94,21 @@ public class GenericInvocationStrategyTest {
 			loadLabToCDMSStrategy.setReturnTypeElement("LoadLabsResponse");
 			loadLabToCDMSStrategy.setOperationName("loadLabs");
 			
-			DataCaptureTransformer dataCaptureTransformer = new DataCaptureTransformer();
-			String loadLabConvertedString = dataCaptureTransformer.convert2RequestString(TestConstants.LOAD_LAB_TO_CDMS_PAYLOAD);			
-			System.out.println("LoadLab Converted String: "+loadLabConvertedString);
-			String loadLabBusinessString = IntegrationHubUtil.convertPayloadIntoBusinessPayload(loadLabConvertedString);
+//			DataCaptureTransformer dataCaptureTransformer = new DataCaptureTransformer();
+//			String loadLabConvertedString = dataCaptureTransformer.convert2RequestString(TestConstants.LOAD_LAB_TO_CDMS_PAYLOAD);			
+//			System.out.println("LoadLab Converted String: "+loadLabConvertedString);
+//			String loadLabBusinessString = IntegrationHubUtil.convertPayloadIntoBusinessPayload(loadLabConvertedString);
 			
-			Element labBasedAEPayloadDocument = IntegrationHubUtil.
-			stringToDOMDocument(loadLabBusinessString).getDocumentElement();
+			Element loadLabToCDMSPayloadDocument = IntegrationHubUtil.
+			stringToDOMDocument(TestConstants.LOAD_LAB_TO_CDMS_PAYLOAD).getDocumentElement();
 			
 			loadLabToCDMSStrategy.setSubject(subject);
 			loadLabToCDMSStrategy.setServiceProviderName("C3D");
-			loadLabToCDMSStrategy.setPayload(labBasedAEPayloadDocument);
+			loadLabToCDMSStrategy.setPayload(loadLabToCDMSPayloadDocument);
 			
 			GridInvocationResult studyCreationResponse = loadLabToCDMSStrategy.invokeGridService(false);
 			System.out.println(" Response: "+IntegrationHubUtil.xmlToString(studyCreationResponse.getResult()));
+			*/
 			
 			/*
 			GenericInvocationStrategy labBasedAEStrategy = new GenericInvocationStrategy();
@@ -136,6 +191,13 @@ public class GenericInvocationStrategyTest {
 			registrationInvocationStrategy.setPayload(subjectRegistrationPayloadDocument);
 			
 			GridInvocationResult subjectRegistrationResponse = registrationInvocationStrategy.invokeGridService(false);
+			
+			GenerateResponseBean generateResponseBean = new GenerateResponseBean();
+			
+			Document gridInvocationResultDocument = generateResponseBean.createOutputDocument("C3D", "",
+					"gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain", subjectRegistrationResponse);
+			
+			System.out.println("Response Document Type: "+subjectRegistrationResponse.getResult().getNodeType());
 			System.out.println("Subject Registration Response: "+IntegrationHubUtil.xmlToString(subjectRegistrationResponse.getResult()));
 			*/
 		} catch (Exception e) {

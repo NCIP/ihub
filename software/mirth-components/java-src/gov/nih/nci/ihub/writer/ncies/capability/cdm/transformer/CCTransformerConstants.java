@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 
 public class CCTransformerConstants {
 
-	public static Logger logger = LogManager.getLogger(CCTransformerConstants.class);
+	/*public static Logger logger = LogManager.getLogger(CCTransformerConstants.class);
 	public static final String MRN_NAME = "MRN";
 	public static final String COOPERATIVE_GROUP_IDENTIFIER_NAME = "COOPERATIVE_GROUP_IDENTIFIER";
 	public static final String CLINICAL_CONNECTOR_ROOT = "2.16.840.1.113883.3.26.7";
@@ -64,6 +64,6 @@ public class CCTransformerConstants {
 		   NAME_ROOT_MAP.put(PATIENT_POSITION_IDENTIFIER_NAME, PATIENT_POSITION_IDENTIFIER_ROOT);
 		   NAME_ROOT_MAP.put(STUDY_PROTOCOL_IDENTIFIER_NAME, STUDY_PROTOCOL_IDENTIFIER_ROOT);
 		}
-	}
+	}*/
 
 }

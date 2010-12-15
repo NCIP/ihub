@@ -36,6 +36,7 @@
 	<classpathentry kind="lib" path="lib/wstx-asl-3.2.4.jar"/>
 	<classpathentry kind="lib" path="lib/ClinicalConnector-common-2.2_jaxb.jar"/>
 	<classpathentry kind="lib" path="lib/ClinicalConnector-service-2.2_jaxb.jar"/>
+	<classpathentry kind="lib" path="lib/neethi-2.0.4.jar"/>
 	<classpathentry kind="src" path="java-src"/>
 	<classpathentry kind="lib" path="lib/resolver-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/axis-url-1.2RC2.jar"/>
@@ -278,5 +279,6 @@
 	<classpathentry kind="lib" path="lib/CoppaPO-stubs-3.1.jar"/>
 	<classpathentry kind="lib" path="lib/CoppaPO-tests-3.1.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/xbean.jar"/>
+	<classpathentry kind="lib" path="/mirth/tags/1.8.2/server/lib/custom/ihub-mirth-components.jar"/>
 	<classpathentry kind="output" path="target"/>
 </classpath>

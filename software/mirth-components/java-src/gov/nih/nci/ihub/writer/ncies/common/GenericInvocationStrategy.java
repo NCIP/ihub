@@ -61,6 +61,10 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 	protected Element payload;
 	protected Subject subject;
 	private String serviceProviderName;
+	protected Object returnObject;
+	protected String username;
+	protected String password;
+	protected long connectionTimeout;
 
 	private static Logger logger = LogManager
 			.getLogger(GenericInvocationStrategy.class);
@@ -74,14 +78,24 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 		this.subject = subject;
 		this.serviceProviderName = serviceProviderName;
 	}
-	
-	public void copyCommonContents(GenericInvocationStrategy genericInvocationStrategy){
+
+	public void copyCommonContents(
+			GenericInvocationStrategy genericInvocationStrategy) {
 		this.serviceType = genericInvocationStrategy.getServiceType();
-		this.gridClientClassName = genericInvocationStrategy.getGridClientClassName();
-		this.requestPayloadClassName = genericInvocationStrategy.getRequestPayloadClassName();
-		this.returnTypeNameSpace = genericInvocationStrategy.getReturnTypeNameSpace();
-		this.returnTypeElement = genericInvocationStrategy.getReturnTypeElement();
-		this.operationName = genericInvocationStrategy.getOperationName();		
+		this.serviceUrl = genericInvocationStrategy.getServiceUrl();
+		this.gridClientClassName = genericInvocationStrategy
+				.getGridClientClassName();
+		this.requestPayloadClassName = genericInvocationStrategy
+				.getRequestPayloadClassName();
+		this.returnTypeNameSpace = genericInvocationStrategy
+				.getReturnTypeNameSpace();
+		this.returnTypeElement = genericInvocationStrategy
+				.getReturnTypeElement();
+		this.operationName = genericInvocationStrategy.getOperationName();
+		this.username = genericInvocationStrategy.getUsername();
+		this.password = genericInvocationStrategy.getPassword();
+		this.connectionTimeout = genericInvocationStrategy
+				.getConnectionTimeout();
 	}
 
 	@Override
@@ -107,12 +121,11 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 
 			if (isRollback) {
 				invokeGridOperation(client, requestPayload, "rollback");
-				System.out.println("Registeration ROLLBACK called");
 				return new GridInvocationResult(false, null, false);
 			} else {
 				logger.info("Invoking grid operation:" + new Date());
-				Object returnObject = invokeGridOperation(client,
-						requestPayload, operationName);
+				returnObject = invokeGridOperation(client, requestPayload,
+						operationName);
 				logger.info("After Invoking grid operation:" + new Date());
 				// commented to remove commit
 				// client.commit(request);
@@ -247,7 +260,12 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 		InputStream deseralizeStream = client.getClass().getClassLoader()
 				.getResourceAsStream(
 						HubConstants.WSDD_FILE_LOCATION_PREFIX + serviceType
+								+ "/" + serviceProviderName
 								+ HubConstants.WSDD_FILE_LOCATION_SUFFIX);
+		if (deseralizeStream == null) {
+			deseralizeStream = client.getClass().getResourceAsStream(
+					"client-config.wsdd");
+		}
 
 		Object requestPayload = null;
 		try {
@@ -267,7 +285,7 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 				int i = 0;
 				for (Element element : payloads) {
 					String payload = transformer.toString(element);
-					System.out.println("Payload in GenericInvocationStrategy: "+payload);
+					// System.out.println("Payload in GenericInvocationStrategy: "+payload);
 					logger.debug("The message payload is:" + payload);
 					StringReader reader = new StringReader(payload);
 					bais = new ByteArrayInputStream(clientConfigAsBytes);
@@ -277,11 +295,15 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 				}
 			} else {
 				String payloadString = transformer.toString(getPayload());
-				System.out.println("Payload in GenericInvocationStrategy: "+payloadString);
+				// System.out.println("Payload in GenericInvocationStrategy: "+payloadString);
 				logger.debug("The message payload is:" + payloadString);
 				StringReader reader = new StringReader(payloadString);
-				requestPayload = Utils.deserializeObject(reader,
-						requestPayloadClass, deseralizeStream);
+				if (requestPayloadClass != String.class) {
+					requestPayload = Utils.deserializeObject(reader,
+							requestPayloadClass, deseralizeStream);
+				} else {
+					requestPayload = reader.toString();
+				}
 			}
 		} catch (IOException ie) {
 			logger.error("Error reading client-config.wsdd.", ie);
@@ -329,7 +351,7 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 					requestPayloadClass);
 			logger.debug("Operation Name:" + operationName + " payload class:"
 					+ requestPayloadClass.getName());
-			Object returnObject = gridOperation.invoke(client, requestPayload);
+			returnObject = gridOperation.invoke(client, requestPayload);
 			return returnObject;
 		} catch (NoSuchMethodException nsme) {
 			logger.error("Method not found in the client:" + operationName,
@@ -362,8 +384,12 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 		InputStream seralizeStream = client.getClass().getClassLoader()
 				.getResourceAsStream(
 						HubConstants.WSDD_FILE_LOCATION_PREFIX + serviceType
+								+ "/" + serviceProviderName
 								+ HubConstants.WSDD_FILE_LOCATION_SUFFIX);
-
+		if (seralizeStream == null) {
+			seralizeStream = client.getClass().getResourceAsStream(
+					"client-config.wsdd");
+		}
 		String serviceResponsePayload = null;
 		try {
 			StringWriter writer = new StringWriter();
@@ -501,6 +527,30 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 
 	public void setServiceProviderName(String serviceProviderName) {
 		this.serviceProviderName = serviceProviderName;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public long getConnectionTimeout() {
+		return connectionTimeout;
+	}
+
+	public void setConnectionTimeout(long connectionTimeout) {
+		this.connectionTimeout = connectionTimeout;
 	}
 
 }

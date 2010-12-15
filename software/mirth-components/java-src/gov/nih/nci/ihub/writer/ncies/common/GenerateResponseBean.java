@@ -102,6 +102,7 @@ public class GenerateResponseBean {
 			payloadElement.appendChild(schemaDefElement);
 		}
 		payloadElement.appendChild(output.importNode(result.getResult(), true));
+		
 		root.appendChild(payloadElement);
 		return output;
 	}

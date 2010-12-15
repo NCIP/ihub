@@ -41,8 +41,8 @@ public class DataCaptureClient extends CCClient {
 	 * @param ccUsername
 	 * @param ccPassword
 	 */
-	public DataCaptureClient(String ccURL, String ccUsername, String ccPassword) {
-		super(ccURL, ccUsername, ccPassword);
+	public DataCaptureClient(String ccURL, String ccUsername, String ccPassword, long ccTimeout) {
+		super(ccURL, ccUsername, ccPassword, ccTimeout);
 	}
 
 	public String convertToString(CCLoadLabsFaultMessage loadLabsFault)
