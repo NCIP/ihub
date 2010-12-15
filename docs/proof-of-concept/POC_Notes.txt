@@ -641,8 +641,13 @@ Things to Do
 1. For the JMS Reader and Writer Channels, Tokenize the values, user, password, inbound/ outbound queue names, host and port in the exported 
 	channel XML code. Derive the values from the properties file during deployment. This should be the second option because the tokens will
 	be erased when channels are re-exported. The first option should be to set the global variables and use the variables where ever needed.
+	
+	Dynamic variables support for JMS Reader and Writer is not available in Mirth 1.8.2. It is available in the future Mirth connect 2.0.
+	http://www.mirthcorp.com/community/issues/browse/MIRTH-1385
 
 2. Move any database specific (example: PostgreSQL, MySQL, etc) into global scripts section.
+
+	Done
 
 3. Look into configuration to increase the java heap size for Mirth
 
@@ -665,6 +670,12 @@ Things to Do
 --------------------------------------------------
 
 11. Move clinical connector related XSDs and wsdl files to the new code base.
+
+12. Delete RegistrationInvocationStrategy code, since not needed.
+	
+	Done
+	
+13. Delete unused clinical connector classes.
 
 
 
