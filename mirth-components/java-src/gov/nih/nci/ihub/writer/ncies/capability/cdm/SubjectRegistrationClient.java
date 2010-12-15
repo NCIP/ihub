@@ -45,8 +45,8 @@ public class SubjectRegistrationClient extends CCClient {
 	 * @param ccPassword
 	 */
 	public SubjectRegistrationClient(String ccURL, String ccUsername,
-			String ccPassword) {
-		super(ccURL, ccUsername, ccPassword);
+			String ccPassword, long ccTimeout) {
+		super(ccURL, ccUsername, ccPassword, ccTimeout);
 	}
 
 	public String convertToString(CCSystemFaultMessage systemFault)

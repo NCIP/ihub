@@ -1,7 +1,5 @@
 package gov.nih.nci.ihub.writer.ncies.capability.cdm;
 
-import java.util.ResourceBundle;
-
 import javax.xml.soap.SOAPException;
 
 import org.apache.axis2.AxisFault;
@@ -30,10 +28,12 @@ abstract public class CCClient {
 	public CCClient() {
 	}
 
-	public CCClient(String ccURL, String ccUsername, String ccPassword) {
+	public CCClient(String ccURL, String ccUsername, String ccPassword, long ccTimeout) {
 		this.ccURL = ccURL;
 		this.ccUsername = ccUsername;
 		this.ccPassword = ccPassword;
+		this.ccTimeout = ccTimeout;
+		
 	}
 	
 	/**

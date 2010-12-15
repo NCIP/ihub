@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1290030678687</time>
+    <time>1292266268953</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>58</revision>
+  <revision>59</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -360,14 +360,14 @@ function updateMessageServiceStatus(){
       <properties>
         <property name="useJndi">0</property>
         <property name="connectionFactoryClass">org.apache.activemq.ActiveMQConnectionFactory</property>
-        <property name="username">user</property>
+        <property name="username"></property>
         <property name="specification">1.1</property>
         <property name="connectionFactoryProperties">&lt;properties&gt;
   &lt;property name=&quot;brokerURL&quot;&gt;tcp://localhost:61616&lt;/property&gt;
 &lt;/properties&gt;</property>
         <property name="DataType">JMS Writer</property>
         <property name="acknowledgementMode">1</property>
-        <property name="password">password</property>
+        <property name="password"></property>
         <property name="template">${message_overall_response}</property>
         <property name="host">caxchangeOutboundQueue</property>
       </properties>

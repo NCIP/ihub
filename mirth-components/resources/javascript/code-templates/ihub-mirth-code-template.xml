@@ -26,23 +26,24 @@
 						continue;
 					} else {
 						insertCompiledTargetResponse(createSuccessResponseXML(gridInvocationResult, varTargetDetailsCode, varBusinessMessageXMLSchemaDefinition), 
-							varTargetDetailsCode, globalMap.get(&quot;target.response.status.successful&quot;), varMessageID);
+							varTargetDetailsCode, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_RESPONSE_STATUS_SUCCESSFUL, varMessageID);
 						break;
 					}
 				}
 			} else {
 				insertCompiledTargetResponse(createErrorResponseXML(gridInvocationResult.getInvocationException(), varTargetDetailsCode), 
-					varTargetDetailsCode, globalMap.get(&quot;target.response.status.fault&quot;), varMessageID);
+					varTargetDetailsCode, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_RESPONSE_STATUS_FAULT, varMessageID);
 			}
 		} else {
+			logger.debug(&quot;Calling insertCompiledTargetResponse&quot;);
 			insertCompiledTargetResponse(createSuccessResponseXML(gridInvocationResult, varTargetDetailsCode, varBusinessMessageXMLSchemaDefinition), 
-					varTargetDetailsCode, globalMap.get(&quot;target.response.status.successful&quot;), varMessageID);
+					varTargetDetailsCode, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_RESPONSE_STATUS_SUCCESSFUL, varMessageID);
 		}		
 
 	} catch (error) {	
 		logger.error(&quot;EXCEPTION OCCURED IN MIRTH DURING &quot;+varTargetDetailsCode+&quot; INVOCATION: &quot;+error);
 		insertCompiledTargetResponse(createErrorResponseXML(new Packages.java.lang.Exception(error), varTargetDetailsCode), 
-			varTargetDetailsCode, globalMap.get(&quot;target.response.status.fault&quot;), varMessageID);
+			varTargetDetailsCode, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_RESPONSE_STATUS_FAULT, varMessageID);
 	}
 }
 
@@ -80,14 +81,14 @@ function delegateSynchronousRequest(varServiceType, varTargetInvocationStrategy,
 		}		
 		overallResponseString = generateResponseBean.generateResponseFromTargetResponse(varExternalID, 
 								varMessageID, generateResponseBean.createOutputDocument(varTargetDetailsCode, varOperationName, varBusinessMessageXMLSchemaDefinition, gridInvocationResult));		
-		updateMessageServiceResponseInDB(isFailureOverallResponse, &quot;&quot;, varMessageID, globalMap.get(&quot;request.message.status.responsereturned&quot;));
+		updateMessageServiceResponseInDB(isFailureOverallResponse, &quot;&quot;, varMessageID, Packages.gov.nih.nci.ihub.util.HubConstants.MESSAGE_STATUS_RESPONSE_RETURNED);
 
 	} catch (error) {	
 		logger.error(&quot;EXCEPTION OCCURED IN MIRTH DURING &quot;+varTargetDetailsCode+&quot; INVOCATION: &quot;+error);
 		gridInvocationResult = new Packages.gov.nih.nci.ihub.writer.ncies.common.GridInvocationResult(true, createErrorResponseNode(new Packages.java.lang.Exception(error), varTargetDetailsCode), false);
 		overallResponseString = generateResponseBean.generateResponseFromTargetResponse(varExternalID, 
 								varMessageID, generateResponseBean.createOutputDocument(varTargetDetailsCode, varOperationName, varBusinessMessageXMLSchemaDefinition, gridInvocationResult));		
-		updateMessageServiceResponseInDB(true, &quot;&quot;, varMessageID, globalMap.get(&quot;request.message.status.responsereturned&quot;));
+		updateMessageServiceResponseInDB(true, &quot;&quot;, varMessageID, Packages.gov.nih.nci.ihub.util.HubConstants.MESSAGE_STATUS_RESPONSE_RETURNED);
 	}
 	return overallResponseString;
 }
@@ -105,7 +106,7 @@ function delegateTargetRollbackRequest(varServiceType, varTargetInvocationStrate
 		} catch (error) {	
 			logger.error(&quot;EXCEPTION OCCURED IN MIRTH DURING &quot;+varTargetDetailsCode+&quot; INVOCATION: &quot;+error);
 			insertCompiledTargetResponse(createErrorResponseXML(new Packages.java.lang.Exception(error), varTargetDetailsCode), 
-				varTargetDetailsCode, globalMap.get(&quot;target.response.status.fault&quot;), varMessageID);
+				varTargetDetailsCode, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_RESPONSE_STATUS_FAULT, varMessageID);
 		}
 	}
 }
@@ -183,9 +184,9 @@ function getCompiledResponseResultsFromDB(varMessageID){
 
 // This function is called by: aggregateBroadcastResponse().
 function updateMessageServiceResponseInDB(varIsFailureOverallResponse, varOverallResponseString, varMessageID, varMessageStatus){
-	var overallResponseStatus = globalMap.get(&quot;overall.response.status.success&quot;);
+	var overallResponseStatus = Packages.gov.nih.nci.ihub.util.HubConstants.OVERALL_RESPONSE_STATUS_SUCCESS;
 	if(varIsFailureOverallResponse){
-		overallResponseStatus = globalMap.get(&quot;overall.response.status.failure&quot;);
+		overallResponseStatus = Packages.gov.nih.nci.ihub.util.HubConstants.OVERALL_RESPONSE_STATUS_FAILURE;
 	}
 	//var overallResponseString = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(varOverallResponse);
 	//logger.info(&quot;Overall Response String: &quot;+varOverallResponseString);
@@ -206,7 +207,7 @@ function retrieveOverallBroadcastResponseFromDB(varMessageID){
 	var overallResponseString;
 	try{
 		var dbConn = getIHubDatabaseConnection();
-		var overallResponseSQL = &quot;SELECT message.overall_response_data AS message_overall_response_data FROM message WHERE message.message_id=&apos;&quot;+varMessageID+&quot;&apos; AND message.message_status=&apos;&quot;+globalMap.get(&apos;request.message.status.processed&apos;)+&quot;&apos;&quot;;
+		var overallResponseSQL = &quot;SELECT message.overall_response_data AS message_overall_response_data FROM message WHERE message.message_id=&apos;&quot;+varMessageID+&quot;&apos; AND message.message_status=&apos;&quot;+Packages.gov.nih.nci.ihub.util.HubConstants.MESSAGE_STATUS_PROCESSED+&quot;&apos;&quot;;
 		var overallResponseResults = dbConn.executeCachedQuery(overallResponseSQL);
 
 		var totalSecondsElapsed = 0;
@@ -220,7 +221,7 @@ function retrieveOverallBroadcastResponseFromDB(varMessageID){
 		}
 		if(overallResponseResults.next()){
 			overallResponseString = overallResponseResults.getString(&quot;message_overall_response_data&quot;);			
-			updateMessageServiceStatusInDB(globalMap.get(&quot;request.message.status.responsereturned&quot;), varMessageID);
+			updateMessageServiceStatusInDB(Packages.gov.nih.nci.ihub.util.HubConstants.MESSAGE_STATUS_RESPONSE_RETURNED, varMessageID);
 			dbConn.close();			
 		} else {
 			//initiate code to put some error response message back in the queue
@@ -252,7 +253,7 @@ function retrieveOverallBroadcastResponseFromDB(varMessageID){
     <id>40480fca-b111-42e9-81a6-b460f6bbe670</id>
     <name>aggregateBroadcastResponse</name>
     <tooltip>Generic Aggregator Function that aggregates responses from one or more suite target services</tooltip>
-    <code>function aggregateBroadcastResponse(varServiceType, varTargetInvocationStrategy, varBusinessMessagePayload, varConsumerIdentifier, varMessageID){
+    <code>function aggregateBroadcastResponse(varServiceType, varBusinessMessagePayload, varConsumerIdentifier, varMessageID){
 	try{
 		logger.debug(&quot;aggregateBroadcastResponse() - start&quot;);
 		var activeDestinationCount = globalMap.get(varServiceType+&quot;.active.destination.count&quot;);
@@ -282,11 +283,15 @@ function retrieveOverallBroadcastResponseFromDB(varMessageID){
 				compiledResponseResultSet.getString(&quot;compiled_target_response_compiled_response&quot;));
 			responseArrayList.add(compiledResponseStringToDOMDocument);
 			var compiledTargetResponseStatus = compiledResponseResultSet.getString(&quot;compiled_target_response_target_response_status&quot;);
-			if(compiledTargetResponseStatus == globalMap.get(&quot;target.response.status.fault&quot;)){
+			if(compiledTargetResponseStatus == Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_RESPONSE_STATUS_FAULT){
 				isFailureOverallResponse = true;
-			} else {				
-				var targetInvocationStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenericInvocationStrategy();
-				targetInvocationStrategy.copyCommonContents(varTargetInvocationStrategy);
+			} else {
+				var targetGlobalInvocationStrategy = globalMap.get($(&apos;ns1metadata_ns1servicetype&apos;)+&quot;_&quot;+compiledResponseResultSet.getString(&quot;compiled_target_response_target_details&quot;)+&quot;_Strategy&quot;);
+				if(targetGlobalInvocationStrategy == null){					
+					targetGlobalInvocationStrategy = globalMap.get($(&apos;ns1metadata_ns1servicetype&apos;)+&quot;_Strategy&quot;);
+				}
+				var targetInvocationStrategy = targetGlobalInvocationStrategy.getClass().newInstance();
+				targetInvocationStrategy.copyCommonContents(targetGlobalInvocationStrategy);
 
 				targetInvocationStrategy.setServiceUrl(globalMap.get(compiledResponseResultSet.getString(&quot;compiled_target_response_target_details&quot;)+&quot;.&quot;+varServiceType+&quot;.url&quot;));
 				targetInvocationStrategy.setSubject(globalMap.get(&quot;subject&quot;+varMessageID));
@@ -294,8 +299,6 @@ function retrieveOverallBroadcastResponseFromDB(varMessageID){
 				targetInvocationStrategy.setPayload(varBusinessMessagePayload);
 
 				potentialRollbackInvocationStrategyList.add(targetInvocationStrategy);
-
-				//varTargetInvocationStrategy = varTargetInvocationStrategy.getClass().newInstance();
 			}
 		}
 
@@ -307,21 +310,15 @@ function retrieveOverallBroadcastResponseFromDB(varMessageID){
 		var aggregatedResponseBuilder = new Packages.gov.nih.nci.ihub.writer.ncies.common.AggregatedResponseBuilder();
 		var aggregatedResponse = aggregatedResponseBuilder.buildAggregatedDocument(responseArrayList, false);		
 		var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenerateResponseBean();
-		//var overallResponse = generateResponseBean.generateResponseFromAggregatedResponse(varConsumerIdentifier, 
-		//						varMessageID, aggregatedResponse);
 		var overallResponseString = generateResponseBean.generateResponseFromAggregatedResponse(varConsumerIdentifier, 
 								varMessageID, aggregatedResponse);
-		//logger.error(&quot;OverallResponse in aggregateBroadcastResponse(): &quot;+overallResponse);
-		//var overallResponseString = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(overallResponse);
 		logger.info(&quot;OverallResponseString in aggregateBroadcastResponse(): &quot;+overallResponseString);
-		updateMessageServiceResponseInDB(isFailureOverallResponse, overallResponseString, varMessageID, globalMap.get(&quot;request.message.status.processed&quot;));
+		updateMessageServiceResponseInDB(isFailureOverallResponse, overallResponseString, varMessageID, Packages.gov.nih.nci.ihub.util.HubConstants.MESSAGE_STATUS_PROCESSED);
 		logger.debug(&quot;aggregateBroadcastResponse() - end&quot;);
 		return overallResponseString;
-
 	} catch (error) {	
 		logger.error(&quot;EXCEPTION OCCURED IN MIRTH RESPONSE AGGREGATOR &quot;+error);
 	}
-
 }</code>
     <type>FUNCTION</type>
     <scope>2</scope>
@@ -362,7 +359,7 @@ function retrieveOverallBroadcastResponseFromDB(varMessageID){
 	} catch (error) {	
 		logger.error(&quot;EXCEPTION OCCURED IN MIRTH DURING &quot;+varTargetDetailsCode+&quot; INVOCATION: &quot;+error);
 		var errorMessage = createErrorResponseXML(new Packages.java.lang.Exception(error), varTargetDetailsCode);
-		insertCompiledTargetResponse(errorMessage, varTargetDetailsCode, globalMap.get(&quot;target.response.status.fault&quot;), varMessageID);
+		insertCompiledTargetResponse(errorMessage, varTargetDetailsCode, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_RESPONSE_STATUS_FAULT, varMessageID);
 		
 		channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, true);
 		return &quot;&quot;;

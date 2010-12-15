@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1291225801796</time>
+    <time>1292267084109</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>136</revision>
+  <revision>142</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -17,14 +17,14 @@
       <property name="durable">0</property>
       <property name="selector"></property>
       <property name="connectionFactoryClass">org.apache.activemq.ActiveMQConnectionFactory</property>
-      <property name="username">user</property>
+      <property name="username"></property>
       <property name="specification">1.1</property>
       <property name="connectionFactoryProperties">&lt;properties&gt;
   &lt;property name=&quot;brokerURL&quot;&gt;tcp://localhost:61616&lt;/property&gt;
 &lt;/properties&gt;</property>
       <property name="acknowledgementMode">1</property>
       <property name="DataType">JMS Reader</property>
-      <property name="password">password</property>
+      <property name="password"></property>
       <property name="host">caxchangeInboundQueue</property>
     </properties>
     <transformer>
@@ -477,7 +477,7 @@
         <property name="URL">jdbc:postgresql://host:port/dbname</property>
         <property name="query"></property>
         <property name="script">insertIncomingMessageInDB($(&apos;ns1metadata_ns1caxchangeidentifier&apos;), $(&apos;ns1request_ns1businessmessagepayload&apos;), 
-	globalMap.get(&apos;request.message.status.inprocess&apos;), $(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;), $(&apos;ns1metadata&apos;));</property>
+	Packages.gov.nih.nci.ihub.util.HubConstants.MESSAGE_STATUS_IN_PROCESS, $(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;), $(&apos;ns1metadata&apos;));</property>
         <property name="password"></property>
         <property name="host">query</property>
         <property name="driver">org.postgresql.Driver</property>
@@ -504,7 +504,7 @@
       <name>Retrieve Security Subject</name>
       <properties>
         <property name="script">var subject = invokeDelegationService($(&apos;ns1metadata_ns1credentials_ns1delegatedcredentialreference&apos;), globalMap.get(&quot;delegation.certificate.file.path&quot;),
-	 globalMap.get(&quot;delegation.key.file.path&quot;), globalMap.get(&quot;target.detail.code.delegation&quot;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
+	 globalMap.get(&quot;delegation.key.file.path&quot;), Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_DETAIL_DELEGATION, $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
 
 globalMap.put(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;), subject);</property>
         <property name="DataType">JavaScript Writer</property>
@@ -590,42 +590,6 @@ return message;</preprocessingScript>
 return;</postprocessingScript>
   <deployScript>// This script executes once when the mule engine is started
 // You only have access to the globalMap here to persist data
-/*
-globalMap.put(&quot;delegation.certificate.file.path&quot;,&quot;C:/projects_svn/caBIGIntegrationHub/common/resources/ihub/ncias-c278-v.nci.nih.gov-cert.pem&quot;);
-globalMap.put(&quot;delegation.key.file.path&quot;,&quot;C:/projects_svn/caBIGIntegrationHub/common/resources/ihub/ncias-c278-v.nci.nih.gov-key.pem&quot;);
-globalMap.put(&quot;user.proxy.cache.time.to.live&quot;,600);
-globalMap.put(&quot;caaers.registration.url&quot;,&quot;https://ncias-d282-v.nci.nih.gov:29543/wsrf-caaers/services/cagrid/RegistrationConsumer&quot;);
-globalMap.put(&quot;ctom.registration.url&quot;,&quot;https://ncias-d282-v.nci.nih.gov:29543/ctom-wsrf/services/cagrid/RegistrationConsumer&quot;);
-globalMap.put(&quot;psc.registration.url&quot;,&quot;https://ncias-d282-v.nci.nih.gov:29543/wsrf-psc/services/cagrid/RegistrationConsumer&quot;);
-globalMap.put(&quot;target.grid.service.retry.attempts&quot;,3);
-
-//UPDATE THE COUNT IF THE DESTINATION BROADCAST COUNT IS CHANGED FROM DEFAULT
-globalMap.put(&quot;register.subject.active.destination.count&quot;,2);
-
-// ####### START VARIABLES REQUIRED FOR SUITE AND NOT CONFIGURABLE ######
-//request message status
-globalMap.put(&quot;request.message.status.open&quot;,&quot;OPEN&quot;);
-globalMap.put(&quot;request.message.status.inprocess&quot;,&quot;IN_PROCESS&quot;);
-globalMap.put(&quot;request.message.status.processed&quot;,&quot;PROCESSED&quot;);
-globalMap.put(&quot;request.message.status.responsereturned&quot;,&quot;RESPONSE_RETURNED&quot;);
-//target details - name
-globalMap.put(&quot;target.detail.code.caaers&quot;,&quot;caAERS&quot;);
-globalMap.put(&quot;target.detail.code.psc&quot;,&quot;PSC&quot;);
-globalMap.put(&quot;target.detail.code.ctom&quot;,&quot;CTOM&quot;);
-globalMap.put(&quot;target.detail.code.c3pr&quot;,&quot;C3PR&quot;);
-globalMap.put(&quot;target.detail.code.delegation&quot;,&quot;DELEGATION&quot;);
-
-//target response status
-globalMap.put(&quot;target.response.status.successful&quot;,&quot;SUCCESSFUL&quot;);
-globalMap.put(&quot;target.response.status.fault&quot;,&quot;FAULT&quot;);
-globalMap.put(&quot;target.response.status.timeout&quot;,&quot;TIMEOUT&quot;);
-//overall response status
-globalMap.put(&quot;overall.response.status.success&quot;,&quot;SUCCESS&quot;);
-globalMap.put(&quot;overall.response.status.failure&quot;,&quot;FAILURE&quot;);
-
-// ######## END VARIABLES REQUIRED FOR SUITE AND NOT CONFIGURABLE ########
-
-*/
 
 return;</deployScript>
   <shutdownScript>// This script executes once when the mule engine is stopped

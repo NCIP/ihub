@@ -14,6 +14,7 @@ import gov.nih.nci.caxchange.servicemix.bean.clinicalconnector.DataCaptureServic
 import gov.nih.nci.caxchange.servicemix.bean.clinicalconnector.DataCaptureServiceStub.ST;
 import gov.nih.nci.caxchange.servicemix.bean.clinicalconnector.DataCaptureServiceStub.TS;
 import gov.nih.nci.caxchange.servicemix.bean.clinicalconnector.DataCaptureServiceStub.Uid;
+import gov.nih.nci.ihub.util.HubConstants;
 import gov.nih.nci.ihub.writer.ncies.capability.cdm.transformer.CCTransformException;
 import gov.nih.nci.ihub.writer.ncies.capability.cdm.transformer.CCTransformer;
 import gov.nih.nci.ihub.writer.ncies.capability.cdm.transformer.CCTransformerConstants;
@@ -25,7 +26,7 @@ import org.apache.log4j.Logger;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class DataCaptureTransformer implements CCTransformer {
+public class DataCaptureTransformer extends CCTransformer {
 	protected static Logger logger = LogManager
 			.getLogger(DataCaptureTransformer.class);
 
@@ -241,7 +242,7 @@ public class DataCaptureTransformer implements CCTransformer {
 			identifier.setIdentifierName(identifierName);
 			Uid uid = new Uid();
 			uid
-					.setUid(CCTransformerConstants.NAME_ROOT_MAP
+					.setUid(NAME_ROOT_MAP
 							.get(identifierName));
 			identifier.setRoot(uid);
 			identifier.setExtension(checkEmpty(extension));
@@ -351,7 +352,7 @@ public class DataCaptureTransformer implements CCTransformer {
 							+ "]/loadlabs:StudySubject/loadlabs:PerformedStudy/loadlabs:Documentation/loadlabs:II/loadlabs:extension");
 			// performedObservation.studyProtocolIdentifierName =
 			// reader.read("xxx");
-			performedObservation.studyProtocolIdentifierName = CCTransformerConstants.STUDY_PROTOCOL_IDENTIFIER_NAME;
+			performedObservation.studyProtocolIdentifierName = HubConstants.CC_STUDY_PROTOCOL_IDENTIFIER_NAME;
 			if ((performedObservation.studyProtocolIdentifier != null)
 					&& (performedObservation.studyProtocolIdentifier
 							.startsWith("STUDY:"))) {
@@ -365,7 +366,7 @@ public class DataCaptureTransformer implements CCTransformer {
 							+ "]/loadlabs:StudySubject/loadlabs:Participant/loadlabs:II/loadlabs:extension"));
 			// performedObservation.studySubjectIdentifierName =
 			// retrieve_studySubjectIdentifierName(performedObservation.studySubjectIdentifier);
-			performedObservation.studySubjectIdentifierName = CCTransformerConstants.MRN_NAME; // retrieve_studySubjectIdentifierName(reader.read("loadlabs:LabResult/loadlabs:StudySubject/loadlabs:Participant/loadlabs:II/loadlabs:extension"));
+			performedObservation.studySubjectIdentifierName = HubConstants.CC_MRN_NAME; // retrieve_studySubjectIdentifierName(reader.read("loadlabs:LabResult/loadlabs:StudySubject/loadlabs:Participant/loadlabs:II/loadlabs:extension"));
 
 			performedObservation.studySubjectIdentifierRoot = reader
 					.read("/loadlabs:LoadLabsRequest/loadlabs:LabResult["
@@ -378,7 +379,7 @@ public class DataCaptureTransformer implements CCTransformer {
 						.read("/loadlabs:LoadLabsRequest/loadlabs:LabResult["
 								+ (i + 1)
 								+ "]/loadlabs:StudySubject/loadlabs:II/loadlabs:extension"));
-				performedObservation.studySubjectIdentifierName = CCTransformerConstants.PATIENT_POSITION_IDENTIFIER_NAME; // retrieve_studySubjectIdentifierName(reader.read("loadlabs:LabResult/loadlabs:StudySubject/loadlabs:II/loadlabs:extension"));
+				performedObservation.studySubjectIdentifierName = HubConstants.CC_PATIENT_POSITION_IDENTIFIER_NAME; // retrieve_studySubjectIdentifierName(reader.read("loadlabs:LabResult/loadlabs:StudySubject/loadlabs:II/loadlabs:extension"));
 				performedObservation.studySubjectIdentifierRoot = reader
 						.read("/loadlabs:LoadLabsRequest/loadlabs:LabResult["
 								+ (i + 1)
