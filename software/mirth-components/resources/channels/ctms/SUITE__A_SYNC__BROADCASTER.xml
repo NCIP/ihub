@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1292441783906</time>
+    <time>1292971551765</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>692</revision>
+  <revision>693</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -605,7 +605,7 @@ return false;</script>
       </filter>
       <transportName>JavaScript Writer</transportName>
       <mode>DESTINATION</mode>
-      <enabled>false</enabled>
+      <enabled>true</enabled>
     </com.webreach.mirth.model.Connector>
     <com.webreach.mirth.model.Connector>
       <name>CTOM</name>
@@ -760,7 +760,7 @@ return false;</script>
       </filter>
       <transportName>JavaScript Writer</transportName>
       <mode>DESTINATION</mode>
-      <enabled>false</enabled>
+      <enabled>true</enabled>
     </com.webreach.mirth.model.Connector>
     <com.webreach.mirth.model.Connector>
       <name>PSC</name>
@@ -917,7 +917,7 @@ return false;</script>
       </filter>
       <transportName>JavaScript Writer</transportName>
       <mode>DESTINATION</mode>
-      <enabled>false</enabled>
+      <enabled>true</enabled>
     </com.webreach.mirth.model.Connector>
     <com.webreach.mirth.model.Connector>
       <name>C3D</name>
@@ -1035,7 +1035,7 @@ return false;</script>
       </filter>
       <transportName>JavaScript Writer</transportName>
       <mode>DESTINATION</mode>
-      <enabled>false</enabled>
+      <enabled>true</enabled>
     </com.webreach.mirth.model.Connector>
     <com.webreach.mirth.model.Connector>
       <name>MEDIDATA_RAVE</name>
@@ -1157,7 +1157,7 @@ return false;</script>
       </filter>
       <transportName>JavaScript Writer</transportName>
       <mode>DESTINATION</mode>
-      <enabled>true</enabled>
+      <enabled>false</enabled>
     </com.webreach.mirth.model.Connector>
     <com.webreach.mirth.model.Connector>
       <name>Response Aggregator</name>

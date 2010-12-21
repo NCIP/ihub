@@ -16,7 +16,7 @@ globalMap.put("MEDIDATA_RAVE.REGISTER_SUBJECT.username","@medidata.rave.registra
 globalMap.put("MEDIDATA_RAVE.REGISTER_SUBJECT.password","@medidata.rave.registration.password@");
 globalMap.put("MEDIDATA_RAVE.REGISTER_SUBJECT.timeout","@medidata.rave.registration.timeout@");
 //UPDATE THE COUNT IF THE DESTINATION BROADCAST COUNT IS CHANGED FROM DEFAULT
-globalMap.put("REGISTER_SUBJECT.active.destination.count",3);
+globalMap.put("REGISTER_SUBJECT.active.destination.count",4);
 
 globalMap.put("caAERS.STUDY_CREATION.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-caaers/services/cagrid/StudyConsumer");
 globalMap.put("CTOM.STUDY_CREATION.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/ctom-wsrf/services/cagrid/StudyConsumer");
@@ -79,8 +79,8 @@ globalMap.put("DOCUMENT_WORKFLOW_STATUS.url","@coppa.services.pa.protocol@://@co
 
 globalMap.put("target.grid.service.retry.attempts",3);
 
-globalMap.put("mirth.http.user.tomcat","@mirth.http.user@");
-globalMap.put("mirth.http.password.tomcat","@mirth.http.password@");
+globalMap.put("mirth.http.listener.user.tomcat","@mirth.http.listener.user@");
+globalMap.put("mirth.http.listener.password.tomcat","@mirth.http.listener.password@");
 
 // #########  ACTIVE MQ PROPERTIES - NEED NOT BE TOKENIZED SINCE CHANNELS CANNOT GET THESE VALUES USING VARIABLES ##########
 // dynamic support is available in a future release when iHub migrates to Mirth Connect 2.x.
