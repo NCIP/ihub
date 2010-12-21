@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1292441644656</time>
+    <time>1292441783906</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>691</revision>
+  <revision>692</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -1225,7 +1225,6 @@ registrationMedidataRaveStrategy.setServiceType(Packages.gov.nih.nci.ihub.util.H
 registrationMedidataRaveStrategy.setUsername(globalMap.get(Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_DETAIL_MEDIDATA_RAVE+&quot;.&quot;+Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_REGISTER_SUBJECT+&quot;.username&quot;));
 registrationMedidataRaveStrategy.setPassword(globalMap.get(Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_DETAIL_MEDIDATA_RAVE+&quot;.&quot;+Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_REGISTER_SUBJECT+&quot;.password&quot;));
 registrationMedidataRaveStrategy.setConnectionTimeout(globalMap.get(Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_DETAIL_MEDIDATA_RAVE+&quot;.&quot;+Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_REGISTER_SUBJECT+&quot;.timeout&quot;));
-
 globalMap.put(Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_REGISTER_SUBJECT+&quot;_&quot;+Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_DETAIL_MEDIDATA_RAVE+&quot;_Strategy&quot;, registrationMedidataRaveStrategy);
 
 

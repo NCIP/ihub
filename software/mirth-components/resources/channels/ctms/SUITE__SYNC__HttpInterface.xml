@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1292262974046</time>
+    <time>1292884097062</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>202</revision>
+  <revision>212</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -556,7 +556,12 @@ function createErrorResponseXML(varException, varTargetDetailCode){
       <name>COPPA Invoker</name>
       <properties>
         <property name="script">logger.debug(&quot;Processing COPPA Invoker destination&quot;);
-var targetInvocationStrategy = globalMap.get($(&apos;ns1metadata_ns1servicetype&apos;)+&quot;_Strategy&quot;);
+var targetGlobalInvocationStrategy = globalMap.get($(&apos;ns1metadata_ns1servicetype&apos;)+&quot;_Strategy&quot;);
+
+var targetInvocationStrategy = targetGlobalInvocationStrategy.getClass().newInstance();
+targetInvocationStrategy.copyCommonContents(targetGlobalInvocationStrategy);
+targetInvocationStrategy.init();
+
 targetInvocationStrategy.setStrategySpecificVariables($(&apos;ns1metadata_ns1operationname&apos;), 
 							$(&apos;ns1metadata_ns1servicetype&apos;), $(&apos;ihubBusinessMessagePayloadDocument&apos;), $(&apos;coppaSubject&apos;), $(&apos;ns1metadata_ns1servicetype&apos;));
 
@@ -629,16 +634,7 @@ return true;</script>
     <com.webreach.mirth.model.Connector>
       <name>Write Response</name>
       <properties>
-        <property name="script">//responseMap.put(&apos;SOAPResponse&apos;, ResponseFactory.getSuccessResponse(globalMap.get(messageObject.getId())));
-//var overallResponseString = retrieveOverallBroadcastResponseFromDB($(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
-//channelMap.put(&quot;message_overall_response&quot;,overallResponseString);
-
-responseMap.put(&apos;SuiteSynchronousResponse&apos;, ResponseFactory.getSuccessResponse(channelMap.get(&quot;overallResponseString&quot;)));
-
-
-
-//responseMap.put(&apos;SOAPResponse&apos;, ResponseFactory.getSuccessResponse(responseMap.get($(&apos;DELIMITED TO HL7V3&apos;))));
-</property>
+        <property name="script">responseMap.put(&apos;SuiteSynchronousResponse&apos;, ResponseFactory.getSuccessResponse(channelMap.get(&quot;overallResponseString&quot;)));</property>
         <property name="DataType">JavaScript Writer</property>
         <property name="host">sink</property>
       </properties>
@@ -755,6 +751,24 @@ coppaPOBusinessStrategy.setServiceUrl(globalMap.get(&quot;PO_BUSINESS.url&quot;)
 coppaPOBusinessStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.business.business.client.BusinessClient&quot;);
 coppaPOBusinessStrategy.init();
 globalMap.put(&quot;PO_BUSINESS_Strategy&quot;, coppaPOBusinessStrategy);
+
+
+var coppaPersonBusinessServiceStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaPBInvocationStrategy();
+//setting url and client class are not used, but need to set for a generalized solution
+coppaPersonBusinessServiceStrategy.setServiceUrl(globalMap.get(&quot;IDENTIFIED_PERSON.url&quot;));
+coppaPersonBusinessServiceStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.structuralroles.identifiedperson.client.IdentifiedPersonClient&quot;);
+coppaPersonBusinessServiceStrategy.setIdentifiedPersonInvocationStrategy(coppaIdentifiedPersonStrategy);
+coppaPersonBusinessServiceStrategy.setPersonInvocationStrategy(coppaPersonStrategy);
+globalMap.put(&quot;PERSON_BUSINESS_SERVICE_Strategy&quot;, coppaPersonBusinessServiceStrategy);
+
+
+var coppaOrganizationBusinessServiceStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaOBInvocationStrategy();
+//setting url and client class are not used, but need to set for a generalized solution
+coppaOrganizationBusinessServiceStrategy.setServiceUrl(globalMap.get(&quot;IDENTIFIED_ORGANIZATION.url&quot;));
+coppaOrganizationBusinessServiceStrategy.setGridClientClassName(&quot;gov.nih.nci.coppa.services.structuralroles.identifiedorganization.client.IdentifiedOrganizationClient&quot;);
+coppaOrganizationBusinessServiceStrategy.setIdentifiedOrganizationInvocationStrategy(coppaIdentifiedOrganizationStrategy);
+coppaOrganizationBusinessServiceStrategy.setOrganizationInvocationStrategy(coppaOrganizationStrategy);
+globalMap.put(&quot;ORGANIZATION_BUSINESS_SERVICE_Strategy&quot;, coppaOrganizationBusinessServiceStrategy);
 
 
 /*********************************************************

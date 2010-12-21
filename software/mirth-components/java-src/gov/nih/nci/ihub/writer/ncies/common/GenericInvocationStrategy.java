@@ -65,7 +65,7 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 	protected String username;
 	protected String password;
 	protected long connectionTimeout;
-
+	
 	private static Logger logger = LogManager
 			.getLogger(GenericInvocationStrategy.class);
 
