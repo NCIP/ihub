@@ -60,9 +60,9 @@ public class CaXchangeRequestProcessorImpl extends CaXchangeRequestProcessorImpl
 	public static Map<CaxchangeResponseExceptionListener, Connection> responseListeners = null;
 	protected static Long synchronousServiceClientTimeout = null;
 	
-	private static final String MIRTH_HTTP_USER = "mirth.http.user";
-	private static final String MIRTH_HTTP_PASSWORD = "mirth.http.password";
-	private static final String MIRTH_HTTP_URL = "mirth.http.url";
+	private static final String MIRTH_HTTP_LISTENER_USER = "mirth.http.listener.user";
+	private static final String MIRTH_HTTP_LISTENER_PASSWORD = "mirth.http.listener.password";
+	private static final String MIRTH_HTTP_LISTENER_URL = "mirth.http.listener.url";
 	private static final String COPPA_AUTH_USER ="coppa.authentication.user";			
 	private static final String COPPA_AUTH_PASS = "coppa.authentication.password";			
 	private static final String COPPA_AUTH_URL = "coppa.authentication.url";			
@@ -305,9 +305,9 @@ public class CaXchangeRequestProcessorImpl extends CaXchangeRequestProcessorImpl
 			String dorianServiceUrl = properties.getProperty(COPPA_DORIAN_URL);			
 			String delegationServiceUrl = properties.getProperty(COPPA_DELEG_URL);
 			String mirthHostIdentity = properties.getProperty(COPPA_HOST_IDENT);
-			String mirthHttpUrl = properties.getProperty(MIRTH_HTTP_URL);
-			String mirthHttpUser = properties.getProperty(MIRTH_HTTP_USER);
-			String mirthHttpPassowrd = properties.getProperty(MIRTH_HTTP_PASSWORD);
+			String mirthHttpUrl = properties.getProperty(MIRTH_HTTP_LISTENER_URL);
+			String mirthHttpListenerUser = properties.getProperty(MIRTH_HTTP_LISTENER_USER);
+			String mirthHttpListenerPassowrd = properties.getProperty(MIRTH_HTTP_LISTENER_PASSWORD);
 
 			CaGridAuthenticationManager caGridAuthenticationManager = new CaGridAuthenticationManager(
 						gridUser, gridUserPassword, authenticationServiceUrl, dorianServiceUrl, delegationServiceUrl, 12, mirthHostIdentity);
@@ -326,8 +326,8 @@ public class CaXchangeRequestProcessorImpl extends CaXchangeRequestProcessorImpl
 			
 			method.addParameter("synchronous_msg", reqMessage);
 			method.addParameter("coppa_delegated_credential_ref", credential);
-			method.addRequestHeader(MIRTH_HTTP_USER, mirthHttpUser);
-			method.addRequestHeader(MIRTH_HTTP_PASSWORD, mirthHttpPassowrd);
+			method.addRequestHeader(MIRTH_HTTP_LISTENER_USER, mirthHttpListenerUser);
+			method.addRequestHeader(MIRTH_HTTP_LISTENER_PASSWORD, mirthHttpListenerPassowrd);
 
 			try {
 				int returnCode = client.executeMethod(method);
