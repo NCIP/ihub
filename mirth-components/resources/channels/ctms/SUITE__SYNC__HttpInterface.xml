@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1292884097062</time>
+    <time>1292970088140</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>212</revision>
+  <revision>213</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -62,8 +62,8 @@ msg = new XML(nonencodedSyncMsg);</string>
     &lt;http.method&gt;POST&lt;/http.method&gt;&#x0D;
     &lt;http.request&gt;/&lt;/http.request&gt;&#x0D;
     &lt;Content-Type&gt;application/x-www-form-urlencoded&lt;/Content-Type&gt;&#x0D;
-    &lt;mirth.http.password&gt;changeme&lt;/mirth.http.password&gt;&#x0D;
-    &lt;mirth.http.user&gt;tomcatuser&lt;/mirth.http.user&gt;&#x0D;
+    &lt;mirth.http.listener.password&gt;changeme&lt;/mirth.http.listener.password&gt;&#x0D;
+    &lt;mirth.http.listener.user&gt;tomcatuser&lt;/mirth.http.listener.user&gt;&#x0D;
 &lt;/message&gt;</inboundTemplate>
       <outboundTemplate></outboundTemplate>
       <inboundProtocol>XML</inboundProtocol>
@@ -79,7 +79,7 @@ msg = new XML(nonencodedSyncMsg);</string>
       <rules>
         <com.webreach.mirth.model.Rule>
           <sequenceNumber>0</sequenceNumber>
-          <name>Accept message if &quot;mirth.http.user&quot; equals globalMap.get(&apos;mirth.http.user.tomcat&apos;)</name>
+          <name>Accept message if &quot;msg[&apos;mirth.http.listener.user&apos;].toString()&quot; equals globalMap.get(&apos;mirth.http.listener.user.tomcat&apos;)</name>
           <data class="map">
             <entry>
               <string>OriginalField</string>
@@ -88,7 +88,7 @@ msg = new XML(nonencodedSyncMsg);</string>
             <entry>
               <string>Values</string>
               <list>
-                <string>globalMap.get(&apos;mirth.http.user.tomcat&apos;)</string>
+                <string>globalMap.get(&apos;mirth.http.listener.user.tomcat&apos;)</string>
               </list>
             </entry>
             <entry>
@@ -97,7 +97,7 @@ msg = new XML(nonencodedSyncMsg);</string>
             </entry>
             <entry>
               <string>Field</string>
-              <string>msg[&apos;mirth.http.user&apos;].toString()</string>
+              <string>msg[&apos;mirth.http.listener.user&apos;].toString()</string>
             </entry>
             <entry>
               <string>Name</string>
@@ -109,7 +109,7 @@ msg = new XML(nonencodedSyncMsg);</string>
             </entry>
           </data>
           <type>Rule Builder</type>
-          <script>if(msg[&apos;mirth.http.user&apos;].toString() == globalMap.get(&apos;mirth.http.user.tomcat&apos;))
+          <script>if(msg[&apos;mirth.http.listener.user&apos;].toString() == globalMap.get(&apos;mirth.http.listener.user.tomcat&apos;))
 {
 return true;
 }
@@ -118,7 +118,7 @@ return false;</script>
         </com.webreach.mirth.model.Rule>
         <com.webreach.mirth.model.Rule>
           <sequenceNumber>1</sequenceNumber>
-          <name>Accept message if &quot;mirth.http.password&quot; equals globalMap.get(&apos;mirth.http.password.tomcat&apos;)</name>
+          <name>Accept message if &quot;msg[&apos;mirth.http.listener.password&apos;].toString()&quot; equals globalMap.get(&apos;mirth.http.listener.password.tomcat&apos;)</name>
           <data class="map">
             <entry>
               <string>OriginalField</string>
@@ -127,7 +127,7 @@ return false;</script>
             <entry>
               <string>Values</string>
               <list>
-                <string>globalMap.get(&apos;mirth.http.password.tomcat&apos;)</string>
+                <string>globalMap.get(&apos;mirth.http.listener.password.tomcat&apos;)</string>
               </list>
             </entry>
             <entry>
@@ -136,7 +136,7 @@ return false;</script>
             </entry>
             <entry>
               <string>Field</string>
-              <string>msg[&apos;mirth.http.password&apos;].toString()</string>
+              <string>msg[&apos;mirth.http.listener.password&apos;].toString()</string>
             </entry>
             <entry>
               <string>Name</string>
@@ -148,7 +148,7 @@ return false;</script>
             </entry>
           </data>
           <type>Rule Builder</type>
-          <script>if(msg[&apos;mirth.http.password&apos;].toString() == globalMap.get(&apos;mirth.http.password.tomcat&apos;))
+          <script>if(msg[&apos;mirth.http.listener.password&apos;].toString() == globalMap.get(&apos;mirth.http.listener.password.tomcat&apos;))
 {
 return true;
 }
