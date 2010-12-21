@@ -4,7 +4,7 @@
 
 	<!-- Read in user specific properties -->
 	
-	<property file="local.shell_Ant.properties"/>
+	<!-- <property file="local.shell_Ant.properties"/> -->
 	<property name="root" value="." />
 	<property name="target_dir" value="${root}/target" />
 	<property name="dist_dir" value="${target_dir}/dist" />
@@ -21,12 +21,15 @@
 		<fileset dir="${mirth_home}/lib">
 			<include name="*.jar"/>
 		</fileset>
+		<fileset dir="${mirth_home}/lib/custom">
+			<include name="*.jar"/>
+		</fileset>
 		<fileset dir="${mirth_home}/client-lib">
 			<include name="*.jar"/>
 		</fileset>		
-		<fileset dir=".">
-			<include name="*.jar"/>
-		</fileset>		
+		<!--<fileset dir=".">
+					<include name="*.jar"/>
+				</fileset>		-->
 	</path>
 
 

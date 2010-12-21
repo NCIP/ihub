@@ -127,7 +127,7 @@ public class CoppaInvocationStrategy extends GenericInvocationStrategy {
 			}
 		} catch (Exception e) {
 			logger.error("Failed to invoke grid service." + serviceUrl, e);
-			throw new GridInvocationException(e.getMessage(), e);
+			return new GridInvocationResult(true, null, false, e);
 		}
 	}
 
