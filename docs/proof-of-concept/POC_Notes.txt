@@ -677,6 +677,8 @@ Things to Do
 	
 13. Delete unused clinical connector classes.
 
+14. Merge PB and OB business services invocation strategy and make it generic
+
 
 
 
