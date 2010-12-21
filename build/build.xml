@@ -147,7 +147,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	<property name="mirth.dest.file" value="${download.dir}/${mirth.binaries.file}" />
 
 	<property name="axis.2.file" value="${download.dir}/${axis.2.binaries.file}" />
-	
+
 	<property name="activemq.file" value="${download.dir}/${activemq.binaries.file}" />
 
 	<!-- Default install time targets passed by deploy targets to the installer, can be overridden by being set on the command line if different target is desitred.  -->
@@ -193,7 +193,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		<property name="software.dir" location="${software.dir}" />
 		<property name="commonlibrary.dir" location="${commonlibrary.dir}" />
 		<!-- Use below for old ivy repo -->
-		<property name="ivy.settings.file" value="ivy-bda-settings.xml"/>
+		<property name="ivy.settings.file" value="ivy-bda-settings.xml" />
 		<!-- Use below for new ivy repo -->
 		<!-- <property name="ivy.settings.file" value="cbiit-ivy-bda-settings.xml" /> -->
 		<property name="target.dir" location="${target.dir}" />
@@ -374,7 +374,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 				</if>
 			</then>
 		</if>
-		
+
 		<available file="${activemq.file}" property="activemq.tools.exists" />
 		<if>
 			<equals arg1="${require.activemq}" arg2="true" />
@@ -439,19 +439,21 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		build:OpenClinicaPlugin,
  		database:prep
 		">
-	<!--	-->
+		<!--	-->
 	</target>
 
-	<target name="build:mirth-components" depends="init" description="Call mirth-components build target to produce artifiacts">		
+	<target name="build:mirth-components" depends="init" description="Call mirth-components build target to produce artifiacts">
 		<ant inheritAll="false" inheritRefs="false" antfile="${mirth-components.build.file}" target="${mirth-components.build.target}" dir="${mirth-components.base.dir}">
-			<property name="dist.dir" value="${mirth-components.dist.dir}" />			
+			<property name="dist.dir" value="${mirth-components.dist.dir}" />
+			<!--
 			<property name="env.GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
-			<property name="no.deployment.validation" value="true" />
+			<property name="no.deployment.validation" value="true" />			
 			<property name="tomcat.dir" value="${pt.dir}/${tomcat.binaries.relative.dir}" />
 			<property name="globus.webapp" value="${caXchange.wsrf.war.name}" />
-			<property name="build.compiler" value="extJavac" />
+			<property name="build.compiler" value="extJavac" /> 
+			-->
 		</ant>
-		<copy todir="${caXchangeInboundService.base.dir}/lib" overwrite="true" file="${mirth-components.dist.dir}/ihub-mirth-components.jar" />		
+		<copy todir="${caXchangeInboundService.base.dir}/lib" overwrite="true" file="${mirth-components.dist.dir}/ihub-mirth-components.jar" />
 	</target>
 
 	<target name="build:caXchangeInboundService" depends="init" description="Call caXchangeInboundService sub-project's build target to produce artifiacts">
@@ -508,7 +510,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<property name="ext.globus.dir" value="${env.GLOBUS_LOCATION}" />
 		</ant>
 	</target>
-	    
+
 	<target name="dist" description="Makes all distributions: installer, upgrader and source" depends="
 		build:all,
  		dist:installer,
@@ -548,7 +550,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	</target>
 
 	<target name="dist:tools:retrieve:mirth" unless="mirth.tools.exists" description="Downloads mirth from binary repository and verifies checksum">
-		<get src="${mirth.src.url}" dest="${mirth.dest.file}" />		
+		<get src="${mirth.src.url}" dest="${mirth.dest.file}" />
 		<!-- Commented out the md5 check, should uncomment this portion after the binary and md5 are added in repository
 		<get src="${mirth.src.url}.md5" dest="${mirth.dest.file}.MD5" />
 		<checksum file="${mirth.dest.file}" verifyProperty="mirth.cksum.ok" />
@@ -566,9 +568,9 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 
 	<target name="dist:tools:retrieve:axis.2" unless="local.axis.2.exists" description="Downloads AXIS 2 from binary repository and verifies checksum">
 		<get src="${axis.2.src.url}" dest="${axis.2.file}" />
-		<get src="${axis.2.src.md5.url}" dest="${axis.2.file}.MD5" />		
+		<get src="${axis.2.src.md5.url}" dest="${axis.2.file}.MD5" />
 	</target>
-	
+
 	<target name="dist:tools:retrieve:activemq" unless="local.activemq.exists" description="Downloads ACTIVEMQ from binary repository and verifies checksum">
 		<get src="${activemq.src.url}" dest="${activemq.file}" />
 		<!--<get src="${activemq.src.md5.url}" dest="${activemq.file}.MD5" />		-->

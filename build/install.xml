@@ -434,6 +434,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		install:clean:mirth,
  		install:init,
  		install:mirth:binaries,
+		install:mirth:configure,
 		install:mirth:mirth-components,
 		install:post:mirth,
  		install:mirth:start,
@@ -451,6 +452,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		install:clean:activemq,
 		install:init,
  		install:activemq:binaries,
+		install:activemq:configure,
 		install:activemq:start
 	">
 	</target>
@@ -702,6 +704,36 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 
 	<target name="install:tomcat:configure" description="Configure tomcat (change ports)" unless="exclude.tomcat" depends="init:install,init:common">
 		<tomcat-configure tomcat.grid.configure="true" />
+	</target>
+
+	<target name="install:mirth:configure" description="Configure mirth (change ports)" unless="exclude.mirth">
+		<groovy>
+	               File mirthPropertiesFile = new File(properties['mirth.home']+"/conf/mirth.properties")
+	               println mirthPropertiesFile.toURL()
+	               def java.util.Properties mirthProps = new java.util.Properties()
+	               mirthProps.load(mirthPropertiesFile.toURL().openStream())
+	               def config = new ConfigSlurper().parse(mirthProps)
+	               config.http.port = properties['mirth.http.port']
+	               config.https.port = properties['mirth.https.port']
+	               config.jmx.port = properties['mirth.jmx.port']
+	               def java.util.Properties props = config.toProperties()
+	               java.io.FileOutputStream mirthPropertiesFOS = new FileOutputStream(mirthPropertiesFile)
+	               props.store(mirthPropertiesFOS, 'Configuration - updated by the Suite installer')
+	            </groovy>
+	</target>
+
+	<target name="install:activemq:configure" description="Configure activemq (change ports)" unless="exclude.activemq">
+		<property name="activemq.config.file" value="${activemq.home}/conf/activemq.xml" />
+		<copy todir="${activemq.home}/conf" filtering="true">
+			<fileset dir="${common.resource.dir.dest}/conf/activemq">
+				<include name="activemq.xml" />
+				<include name="jetty.xml" />
+			</fileset>
+			<filterset>
+				<filtersfile file="${properties.file}" />
+				<filtersfile file="project.properties" />
+			</filterset>
+		</copy>
 	</target>
 
 	<target name="install:tomcat:stop" description="Stop Tomcat" unless="exclude.tomcat" depends="init:install,init:common">
@@ -1105,7 +1137,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 
 		<delete dir="${tomcat.home}/webapps/${caXchange.wsrf.old.war.name}" />
 
-		<copy file="${common.resource.dir.dest}/conf/mirth/caxchange.properties" todir="${tomcat.home}/conf/caXchange" overwrite="true" />
+		<copy file="${common.resource.dir.dest}/conf/servicemix/caxchange.properties" todir="${tomcat.home}/conf/caXchange" overwrite="true" />
 		<if>
 			<equals arg1="${llt.deploy}" arg2="true" />
 			<then>
@@ -1168,10 +1200,10 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 				<include name="*.jar" />
 			</fileset>
 		</copy>
-		
+
 		<copy file="${tomcat.grid.secure.cert.location}" todir="${mirth.home}/conf" overwrite="true" />
 		<copy file="${tomcat.grid.secure.key.location}" todir="${mirth.home}/conf" overwrite="true" />
-		
+
 		<!-- This two lines of code required for proper channel deployment. In future release consider removing it-->
 		<move file="${mirth.home}/lib/mule/axis-14.jar" tofile="${mirth.home}/undeployed-jars/lib/mule/axis-14.jar" failonerror="false" />
 		<move file="${mirth.home}/lib/mule/wsif.jar" tofile="${mirth.home}/undeployed-jars/lib/mule/wsif.jar" failonerror="false" />
@@ -1180,7 +1212,15 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	<target name="install:mirth:channels" description="Import, deploy and starts channels in mirth" unless="exclude.tomcat" depends="init:install,init:common">
 		<ant inheritAll="false" inheritRefs="false" antfile="${mirth-components.dir.dist}/shellAnt.xml" target="import">
 			<property name="mirth_home" value="${mirth.home}" />
+			<property name="server" value="https://${tomcat.hostname}:${mirth.https.port}" />
+			<property name="user" value="${mirth.admin.user}" />
+			<property name="password" value="${mirth.admin.password}" />
+			<property name="timeout" value="120" />
 			<property name="channels_dir" value="${mirth-components.dir.dist}/channels/ctms" />
+			<property name="deployScript_name" value="${mirth-components.dir.dist}/javascript/at-deploy-script.xml" />
+			<property name="stats_filename" value="${mirth.home}/logs/mirth_stats.log" />
+			<property name="events_filename" value="${mirth.home}/logs/mirth_events.log" />
+
 		</ant>
 	</target>
 
@@ -1194,7 +1234,14 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		</copy>
 		<ant inheritAll="false" inheritRefs="false" antfile="${mirth-components.dir.dist}/shellAnt.xml" target="importscript">
 			<property name="mirth_home" value="${mirth.home}" />
-			<property name="deployScript_name" value="${mirth-components.dir.dist}\javascript\at-deploy-script.xml" />
+			<property name="server" value="https://${tomcat.hostname}:${mirth.https.port}" />
+			<property name="user" value="${mirth.admin.user}" />
+			<property name="password" value="${mirth.admin.password}" />
+			<property name="timeout" value="120" />
+			<property name="channels_dir" value="${mirth-components.dir.dist}/channels/ctms" />
+			<property name="deployScript_name" value="${mirth-components.dir.dist}/javascript/at-deploy-script.xml" />
+			<property name="stats_filename" value="${mirth.home}/logs/mirth_stats.log" />
+			<property name="events_filename" value="${mirth.home}/logs/mirth_events.log" />
 		</ant>
 	</target>
 
@@ -1327,8 +1374,71 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		<!-- place holder -->
 	</target>
 
+	<!-- mirth START AND STOP MACROS -->
+	<macrodef name="mirth-start" description="Starts mirth instance">
+		<attribute name="mirth.home" />
+		<sequential>
+			<echo message="Macro call: Start mirth" />
+			<exec executable="sh" osfamily="unix" dir="@{mirth.home}" spawn="true">
+				<arg line="mirth-daemon start" />
+			</exec>
+			<echo message="executing ${bda-utils.dir}/resource/psexec.exe" />
+			<exec osfamily="windows" executable="${bda-utils.dir}/resource/psexec.exe" dir="@{mirth.home}" spawn="true">
+				<env key="NOPAUSE" value="true" />
+				<arg line="-d -i -w @{mirth.home} @{mirth.home}/Mirth.exe" />
+			</exec>
+			<sleep seconds="10" />
+		</sequential>
+	</macrodef>
+
+	<macrodef name="mirth-stop" description="Stops mirth instance">
+		<attribute name="mirth.home" />
+		<sequential>
+			<echo message="Macro call: Stop mirth" />
+			<exec executable="sh" osfamily="unix" dir="@{mirth.home}" spawn="true">
+				<arg line="mirth-daemon stop" />
+			</exec>
+			<exec osfamily="windows" executable="cmd" dir="@{mirth.home}" spawn="true">
+				<arg line="/c mirth-daemon stop ${mirth.home}" />
+			</exec>
+			<sleep seconds="5" />
+		</sequential>
+	</macrodef>
+
+	<!-- activemq START MACROS -->
+	<macrodef name="activemq-start" description="Starts activemq instance">
+		<attribute name="activemq.home" />
+		<sequential>
+			<echo message="ActiveMQ call: Start activemq" />
+			<exec executable="sh" osfamily="unix" dir="@{activemq.home}" spawn="true">
+				<arg line="bin/activemq" />
+			</exec>
+			<echo message="executing ${bda-utils.dir}/resource/psexec.exe" />
+			<exec osfamily="windows" executable="${bda-utils.dir}/resource/psexec.exe" dir="@{activemq.home}/bin" spawn="true">
+				<env key="NOPAUSE" value="true" />
+				<arg line="-d -i -w @{activemq.home}/bin @{activemq.home}/bin/activemq.bat" />
+			</exec>
+			<sleep seconds="5" />
+		</sequential>
+	</macrodef>
+
+	<macrodef name="activemq-stop" description="Stops activemq instance">
+		<attribute name="activemq.home" />
+		<sequential>
+			<echo message="Macro call: Stop activemq" />
+			<exec executable="sh" osfamily="unix" dir="@{activemq.home}" spawn="true">
+				<arg line="bin/activemq-stop" />
+			</exec>
+			<exec osfamily="windows" executable="${bda-utils.dir}/resource/psexec.exe" dir="@{activemq.home}/bin" spawn="true">
+				<env key="NOPAUSE" value="true" />
+				<arg line="ECHO Use CTRL-C on the Activemq console window to stop activemq." />
+			</exec>
+			<sleep seconds="5" />
+		</sequential>
+	</macrodef>
 
 	<!-- mirth START AND STOP MACROS -->
+	<!--
 	<macrodef name="mirth-start" description="Starts mirth instance">
 		<attribute name="mirth.home" />
 		<sequential>
@@ -1358,8 +1468,9 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<sleep seconds="5" />
 		</sequential>
 	</macrodef>
-
+-->
 	<!-- activemq START MACROS -->
+	<!--
 	<macrodef name="activemq-start" description="Starts activemq instance">
 		<attribute name="activemq.home" />
 		<sequential>
@@ -1375,8 +1486,9 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<sleep seconds="5" />
 		</sequential>
 	</macrodef>
-
+-->
 	<!-- NEW TARGETS FROM CAXCHANGE INSTALL SCRIPT -->
+
 
 	<!--Verifies if there were any error in the routing-->
 	<target name="verify-routing" depends="install:init" description="Verifies if there is any changes in the routing pattern">
