@@ -679,6 +679,23 @@ Things to Do
 
 14. Merge PB and OB business services invocation strategy and make it generic
 
+15. Integrate Validation component.
+
+16. Look at what's needed under resources/.../servicemix and move it to appropirate place under the new directory structure.
+
+17. Standardize the directory structure and move the AntShell.xml and related stuff into the mirth-components root folder. Remove
+	it from the resources folder.
+	
+18. Dulicate lines and/ or targets in the install.xml dhould be consolidated during install and upgrade process. For example we faced a bug that was 
+	a result or not deleting *-tests.jar during the upgrade process. It is there in the install target. If there was not duplicate scripts, this
+	issue wouldn't not have happened.
+	
+19. To be in sync with other components in the build script, change "mirth-components.dir.dist" to "mirth-components.dir.dest". Use the concept called
+	mirth-components.dir.src. The "mirth-components.dir.src" should be pointed to "..dist/exploded/mirth-components". This will give us the flexibility
+	to move the files from "..src" to "..dest" for tokenizing purposes. We can then deploy the tokenized contents from the "...dest" location.
+	
+	Done
+
 
 
 
