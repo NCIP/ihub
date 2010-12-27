@@ -2,7 +2,7 @@ package gov.nih.nci.ihub.test;
 
 public class TestConstants {
 	
-	public static final String DELEGATED_CREDENTIAL_REF_NUMBER = "12973";
+	public static final String DELEGATED_CREDENTIAL_REF_NUMBER = "13167";
 	public static final String CERT_FILE_LOCATION = "C:/projects_svn/caBIGIntegrationHub/common/resources/ihub/ncias-c278-v.nci.nih.gov-cert.pem";
 	public static final String KEY_FILE_LOCATION = "C:/projects_svn/caBIGIntegrationHub/common/resources/ihub/ncias-c278-v.nci.nih.gov-key.pem";
 	public static final String HOST_IDENTITY = "/O=caBIG/OU=caGrid/OU=Stage LOA1/OU=Dorian/CN=dev2_ld_user";
@@ -39,4 +39,7 @@ public class TestConstants {
 	public static final String ORGANIZATION_BUSINESS_SERVICE_PAYLOAD = "<ns1:businessMessagePayload xmlns:ns1=\"http://caXchange.nci.nih.gov/messaging\"><ns1:xmlSchemaDefinition>gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain</ns1:xmlSchemaDefinition><Id xmlns=\"http://po.coppa.nci.nih.gov\" xmlns:ISO=\"uri:iso.org:21090\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" root=\"Cancer Therapy Evaluation Program Organization Identifier\"  extension=\"27002\" /></ns1:businessMessagePayload>";
 	public static final String IDENTIFIED_ORGANIZATION_URL = "https://ctms-services-po-3-1-integration.nci.nih.gov:1521/wsrf/services/cagrid/IdentifiedOrganization";
 	public static final String ORGANIZATION_URL = "https://ctms-services-po-3-1-integration.nci.nih.gov:1521/wsrf/services/cagrid/Organization";
+	
+	public static final String IDENTIFIED_PERSON_PAYLOAD = "<ns1:businessMessagePayload xmlns:ns1=\"http://caXchange.nci.nih.gov/messaging\"><ns1:xmlSchemaDefinition>gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain</ns1:xmlSchemaDefinition><ns1:Id extension=\"272810\" identifierName=\"NCI person entity identifier\" root=\"2.16.840.1.113883.3.26.4.1\" xmlns:ns1=\"http://po.coppa.nci.nih.gov\"/>                     <ns1:Id extension=\"273516\" identifierName=\"NCI person entity identifier\" root=\"2.16.840.1.113883.3.26.4.1\" xmlns:ns1=\"http://po.coppa.nci.nih.gov\"/>                     <ns1:Id extension=\"286514\" identifierName=\"NCI person entity identifier\" root=\"2.16.840.1.113883.3.26.4.1\" xmlns:ns1=\"http://po.coppa.nci.nih.gov\"/></ns1:businessMessagePayload>";
+	public static final String IDENTIFIED_PERSON_CLIENT_CLASS_NAME = "gov.nih.nci.coppa.services.structuralroles.identifiedperson.client.IdentifiedPersonClient";
 }
