@@ -211,7 +211,7 @@ public class CoppaInvocationStrategy extends GenericInvocationStrategy {
 			byte[] clientConfigAsBytes = clientConfig.toString().getBytes();
 			bais = new ByteArrayInputStream(clientConfigAsBytes);
 			List<Element> payloads = getPayloads();
-			if (logger.isDebugEnabled()) {
+			//if (logger.isDebugEnabled()) {
 				if (payloads == null) {
 					logger.debug("Payload Elements list is null.");
 				} else {
@@ -223,7 +223,7 @@ public class CoppaInvocationStrategy extends GenericInvocationStrategy {
 								+ transformer.toString(payloadElement));
 					}
 				}
-			}
+			//}
 			int payloadsIndex = 0;
 			for (Class requestPayloadClass : requestPayloadClassses) {
 				if (payloadsIndex >= payloads.size()) {
@@ -237,7 +237,8 @@ public class CoppaInvocationStrategy extends GenericInvocationStrategy {
 					Element arrayElement = payloads.get(payloadsIndex);
 					logger.debug("The array payload is:"
 							+ transformer.toString(arrayElement));
-					if ("Array".equals(arrayElement.getLocalName())) {
+					logger.debug("ArrayElement Local Name: "+arrayElement.getNodeName());
+					if ("Array".equals(arrayElement.getNodeName())) {
 						// The element is an array.
 						logger.debug("Looking for nodes:"
 								+ requestPayloadClass.getSimpleName());
@@ -250,10 +251,10 @@ public class CoppaInvocationStrategy extends GenericInvocationStrategy {
 								Node node = nodeList.item(k);
 								logger.debug("Simple Name:"
 										+ requestPayloadClass.getSimpleName()
-										+ " local:" + node.getLocalName());
-								if ((node.getLocalName() != null)
+										+ " local:" + node.getNodeName());
+								if ((node.getNodeName() != null)
 										&& (requestPayloadClass.getSimpleName()
-												.startsWith(node.getLocalName()))) {
+												.startsWith(node.getNodeName()))) {
 									String payload = transformer.toString(node);
 									logger.debug("The message payload is:"
 											+ payload);
@@ -281,9 +282,9 @@ public class CoppaInvocationStrategy extends GenericInvocationStrategy {
 									+ requestPayloadClass.getName() + "SN:"
 									+ requestPayloadClass.getSimpleName()
 									+ " Element:" + element.getNodeName() + " "
-									+ element.getLocalName());
+									+ element.getNodeName());
 							if (requestPayloadClass.getSimpleName().startsWith(
-									element.getLocalName())) {
+									element.getNodeName())) {
 								String payload = transformer.toString(element);
 								logger.debug("The message payload is:"
 										+ payload);
@@ -310,7 +311,7 @@ public class CoppaInvocationStrategy extends GenericInvocationStrategy {
 					Element element = payloads.get(payloadsIndex++);
 					logger.debug("Class:" + requestPayloadClass.getName()
 							+ " Element:" + element.getNodeName() + " "
-							+ element.getLocalName());
+							+ element.getNodeName());
 					String payload = transformer.toString(element);
 					logger.debug("The message payload is:" + payload);
 					StringReader reader = new StringReader(payload);
@@ -341,10 +342,8 @@ public class CoppaInvocationStrategy extends GenericInvocationStrategy {
 	}
 
 	public Object invokeGridOperation(Object client, Object[] requestPayload)
-			throws GridInvocationException {
-		String operationName = "";
+			throws GridInvocationException {		
 		try {
-			// operationName = message.getOperationName();
 			Method gridOperation = getClientMethod(client);
 			logger.debug("Operation Name:" + operationName);
 			Object returnObject = gridOperation.invoke(client, requestPayload);
