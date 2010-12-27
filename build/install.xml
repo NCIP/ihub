@@ -86,7 +86,8 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	<property name="openclinicaConsumerService.war.file" value="${openclinicaConsumerService.name}.war" />
 
 	<!-- mirth-components and assemblies -->
-	<property name="mirth-components.dir.dist" location="${basedir}/${mirth-components.dist.relative.dir}" />
+	<property name="mirth-components.dir.src" location="${basedir}/${mirth-components.dist.relative.dir}" />
+	<property name="mirth-components.dir.dest" location="${working.dir}/${mirth-components.dist.relative.dir}" />
 
 	<!-- Grid related properties -->
 	<property name="grid.resource.dir" location="${basedir}/${tools.dist.relative.dir}" />
@@ -215,7 +216,6 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 
 			<!-- properties added to handle sensitive properties per system's team -->
 			<filter token="database.system.password" value="${database.system.password}" />
-			<filter token="database.password" value="${database.password}" />
 			<filter token="database.llt.password" value="${database.llt.password}" />
 			<filter token="database.gme.password" value="${database.gme.password}" />
 			<filter token="tomcat.ssl.keystore.pass" value="${tomcat.ssl.keystore.pass}" />
@@ -233,6 +233,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<filter token="database.password" value="${database.password}" />
 			<filter token="database.system.url" value="${database.system.url}" /> -->
 
+			<filter token="database.username" value="${database.username}" />
 			<filter token="database.password" value="${database.password}" />
 			<filter token="database.url" value="${database.url}" />
 			<filter token="database.driver" value="${database.driver}" />
@@ -1105,6 +1106,8 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		<copy file="${caXchangeInboundService.dir.dist}/${caXchangeInboundService.war.file}" tofile="${caXchangeInboundService.dir.dist}/${caXchangeInboundService.war.file}.back" overwrite="true" />
 		<unwar src="${caXchangeInboundService.dir.dist}/${caXchangeInboundService.war.file}" dest="${working.dir}/${caXchangeInboundService.name}">
 		</unwar>
+		<delete file="${working.dir}/${caXchangeInboundService.name}/WEB-INF/lib/CaXchangeRequestProcessor-tests.jar" />
+		<delete file="${working.dir}/${caXchangeInboundService.name}/WEB-INF/lib/xercesImpl.jar" />
 		<copy todir="${temp.dir}/${caXchangeInboundService.name}" overwrite="true">
 			<fileset dir="${working.dir}/${caXchangeInboundService.name}/WEB-INF/etc/cagrid_${grid.application.name}">
 				<include name="*" />
@@ -1194,9 +1197,9 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 
 	<target name="install:mirth:mirth-components" description="Deploy mirth-components and common libraries to mirth installation" unless="exclude.tomcat" depends="init:install,init:common">
 
-		<copy todir="${mirth.home}/lib/custom" overwrite="true" file="${mirth-components.dir.dist}/ihub-mirth-components.jar" />
+		<copy todir="${mirth.home}/lib/custom" overwrite="true" file="${mirth-components.dir.src}/ihub-mirth-components.jar" />
 		<copy todir="${mirth.home}/lib/custom" overwrite="true">
-			<fileset dir="${mirth-components.dir.dist}/lib">
+			<fileset dir="${mirth-components.dir.src}/lib">
 				<include name="*.jar" />
 			</fileset>
 		</copy>
@@ -1210,36 +1213,47 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	</target>
 
 	<target name="install:mirth:channels" description="Import, deploy and starts channels in mirth" unless="exclude.tomcat" depends="init:install,init:common">
-		<ant inheritAll="false" inheritRefs="false" antfile="${mirth-components.dir.dist}/shellAnt.xml" target="import">
-			<property name="mirth_home" value="${mirth.home}" />
-			<property name="server" value="https://${tomcat.hostname}:${mirth.https.port}" />
-			<property name="user" value="${mirth.admin.user}" />
-			<property name="password" value="${mirth.admin.password}" />
-			<property name="timeout" value="120" />
-			<property name="channels_dir" value="${mirth-components.dir.dist}/channels/ctms" />
-			<property name="deployScript_name" value="${mirth-components.dir.dist}/javascript/at-deploy-script.xml" />
-			<property name="stats_filename" value="${mirth.home}/logs/mirth_stats.log" />
-			<property name="events_filename" value="${mirth.home}/logs/mirth_events.log" />
-
-		</ant>
-	</target>
-
-	<target name="install:mirth:javascripts" description="Imports the named global script for mirth channels" unless="exclude.tomcat" depends="init:install,init:common">
-		<echo message="Filtering java script" />
-		<copy todir="${mirth-components.dir.dist}\javascript\" filtering="true" overwrite="true" file="${mirth-components.dir.dist}\javascript\global-scripts\at-deploy-script.xml">
+		<copy todir="${mirth-components.dir.dest}\channels\" filtering="true" overwrite="true">
+			<fileset dir="${mirth-components.dir.src}/channels">
+				<include name="**/*" />
+			</fileset>
 			<filterset refid="embedded.filterset" />
 			<filterset>
 				<filtersfile file="${properties.file}" />
 			</filterset>
 		</copy>
-		<ant inheritAll="false" inheritRefs="false" antfile="${mirth-components.dir.dist}/shellAnt.xml" target="importscript">
+		<ant inheritAll="false" inheritRefs="false" antfile="${mirth-components.dir.src}/shellAnt.xml" target="import">
 			<property name="mirth_home" value="${mirth.home}" />
 			<property name="server" value="https://${tomcat.hostname}:${mirth.https.port}" />
 			<property name="user" value="${mirth.admin.user}" />
 			<property name="password" value="${mirth.admin.password}" />
 			<property name="timeout" value="120" />
-			<property name="channels_dir" value="${mirth-components.dir.dist}/channels/ctms" />
-			<property name="deployScript_name" value="${mirth-components.dir.dist}/javascript/at-deploy-script.xml" />
+			<property name="channels_dir" value="${mirth-components.dir.dest}/channels/ctms" />
+			<property name="deployScript_name" value="${mirth-components.dir.dest}/javascript/global-scripts/at-deploy-script.xml" />
+			<property name="stats_filename" value="${mirth.home}/logs/mirth_stats.log" />
+			<property name="events_filename" value="${mirth.home}/logs/mirth_events.log" />
+		</ant>
+	</target>
+
+	<target name="install:mirth:javascripts" description="Imports the named global script for mirth channels" unless="exclude.tomcat" depends="init:install,init:common">
+		<echo message="Filtering java script" />
+		<copy todir="${mirth-components.dir.dest}\javascript\" filtering="true" overwrite="true">
+			<fileset dir="${mirth-components.dir.src}/javascript">
+				<include name="**/*" />
+			</fileset>
+			<filterset refid="embedded.filterset" />
+			<filterset>
+				<filtersfile file="${properties.file}" />
+			</filterset>
+		</copy>
+		<ant inheritAll="false" inheritRefs="false" antfile="${mirth-components.dir.src}/shellAnt.xml" target="importscript">
+			<property name="mirth_home" value="${mirth.home}" />
+			<property name="server" value="https://${tomcat.hostname}:${mirth.https.port}" />
+			<property name="user" value="${mirth.admin.user}" />
+			<property name="password" value="${mirth.admin.password}" />
+			<property name="timeout" value="120" />
+			<property name="channels_dir" value="${mirth-components.dir.dest}/channels/ctms" />
+			<property name="deployScript_name" value="${mirth-components.dir.dest}/javascript/global-scripts/at-deploy-script.xml" />
 			<property name="stats_filename" value="${mirth.home}/logs/mirth_stats.log" />
 			<property name="events_filename" value="${mirth.home}/logs/mirth_events.log" />
 		</ant>
@@ -1492,18 +1506,18 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 
 	<!--Verifies if there were any error in the routing-->
 	<target name="verify-routing" depends="install:init" description="Verifies if there is any changes in the routing pattern">
-		<mkdir dir="${mirth-components.dir.dist}/verifyRouting/caXchangeConf" />
-		<copy todir="${mirth-components.dir.dist}/verifyRouting/caXchangeConf">
+		<mkdir dir="${mirth-components.dir.src}/verifyRouting/caXchangeConf" />
+		<copy todir="${mirth-components.dir.src}/verifyRouting/caXchangeConf">
 			<fileset dir="${common.resource.dir.dest}/conf/mirth/caXchangeConf" />
 		</copy>
-		<java dir="${mirth-components.dir.dist}/verifyRouting" jar="${mirth-components.dir.dist}/verifyRouting/caXchange-verify-routing-jar-${caXchange.version}.jar" fork="true" failonerror="true" maxmemory="128m">
+		<java dir="${mirth-components.dir.src}/verifyRouting" jar="${mirth-components.dir.src}/verifyRouting/caXchange-verify-routing-jar-${caXchange.version}.jar" fork="true" failonerror="true" maxmemory="128m">
 			<arg value="-jar" />
 			<classpath>
-				<pathelement location="${mirth-components.dir.dist}/verifyRouting/caXchange-verify-routing-jar-${caXchange.version}.jar" />
+				<pathelement location="${mirth-components.dir.src}/verifyRouting/caXchange-verify-routing-jar-${caXchange.version}.jar" />
 				<pathelement path="${java.class.path}" />
 			</classpath>
 		</java>
-		<delete dir="${mirth-components.dir.dist}/verifyRouting/caXchangeConf">
+		<delete dir="${mirth-components.dir.src}/verifyRouting/caXchangeConf">
 		</delete>
 	</target>
 
@@ -1524,7 +1538,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<transaction src="${common.dir.dest.gme}/GME_REGISTRY.sql" />
 			<transaction>commit;</transaction>
 			<classpath>
-				<fileset dir="${mirth-components.dir.dist}/lib">
+				<fileset dir="${mirth-components.dir.src}/lib">
 					<include name="*.jar" />
 				</fileset>
 			</classpath>
@@ -1536,7 +1550,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<transaction src="${common.dir.dest.gme}/GME_SCHEMA_STORE.sql" />
 			<transaction>commit;</transaction>
 			<classpath>
-				<fileset dir="${mirth-components.dir.dist}/lib">
+				<fileset dir="${mirth-components.dir.src}/lib">
 					<include name="*.jar" />
 				</fileset>
 			</classpath>
@@ -1548,7 +1562,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<transaction src="${common.dir.dest.gme}/GME_SCHEMA_CACHE.sql" />
 			<transaction>commit;</transaction>
 			<classpath>
-				<fileset dir="${mirth-components.dir.dist}/lib">
+				<fileset dir="${mirth-components.dir.src}/lib">
 					<include name="*.jar" />
 				</fileset>
 			</classpath>
@@ -1562,7 +1576,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	    		</transaction>
 			<transaction>commit;</transaction>
 			<classpath>
-				<fileset dir="${mirth-components.dir.dist}/lib">
+				<fileset dir="${mirth-components.dir.src}/lib">
 					<include name="*.jar" />
 				</fileset>
 			</classpath>
@@ -1578,7 +1592,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	    		</transaction>
 			<transaction>commit;</transaction>
 			<classpath>
-				<fileset dir="${mirth-components.dir.dist}/lib">
+				<fileset dir="${mirth-components.dir.src}/lib">
 					<include name="*.jar" />
 				</fileset>
 			</classpath>
