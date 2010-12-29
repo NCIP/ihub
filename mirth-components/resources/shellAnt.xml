@@ -296,12 +296,8 @@
 	</target>	
 
 	<target name="import" depends="init" description="Imports channel specified by path. Optional force overwrites existing channels" >
-		<echo>Importing Channels</echo>
-		<!--
-		<mirth:channel-action user="${user}" password="${password}" server="${server}" channel="${channel}" action="remove"/>
-		<mirth:deploy user="${user}" password="${password}" server="${server}" timeout="${timeout}"/>-->
+		<echo>Importing Channels</echo>		
 		<mirth:status user="${user}" password="${password}" server="${server}"/>
-
 		<for param="file">
 			<path>
 				<fileset dir="${channels_dir}" includes="**/*.xml"/>
@@ -309,7 +305,16 @@
 			</path>
 			<sequential>
 				<echo message="Importing Channel @{file}"/>
+				
+				<var name="id" unset="true"/>
+				<xmlproperty file="@{file}"  keepRoot="false"/>
+				<echo>Channel id: ${id}</echo>
+				<antcall target="removeChannel">
+					<param name="channel" value="${id}"/>
+				</antcall>
+				
 				<mirth:import user="${user}" password="${password}" server="${server}" type="channel" filename="@{file}"/>				
+				
 			</sequential>
 		</for>
 		<mirth:deploy user="${user}" password="${password}" server="${server}" timeout="${timeout}"/>		
