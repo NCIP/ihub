@@ -8,7 +8,7 @@ globalMap.put("coppa.mirth.delegation.certificate.file.path","@coppa.mirth.deleg
 globalMap.put("coppa.mirth.delegation.key.file.path","@coppa.mirth.delegation.key.file.path@");
 
 globalMap.put("caAERS.REGISTER_SUBJECT.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-caaers/services/cagrid/RegistrationConsumer");
-globalMap.put("CTOM.REGISTER_SUBJECT.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/ctom-wsrf/services/cagrid/RegistrationConsumer");
+globalMap.put("CTOM.REGISTER_SUBJECT.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-ctods/services/cagrid/RegistrationConsumer");
 globalMap.put("PSC.REGISTER_SUBJECT.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-psc/services/cagrid/RegistrationConsumer");
 globalMap.put("C3D.REGISTER_SUBJECT.url","@c3d.registration.url@");
 globalMap.put("MEDIDATA_RAVE.REGISTER_SUBJECT.url","@medidata.rave.registration.url@");
@@ -19,7 +19,7 @@ globalMap.put("MEDIDATA_RAVE.REGISTER_SUBJECT.timeout","@medidata.rave.registrat
 globalMap.put("REGISTER_SUBJECT.active.destination.count",4);
 
 globalMap.put("caAERS.STUDY_CREATION.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-caaers/services/cagrid/StudyConsumer");
-globalMap.put("CTOM.STUDY_CREATION.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/ctom-wsrf/services/cagrid/StudyConsumer");
+globalMap.put("CTOM.STUDY_CREATION.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-ctods/services/cagrid/StudyConsumer");
 globalMap.put("PSC.STUDY_CREATION.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-psc/services/cagrid/StudyConsumer");
 //UPDATE THE COUNT IF THE DESTINATION BROADCAST COUNT IS CHANGED FROM DEFAULT
 globalMap.put("STUDY_CREATION.active.destination.count",3);
@@ -37,7 +37,7 @@ globalMap.put("MEDIDATA_RAVE.LOAD_LAB_TO_CDMS.password","@medidata.rave.datacapt
 globalMap.put("MEDIDATA_RAVE.LOAD_LAB_TO_CDMS.timeout","@medidata.rave.datacapture.timeout@");
 globalMap.put("LOAD_LAB_TO_CDMS.active.destination.count",1);
 
-globalMap.put("CTOM.CT_LAB_DATA.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/ctom-wsrf/services/cagrid/LabLoader");
+globalMap.put("CTOM.CT_LAB_DATA.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-ctods/services/cagrid/LabLoader");
 globalMap.put("CT_LAB_DATA.active.destination.count",1);
 
 // PO services
