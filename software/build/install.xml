@@ -1222,6 +1222,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 				<filtersfile file="${properties.file}" />
 			</filterset>
 		</copy>
+				
 		<ant inheritAll="false" inheritRefs="false" antfile="${mirth-components.dir.src}/shellAnt.xml" target="import">
 			<property name="mirth_home" value="${mirth.home}" />
 			<property name="server" value="https://${tomcat.hostname}:${mirth.https.port}" />
