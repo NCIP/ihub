@@ -363,7 +363,7 @@ function updateMessageServiceStatus(){
         <property name="username"></property>
         <property name="specification">1.1</property>
         <property name="connectionFactoryProperties">&lt;properties&gt;
-  &lt;property name=&quot;brokerURL&quot;&gt;tcp://localhost:61616&lt;/property&gt;
+  &lt;property name=&quot;brokerURL&quot;&gt;tcp://@amq.ihub.host@:@amq.ihub.port@&lt;/property&gt;
 &lt;/properties&gt;</property>
         <property name="DataType">JMS Writer</property>
         <property name="acknowledgementMode">1</property>
