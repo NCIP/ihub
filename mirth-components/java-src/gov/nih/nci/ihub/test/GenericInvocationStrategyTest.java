@@ -35,7 +35,7 @@ public class GenericInvocationStrategyTest {
 			Subject subject = delegationServiceBean.invokeDelegationService();
 			System.out.println("SUBJECT: "+subject.toString());
 			
-			
+			/*
 			C3DRegistrationInvocationStrategy registrationC3DStrategy = new C3DRegistrationInvocationStrategy();
 			registrationC3DStrategy.setServiceType("REGISTER_SUBJECT");
 			registrationC3DStrategy.setServiceUrl(TestConstants.REGISTER_SUBJECT_C3D_URL);
@@ -61,7 +61,7 @@ public class GenericInvocationStrategyTest {
 			
 			String successResponseXML = IntegrationHubUtil.xmlToString(gridInvocationResultDocument);			
 			System.out.println(" Response: "+successResponseXML);
-			
+			*/
 			
 			/*
 			GenericInvocationStrategy ctLabDataStrategy = new GenericInvocationStrategy();
@@ -173,7 +173,7 @@ public class GenericInvocationStrategyTest {
 			System.out.println("Study Creation Response: "+IntegrationHubUtil.xmlToString(studyCreationResponse.getResult()));
 			*/
 			
-			/*
+			
 			GenericInvocationStrategy registrationInvocationStrategy = new gov.nih.nci.ihub.writer.ncies.common.GenericInvocationStrategy();
 			registrationInvocationStrategy.setServiceType("REGISTER_SUBJECT");
 			registrationInvocationStrategy.setServiceUrl(TestConstants.REGISTER_SUBJECT_CAAERS_URL);
@@ -199,7 +199,7 @@ public class GenericInvocationStrategyTest {
 			
 			System.out.println("Response Document Type: "+subjectRegistrationResponse.getResult().getNodeType());
 			System.out.println("Subject Registration Response: "+IntegrationHubUtil.xmlToString(subjectRegistrationResponse.getResult()));
-			*/
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());

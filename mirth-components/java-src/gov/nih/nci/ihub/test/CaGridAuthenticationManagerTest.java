@@ -23,8 +23,10 @@ public class CaGridAuthenticationManagerTest {
 		CaGridAuthenticationManager caGridAuthenticationManager = new CaGridAuthenticationManager(
 //				"dev1@nci",
 //				"D3v1@NC1.gov",
-				"coppagridtest",
-				"Coppa#12345",
+				"duke_admin",
+				"D3v1@NC1.gov",
+//				"coppagridtest",
+//				"Coppa#12345",
 				"https://cagrid-dorian-stage.nci.nih.gov:8443/wsrf/services/cagrid/Dorian",
 				"https://cagrid-dorian-stage.nci.nih.gov:8443/wsrf/services/cagrid/Dorian",
 				"https://cagrid-cds-stage.nci.nih.gov:8443/wsrf/services/cagrid/CredentialDelegationService",
