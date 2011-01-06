@@ -92,16 +92,6 @@
 				<include name="*.jar" />
 			</fileset>
 		</copy>
-	</target>
-
-	<target name="startMirth">
-		<echo message="Starting Mirth" />
-		<exec osfamily="windows" executable="${mirth.home}/Mirth.exe" dir="${mirth.home}" spawn="true">
-		</exec>
-	</target>
-
-	<!--<target name="importChannels" depends="startMirth">
-		<echo message="Importing Channels" />		
-	</target>-->
+	</target>		
 
 </project>
