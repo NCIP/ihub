@@ -251,6 +251,9 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 
 			<filter token="coppa.mirth.delegation.certificate.file.path" value="${mirth.home}/conf/${host.cert.file.name}" />
 			<filter token="coppa.mirth.delegation.key.file.path" value="${mirth.home}/conf/${host.key.file.name}" />
+			<filter token="amq.ihub.host" value="${amq.ihub.host}" />
+			<filter token="amq.ihub.port" value="${amq.ihub.port}" />
+
 			<filter token="" value="" />
 		</filterset>
 
