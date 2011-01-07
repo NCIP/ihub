@@ -282,7 +282,7 @@
 	<target name="removeChannel" depends="init" description="remove/delete the specified channel">
 		<echo>Deleting channel: ${channel}</echo>
 		<mirth:channel-action user="${user}" password="${password}" server="${server}" channel="${channel}" action="disable"/>
-		<mirth:deploy user="${user}" password="${password}" server="${server}" timeout="${timeout}"/>
+		<!--<mirth:deploy user="${user}" password="${password}" server="${server}" timeout="${timeout}"/>-->
 		<mirth:channel-action user="${user}" password="${password}" server="${server}" channel="${channel}" action="remove"/>        
 		<mirth:status user="${user}" password="${password}" server="${server}"/>
 		<echo/>
