@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1292267084109</time>
+    <time>1295384298765</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>142</revision>
+  <revision>163</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -501,6 +501,42 @@
       <enabled>true</enabled>
     </com.webreach.mirth.model.Connector>
     <com.webreach.mirth.model.Connector>
+      <name>Validate Payload</name>
+      <properties>
+        <property name="script">try{
+	logger.debug(&quot;Processing Validate Payload Destination&quot;);
+	var schemaFactory = globalMap.get(&quot;Schema_Factory&quot;);
+
+	var payloadValidator = new Packages.gov.nih.nci.ihub.writer.ncies.infrastructure.validation.PayloadValidator();
+	payloadValidator.setCaxchangeSchemaFactory(schemaFactory);			
+	payloadValidator.validatePayload(Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.stringToDOMDocument(
+	Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.getPayloadFromBusinessPayload($(&apos;ns1request_ns1businessmessagepayload&apos;))),
+	globalMap.get($(&apos;ns1metadata_ns1servicetype&apos;)+&quot;.namespace&quot;),$(&apos;ns1metadata_ns1servicetype&apos;));
+
+} catch (error) {	
+	logger.error(&quot;EXCEPTION OCCURED IN MIRTH DURING PAYLOAD VALIDATION&quot;);
+	
+	var errorMessage = createErrorResponseXML(new Packages.java.lang.Exception(error), &quot;VALIDATION&quot;);
+	insertCompiledTargetResponse(errorMessage, &quot;VALIDATION&quot;, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_RESPONSE_STATUS_FAULT, $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
+		
+	channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, true);
+}</property>
+        <property name="DataType">JavaScript Writer</property>
+        <property name="host">sink</property>
+      </properties>
+      <transformer>
+        <steps/>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+      </transformer>
+      <filter>
+        <rules/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+    </com.webreach.mirth.model.Connector>
+    <com.webreach.mirth.model.Connector>
       <name>Retrieve Security Subject</name>
       <properties>
         <property name="script">var subject = invokeDelegationService($(&apos;ns1metadata_ns1credentials_ns1delegatedcredentialreference&apos;), globalMap.get(&quot;delegation.certificate.file.path&quot;),
@@ -588,7 +624,19 @@ globalMap.put(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apo
 return message;</preprocessingScript>
   <postprocessingScript>// This script executes once after a message has been processed
 return;</postprocessingScript>
-  <deployScript>// This script executes once when the mule engine is started
+  <deployScript>var fileSystemSchemaFactory = new Packages.gov.nih.nci.ihub.writer.ncies.infrastructure.validation.FileSystemSchemaFactory();
+fileSystemSchemaFactory.setSchemaDirectoryLocation(globalMap.get(&quot;gme.cache.directory&quot;));
+fileSystemSchemaFactory.init();
+
+var gmeSchemaFactory = new Packages.gov.nih.nci.ihub.writer.ncies.infrastructure.validation.GMESchemaFactory();
+gmeSchemaFactory.setCacheDirectoryLocation(globalMap.get(&quot;gme.cache.directory&quot;));
+gmeSchemaFactory.setGMEGridServiceLocation(globalMap.get(&quot;gme.service.url&quot;));
+gmeSchemaFactory.init();
+
+globalMap.put(&quot;Schema_Factory&quot;, fileSystemSchemaFactory);
+//globalMap.put(&quot;Schema_Factory&quot;, gmeSchemaFactory);
+
+// This script executes once when the mule engine is started
 // You only have access to the globalMap here to persist data
 
 return;</deployScript>
