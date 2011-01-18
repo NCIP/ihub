@@ -32,10 +32,10 @@ public class PayloadValidatorTest {
 //			Schema schema = fileSystemSchemaFactory.getSchema(
 //					"REGISTER_SUBJECT",
 //					"gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain");
-			Schema schema = gmeSchemaFactory.getSchema(
-					"REGISTER_SUBJECT",
-					"gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain");
-			System.out.println("Schema: " + schema.toString());
+//			Schema schema = gmeSchemaFactory.getSchema(
+//					"REGISTER_SUBJECT",
+//					"gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain");
+//			System.out.println("Schema: " + schema.toString());
 			PayloadValidator payloadValidator = new PayloadValidator();
 			//payloadValidator.setCaxchangeSchemaFactory(fileSystemSchemaFactory);
 			payloadValidator.setCaxchangeSchemaFactory(gmeSchemaFactory);
@@ -48,8 +48,6 @@ public class PayloadValidatorTest {
 									.getPayloadFromBusinessPayload(TestConstants.REGISTER_SUBJECT_PAYLOAD)),
 							"gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain",
 							"REGISTER_SUBJECT");
-		} catch (SchemaFactoryException e) {
-			fail(e.getMessage());
 		} catch (PayloadValidationException e) {
 			fail("Payload Validation Failed: "+e.getMessage());
 		}
