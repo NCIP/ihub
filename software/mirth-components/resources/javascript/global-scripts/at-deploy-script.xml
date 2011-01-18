@@ -15,19 +15,23 @@ globalMap.put("MEDIDATA_RAVE.REGISTER_SUBJECT.url","@medidata.rave.registration.
 globalMap.put("MEDIDATA_RAVE.REGISTER_SUBJECT.username","@medidata.rave.registration.username@");
 globalMap.put("MEDIDATA_RAVE.REGISTER_SUBJECT.password","@medidata.rave.registration.password@");
 globalMap.put("MEDIDATA_RAVE.REGISTER_SUBJECT.timeout","@medidata.rave.registration.timeout@");
+globalMap.put("REGISTER_SUBJECT.namespace","gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain");
 //UPDATE THE COUNT IF THE DESTINATION BROADCAST COUNT IS CHANGED FROM DEFAULT
 globalMap.put("REGISTER_SUBJECT.active.destination.count",4);
 
 globalMap.put("caAERS.STUDY_CREATION.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-caaers/services/cagrid/StudyConsumer");
 globalMap.put("CTOM.STUDY_CREATION.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-ctods/services/cagrid/StudyConsumer");
 globalMap.put("PSC.STUDY_CREATION.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-psc/services/cagrid/StudyConsumer");
+globalMap.put("STUDY_CREATION.namespace","gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain");
 //UPDATE THE COUNT IF THE DESTINATION BROADCAST COUNT IS CHANGED FROM DEFAULT
 globalMap.put("STUDY_CREATION.active.destination.count",3);
 
 globalMap.put("PSC.SCHEDULE_MODIFICATION.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-psc/services/cagrid/AdverseEventConsumer");
+globalMap.put("SCHEDULE_MODIFICATION.namespace","gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.ae.domain");
 globalMap.put("SCHEDULE_MODIFICATION.active.destination.count",1);
 
 globalMap.put("caAERS.LAB_BASED_AE.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-caaers/services/cagrid/LabConsumerService");
+globalMap.put("LAB_BASED_AE.namespace","gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain.loadlabs");
 globalMap.put("LAB_BASED_AE.active.destination.count",1);
 
 globalMap.put("C3D.LOAD_LAB_TO_CDMS.url","@load.lab.url@");
@@ -35,6 +39,7 @@ globalMap.put("MEDIDATA_RAVE.LOAD_LAB_TO_CDMS.url","@medidata.rave.datacapture.u
 globalMap.put("MEDIDATA_RAVE.LOAD_LAB_TO_CDMS.username","@medidata.rave.datacapture.username@");
 globalMap.put("MEDIDATA_RAVE.LOAD_LAB_TO_CDMS.password","@medidata.rave.datacapture.password@");
 globalMap.put("MEDIDATA_RAVE.LOAD_LAB_TO_CDMS.timeout","@medidata.rave.datacapture.timeout@");
+globalMap.put("LOAD_LAB_TO_CDMS.namespace","gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain.loadlabs");
 globalMap.put("LOAD_LAB_TO_CDMS.active.destination.count",1);
 
 globalMap.put("CTOM.CT_LAB_DATA.url","@suite.gridsvc.protocol@://@suite.gridsvc.host@:@suite.gridsvc.port@/wsrf-ctods/services/cagrid/LabLoader");
@@ -92,5 +97,8 @@ globalMap.put("database.driver","@database.driver@");
 globalMap.put("database.url","@database.url@");
 globalMap.put("database.username","@database.username@");
 globalMap.put("database.password","@database.password@");
+
+globalMap.put("gme.service.url","@gme.service.url@");
+globalMap.put("gme.cache.directory","@gme.cache.directory@");
 
 return;
