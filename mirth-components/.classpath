@@ -37,6 +37,7 @@
 	<classpathentry kind="lib" path="lib/axis2-adb-codegen-1.4.1.jar"/>
 	<classpathentry kind="lib" path="lib/axis2-codegen-1.4.1.jar"/>
 	<classpathentry kind="lib" path="lib/axis2-kernel-1.4.1.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-annotations-3.0alpha3.jar"/>
 	<classpathentry kind="src" path="java-src"/>
 	<classpathentry kind="lib" path="lib/resolver-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/axis-url-1.2RC2.jar"/>
