@@ -106,6 +106,7 @@ public class HubConstants {
 	public static final String TARGET_DETAIL_DELEGATION = "DELEGATION";
 	public static final String TARGET_DETAIL_C3D = "C3D";
 	public static final String TARGET_DETAIL_MEDIDATA_RAVE = "MEDIDATA_RAVE";
+	public static final String TARGET_DETAIL_VALIDATION = "VALIDATION";
 	
 	//client-config.wsdd location
 	public static final String WSDD_FILE_LOCATION_PREFIX = "wsdd/";
