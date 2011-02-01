@@ -695,6 +695,15 @@ Things to Do
 	to move the files from "..src" to "..dest" for tokenizing purposes. We can then deploy the tokenized contents from the "...dest" location.
 	
 	Done
+	
+20. The next iHub deployment (m4 or rc1) required a new iHub database installation.
+
+21. Send release notes for M3. Santosh: look at the scope email on 12/09/10 and keep it at that level.
+
+22. Verified that getPersonByCtepId works in dev2 on the current tag. However I have not been able to verify getOrganizationByCtepId, 
+	the sample data that I have does not bring up any results on COPPA integration tier. There is an issue with iHub-MirthConnect 
+	that results in the NPE if the first call to COPPA results in an exception. Comprehensive exception handling is going to be 
+	part of our next milestone/release candidate where this can be handled.
 
 
 
