@@ -1,6 +1,11 @@
 package gov.nih.nci.ihub.test;
 
 import static org.junit.Assert.fail;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+
+import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
 import gov.nih.nci.ihub.writer.ncies.exception.AuthenticationConfigurationException;
 import gov.nih.nci.ihub.writer.ncies.exception.AuthenticationErrorException;
 import gov.nih.nci.ihub.writer.ncies.infrastructure.CaGridAuthenticationManager;
@@ -43,7 +48,20 @@ public class CaGridAuthenticationManagerTest {
 		try {
 			System.out.println("Delegated Credential Reference: "
 						+ caGridAuthenticationManager
-							.getDelegatedCredentialReference());	
+							.getDelegatedCredentialReference());
+			
+			SAMLAssertion assertion = caGridAuthenticationManager.authenticate();
+			 try{
+				    // Create file 
+				    FileWriter fstream = new FileWriter("C://SAML_Token.xml");
+				        BufferedWriter out = new BufferedWriter(fstream);
+				    out.write(assertion.toString());
+				    //Close the output stream
+				    out.close();
+				    }catch (Exception e){//Catch exception if any
+				      System.err.println("Error: " + e.getMessage());
+				    }
+			System.out.println("SAML Token "+assertion.toString());
 			
 		} catch (AuthenticationErrorException e) {
 			fail(e.getMessage());
