@@ -255,7 +255,7 @@ function retrieveOverallBroadcastResponseFromDB(varMessageID){
     <tooltip>Generic Aggregator Function that aggregates responses from one or more suite target services</tooltip>
     <code>function aggregateBroadcastResponse(varServiceType, varBusinessMessagePayload, varConsumerIdentifier, varMessageID){
 	try{
-		logger.debug(&quot;aggregateBroadcastResponse() - start&quot;);
+		logger.debug(&quot;aggregateBroadcastResponse() - START&quot;);
 		var activeDestinationCount = globalMap.get(varServiceType+&quot;.active.destination.count&quot;);
 		logger.debug(&quot;Active Destination Count in : &quot;+activeDestinationCount);
 
@@ -314,7 +314,7 @@ function retrieveOverallBroadcastResponseFromDB(varMessageID){
 								varMessageID, aggregatedResponse);
 		logger.info(&quot;OverallResponseString in aggregateBroadcastResponse(): &quot;+overallResponseString);
 		updateMessageServiceResponseInDB(isFailureOverallResponse, overallResponseString, varMessageID, Packages.gov.nih.nci.ihub.util.HubConstants.MESSAGE_STATUS_PROCESSED);
-		logger.debug(&quot;aggregateBroadcastResponse() - end&quot;);
+		logger.debug(&quot;aggregateBroadcastResponse() - END&quot;);
 		return overallResponseString;
 	} catch (error) {	
 		logger.error(&quot;EXCEPTION OCCURED IN MIRTH RESPONSE AGGREGATOR &quot;+error);
@@ -364,6 +364,44 @@ function retrieveOverallBroadcastResponseFromDB(varMessageID){
 		channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, true);
 		return &quot;&quot;;
 	}
+}</code>
+    <type>FUNCTION</type>
+    <scope>2</scope>
+  </com.webreach.mirth.model.CodeTemplate>
+  <com.webreach.mirth.model.CodeTemplate>
+    <id>5d3618d3-df2d-45ad-a45f-22337a138fb5</id>
+    <name>recordMessageProcessingError</name>
+    <tooltip>Sets variable such that further message processing is filtered. Also records the error in the database</tooltip>
+    <code>function recordMessageProcessingError(varError, varTargetDetailsCode, varMessageID, varExternalID, varBusinessMessageSchemaDefinition){
+	logger.debug(&quot;recordMessageProcessingError() - START&quot;);
+	channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, true);	
+	var errorMessage = createErrorResponseXML(new Packages.java.lang.Exception(varError), varTargetDetailsCode);
+	insertCompiledTargetResponse(errorMessage, varTargetDetailsCode, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_RESPONSE_STATUS_FAULT, varMessageID);
+	var gridInvocationResult = new Packages.gov.nih.nci.ihub.writer.ncies.common.GridInvocationResult(true, 
+								createErrorResponseNode(new Packages.java.lang.Exception(varError), varTargetDetailsCode).getFirstChild(), false);
+	var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenerateResponseBean();
+	var overallResponseString = generateResponseBean.generateResponseFromTargetResponse(varExternalID, 
+									varMessageID, generateResponseBean.createOutputDocument(varTargetDetailsCode, 
+									new Packages.java.lang.String(&quot;&quot;), varBusinessMessageSchemaDefinition, gridInvocationResult));
+	updateMessageServiceResponseInDB(true, overallResponseString, varMessageID, Packages.gov.nih.nci.ihub.util.HubConstants.MESSAGE_STATUS_PROCESSED);
+	logger.debug(&quot;recordMessageProcessingError() - END&quot;);
+}
+</code>
+    <type>FUNCTION</type>
+    <scope>2</scope>
+  </com.webreach.mirth.model.CodeTemplate>
+  <com.webreach.mirth.model.CodeTemplate>
+    <id>f136d2d9-958a-40fb-9215-4b561762fc0e</id>
+    <name>validatePayload</name>
+    <tooltip>Validates message payload and returns an error if the validation failes. Returns nothing if the validation is successful</tooltip>
+    <code>function validatePayload(varSchemaFactory, varNamespace, varServiceType, varBusinessMessagePayload){
+	logger.debug(&quot;validatePayload() - START&quot;);
+	var payloadValidator = new Packages.gov.nih.nci.ihub.writer.ncies.infrastructure.validation.PayloadValidator();	
+	payloadValidator.setCaxchangeSchemaFactory(varSchemaFactory);			
+	payloadValidator.validatePayload(Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.stringToDOMDocument(
+		Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.getPayloadFromBusinessPayload(varBusinessMessagePayload)),
+		varNamespace,varServiceType);
+	logger.debug(&quot;validatePayload() - END&quot;);
 }</code>
     <type>FUNCTION</type>
     <scope>2</scope>
