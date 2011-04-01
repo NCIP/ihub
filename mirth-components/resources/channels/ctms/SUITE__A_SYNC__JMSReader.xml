@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1295384298765</time>
+    <time>1301673517765</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>163</revision>
+  <revision>215</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -31,13 +31,17 @@
       <steps>
         <com.webreach.mirth.model.Step>
           <sequenceNumber>0</sequenceNumber>
-          <name>Namespace setting</name>
-          <script>default xml namespace = &quot;http://caXchange.nci.nih.gov/messaging&quot;</script>
+          <name>Initialize variables</name>
+          <script>default xml namespace = &quot;http://caXchange.nci.nih.gov/messaging&quot;
+
+channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, false);</script>
           <type>JavaScript</type>
           <data class="map">
             <entry>
               <string>Script</string>
-              <string>default xml namespace = &quot;http://caXchange.nci.nih.gov/messaging&quot;</string>
+              <string>default xml namespace = &quot;http://caXchange.nci.nih.gov/messaging&quot;
+
+channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, false);</string>
             </entry>
           </data>
         </com.webreach.mirth.model.Step>
@@ -479,8 +483,8 @@
         <property name="script">insertIncomingMessageInDB($(&apos;ns1metadata_ns1caxchangeidentifier&apos;), $(&apos;ns1request_ns1businessmessagepayload&apos;), 
 	Packages.gov.nih.nci.ihub.util.HubConstants.MESSAGE_STATUS_IN_PROCESS, $(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;), $(&apos;ns1metadata&apos;));</property>
         <property name="password"></property>
-        <property name="host">query</property>
         <property name="driver">org.postgresql.Driver</property>
+        <property name="host">query</property>
       </properties>
       <transformer>
         <steps/>
@@ -505,44 +509,14 @@
       <properties>
         <property name="script">try{
 	logger.debug(&quot;Processing Validate Payload Destination&quot;);
-	var schemaFactory = globalMap.get(&quot;Schema_Factory&quot;);
-
-	var payloadValidator = new Packages.gov.nih.nci.ihub.writer.ncies.infrastructure.validation.PayloadValidator();
-	payloadValidator.setCaxchangeSchemaFactory(schemaFactory);			
-	payloadValidator.validatePayload(Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.stringToDOMDocument(
-	Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.getPayloadFromBusinessPayload($(&apos;ns1request_ns1businessmessagepayload&apos;))),
-	globalMap.get($(&apos;ns1metadata_ns1servicetype&apos;)+&quot;.namespace&quot;),$(&apos;ns1metadata_ns1servicetype&apos;));
-
-} catch (error) {	
-	logger.error(&quot;EXCEPTION OCCURED IN MIRTH DURING PAYLOAD VALIDATION&quot;);
-	
-	var errorMessage = createErrorResponseXML(new Packages.java.lang.Exception(error), &quot;VALIDATION&quot;);
-	insertCompiledTargetResponse(errorMessage, &quot;VALIDATION&quot;, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_RESPONSE_STATUS_FAULT, $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
-		
-	channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, true);
-}</property>
-        <property name="DataType">JavaScript Writer</property>
-        <property name="host">sink</property>
-      </properties>
-      <transformer>
-        <steps/>
-        <inboundProtocol>XML</inboundProtocol>
-        <outboundProtocol>XML</outboundProtocol>
-      </transformer>
-      <filter>
-        <rules/>
-      </filter>
-      <transportName>JavaScript Writer</transportName>
-      <mode>DESTINATION</mode>
-      <enabled>true</enabled>
-    </com.webreach.mirth.model.Connector>
-    <com.webreach.mirth.model.Connector>
-      <name>Retrieve Security Subject</name>
-      <properties>
-        <property name="script">var subject = invokeDelegationService($(&apos;ns1metadata_ns1credentials_ns1delegatedcredentialreference&apos;), globalMap.get(&quot;delegation.certificate.file.path&quot;),
-	 globalMap.get(&quot;delegation.key.file.path&quot;), Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_DETAIL_DELEGATION, $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
-
-globalMap.put(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;), subject);</property>
+	validatePayload(globalMap.get(&quot;Schema_Factory&quot;), globalMap.get($(&apos;ns1metadata_ns1servicetype&apos;)+&quot;.namespace&quot;), $(&apos;ns1metadata_ns1servicetype&apos;), 
+		$(&apos;ns1request_ns1businessmessagepayload&apos;));
+} catch (error) {
+	logger.error(&quot;EXCEPTION OCCURED IN MIRTH DURING PAYLOAD VALIDATION: &quot;+error.message);
+	recordMessageProcessingError(error, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_DETAIL_VALIDATION, $(&apos;ns1metadata_ns1caxchangeidentifier&apos;),
+			$(&apos;ns1metadata_ns1externalidentifier&apos;), $(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;));
+}
+</property>
         <property name="DataType">JavaScript Writer</property>
         <property name="host">sink</property>
       </properties>
@@ -556,7 +530,119 @@ globalMap.put(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apo
         </inboundProperties>
       </transformer>
       <filter>
-        <rules/>
+        <rules>
+          <com.webreach.mirth.model.Rule>
+            <sequenceNumber>0</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;IS_IHUB_PROCESSING_ERROR&apos;)&quot; equals false</name>
+            <data class="map">
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>false</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;IS_IHUB_PROCESSING_ERROR&apos;)</string>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Accept</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;IS_IHUB_PROCESSING_ERROR&apos;) == false)
+{
+return true;
+}
+return false;</script>
+            <operator>NONE</operator>
+          </com.webreach.mirth.model.Rule>
+        </rules>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+    </com.webreach.mirth.model.Connector>
+    <com.webreach.mirth.model.Connector>
+      <name>Retrieve Security Subject</name>
+      <properties>
+        <property name="script">try{	
+	var subject = invokeDelegationService($(&apos;ns1metadata_ns1credentials_ns1delegatedcredentialreference&apos;), globalMap.get(&quot;delegation.certificate.file.path&quot;),
+	 				globalMap.get(&quot;delegation.key.file.path&quot;), Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_DETAIL_DELEGATION, 
+					$(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
+	globalMap.put(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apos;), subject);
+} catch (error) {
+	logger.error(&quot;EXCEPTION OCCURED IN MIRTH WHILE OBTAINING SUBJECT: &quot;+error.message);
+	recordMessageProcessingError(error, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_DETAIL_DELEGATION, $(&apos;ns1metadata_ns1caxchangeidentifier&apos;),
+			$(&apos;ns1metadata_ns1externalidentifier&apos;), $(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;));
+}</property>
+        <property name="DataType">JavaScript Writer</property>
+        <property name="host">sink</property>
+      </properties>
+      <transformer>
+        <steps/>
+        <inboundTemplate></inboundTemplate>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">false</property>
+        </inboundProperties>
+      </transformer>
+      <filter>
+        <rules>
+          <com.webreach.mirth.model.Rule>
+            <sequenceNumber>0</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;IS_IHUB_PROCESSING_ERROR&apos;)&quot; equals false</name>
+            <data class="map">
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>false</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;IS_IHUB_PROCESSING_ERROR&apos;)</string>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Accept</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;IS_IHUB_PROCESSING_ERROR&apos;) == false)
+{
+return true;
+}
+return false;</script>
+            <operator>NONE</operator>
+          </com.webreach.mirth.model.Rule>
+        </rules>
       </filter>
       <transportName>JavaScript Writer</transportName>
       <mode>DESTINATION</mode>
@@ -580,14 +666,54 @@ globalMap.put(&quot;subject&quot;+$(&apos;ns1metadata_ns1caxchangeidentifier&apo
         </inboundProperties>
       </transformer>
       <filter>
-        <rules/>
+        <rules>
+          <com.webreach.mirth.model.Rule>
+            <sequenceNumber>0</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;IS_IHUB_PROCESSING_ERROR&apos;)&quot; equals false</name>
+            <data class="map">
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>false</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;IS_IHUB_PROCESSING_ERROR&apos;)</string>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Accept</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;IS_IHUB_PROCESSING_ERROR&apos;) == false)
+{
+return true;
+}
+return false;</script>
+            <operator>NONE</operator>
+          </com.webreach.mirth.model.Rule>
+        </rules>
       </filter>
       <transportName>Channel Writer</transportName>
       <mode>DESTINATION</mode>
       <enabled>true</enabled>
     </com.webreach.mirth.model.Connector>
     <com.webreach.mirth.model.Connector>
-      <name>Suite Outbound JMS Writer</name>
+      <name>Suite A-Sync JMSWriter</name>
       <properties>
         <property name="DataType">Channel Writer</property>
         <property name="synchronised">1</property>
@@ -626,6 +752,7 @@ return message;</preprocessingScript>
 return;</postprocessingScript>
   <deployScript>var fileSystemSchemaFactory = new Packages.gov.nih.nci.ihub.writer.ncies.infrastructure.validation.FileSystemSchemaFactory();
 fileSystemSchemaFactory.setSchemaDirectoryLocation(globalMap.get(&quot;gme.cache.directory&quot;));
+//fileSystemSchemaFactory.setSchemaDirectoryLocation(&apos;C:/projects_svn/ihub-mirth/trunk/software/common/resources/payloadSchemas&apos;);
 fileSystemSchemaFactory.init();
 
 var gmeSchemaFactory = new Packages.gov.nih.nci.ihub.writer.ncies.infrastructure.validation.GMESchemaFactory();
