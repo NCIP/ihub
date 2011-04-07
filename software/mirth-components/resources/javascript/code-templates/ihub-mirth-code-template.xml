@@ -50,46 +50,39 @@
 
 
 function delegateSynchronousRequest(varServiceType, varTargetInvocationStrategy, varMessageID, varExternalID, varOperationName, varBusinessMessageXMLSchemaDefinition){
+	logger.debug(&quot;delegateSynchronousRequest() - START&quot;);
 	var	varTargetDetailsCode = varTargetInvocationStrategy.getServiceProviderName();
 	var isFailureOverallResponse = false;
 	var overallResponseString;
 	var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenerateResponseBean();
-	try{
-		if (varBusinessMessageXMLSchemaDefinition == undefined){
-			varBusinessMessageXMLSchemaDefinition = &quot;&quot;;
-		}
-		gridInvocationResult = varTargetInvocationStrategy.invokeGridService(false);
-
-		if(gridInvocationResult.isFault()){		
-			if(gridInvocationResult.isRetry()){
-				var retryAttempt=0;
-				var totalRetryAttempts = globalMap.get(&quot;target.grid.service.retry.attempts&quot;);
-				for (retryAttempt=0; retryAttempt&lt;totalRetryAttempts; retryAttempt++)
-				{
-					logger.info(varTargetDetailsCode+&quot; Retry Attempt: &quot;+retryAttempt);
-					gridInvocationResult = varTargetInvocationStrategy.invokeGridService(false);
-					if(gridInvocationResult.isFault()){
-						isFailureOverallResponse = true;
-						continue;
-					} else {
-						break;
-					}
-				}
-			} else {
-				isFailureOverallResponse = true;
-			}
-		}		
-		overallResponseString = generateResponseBean.generateResponseFromTargetResponse(varExternalID, 
-								varMessageID, generateResponseBean.createOutputDocument(varTargetDetailsCode, varOperationName, varBusinessMessageXMLSchemaDefinition, gridInvocationResult));		
-		updateMessageServiceResponseInDB(isFailureOverallResponse, &quot;&quot;, varMessageID, Packages.gov.nih.nci.ihub.util.HubConstants.MESSAGE_STATUS_RESPONSE_RETURNED);
-
-	} catch (error) {	
-		logger.error(&quot;EXCEPTION OCCURED IN MIRTH DURING &quot;+varTargetDetailsCode+&quot; INVOCATION: &quot;+error);
-		gridInvocationResult = new Packages.gov.nih.nci.ihub.writer.ncies.common.GridInvocationResult(true, createErrorResponseNode(new Packages.java.lang.Exception(error), varTargetDetailsCode), false);
-		overallResponseString = generateResponseBean.generateResponseFromTargetResponse(varExternalID, 
-								varMessageID, generateResponseBean.createOutputDocument(varTargetDetailsCode, varOperationName, varBusinessMessageXMLSchemaDefinition, gridInvocationResult));		
-		updateMessageServiceResponseInDB(true, &quot;&quot;, varMessageID, Packages.gov.nih.nci.ihub.util.HubConstants.MESSAGE_STATUS_RESPONSE_RETURNED);
+	if (varBusinessMessageXMLSchemaDefinition == undefined){
+		varBusinessMessageXMLSchemaDefinition = &quot;&quot;;
 	}
+	gridInvocationResult = varTargetInvocationStrategy.invokeGridService(false);
+
+	if(gridInvocationResult.isFault()){		
+		if(gridInvocationResult.isRetry()){
+			var retryAttempt=0;
+			var totalRetryAttempts = globalMap.get(&quot;target.grid.service.retry.attempts&quot;);
+			for (retryAttempt=0; retryAttempt&lt;totalRetryAttempts; retryAttempt++)
+			{
+				logger.info(varTargetDetailsCode+&quot; Retry Attempt: &quot;+retryAttempt);
+				gridInvocationResult = varTargetInvocationStrategy.invokeGridService(false);
+				if(gridInvocationResult.isFault()){
+					isFailureOverallResponse = true;
+					continue;
+				} else {
+					break;
+				}
+			}
+		} else {
+			isFailureOverallResponse = true;
+		}
+	}		
+	overallResponseString = generateResponseBean.generateResponseFromTargetResponse(varExternalID, 
+							varMessageID, generateResponseBean.createOutputDocument(varTargetDetailsCode, varOperationName, varBusinessMessageXMLSchemaDefinition, gridInvocationResult));		
+	updateMessageServiceResponseInDB(isFailureOverallResponse, &quot;&quot;, varMessageID, Packages.gov.nih.nci.ihub.util.HubConstants.MESSAGE_STATUS_RESPONSE_RETURNED);
+	logger.debug(&quot;delegateSynchronousRequest() - END&quot;);
 	return overallResponseString;
 }
 
@@ -350,20 +343,13 @@ function retrieveOverallBroadcastResponseFromDB(varMessageID){
     <name>invokeDelegationService</name>
     <tooltip>Invokes the caGrid Credential Delegation Service and returns a security Subject</tooltip>
     <code>function invokeDelegationService(varDelegatedCredentialReference, varCertFilePath, varKeyFilePath, varTargetDetailsCode, varMessageID){
-	try{		
-		var delegateServiceBean = new Packages.gov.nih.nci.ihub.writer.ncies.infrastructure.InvokeDelegationServiceBean($(&apos;ns1metadata_ns1credentials_ns1grididentifier&apos;), 
-						varDelegatedCredentialReference, varCertFilePath, varKeyFilePath, globalMap.get(&quot;user.proxy.cache.time.to.live&quot;));
-		var subject = delegateServiceBean.invokeDelegationService();		
-		logger.info(&quot;Subject in function invokeDelegationService(): &quot;+subject);	
-		return subject;
-	} catch (error) {	
-		logger.error(&quot;EXCEPTION OCCURED IN MIRTH DURING &quot;+varTargetDetailsCode+&quot; INVOCATION: &quot;+error);
-		var errorMessage = createErrorResponseXML(new Packages.java.lang.Exception(error), varTargetDetailsCode);
-		insertCompiledTargetResponse(errorMessage, varTargetDetailsCode, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_RESPONSE_STATUS_FAULT, varMessageID);
-		
-		channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, true);
-		return &quot;&quot;;
-	}
+	logger.debug(&quot;invokeDelegationService() - START&quot;);
+	var delegateServiceBean = new Packages.gov.nih.nci.ihub.writer.ncies.infrastructure.InvokeDelegationServiceBean($(&apos;ns1metadata_ns1credentials_ns1grididentifier&apos;), 
+								varDelegatedCredentialReference, varCertFilePath, varKeyFilePath, globalMap.get(&quot;user.proxy.cache.time.to.live&quot;));
+	var subject = delegateServiceBean.invokeDelegationService();		
+	logger.debug(&quot;Subject in function invokeDelegationService(): &quot;+subject);	
+	logger.debug(&quot;invokeDelegationService() - END&quot;);
+	return subject;	
 }</code>
     <type>FUNCTION</type>
     <scope>2</scope>
@@ -372,7 +358,7 @@ function retrieveOverallBroadcastResponseFromDB(varMessageID){
     <id>5d3618d3-df2d-45ad-a45f-22337a138fb5</id>
     <name>recordMessageProcessingError</name>
     <tooltip>Sets variable such that further message processing is filtered. Also records the error in the database</tooltip>
-    <code>function recordMessageProcessingError(varError, varTargetDetailsCode, varMessageID, varExternalID, varBusinessMessageSchemaDefinition){
+    <code>function recordMessageProcessingError(varError, varTargetDetailsCode, varMessageID, varExternalID, varBusinessMessageSchemaDefinition, varMessageStatus){
 	logger.debug(&quot;recordMessageProcessingError() - START&quot;);
 	channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, true);	
 	var errorMessage = createErrorResponseXML(new Packages.java.lang.Exception(varError), varTargetDetailsCode);
@@ -383,8 +369,9 @@ function retrieveOverallBroadcastResponseFromDB(varMessageID){
 	var overallResponseString = generateResponseBean.generateResponseFromTargetResponse(varExternalID, 
 									varMessageID, generateResponseBean.createOutputDocument(varTargetDetailsCode, 
 									new Packages.java.lang.String(&quot;&quot;), varBusinessMessageSchemaDefinition, gridInvocationResult));
-	updateMessageServiceResponseInDB(true, overallResponseString, varMessageID, Packages.gov.nih.nci.ihub.util.HubConstants.MESSAGE_STATUS_PROCESSED);
+	updateMessageServiceResponseInDB(true, overallResponseString, varMessageID, varMessageStatus);
 	logger.debug(&quot;recordMessageProcessingError() - END&quot;);
+	return overallResponseString;
 }
 </code>
     <type>FUNCTION</type>
