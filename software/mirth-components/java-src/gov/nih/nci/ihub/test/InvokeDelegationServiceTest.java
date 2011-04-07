@@ -1,10 +1,12 @@
 package gov.nih.nci.ihub.test;
 
 import static org.junit.Assert.fail;
+import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
+import gov.nih.nci.ihub.writer.ncies.infrastructure.InvokeDelegationServiceBean;
+
+import java.io.ByteArrayInputStream;
 
 import javax.security.auth.Subject;
-
-import gov.nih.nci.ihub.writer.ncies.infrastructure.InvokeDelegationServiceBean;
 
 import org.junit.Test;
 
@@ -21,6 +23,12 @@ public class InvokeDelegationServiceTest {
 		try {
 			Subject subject = delegationServiceBean.invokeDelegationService();
 			System.out.println("SUBJECT: "+subject.toString());
+			
+			ByteArrayInputStream bStream = new ByteArrayInputStream(subject.toString().getBytes());
+			SAMLAssertion samlAssertion = new SAMLAssertion(bStream);
+			System.out.println("SAML Assertion: "+samlAssertion.toString());
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
