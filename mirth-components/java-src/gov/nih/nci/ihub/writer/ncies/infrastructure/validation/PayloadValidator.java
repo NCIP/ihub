@@ -83,9 +83,12 @@ public class PayloadValidator {
 
 				parser.parse(st.toStreamSource(source).getInputStream(),
 						validatingErrorHandler);
-
-				System.setProperty("javax.xml.parsers.SAXParserFactory",
-						propertyValue);
+				
+				if(propertyValue == null){
+					System.clearProperty("javax.xml.parsers.SAXParserFactory");
+				}
+//				System.setProperty("javax.xml.parsers.SAXParserFactory",
+//						propertyValue);
 				long timeAfter = new java.util.Date().getTime();
 				logger.debug("Time for validation:" + (timeAfter - timeBefore));
 			} else {
