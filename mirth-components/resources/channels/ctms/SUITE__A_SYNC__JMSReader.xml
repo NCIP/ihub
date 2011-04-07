@@ -8,7 +8,7 @@
     <time>1301673517765</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>215</revision>
+  <revision>217</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -514,7 +514,8 @@ channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, false);</string>
 } catch (error) {
 	logger.error(&quot;EXCEPTION OCCURED IN MIRTH DURING PAYLOAD VALIDATION: &quot;+error.message);
 	recordMessageProcessingError(error, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_DETAIL_VALIDATION, $(&apos;ns1metadata_ns1caxchangeidentifier&apos;),
-			$(&apos;ns1metadata_ns1externalidentifier&apos;), $(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;));
+			$(&apos;ns1metadata_ns1externalidentifier&apos;), $(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;), 
+			Packages.gov.nih.nci.ihub.util.HubConstants.MESSAGE_STATUS_PROCESSED);
 }
 </property>
         <property name="DataType">JavaScript Writer</property>
@@ -587,7 +588,8 @@ return false;</script>
 } catch (error) {
 	logger.error(&quot;EXCEPTION OCCURED IN MIRTH WHILE OBTAINING SUBJECT: &quot;+error.message);
 	recordMessageProcessingError(error, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_DETAIL_DELEGATION, $(&apos;ns1metadata_ns1caxchangeidentifier&apos;),
-			$(&apos;ns1metadata_ns1externalidentifier&apos;), $(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;));
+			$(&apos;ns1metadata_ns1externalidentifier&apos;), $(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;), 
+			Packages.gov.nih.nci.ihub.util.HubConstants.MESSAGE_STATUS_PROCESSED);
 }</property>
         <property name="DataType">JavaScript Writer</property>
         <property name="host">sink</property>

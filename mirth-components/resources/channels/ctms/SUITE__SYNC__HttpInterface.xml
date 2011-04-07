@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1292970088140</time>
+    <time>1302190440421</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>213</revision>
+  <revision>232</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -445,11 +445,17 @@ channelMap.put(&quot;ihubBusinessMessagePayloadDocument&quot;, ihubBusinessMessa
     <com.webreach.mirth.model.Connector>
       <name>Retrieve Security Subject</name>
       <properties>
-        <property name="script">//var subject = invokeDelegationService($(&apos;coppaDelegatedCredentialRef&apos;), globalMap.get(&quot;delegation.certificate.file.path&quot;),
-//	 globalMap.get(&quot;delegation.key.file.path&quot;), globalMap.get(&quot;target.detail.code.delegation&quot;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
-
-//channelMap.put(&quot;coppaSubject&quot;, subject);
-return;</property>
+        <property name="script">try{	
+	var subject = invokeDelegationService($(&apos;coppaDelegatedCredentialRef&apos;), globalMap.get(&quot;coppa.mirth.delegation.certificate.file.path&quot;),
+	 				globalMap.get(&quot;coppa.mirth.delegation.key.file.path&quot;), globalMap.get(&quot;target.detail.code.delegation&quot;), 
+					$(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
+	channelMap.put(&quot;coppaSubject&quot;, subject);	
+} catch (error) {
+	logger.error(&quot;EXCEPTION OCCURED IN MIRTH WHILE OBTAINING COPPA SUBJECT: &quot;+error.message);
+	var overallResponseString = recordMessageProcessingError(error, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_DETAIL_DELEGATION, $(&apos;ns1metadata_ns1caxchangeidentifier&apos;),
+			$(&apos;ns1metadata_ns1externalidentifier&apos;), $(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;));
+	channelMap.put(&quot;overallResponseString&quot;, overallResponseString);
+}</property>
         <property name="DataType">JavaScript Writer</property>
         <property name="host">sink</property>
       </properties>
@@ -458,78 +464,24 @@ return;</property>
           <com.webreach.mirth.model.Step>
             <sequenceNumber>0</sequenceNumber>
             <name>Retrieve Security Subject</name>
-            <script>logger.info(&quot;Invoking Delegation Service&quot;);
+            <script>/*
+logger.info(&quot;Invoking Delegation Service&quot;);
 var subject = invokeDelegationService($(&apos;coppaDelegatedCredentialRef&apos;), globalMap.get(&quot;coppa.mirth.delegation.certificate.file.path&quot;),
 	 globalMap.get(&quot;coppa.mirth.delegation.key.file.path&quot;), globalMap.get(&quot;target.detail.code.delegation&quot;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
 logger.info(&quot;Subject: &quot;+subject);
 channelMap.put(&quot;coppaSubject&quot;, subject);
-
-
-
-
-
-
-
-//use this function to replace success and error response XML functions
-function createResponseXML(varGridInvocationResult, varTargetDetailCode, varRequestXMLSchemaDefinition, varIsError){
-	var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenerateResponseBean();
-	if(varIsError){
-		var gridInvocationResultDocument = generateResponseBean.createErrorDocument(varTargetDetailCode, new Packages.java.lang.String(&quot;&quot;),
-			 varException);
-	} else{
-		var gridInvocationResultDocument = generateResponseBean.createOutputDocument(varTargetDetailCode, new Packages.java.lang.String(&quot;&quot;),
-			varRequestXMLSchemaDefinition, varGridInvocationResult);
-	}	
-	var successResponseXML = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(gridInvocationResultDocument);
-	return successResponseXML;
-}
-
-
-function createErrorResponseXML(varException, varTargetDetailCode){
-	var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenerateResponseBean();
-	var gridInvocationResultDocument = generateResponseBean.createErrorDocument(varTargetDetailCode, new Packages.java.lang.String(&quot;&quot;),
-			 varException);
-	var errorResponseXML = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(gridInvocationResultDocument);
-	return errorResponseXML;
-}</script>
+*/</script>
             <type>JavaScript</type>
             <data class="map">
               <entry>
                 <string>Script</string>
-                <string>logger.info(&quot;Invoking Delegation Service&quot;);
+                <string>/*
+logger.info(&quot;Invoking Delegation Service&quot;);
 var subject = invokeDelegationService($(&apos;coppaDelegatedCredentialRef&apos;), globalMap.get(&quot;coppa.mirth.delegation.certificate.file.path&quot;),
 	 globalMap.get(&quot;coppa.mirth.delegation.key.file.path&quot;), globalMap.get(&quot;target.detail.code.delegation&quot;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
 logger.info(&quot;Subject: &quot;+subject);
 channelMap.put(&quot;coppaSubject&quot;, subject);
-
-
-
-
-
-
-
-//use this function to replace success and error response XML functions
-function createResponseXML(varGridInvocationResult, varTargetDetailCode, varRequestXMLSchemaDefinition, varIsError){
-	var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenerateResponseBean();
-	if(varIsError){
-		var gridInvocationResultDocument = generateResponseBean.createErrorDocument(varTargetDetailCode, new Packages.java.lang.String(&quot;&quot;),
-			 varException);
-	} else{
-		var gridInvocationResultDocument = generateResponseBean.createOutputDocument(varTargetDetailCode, new Packages.java.lang.String(&quot;&quot;),
-			varRequestXMLSchemaDefinition, varGridInvocationResult);
-	}	
-	var successResponseXML = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(gridInvocationResultDocument);
-	return successResponseXML;
-}
-
-
-function createErrorResponseXML(varException, varTargetDetailCode){
-	var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenerateResponseBean();
-	var gridInvocationResultDocument = generateResponseBean.createErrorDocument(varTargetDetailCode, new Packages.java.lang.String(&quot;&quot;),
-			 varException);
-	var errorResponseXML = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(gridInvocationResultDocument);
-	return errorResponseXML;
-}</string>
+*/</string>
               </entry>
             </data>
           </com.webreach.mirth.model.Step>
@@ -546,7 +498,47 @@ function createErrorResponseXML(varException, varTargetDetailCode){
         </outboundProperties>
       </transformer>
       <filter>
-        <rules/>
+        <rules>
+          <com.webreach.mirth.model.Rule>
+            <sequenceNumber>0</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;IS_IHUB_PROCESSING_ERROR&apos;)&quot; equals false</name>
+            <data class="map">
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>false</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;IS_IHUB_PROCESSING_ERROR&apos;)</string>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Accept</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;IS_IHUB_PROCESSING_ERROR&apos;) == false)
+{
+return true;
+}
+return false;</script>
+            <operator>NONE</operator>
+          </com.webreach.mirth.model.Rule>
+        </rules>
       </filter>
       <transportName>JavaScript Writer</transportName>
       <mode>DESTINATION</mode>
@@ -555,21 +547,33 @@ function createErrorResponseXML(varException, varTargetDetailCode){
     <com.webreach.mirth.model.Connector>
       <name>COPPA Invoker</name>
       <properties>
-        <property name="script">logger.debug(&quot;Processing COPPA Invoker destination&quot;);
-var targetGlobalInvocationStrategy = globalMap.get($(&apos;ns1metadata_ns1servicetype&apos;)+&quot;_Strategy&quot;);
+        <property name="script">try{
+	var targetGlobalInvocationStrategy = globalMap.get($(&apos;ns1metadata_ns1servicetype&apos;)+&quot;_Strategy&quot;);
 
-var targetInvocationStrategy = targetGlobalInvocationStrategy.getClass().newInstance();
-targetInvocationStrategy.copyCommonContents(targetGlobalInvocationStrategy);
-targetInvocationStrategy.init();
+	var targetInvocationStrategy = targetGlobalInvocationStrategy.getClass().newInstance();
+	targetInvocationStrategy.copyCommonContents(targetGlobalInvocationStrategy);
+	targetInvocationStrategy.init();
 
-targetInvocationStrategy.setStrategySpecificVariables($(&apos;ns1metadata_ns1operationname&apos;), 
+	targetInvocationStrategy.setStrategySpecificVariables($(&apos;ns1metadata_ns1operationname&apos;), 
 							$(&apos;ns1metadata_ns1servicetype&apos;), $(&apos;ihubBusinessMessagePayloadDocument&apos;), $(&apos;coppaSubject&apos;), $(&apos;ns1metadata_ns1servicetype&apos;));
 
 
-var overallResponseString = delegateSynchronousRequest($(&apos;ns1metadata_ns1servicetype&apos;), targetInvocationStrategy, 
+	var overallResponseString = delegateSynchronousRequest($(&apos;ns1metadata_ns1servicetype&apos;), targetInvocationStrategy, 
 								$(&apos;ns1metadata_ns1caxchangeidentifier&apos;), $(&apos;ns1metadata_ns1externalidentifier&apos;), 
 								$(&apos;ns1metadata_ns1operationname&apos;), $(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;));
-channelMap.put(&quot;overallResponseString&quot;, overallResponseString);</property>
+	channelMap.put(&quot;overallResponseString&quot;, overallResponseString);
+} catch (error) {
+	logger.error(&quot;EXCEPTION OCCURED IN MIRTH WHILE INVOKING COPPA: &quot;+error.message);
+	var overallResponseString = recordMessageProcessingError(error, $(&apos;ns1metadata_ns1servicetype&apos;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;),
+			$(&apos;ns1metadata_ns1externalidentifier&apos;), $(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;), 
+			Packages.gov.nih.nci.ihub.util.HubConstants.MESSAGE_STATUS_RESPONSE_RETURNED);
+	channelMap.put(&quot;overallResponseString&quot;, overallResponseString);
+}
+
+
+
+
+</property>
         <property name="DataType">JavaScript Writer</property>
         <property name="host">sink</property>
       </properties>
@@ -588,7 +592,7 @@ channelMap.put(&quot;overallResponseString&quot;, overallResponseString);</prope
         <rules>
           <com.webreach.mirth.model.Rule>
             <sequenceNumber>0</sequenceNumber>
-            <name>Reject message if &quot;$(&apos;IS_IHUB_PROCESSING_ERROR&apos;)&quot; equals true</name>
+            <name>Accept message if &quot;$(&apos;IS_IHUB_PROCESSING_ERROR&apos;)&quot; equals false</name>
             <data class="map">
               <entry>
                 <string>OriginalField</string>
@@ -597,7 +601,7 @@ channelMap.put(&quot;overallResponseString&quot;, overallResponseString);</prope
               <entry>
                 <string>Values</string>
                 <list>
-                  <string>true</string>
+                  <string>false</string>
                 </list>
               </entry>
               <entry>
@@ -614,15 +618,15 @@ channelMap.put(&quot;overallResponseString&quot;, overallResponseString);</prope
               </entry>
               <entry>
                 <string>Accept</string>
-                <string>0</string>
+                <string>1</string>
               </entry>
             </data>
             <type>Rule Builder</type>
-            <script>if($(&apos;IS_IHUB_PROCESSING_ERROR&apos;) == true)
+            <script>if($(&apos;IS_IHUB_PROCESSING_ERROR&apos;) == false)
 {
-return false;
+return true;
 }
-return true;</script>
+return false;</script>
             <operator>NONE</operator>
           </com.webreach.mirth.model.Rule>
         </rules>
@@ -663,7 +667,7 @@ return true;</script>
     <property name="initialState">started</property>
     <property name="synchronous">true</property>
     <property name="store_messages">true</property>
-    <property name="encryptData">true</property>
+    <property name="encryptData">false</property>
     <property name="transactional">false</property>
     <property name="max_message_age">-1</property>
     <property name="dont_store_filtered">false</property>
