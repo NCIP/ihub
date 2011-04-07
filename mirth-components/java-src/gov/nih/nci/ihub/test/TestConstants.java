@@ -2,7 +2,7 @@ package gov.nih.nci.ihub.test;
 
 public class TestConstants {
 	
-	public static final String DELEGATED_CREDENTIAL_REF_NUMBER = "13513";
+	public static final String DELEGATED_CREDENTIAL_REF_NUMBER = "16994";
 	public static final String CERT_FILE_LOCATION = "C:/projects_svn/caBIGIntegrationHub/common/resources/ihub/ncias-c278-v.nci.nih.gov-cert.pem";
 	public static final String KEY_FILE_LOCATION = "C:/projects_svn/caBIGIntegrationHub/common/resources/ihub/ncias-c278-v.nci.nih.gov-key.pem";
 	public static final String HOST_IDENTITY = "/O=caBIG/OU=caGrid/OU=Stage LOA1/OU=Dorian/CN=dev2_ld_user";
