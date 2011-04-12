@@ -101,4 +101,10 @@ globalMap.put("database.password","@database.password@");
 globalMap.put("gme.service.url","@gme.service.url@");
 globalMap.put("gme.cache.directory","@gme.cache.directory@");
 
+// ######## COPPA CAGRID PROPERTIES ##########
+globalMap.put("coppa.authentication.user", "@coppa.authentication.user@");
+globalMap.put("coppa.authentication.password", "@coppa.authentication.password@");
+globalMap.put("coppa.authentication.url", "@coppa.authentication.url@");
+globalMap.put("coppa.dorian.url", "@coppa.dorian.url@");
+
 return;
