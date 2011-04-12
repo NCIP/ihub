@@ -393,4 +393,20 @@ function retrieveOverallBroadcastResponseFromDB(varMessageID){
     <type>FUNCTION</type>
     <scope>2</scope>
   </com.webreach.mirth.model.CodeTemplate>
+  <com.webreach.mirth.model.CodeTemplate>
+    <id>bc9546f7-b719-46f2-9ade-3f4fb80edd95</id>
+    <name>getCagridSubject</name>
+    <tooltip>Using caGrid credential and by using caGrid authentication service, returns Subject</tooltip>
+    <code>function getCagridSubject(varUsername, varPassword, varAuthenticationServiceURL, varDorianServiceURL){
+	logger.debug(&quot;getCagridSubject() - START&quot;);
+	var caGridAuthenticationManager = new Packages.gov.nih.nci.ihub.writer.ncies.infrastructure.CaGridAuthenticationManager(varUsername, 
+								varPassword, varAuthenticationServiceURL, varDorianServiceURL);
+	var subject = caGridAuthenticationManager.getSubject();		
+	logger.debug(&quot;Subject in function getCagridSubject(): &quot;+subject);	
+	logger.debug(&quot;getCagridSubject() - END&quot;);
+	return subject;	
+}</code>
+    <type>FUNCTION</type>
+    <scope>2</scope>
+  </com.webreach.mirth.model.CodeTemplate>
 </list>
