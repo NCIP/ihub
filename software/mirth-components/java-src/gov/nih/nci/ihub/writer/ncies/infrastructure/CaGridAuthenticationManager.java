@@ -14,14 +14,18 @@ import gov.nih.nci.cagrid.dorian.stubs.types.InvalidProxyFault;
 import gov.nih.nci.cagrid.dorian.stubs.types.PermissionDeniedFault;
 import gov.nih.nci.cagrid.dorian.stubs.types.UserPolicyFault;
 import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
+import gov.nih.nci.caxchange.security.CaXchangePrincipal;
 import gov.nih.nci.ihub.writer.ncies.exception.AuthenticationConfigurationException;
 import gov.nih.nci.ihub.writer.ncies.exception.AuthenticationErrorException;
 
 import java.rmi.RemoteException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.security.auth.Subject;
 
 import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.log4j.LogManager;
@@ -44,7 +48,7 @@ public class CaGridAuthenticationManager {
 
 	private ProxyLifetime proxyLifetime = null;
 
-	private static Map<String, GlobusCredential> cache = new HashMap<String, GlobusCredential>(2);
+	private static Map<String, GlobusCredential> gridProxycache = new HashMap<String, GlobusCredential>(2);
 	
 	private static Map<String, String> delegationCredentialCache = new HashMap<String, String>(2);
 	
@@ -63,6 +67,15 @@ public class CaGridAuthenticationManager {
 		this.credentialDelegationServiceURL = credentialDelegationServiceURL;
 		this.proxyLifetimeHours = proxyLifetimeHours;		
 		this.hostIdentity = hostIdentity;
+	}
+	
+	public CaGridAuthenticationManager(String username, String password,
+			String authenticationServiceURL, String dorianServiceURL) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.authenticationServiceURL = authenticationServiceURL;
+		this.dorianServiceURL = dorianServiceURL;
 	}
 
 	/**
@@ -98,6 +111,43 @@ public class CaGridAuthenticationManager {
 
 		} catch (Exception e) {
 			logger.error("Error authenticating", e);
+			throw e;
+		}
+	}
+	
+	/**
+	 * Authenticate the user credentials and retrieve samlAssertion for
+	 * authentication Service Obtain the GlobusCredential for the Authenticated
+	 * User 
+	 * 
+	 * @return javax.security.auth.Subject
+	 * @throws Exception
+	 */
+	public Subject getSubject() throws Exception {
+		if (logger.isDebugEnabled()) {
+			logger.debug("getSubject() - start");
+		}
+		try {			
+			verifyUserCredential(dorianServiceURL, authenticationServiceURL,username, password);
+			GlobusCredential userCredential = getCachedCredential(dorianServiceURL, authenticationServiceURL, username,password);
+			if (userCredential == null) {
+				logger.debug("User credential not set or is expired.");
+				SAMLAssertion samlAssertion = authenticate();
+				userCredential = obtainProxy(samlAssertion);
+				setCachedCredential(dorianServiceURL, authenticationServiceURL,username, password, userCredential);				
+			}
+			
+			Subject subject = new Subject();
+			CaXchangePrincipal principal = new CaXchangePrincipal();
+			principal.setName(userCredential.getIdentity());
+			subject.getPrincipals().add((Principal) principal);
+			subject.getPrivateCredentials().add(userCredential);
+			
+			logger.debug("getSubject() - end");
+			return subject;
+
+		} catch (Exception e) {
+			logger.error("Error getting GlobusCredential", e);
 			throw e;
 		}
 	}
@@ -221,7 +271,7 @@ public class CaGridAuthenticationManager {
 			logger.debug("getCachedCredential(String, String, String, String) - start");
 		}
 
-		GlobusCredential returnGlobusCredential = cache.get(authenticationServiceUrl + user);
+		GlobusCredential returnGlobusCredential = gridProxycache.get(authenticationServiceUrl + user);
 		if (logger.isDebugEnabled()) {
 			logger.debug("getCachedCredential(String, String, String, String) - end");
 		}
@@ -234,7 +284,7 @@ public class CaGridAuthenticationManager {
 			logger.debug("setCachedCredential(String, String, String, String, GlobusCredential) - start");
 		}
 
-		cache.put(authenticationServiceUrl + user, userCreds);
+		gridProxycache.put(authenticationServiceUrl + user, userCreds);
 
 		if (logger.isDebugEnabled()) {
 			logger.debug("setCachedCredential(String, String, String, String, GlobusCredential) - end");
