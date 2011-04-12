@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1302190440421</time>
+    <time>1302636949812</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>232</revision>
+  <revision>239</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -446,14 +446,14 @@ channelMap.put(&quot;ihubBusinessMessagePayloadDocument&quot;, ihubBusinessMessa
       <name>Retrieve Security Subject</name>
       <properties>
         <property name="script">try{	
-	var subject = invokeDelegationService($(&apos;coppaDelegatedCredentialRef&apos;), globalMap.get(&quot;coppa.mirth.delegation.certificate.file.path&quot;),
-	 				globalMap.get(&quot;coppa.mirth.delegation.key.file.path&quot;), globalMap.get(&quot;target.detail.code.delegation&quot;), 
-					$(&apos;ns1metadata_ns1caxchangeidentifier&apos;));
+	var subject = getCagridSubject(globalMap.get(&quot;coppa.authentication.user&quot;), globalMap.get(&quot;coppa.authentication.password&quot;),
+	 				globalMap.get(&quot;coppa.authentication.url&quot;), globalMap.get(&quot;coppa.dorian.url&quot;));
 	channelMap.put(&quot;coppaSubject&quot;, subject);	
 } catch (error) {
 	logger.error(&quot;EXCEPTION OCCURED IN MIRTH WHILE OBTAINING COPPA SUBJECT: &quot;+error.message);
-	var overallResponseString = recordMessageProcessingError(error, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_DETAIL_DELEGATION, $(&apos;ns1metadata_ns1caxchangeidentifier&apos;),
-			$(&apos;ns1metadata_ns1externalidentifier&apos;), $(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;));
+	var overallResponseString = recordMessageProcessingError(error, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_DETAIL_AUTHENTICATION, $(&apos;ns1metadata_ns1caxchangeidentifier&apos;),
+			$(&apos;ns1metadata_ns1externalidentifier&apos;), $(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;),
+			Packages.gov.nih.nci.ihub.util.HubConstants.MESSAGE_STATUS_RESPONSE_RETURNED);
 	channelMap.put(&quot;overallResponseString&quot;, overallResponseString);
 }</property>
         <property name="DataType">JavaScript Writer</property>
