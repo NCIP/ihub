@@ -178,7 +178,7 @@ invoked java code are NOT getting printed. Other than these ALL TESTED SUCCESSFU
 
 usage-packets-common-4.0.3.jar
 usage-wsrf-tools-test-4.0.3.jar
-verify-routing.jar
+verify-routing.jar  (this file has the log4j.xml that is controlling the log level)
 wsdl4j-1.1.jar
 wss4j-4.0.3.jar
 
@@ -750,7 +750,7 @@ Request using Apache Commons HttpClient:
 
 
 
-Find PID for a particular port in use
+Find PID for a particular port in use on Windows
 ----------------------------------------------
 Netstat -a -n -o | findstr 1099
 
