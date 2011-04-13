@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1302636949812</time>
+    <time>1302706211000</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>239</revision>
+  <revision>240</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -29,9 +29,9 @@
           <sequenceNumber>0</sequenceNumber>
           <name>Extract Message</name>
           <script>var nonencodedSyncMsg = Packages.java.net.URLDecoder.decode(msg[&apos;synchronous_msg&apos;].toString());
-var coppaDelegatedCredentialRefFromMsg = Packages.java.net.URLDecoder.decode(msg[&apos;coppa_delegated_credential_ref&apos;].toString());
+//var coppaDelegatedCredentialRefFromMsg = Packages.java.net.URLDecoder.decode(msg[&apos;coppa_delegated_credential_ref&apos;].toString());
 
-channelMap.put(&apos;coppaDelegatedCredentialRef&apos;, coppaDelegatedCredentialRefFromMsg);
+//channelMap.put(&apos;coppaDelegatedCredentialRef&apos;, coppaDelegatedCredentialRefFromMsg);
 channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, false);
 
 //var reqXML = SerializerFactory.getHL7Serializer(false, false, false).toXML(nonencodedhl7);
@@ -41,9 +41,9 @@ msg = new XML(nonencodedSyncMsg);</script>
             <entry>
               <string>Script</string>
               <string>var nonencodedSyncMsg = Packages.java.net.URLDecoder.decode(msg[&apos;synchronous_msg&apos;].toString());
-var coppaDelegatedCredentialRefFromMsg = Packages.java.net.URLDecoder.decode(msg[&apos;coppa_delegated_credential_ref&apos;].toString());
+//var coppaDelegatedCredentialRefFromMsg = Packages.java.net.URLDecoder.decode(msg[&apos;coppa_delegated_credential_ref&apos;].toString());
 
-channelMap.put(&apos;coppaDelegatedCredentialRef&apos;, coppaDelegatedCredentialRefFromMsg);
+//channelMap.put(&apos;coppaDelegatedCredentialRef&apos;, coppaDelegatedCredentialRefFromMsg);
 channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, false);
 
 //var reqXML = SerializerFactory.getHL7Serializer(false, false, false).toXML(nonencodedhl7);
