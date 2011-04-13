@@ -8,12 +8,9 @@ import gov.nih.nci.cagrid.caxchange.listener.ResponseHandler;
 import gov.nih.nci.cagrid.caxchange.stubs.types.CaXchangeFault;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.caxchange.ResponseMessage;
-import gov.nih.nci.ihub.writer.ncies.infrastructure.CaGridAuthenticationManager;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.rmi.RemoteException;
 import java.util.Date;
@@ -63,12 +60,6 @@ public class CaXchangeRequestProcessorImpl extends CaXchangeRequestProcessorImpl
 	private static final String MIRTH_HTTP_LISTENER_USER = "mirth.http.listener.user";
 	private static final String MIRTH_HTTP_LISTENER_PASSWORD = "mirth.http.listener.password";
 	private static final String MIRTH_HTTP_LISTENER_URL = "mirth.http.listener.url";
-	private static final String COPPA_AUTH_USER ="coppa.authentication.user";			
-	private static final String COPPA_AUTH_PASS = "coppa.authentication.password";			
-	private static final String COPPA_AUTH_URL = "coppa.authentication.url";			
-	private static final String COPPA_DORIAN_URL = "coppa.dorian.url";			
-	private static final String COPPA_DELEG_URL = "coppa.delegation.url";
-	private static final String COPPA_HOST_IDENT = "coppa.mirth.cagrid.host.identity";
 	
 	
 	public CaXchangeRequestProcessorImpl() throws RemoteException {
@@ -298,21 +289,9 @@ public class CaXchangeRequestProcessorImpl extends CaXchangeRequestProcessorImpl
 
 			HttpClient client = new HttpClient();
 			BufferedReader br = null;
-			String credential = "";			
-			String gridUser = properties.getProperty(COPPA_AUTH_USER);			
-			String gridUserPassword = properties.getProperty(COPPA_AUTH_PASS);			
-			String authenticationServiceUrl = properties.getProperty(COPPA_AUTH_URL);			
-			String dorianServiceUrl = properties.getProperty(COPPA_DORIAN_URL);			
-			String delegationServiceUrl = properties.getProperty(COPPA_DELEG_URL);
-			String mirthHostIdentity = properties.getProperty(COPPA_HOST_IDENT);
 			String mirthHttpUrl = properties.getProperty(MIRTH_HTTP_LISTENER_URL);
 			String mirthHttpListenerUser = properties.getProperty(MIRTH_HTTP_LISTENER_USER);
 			String mirthHttpListenerPassowrd = properties.getProperty(MIRTH_HTTP_LISTENER_PASSWORD);
-
-			CaGridAuthenticationManager caGridAuthenticationManager = new CaGridAuthenticationManager(
-						gridUser, gridUserPassword, authenticationServiceUrl, dorianServiceUrl, delegationServiceUrl, 12, mirthHostIdentity);
-			credential = caGridAuthenticationManager.getDelegatedCredentialReference();				
-			logger.debug("Delegated credentials are: "+credential);
 						
 			ResponseMessage responseMessageToClient = new ResponseMessage();
 
@@ -325,7 +304,6 @@ public class CaXchangeRequestProcessorImpl extends CaXchangeRequestProcessorImpl
 			logger.debug("Synchronous Message: "+reqMessage);
 			
 			method.addParameter("synchronous_msg", reqMessage);
-			method.addParameter("coppa_delegated_credential_ref", credential);
 			method.addRequestHeader(MIRTH_HTTP_LISTENER_USER, mirthHttpListenerUser);
 			method.addRequestHeader(MIRTH_HTTP_LISTENER_PASSWORD, mirthHttpListenerPassowrd);
 
@@ -341,8 +319,6 @@ public class CaXchangeRequestProcessorImpl extends CaXchangeRequestProcessorImpl
 					while ((readLine = br.readLine()) != null) {			
 						responseStringBuffer.append(readLine);
 					}
-					//Reader reader = new StringReader(readLine);
-					//responseMessageToClient = (ResponseMessage) Utils.deserializeObject(reader,ResponseMessage.class);
 					
 					ResponseHandler responseHandler = new ResponseHandler();
 			        responseHandler.setResponseText(responseStringBuffer.toString());
