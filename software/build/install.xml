@@ -88,6 +88,18 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	<!-- mirth-components and assemblies -->
 	<property name="mirth-components.dir.src" location="${basedir}/${mirth-components.dist.relative.dir}" />
 	<property name="mirth-components.dir.dest" location="${working.dir}/${mirth-components.dist.relative.dir}" />
+	
+	<!-- Set the activemq download properties based on the operating system -->
+	<condition property="activemq.binaries.file" value="${activemq.linux.binaries.file}">
+			<or>
+				<os family="unix" />
+				<os family="mac" />
+			</or>
+	</condition>
+	<condition property="activemq.binaries.file" value="${activemq.windows.binaries.file}">
+			<os family="windows" />
+	</condition>
+	
 
 	<!-- Grid related properties -->
 	<property name="grid.resource.dir" location="${basedir}/${tools.dist.relative.dir}" />
@@ -443,7 +455,8 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		install:post:mirth,
  		install:mirth:start,
 		install:mirth:channels,
-		install:mirth:javascripts
+		install:mirth:javascripts,
+		install:mirth:templates
 		">
 	</target>
 
@@ -689,7 +702,9 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		<if>
 			<os family="unix" />
 			<then>
-				<chmod dir="${mirth.home}/bin" perm="ugo+rx" includes="**/*.sh" />
+				<chmod dir="${mirth.home}" perm="ugo+rx" includes="**/*.sh" />
+				<chmod dir="${mirth.home}" perm="ugo+rx" includes="**/mirth-daemon" />
+				<chmod dir="${mirth.home}" perm="ugo+rx" includes="**/wrapper*" />
 			</then>
 		</if>
 	</target>
@@ -697,12 +712,19 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	<target name="install:activemq:binaries" description="Install activemq binaries" unless="exclude.activemq" depends="init:install,init:common">
 		<delete dir="${activemq.home}" />
 		<dirname file="${activemq.home}" property="activemq.base.dir" />
-		<unzip dest="${application.base.path}" src="${tools.dir}/${activemq.binaries.file}" />
 		<if>
-			<os family="unix" />
+			<os family="windows" />
 			<then>
-				<chmod dir="${activemq.home}/bin" perm="ugo+rx" includes="**/*.sh" />
+			        <unzip dest="${activemq.base.dir}" src="${tools.dir}/${activemq.binaries.file}" />
 			</then>
+			<else>
+			        <gunzip src="${tools.dir}/${activemq.binaries.file}"/>
+			        <propertyregex property="activemq.binaries.tar.file" input="${activemq.binaries.file}" regexp=".gz$" replace="" />
+			        <untar src="${tools.dir}/${activemq.binaries.tar.file}" dest="${activemq.base.dir}"/>
+			        <copy  file="${common.resource.dir.dest}/bin/activemq/unix/activemq-stop" todir="${activemq.home}/bin" />
+			        <chmod dir="${activemq.home}" perm="ugo+rx" includes="bin/activemq" />
+			        <chmod dir="${activemq.home}" perm="ugo+rx" includes="bin/activemq-stop" />
+			</else>
 		</if>
 	</target>
 
@@ -711,7 +733,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	</target>
 
 	<target name="install:mirth:configure" description="Configure mirth (change ports)" unless="exclude.mirth">
-		<groovy>
+		  <groovy>
 	               File mirthPropertiesFile = new File(properties['mirth.home']+"/conf/mirth.properties")
 	               println mirthPropertiesFile.toURL()
 	               def java.util.Properties mirthProps = new java.util.Properties()
@@ -723,7 +745,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	               def java.util.Properties props = config.toProperties()
 	               java.io.FileOutputStream mirthPropertiesFOS = new FileOutputStream(mirthPropertiesFile)
 	               props.store(mirthPropertiesFOS, 'Configuration - updated by the Suite installer')
-	            </groovy>
+	           </groovy>
 	</target>
 
 	<target name="install:activemq:configure" description="Configure activemq (change ports)" unless="exclude.activemq">
@@ -755,7 +777,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 
 	<target name="install:mirth:stop" description="Stop mirth" unless="exclude.mirth" depends="init:install,init:common">
 		<if>
-			<available file="${mirth.home}/mirth-start-stop.bat" />
+			<available file="${mirth.home}/mirth-daemon" />
 			<then>
 				<echo message="Shutting down mirth" />
 				<mirth-stop mirth.home="${mirth.home}" />
@@ -1248,7 +1270,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		</ant>
 	</target>
 
-	<target name="install:mirth:javascripts" description="Imports the named global script for mirth channels" unless="exclude.tomcat" depends="init:install,init:common">
+	<target name="install:mirth:javascripts" description="Imports the named global script for mirth channels" unless="exclude.mirth" depends="init:install,init:common">
 		<echo message="Filtering java script" />
 		<copy todir="${mirth-components.dir.dest}\javascript\" filtering="true" overwrite="true">
 			<fileset dir="${mirth-components.dir.src}/javascript">
@@ -1271,6 +1293,30 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			<property name="events_filename" value="${mirth.home}/logs/mirth_events.log" />
 		</ant>
 	</target>
+	
+	<target name="install:mirth:templates" description="Imports the code template for mirth channels" unless="exclude.mirth" depends="init:install,init:common">
+		<echo message="Filtering java script" />
+		<copy todir="${mirth-components.dir.dest}\javascript\" filtering="true" overwrite="true">
+			<fileset dir="${mirth-components.dir.src}/javascript">
+				<include name="**/*" />
+			</fileset>
+			<filterset refid="embedded.filterset" />
+			<filterset>
+				<filtersfile file="${properties.file}" />
+			</filterset>
+		</copy>
+		<ant inheritAll="false" inheritRefs="false" antfile="${mirth-components.dir.src}/shellAnt.xml" target="importtemplate">
+			<property name="mirth_home" value="${mirth.home}" />
+			<property name="server" value="https://${tomcat.hostname}:${mirth.https.port}" />
+			<property name="user" value="${mirth.admin.user}" />
+			<property name="password" value="${mirth.admin.password}" />
+			<property name="timeout" value="120" />
+			<property name="channels_dir" value="${mirth-components.dir.dest}/channels/ctms" />
+			<property name="deployScript_name" value="${mirth-components.dir.dest}/javascript/code-templates/ihub-mirth-code-template.xml" />
+			<property name="stats_filename" value="${mirth.home}/logs/mirth_stats.log" />
+			<property name="events_filename" value="${mirth.home}/logs/mirth_events.log" />
+		</ant>
+	</target>	
 
 	<target name="upgrade-ncm:mirth:mirth-components" description="Deploy mirth-components and common libraries to mirth installation" unless="exclude.tomcat" depends="init:install,init:common,install:mirth:mirth-components">
 

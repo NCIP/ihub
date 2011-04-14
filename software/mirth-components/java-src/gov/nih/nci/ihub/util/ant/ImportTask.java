@@ -4,13 +4,16 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.tools.ant.BuildException;
 
 import com.webreach.mirth.client.core.ClientException;
 import com.webreach.mirth.model.Channel;
+import com.webreach.mirth.model.CodeTemplate;
 import com.webreach.mirth.model.ServerConfiguration;
 import com.webreach.mirth.model.converters.ObjectXMLSerializer;
 import com.webreach.mirth.model.util.ImportConverter;
@@ -28,6 +31,7 @@ public class ImportTask extends AbstractMirthTask
 	private final String		TYPE_CHANNEL	= "channel";
 	private final String		TYPE_CONFIG		= "config";
 	private final String		TYPE_SCRIPT		= "script";
+	private final String        TYPE_TEMPLATE   = "template";
 	
 	private final String		SCRIPT_DEPLOY	= "Deploy";
 	private final String		SCRIPT_PRE		= "Preprocessor";
@@ -89,6 +93,8 @@ public class ImportTask extends AbstractMirthTask
 					commandImportChannel();
 				} else if( type.equalsIgnoreCase( TYPE_CONFIG ) ) {
 					commandImportConfig();
+				} else if( type.equalsIgnoreCase( TYPE_TEMPLATE ) ) {
+					commandImportTemplate();
 				} else if( type.equalsIgnoreCase( TYPE_SCRIPT ) ) {
 					if( script.length() > 0 ) {
 						commandImportScript();	
@@ -125,6 +131,24 @@ public class ImportTask extends AbstractMirthTask
 		}
 		
 		disconnectClient();
+	}
+	
+	private void commandImportTemplate() throws ClientException, BuildException 
+	{
+		connectClient();
+		
+		File fXml = new File( filename );
+		
+		if( !fXml.exists() ) {
+			throw( new BuildException( "" + filename + " not found" ) );
+		} else if( !fXml.canRead() ) {
+			throw( new BuildException( "cannot read " + filename ) );
+		} else {
+			doImportTemplate( fXml );
+		}
+		
+		disconnectClient();
+		
 	}
 	
 	
@@ -203,6 +227,28 @@ public class ImportTask extends AbstractMirthTask
 		client.setGlobalScripts( scriptMap );
 	}
 	
+	private void doImportTemplate( File importFile) throws ClientException, BuildException
+	{
+		String templateXML = "";
+		try {
+			templateXML = readTemplateFile(importFile);
+		}catch(Exception e1) {
+			throw new BuildException("Invalid code template file.");
+		}
+		
+		ObjectXMLSerializer serializer = new ObjectXMLSerializer();
+        List<CodeTemplate> templates = new ArrayList<CodeTemplate>();
+        try {
+        	templates =  (List<CodeTemplate>)serializer.fromXML(templateXML);
+        }catch(Exception e) {
+        	throw new BuildException("Invalid code template file.");
+        }
+        client.updateCodeTemplates(templates);
+        
+        System.out.println("Code templates imported successfully.");
+		
+	}
+	
 	
 	private void doImportChannel( File importFile, boolean force ) throws ClientException, BuildException 
 	{
@@ -271,6 +317,21 @@ public class ImportTask extends AbstractMirthTask
 		return( ret );
 	}
 	
+	public static String readTemplateFile(File file) throws IOException 
+	{
+		BufferedReader reader = new BufferedReader( new FileReader( file ) );
+		StringBuilder contents = new StringBuilder();
+	    char[] buf = new char[1024];
+        int numRead = 0;
+		while ((numRead=reader.read(buf))!= -1) {
+			String readData = String.valueOf(buf,0,numRead);
+			contents.append(readData);
+			buf = new char[1024];
+		}
+		reader.close();
+		
+		return contents.toString();
+	}
 	
 	public static String readFile( File file ) throws IOException 
 	{
