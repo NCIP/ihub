@@ -37,6 +37,27 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	<condition property="application.base.path" value="${application.base.path.windows}">
 		<os family="windows" />
 	</condition>
+	
+	<!-- Set the activemq download properties based on the operating system -->
+	<condition property="activemq.binaries.file" value="${activemq.linux.binaries.file}">
+		<or>
+			<os family="unix" />
+			<os family="mac" />
+		</or>
+	</condition>
+	<condition property="activemq.binaries.file" value="${activemq.windows.binaries.file}">
+		<os family="windows" />
+	</condition>
+	<condition property="activemq.src.url" value="${activemq.linux.src.url}">
+		<or>
+			<os family="unix" />
+			<os family="mac" />
+		</or>
+	</condition>
+	<condition property="activemq.src.url" value="${activemq.windows.src.url}">
+		<os family="windows" />
+	</condition>
+	
 	<property name="tomcat.home" value="${application.base.path}/${tomcat.relative.path}" />
 	<property name="mirth.home" value="${application.base.path}/${mirth.relative.path}" />
 	<property name="axis.2.home" value="${application.base.path}/${axis.2.relative.path}" />
@@ -572,7 +593,8 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	</target>
 
 	<target name="dist:tools:retrieve:activemq" unless="local.activemq.exists" description="Downloads ACTIVEMQ from binary repository and verifies checksum">
-		<get src="${activemq.src.url}" dest="${activemq.file}" />
+		<get src="${activemq.windows.src.url}" dest="${download.dir}/${activemq.windows.binaries.file}" />
+		<get src="${activemq.linux.src.url}" dest="${download.dir}/${activemq.linux.binaries.file}" />
 		<!--<get src="${activemq.src.md5.url}" dest="${activemq.file}.MD5" />		-->
 	</target>
 

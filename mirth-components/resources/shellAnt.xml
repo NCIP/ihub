@@ -336,6 +336,12 @@
 		<mirth:import user="${user}" password="${password}" server="${server}" type="script" script="shutdown" filename="${resources.dir}/shutdown.js"/>-->
 		<echo/>
 	</target>
+	
+	<target name="importtemplate" depends="init" description="Imports the named code templates from the file specified by path" >
+		<echo>Importing Code Templates: ${deployScript_name}</echo>
+		<mirth:import user="${user}" password="${password}" server="${server}" type="template"  filename="${deployScript_name}"/>
+		<echo/>
+	</target>	
 
 	<target name="export" depends="init" description="Exports the specified channel or channels to path" >
 		<echo>Exporting Channel...</echo>

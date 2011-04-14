@@ -10,16 +10,16 @@ import com.webreach.mirth.model.ChannelStatus;
 
 public abstract class AbstractMirthTask extends Task
 {
-	
+
 	protected 	String          user        = "admin";
 	protected 	String          password    = "admin";
 	protected 	String          server      = "https://localhost:8443";
 	protected 	String          version     = "0.0.0";
 	protected 	boolean 		failonerror = true;
-	
+
 	protected 	Client 			client;
-	
-	
+
+
 	/**
      * @param password
      */
@@ -27,8 +27,8 @@ public abstract class AbstractMirthTask extends Task
 	{
 		this.password = password;
 	}
-	
-	
+
+
 	/**
      * @param user
      */
@@ -36,8 +36,8 @@ public abstract class AbstractMirthTask extends Task
 	{
 		this.user = user;
 	}
-	
-	
+
+
 	/**
      * @param server
      */
@@ -45,8 +45,8 @@ public abstract class AbstractMirthTask extends Task
 	{
 		this.server = server;
 	}
-	
-	
+
+
 	/**
      * @param version
      */
@@ -54,69 +54,69 @@ public abstract class AbstractMirthTask extends Task
 	{
 		this.version = version;
 	}
-	
-	
+
+
 	public void setFailonerror( boolean failonerror )
 	{
 		this.failonerror = failonerror;
 	}
-	
-	
+
+
 	/* Implemented by all Mirth Ant Tasks
      * @see org.apache.tools.ant.Task#execute()
      */
-	
+
 	public abstract void executeTask() throws BuildException;
-	
-	
+
+
 	/* Task execute() dispatcher.
      * @see org.apache.tools.ant.Task#execute()
      */
-	
+
 	public void execute() throws BuildException
 	{
 		try {
-			executeTask();	
-		} 
+			executeTask();
+		}
 		catch( BuildException e ) {
 			if( failonerror ) {
 				throw ( e );
 			} else {
 				System.out.println( e.getMessage() );
 			}
-		} 
+		}
 	}
-	
-	
+
+
 	protected void connectClient() throws ClientException
 	{
-		client = new Client( server );
-		
+		client = new Client( server, 1000000 );
+
 		if( !client.login( user, password, version ) ) {
 			throw( new ClientException( "Could not login to server." ) );
 		}
 	}
-	
-	
+
+
 	protected void disconnectClient() throws ClientException
 	{
 		client.logout();
 	}
-	
-	
-	protected String getChannelEnabledString( ChannelStatus channelStatus ) throws ClientException 
+
+
+	protected String getChannelEnabledString( ChannelStatus channelStatus ) throws ClientException
 	{
 		String result = "unknown";
-		
+
 		String id		= channelStatus.getChannelId();
-		
+
 		for( Channel channel : client.getChannel( null ) ) {
 			if( channel.getId().equalsIgnoreCase( id ) ) {
 				result = channel.isEnabled() ? "ENABLED" : "DISABLED";
 				break;
 			}
 		}
-		
+
 		return( result );
 	}
 }
