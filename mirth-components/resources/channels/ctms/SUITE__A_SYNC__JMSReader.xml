@@ -64,12 +64,12 @@ channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, false);</string>
               <list/>
             </entry>
             <entry>
-              <string>DefaultValue</string>
-              <string></string>
-            </entry>
-            <entry>
               <string>isGlobal</string>
               <string>channel</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
             </entry>
           </data>
         </com.webreach.mirth.model.Step>
@@ -92,12 +92,12 @@ channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, false);</string>
               <list/>
             </entry>
             <entry>
-              <string>DefaultValue</string>
-              <string></string>
-            </entry>
-            <entry>
               <string>isGlobal</string>
               <string>channel</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
             </entry>
           </data>
         </com.webreach.mirth.model.Step>
@@ -120,12 +120,12 @@ channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, false);</string>
               <list/>
             </entry>
             <entry>
-              <string>DefaultValue</string>
-              <string></string>
-            </entry>
-            <entry>
               <string>isGlobal</string>
               <string>channel</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
             </entry>
           </data>
         </com.webreach.mirth.model.Step>
@@ -148,12 +148,12 @@ channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, false);</string>
               <list/>
             </entry>
             <entry>
-              <string>DefaultValue</string>
-              <string></string>
-            </entry>
-            <entry>
               <string>isGlobal</string>
               <string>channel</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
             </entry>
           </data>
         </com.webreach.mirth.model.Step>
@@ -176,12 +176,12 @@ channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, false);</string>
               <list/>
             </entry>
             <entry>
-              <string>DefaultValue</string>
-              <string></string>
-            </entry>
-            <entry>
               <string>isGlobal</string>
               <string>channel</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
             </entry>
           </data>
         </com.webreach.mirth.model.Step>
@@ -204,12 +204,12 @@ channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, false);</string>
               <list/>
             </entry>
             <entry>
-              <string>DefaultValue</string>
-              <string></string>
-            </entry>
-            <entry>
               <string>isGlobal</string>
               <string>channel</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
             </entry>
           </data>
         </com.webreach.mirth.model.Step>
@@ -232,12 +232,12 @@ channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, false);</string>
               <list/>
             </entry>
             <entry>
-              <string>DefaultValue</string>
-              <string></string>
-            </entry>
-            <entry>
               <string>isGlobal</string>
               <string>channel</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
             </entry>
           </data>
         </com.webreach.mirth.model.Step>
@@ -483,8 +483,8 @@ channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, false);</string>
         <property name="script">insertIncomingMessageInDB($(&apos;ns1metadata_ns1caxchangeidentifier&apos;), $(&apos;ns1request_ns1businessmessagepayload&apos;), 
 	Packages.gov.nih.nci.ihub.util.HubConstants.MESSAGE_STATUS_IN_PROCESS, $(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;), $(&apos;ns1metadata&apos;));</property>
         <property name="password"></property>
-        <property name="driver">org.postgresql.Driver</property>
         <property name="host">query</property>
+        <property name="driver">org.postgresql.Driver</property>
       </properties>
       <transformer>
         <steps/>
@@ -551,12 +551,12 @@ channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, false);</string>
                 <string>1</string>
               </entry>
               <entry>
-                <string>Field</string>
-                <string>$(&apos;IS_IHUB_PROCESSING_ERROR&apos;)</string>
-              </entry>
-              <entry>
                 <string>Name</string>
                 <string></string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;IS_IHUB_PROCESSING_ERROR&apos;)</string>
               </entry>
               <entry>
                 <string>Accept</string>
@@ -624,12 +624,12 @@ return false;</script>
                 <string>1</string>
               </entry>
               <entry>
-                <string>Field</string>
-                <string>$(&apos;IS_IHUB_PROCESSING_ERROR&apos;)</string>
-              </entry>
-              <entry>
                 <string>Name</string>
                 <string></string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;IS_IHUB_PROCESSING_ERROR&apos;)</string>
               </entry>
               <entry>
                 <string>Accept</string>
@@ -653,8 +653,8 @@ return false;</script>
     <com.webreach.mirth.model.Connector>
       <name>Suite Broadcaster</name>
       <properties>
-        <property name="DataType">Channel Writer</property>
         <property name="synchronised">1</property>
+        <property name="DataType">Channel Writer</property>
         <property name="template">${message.encodedData}</property>
         <property name="host">afe931ad-7ed6-4894-b755-aaf7d5c2a492</property>
       </properties>
@@ -688,12 +688,12 @@ return false;</script>
                 <string>1</string>
               </entry>
               <entry>
-                <string>Field</string>
-                <string>$(&apos;IS_IHUB_PROCESSING_ERROR&apos;)</string>
-              </entry>
-              <entry>
                 <string>Name</string>
                 <string></string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;IS_IHUB_PROCESSING_ERROR&apos;)</string>
               </entry>
               <entry>
                 <string>Accept</string>
@@ -717,8 +717,8 @@ return false;</script>
     <com.webreach.mirth.model.Connector>
       <name>Suite A-Sync JMSWriter</name>
       <properties>
-        <property name="DataType">Channel Writer</property>
         <property name="synchronised">1</property>
+        <property name="DataType">Channel Writer</property>
         <property name="template">${message.encodedData}</property>
         <property name="host">b5146b95-5701-42eb-84b9-cdb6b6d88749</property>
       </properties>
