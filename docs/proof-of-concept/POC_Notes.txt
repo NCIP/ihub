@@ -775,3 +775,5 @@ Things to Do as on 04/21/2011
 -----------------------------
 1. For function "retrieveOverallBroadcastResponseFromDB", the overall wait time needs to be derieved or retrieved instead of hard coding.
 2. For function "aggregateBroadcastResponse", varialbe 'totalSecondsElapsed' needs to be derived or retrieved instead of hard coding
+3. Re-order the deployment such that Mirth gets installed and started first, then tomcat and active MQ. The Channels, code-templates, and
+	scripts can be import at the end. This will minimize any delay in Mirth coming up slowly.
