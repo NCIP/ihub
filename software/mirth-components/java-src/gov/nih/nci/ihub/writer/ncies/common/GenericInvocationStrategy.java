@@ -375,7 +375,7 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 
 	public GridInvocationResult getSuccessResult() throws Exception {
 		final Document resp = new SourceTransformer()
-				.toDOMDocument(new StringSource("<result>success</result>"));
+				.toDOMDocument(new StringSource(HubConstants.SUCCESS_RESULT_ON_VOID_RETURN));
 		return new GridInvocationResult(false, resp.getDocumentElement(), false);
 	}
 

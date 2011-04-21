@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import javax.security.auth.Subject;
 
 import gov.nih.nci.ihub.util.IntegrationHubUtil;
+import gov.nih.nci.ihub.writer.ncies.common.GridInvocationResult;
 import gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy;
 import gov.nih.nci.ihub.writer.ncies.exception.GridInvocationException;
 import gov.nih.nci.ihub.writer.ncies.infrastructure.InvokeDelegationServiceBean;
@@ -38,7 +39,14 @@ public class CoppaInvocationStrategyTest {
 									TestConstants.IDENTIFIED_PERSON_PAYLOAD)
 									.getDocumentElement(), subject,
 							"IDENTIFIED_PERSON");
-			coppaInvocationStrategy.invokeGridService(false);
+			GridInvocationResult coppaResponse = coppaInvocationStrategy
+					.invokeGridService(false);
+
+			System.out
+					.println("COPPA Response: "
+							+ IntegrationHubUtil.xmlToString(coppaResponse
+									.getResult()));
+
 			// fail("Not yet implemented");
 		} catch (GridInvocationException e) {
 			// TODO Auto-generated catch block

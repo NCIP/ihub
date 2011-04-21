@@ -1,50 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/dom4j-1.4.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/jdom.jar"/>
-	<classpathentry kind="lib" path="lib/jdom-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/xercesImpl.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/xml-apis.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/xmlParserAPIs.jar"/>
-	<classpathentry kind="lib" path="lib/jaxb-api-2.1.jar"/>
-	<classpathentry kind="lib" path="lib/jaxb-impl-2.1.7.jar"/>
-	<classpathentry kind="lib" path="lib/jaxrpc-1.1.jar"/>
-	<classpathentry kind="lib" path="lib/xercesImpl-2.8.1.jar"/>
-	<classpathentry kind="lib" path="lib/xml-apis-1.3.04.jar"/>
-	<classpathentry kind="lib" path="lib/xmlbeans-2.3.0.jar"/>
-	<classpathentry kind="lib" path="lib/XmlSchema-1.4.2.jar"/>
-	<classpathentry kind="lib" path="lib/axiom-api-1.2.7.jar"/>
-	<classpathentry kind="lib" path="lib/axiom-dom-1.2.7.jar"/>
-	<classpathentry kind="lib" path="lib/axiom-impl-1.2.7.jar"/>
-	<classpathentry kind="lib" path="lib/caXchange-clinicalConnectorStubs-jar-2.2.jar"/>
-	<classpathentry kind="lib" path="lib/ClinicalConnector-stubs-2.2_jaxb.jar"/>
-	<classpathentry kind="lib" path="lib/ClinicalConnector-client-2.2_jaxb.jar"/>
-	<classpathentry kind="lib" path="lib/jboss-embedded-all.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/jaxb-xjc.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/jaxb-api.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/jaxb-impl.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/jsch-0.1.41.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/jsr173_1.0_api.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/jsr223-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/jtds-1.2.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/jug-1.0.3.jar"/>
-	<classpathentry kind="lib" path="lib/wstx-asl-3.2.4.jar"/>
-	<classpathentry kind="lib" path="lib/ClinicalConnector-common-2.2_jaxb.jar"/>
-	<classpathentry kind="lib" path="lib/ClinicalConnector-service-2.2_jaxb.jar"/>
-	<classpathentry kind="lib" path="lib/neethi-2.0.4.jar"/>
-	<classpathentry kind="lib" path="lib/axis2-adb-1.4.1.jar"/>
-	<classpathentry kind="lib" path="lib/axis2-adb-codegen-1.4.1.jar"/>
-	<classpathentry kind="lib" path="lib/axis2-codegen-1.4.1.jar"/>
-	<classpathentry kind="lib" path="lib/axis2-kernel-1.4.1.jar"/>
-	<classpathentry kind="lib" path="lib/hibernate-annotations-3.0alpha3.jar"/>
-	<classpathentry kind="lib" path="lib/xalan-4.0.3-DEFAULT-TRF-REMOVED.jar"/>
 	<classpathentry kind="src" path="java-src"/>
-	<classpathentry kind="lib" path="lib/resolver-1.1.jar"/>
-	<classpathentry kind="lib" path="lib/axis-url-1.2RC2.jar"/>
-	<classpathentry kind="lib" path="lib/axis-1.2RC2.jar"/>
-	<classpathentry kind="lib" path="lib/cog-jglobus-1.2.jar"/>
-	<classpathentry kind="lib" path="lib/addressing-1.0.jar" sourcepath="C:/Documents and Settings/Ajay/.m2/repository/cagrid/addressing/1.0/addressing-1.0-sources.jar"/>
+	<classpathentry kind="lib" path="lib/catissuecore.jar"/>
+	<classpathentry kind="lib" path="lib/cglib-full-2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/commonpackage.jar"/>
+	<classpathentry kind="lib" path="lib/deintegration-client.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate3.jar"/>
+	<classpathentry kind="lib" path="lib/javax-xml-bind.jar"/>
+	<classpathentry kind="lib" path="lib/jaxb-impl-2.1.5849239.jar"/>
+	<classpathentry kind="lib" path="lib/patienthistory-client.jar"/>
+	<classpathentry kind="lib" path="lib/spring.jar"/>
+	<classpathentry kind="lib" path="lib/struts.jar"/>
+	<classpathentry kind="lib" path="lib/trim-parser.jar"/>
+	<classpathentry kind="lib" path="lib/stax-api-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.14.jar"/>
+	<classpathentry kind="lib" path="lib/junit-3.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/servicemix-utils-1.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/activation-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/activemq-core-5.3.2.jar"/>
+	<classpathentry kind="lib" path="lib/addressing-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/adverse-event-client-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/adverse-event-common-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/adverse-event-service-1.3.jar"/>
@@ -54,14 +30,23 @@
 	<classpathentry kind="lib" path="lib/authzService-4.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/authzService-stubs-4.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/avalon-framework-4.1.3.jar"/>
+	<classpathentry kind="lib" path="lib/axiom-api-1.2.7.jar"/>
+	<classpathentry kind="lib" path="lib/axiom-dom-1.2.7.jar"/>
+	<classpathentry kind="lib" path="lib/axiom-impl-1.2.7.jar"/>
+	<classpathentry kind="lib" path="lib/axis-1.2RC2.jar"/>
+	<classpathentry kind="lib" path="lib/axis-url-1.2RC2.jar"/>
+	<classpathentry kind="lib" path="lib/axis2-adb-1.4.1.jar"/>
+	<classpathentry kind="lib" path="lib/axis2-adb-codegen-1.4.1.jar"/>
+	<classpathentry kind="lib" path="lib/axis2-codegen-1.4.1.jar"/>
+	<classpathentry kind="lib" path="lib/axis2-kernel-1.4.1.jar"/>
 	<classpathentry kind="lib" path="lib/beanuitls-1.6.jar"/>
 	<classpathentry kind="lib" path="lib/bootstrap-4.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/cagrid-advertisement-1.3.jar"/>
-	<classpathentry kind="lib" path="lib/cagrid-authentication-service-client-1.3.jar" sourcepath="C:/Documents and Settings/Ajay/.m2/repository/cagrid/authentication/cagrid-authentication-service-client/1.3/cagrid-authentication-service-client-1.3-sources.jar"/>
+	<classpathentry kind="lib" path="lib/cagrid-authentication-service-client-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/cagrid-authentication-service-common-1.3.jar"/>
-	<classpathentry kind="lib" path="lib/cagrid-authentication-service-stubs-1.3.jar" sourcepath="C:/Documents and Settings/Ajay/.m2/repository/cagrid/authentication/cagrid-authentication-service-stubs/1.3/cagrid-authentication-service-stubs-1.3-sources.jar"/>
+	<classpathentry kind="lib" path="lib/cagrid-authentication-service-stubs-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/cagrid-core-1.3.jar"/>
-	<classpathentry kind="lib" path="lib/cagrid-dorian-client-1.3.jar" sourcepath="C:/Documents and Settings/Ajay/.m2/repository/cagrid/dorian/cagrid-dorian-client/1.3/cagrid-dorian-client-1.3-sources.jar"/>
+	<classpathentry kind="lib" path="lib/cagrid-dorian-client-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/cagrid-dorian-common-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/cagrid-dorian-stubs-1.2-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/cagrid-dorian-stubs-1.3.jar"/>
@@ -70,13 +55,14 @@
 	<classpathentry kind="lib" path="lib/cagrid-metadata-common-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/cagrid-metadata-security-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/cagrid-metadata-utils-1.3.jar"/>
-	<classpathentry kind="lib" path="lib/caGrid-opensaml-1.3.jar" sourcepath="C:/Documents and Settings/Ajay/.m2/repository/cagrid/opensaml/caGrid-opensaml/1.3/caGrid-opensaml-1.3-sources.jar"/>
+	<classpathentry kind="lib" path="lib/caGrid-opensaml-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/caGrid-ServiceSecurityProvider-client-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/caGrid-ServiceSecurityProvider-common-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/caGrid-ServiceSecurityProvider-service-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/caGrid-ServiceSecurityProvider-stubs-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/cas-server-core-3.1.jar"/>
 	<classpathentry kind="lib" path="lib/castor-0.9.9.jar"/>
+	<classpathentry kind="lib" path="lib/caXchange-clinicalConnectorStubs-jar-2.2.jar"/>
 	<classpathentry kind="lib" path="lib/caxchange-clm-jar-3.2.jar"/>
 	<classpathentry kind="lib" path="lib/caXchange-common-jar-2.2.jar"/>
 	<classpathentry kind="lib" path="lib/caxchange-consumer-client-2.0.jar"/>
@@ -84,17 +70,35 @@
 	<classpathentry kind="lib" path="lib/caxchange-consumer-stubs-2.0.jar"/>
 	<classpathentry kind="lib" path="lib/caXchange-outbound-core-2.2.jar"/>
 	<classpathentry kind="lib" path="lib/caXchange-security-jar-2.2.jar"/>
+	<classpathentry kind="lib" path="lib/cds-client-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/cds-common-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/cds-stubs-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/cli-2.0.jar"/>
+	<classpathentry kind="lib" path="lib/ClinicalConnector-client-2.2_jaxb.jar"/>
+	<classpathentry kind="lib" path="lib/ClinicalConnector-common-2.2_jaxb.jar"/>
+	<classpathentry kind="lib" path="lib/ClinicalConnector-service-2.2_jaxb.jar"/>
+	<classpathentry kind="lib" path="lib/ClinicalConnector-stubs-2.2_jaxb.jar"/>
 	<classpathentry kind="lib" path="lib/cog-axis-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/cog-jglobus-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/cog-tomcat-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/cog-url-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/common-4.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/commonj-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/commons-collections-2.0.jar"/>
 	<classpathentry kind="lib" path="lib/commons-dbcp-1.2.1.jar"/>
-	<classpathentry kind="lib" path="lib/commons-logging-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/commons-pool-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/concurrent-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/Coppa-commons-1.2.3.jar"/>
+	<classpathentry kind="lib" path="lib/CoppaPA-client-3.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/CoppaPA-common-3.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/CoppaPA-service-3.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/CoppaPA-stubs-3.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/CoppaPA-tests-3.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/CoppaPO-client-3.1.jar"/>
+	<classpathentry kind="lib" path="lib/CoppaPO-common-3.1.jar"/>
+	<classpathentry kind="lib" path="lib/CoppaPO-service-3.1.jar"/>
+	<classpathentry kind="lib" path="lib/CoppaPO-stubs-3.1.jar"/>
+	<classpathentry kind="lib" path="lib/CoppaPO-tests-3.1.jar"/>
 	<classpathentry kind="lib" path="lib/core-4.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/core-registry-4.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/core-registry-stubs-4.0.3.jar"/>
@@ -107,14 +111,19 @@
 	<classpathentry kind="lib" path="lib/digester-1.5.jar"/>
 	<classpathentry kind="lib" path="lib/discovery-0.2-dev.jar"/>
 	<classpathentry kind="lib" path="lib/geronimo-activation_1.0.2_spec-1.2.jar"/>
-	<classpathentry kind="lib" path="lib/geronimo-qname_1.1_spec-1.1.jar" sourcepath="C:/Documents and Settings/Ajay/.m2/repository/org/apache/geronimo/specs/geronimo-qname_1.1_spec/1.1/geronimo-qname_1.1_spec-1.1-sources.jar"/>
+	<classpathentry kind="lib" path="lib/geronimo-qname_1.1_spec-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/gme-client-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/gme-common-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/gme-stubs-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-annotations-3.0alpha3.jar"/>
+	<classpathentry kind="lib" path="lib/jaxb-api-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/jaxb-impl-2.1.7.jar"/>
+	<classpathentry kind="lib" path="lib/jaxrpc-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/jboss-embedded-all.jar"/>
 	<classpathentry kind="lib" path="lib/jce-jdk13-125.jar"/>
 	<classpathentry kind="lib" path="lib/jcs-jar-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/jdom-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/jgss-1.1.jar"/>
-	<classpathentry kind="lib" path="lib/junit-3.8.1.jar"/>
 	<classpathentry kind="lib" path="lib/lab-loader-client-2.1.jar"/>
 	<classpathentry kind="lib" path="lib/lab-loader-common-2.1.jar"/>
 	<classpathentry kind="lib" path="lib/lab-loader-stubs-2.1.jar"/>
@@ -131,6 +140,7 @@
 	<classpathentry kind="lib" path="lib/mgmt-4.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/mgmt-stubs-4.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-3.1.14.jar"/>
+	<classpathentry kind="lib" path="lib/neethi-2.0.4.jar"/>
 	<classpathentry kind="lib" path="lib/opensaml-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/postgres-database-driver-8.4.701.jar"/>
 	<classpathentry kind="lib" path="lib/puretls-1.1.jar"/>
@@ -140,6 +150,7 @@
 	<classpathentry kind="lib" path="lib/resolution-service-4.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/resolution-stubs-java-4.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/resolution-test-4.0.3.jar"/>
+	<classpathentry kind="lib" path="lib/resolver-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/saaj-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/servicemix-jbi-3.2.3.jar"/>
 	<classpathentry kind="lib" path="lib/servlet-api-2.3.jar"/>
@@ -147,8 +158,7 @@
 	<classpathentry kind="lib" path="lib/spring-aop-2.5.5.jar"/>
 	<classpathentry kind="lib" path="lib/spring-beans-2.0.6.jar"/>
 	<classpathentry kind="lib" path="lib/spring-jdbc-2.0.6.jar"/>
-	<classpathentry kind="lib" path="lib/stax-api-1.0-2.jar" sourcepath="C:/Documents and Settings/Ajay/.m2/repository/javax/xml/stream/stax-api/1.0-2/stax-api-1.0-2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/stax-api-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/stax-api-1.0-2.jar"/>
 	<classpathentry kind="lib" path="lib/study-client-2.1.jar"/>
 	<classpathentry kind="lib" path="lib/study-common-2.1.jar"/>
 	<classpathentry kind="lib" path="lib/study-stubs-2.1.jar"/>
@@ -163,12 +173,16 @@
 	<classpathentry kind="lib" path="lib/verify-routing.jar"/>
 	<classpathentry kind="lib" path="lib/wsdl4j-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/wss4j-4.0.3.jar"/>
+	<classpathentry kind="lib" path="lib/wstx-asl-3.2.4.jar"/>
+	<classpathentry kind="lib" path="lib/xalan-4.0.3-DEFAULT-TRF-REMOVED.jar"/>
+	<classpathentry kind="lib" path="lib/xercesImpl-2.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/xml-apis-1.3.04.jar"/>
+	<classpathentry kind="lib" path="lib/xmlbeans-2.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/XmlSchema-1.4.2.jar"/>
 	<classpathentry kind="lib" path="lib/xmlsec-4.0.3.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-1.2.14.jar"/>
-	<classpathentry kind="lib" path="lib/activation-1.1.jar"/>
-	<classpathentry kind="lib" path="lib/servicemix-utils-1.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/acrobat.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/activation-1.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/activation.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/activeio-2.1.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/ant-contrib.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/ant.jar"/>
@@ -196,12 +210,14 @@
 	<classpathentry kind="lib" path="lib/mirth_jars/commons-net-2.0.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/commons-pool-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/core-renderer.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/databinding-0.8.0.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/dcm4che-core-2.0.15.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/dcm4che-net-2.0.15.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/dcm4che-tool-dcmrcv-2.0.15.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/dcm4che-tool-dcmsnd-2.0.15.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/derby.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/derbytools.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/dom4j-1.4.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/geronimo-spec-ejb-2.1-rc4.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/geronimo-spec-j2ee-connector-1.5-rc4.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/geronimo-spec-j2ee-management-1.0-rc4.jar"/>
@@ -219,66 +235,61 @@
 	<classpathentry kind="lib" path="lib/mirth_jars/jasper-compiler.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/jasper-runtime.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/javax.servlet.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/jaxb-api.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/jaxb-impl.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/jaxb-xjc.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/jcifs-1.2.22.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/junit-4.1.jar" sourcepath="C:/Documents and Settings/Ajay/.m2/repository/junit/junit/4.1/junit-4.1-sources.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/jconn2.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/jconn3.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/jdic-0.8.0.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/jdic.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/jdom.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/jsch-0.1.41.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/jsr173_1.0_api.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/jsr223-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/jtds-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/jug-1.0.3.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/junit-4.1.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/l2fprod-common-all.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/l2fprod-common-sheet.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/log4j-1.2.13.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/looks-2.2.2.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/mail-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/mirth-client-core.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/MRJToolkitStubs.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/mule-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/mx4j-remote.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/mx4j-tools.jar" sourcepath="C:/Documents and Settings/Ajay/.m2/repository/mx4j/mx4j-tools/3.0.1/mx4j-tools-3.0.1-sources.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/mx4j-tools.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/mx4j.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/mysql-connector-java-5.0.8-bin.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/nsisant-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/ognl-2.6.7.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/ojdbc14.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/org.mortbay.jetty.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/org.mortbay.jmx.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/oro.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/postgresql-8.3-603.jdbc3.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/qname.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/quartz-all-1.6.0.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/rhino-1.7r3pre.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/slf4j-api-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/slf4j-log4j12-1.2.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/velocity-1.5.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/velocity-tools-1.4.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/webdavclient4j-core-0.92.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/wrapper.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/xpp3_min-1.1.3.4.O.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/xstream-1.2.2.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/activation.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/databinding-0.8.0.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/jconn2.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/jconn3.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/jdic-0.8.0.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/jdic.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/l2fprod-common-sheet.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/looks-2.2.2.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/mysql-connector-java-5.0.8-bin.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/nsisant-1.2.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/ojdbc14.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/postgresql-8.3-603.jdbc3.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/swing-layout.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/swing-worker.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/swingx-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/test-4.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/tools-4.0.3.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/velocity-1.5.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/velocity-tools-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/webdavclient4j-core-0.92.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/wizard.jar"/>
-	<classpathentry kind="lib" path="lib/mirth_jars/mirth-client-core.jar"/>
-	<classpathentry kind="lib" path="lib/cds-client-1.3.jar"/>
-	<classpathentry kind="lib" path="lib/cds-common-1.3.jar"/>
-	<classpathentry kind="lib" path="lib/cds-stubs-1.3.jar"/>
-	<classpathentry kind="lib" path="lib/activemq-core-5.3.2.jar"/>
-	<classpathentry kind="lib" path="lib/Coppa-commons-1.2.3.jar"/>
-	<classpathentry kind="lib" path="lib/CoppaPA-client-3.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/CoppaPA-common-3.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/CoppaPA-service-3.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/CoppaPA-stubs-3.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/CoppaPA-tests-3.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/CoppaPO-client-3.1.jar" sourcepath="C:/Documents and Settings/Ajay/.m2/repository/gov/nih/nci/coppa/po/grid/CoppaPO-client/3.1/CoppaPO-client-3.1-sources.jar"/>
-	<classpathentry kind="lib" path="lib/CoppaPO-common-3.1.jar"/>
-	<classpathentry kind="lib" path="lib/CoppaPO-service-3.1.jar"/>
-	<classpathentry kind="lib" path="lib/CoppaPO-stubs-3.1.jar"/>
-	<classpathentry kind="lib" path="lib/CoppaPO-tests-3.1.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/wrapper.jar"/>
 	<classpathentry kind="lib" path="lib/mirth_jars/xbean.jar"/>
-	<classpathentry kind="lib" path="/mirth/tags/1.8.2/server/lib/custom/ihub-mirth-components.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/xml-apis.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/xmlParserAPIs.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/xpp3_min-1.1.3.4.O.jar"/>
+	<classpathentry kind="lib" path="lib/mirth_jars/xstream-1.2.2.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="target"/>
 </classpath>

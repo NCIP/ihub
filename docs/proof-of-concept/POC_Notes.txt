@@ -767,3 +767,11 @@ ant testCoppaService -Dpayload.file.name=PERSON_SEARCH.xml -Dservice.type=PERSON
 Kill Windows Update Restart Popup
 ---------------------------------------
 sc stop wuauserv
+
+
+
+
+Things to Do as on 04/21/2011
+-----------------------------
+1. For function "retrieveOverallBroadcastResponseFromDB", the overall wait time needs to be derieved or retrieved instead of hard coding.
+2. For function "aggregateBroadcastResponse", varialbe 'totalSecondsElapsed' needs to be derived or retrieved instead of hard coding
