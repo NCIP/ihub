@@ -409,4 +409,32 @@ function retrieveOverallBroadcastResponseFromDB(varMessageID){
     <type>FUNCTION</type>
     <scope>2</scope>
   </com.webreach.mirth.model.CodeTemplate>
+  <com.webreach.mirth.model.CodeTemplate>
+    <id>8fb1206e-7191-40e7-bb4b-7703a2e826c6</id>
+    <name>delegateCaTissueRequest</name>
+    <tooltip>Delegates request to caTissue API and compiles the success or error responses</tooltip>
+    <code>function delegateCaTissueRequest(varCaTissueUsername, varCaTissuePassword, varBusinessMessagePayload,
+			varOperationName, varExternalID, varMessageID, varServiceType, varBusinessMessageXMLSchemaDefinition){
+	logger.debug(&quot;delegateCaTissueRequest() - START&quot;);
+
+	var tolvenCaTissueClientBean = new Packages.gov.nih.nci.ihub.writer.ncies.entity.catissue.transcend.TolvenCaTissueClientBean();
+	tolvenCaTissueClientBean.setUserName(varCaTissueUsername);
+	tolvenCaTissueClientBean.setPassword(varCaTissuePassword);
+	var trimParser = new Packages.gov.nih.nci.ihub.writer.ncies.entity.catissue.transcend.TrimParser();
+	tolvenCaTissueClientBean.setTrimParser(trimParser);	
+	tolvenCaTissueClientBean.createObject(Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.
+			stringToDOMDocumentNameSpaceAware(Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.getPayloadFromBusinessPayload(varBusinessMessagePayload)), varOperationName);
+	
+	var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenerateResponseBean();
+	var overallResponseString = generateResponseBean.generateResponseFromTargetResponse(varExternalID, 
+			varMessageID, generateResponseBean.createOutputDocument(varServiceType, 
+			varOperationName, varBusinessMessageXMLSchemaDefinition, 
+			new Packages.gov.nih.nci.ihub.writer.ncies.common.GenericInvocationStrategy().getSuccessResult()));
+
+	logger.debug(&quot;delegateCaTissueRequest() - END&quot;);
+	return overallResponseString;
+}</code>
+    <type>FUNCTION</type>
+    <scope>2</scope>
+  </com.webreach.mirth.model.CodeTemplate>
 </list>
