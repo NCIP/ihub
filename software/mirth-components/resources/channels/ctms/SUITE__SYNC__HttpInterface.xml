@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1302706211000</time>
+    <time>1303405361390</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>240</revision>
+  <revision>270</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -538,6 +538,45 @@ return true;
 return false;</script>
             <operator>NONE</operator>
           </com.webreach.mirth.model.Rule>
+          <com.webreach.mirth.model.Rule>
+            <sequenceNumber>1</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;ns1metadata_ns1servicetype&apos;)&quot; does not equal Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_CATISSUE</name>
+            <data class="map">
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_CATISSUE</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>0</string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;ns1metadata_ns1servicetype&apos;)</string>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Accept</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;ns1metadata_ns1servicetype&apos;) != Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_CATISSUE)
+{
+return true;
+}
+return false;</script>
+            <operator>AND</operator>
+          </com.webreach.mirth.model.Rule>
         </rules>
       </filter>
       <transportName>JavaScript Writer</transportName>
@@ -556,7 +595,6 @@ return false;</script>
 
 	targetInvocationStrategy.setStrategySpecificVariables($(&apos;ns1metadata_ns1operationname&apos;), 
 							$(&apos;ns1metadata_ns1servicetype&apos;), $(&apos;ihubBusinessMessagePayloadDocument&apos;), $(&apos;coppaSubject&apos;), $(&apos;ns1metadata_ns1servicetype&apos;));
-
 
 	var overallResponseString = delegateSynchronousRequest($(&apos;ns1metadata_ns1servicetype&apos;), targetInvocationStrategy, 
 								$(&apos;ns1metadata_ns1caxchangeidentifier&apos;), $(&apos;ns1metadata_ns1externalidentifier&apos;), 
@@ -586,7 +624,9 @@ return false;</script>
         <inboundProperties>
           <property name="stripNamespaces">false</property>
         </inboundProperties>
-        <outboundProperties/>
+        <outboundProperties>
+          <property name="stripNamespaces">false</property>
+        </outboundProperties>
       </transformer>
       <filter>
         <rules>
@@ -628,6 +668,162 @@ return true;
 }
 return false;</script>
             <operator>NONE</operator>
+          </com.webreach.mirth.model.Rule>
+          <com.webreach.mirth.model.Rule>
+            <sequenceNumber>1</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;ns1metadata_ns1servicetype&apos;)&quot; does not equal Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_CATISSUE</name>
+            <data class="map">
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_CATISSUE</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>0</string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;ns1metadata_ns1servicetype&apos;)</string>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Accept</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;ns1metadata_ns1servicetype&apos;) != Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_CATISSUE)
+{
+return true;
+}
+return false;</script>
+            <operator>AND</operator>
+          </com.webreach.mirth.model.Rule>
+        </rules>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+    </com.webreach.mirth.model.Connector>
+    <com.webreach.mirth.model.Connector>
+      <name>CATISSUE</name>
+      <properties>
+        <property name="script">try{
+	var overallResponseString = delegateCaTissueRequest(globalMap.get(&quot;catissue.username&quot;), globalMap.get(&quot;catissue.password&quot;),
+			$(&apos;ns1request_ns1businessmessagepayload&apos;), $(&apos;ns1metadata_ns1operationname&apos;), $(&apos;ns1metadata_ns1externalidentifier&apos;), 
+			$(&apos;ns1metadata_ns1caxchangeidentifier&apos;), $(&apos;ns1metadata_ns1servicetype&apos;), $(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;));	
+	channelMap.put(&quot;overallResponseString&quot;, overallResponseString);
+} catch (error) {
+	logger.error(&quot;EXCEPTION OCCURED IN MIRTH WHILE INVOKING CATISSUE: &quot;+error.message);
+	var overallResponseString = recordMessageProcessingError(error, $(&apos;ns1metadata_ns1servicetype&apos;), $(&apos;ns1metadata_ns1caxchangeidentifier&apos;),
+			$(&apos;ns1metadata_ns1externalidentifier&apos;), $(&apos;ns1request_ns1businessmessagepayload_ns1xmlschemadefinition&apos;), 
+			Packages.gov.nih.nci.ihub.util.HubConstants.MESSAGE_STATUS_RESPONSE_RETURNED);
+	channelMap.put(&quot;overallResponseString&quot;, overallResponseString);
+}</property>
+        <property name="DataType">JavaScript Writer</property>
+        <property name="host">sink</property>
+      </properties>
+      <transformer>
+        <steps/>
+        <inboundTemplate></inboundTemplate>
+        <outboundTemplate></outboundTemplate>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">false</property>
+        </inboundProperties>
+        <outboundProperties>
+          <property name="stripNamespaces">false</property>
+        </outboundProperties>
+      </transformer>
+      <filter>
+        <rules>
+          <com.webreach.mirth.model.Rule>
+            <sequenceNumber>0</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;IS_IHUB_PROCESSING_ERROR&apos;)&quot; equals false</name>
+            <data class="map">
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>false</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;IS_IHUB_PROCESSING_ERROR&apos;)</string>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Accept</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;IS_IHUB_PROCESSING_ERROR&apos;) == false)
+{
+return true;
+}
+return false;</script>
+            <operator>NONE</operator>
+          </com.webreach.mirth.model.Rule>
+          <com.webreach.mirth.model.Rule>
+            <sequenceNumber>1</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;ns1metadata_ns1servicetype&apos;)&quot; equals Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_CATISSUE</name>
+            <data class="map">
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_CATISSUE</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;ns1metadata_ns1servicetype&apos;)</string>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Accept</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;ns1metadata_ns1servicetype&apos;) == Packages.gov.nih.nci.ihub.util.HubConstants.SERVICE_TYPE_CATISSUE)
+{
+return true;
+}
+return false;</script>
+            <operator>AND</operator>
           </com.webreach.mirth.model.Rule>
         </rules>
       </filter>
