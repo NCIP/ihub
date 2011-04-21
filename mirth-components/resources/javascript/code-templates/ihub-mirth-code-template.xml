@@ -1,202 +1,9 @@
 <list>
   <com.webreach.mirth.model.CodeTemplate>
     <id>cff8ac93-a738-452d-8b07-3fe56b4f23ea</id>
-    <name>Invoke Target Grid and Compile Response</name>
-    <tooltip></tooltip>
-    <code>function delegateSingleTargetRequest(varServiceType, varTargetInvocationStrategy, varBusinessMessageXMLSchemaDefinition, varMessageID){
-	var	varTargetDetailsCode = varTargetInvocationStrategy.getServiceProviderName();
-	
-	try{
-		//logger.info(varTargetDetailsCode+&quot; XML schema definition: &quot;+varBusinessMessageXMLSchemaDefinition);
-		if (varBusinessMessageXMLSchemaDefinition == undefined){
-			varBusinessMessageXMLSchemaDefinition = &quot;&quot;;
-		}
-
-		var gridInvocationResult = varTargetInvocationStrategy.invokeGridService(false);
-
-		if(gridInvocationResult.isFault()){		
-			if(gridInvocationResult.isRetry()){
-				var retryAttempt=0;
-				var totalRetryAttempts = globalMap.get(&quot;target.grid.service.retry.attempts&quot;);
-				for (retryAttempt=0; retryAttempt&lt;totalRetryAttempts; retryAttempt++)
-				{
-					logger.info(varTargetDetailsCode+&quot; Retry Attempt: &quot;+retryAttempt);
-					gridInvocationResult = varTargetInvocationStrategy.invokeGridService(false);
-					if(gridInvocationResult.isFault()){
-						continue;
-					} else {
-						insertCompiledTargetResponse(createSuccessResponseXML(gridInvocationResult, varTargetDetailsCode, varBusinessMessageXMLSchemaDefinition), 
-							varTargetDetailsCode, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_RESPONSE_STATUS_SUCCESSFUL, varMessageID);
-						break;
-					}
-				}
-			} else {
-				insertCompiledTargetResponse(createErrorResponseXML(gridInvocationResult.getInvocationException(), varTargetDetailsCode), 
-					varTargetDetailsCode, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_RESPONSE_STATUS_FAULT, varMessageID);
-			}
-		} else {
-			logger.debug(&quot;Calling insertCompiledTargetResponse&quot;);
-			insertCompiledTargetResponse(createSuccessResponseXML(gridInvocationResult, varTargetDetailsCode, varBusinessMessageXMLSchemaDefinition), 
-					varTargetDetailsCode, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_RESPONSE_STATUS_SUCCESSFUL, varMessageID);
-		}		
-
-	} catch (error) {	
-		logger.error(&quot;EXCEPTION OCCURED IN MIRTH DURING &quot;+varTargetDetailsCode+&quot; INVOCATION: &quot;+error);
-		insertCompiledTargetResponse(createErrorResponseXML(new Packages.java.lang.Exception(error), varTargetDetailsCode), 
-			varTargetDetailsCode, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_RESPONSE_STATUS_FAULT, varMessageID);
-	}
-}
-
-
-
-function delegateSynchronousRequest(varServiceType, varTargetInvocationStrategy, varMessageID, varExternalID, varOperationName, varBusinessMessageXMLSchemaDefinition){
-	logger.debug(&quot;delegateSynchronousRequest() - START&quot;);
-	var	varTargetDetailsCode = varTargetInvocationStrategy.getServiceProviderName();
-	var isFailureOverallResponse = false;
-	var overallResponseString;
-	var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenerateResponseBean();
-	if (varBusinessMessageXMLSchemaDefinition == undefined){
-		varBusinessMessageXMLSchemaDefinition = &quot;&quot;;
-	}
-	gridInvocationResult = varTargetInvocationStrategy.invokeGridService(false);
-
-	if(gridInvocationResult.isFault()){		
-		if(gridInvocationResult.isRetry()){
-			var retryAttempt=0;
-			var totalRetryAttempts = globalMap.get(&quot;target.grid.service.retry.attempts&quot;);
-			for (retryAttempt=0; retryAttempt&lt;totalRetryAttempts; retryAttempt++)
-			{
-				logger.info(varTargetDetailsCode+&quot; Retry Attempt: &quot;+retryAttempt);
-				gridInvocationResult = varTargetInvocationStrategy.invokeGridService(false);
-				if(gridInvocationResult.isFault()){
-					isFailureOverallResponse = true;
-					continue;
-				} else {
-					break;
-				}
-			}
-		} else {
-			isFailureOverallResponse = true;
-		}
-	}		
-	overallResponseString = generateResponseBean.generateResponseFromTargetResponse(varExternalID, 
-							varMessageID, generateResponseBean.createOutputDocument(varTargetDetailsCode, varOperationName, varBusinessMessageXMLSchemaDefinition, gridInvocationResult));		
-	updateMessageServiceResponseInDB(isFailureOverallResponse, &quot;&quot;, varMessageID, Packages.gov.nih.nci.ihub.util.HubConstants.MESSAGE_STATUS_RESPONSE_RETURNED);
-	logger.debug(&quot;delegateSynchronousRequest() - END&quot;);
-	return overallResponseString;
-}
-
-
-function delegateTargetRollbackRequest(varServiceType, varTargetInvocationStrategyList, varMessageID){
-	for(i=0; i&lt;varTargetInvocationStrategyList.size(); i++) {	
-		
-		varTargetInvocationStrategy = varTargetInvocationStrategyList.get(i);
-		var	varTargetDetailsCode = varTargetInvocationStrategy.getServiceProviderName();
-		logger.info(&quot;Sending &quot;+ varServiceType +&quot; ROLLBACK to &quot;+varTargetDetailsCode);
-		try{	
-			var gridInvocationResult = varTargetInvocationStrategy.invokeGridService(true);
-
-		} catch (error) {	
-			logger.error(&quot;EXCEPTION OCCURED IN MIRTH DURING &quot;+varTargetDetailsCode+&quot; INVOCATION: &quot;+error);
-			insertCompiledTargetResponse(createErrorResponseXML(new Packages.java.lang.Exception(error), varTargetDetailsCode), 
-				varTargetDetailsCode, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_RESPONSE_STATUS_FAULT, varMessageID);
-		}
-	}
-}
-
-
-
-//By using the varRequestXMLSchemaDefinition, and undefined value is getting set in the aggregated response. As a work around, replacing 
-// varRequestXMLSchemaDefinition with an empty string temporarily.
-function createSuccessResponseXML(varGridInvocationResult, varTargetDetailCode, varRequestXMLSchemaDefinition){
-	var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenerateResponseBean();
-	var gridInvocationResultDocument = generateResponseBean.createOutputDocument(varTargetDetailCode, new Packages.java.lang.String(&quot;&quot;),
-			varRequestXMLSchemaDefinition, varGridInvocationResult);
-	var successResponseXML = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(gridInvocationResultDocument);
-	return successResponseXML;
-}
-
-function createErrorResponseXML(varException, varTargetDetailCode){
-	var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenerateResponseBean();
-	var gridInvocationResultDocument = generateResponseBean.createErrorDocument(varTargetDetailCode, new Packages.java.lang.String(&quot;&quot;),
-			 varException);
-	var errorResponseXML = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(gridInvocationResultDocument);
-	return errorResponseXML;
-}
-
-
-function createErrorResponseNode(varException, varTargetDetailCode){
-	var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenerateResponseBean();
-	var gridInvocationResultDocument = generateResponseBean.createErrorDocument(varTargetDetailCode, new Packages.java.lang.String(&quot;&quot;),
-			 varException);	
-	return gridInvocationResultDocument;
-}
-
-
-function insertCompiledTargetResponse(varResponseXML, varTargetDetailCode, varTargetResponseStatus, varMessageID){
-	logger.info(varTargetDetailCode+ &quot; Response XML: &quot;+varResponseXML);		
-	//var dbConn = DatabaseConnectionFactory.createDatabaseConnection(&apos;org.postgresql.Driver&apos;,&apos;jdbc:postgresql://localhost:5432/mirth&apos;,&apos;mirthadmin&apos;,&apos;changeme&apos;);
-	var dbConn = getIHubDatabaseConnection();
-
-	var prepStatement = &quot;INSERT INTO COMPILED_TARGET_RESPONSE (MESSAGE_ID, TARGET_DETAILS, COMPILED_RESPONSE, TARGET_RESPONSE_STATUS, TIME_COMPLETED) VALUES(?,?,?,?,to_timestamp(?, &apos;YYYY-MM-DD HH24:MI:SS&apos;))&quot;;
-	var params = new Packages.java.util.ArrayList();
-	params.add(varMessageID);
-	params.add(varTargetDetailCode);
-	params.add(varResponseXML);
-	params.add(varTargetResponseStatus);
-	params.add(DateUtil.getCurrentDate(&quot;yyyy-MM-dd HH:mm:ss&quot;));
-
-	dbConn.executeUpdate(prepStatement, params);
-	dbConn.close();	
-}
-
-
-function insertIncomingMessageInDB(varMessageID, varBusinessMessagePayload, varMessageStatus, varSchemaDefinition, varMetadata){	
-	var dbConn = getIHubDatabaseConnection();
-	var prepStatement = &quot;INSERT INTO MESSAGE (MESSAGE_ID, PAYLOAD, MESSAGE_STATUS, TIME_RECEIVED, SCHEMA_DEFINITION, METADATA) VALUES(?, ?, ?, to_timestamp(?, &apos;YYYY-MM-DD HH24:MI:SS&apos;), ?, ?)&quot;;
-	var params = new Packages.java.util.ArrayList();
-	params.add(varMessageID);
-	params.add(varBusinessMessagePayload);
-	params.add(varMessageStatus);
-	params.add(DateUtil.getCurrentDate(&quot;yyyy-MM-dd HH:mm:ss&quot;));
-	params.add(varSchemaDefinition);
-	params.add(varMetadata);
-	dbConn.executeUpdate(prepStatement, params);
-	dbConn.close();	
-}
-
-
-function getCompiledResponseResultsFromDB(varMessageID){	
-	var dbConn = getIHubDatabaseConnection();
-	var resultSet = dbConn.executeCachedQuery(&quot;SELECT compiled_target_response.compiled_target_response_id AS compiled_target_response_compiled_target_response_id, compiled_target_response.message_id AS compiled_target_response_message_id, compiled_target_response.target_details AS compiled_target_response_target_details, compiled_target_response.compiled_response AS compiled_target_response_compiled_response, compiled_target_response.target_response_status AS compiled_target_response_target_response_status, compiled_target_response.time_completed AS compiled_target_response_time_completed FROM compiled_target_response where message_id=&apos;&quot;+varMessageID+&quot;&apos;&quot;);
-	//logger.info(&quot;Compiled Result Set Size: &quot;+resultSet.size());
-	dbConn.close();
-	return resultSet;
-}
-
-
-// This function is called by: aggregateBroadcastResponse().
-function updateMessageServiceResponseInDB(varIsFailureOverallResponse, varOverallResponseString, varMessageID, varMessageStatus){
-	var overallResponseStatus = Packages.gov.nih.nci.ihub.util.HubConstants.OVERALL_RESPONSE_STATUS_SUCCESS;
-	if(varIsFailureOverallResponse){
-		overallResponseStatus = Packages.gov.nih.nci.ihub.util.HubConstants.OVERALL_RESPONSE_STATUS_FAILURE;
-	}
-	//var overallResponseString = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(varOverallResponse);
-	//logger.info(&quot;Overall Response String: &quot;+varOverallResponseString);
-	var dbConn = getIHubDatabaseConnection();
-	var prepStatement = &quot;UPDATE MESSAGE SET MESSAGE_STATUS=?, OVERALL_RESPONSE_DATA=?, OVERALL_RESPONSE_STATUS=?, TIME_COMPLETED=to_timestamp(?, &apos;YYYY-MM-DD HH24:MI:SS&apos;) WHERE MESSAGE_ID=?&quot;;
-	var params = new Packages.java.util.ArrayList();
-	params.add(varMessageStatus);
-	params.add(varOverallResponseString);
-	params.add(overallResponseStatus);
-	params.add(DateUtil.getCurrentDate(&quot;yyyy-MM-dd HH:mm:ss&quot;));
-	params.add(varMessageID);
-	dbConn.executeUpdate(prepStatement, params);
-	dbConn.close();		
-}
-
-
-function retrieveOverallBroadcastResponseFromDB(varMessageID){
+    <name>retrieveOverallBroadcastResponseFromDB</name>
+    <tooltip>Used primarily for requests involving broadcasting. This function has the logic to wait for a certain amount of time for the response to be aggregated for multiple target services.</tooltip>
+    <code>function retrieveOverallBroadcastResponseFromDB(varMessageID){
 	var overallResponseString;
 	try{
 		var dbConn = getIHubDatabaseConnection();
@@ -208,6 +15,7 @@ function retrieveOverallBroadcastResponseFromDB(varMessageID){
 			Packages.java.lang.Thread.sleep(1000);
 			overallResponseResults = dbConn.executeCachedQuery(overallResponseSQL);
 			totalSecondsElapsed++;
+			//the number 62, can be derived instead of hard coding. 62 means 62 seconds of maximum wait time
 			if(totalSecondsElapsed &gt;= 62){			
 				break;
 			}
@@ -222,7 +30,7 @@ function retrieveOverallBroadcastResponseFromDB(varMessageID){
 		return overallResponseString;
 
 	} catch (error) {
-		logger.error(&quot;Error occured in Retrieve Response From Database: &quot;+error);
+		logger.error(&quot;Error occured in Retrieving Response From the Database: &quot;+error);
 	}
 }
 
@@ -433,6 +241,249 @@ function retrieveOverallBroadcastResponseFromDB(varMessageID){
 
 	logger.debug(&quot;delegateCaTissueRequest() - END&quot;);
 	return overallResponseString;
+}</code>
+    <type>FUNCTION</type>
+    <scope>2</scope>
+  </com.webreach.mirth.model.CodeTemplate>
+  <com.webreach.mirth.model.CodeTemplate>
+    <id>75d33796-6465-4747-b5d5-68f8beb1f87f</id>
+    <name>delegateSingleTargetRequest1</name>
+    <tooltip>Delegates request to a SINGLE target caGrid service. Does a one time retry on connection related exceptions. Usage:  ASYNCHRONOUS channels</tooltip>
+    <code>function delegateSingleTargetRequest(varServiceType, varTargetInvocationStrategy, varBusinessMessageXMLSchemaDefinition, varMessageID){
+	var	varTargetDetailsCode = varTargetInvocationStrategy.getServiceProviderName();
+	
+	try{
+		//logger.info(varTargetDetailsCode+&quot; XML schema definition: &quot;+varBusinessMessageXMLSchemaDefinition);
+		if (varBusinessMessageXMLSchemaDefinition == undefined){
+			varBusinessMessageXMLSchemaDefinition = &quot;&quot;;
+		}
+
+		var gridInvocationResult = varTargetInvocationStrategy.invokeGridService(false);
+
+		if(gridInvocationResult.isFault()){		
+			if(gridInvocationResult.isRetry()){
+				var retryAttempt=0;
+				var totalRetryAttempts = globalMap.get(&quot;target.grid.service.retry.attempts&quot;);
+				for (retryAttempt=0; retryAttempt&lt;totalRetryAttempts; retryAttempt++)
+				{
+					logger.info(varTargetDetailsCode+&quot; Retry Attempt: &quot;+retryAttempt);
+					gridInvocationResult = varTargetInvocationStrategy.invokeGridService(false);
+					if(gridInvocationResult.isFault()){
+						continue;
+					} else {
+						insertCompiledTargetResponse(createSuccessResponseXML(gridInvocationResult, varTargetDetailsCode, varBusinessMessageXMLSchemaDefinition), 
+							varTargetDetailsCode, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_RESPONSE_STATUS_SUCCESSFUL, varMessageID);
+						break;
+					}
+				}
+			} else {
+				insertCompiledTargetResponse(createErrorResponseXML(gridInvocationResult.getInvocationException(), varTargetDetailsCode), 
+					varTargetDetailsCode, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_RESPONSE_STATUS_FAULT, varMessageID);
+			}
+		} else {
+			logger.debug(&quot;Calling insertCompiledTargetResponse&quot;);
+			insertCompiledTargetResponse(createSuccessResponseXML(gridInvocationResult, varTargetDetailsCode, varBusinessMessageXMLSchemaDefinition), 
+					varTargetDetailsCode, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_RESPONSE_STATUS_SUCCESSFUL, varMessageID);
+		}		
+
+	} catch (error) {	
+		logger.error(&quot;EXCEPTION OCCURED IN MIRTH DURING &quot;+varTargetDetailsCode+&quot; INVOCATION: &quot;+error);
+		insertCompiledTargetResponse(createErrorResponseXML(new Packages.java.lang.Exception(error), varTargetDetailsCode), 
+			varTargetDetailsCode, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_RESPONSE_STATUS_FAULT, varMessageID);
+	}
+}</code>
+    <type>FUNCTION</type>
+    <scope>2</scope>
+  </com.webreach.mirth.model.CodeTemplate>
+  <com.webreach.mirth.model.CodeTemplate>
+    <id>62f9997e-8c68-4319-8d52-524a0cd37a08</id>
+    <name>delegateSynchronousRequest</name>
+    <tooltip>Based on the invocation strategy set by caller, delegates the request to a  SINGLE caGrid service. Does a one time retry on connection related exceptions. Usage: SYNCHRONOUS channels</tooltip>
+    <code>function delegateSynchronousRequest(varServiceType, varTargetInvocationStrategy, varMessageID, varExternalID, varOperationName, varBusinessMessageXMLSchemaDefinition){
+	logger.debug(&quot;delegateSynchronousRequest() - START&quot;);
+	var	varTargetDetailsCode = varTargetInvocationStrategy.getServiceProviderName();
+	var isFailureOverallResponse = false;
+	var overallResponseString;
+	var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenerateResponseBean();
+	if (varBusinessMessageXMLSchemaDefinition == undefined){
+		varBusinessMessageXMLSchemaDefinition = &quot;&quot;;
+	}
+	gridInvocationResult = varTargetInvocationStrategy.invokeGridService(false);
+
+	if(gridInvocationResult.isFault()){		
+		if(gridInvocationResult.isRetry()){
+			var retryAttempt=0;
+			var totalRetryAttempts = globalMap.get(&quot;target.grid.service.retry.attempts&quot;);
+			for (retryAttempt=0; retryAttempt&lt;totalRetryAttempts; retryAttempt++)
+			{
+				logger.info(varTargetDetailsCode+&quot; Retry Attempt: &quot;+retryAttempt);
+				gridInvocationResult = varTargetInvocationStrategy.invokeGridService(false);
+				if(gridInvocationResult.isFault()){
+					isFailureOverallResponse = true;
+					continue;
+				} else {
+					break;
+				}
+			}
+		} else {
+			isFailureOverallResponse = true;
+		}
+	}		
+	overallResponseString = generateResponseBean.generateResponseFromTargetResponse(varExternalID, 
+							varMessageID, generateResponseBean.createOutputDocument(varTargetDetailsCode, varOperationName, varBusinessMessageXMLSchemaDefinition, gridInvocationResult));		
+	updateMessageServiceResponseInDB(isFailureOverallResponse, &quot;&quot;, varMessageID, Packages.gov.nih.nci.ihub.util.HubConstants.MESSAGE_STATUS_RESPONSE_RETURNED);
+	logger.debug(&quot;delegateSynchronousRequest() - END&quot;);
+	return overallResponseString;
+}</code>
+    <type>FUNCTION</type>
+    <scope>2</scope>
+  </com.webreach.mirth.model.CodeTemplate>
+  <com.webreach.mirth.model.CodeTemplate>
+    <id>00908a17-6da4-465c-a4f9-d15e9dbdb063</id>
+    <name>delegateTargetRollbackRequest</name>
+    <tooltip>Delagates a ROLLBACK request to a single target caGrid service. The target caGrid service must implement the &quot;rollback&quot; operation</tooltip>
+    <code>function delegateTargetRollbackRequest(varServiceType, varTargetInvocationStrategyList, varMessageID){
+	for(i=0; i&lt;varTargetInvocationStrategyList.size(); i++) {	
+		
+		varTargetInvocationStrategy = varTargetInvocationStrategyList.get(i);
+		var	varTargetDetailsCode = varTargetInvocationStrategy.getServiceProviderName();
+		logger.info(&quot;Sending &quot;+ varServiceType +&quot; ROLLBACK to &quot;+varTargetDetailsCode);
+		try{	
+			var gridInvocationResult = varTargetInvocationStrategy.invokeGridService(true);
+
+		} catch (error) {	
+			logger.error(&quot;EXCEPTION OCCURED IN MIRTH DURING &quot;+varTargetDetailsCode+&quot; INVOCATION: &quot;+error);
+			insertCompiledTargetResponse(createErrorResponseXML(new Packages.java.lang.Exception(error), varTargetDetailsCode), 
+				varTargetDetailsCode, Packages.gov.nih.nci.ihub.util.HubConstants.TARGET_RESPONSE_STATUS_FAULT, varMessageID);
+		}
+	}
+}</code>
+    <type>FUNCTION</type>
+    <scope>2</scope>
+  </com.webreach.mirth.model.CodeTemplate>
+  <com.webreach.mirth.model.CodeTemplate>
+    <id>75156b39-35c9-4fab-93fc-61dfc4dca96d</id>
+    <name>createSuccessResponseXML</name>
+    <tooltip>Using the response from caGrid service, creates a successful response XML String  that can be embedded in the overall response returned to the caller</tooltip>
+    <code>//By using the varRequestXMLSchemaDefinition, an undefined value is getting set in the aggregated response. As a work around, replacing 
+// varRequestXMLSchemaDefinition with an empty string temporarily.
+function createSuccessResponseXML(varGridInvocationResult, varTargetDetailCode, varRequestXMLSchemaDefinition){
+	var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenerateResponseBean();
+	var gridInvocationResultDocument = generateResponseBean.createOutputDocument(varTargetDetailCode, new Packages.java.lang.String(&quot;&quot;),
+			varRequestXMLSchemaDefinition, varGridInvocationResult);
+	var successResponseXML = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(gridInvocationResultDocument);
+	return successResponseXML;
+}
+</code>
+    <type>FUNCTION</type>
+    <scope>2</scope>
+  </com.webreach.mirth.model.CodeTemplate>
+  <com.webreach.mirth.model.CodeTemplate>
+    <id>b136e439-7d02-4205-9f7a-3a4015ca33a3</id>
+    <name>createErrorResponseXML</name>
+    <tooltip>Using the response or exception during caGrid service invocation, creates an error response XML String that can be embedded in the overall response returned to the caller</tooltip>
+    <code>function createErrorResponseXML(varException, varTargetDetailCode){
+	var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenerateResponseBean();
+	var gridInvocationResultDocument = generateResponseBean.createErrorDocument(varTargetDetailCode, new Packages.java.lang.String(&quot;&quot;),
+			 varException);
+	var errorResponseXML = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(gridInvocationResultDocument);
+	return errorResponseXML;
+}</code>
+    <type>FUNCTION</type>
+    <scope>2</scope>
+  </com.webreach.mirth.model.CodeTemplate>
+  <com.webreach.mirth.model.CodeTemplate>
+    <id>6f1f47ee-90a1-4dc5-b129-f17634474fdb</id>
+    <name>createErrorResponseNode</name>
+    <tooltip>Using the response or exception during caGrid service invocation, creates an error response XML Node that can be embedded in the overall response returned to the caller</tooltip>
+    <code>function createErrorResponseNode(varException, varTargetDetailCode){
+	var generateResponseBean = new Packages.gov.nih.nci.ihub.writer.ncies.common.GenerateResponseBean();
+	var gridInvocationResultDocument = generateResponseBean.createErrorDocument(varTargetDetailCode, new Packages.java.lang.String(&quot;&quot;),
+			 varException);	
+	return gridInvocationResultDocument;
+}</code>
+    <type>FUNCTION</type>
+    <scope>2</scope>
+  </com.webreach.mirth.model.CodeTemplate>
+  <com.webreach.mirth.model.CodeTemplate>
+    <id>9658ebf3-03fa-4c15-a85f-3833f204e496</id>
+    <name>insertCompiledTargetResponse</name>
+    <tooltip>Using the compiled target service response, gets the database connection and stores the response and status  in the COMPILED_TARGET_RESPONSE table</tooltip>
+    <code>function insertCompiledTargetResponse(varResponseXML, varTargetDetailCode, varTargetResponseStatus, varMessageID){
+	logger.info(varTargetDetailCode+ &quot; Response XML: &quot;+varResponseXML);		
+	//var dbConn = DatabaseConnectionFactory.createDatabaseConnection(&apos;org.postgresql.Driver&apos;,&apos;jdbc:postgresql://localhost:5432/mirth&apos;,&apos;mirthadmin&apos;,&apos;changeme&apos;);
+	var dbConn = getIHubDatabaseConnection();
+
+	var prepStatement = &quot;INSERT INTO COMPILED_TARGET_RESPONSE (MESSAGE_ID, TARGET_DETAILS, COMPILED_RESPONSE, TARGET_RESPONSE_STATUS, TIME_COMPLETED) VALUES(?,?,?,?,to_timestamp(?, &apos;YYYY-MM-DD HH24:MI:SS&apos;))&quot;;
+	var params = new Packages.java.util.ArrayList();
+	params.add(varMessageID);
+	params.add(varTargetDetailCode);
+	params.add(varResponseXML);
+	params.add(varTargetResponseStatus);
+	params.add(DateUtil.getCurrentDate(&quot;yyyy-MM-dd HH:mm:ss&quot;));
+
+	dbConn.executeUpdate(prepStatement, params);
+	dbConn.close();	
+}</code>
+    <type>FUNCTION</type>
+    <scope>2</scope>
+  </com.webreach.mirth.model.CodeTemplate>
+  <com.webreach.mirth.model.CodeTemplate>
+    <id>77131a08-e8c3-434e-9dfc-4820dfaf9255</id>
+    <name>insertIncomingMessageInDB</name>
+    <tooltip>Using the incoming message to iHub, gets the database connection and stores the  message in the MESSAGE table.</tooltip>
+    <code>function insertIncomingMessageInDB(varMessageID, varBusinessMessagePayload, varMessageStatus, varSchemaDefinition, varMetadata){	
+	var dbConn = getIHubDatabaseConnection();
+	var prepStatement = &quot;INSERT INTO MESSAGE (MESSAGE_ID, PAYLOAD, MESSAGE_STATUS, TIME_RECEIVED, SCHEMA_DEFINITION, METADATA) VALUES(?, ?, ?, to_timestamp(?, &apos;YYYY-MM-DD HH24:MI:SS&apos;), ?, ?)&quot;;
+	var params = new Packages.java.util.ArrayList();
+	params.add(varMessageID);
+	params.add(varBusinessMessagePayload);
+	params.add(varMessageStatus);
+	params.add(DateUtil.getCurrentDate(&quot;yyyy-MM-dd HH:mm:ss&quot;));
+	params.add(varSchemaDefinition);
+	params.add(varMetadata);
+	dbConn.executeUpdate(prepStatement, params);
+	dbConn.close();	
+}</code>
+    <type>FUNCTION</type>
+    <scope>2</scope>
+  </com.webreach.mirth.model.CodeTemplate>
+  <com.webreach.mirth.model.CodeTemplate>
+    <id>dad96078-0d53-4b2e-aa6e-a46de1e838b4</id>
+    <name>getCompiledResponseResultsFromDB</name>
+    <tooltip>Retrieves the results from the COMPILED_TARGET_RESPONSE table based on the message_id. Returns the ResultSet object.</tooltip>
+    <code>function getCompiledResponseResultsFromDB(varMessageID){	
+	var dbConn = getIHubDatabaseConnection();
+	var resultSet = dbConn.executeCachedQuery(&quot;SELECT compiled_target_response.compiled_target_response_id AS compiled_target_response_compiled_target_response_id, compiled_target_response.message_id AS compiled_target_response_message_id, compiled_target_response.target_details AS compiled_target_response_target_details, compiled_target_response.compiled_response AS compiled_target_response_compiled_response, compiled_target_response.target_response_status AS compiled_target_response_target_response_status, compiled_target_response.time_completed AS compiled_target_response_time_completed FROM compiled_target_response where message_id=&apos;&quot;+varMessageID+&quot;&apos;&quot;);
+	//logger.info(&quot;Compiled Result Set Size: &quot;+resultSet.size());
+	dbConn.close();
+	return resultSet;
+}</code>
+    <type>FUNCTION</type>
+    <scope>2</scope>
+  </com.webreach.mirth.model.CodeTemplate>
+  <com.webreach.mirth.model.CodeTemplate>
+    <id>4e92d63b-9d45-4e76-839f-74c9326b8032</id>
+    <name>updateMessageServiceResponseInDB</name>
+    <tooltip>Updates the MESSAGE table with the overall response string that will be returned to the caller. </tooltip>
+    <code>// This function is called by: aggregateBroadcastResponse().
+function updateMessageServiceResponseInDB(varIsFailureOverallResponse, varOverallResponseString, varMessageID, varMessageStatus){
+	var overallResponseStatus = Packages.gov.nih.nci.ihub.util.HubConstants.OVERALL_RESPONSE_STATUS_SUCCESS;
+	if(varIsFailureOverallResponse){
+		overallResponseStatus = Packages.gov.nih.nci.ihub.util.HubConstants.OVERALL_RESPONSE_STATUS_FAILURE;
+	}
+	//var overallResponseString = Packages.gov.nih.nci.ihub.util.IntegrationHubUtil.xmlToString(varOverallResponse);
+	//logger.info(&quot;Overall Response String: &quot;+varOverallResponseString);
+	var dbConn = getIHubDatabaseConnection();
+	var prepStatement = &quot;UPDATE MESSAGE SET MESSAGE_STATUS=?, OVERALL_RESPONSE_DATA=?, OVERALL_RESPONSE_STATUS=?, TIME_COMPLETED=to_timestamp(?, &apos;YYYY-MM-DD HH24:MI:SS&apos;) WHERE MESSAGE_ID=?&quot;;
+	var params = new Packages.java.util.ArrayList();
+	params.add(varMessageStatus);
+	params.add(varOverallResponseString);
+	params.add(overallResponseStatus);
+	params.add(DateUtil.getCurrentDate(&quot;yyyy-MM-dd HH:mm:ss&quot;));
+	params.add(varMessageID);
+	dbConn.executeUpdate(prepStatement, params);
+	dbConn.close();		
 }</code>
     <type>FUNCTION</type>
     <scope>2</scope>
