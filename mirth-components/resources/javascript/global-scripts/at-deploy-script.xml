@@ -107,4 +107,8 @@ globalMap.put("coppa.authentication.password", "@coppa.authentication.password@"
 globalMap.put("coppa.authentication.url", "@coppa.authentication.url@");
 globalMap.put("coppa.dorian.url", "@coppa.dorian.url@");
 
+// ######## CATISSUE PROPERTIES ##########
+globalMap.put("catissue.username", "@catissue.username@");
+globalMap.put("catissue.password", "@catissue.password@");
+
 return;

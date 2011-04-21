@@ -144,35 +144,32 @@ public class GenericInvocationStrategyTest {
 			 * .getResult()));
 			 */
 
-			/*
-			 * GenericInvocationStrategy labBasedAEStrategy = new
-			 * GenericInvocationStrategy();
-			 * labBasedAEStrategy.setServiceType("LAB_BASED_AE");
-			 * labBasedAEStrategy
-			 * .setServiceUrl(TestConstants.LAB_BASED_AE_CAAERS_URL);
-			 * labBasedAEStrategy.setGridClientClassName(
-			 * "gov.nih.nci.ccts.grid.client.LabConsumerServiceClient");
-			 * labBasedAEStrategy.setRequestPayloadClassName(
-			 * "gov.nih.nci.cabig.ccts.domain.loadlabs.LoadLabsRequest");
-			 * labBasedAEStrategy.setReturnTypeNameSpace(
-			 * "gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain.loadlabs");
-			 * labBasedAEStrategy.setReturnTypeElement("Acknowledgement");
-			 * labBasedAEStrategy.setOperationName("loadLabs");
-			 * 
-			 * Element labBasedAEPayloadDocument = IntegrationHubUtil.
-			 * stringToDOMDocument
-			 * (TestConstants.LAB_BASED_AE_PAYYLOAD).getDocumentElement();
-			 * 
-			 * labBasedAEStrategy.setSubject(subject);
-			 * labBasedAEStrategy.setServiceProviderName("caAERS");
-			 * labBasedAEStrategy.setPayload(labBasedAEPayloadDocument);
-			 * 
-			 * GridInvocationResult studyCreationResponse =
-			 * labBasedAEStrategy.invokeGridService(false);
-			 * System.out.println(" Response: "
-			 * +IntegrationHubUtil.xmlToString(studyCreationResponse
-			 * .getResult()));
-			 */
+			GenericInvocationStrategy labBasedAEStrategy = new GenericInvocationStrategy();
+			labBasedAEStrategy.setServiceType("LAB_BASED_AE");
+			labBasedAEStrategy
+					.setServiceUrl(TestConstants.LAB_BASED_AE_CAAERS_URL);
+			labBasedAEStrategy
+					.setGridClientClassName("gov.nih.nci.ccts.grid.client.LabConsumerServiceClient");
+			labBasedAEStrategy
+					.setRequestPayloadClassName("gov.nih.nci.cabig.ccts.domain.loadlabs.LoadLabsRequest");
+			labBasedAEStrategy
+					.setReturnTypeNameSpace("gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain.loadlabs");
+			labBasedAEStrategy.setReturnTypeElement("Acknowledgement");
+			labBasedAEStrategy.setOperationName("loadLabs");
+
+			Element labBasedAEPayloadDocument = IntegrationHubUtil
+					.stringToDOMDocument(TestConstants.LAB_BASED_AE_PAYYLOAD)
+					.getDocumentElement();
+
+			labBasedAEStrategy.setSubject(subject);
+			labBasedAEStrategy.setServiceProviderName("caAERS");
+			labBasedAEStrategy.setPayload(labBasedAEPayloadDocument);
+
+			GridInvocationResult studyCreationResponse = labBasedAEStrategy
+					.invokeGridService(false);
+			System.out.println(" Response: "
+					+ IntegrationHubUtil.xmlToString(studyCreationResponse
+							.getResult()));
 
 			/*
 			 * GenericInvocationStrategy adverseEventStrategy = new
@@ -206,45 +203,46 @@ public class GenericInvocationStrategyTest {
 			 * .getResult()));
 			 */
 
-			GenericInvocationStrategy studyCreationStrategy = new gov.nih.nci.ihub.writer.ncies.common.GenericInvocationStrategy();
-			studyCreationStrategy.setServiceType("STUDY_CREATION");
-			studyCreationStrategy
-					.setServiceUrl(TestConstants.STUDY_CREATION_PSC_URL);
-			studyCreationStrategy
-					.setGridClientClassName("gov.nih.nci.ccts.grid.studyconsumer.client.StudyConsumerClient");
-			studyCreationStrategy
-					.setRequestPayloadClassName("gov.nih.nci.cabig.ccts.domain.Study");
-			studyCreationStrategy
-					.setReturnTypeNameSpace("gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain");
-			studyCreationStrategy.setReturnTypeElement("study");
-			studyCreationStrategy.setOperationName("createStudy");
-
-			Element studyCreationPayloadDocument = IntegrationHubUtil
-					.stringToDOMDocument(TestConstants.STUDY_CREATION_PAYLOAD)
-					.getDocumentElement();
-
-			studyCreationStrategy.setSubject(subject);
-			studyCreationStrategy.setServiceProviderName("PSC");
-			studyCreationStrategy.setPayload(studyCreationPayloadDocument);
-
-			GridInvocationResult studyCreationResponse = studyCreationStrategy
-					.invokeGridService(false);
-			System.out.println("Study Creation Response: "
-					+ IntegrationHubUtil.xmlToString(studyCreationResponse
-							.getResult()));
-
-			GenerateResponseBean generateResponseBean = new GenerateResponseBean();
-
-			Document gridInvocationResultDocument = generateResponseBean
-					.createOutputDocument(
-							"PSC",
-							"",
-							"gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain",
-							studyCreationResponse);
-			System.out.println("Subject Registration Response: "
-					+ IntegrationHubUtil
-							.xmlToString(studyCreationResponse
-									.getResult()));
+			/*
+			 * GenericInvocationStrategy studyCreationStrategy = new
+			 * gov.nih.nci.ihub.writer.ncies.common.GenericInvocationStrategy();
+			 * studyCreationStrategy.setServiceType("STUDY_CREATION");
+			 * studyCreationStrategy
+			 * .setServiceUrl(TestConstants.STUDY_CREATION_PSC_URL);
+			 * studyCreationStrategy.setGridClientClassName(
+			 * "gov.nih.nci.ccts.grid.studyconsumer.client.StudyConsumerClient"
+			 * ); studyCreationStrategy
+			 * .setRequestPayloadClassName("gov.nih.nci.cabig.ccts.domain.Study"
+			 * ); studyCreationStrategy.setReturnTypeNameSpace(
+			 * "gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain");
+			 * studyCreationStrategy.setReturnTypeElement("study");
+			 * studyCreationStrategy.setOperationName("createStudy");
+			 * 
+			 * Element studyCreationPayloadDocument = IntegrationHubUtil
+			 * .stringToDOMDocument(TestConstants.STUDY_CREATION_PAYLOAD)
+			 * .getDocumentElement();
+			 * 
+			 * studyCreationStrategy.setSubject(subject);
+			 * studyCreationStrategy.setServiceProviderName("PSC");
+			 * studyCreationStrategy.setPayload(studyCreationPayloadDocument);
+			 * 
+			 * GridInvocationResult studyCreationResponse =
+			 * studyCreationStrategy .invokeGridService(false);
+			 * System.out.println("Study Creation Response: " +
+			 * IntegrationHubUtil.xmlToString(studyCreationResponse
+			 * .getResult()));
+			 * 
+			 * GenerateResponseBean generateResponseBean = new
+			 * GenerateResponseBean();
+			 * 
+			 * Document gridInvocationResultDocument = generateResponseBean
+			 * .createOutputDocument( "PSC", "",
+			 * "gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain",
+			 * studyCreationResponse);
+			 * System.out.println("Subject Registration Response: " +
+			 * IntegrationHubUtil .xmlToString(studyCreationResponse
+			 * .getResult()));
+			 */
 
 			/*
 			 * GenericInvocationStrategy registrationInvocationStrategy = new

@@ -144,4 +144,7 @@ public class HubConstants {
 	public static final String ORCHESTRATION_OBS_RESULT_IDENTIFIED_ORG_LOOKUP_ELEMENT = "playerIdentifier";
 	public static final String ORCHESTRATION_OBS_EXCEPTION_MESSAGE_IDENTIFIED_ORG = "CTEP Identifier not found";	
 	public static final String ORCHESTRATION_OBS_RESULT_PO_NAMESPACE = "http://po.coppa.nci.nih.gov";
+	
+	//static responses
+	public static final String SUCCESS_RESULT_ON_VOID_RETURN = "<result>success</result>";
 }

@@ -1,7 +1,5 @@
 package gov.nih.nci.ihub.util;
 
-import gov.nih.nci.ihub.writer.ncies.exception.GridInvocationException;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -84,6 +82,34 @@ public class IntegrationHubUtil {
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory
 					.newInstance();
+			//factory.setNamespaceAware(true);
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			Document document = builder.parse(new InputSource(new StringReader(
+					xmlString)));
+			return document;
+		} catch (ParserConfigurationException e) {
+			logger.error(e.getMessage());
+		} catch (SAXException e) {
+			logger.error(e.getMessage());
+		} catch (IOException e) {
+			logger.error(e.getMessage());
+		}
+		return null;
+	}
+	
+	
+	/**
+	 * Converts a given XML string into a DOM Document with Namespace aware
+	 * set to true
+	 * 
+	 * @param xmlString
+	 * @return
+	 */
+	public static Document stringToDOMDocumentNameSpaceAware(String xmlString) {
+		try {
+			DocumentBuilderFactory factory = DocumentBuilderFactory
+					.newInstance();
+			factory.setNamespaceAware(true);
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			Document document = builder.parse(new InputSource(new StringReader(
 					xmlString)));
@@ -109,9 +135,10 @@ public class IntegrationHubUtil {
 		String payloadXMLString = null;
 		try {
 			XPath xpath = XPathFactory.newInstance().newXPath();
-
+			System.out.println("PROCESS 1");
 			Node xmlToStripNode = IntegrationHubUtil
 					.stringToDOMDocument(businessPayloadXMLString);
+			System.out.println("PROCESS 2: "+xmlToStripNode);
 			XPathExpression expression = xpath.compile("/"
 					+ HubConstants.REQUEST_PAYLOAD_ELEMENT);
 			NodeList nodes = (NodeList) expression.evaluate(xmlToStripNode,
