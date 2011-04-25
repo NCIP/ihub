@@ -1,0 +1,91 @@
+<beans  xmlns="http://www.springframework.org/schema/beans"
+        xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:sec="http://cxf.apache.org/configuration/security"
+	xmlns:http="http://cxf.apache.org/transports/http/configuration"
+	xmlns:cxf="http://cxf.apache.org/core"
+    xmlns:httpj="http://cxf.apache.org/transports/http-jetty/configuration"
+	xsi:schemaLocation="
+http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd	
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://cxf.apache.org/jaxws http://cxf.apache.org/schema/jaxws.xsd 
+http://cxf.apache.org/configuration/security http://cxf.apache.org/schemas/configuration/security.xsd
+http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd
+http://cxf.apache.org/transports/http-jetty/configuration http://cxf.apache.org/schemas/configuration/http-jetty.xsd
+">
+
+
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<value>classpath:ihub.cxf.inbound.properties
+			</value>
+		</property>
+	</bean>	
+	
+	<bean id="myPasswordCallback"
+		class="gov.nih.nci.ihub.reader.cxf.impl.ServerPasswordCallback" >
+		<property name="password">
+		      <value>password</value>
+		</property>
+		<property name="identifier">
+		      <value>wsclient</value>
+		</property>		
+	</bean>
+	
+	<bean id="loggingInInterceptor" class="org.apache.cxf.interceptor.LoggingInInterceptor" />
+		
+	<bean id="wss4jInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+		<constructor-arg>
+			<map>
+				<entry key="action" value="UsernameToken Timestamp" />
+				<entry key="passwordType" value="PasswordText" />
+				<entry key="signaturePropFile" value="cxfCrypto.properties" />
+				<entry key="passwordCallbackRef">
+					<ref bean="myPasswordCallback" />
+				</entry>
+			</map>
+		</constructor-arg>
+	</bean>	
+	
+        <cxf:bus>
+		<cxf:inInterceptors>
+			    <ref bean="loggingInInterceptor"/>
+			    <ref bean="wss4jInterceptor"/>
+		</cxf:inInterceptors>
+        </cxf:bus>        
+
+		
+	
+	<http:destination
+		name="https://${ihub.cxf.hostname}:${ihub.cxf.port}/CaXchangeRequestService.http-destination">
+	</http:destination>
+	
+	<httpj:engine-factory>
+		<httpj:engine port="${ihub.cxf.port}">
+			<httpj:tlsServerParameters>
+				<sec:keyManagers keyPassword="smxServerPassword">
+					<sec:keyStore type="JKS" password="keyStorePassword"
+						resource="server_privatestore.jks" />
+				</sec:keyManagers>
+				<sec:trustManagers>
+					<sec:keyStore type="JKS" password="keyStorePassword"
+						resource="server_privatestore.jks" />
+				</sec:trustManagers>
+				<sec:cipherSuitesFilter>
+					<sec:include>.*_EXPORT_.*</sec:include>
+					<sec:include>.*_EXPORT1024_.*</sec:include>
+					<sec:include>.*_WITH_DES_.*</sec:include>
+					<sec:include>.*_WITH_NULL_.*</sec:include>
+					<sec:include>.*_128_.*</sec:include>
+					<sec:exclude>.*_DH_anon_.*</sec:exclude>
+				</sec:cipherSuitesFilter>
+				<sec:clientAuthentication want="false"
+					required="false" />
+			</httpj:tlsServerParameters>		
+
+		</httpj:engine>
+	</httpj:engine-factory>
+
+</beans>
