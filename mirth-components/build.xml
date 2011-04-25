@@ -27,6 +27,18 @@
 			<include name="*.zip" />
 		</fileset>
 	</path>
+	
+	<path id="run.classpath">
+	        <pathelement location="${classes.dir}"/>
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+			<include name="*.zip" />
+		</fileset>		
+		<fileset dir="${lib.dir}/mirth_jars">
+			<include name="*.jar" />
+			<include name="*.zip" />
+		</fileset>		
+	</path>	
 
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="compile.classpath" />
 
@@ -79,6 +91,17 @@
 		<mkdir dir="${mirth.home}/undeployed-jars" />
 		<move file="${mirth.home}/lib/mule/axis-14.jar" tofile="${mirth.home}/undeployed-jars/lib/mule/axis-14.jar" failonerror="false" />
 		<move file="${mirth.home}/lib/mule/wsif.jar" tofile="${mirth.home}/undeployed-jars/lib/mule/wsif.jar" failonerror="false" />
+	</target>
+	
+	<target name="run.cxf.inbound.service" depends="compile" description="Runs the CXF inbound service">
+	       <copy todir="${classes.dir}" overwrite="true">
+	             <fileset dir="${resources.dir}/cxf">
+				<include name="**/*.*" />
+		     </fileset>	                    
+	       </copy>
+	       <java classname="gov.nih.nci.ihub.reader.cxf.impl.IHubInboundServer" classpathref="run.classpath" fork="true" failonerror="true" logError="true">
+	          
+	       </java>
 	</target>
 
 	<target name="deploy" depends="mirth.clean, makejar">
