@@ -9,9 +9,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for responseMetadata complex type.
- *
+ * 
  * <p>The following schema fragment specifies the expected content contained within this class.
- *
+ * 
  * <pre>
  * &lt;complexType name="responseMetadata">
  *   &lt;complexContent>
@@ -24,8 +24,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "responseMetadata", propOrder = {
@@ -41,11 +41,11 @@ public class ResponseMetadata {
 
     /**
      * Gets the value of the externalIdentifier property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getExternalIdentifier() {
         return externalIdentifier;
@@ -53,11 +53,11 @@ public class ResponseMetadata {
 
     /**
      * Sets the value of the externalIdentifier property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setExternalIdentifier(String value) {
         this.externalIdentifier = value;
@@ -65,11 +65,11 @@ public class ResponseMetadata {
 
     /**
      * Gets the value of the caXchangeIdentifier property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getCaXchangeIdentifier() {
         return caXchangeIdentifier;
@@ -77,11 +77,11 @@ public class ResponseMetadata {
 
     /**
      * Sets the value of the caXchangeIdentifier property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setCaXchangeIdentifier(String value) {
         this.caXchangeIdentifier = value;

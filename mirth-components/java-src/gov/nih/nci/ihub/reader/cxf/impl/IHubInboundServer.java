@@ -18,7 +18,7 @@ public class IHubInboundServer {
     private String host = "localhost";
     private String port;
     private static Properties properties;
-    
+
     static {
     	URL propsUrl = IHubInboundServer.class.getClassLoader().getResource("ihub.cxf.inbound.properties");
     	properties = new Properties();
@@ -33,7 +33,7 @@ public class IHubInboundServer {
     		properties.setProperty("ihub.cxf.port", "8194");
     	}
     }
- 	
+
 	protected String getAddress() {
 		String host = properties.getProperty("ihub.cxf.hostname");
 		String port = properties.getProperty("ihub.cxf.port");
@@ -43,6 +43,7 @@ public class IHubInboundServer {
 
 	protected IHubInboundServer() throws Exception {
     	logger.info("Starting the iHub inbound server ....");
+        System.setProperty("javax.xml.soap.MessageFactory", "com.sun.xml.messaging.saaj.soap.ver1_1.SOAPMessageFactory1_1Impl");
         SpringBusFactory bf = new SpringBusFactory();
         URL busFile = IHubInboundServer.class.getClassLoader().getResource("CXFInboundServer.xml");
         Bus bus = bf.createBus(busFile.toString());

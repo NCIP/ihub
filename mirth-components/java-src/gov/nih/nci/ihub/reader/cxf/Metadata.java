@@ -11,9 +11,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for metadata complex type.
- *
+ * 
  * <p>The following schema fragment specifies the expected content contained within this class.
- *
+ * 
  * <pre>
  * &lt;complexType name="metadata">
  *   &lt;complexContent>
@@ -30,8 +30,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "metadata", propOrder = {
@@ -57,11 +57,11 @@ public class Metadata {
 
     /**
      * Gets the value of the transactionControl property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link TransactionControls }
-     *
+     *     
      */
     public TransactionControls getTransactionControl() {
         return transactionControl;
@@ -69,11 +69,11 @@ public class Metadata {
 
     /**
      * Sets the value of the transactionControl property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link TransactionControls }
-     *
+     *     
      */
     public void setTransactionControl(TransactionControls value) {
         this.transactionControl = value;
@@ -81,11 +81,11 @@ public class Metadata {
 
     /**
      * Gets the value of the serviceType property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getServiceType() {
         return serviceType;
@@ -93,11 +93,11 @@ public class Metadata {
 
     /**
      * Sets the value of the serviceType property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setServiceType(String value) {
         this.serviceType = value;
@@ -105,11 +105,11 @@ public class Metadata {
 
     /**
      * Gets the value of the operationName property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link JAXBElement }{@code <}{@link String }{@code >}
-     *
+     *     
      */
     public JAXBElement<String> getOperationName() {
         return operationName;
@@ -117,11 +117,11 @@ public class Metadata {
 
     /**
      * Sets the value of the operationName property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link JAXBElement }{@code <}{@link String }{@code >}
-     *
+     *     
      */
     public void setOperationName(JAXBElement<String> value) {
         this.operationName = ((JAXBElement<String> ) value);
@@ -129,11 +129,11 @@ public class Metadata {
 
     /**
      * Gets the value of the externalIdentifier property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getExternalIdentifier() {
         return externalIdentifier;
@@ -141,11 +141,11 @@ public class Metadata {
 
     /**
      * Sets the value of the externalIdentifier property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setExternalIdentifier(String value) {
         this.externalIdentifier = value;
@@ -153,11 +153,11 @@ public class Metadata {
 
     /**
      * Gets the value of the caXchangeIdentifier property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getCaXchangeIdentifier() {
         return caXchangeIdentifier;
@@ -165,11 +165,11 @@ public class Metadata {
 
     /**
      * Sets the value of the caXchangeIdentifier property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setCaXchangeIdentifier(String value) {
         this.caXchangeIdentifier = value;
@@ -177,11 +177,11 @@ public class Metadata {
 
     /**
      * Gets the value of the credentials property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link Credentials }
-     *
+     *     
      */
     public Credentials getCredentials() {
         return credentials;
@@ -189,11 +189,11 @@ public class Metadata {
 
     /**
      * Sets the value of the credentials property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link Credentials }
-     *
+     *     
      */
     public void setCredentials(Credentials value) {
         this.credentials = value;

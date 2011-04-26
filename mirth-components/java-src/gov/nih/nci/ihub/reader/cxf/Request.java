@@ -9,9 +9,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for request complex type.
- *
+ * 
  * <p>The following schema fragment specifies the expected content contained within this class.
- *
+ * 
  * <pre>
  * &lt;complexType name="request">
  *   &lt;complexContent>
@@ -23,8 +23,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "request", propOrder = {
@@ -37,11 +37,11 @@ public class Request {
 
     /**
      * Gets the value of the businessMessagePayload property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link MessagePayload }
-     *
+     *     
      */
     public MessagePayload getBusinessMessagePayload() {
         return businessMessagePayload;
@@ -49,11 +49,11 @@ public class Request {
 
     /**
      * Sets the value of the businessMessagePayload property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link MessagePayload }
-     *
+     *     
      */
     public void setBusinessMessagePayload(MessagePayload value) {
         this.businessMessagePayload = value;

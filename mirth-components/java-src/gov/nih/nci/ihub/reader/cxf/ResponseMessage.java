@@ -9,9 +9,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for responseMessage complex type.
- *
+ * 
  * <p>The following schema fragment specifies the expected content contained within this class.
- *
+ * 
  * <pre>
  * &lt;complexType name="responseMessage">
  *   &lt;complexContent>
@@ -24,8 +24,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "responseMessage", propOrder = {
@@ -41,11 +41,11 @@ public class ResponseMessage {
 
     /**
      * Gets the value of the responseMetadata property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link ResponseMetadata }
-     *
+     *     
      */
     public ResponseMetadata getResponseMetadata() {
         return responseMetadata;
@@ -53,11 +53,11 @@ public class ResponseMessage {
 
     /**
      * Sets the value of the responseMetadata property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link ResponseMetadata }
-     *
+     *     
      */
     public void setResponseMetadata(ResponseMetadata value) {
         this.responseMetadata = value;
@@ -65,11 +65,11 @@ public class ResponseMessage {
 
     /**
      * Gets the value of the response property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link Response }
-     *
+     *     
      */
     public Response getResponse() {
         return response;
@@ -77,11 +77,11 @@ public class ResponseMessage {
 
     /**
      * Sets the value of the response property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link Response }
-     *
+     *     
      */
     public void setResponse(Response value) {
         this.response = value;

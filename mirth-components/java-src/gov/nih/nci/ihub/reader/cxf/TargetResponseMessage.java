@@ -9,9 +9,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for targetResponseMessage complex type.
- *
+ * 
  * <p>The following schema fragment specifies the expected content contained within this class.
- *
+ * 
  * <pre>
  * &lt;complexType name="targetResponseMessage">
  *   &lt;complexContent>
@@ -29,8 +29,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "targetResponseMessage", propOrder = {
@@ -53,11 +53,11 @@ public class TargetResponseMessage {
 
     /**
      * Gets the value of the targetServiceIdentifier property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getTargetServiceIdentifier() {
         return targetServiceIdentifier;
@@ -65,11 +65,11 @@ public class TargetResponseMessage {
 
     /**
      * Sets the value of the targetServiceIdentifier property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setTargetServiceIdentifier(String value) {
         this.targetServiceIdentifier = value;
@@ -77,11 +77,11 @@ public class TargetResponseMessage {
 
     /**
      * Gets the value of the targetServiceOperation property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getTargetServiceOperation() {
         return targetServiceOperation;
@@ -89,11 +89,11 @@ public class TargetResponseMessage {
 
     /**
      * Sets the value of the targetServiceOperation property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setTargetServiceOperation(String value) {
         this.targetServiceOperation = value;
@@ -101,11 +101,11 @@ public class TargetResponseMessage {
 
     /**
      * Gets the value of the targetMessageStatus property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link MessageStatuses }
-     *
+     *     
      */
     public MessageStatuses getTargetMessageStatus() {
         return targetMessageStatus;
@@ -113,11 +113,11 @@ public class TargetResponseMessage {
 
     /**
      * Sets the value of the targetMessageStatus property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link MessageStatuses }
-     *
+     *     
      */
     public void setTargetMessageStatus(MessageStatuses value) {
         this.targetMessageStatus = value;
@@ -125,11 +125,11 @@ public class TargetResponseMessage {
 
     /**
      * Gets the value of the targetError property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link ErrorDetails }
-     *
+     *     
      */
     public ErrorDetails getTargetError() {
         return targetError;
@@ -137,11 +137,11 @@ public class TargetResponseMessage {
 
     /**
      * Sets the value of the targetError property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link ErrorDetails }
-     *
+     *     
      */
     public void setTargetError(ErrorDetails value) {
         this.targetError = value;
@@ -149,11 +149,11 @@ public class TargetResponseMessage {
 
     /**
      * Gets the value of the targetBusinessMessage property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link MessagePayload }
-     *
+     *     
      */
     public MessagePayload getTargetBusinessMessage() {
         return targetBusinessMessage;
@@ -161,11 +161,11 @@ public class TargetResponseMessage {
 
     /**
      * Sets the value of the targetBusinessMessage property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link MessagePayload }
-     *
+     *     
      */
     public void setTargetBusinessMessage(MessagePayload value) {
         this.targetBusinessMessage = value;

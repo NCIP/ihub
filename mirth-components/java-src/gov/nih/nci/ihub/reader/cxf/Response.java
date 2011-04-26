@@ -11,9 +11,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for response complex type.
- *
+ * 
  * <p>The following schema fragment specifies the expected content contained within this class.
- *
+ * 
  * <pre>
  * &lt;complexType name="response">
  *   &lt;complexContent>
@@ -29,8 +29,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "response", propOrder = {
@@ -47,11 +47,11 @@ public class Response {
 
     /**
      * Gets the value of the responseStatus property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link Statuses }
-     *
+     *     
      */
     public Statuses getResponseStatus() {
         return responseStatus;
@@ -59,11 +59,11 @@ public class Response {
 
     /**
      * Sets the value of the responseStatus property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link Statuses }
-     *
+     *     
      */
     public void setResponseStatus(Statuses value) {
         this.responseStatus = value;
@@ -71,11 +71,11 @@ public class Response {
 
     /**
      * Gets the value of the caXchangeError property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link ErrorDetails }
-     *
+     *     
      */
     public ErrorDetails getCaXchangeError() {
         return caXchangeError;
@@ -83,11 +83,11 @@ public class Response {
 
     /**
      * Sets the value of the caXchangeError property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link ErrorDetails }
-     *
+     *     
      */
     public void setCaXchangeError(ErrorDetails value) {
         this.caXchangeError = value;
@@ -95,25 +95,25 @@ public class Response {
 
     /**
      * Gets the value of the targetResponse property.
-     *
+     * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the targetResponse property.
-     *
+     * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getTargetResponse().add(newItem);
      * </pre>
-     *
-     *
+     * 
+     * 
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link TargetResponseMessage }
-     *
-     *
+     * 
+     * 
      */
     public List<TargetResponseMessage> getTargetResponse() {
         if (targetResponse == null) {
