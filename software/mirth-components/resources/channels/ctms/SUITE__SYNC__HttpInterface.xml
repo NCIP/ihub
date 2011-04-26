@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>1.8.2</version>
   <lastModified>
-    <time>1303405361390</time>
+    <time>1303827679093</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>270</revision>
+  <revision>272</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -873,7 +873,12 @@ return false;</script>
 return message;</preprocessingScript>
   <postprocessingScript>// This script executes once after a message has been processed
 return;</postprocessingScript>
-  <deployScript>/*********************************************************
+  <deployScript>/***  START CXF SERVICE ****/
+var iHubInboundServer = new Packages.gov.nih.nci.ihub.reader.cxf.impl.IHubInboundServer();
+globalMap.put(&quot;iHubInboundServer&quot;, iHubInboundServer);
+
+
+/*********************************************************
 *****************   PO SERVICES   ************************
 *********************************************************/
 var coppaPersonStrategy = new Packages.gov.nih.nci.ihub.writer.ncies.core.CoppaInvocationStrategy();
