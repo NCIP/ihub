@@ -9,9 +9,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for message complex type.
- *
+ * 
  * <p>The following schema fragment specifies the expected content contained within this class.
- *
+ * 
  * <pre>
  * &lt;complexType name="message">
  *   &lt;complexContent>
@@ -24,8 +24,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "message", propOrder = {
@@ -41,11 +41,11 @@ public class Message {
 
     /**
      * Gets the value of the metadata property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link Metadata }
-     *
+     *     
      */
     public Metadata getMetadata() {
         return metadata;
@@ -53,11 +53,11 @@ public class Message {
 
     /**
      * Sets the value of the metadata property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link Metadata }
-     *
+     *     
      */
     public void setMetadata(Metadata value) {
         this.metadata = value;
@@ -65,11 +65,11 @@ public class Message {
 
     /**
      * Gets the value of the request property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link Request }
-     *
+     *     
      */
     public Request getRequest() {
         return request;
@@ -77,11 +77,11 @@ public class Message {
 
     /**
      * Sets the value of the request property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link Request }
-     *
+     *     
      */
     public void setRequest(Request value) {
         this.request = value;

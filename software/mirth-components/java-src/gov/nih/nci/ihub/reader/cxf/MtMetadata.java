@@ -10,9 +10,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for mtMetadata complex type.
- *
+ * 
  * <p>The following schema fragment specifies the expected content contained within this class.
- *
+ * 
  * <pre>
  * &lt;complexType name="mtMetadata">
  *   &lt;complexContent>
@@ -26,8 +26,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "mtMetadata", propOrder = {
@@ -46,11 +46,11 @@ public class MtMetadata {
 
     /**
      * Gets the value of the messageType property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getMessageType() {
         return messageType;
@@ -58,11 +58,11 @@ public class MtMetadata {
 
     /**
      * Sets the value of the messageType property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setMessageType(String value) {
         this.messageType = value;
@@ -70,11 +70,11 @@ public class MtMetadata {
 
     /**
      * Gets the value of the payloadUri property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getPayloadUri() {
         return payloadUri;
@@ -82,11 +82,11 @@ public class MtMetadata {
 
     /**
      * Sets the value of the payloadUri property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setPayloadUri(String value) {
         this.payloadUri = value;
@@ -94,7 +94,7 @@ public class MtMetadata {
 
     /**
      * Gets the value of the reliableTransactions property.
-     *
+     * 
      */
     public boolean isReliableTransactions() {
         return reliableTransactions;
@@ -102,7 +102,7 @@ public class MtMetadata {
 
     /**
      * Sets the value of the reliableTransactions property.
-     *
+     * 
      */
     public void setReliableTransactions(boolean value) {
         this.reliableTransactions = value;

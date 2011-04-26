@@ -8,9 +8,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for credentials complex type.
- *
+ * 
  * <p>The following schema fragment specifies the expected content contained within this class.
- *
+ * 
  * <pre>
  * &lt;complexType name="credentials">
  *   &lt;complexContent>
@@ -28,8 +28,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "credentials", propOrder = {
@@ -49,11 +49,11 @@ public class Credentials {
 
     /**
      * Gets the value of the userName property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getUserName() {
         return userName;
@@ -61,11 +61,11 @@ public class Credentials {
 
     /**
      * Sets the value of the userName property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setUserName(String value) {
         this.userName = value;
@@ -73,11 +73,11 @@ public class Credentials {
 
     /**
      * Gets the value of the groupName property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getGroupName() {
         return groupName;
@@ -85,11 +85,11 @@ public class Credentials {
 
     /**
      * Sets the value of the groupName property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setGroupName(String value) {
         this.groupName = value;
@@ -97,11 +97,11 @@ public class Credentials {
 
     /**
      * Gets the value of the gridIdentifier property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getGridIdentifier() {
         return gridIdentifier;
@@ -109,11 +109,11 @@ public class Credentials {
 
     /**
      * Sets the value of the gridIdentifier property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setGridIdentifier(String value) {
         this.gridIdentifier = value;
@@ -121,11 +121,11 @@ public class Credentials {
 
     /**
      * Gets the value of the password property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getPassword() {
         return password;
@@ -133,11 +133,11 @@ public class Credentials {
 
     /**
      * Sets the value of the password property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setPassword(String value) {
         this.password = value;
@@ -145,11 +145,11 @@ public class Credentials {
 
     /**
      * Gets the value of the delegatedCredentialReference property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link String }
-     *
+     *     
      */
     public String getDelegatedCredentialReference() {
         return delegatedCredentialReference;
@@ -157,11 +157,11 @@ public class Credentials {
 
     /**
      * Sets the value of the delegatedCredentialReference property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link String }
-     *
+     *     
      */
     public void setDelegatedCredentialReference(String value) {
         this.delegatedCredentialReference = value;
