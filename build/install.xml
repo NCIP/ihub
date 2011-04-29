@@ -1240,7 +1240,7 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 			</fileset>
 		</copy>
 		
-		<copy file="${common.resource.dir.dest}/conf/mirth/remoteService.xml" todir="${mirth.home}/conf/custom" overwrite="true" />
+		<copy file="${common.resource.dir.dest}/conf/mirth/remoteService.xml" todir="${mirth.home}/conf" overwrite="true" />
 		
 		<!-- This two lines of code required for proper channel deployment. In future release consider removing it-->
 		<move file="${mirth.home}/lib/mule/axis-14.jar" tofile="${mirth.home}/undeployed-jars/lib/mule/axis-14.jar" failonerror="false" />
