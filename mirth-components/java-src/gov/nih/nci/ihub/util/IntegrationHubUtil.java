@@ -1,11 +1,16 @@
 package gov.nih.nci.ihub.util;
 
+import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.ihub.reader.cxf.ResponseMessage;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 
+import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -32,6 +37,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import gov.nih.nci.ihub.reader.cxf.Message;
 
 public class IntegrationHubUtil {
 	/**
@@ -190,6 +197,7 @@ public class IntegrationHubUtil {
 		return "<" + HubConstants.REQUEST_PAYLOAD_ELEMENT + ">" + payload
 				+ "</" + HubConstants.REQUEST_PAYLOAD_ELEMENT + ">";
 	}
+	
 
 	/**
 	 * 
@@ -208,6 +216,34 @@ public class IntegrationHubUtil {
 			logger.error(e.getMessage());
 			return null;
 		}
+	}
+	
+	
+	/**
+	 * 
+	 * @param cxfRequestMessage
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getStringFromCXFMessage(Message cxfRequestMessage) throws Exception {
+        StringWriter stringWriter = new StringWriter();
+        QName requestQName =new QName(HubConstants.NS, HubConstants.ROOT_NODE);
+        Utils.serializeObject(cxfRequestMessage,requestQName, stringWriter);
+        return stringWriter.toString();
+    }
+	
+	
+	/**
+     * Parse the response text from caXchange.
+     * 
+     * @return parsed gov.nih.nci.ihub.reader.cxf.ResponseMessage
+     * @throws Exception
+     */
+    public static ResponseMessage getCXFResponseFromString(String responseText) throws Exception {
+        Reader reader = new StringReader(responseText);
+        ResponseMessage rm = (ResponseMessage) Utils.deserializeObject(reader,
+				ResponseMessage.class);
+		return rm;
 	}
 
 }

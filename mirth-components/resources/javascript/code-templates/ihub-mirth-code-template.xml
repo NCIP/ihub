@@ -247,7 +247,7 @@
   </com.webreach.mirth.model.CodeTemplate>
   <com.webreach.mirth.model.CodeTemplate>
     <id>75d33796-6465-4747-b5d5-68f8beb1f87f</id>
-    <name>delegateSingleTargetRequest1</name>
+    <name>delegateSingleTargetRequest</name>
     <tooltip>Delegates request to a SINGLE target caGrid service. Does a one time retry on connection related exceptions. Usage:  ASYNCHRONOUS channels</tooltip>
     <code>function delegateSingleTargetRequest(varServiceType, varTargetInvocationStrategy, varBusinessMessageXMLSchemaDefinition, varMessageID){
 	var	varTargetDetailsCode = varTargetInvocationStrategy.getServiceProviderName();
