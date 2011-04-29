@@ -4,6 +4,7 @@ public class HubConstants {
 
 	//response tags
 	public static final String NS = "http://caXchange.nci.nih.gov/messaging";
+	public static final String ROOT_NODE = "caXchangeRequestMessage";
 	public static final String REQUEST_ELEMENT = "request";
 	public static final String REQUEST_PAYLOAD_ELEMENT = "businessMessagePayload";
 	public static final String META_DATA_ELEMENT = "metadata";
@@ -147,4 +148,8 @@ public class HubConstants {
 	
 	//static responses
 	public static final String SUCCESS_RESULT_ON_VOID_RETURN = "<result>success</result>";
+	
+	public static final String MIRTH_HTTP_LISTENER_USER = "mirth.http.listener.user";
+	public static final String MIRTH_HTTP_LISTENER_PASSWORD = "mirth.http.listener.password";
+	public static final String MIRTH_HTTP_LISTENER_URL = "mirth.http.listener.url";
 }
