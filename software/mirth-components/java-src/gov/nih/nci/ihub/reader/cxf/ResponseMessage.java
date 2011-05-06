@@ -4,6 +4,7 @@ package gov.nih.nci.ihub.reader.cxf;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -27,6 +28,7 @@ import javax.xml.bind.annotation.XmlType;
  * 
  * 
  */
+@XmlRootElement(name = "caXchangeResponseMessage")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "responseMessage", propOrder = {
     "responseMetadata",
