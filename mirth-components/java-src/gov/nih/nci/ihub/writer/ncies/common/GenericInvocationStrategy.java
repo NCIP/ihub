@@ -413,7 +413,8 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 			Node node = nodes.item(i);
 			if (node instanceof Element) {
 				if (("ns1:" + HubConstants.SCHEMA_DEFINITION_ELEMENT)
-						.equals(node.getNodeName())) {
+						.equals(node.getNodeName())||
+					(HubConstants.SCHEMA_DEFINITION_ELEMENT.equals(node.getNodeName()))) {
 					continue;
 				} else {
 					els.add((Element) node);

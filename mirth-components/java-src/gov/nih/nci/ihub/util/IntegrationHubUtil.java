@@ -11,7 +11,9 @@ import java.io.StringReader;
 import java.io.StringWriter;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -49,6 +51,7 @@ public class IntegrationHubUtil {
 	private static final Logger logger = Logger
 			.getLogger(IntegrationHubUtil.class);
 	private static JAXBContext context = null;
+	private static JAXBContext responseContext = null;
 
 	/**
 	 * Returns the string representation of a given org.w3c.dom.Node object
@@ -247,8 +250,13 @@ public class IntegrationHubUtil {
      */
     public static ResponseMessage getCXFResponseFromString(String responseText) throws Exception {
         Reader reader = new StringReader(responseText);
-        ResponseMessage rm = (ResponseMessage) Utils.deserializeObject(reader,
-				ResponseMessage.class);
+        if (responseContext == null) {
+        	responseContext = JAXBContext.newInstance(ResponseMessage.class);
+        }
+        Unmarshaller unMarshaller = responseContext.createUnmarshaller();
+
+        JAXBElement<ResponseMessage> jbe = (JAXBElement<ResponseMessage>)unMarshaller.unmarshal(reader);
+        ResponseMessage rm = jbe.getValue();
 		return rm;
 	}
 

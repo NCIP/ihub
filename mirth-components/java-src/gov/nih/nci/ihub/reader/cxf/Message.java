@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlType;
  * 
  * 
  */
-@XmlRootElement
+@XmlRootElement(name = "caXchangeRequestMessage")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "message", propOrder = {
     "metadata",
