@@ -10,6 +10,8 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -46,6 +48,7 @@ public class IntegrationHubUtil {
 	 */
 	private static final Logger logger = Logger
 			.getLogger(IntegrationHubUtil.class);
+	private static JAXBContext context = null;
 
 	/**
 	 * Returns the string representation of a given org.w3c.dom.Node object
@@ -213,7 +216,7 @@ public class IntegrationHubUtil {
 			output.appendChild(root);
 			return output.getDocumentElement();
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			logger.error("Error converting to business payload",e);
 			return null;
 		}
 	}
@@ -226,9 +229,12 @@ public class IntegrationHubUtil {
 	 * @throws Exception
 	 */
 	public static String getStringFromCXFMessage(Message cxfRequestMessage) throws Exception {
+		if (context == null) {
+	       context = JAXBContext.newInstance(Message.class);
+		}
+		Marshaller marshaller = context.createMarshaller();
         StringWriter stringWriter = new StringWriter();
-        QName requestQName =new QName(HubConstants.NS, HubConstants.ROOT_NODE);
-        Utils.serializeObject(cxfRequestMessage,requestQName, stringWriter);
+		marshaller.marshal(cxfRequestMessage, stringWriter);
         return stringWriter.toString();
     }
 	
