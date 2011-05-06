@@ -29,12 +29,12 @@
 	</path>
 	
 	<path id="run.classpath">
-	        <pathelement location="${classes.dir}"/>
-		<fileset dir="${lib.dir}">
+	        <pathelement location="${classes.dir}"/>		
+		<fileset dir="${lib.dir}/mirth_jars">
 			<include name="*.jar" />
 			<include name="*.zip" />
 		</fileset>		
-		<fileset dir="${lib.dir}/mirth_jars">
+		<fileset dir="${lib.dir}">
 			<include name="*.jar" />
 			<include name="*.zip" />
 		</fileset>		
@@ -51,7 +51,7 @@
 	<target name="compile" depends="clean" description="Compile Mirth custom components">
 		<javac classpathref="compile.classpath" destdir="${classes.dir}" debug="on" optimize="on">
 			<src path="${src.dir}" />
-		</javac>
+		</javac>	
 
 		<!-- copy other files so they will be included in jar -->
 		<copydir dest="${classes.dir}" src="${src.dir}">

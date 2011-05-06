@@ -111,4 +111,5 @@ globalMap.put("coppa.dorian.url", "@coppa.dorian.url@");
 globalMap.put("catissue.username", "@catissue.username@");
 globalMap.put("catissue.password", "@catissue.password@");
 
+
 return;

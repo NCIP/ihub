@@ -57,8 +57,9 @@ public class IhubCXFInboundImpl implements CaXchangeRequestPortType {
 		ResponseMessage cxfResponseMessage = new ResponseMessage();
 
 		PostMethod method = new PostMethod(mirthHttpUrl);
+		logger.info("Sending message to mirth http listener URL."+mirthHttpUrl);
 		try {
-			logger.debug("Synchronous Message: "
+			logger.info("Synchronous Message: "
 					+ IntegrationHubUtil
 							.getStringFromCXFMessage(cxfRequestMessage));
 			method.addParameter("synchronous_msg", IntegrationHubUtil
@@ -86,6 +87,8 @@ public class IhubCXFInboundImpl implements CaXchangeRequestPortType {
 								.toString());
 			}
 		} catch (Exception e) {
+			logger.error("Error sending message to the Mirth Http listener.",e);
+			
 			e.printStackTrace();
 		} finally {
 			method.releaseConnection();
