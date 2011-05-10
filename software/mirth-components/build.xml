@@ -9,6 +9,7 @@
 
 	<property name="root" value="." />
 	<property name="lib.dir" value="${root}/lib" />
+	<property name="ihub-custom.dir" value="${root}/ihub-custom" />
 	<property name="src.dir" value="${root}/java-src" />
 	<property name="target.dir" value="${root}/target" />
 	<property name="resources.dir" value="${root}/resources" />
@@ -84,6 +85,11 @@
 			<fileset dir="${lib.dir}">
 				<include name="*.jar" />
 			</fileset>
+		</copy>
+		<copy todir="${dist.dir}/ihub-custom">
+		       <fileset dir="${ihub-custom.dir}">
+		            <include name="*.*" />
+		       </fileset>
 		</copy>
 	</target>
 
