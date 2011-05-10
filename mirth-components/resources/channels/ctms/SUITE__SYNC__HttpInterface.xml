@@ -873,9 +873,7 @@ return false;</script>
 return message;</preprocessingScript>
   <postprocessingScript>// This script executes once after a message has been processed
 return;</postprocessingScript>
-  <deployScript>/***  START CXF SERVICE ****/
-var iHubInboundServer = new Packages.gov.nih.nci.ihub.reader.cxf.impl.IHubInboundServer();
-globalMap.put(&quot;iHubInboundServer&quot;, iHubInboundServer);
+  <deployScript>
 
 
 /*********************************************************

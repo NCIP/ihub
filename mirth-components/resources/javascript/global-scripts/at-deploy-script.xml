@@ -112,4 +112,16 @@ globalMap.put("catissue.username", "@catissue.username@");
 globalMap.put("catissue.password", "@catissue.password@");
 
 
+/***  START CXF SERVICE ****/
+
+logger.info('Starting the CXF service');
+
+var iHubInboundServer = new Packages.gov.nih.nci.ihub.reader.cxf.impl.IHubInboundServer();
+globalMap.put('iHubInboundServer', iHubInboundServer);
+
+logger.info('Done starting the CXF service');
+
+
+
+
 return;

@@ -1242,9 +1242,51 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 		
 		<copy file="${common.resource.dir.dest}/conf/mirth/remoteService.xml" todir="${mirth.home}/conf" overwrite="true" />
 		
+		<copy todir="${mirth.home}" overwrite="true">
+		      <fileset dir="${mirth-components.dir.src}/ihub-custom">
+		              <include name="mirth-server.jar" />
+		      </fileset>
+		</copy>
+		
+		<copy todir="${mirth.home}/lib/jetty" overwrite="true">
+		      <fileset dir="${mirth-components.dir.src}/ihub-custom">
+		              <include name="jetty-6.1.26.jar" />
+		              <include name="jetty-util-6.1.26.jar" />
+		      </fileset>
+		</copy>				
+		
+		<copy todir="${temp.dir}/mirth-components/cxf" overwrite="true">
+			<fileset dir="${mirth-components.dir.src}/cxf">
+				<include name="CXFInboundServer.xml" />
+				<include name="ihub.cxf.inbound.properties" />
+				<include name="cxfCrypto.properties" />
+			</fileset>
+			<filterset>
+				<filtersfile file="${properties.file}" />
+				<filtersfile file="project.properties" />
+			</filterset>
+		</copy>		
+	
+		
+		<copy todir="${mirth.home}/conf" overwrite="true">
+		      <fileset dir="${temp.dir}/mirth-components/cxf">
+			      <include name="*.*" />
+		      </fileset>
+		</copy>
+		
+		<copy todir="${mirth.home}/conf" overwrite="true">
+		      <fileset dir="${mirth-components.dir.src}/cxf">
+			      <include name="*.*" />
+			      <exclude name="CXFInboundServer.xml" />
+			      <exclude name="ihub.cxf.inbound.properties" />
+			      <exclude name="cxfCrypto.properties" />
+		      </fileset>
+		</copy>		
+		
 		<!-- This two lines of code required for proper channel deployment. In future release consider removing it-->
 		<move file="${mirth.home}/lib/mule/axis-14.jar" tofile="${mirth.home}/undeployed-jars/lib/mule/axis-14.jar" failonerror="false" />
 		<move file="${mirth.home}/lib/mule/wsif.jar" tofile="${mirth.home}/undeployed-jars/lib/mule/wsif.jar" failonerror="false" />
+		<move file="${mirth.home}/lib/jetty/org.mortbay.jetty.jar" tofile="${mirth.home}/undeployed-jars/lib/jetty/org.mortbay.jetty.jar" failonerror="false" />
 	
 	</target>
 
