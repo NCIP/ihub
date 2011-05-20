@@ -4,6 +4,7 @@
 globalMap.put("delegation.certificate.file.path","@delegation.certificate.file.path@");
 globalMap.put("delegation.key.file.path","@delegation.key.file.path@");
 globalMap.put("user.proxy.cache.time.to.live",600);
+globalMap.put("response.aggregator.timeout",120);
 globalMap.put("coppa.mirth.delegation.certificate.file.path","@coppa.mirth.delegation.certificate.file.path@");
 globalMap.put("coppa.mirth.delegation.key.file.path","@coppa.mirth.delegation.key.file.path@");
 
