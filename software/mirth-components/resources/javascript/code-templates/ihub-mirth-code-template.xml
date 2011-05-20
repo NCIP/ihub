@@ -9,6 +9,7 @@
 		var dbConn = getIHubDatabaseConnection();
 		var overallResponseSQL = &quot;SELECT message.overall_response_data AS message_overall_response_data FROM message WHERE message.message_id=&apos;&quot;+varMessageID+&quot;&apos; AND message.message_status=&apos;&quot;+Packages.gov.nih.nci.ihub.util.HubConstants.MESSAGE_STATUS_PROCESSED+&quot;&apos;&quot;;
 		var overallResponseResults = dbConn.executeCachedQuery(overallResponseSQL);
+		var aggregatorTimeout = globalMap.get("response.aggregator.timeout");
 
 		var totalSecondsElapsed = 0;
 		while (overallResponseResults.size() &lt; 1) {
@@ -16,7 +17,7 @@
 			overallResponseResults = dbConn.executeCachedQuery(overallResponseSQL);
 			totalSecondsElapsed++;
 			//the number 62, can be derived instead of hard coding. 62 means 62 seconds of maximum wait time
-			if(totalSecondsElapsed &gt;= 62){			
+			if(totalSecondsElapsed &gt;= aggregatorTimeout){			
 				break;
 			}
 		}
