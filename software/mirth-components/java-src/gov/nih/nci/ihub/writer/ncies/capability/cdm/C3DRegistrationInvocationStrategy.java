@@ -39,7 +39,12 @@ public class C3DRegistrationInvocationStrategy extends
 										.convertPayloadIntoBusinessPayload(registerSubjectConvertedString))
 						.getDocumentElement();
 
-				super.invokeGridService(isRollback);
+				GridInvocationResult gridInvocationResult = super.invokeGridService(isRollback);
+				if (gridInvocationResult.isFault()) {
+					//If an error happened invaking the C3D register subject service return it so that the
+					//error is communicated back to the invoking application.
+					return gridInvocationResult;
+				}
 							
 				final Element response = (Element) subjectRegistrationTransformer
 						.insertPatientPosition(transformer
