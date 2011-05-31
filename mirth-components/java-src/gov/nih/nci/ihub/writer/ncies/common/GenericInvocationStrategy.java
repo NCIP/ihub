@@ -365,11 +365,16 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 		} catch (InvocationTargetException ite) {
 			logger.error("Exception invoking " + operationName, ite);
 			Throwable cause = ite.getCause();
-			String errorDetails = ite.getMessage() + ":"
-					+ ((cause == null) ? "" : cause.getMessage());
+			String errorDetails = getInvocationTargetExceptionCause(ite);
 			throw new GridInvocationException("Exception invoking "
 					+ operationName + " on " + gridClientClassName + "."
 					+ errorDetails, ite);
+		} catch (Throwable throwable) {
+			logger.error("Error invoking "+ operationName, throwable);
+		    String errorDetails = throwable.getMessage();
+			throw new GridInvocationException("Exception invoking "
+					+ operationName + " on " + gridClientClassName + "."
+					+ errorDetails, throwable);
 		}
 	}
 
@@ -404,6 +409,53 @@ public class GenericInvocationStrategy extends GridInvocationStrategy {
 			throw e;
 		}
 
+	}
+	
+	public String getInvocationTargetExceptionCause(InvocationTargetException ite) {
+		StringBuffer causeDetails = new StringBuffer("");
+		if ((ite.getMessage()!= null)&&(!("null".equals(ite.getMessage())))) {
+			causeDetails = causeDetails.append(ite.getMessage()); 
+		}
+		Throwable cause = ite.getCause();
+		logger.debug(ite);
+		logger.debug(cause);
+		if (cause != null) {
+			if ((cause.getMessage()!= null)&&(!("null".equals(cause.getMessage())))) {
+	            if (causeDetails.length() == 0) {
+				   causeDetails = causeDetails.append(cause.getMessage());
+	            } else {
+	               causeDetails = causeDetails.append(":"+cause.getMessage());
+	            }
+	            //return if cause is found
+	            return causeDetails.toString();
+			} else {
+				String causeString = cause.toString();
+				if ((causeString != null)&&(!(causeString.equals("")))) {
+		            if (causeDetails.length() == 0) {
+						   causeDetails = causeDetails.append(causeString);
+			         } else {
+			               causeDetails = causeDetails.append(":"+causeString);
+			         }
+		            return causeDetails.toString();
+				}
+				
+			}
+		}
+		Throwable targetError = ite.getTargetException();
+		logger.debug(targetError);
+		if (targetError != null) {
+			if ((targetError.getMessage()!= null)&&(!("null".equals(targetError.getMessage())))) {
+	            if (causeDetails.length() == 0) {
+				   causeDetails = causeDetails.append(targetError.getMessage());
+	            } else {
+	               causeDetails = causeDetails.append(":"+targetError.getMessage());
+	            }
+	            //return if target error is found
+	            return causeDetails.toString();
+			}
+		}		
+
+		return causeDetails.toString();
 	}
 
 	public List<Element> getPayloads() {
