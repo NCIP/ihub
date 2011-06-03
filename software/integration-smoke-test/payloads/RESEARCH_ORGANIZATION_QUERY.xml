@@ -1,0 +1,15 @@
+<ResearchOrganization 
+    xmlns="http://po.coppa.nci.nih.gov" 
+    xmlns:ISO="uri:iso.org:21090"> 
+    <identifier>
+        <ns2:item reliability="ISS" scope="OBJ" displayable="true" identifierName="NCI Research Organization identifier" extension="507" root="2.16.840.1.113883.3.26.4.4.5" xmlns:ns2="uri:iso.org:21090"/>
+        <ns3:item reliability="VRF" scope="OBJ" displayable="true" identifierName="CTEP ID" extension="CTEP" root="2.16.840.1.113883.3.26.6.2" xmlns:ns3="uri:iso.org:21090"/>
+    </identifier>
+    <playerIdentifier displayable="true" identifierName="NCI organization entity identifier" extension="503" root="2.16.840.1.113883.3.26.4.2"/>
+    <status nullFlavor="NI"/>
+    <typeCode nullFlavor="NI"/>
+    <fundingMechanism nullFlavor="NI"/>
+    <postalAddress nullFlavor="NI"/>
+    <telecomAddress nullFlavor="NI"/>
+    <name nullFlavor="NI"/>
+</ResearchOrganization>
