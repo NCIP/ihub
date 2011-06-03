@@ -1,0 +1,77 @@
+Buildfile: build.xml
+
+init:
+
+replace:
+     [copy] Copying 8 files to C:\work\code\iHub\tg\dist\exploded\integration-smoke-test\resources
+
+testCoppaService:
+    [junit] Running gov.nih.nci.cagrid.caxchange.test.TestCoppaServices
+    [junit] <ns1:caXchangeRequestMessage xmlns:ns1="http://caXchange.nci.nih.gov/messaging">
+    [junit]  <ns1:metadata>
+    [junit]   <ns1:transactionControl xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+    [junit]   <ns1:serviceType>ORGANIZATION</ns1:serviceType>
+    [junit]   <ns1:operationName>search</ns1:operationName>
+    [junit]   <ns1:externalIdentifier>myExternalIdentifier</ns1:externalIdentifier>
+    [junit]   <ns1:credentials>
+    [junit]    <ns1:userName>cctsdev1</ns1:userName>
+    [junit]    <ns1:password>An010101!!</ns1:password>
+    [junit]    <ns1:delegatedCredentialReference>&lt;ns1:DelegatedCredentialReference xmlns:ns1=&quot;http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types&quot;&gt;
+    [junit]  &lt;ns2:EndpointReference xsi:type=&quot;ns2:EndpointReferenceType&quot; xmlns:ns2=&quot;http://schemas.xmlsoap.org/ws/2004/03/addressing&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;
+    [junit]   &lt;ns2:Address xsi:type=&quot;ns2:AttributedURI&quot;&gt;https://cagrid-cds-stage.nci.nih.gov:8443/wsrf/services/cagrid/DelegatedCredential&lt;/ns2:Address&gt;
+    [junit]   &lt;ns2:ReferenceProperties xsi:type=&quot;ns2:ReferencePropertiesType&quot;&gt;
+    [junit]    &lt;ns2:DelegatedCredentialKey xmlns:ns2=&quot;http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential&quot;&gt;
+    [junit]     &lt;ns3:delegationId xmlns:ns3=&quot;http://gaards.cagrid.org/cds&quot;&gt;18007&lt;/ns3:delegationId&gt;
+    [junit]    &lt;/ns2:DelegatedCredentialKey&gt;
+    [junit]   &lt;/ns2:ReferenceProperties&gt;
+    [junit]   &lt;ns2:ReferenceParameters xsi:type=&quot;ns2:ReferenceParametersType&quot;/&gt;
+    [junit]  &lt;/ns2:EndpointReference&gt;
+    [junit] &lt;/ns1:DelegatedCredentialReference&gt;
+    [junit] </ns1:delegatedCredentialReference>
+    [junit]   </ns1:credentials>
+    [junit]  </ns1:metadata>
+    [junit]  <ns1:request>
+    [junit]   <ns1:businessMessagePayload>
+    [junit]    <ns1:xmlSchemaDefinition>http://po.coppa.nci.nih.gov</ns1:xmlSchemaDefinition>
+    [junit]    <ns1:Organization xmlns:ns1="http://po.coppa.nci.nih.gov" xmlns:ns2="uri:iso.org:21090">
+    [junit]      <ns1:identifier nullFlavor="NI" xmlns:ns1="http://po.coppa.nci.nih.gov"/>
+    [junit] 
+    [junit]      <ns1:name xmlns:ns1="http://po.coppa.nci.nih.gov">
+    [junit]        <ns2:part type="DEL" value="YY" xmlns:ns2="uri:iso.org:21090"/>
+    [junit] 
+    [junit]   </ns1:name>
+    [junit] 
+    [junit]      <ns1:postalAddress xmlns:ns1="http://po.coppa.nci.nih.gov"/>
+    [junit] 
+    [junit]      <ns1:statusCode nullFlavor="NI" xmlns:ns1="http://po.coppa.nci.nih.gov"/>
+    [junit] 
+    [junit]      <ns1:telecomAddress xmlns:ns1="http://po.coppa.nci.nih.gov"/>
+    [junit] 
+    [junit] </ns1:Organization>
+    [junit]   </ns1:businessMessagePayload>
+    [junit]  </ns1:request>
+    [junit] </ns1:caXchangeRequestMessage>
+    [junit] Invoking the service synchronously.
+    [junit] <ns1:caXchangeResponseMessage xmlns:ns1="http://caXchange.nci.nih.gov/messaging">
+    [junit]  <ns1:responseMetadata>
+    [junit]   <ns1:externalIdentifier>myExternalIdentifier</ns1:externalIdentifier>
+    [junit]   <ns1:caXchangeIdentifier>de7c6770-8259-11e0-a04a-e1e460fcb307</ns1:caXchangeIdentifier>
+    [junit]  </ns1:responseMetadata>
+    [junit]  <ns1:response>
+    [junit]   <ns1:responseStatus>SUCCESS</ns1:responseStatus>
+    [junit]   <ns1:targetResponse>
+    [junit]    <ns1:targetServiceIdentifier>ORGANIZATION</ns1:targetServiceIdentifier>
+    [junit]    <ns1:targetServiceOperation>search</ns1:targetServiceOperation>
+    [junit]    <ns1:targetMessageStatus>RESPONSE</ns1:targetMessageStatus>
+    [junit]    <ns1:targetBusinessMessage>
+    [junit]     <ns1:xmlSchemaDefinition>http://po.coppa.nci.nih.gov</ns1:xmlSchemaDefinition>
+    [junit]     <soapenc:Array xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"/>
+    [junit]    </ns1:targetBusinessMessage>
+    [junit]   </ns1:targetResponse>
+    [junit]  </ns1:response>
+    [junit] </ns1:caXchangeResponseMessage>
+    [junit] 
+    [junit] Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 5.11 sec
+
+BUILD SUCCESSFUL
+Total time: 6 seconds

@@ -1,0 +1,106 @@
+Buildfile: build.xml
+
+init:
+
+replace:
+     [copy] Copying 8 files to C:\work\code\iHub\tg\dist\exploded\integration-smoke-test\resources
+
+testCoppaService:
+    [junit] Running gov.nih.nci.cagrid.caxchange.test.TestCoppaServices
+    [junit] <ns1:caXchangeRequestMessage xmlns:ns1="http://caXchange.nci.nih.gov/messaging">
+    [junit]  <ns1:metadata>
+    [junit]   <ns1:transactionControl xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+    [junit]   <ns1:serviceType>STUDY_PROTOCOL</ns1:serviceType>
+    [junit]   <ns1:operationName>getInterventionalStudyProtocol</ns1:operationName>
+    [junit]   <ns1:externalIdentifier>myExternalIdentifier</ns1:externalIdentifier>
+    [junit]   <ns1:credentials>
+    [junit]    <ns1:userName>cctsdev1</ns1:userName>
+    [junit]    <ns1:password>An010101!!</ns1:password>
+    [junit]    <ns1:delegatedCredentialReference>&lt;ns1:DelegatedCredentialReference xmlns:ns1=&quot;http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types&quot;&gt;
+    [junit]  &lt;ns2:EndpointReference xsi:type=&quot;ns2:EndpointReferenceType&quot; xmlns:ns2=&quot;http://schemas.xmlsoap.org/ws/2004/03/addressing&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;
+    [junit]   &lt;ns2:Address xsi:type=&quot;ns2:AttributedURI&quot;&gt;https://cagrid-cds-stage.nci.nih.gov:8443/wsrf/services/cagrid/DelegatedCredential&lt;/ns2:Address&gt;
+    [junit]   &lt;ns2:ReferenceProperties xsi:type=&quot;ns2:ReferencePropertiesType&quot;&gt;
+    [junit]    &lt;ns2:DelegatedCredentialKey xmlns:ns2=&quot;http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential&quot;&gt;
+    [junit]     &lt;ns3:delegationId xmlns:ns3=&quot;http://gaards.cagrid.org/cds&quot;&gt;18000&lt;/ns3:delegationId&gt;
+    [junit]    &lt;/ns2:DelegatedCredentialKey&gt;
+    [junit]   &lt;/ns2:ReferenceProperties&gt;
+    [junit]   &lt;ns2:ReferenceParameters xsi:type=&quot;ns2:ReferenceParametersType&quot;/&gt;
+    [junit]  &lt;/ns2:EndpointReference&gt;
+    [junit] &lt;/ns1:DelegatedCredentialReference&gt;
+    [junit] </ns1:delegatedCredentialReference>
+    [junit]   </ns1:credentials>
+    [junit]  </ns1:metadata>
+    [junit]  <ns1:request>
+    [junit]   <ns1:businessMessagePayload>
+    [junit]    <ns1:xmlSchemaDefinition>http://po.coppa.nci.nih.gov</ns1:xmlSchemaDefinition>
+    [junit]    <pa:Id extension="27426" identifierName="NCI study protocol entity identifier" root="2.16.840.1.113883.3.26.4.3" xmlns:pa="http://pa.services.coppa.nci.nih.gov"/>
+    [junit]   </ns1:businessMessagePayload>
+    [junit]  </ns1:request>
+    [junit] </ns1:caXchangeRequestMessage>
+    [junit] Invoking the service synchronously.
+    [junit] <ns1:caXchangeResponseMessage xmlns:ns1="http://caXchange.nci.nih.gov/messaging">
+    [junit]  <ns1:responseMetadata>
+    [junit]   <ns1:externalIdentifier>myExternalIdentifier</ns1:externalIdentifier>
+    [junit]   <ns1:caXchangeIdentifier>c1579e80-8259-11e0-a04a-e1e460fcb307</ns1:caXchangeIdentifier>
+    [junit]  </ns1:responseMetadata>
+    [junit]  <ns1:response>
+    [junit]   <ns1:responseStatus>SUCCESS</ns1:responseStatus>
+    [junit]   <ns1:targetResponse>
+    [junit]    <ns1:targetServiceIdentifier>STUDY_PROTOCOL</ns1:targetServiceIdentifier>
+    [junit]    <ns1:targetServiceOperation>getInterventionalStudyProtocol</ns1:targetServiceOperation>
+    [junit]    <ns1:targetMessageStatus>RESPONSE</ns1:targetMessageStatus>
+    [junit]    <ns1:targetBusinessMessage>
+    [junit]     <ns1:xmlSchemaDefinition>http://po.coppa.nci.nih.gov</ns1:xmlSchemaDefinition>
+    [junit]     <ns1:InterventionalStudyProtocol xmlns:ns1="http://pa.services.coppa.nci.nih.gov">     <ns1:identifier extension="27426" identifierName="NCI study protocol entity identifier" root="2.16.840.1.113883.3.26.4.3"/>
+    [junit]      <ns1:acronym nullFlavor="NI"/>
+    [junit]      <ns1:accrualReportingMethodCode nullFlavor="NI"/>
+    [junit]      <ns1:assignedIdentifier extension="NCI-2009-00001" identifierName="NCI study protocol entity identifier" root="2.16.840.1.113883.3.26.4.3"/>
+    [junit]      <ns1:dataMonitoringCommitteeAppointedIndicator nullFlavor="NI"/>
+    [junit]      <ns1:delayedpostingIndicator nullFlavor="NI"/>
+    [junit]      <ns1:expandedAccessIndicator nullFlavor="NI"/>
+    [junit]      <ns1:fdaRegulatedIndicator nullFlavor="NI"/>
+    [junit]      <ns1:reviewBoardApprovalRequiredIndicator nullFlavor="NI"/>
+    [junit]      <ns1:officialTitle value="title"/>
+    [junit]      <ns1:targetAccrualNumber>      <ns2:low nullFlavor="NI" xmlns:ns2="uri:iso.org:21090"/>
+    [junit]       <ns3:high nullFlavor="NI" xmlns:ns3="uri:iso.org:21090"/>
+    [junit]  </ns1:targetAccrualNumber>
+    [junit]      <ns1:phaseCode nullFlavor="NI"/>
+    [junit]      <ns1:phaseOtherText/>
+    [junit]      <ns1:primaryCompletionDate value="20090723000000.0000-0400"/>
+    [junit]      <ns1:primaryCompletionDateTypeCode code="Anticipated"/>
+    [junit]      <ns1:primaryPurposeCode code="Treatment"/>
+    [junit]      <ns1:primaryPurposeOtherText/>
+    [junit]      <ns1:programCodeText nullFlavor="NI"/>
+    [junit]      <ns1:publicDescription nullFlavor="NI"/>
+    [junit]      <ns1:publicTitle nullFlavor="NI"/>
+    [junit]      <ns1:recordVerificationDate nullFlavor="NI"/>
+    [junit]      <ns1:scientificDescription nullFlavor="NI"/>
+    [junit]      <ns1:section801Indicator nullFlavor="NI"/>
+    [junit]      <ns1:startDate value="20090723000000.0000-0400"/>
+    [junit]      <ns1:startDateTypeCode code="Anticipated"/>
+    [junit]      <ns1:keywordText nullFlavor="NI"/>
+    [junit]      <ns1:acceptHealthyVolunteersIndicator nullFlavor="NI"/>
+    [junit]      <ns1:studyProtocolType value="InterventionalStudyProtocol"/>
+    [junit]      <ns1:userLastCreated value="/O=caBIG/OU=caGrid/OU=Stage LOA1/OU=NCI STAGE/CN=niktevv"/>
+    [junit]      <ns1:statusCode code="Active"/>
+    [junit]      <ns1:statusDate value="20090713153309.0370-0400"/>
+    [junit]      <ns1:amendmentNumber nullFlavor="NI"/>
+    [junit]      <ns1:amendmentDate nullFlavor="NI"/>
+    [junit]      <ns1:amendmentReasonCode nullFlavor="NI"/>
+    [junit]      <ns1:submissionNumber value="1"/>
+    [junit]      <ns1:proprietaryTrialIndicator nullFlavor="NI"/>
+    [junit]      <ns1:allocationCode nullFlavor="NI"/>
+    [junit]      <ns1:blindedRoleCode nullFlavor="NI"/>
+    [junit]      <ns1:blindingSchemaCode nullFlavor="NI"/>
+    [junit]      <ns1:designConfigurationCode nullFlavor="NI"/>
+    [junit]      <ns1:numberOfInterventionGroups nullFlavor="NI"/>
+    [junit]      <ns1:studyClassificationCode nullFlavor="NI"/>
+    [junit]    </ns1:InterventionalStudyProtocol>
+    [junit]   </ns1:targetBusinessMessage>
+    [junit]  </ns1:targetResponse>
+    [junit] </ns1:response></ns1:caXchangeResponseMessage>
+    [junit] 
+    [junit] Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 5.188 sec
+
+BUILD SUCCESSFUL
+Total time: 6 seconds
