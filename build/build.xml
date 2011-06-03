@@ -265,8 +265,29 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 	</target>
 
 	<target name="clean">
-		<delete dir="${dist.dir}" />
-		<delete dir="${temp.dir}" />
+		<delete dir="${target.dir}/dist" />
+		<delete dir="${target.dir}/download" />
+		<delete dir="${target.dir}/pt" />
+		<delete dir="${target.dir}/temp" />
+		<delete>
+			<fileset dir="${target.dir}">
+			    <exclude name="bda-utils/*.*"/>
+				<exclude name="lib/ivy*.*"/>
+				<exclude name="logs/*.*"/>
+			</fileset>
+		</delete>
+		<delete dir="${mirth-components.base.dir}/target" />
+		<delete dir="${OpenClinicaPlugin.base.dir}/classes" />
+		<delete dir="${OpenClinicaPlugin.base.dir}/gend" />
+		<delete dir="${caXchangeInboundService.base.dir}/build" />
+		<delete dir="${OpenClinicaConsumerService.base.dir}/build" />
+		<delete dir="${OpenClinicaConsumerService.base.dir}/temp" />
+		<delete>
+			<fileset dir="${caXchangeInboundService.base.dir}/lib">
+			    <include name="*.jar.*"/>
+			</fileset>
+		</delete>
+
 	</target>
 
 	<target name="init" description="Sets up build are and initalizes variables">
