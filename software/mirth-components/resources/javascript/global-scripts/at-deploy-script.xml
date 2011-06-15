@@ -114,14 +114,14 @@ globalMap.put("catissue.password", "@catissue.password@");
 
 
 /***  START CXF SERVICE ****/
-
+/** Commented out so that the CXF component is not started.
 logger.info('Starting the CXF service');
 
 var iHubInboundServer = new Packages.gov.nih.nci.ihub.reader.cxf.impl.IHubInboundServer();
 globalMap.put('iHubInboundServer', iHubInboundServer);
 
 logger.info('Done starting the CXF service');
-
+*/
 
 
 
