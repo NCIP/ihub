@@ -439,7 +439,18 @@ $HeadURL: https://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build
 							<then>
 								<echo message="LOCAL_ACTIVEMQ_HOME not found downloading." />
 								<antcall target="dist:tools:retrieve:activemq" />
-								<unzip src="${activemq.file}" dest="${pt.dir}" />
+
+								<if>
+									<os family="windows" />
+									<then>
+									        <unzip src="${activemq.file}" dest="${pt.dir}" />
+									</then>
+									<else>
+									        <gunzip src="${activemq.file}"/>
+									        <propertyregex property="activemq.binaries.tar.file" input="${activemq.file}" regexp=".gz$" replace="" />
+									        <untar src="${activemq.binaries.tar.file}" dest="${pt.dir}"/>
+									</else>
+								</if>								
 							</then>
 							<else>
 								<echo message="LOCAL_ACTIVEMQ_HOME found ${local.activemq.home}" />
