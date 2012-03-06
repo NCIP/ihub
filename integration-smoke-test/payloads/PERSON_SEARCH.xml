@@ -1,6 +1,0 @@
-<ns1:Person  xmlns:ns1="http://po.coppa.nci.nih.gov">
-<ns1:name xmlns:ns1="http://po.coppa.nci.nih.gov">
-<ns2:part type="FAM" value="smith" xmlns:ns2="uri:iso.org:21090"/>
-<ns2:part type="GIV" value="Adriana" xmlns:ns2="uri:iso.org:21090"/>
-</ns1:name>
-</ns1:Person>

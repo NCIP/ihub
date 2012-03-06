@@ -1,8 +1,0 @@
-<request>
-	<metadata>
-		<uid>66b20b26-dc51-11df-9972-ddc780619c0d</uid>
-		<sourceformat>DELIMITED</sourceformat>
-		<targetformat>HL7V3</targetformat>
-	</metadata>
-	<payload>Jason,Giambi,08/20/1968,Male,Duke</payload>
-</request>

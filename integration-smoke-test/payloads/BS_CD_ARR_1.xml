@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<soapenc:Array xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
-   <Cd xmlns="http://po.coppa.nci.nih.gov" xmlns:ISO="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" code="IDENTIFIED_ORGANIZATION" />
-   <Cd xmlns="http://po.coppa.nci.nih.gov" xmlns:ISO="uri:iso.org:21090" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" code="HEALTH_CARE_PROVIDER" />
-</soapenc:Array>
