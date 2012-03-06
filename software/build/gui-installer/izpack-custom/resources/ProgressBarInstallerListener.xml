@@ -1,3 +1,0 @@
-<build-installer-listener name="ProgressBarInstallerListener">
-	<include name="com/izforge/izpack/event/ProgressBarInstallerListener.java" />
-</build-installer-listener>

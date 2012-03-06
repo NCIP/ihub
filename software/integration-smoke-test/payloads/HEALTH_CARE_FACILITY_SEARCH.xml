@@ -1,5 +1,0 @@
-<HealthCareFacility xmlns="http://po.coppa.nci.nih.gov" xmlns:ISO="uri:iso.org:21090" xmlns:uri="uri:iso.org:21090"> 
-    <name >
-        <uri:part value="University of Pittsburgh Cancer Institute" />
-    </name>
-</HealthCareFacility>
