@@ -1,5 +1,6 @@
 <project name="build-common" basedir="."
-         xmlns:ivy="antlib:org.apache.ivy.ant">
+        xmlns:ivy="antlib:org.apache.ivy.ant"
+		xmlns:cs="antlib:com.puppycrawl.tools.checkstyle">
 	
 	<property environment="env" />
 	
@@ -158,6 +159,14 @@
 		</fileset>
 	</path>
 	
+	<!-- This path will contain all the lib that are required to 
+			static-analysis -->
+	<path id="sa.classpath">
+		<fileset dir="${sa.lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	
 	<!-- This path will contain the test dependencies and test classes -->
 	<path id="test.run.classpath">
 		<path refid="test.classpath" />
@@ -209,6 +218,7 @@
 		<echo message="Executing ${ant.project.name} : init" />
 		<mkdir dir="${lib.dir}"/>
 		<mkdir dir="${test.lib.dir}"/>
+		<mkdir dir="${sa.lib.dir}"/>
 		<mkdir dir="${classes.dir}" />
 		<mkdir dir="${test.classes.dir}" />
 		<mkdir dir="${instrumented.classes.dir}"/>
@@ -261,6 +271,7 @@
 		<ivy:settings file="${project.build.dir}/ivysettings.xml" id="${ivy.settings.id}" />
 		<property name="loaded.ivy.settings" value="true" />
 	</target>
+	
 	<target name="load-offline-settings" unless="loaded.ivy.settings">
 		<echo message="Going for offline settings" />
 		<path id="ivy.lib.path">
@@ -300,6 +311,16 @@
     	<echo message="Executing ${ant.project.name} : resolve-test" />
     	<ivyResolve confs="test" libdir="${test.lib.dir}" resolveid="[org]-[module]-test"/>
     	<property name="already.resolved-test" value="true"/>
+    </target>
+	
+	<!-- ======================================================== 
+	          target: resolve-static-analysis             
+	    	============================================================ -->
+    <target name="resolve-sa" depends="clean-lib-sa, init, load-ivy" unless="already.resolved-sa" 
+    	description="--> resolve and retrieve 'static-analysis' dependencies with ivy">
+    	<echo message="Executing ${ant.project.name} : resolve-sa" />
+    	<ivyResolve confs="static-analysis" libdir="${sa.lib.dir}" resolveid="[org]-[module]-sa"/>
+    	<property name="already.resolved-sa" value="true"/>
     </target>
   
     <!-- ========================================================== 
@@ -475,7 +496,15 @@
     		/>
         <echo message="project ${ant.project.name} published locally with version ${version}" />
     </target>
-
+	
+	<!-- ====================================================
+			target : clean-lib-sa
+			Cleans the 3rd party libraries
+		=======================================================-->
+    <target name="clean-lib-sa" description="--> clean the static-anlaysis libraries directory (dependencies)" unless="already.resolved-sa">
+    	<echo message="Executing in ${ant.project.name}" />
+        <delete includeemptydirs="true" dir="${sa.lib.dir}"/>
+    </target>
 
 	<!-- ====================================================
           target: clean-lib              
@@ -698,7 +727,77 @@
     	</useCaseTraceabilityReport>
     </target>
 	
-
+	<!-- =======================================================
+				target : Run static-analysis
+			============================================================ -->
+		
+		<target name="static-analysis" depends="checkstyle, pmd" if="static.analysis.failures.present"
+			description="Runs static analysis">	
+			<fail message="Failed because of static-analysis failures"/>
+		</target>
+	
+	<!-- =======================================================
+			target : Run Checkstyle
+		============================================================ -->
+	
+	<target name="checkstyle" depends="resolve-sa" if="${run.static.analysis}" 
+		description="Runs checkstyle and generates report for code convention errors">
+	    <taskdef resource="checkstyletask.properties">
+	        <classpath refid="sa.classpath"/>
+	    </taskdef>
+	
+		<mkdir dir="${cs.report.dir}"/>
+	    <checkstyle config="${static.analysis.config.dir}/CheckstyleConfig.xml" 
+	    	failOnViolation="false" failureProperty="static.analysis.failures.present">
+	        <fileset dir="${main.src}/">
+	            <include name="**/*.java"/>
+	        </fileset>
+	       <!-- <formatter type="plain"/> -->
+	        <formatter type="xml" toFile="${cs.report.dir}/checkstyle-result.xml" />
+	    </checkstyle>
+		<!-- convert main.src to absolute path -->
+		<property name="cs.src.dir" location="${main.src}"/>
+		
+		 <xslt destdir="${cs.report.dir}" 
+		 	basedir="${cs.report.dir}" includes="checkstyle-result.xml"
+		 	style="${static.analysis.config.dir}/checkstyle-frames.xsl" force="true">
+		 		<param name="output.dir" expression="${cs.report.dir}"/>
+		 	    <param name="basedir" expression="${cs.src.dir}"/>
+		 </xslt>
+		
+		<echo message="Checkstyle failures = ${static.analysis.failures.present}"/>
+	</target>
+	
+	<!-- =======================================================
+				target : Run PMD
+			============================================================ -->
+		
+	<target name="pmd" depends="resolve-sa" if="${run.static.analysis}"
+		description="Runs PMD and generates report for code convention errors">
+		<taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="sa.classpath"/>
+	
+		<mkdir dir="${pmd.report.dir}"/>
+		
+		<pmd rulesetfiles="${static.analysis.config.dir}/PmdConfig.xml" failuresPropertyName="pmd.failures.count">
+			<formatter type="xml" toFile="${pmd.report.dir}/pmd-result.xml"/>
+	        <fileset dir="${main.src}">
+	            <include name="**/*.java"/>
+	        </fileset>
+	    </pmd>
+		<property name="pmd.src.dir" location="${main.src}"/>
+		<xslt destdir="${pmd.report.dir}" 
+		 	basedir="${pmd.report.dir}" includes="pmd-result.xml"
+		 	style="${static.analysis.config.dir}/pmd-report.xsl" force="true">
+		 	    <param name="basedir" expression="file://"/>
+		 </xslt>
+		<echo message="No. of PMD failures = ${pmd.failures.count}"/>
+		<condition property="static.analysis.failures.present">
+			<not>
+				<equals arg1="${pmd.failures.count}" arg2="0"/>
+			</not>
+		</condition>
+	</target>
+	
 	<!-- =======================================================
 		target : sync-classpath - TODO FIXIT
 	============================================================ -->
@@ -718,10 +817,10 @@
 		
 	</target>
 	
-	<target name="all" depends="clean, generate-wsdl, publish-local" description="Will build the whole module.">
+	<target name="all" depends="clean, generate-wsdl, static-analysis, publish-local" description="Will build the whole module.">
     </target>
 	
-	<target name="generate-wsdl" depends="clean-generated-src, init, resolve" description="This target will generate java code from WSDL available in ${main.src.resources}/wsdl or url. Overwrite in sub-projects">
+	<target name="generate-wsdl" depends="clean-generated-src, init, resolve" description="Overwrite in sub-projects. This target will generate java code from WSDL available in ${main.src.resources}/wsdl or url.">
 	</target>
 
 	
