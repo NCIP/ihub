@@ -24,6 +24,13 @@
 	<target name="debug-info">
 		<iterate target="debug-info"/>
 	</target>
+	
+	<target name="create-project" 
+		 description="Will create sub project structure under the project folder if it is not available">
+		 <subant target="create-project">
+			<fileset dir="./build" includes="common.xml"/>
+		</subant>
+	</target>	 
 
 	<!-- more targets -->
 </project>

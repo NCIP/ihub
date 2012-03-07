@@ -3,6 +3,8 @@
 	
 	<property environment="env" />
 	
+	<property name="project.software.dir" value="${basedir}/.." />
+	
 	<!-- global build properties -->
 	<property file="${project.software.dir}/local-build.properties" />
 	<property file="${project.software.dir}/build.properties" />
@@ -168,20 +170,20 @@
 	</condition>
 	
 	<!-- ====================================================
-			target : create-module-structure
-			This target will create module structure if one is not available
+			target : create-project
+			This target will create sub project structure under the project folder, if one is not available
 	=======================================================-->
-	<target name="create-module" 
-		 description="Will create a module structure if it is not available">
-		<echo message="create-module: Creating a module structure for : ${new.module.name}" />
-		<mkdir dir="${project.software.dir}/projects/${new.module.name}"/>		
+	<target name="create-project" 
+		 description="Will create sub project structure under the project folder if it is not available">
+		<echo message="create-project: Creating a project structure for : ${new.project.name}" />
+		<mkdir dir="${project.software.dir}/projects/${new.project.name}"/>		
 		
-		<copy todir="${project.software.dir}/projects/${new.module.name}" filtering="true">
+		<copy todir="${project.software.dir}/projects/${new.project.name}" filtering="true">
 			<fileset dir="${project.software.dir}/project-setup/" includes="**/*">
 				<exclude name=".svn"/>
 			</fileset>
 			<filterset begintoken="@" endtoken="@">
-				<filter token="replace.value" value="${new.module.name}" />
+				<filter token="replace.value" value="${new.project.name}" />
             </filterset>
 		</copy>		
 	</target>
