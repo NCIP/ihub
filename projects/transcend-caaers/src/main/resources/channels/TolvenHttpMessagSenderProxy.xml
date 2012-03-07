@@ -1,0 +1,106 @@
+<channel>
+  <id>75b2f326-5486-4bba-8ca0-4bfc1c87fd30</id>
+  <name>TolvenHttpMessagSenderProxy</name>
+  <description>Sends http messages to TranscendInboundChannel proxying as Tolven</description>
+  <enabled>true</enabled>
+  <version>2.1.1.5490</version>
+  <lastModified>
+    <time>1329507808184</time>
+    <timezone>America/New_York</timezone>
+  </lastModified>
+  <revision>1</revision>
+  <sourceConnector>
+    <name>sourceConnector</name>
+    <properties>
+      <property name="DataType">Channel Reader</property>
+      <property name="responseValue">SendToTranscendInboundChannelConnector</property>
+    </properties>
+    <transformer>
+      <steps/>
+      <inboundProtocol>XML</inboundProtocol>
+      <outboundProtocol>XML</outboundProtocol>
+      <inboundProperties>
+        <property name="stripNamespaces">false</property>
+      </inboundProperties>
+      <outboundProperties>
+        <property name="stripNamespaces">false</property>
+      </outboundProperties>
+    </transformer>
+    <filter>
+      <rules/>
+    </filter>
+    <transportName>Channel Reader</transportName>
+    <mode>SOURCE</mode>
+    <enabled>true</enabled>
+    <version>2.1.1.5490</version>
+  </sourceConnector>
+  <destinationConnectors>
+    <connector>
+      <name>SendToTranscendInboundChannelConnector</name>
+      <properties>
+        <property name="DataType">HTTP Sender</property>
+        <property name="dispatcherAuthenticationType">Basic</property>
+        <property name="dispatcherCharset">UTF-8</property>
+        <property name="dispatcherContent">${message.encodedData}</property>
+        <property name="dispatcherContentType">text/plain</property>
+        <property name="dispatcherHeaders">&lt;properties&gt;
+  &lt;property name=&quot;mirth.http.listener.password&quot;&gt;changeme&lt;/property&gt;
+  &lt;property name=&quot;mirth.http.listener.user&quot;&gt;tolvenuser&lt;/property&gt;
+&lt;/properties&gt;</property>
+        <property name="dispatcherIncludeHeadersInResponse">1</property>
+        <property name="dispatcherMethod">post</property>
+        <property name="dispatcherMultipart">0</property>
+        <property name="dispatcherParameters">&lt;properties/&gt;</property>
+        <property name="dispatcherPassword"></property>
+        <property name="dispatcherReplyChannelId">sink</property>
+        <property name="dispatcherSocketTimeout">30000</property>
+        <property name="dispatcherUseAuthentication">0</property>
+        <property name="dispatcherUsername"></property>
+        <property name="host">http://localhost:11080</property>
+        <property name="queuePollInterval">200</property>
+        <property name="reconnectMillisecs">10000</property>
+        <property name="rotateQueue">0</property>
+        <property name="usePersistentQueues">0</property>
+      </properties>
+      <transformer>
+        <steps/>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">false</property>
+        </inboundProperties>
+        <outboundProperties>
+          <property name="stripNamespaces">false</property>
+        </outboundProperties>
+      </transformer>
+      <filter>
+        <rules/>
+      </filter>
+      <transportName>HTTP Sender</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <version>2.1.1.5490</version>
+    </connector>
+  </destinationConnectors>
+  <properties>
+    <property name="clearGlobalChannelMap">true</property>
+    <property name="dont_store_filtered">false</property>
+    <property name="encryptData">false</property>
+    <property name="error_messages_only">false</property>
+    <property name="initialState">started</property>
+    <property name="max_message_age">-1</property>
+    <property name="store_messages">true</property>
+    <property name="synchronous">true</property>
+    <property name="transactional">false</property>
+  </properties>
+  <preprocessingScript>// Modify the message variable below to pre process data
+return message;</preprocessingScript>
+  <postprocessingScript>// This script executes once after a message has been processed
+return;</postprocessingScript>
+  <deployScript>// This script executes once when the channel is deployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+return;</deployScript>
+  <shutdownScript>// This script executes once when the channel is undeployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+return;</shutdownScript>
+</channel>

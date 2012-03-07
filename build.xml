@@ -1,0 +1,29 @@
+<project>
+	<macrodef name="iterate">
+		<attribute name="target"/>
+		<sequential>
+			<subant target="@{target}">
+				<fileset dir="./projects" includes="*/build.xml"/>
+			</subant>
+		</sequential>
+	</macrodef>
+
+
+	<target name="all">
+		<iterate target="all"/>
+	</target>
+	
+	<target name="publish-local">
+		<iterate target="publish-local"/>
+	</target>
+	
+	<target name="publish">
+		<iterate target="publish"/>
+	</target>
+	
+	<target name="debug-info">
+		<iterate target="debug-info"/>
+	</target>
+
+	<!-- more targets -->
+</project>

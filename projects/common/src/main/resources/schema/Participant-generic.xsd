@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="participant">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="firstName"/>
+        <xs:element ref="lastName"/>
+        <xs:element ref="maidenName"/>
+        <xs:element ref="middleName"/>
+        <xs:element ref="birthDate"/>
+        <xs:element ref="activityStatus"/>
+        <xs:element ref="gender"/>
+        <xs:element ref="race"/>
+        <xs:element ref="ethnicity"/>
+        <xs:element ref="identifiers"/>
+        <xs:element ref="assignments"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="firstName" type="xs:string"/>
+  <xs:element name="lastName" type="xs:string"/>
+  <xs:element name="maidenName" type="xs:string"/>
+  <xs:element name="middleName" type="xs:string"/>
+  <xs:element name="birthDate" type="xs:date"/>
+  <xs:element name="activityStatus" type="xs:string"/>
+  <xs:element name="gender" type="xs:string"/>
+  <xs:element name="race" type="xs:string"/>
+  <xs:element name="ethnicity" type="xs:string"/>
+  <xs:element name="assignments">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="assignment"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="assignment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="studySubjectIdentifier"/>
+        <xs:element ref="studySite"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="studySubjectIdentifier" type="xs:integer"/>
+  <xs:element name="studySite">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="study"/>
+        <xs:element ref="organization"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="study">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="identifiers"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="identifiers">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="identifier"/>
+        <xs:sequence>
+          <xs:element ref="organizationAssignedIdentifier"/>
+          <xs:element ref="systemAssignedIdentifier"/>
+          <xs:element maxOccurs="unbounded" ref="otherAssignedIdentifier"/>
+        </xs:sequence>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="identifier">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="type"/>
+        <xs:element ref="value"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="organizationAssignedIdentifier">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="type"/>
+        <xs:element ref="value"/>
+        <xs:element ref="primaryIndicator"/>
+        <xs:element ref="organization"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="systemAssignedIdentifier">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="type"/>
+        <xs:element ref="value"/>
+        <xs:element ref="primaryIndicator"/>
+        <xs:element ref="systemName"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="systemName" type="xs:NCName"/>
+  <xs:element name="otherAssignedIdentifier">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="type"/>
+        <xs:element ref="value"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="organization">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="name"/>
+        <xs:element ref="nciInstituteCode"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="name" type="xs:string"/>
+  <xs:element name="nciInstituteCode" type="xs:string"/>
+  <xs:element name="type" type="xs:string"/>
+  <xs:element name="value" type="xs:NMTOKEN"/>
+  <xs:element name="primaryIndicator" type="xs:boolean"/>
+</xs:schema>

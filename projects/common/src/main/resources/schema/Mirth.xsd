@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.1.6 in JDK 6. --><xs:schema xmlns:tns="http://ws.connectors.connect.mirth.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://ws.connectors.connect.mirth.com/">
+
+<xs:element name="acceptMessage" type="tns:acceptMessage"></xs:element>
+
+<xs:element name="acceptMessageResponse" type="tns:acceptMessageResponse"></xs:element>
+
+<xs:complexType name="acceptMessage">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="acceptMessageResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
