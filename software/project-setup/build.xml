@@ -1,0 +1,22 @@
+<project name="@replace.value@" basedir=".">
+
+	<property file="${basedir}/../antfiles/build.properties" />	
+	<property file="${basedir}/local-build.properties" />
+	<import file="${basedir}/../antfiles/common.xml"/>
+	
+    <target name="all" depends="clean, publish-local" description="Will build the whole module.">
+    </target>
+    
+    <target name="help" description="Prints usage information.">
+        <echo message="================================================================================" />
+        <echo message="          Service: ${ant.project.name}" />
+        <echo message="--------------------------------------------------------------------------------" />
+        <echo message="|  USAGE:                                                                      |" />
+        <echo message="|    Type 'ant -h' for general help with Ant                                   |" />
+        <echo message="|    Type 'ant -p' for a description of this project's build targets.          |" />
+        <echo message="|    Type 'ant -f ivy-build.xml all' To build all.                             |" />
+        <echo message="================================================================================" />
+    </target>
+
+
+</project>

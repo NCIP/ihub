@@ -1,0 +1,36 @@
+<ivysettings>
+    <settings defaultResolver="ihub-resolver" validate="false" />
+	<caches defaultCacheDir="${user.home}/.ivy2/ihub-cache" useOrigin="true"/>
+    <resolvers>
+
+        <chain name="ihub-resolver" returnFirst="true" dual="true">
+
+            <!--  Local Ivy repository -->
+            <filesystem name="local-repo" local="true">
+                <ivy pattern="${local.repo.dir}/[organisation]/[module]/ivy-[revision].xml"/>
+                <artifact pattern="${local.repo.dir}/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
+                <artifact pattern="${local.repo.dir}/[organisation]/[module]/[revision]/[artifact].[ext]"/>
+            </filesystem>
+
+            
+           <!-- Nexus NCI repos-->
+            <ibiblio name="maven2-NCI-3rdparty" m2compatible="true" root="https://ncimvn.nci.nih.gov/nexus/content/repositories/thirdparty" />
+            <ibiblio name="maven2-NCI-m2central" m2compatible="true" root="https://ncimvn.nci.nih.gov/nexus/content/repositories/central" />
+            <ibiblio name="maven2-NCI-jboss" m2compatible="true" root="https://ncimvn.nci.nih.gov/nexus/content/repositories/jboss" />
+			
+			<!-- Maven 2 -->
+            <ibiblio name="maven2" m2compatible="true"/>
+			<!-- Will not use SemanticBits repo until required -->
+			
+			<!--  Semanticbits shared repository [using http] -->
+			<!-- 
+            <url name="semanticbits-repo-http">
+                <ivy pattern="http://repo.semanticbits.com/ivy-repo/[organisation]/[module]/[revision]/ivy.xml" />
+                <artifact pattern="http://repo.semanticbits.com/ivy-repo/[organisation]/[module]/[revision]/[artifact].[ext]" />
+            </url>
+			-->
+            
+        </chain>
+
+    </resolvers>
+</ivysettings>

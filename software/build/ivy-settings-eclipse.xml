@@ -1,0 +1,4 @@
+<ivysettings>    
+    <property name="local.repo.dir" value="${ivy.settings.dir}/repository" override="false"/>
+    <include file="${ivy.settings.dir}/ivysettings.xml"/>
+</ivysettings>

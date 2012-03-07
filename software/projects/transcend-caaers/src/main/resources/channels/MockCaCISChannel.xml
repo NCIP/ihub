@@ -1,0 +1,650 @@
+<channel>
+  <id>a970cdea-9aa0-4d10-97f5-afe305b694d3</id>
+  <name>MockCaCISChannel</name>
+  <description></description>
+  <enabled>true</enabled>
+  <version>2.1.1.5490</version>
+  <lastModified>
+    <time>1330030786628</time>
+    <timezone>America/New_York</timezone>
+  </lastModified>
+  <revision>26</revision>
+  <sourceConnector>
+    <name>sourceConnector</name>
+    <properties>
+      <property name="DataType">Web Service Listener</property>
+      <property name="host">0.0.0.0</property>
+      <property name="port">12085</property>
+      <property name="receiverClassName">com.mirth.connect.connectors.ws.DefaultAcceptMessage</property>
+      <property name="receiverPasswords">&lt;list/&gt;</property>
+      <property name="receiverResponseValue">ResponseWriter</property>
+      <property name="receiverServiceName">Mirth</property>
+      <property name="receiverUsernames">&lt;list/&gt;</property>
+    </properties>
+    <transformer>
+      <steps/>
+      <inboundTemplate encoding="base64"></inboundTemplate>
+      <outboundTemplate encoding="base64"></outboundTemplate>
+      <inboundProtocol>XML</inboundProtocol>
+      <outboundProtocol>XML</outboundProtocol>
+      <inboundProperties>
+        <property name="stripNamespaces">false</property>
+      </inboundProperties>
+      <outboundProperties>
+        <property name="stripNamespaces">false</property>
+      </outboundProperties>
+    </transformer>
+    <filter>
+      <rules/>
+    </filter>
+    <transportName>Web Service Listener</transportName>
+    <mode>SOURCE</mode>
+    <enabled>true</enabled>
+    <version>2.1.1.5490</version>
+  </sourceConnector>
+  <destinationConnectors>
+    <connector>
+      <name>RegistrationTransformation</name>
+      <properties>
+        <property name="DataType">JavaScript Writer</property>
+        <property name="host">sink</property>
+        <property name="script">//supposed to do RegistrationTransformation
+
+return;</property>
+      </properties>
+      <transformer>
+        <steps>
+          <step>
+            <sequenceNumber>0</sequenceNumber>
+            <name>RegistrationTransformationTransformer</name>
+            <script>tFactory = Packages.javax.xml.transform.TransformerFactory.newInstance();xsltTemplate = new Packages.java.io.StringReader(&lt;xsl:stylesheet version=&quot;1.0&quot;
+	xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:ns1trim=&quot;urn:tolven-org:trim:4.0&quot;
+	xmlns:xs=&quot;http://www.w3.org/TR/2008/REC-xml-20081126#&quot; xmlns:cacis=&quot;http://cacis.nci.nih.gov&quot;
+	xmlns:ns1=&quot;http://integration.nci.nih.gov/messaging&quot;
+	xmlns:p=&quot;http://integration.nci.nih.gov/participant&quot;
+	&gt;
+
+	&lt;xsl:output method=&quot;xml&quot; indent=&quot;yes&quot; /&gt;
+
+	&lt;!-- Main --&gt;
+	&lt;xsl:template match=&quot;/&quot;&gt;
+		&lt;xsl:call-template name=&quot;ConvertToMessageBroadcasterInboundMsg&quot;&gt;
+		&lt;/xsl:call-template&gt;
+	&lt;/xsl:template&gt;
+
+
+	&lt;xsl:template name=&quot;ConvertToMessageBroadcasterInboundMsg&quot;&gt;
+		&lt;!--
+			***************************** FIXIT: Since actual trim msg is not
+			present, this transformation just creates a constnat msg with just
+			the msg identifier changed ******************************
+		--&gt;
+		&lt;!-- get the trim msg id --&gt;
+		&lt;xsl:variable name=&quot;trimMsgId&quot;
+			select=&quot;//ns1trim:trim/ns1trim:tolvenEventId/@id&quot; /&gt;
+			
+			
+		&lt;ns1:MessageBroadcasterRequestMessage
+			xmlns:ns1=&quot;http://integration.nci.nih.gov/messaging&quot;&gt;
+			&lt;ns1:metadata&gt;
+				&lt;ns1:serviceType&gt;Registration&lt;/ns1:serviceType&gt;
+				&lt;ns1:externalIdentifier&gt;&lt;xsl:value-of select=&quot;$trimMsgId&quot;/&gt;&lt;/ns1:externalIdentifier&gt;
+			&lt;/ns1:metadata&gt;
+			&lt;ns1:request&gt;
+				&lt;ns1:businessMessagePayload&gt;
+					&lt;ns1:xmlSchemaDefinition&gt;http://integration.nci.nih.gov/participant&lt;/ns1:xmlSchemaDefinition&gt;
+					&lt;p:participant id=&quot;1&quot; version=&quot;1&quot;
+						xmlns:p=&quot;http://integration.nci.nih.gov/participant&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+						xsi:schemaLocation=&quot;http://integration.nci.nih.gov/participant Participant.xsd &quot;&gt;
+						&lt;p:firstName&gt;firstName&lt;/p:firstName&gt;
+						&lt;p:lastName&gt;lastName&lt;/p:lastName&gt;
+						&lt;p:maidenName&gt;maidenName&lt;/p:maidenName&gt;
+						&lt;p:middleName&gt;middleName&lt;/p:middleName&gt;
+						&lt;p:birthDate&gt;2001-01-01&lt;/p:birthDate&gt;
+						&lt;p:gender&gt;Male&lt;/p:gender&gt;
+						&lt;p:race&gt;Asian&lt;/p:race&gt;
+						&lt;p:ethnicity&gt;Hispanic or Latino&lt;/p:ethnicity&gt;
+						&lt;p:activityStatus&gt;ACTIVE&lt;/p:activityStatus&gt;
+						&lt;p:identifiers&gt;
+							&lt;p:organizationAssignedIdentifier
+								id=&quot;1&quot; version=&quot;1&quot;&gt;
+								&lt;p:type&gt;MRN&lt;/p:type&gt;
+								&lt;p:value&gt;value&lt;/p:value&gt;
+								&lt;p:primaryIndicator&gt;true&lt;/p:primaryIndicator&gt;
+								&lt;p:organization id=&quot;1&quot; version=&quot;1&quot;&gt;
+									&lt;p:name&gt;name&lt;/p:name&gt;
+									&lt;p:nciInstituteCode&gt;nciInstituteCode&lt;/p:nciInstituteCode&gt;
+								&lt;/p:organization&gt;
+							&lt;/p:organizationAssignedIdentifier&gt;
+							&lt;p:organizationAssignedIdentifier
+								id=&quot;1&quot; version=&quot;1&quot;&gt;
+								&lt;p:type&gt;SSN&lt;/p:type&gt;
+								&lt;p:value&gt;value&lt;/p:value&gt;
+								&lt;p:primaryIndicator&gt;false&lt;/p:primaryIndicator&gt;
+								&lt;p:organization id=&quot;1&quot; version=&quot;1&quot;&gt;
+									&lt;p:name&gt;SSN&lt;/p:name&gt;
+									&lt;p:nciInstituteCode&gt;SSN&lt;/p:nciInstituteCode&gt;
+								&lt;/p:organization&gt;
+							&lt;/p:organizationAssignedIdentifier&gt;
+							&lt;p:systemAssignedIdentifier id=&quot;1&quot;
+								version=&quot;1&quot;&gt;
+								&lt;p:type&gt;MRN&lt;/p:type&gt;
+								&lt;p:value&gt;value&lt;/p:value&gt;
+								&lt;p:primaryIndicator&gt;true&lt;/p:primaryIndicator&gt;
+								&lt;p:systemName&gt;systemName&lt;/p:systemName&gt;
+							&lt;/p:systemAssignedIdentifier&gt;
+						&lt;/p:identifiers&gt;
+						&lt;p:assignments&gt;
+							&lt;p:assignment id=&quot;1&quot; version=&quot;1&quot;&gt;
+								&lt;p:studySubjectIdentifier&gt;studySubjectIdentifier
+						&lt;/p:studySubjectIdentifier&gt;
+								&lt;p:studySite id=&quot;1&quot; version=&quot;1&quot;&gt;
+									&lt;p:study id=&quot;1&quot; version=&quot;1&quot;&gt;
+										&lt;p:identifiers&gt;
+											&lt;p:identifier id=&quot;1&quot; version=&quot;1&quot;&gt;
+												&lt;p:type&gt;Site Identifier&lt;/p:type&gt;
+												&lt;p:value&gt;value&lt;/p:value&gt;
+											&lt;/p:identifier&gt;
+										&lt;/p:identifiers&gt;
+									&lt;/p:study&gt;
+									&lt;p:organization id=&quot;1&quot; version=&quot;1&quot;&gt;
+										&lt;p:name&gt;name&lt;/p:name&gt;
+										&lt;p:nciInstituteCode&gt;nciInstituteCode&lt;/p:nciInstituteCode&gt;
+									&lt;/p:organization&gt;
+								&lt;/p:studySite&gt;
+							&lt;/p:assignment&gt;
+						&lt;/p:assignments&gt;
+					&lt;/p:participant&gt;
+				&lt;/ns1:businessMessagePayload&gt;
+			&lt;/ns1:request&gt;
+		&lt;/ns1:MessageBroadcasterRequestMessage&gt;
+	&lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;
+);transformer = tFactory.newTransformer(new Packages.javax.xml.transform.stream.StreamSource(xsltTemplate));sourceVar = new Packages.java.io.StringReader(msg);resultVar = new Packages.java.io.StringWriter();transformer.transform(new Packages.javax.xml.transform.stream.StreamSource(sourceVar), new Packages.javax.xml.transform.stream.StreamResult(resultVar));channelMap.put(&apos;msgForBroadcaster&apos;, resultVar)</script>
+            <type>XSLT Step</type>
+            <data class="map">
+              <entry>
+                <string>Source</string>
+                <string>msg</string>
+              </entry>
+              <entry>
+                <string>Result</string>
+                <string>msgForBroadcaster</string>
+              </entry>
+              <entry>
+                <string>XsltTemplate</string>
+                <string>&lt;xsl:stylesheet version=&quot;1.0&quot;
+	xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:ns1trim=&quot;urn:tolven-org:trim:4.0&quot;
+	xmlns:xs=&quot;http://www.w3.org/TR/2008/REC-xml-20081126#&quot; xmlns:cacis=&quot;http://cacis.nci.nih.gov&quot;
+	xmlns:ns1=&quot;http://integration.nci.nih.gov/messaging&quot;
+	xmlns:p=&quot;http://integration.nci.nih.gov/participant&quot;
+	&gt;
+
+	&lt;xsl:output method=&quot;xml&quot; indent=&quot;yes&quot; /&gt;
+
+	&lt;!-- Main --&gt;
+	&lt;xsl:template match=&quot;/&quot;&gt;
+		&lt;xsl:call-template name=&quot;ConvertToMessageBroadcasterInboundMsg&quot;&gt;
+		&lt;/xsl:call-template&gt;
+	&lt;/xsl:template&gt;
+
+
+	&lt;xsl:template name=&quot;ConvertToMessageBroadcasterInboundMsg&quot;&gt;
+		&lt;!--
+			***************************** FIXIT: Since actual trim msg is not
+			present, this transformation just creates a constnat msg with just
+			the msg identifier changed ******************************
+		--&gt;
+		&lt;!-- get the trim msg id --&gt;
+		&lt;xsl:variable name=&quot;trimMsgId&quot;
+			select=&quot;//ns1trim:trim/ns1trim:tolvenEventId/@id&quot; /&gt;
+			
+			
+		&lt;ns1:MessageBroadcasterRequestMessage
+			xmlns:ns1=&quot;http://integration.nci.nih.gov/messaging&quot;&gt;
+			&lt;ns1:metadata&gt;
+				&lt;ns1:serviceType&gt;Registration&lt;/ns1:serviceType&gt;
+				&lt;ns1:externalIdentifier&gt;&lt;xsl:value-of select=&quot;$trimMsgId&quot;/&gt;&lt;/ns1:externalIdentifier&gt;
+			&lt;/ns1:metadata&gt;
+			&lt;ns1:request&gt;
+				&lt;ns1:businessMessagePayload&gt;
+					&lt;ns1:xmlSchemaDefinition&gt;http://integration.nci.nih.gov/participant&lt;/ns1:xmlSchemaDefinition&gt;
+					&lt;p:participant id=&quot;1&quot; version=&quot;1&quot;
+						xmlns:p=&quot;http://integration.nci.nih.gov/participant&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+						xsi:schemaLocation=&quot;http://integration.nci.nih.gov/participant Participant.xsd &quot;&gt;
+						&lt;p:firstName&gt;firstName&lt;/p:firstName&gt;
+						&lt;p:lastName&gt;lastName&lt;/p:lastName&gt;
+						&lt;p:maidenName&gt;maidenName&lt;/p:maidenName&gt;
+						&lt;p:middleName&gt;middleName&lt;/p:middleName&gt;
+						&lt;p:birthDate&gt;2001-01-01&lt;/p:birthDate&gt;
+						&lt;p:gender&gt;Male&lt;/p:gender&gt;
+						&lt;p:race&gt;Asian&lt;/p:race&gt;
+						&lt;p:ethnicity&gt;Hispanic or Latino&lt;/p:ethnicity&gt;
+						&lt;p:activityStatus&gt;ACTIVE&lt;/p:activityStatus&gt;
+						&lt;p:identifiers&gt;
+							&lt;p:organizationAssignedIdentifier
+								id=&quot;1&quot; version=&quot;1&quot;&gt;
+								&lt;p:type&gt;MRN&lt;/p:type&gt;
+								&lt;p:value&gt;value&lt;/p:value&gt;
+								&lt;p:primaryIndicator&gt;true&lt;/p:primaryIndicator&gt;
+								&lt;p:organization id=&quot;1&quot; version=&quot;1&quot;&gt;
+									&lt;p:name&gt;name&lt;/p:name&gt;
+									&lt;p:nciInstituteCode&gt;nciInstituteCode&lt;/p:nciInstituteCode&gt;
+								&lt;/p:organization&gt;
+							&lt;/p:organizationAssignedIdentifier&gt;
+							&lt;p:organizationAssignedIdentifier
+								id=&quot;1&quot; version=&quot;1&quot;&gt;
+								&lt;p:type&gt;SSN&lt;/p:type&gt;
+								&lt;p:value&gt;value&lt;/p:value&gt;
+								&lt;p:primaryIndicator&gt;false&lt;/p:primaryIndicator&gt;
+								&lt;p:organization id=&quot;1&quot; version=&quot;1&quot;&gt;
+									&lt;p:name&gt;SSN&lt;/p:name&gt;
+									&lt;p:nciInstituteCode&gt;SSN&lt;/p:nciInstituteCode&gt;
+								&lt;/p:organization&gt;
+							&lt;/p:organizationAssignedIdentifier&gt;
+							&lt;p:systemAssignedIdentifier id=&quot;1&quot;
+								version=&quot;1&quot;&gt;
+								&lt;p:type&gt;MRN&lt;/p:type&gt;
+								&lt;p:value&gt;value&lt;/p:value&gt;
+								&lt;p:primaryIndicator&gt;true&lt;/p:primaryIndicator&gt;
+								&lt;p:systemName&gt;systemName&lt;/p:systemName&gt;
+							&lt;/p:systemAssignedIdentifier&gt;
+						&lt;/p:identifiers&gt;
+						&lt;p:assignments&gt;
+							&lt;p:assignment id=&quot;1&quot; version=&quot;1&quot;&gt;
+								&lt;p:studySubjectIdentifier&gt;studySubjectIdentifier
+						&lt;/p:studySubjectIdentifier&gt;
+								&lt;p:studySite id=&quot;1&quot; version=&quot;1&quot;&gt;
+									&lt;p:study id=&quot;1&quot; version=&quot;1&quot;&gt;
+										&lt;p:identifiers&gt;
+											&lt;p:identifier id=&quot;1&quot; version=&quot;1&quot;&gt;
+												&lt;p:type&gt;Site Identifier&lt;/p:type&gt;
+												&lt;p:value&gt;value&lt;/p:value&gt;
+											&lt;/p:identifier&gt;
+										&lt;/p:identifiers&gt;
+									&lt;/p:study&gt;
+									&lt;p:organization id=&quot;1&quot; version=&quot;1&quot;&gt;
+										&lt;p:name&gt;name&lt;/p:name&gt;
+										&lt;p:nciInstituteCode&gt;nciInstituteCode&lt;/p:nciInstituteCode&gt;
+									&lt;/p:organization&gt;
+								&lt;/p:studySite&gt;
+							&lt;/p:assignment&gt;
+						&lt;/p:assignments&gt;
+					&lt;/p:participant&gt;
+				&lt;/ns1:businessMessagePayload&gt;
+			&lt;/ns1:request&gt;
+		&lt;/ns1:MessageBroadcasterRequestMessage&gt;
+	&lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;
+</string>
+              </entry>
+            </data>
+          </step>
+        </steps>
+        <inboundTemplate encoding="base64"></inboundTemplate>
+        <outboundTemplate encoding="base64"></outboundTemplate>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">false</property>
+        </inboundProperties>
+        <outboundProperties>
+          <property name="stripNamespaces">true</property>
+        </outboundProperties>
+      </transformer>
+      <filter>
+        <rules>
+          <rule>
+            <sequenceNumber>0</sequenceNumber>
+            <name>Accept message if &quot;msg[&apos;cacis:routingInstructions&apos;][&apos;cacis:exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString()&quot; equals globalMap.get(&apos;REGN&apos;)</name>
+            <data class="map">
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>globalMap.get(&apos;REGN&apos;)</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>msg[&apos;cacis:routingInstructions&apos;][&apos;cacis:exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if(msg[&apos;cacis:routingInstructions&apos;][&apos;cacis:exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString() == globalMap.get(&apos;REGN&apos;))
+{
+return true;
+}
+return false;</script>
+            <operator>NONE</operator>
+          </rule>
+        </rules>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <version>2.1.1.5490</version>
+    </connector>
+    <connector>
+      <name>AdverseEventTransformation</name>
+      <properties>
+        <property name="DataType">JavaScript Writer</property>
+        <property name="host">sink</property>
+        <property name="script">//supposed to handle AE Transformation
+
+return;</property>
+      </properties>
+      <transformer>
+        <steps>
+          <step>
+            <sequenceNumber>0</sequenceNumber>
+            <name>AdverseEventTransformationTransformer</name>
+            <script>tFactory = Packages.javax.xml.transform.TransformerFactory.newInstance();xsltTemplate = new Packages.java.io.StringReader(&lt;xsl:stylesheet version=&quot;1.0&quot;
+	xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:ns1trim=&quot;urn:tolven-org:trim:4.0&quot;
+	xmlns:xs=&quot;http://www.w3.org/TR/2008/REC-xml-20081126#&quot; xmlns:cacis=&quot;http://cacis.nci.nih.gov&quot;
+	xmlns:ns1=&quot;http://integration.nci.nih.gov/messaging&quot;
+	xmlns:p=&quot;http://integration.nci.nih.gov/participant&quot;
+	&gt;
+
+	&lt;xsl:output method=&quot;xml&quot; indent=&quot;yes&quot; /&gt;
+
+	&lt;!-- Main --&gt;
+	&lt;xsl:template match=&quot;/&quot;&gt;
+		&lt;xsl:call-template name=&quot;ConvertToMessageBroadcasterInboundMsg&quot;&gt;
+		&lt;/xsl:call-template&gt;
+	&lt;/xsl:template&gt;
+
+
+	&lt;xsl:template name=&quot;ConvertToMessageBroadcasterInboundMsg&quot;&gt;
+		&lt;!--
+			***************************** 
+			FIXIT: Since actual trim msg is not
+			present, this transformation just creates a constnat msg with just
+			the msg identifier changed 
+
+			Note: The payload is participant paylo
+			******************************
+		--&gt;
+		&lt;!-- get the trim msg id --&gt;
+		&lt;xsl:variable name=&quot;trimMsgId&quot;
+			select=&quot;//ns1trim:trim/ns1trim:tolvenEventId/@id&quot; /&gt;
+			
+			
+		&lt;ns1:MessageBroadcasterRequestMessage
+			xmlns:ns1=&quot;http://integration.nci.nih.gov/messaging&quot;&gt;
+			&lt;ns1:metadata&gt;
+				&lt;ns1:serviceType&gt;AE&lt;/ns1:serviceType&gt;
+				&lt;ns1:externalIdentifier&gt;&lt;xsl:value-of select=&quot;$trimMsgId&quot;/&gt;&lt;/ns1:externalIdentifier&gt;
+			&lt;/ns1:metadata&gt;
+			&lt;ns1:request&gt;
+				&lt;ns1:businessMessagePayload&gt;
+					&lt;ns1:xmlSchemaDefinition&gt;http://integration.nci.nih.gov/adverseevent&lt;/ns1:xmlSchemaDefinition&gt;
+					&lt;p:AdverseEvent id=&quot;1&quot; version=&quot;1&quot;
+						xmlns:p=&quot;http://integration.nci.nih.gov/adverseevent&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+						xsi:schemaLocation=&quot;http://integration.nci.nih.gov/adverseevent AdverseEvent.xsd &quot;&gt;
+						
+					&lt;/p:AdverseEvent&gt;
+				&lt;/ns1:businessMessagePayload&gt;
+			&lt;/ns1:request&gt;
+		&lt;/ns1:MessageBroadcasterRequestMessage&gt;
+	&lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;
+);transformer = tFactory.newTransformer(new Packages.javax.xml.transform.stream.StreamSource(xsltTemplate));sourceVar = new Packages.java.io.StringReader(msg);resultVar = new Packages.java.io.StringWriter();transformer.transform(new Packages.javax.xml.transform.stream.StreamSource(sourceVar), new Packages.javax.xml.transform.stream.StreamResult(resultVar));channelMap.put(&apos;msgForBroadcaster&apos;, resultVar)</script>
+            <type>XSLT Step</type>
+            <data class="map">
+              <entry>
+                <string>Source</string>
+                <string>msg</string>
+              </entry>
+              <entry>
+                <string>Result</string>
+                <string>msgForBroadcaster</string>
+              </entry>
+              <entry>
+                <string>XsltTemplate</string>
+                <string>&lt;xsl:stylesheet version=&quot;1.0&quot;
+	xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:ns1trim=&quot;urn:tolven-org:trim:4.0&quot;
+	xmlns:xs=&quot;http://www.w3.org/TR/2008/REC-xml-20081126#&quot; xmlns:cacis=&quot;http://cacis.nci.nih.gov&quot;
+	xmlns:ns1=&quot;http://integration.nci.nih.gov/messaging&quot;
+	xmlns:p=&quot;http://integration.nci.nih.gov/participant&quot;
+	&gt;
+
+	&lt;xsl:output method=&quot;xml&quot; indent=&quot;yes&quot; /&gt;
+
+	&lt;!-- Main --&gt;
+	&lt;xsl:template match=&quot;/&quot;&gt;
+		&lt;xsl:call-template name=&quot;ConvertToMessageBroadcasterInboundMsg&quot;&gt;
+		&lt;/xsl:call-template&gt;
+	&lt;/xsl:template&gt;
+
+
+	&lt;xsl:template name=&quot;ConvertToMessageBroadcasterInboundMsg&quot;&gt;
+		&lt;!--
+			***************************** 
+			FIXIT: Since actual trim msg is not
+			present, this transformation just creates a constnat msg with just
+			the msg identifier changed 
+
+			Note: The payload is participant paylo
+			******************************
+		--&gt;
+		&lt;!-- get the trim msg id --&gt;
+		&lt;xsl:variable name=&quot;trimMsgId&quot;
+			select=&quot;//ns1trim:trim/ns1trim:tolvenEventId/@id&quot; /&gt;
+			
+			
+		&lt;ns1:MessageBroadcasterRequestMessage
+			xmlns:ns1=&quot;http://integration.nci.nih.gov/messaging&quot;&gt;
+			&lt;ns1:metadata&gt;
+				&lt;ns1:serviceType&gt;AE&lt;/ns1:serviceType&gt;
+				&lt;ns1:externalIdentifier&gt;&lt;xsl:value-of select=&quot;$trimMsgId&quot;/&gt;&lt;/ns1:externalIdentifier&gt;
+			&lt;/ns1:metadata&gt;
+			&lt;ns1:request&gt;
+				&lt;ns1:businessMessagePayload&gt;
+					&lt;ns1:xmlSchemaDefinition&gt;http://integration.nci.nih.gov/adverseevent&lt;/ns1:xmlSchemaDefinition&gt;
+					&lt;p:AdverseEvent id=&quot;1&quot; version=&quot;1&quot;
+						xmlns:p=&quot;http://integration.nci.nih.gov/adverseevent&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+						xsi:schemaLocation=&quot;http://integration.nci.nih.gov/adverseevent AdverseEvent.xsd &quot;&gt;
+						
+					&lt;/p:AdverseEvent&gt;
+				&lt;/ns1:businessMessagePayload&gt;
+			&lt;/ns1:request&gt;
+		&lt;/ns1:MessageBroadcasterRequestMessage&gt;
+	&lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;
+</string>
+              </entry>
+            </data>
+          </step>
+        </steps>
+        <inboundTemplate encoding="base64"></inboundTemplate>
+        <outboundTemplate encoding="base64"></outboundTemplate>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">false</property>
+        </inboundProperties>
+        <outboundProperties>
+          <property name="stripNamespaces">true</property>
+        </outboundProperties>
+      </transformer>
+      <filter>
+        <rules>
+          <rule>
+            <sequenceNumber>0</sequenceNumber>
+            <name>Accept message if &quot;msg[&apos;cacis:routingInstructions&apos;][&apos;cacis:exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString()&quot; equals globalMap.get(&apos;AE&apos;)</name>
+            <data class="map">
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>globalMap.get(&apos;AE&apos;)</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>msg[&apos;cacis:routingInstructions&apos;][&apos;cacis:exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if(msg[&apos;cacis:routingInstructions&apos;][&apos;cacis:exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString() == globalMap.get(&apos;AE&apos;))
+{
+return true;
+}
+return false;</script>
+            <operator>NONE</operator>
+          </rule>
+        </rules>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <version>2.1.1.5490</version>
+    </connector>
+    <connector>
+      <name>SendToMessageBroadcaster</name>
+      <properties>
+        <property name="DataType">Channel Writer</property>
+        <property name="host">caa43737-c755-4a8e-bba7-ef610c9b8f2d</property>
+        <property name="synchronised">1</property>
+        <property name="template">${msgForBroadcaster}</property>
+      </properties>
+      <transformer>
+        <steps/>
+        <inboundTemplate encoding="base64"></inboundTemplate>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">false</property>
+        </inboundProperties>
+        <outboundProperties>
+          <property name="stripNamespaces">false</property>
+        </outboundProperties>
+      </transformer>
+      <filter>
+        <rules>
+          <rule>
+            <sequenceNumber>0</sequenceNumber>
+            <name>Accept message if &quot;msg[&apos;cacis:routingInstructions&apos;][&apos;cacis:exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString()&quot; equals globalMap.get(&apos;AE&apos;) or globalMap.get(&apos;REGN&apos;)</name>
+            <data class="map">
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>globalMap.get(&apos;AE&apos;)</string>
+                  <string>globalMap.get(&apos;REGN&apos;)</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>msg[&apos;cacis:routingInstructions&apos;][&apos;cacis:exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if(msg[&apos;cacis:routingInstructions&apos;][&apos;cacis:exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString() == globalMap.get(&apos;AE&apos;) || msg[&apos;cacis:routingInstructions&apos;][&apos;cacis:exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString() == globalMap.get(&apos;REGN&apos;))
+{
+return true;
+}
+return false;</script>
+            <operator>NONE</operator>
+          </rule>
+        </rules>
+      </filter>
+      <transportName>Channel Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <version>2.1.1.5490</version>
+    </connector>
+    <connector>
+      <name>ResponseWriter</name>
+      <properties>
+        <property name="DataType">JavaScript Writer</property>
+        <property name="host">sink</property>
+        <property name="script">//handle all responses and create appropriate response for this channel
+
+var msgTyp = msg[&apos;cacis:routingInstructions&apos;][&apos;cacis:exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString();
+if(	msgTyp != globalMap.get(&apos;AE&apos;) 
+	&amp;&amp; msgTyp != globalMap.get(&apos;REGN&apos;)
+	) {
+	responseMap.put(&quot;ResponseWriter&quot;, &quot;Unable to process messages other than AE and Registration!&quot;);
+}
+
+//TODO : handle other responses
+responseMap.put(&quot;ResponseWriter&quot;, responseMap.get(&apos;SendToMessageBroadcaster&apos;));
+return;</property>
+      </properties>
+      <transformer>
+        <steps/>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">false</property>
+        </inboundProperties>
+        <outboundProperties>
+          <property name="stripNamespaces">true</property>
+        </outboundProperties>
+      </transformer>
+      <filter>
+        <rules/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <version>2.1.1.5490</version>
+    </connector>
+  </destinationConnectors>
+  <properties>
+    <property name="clearGlobalChannelMap">true</property>
+    <property name="dont_store_filtered">false</property>
+    <property name="encryptData">false</property>
+    <property name="error_messages_only">false</property>
+    <property name="initialState">started</property>
+    <property name="max_message_age">-1</property>
+    <property name="store_messages">true</property>
+    <property name="synchronous">true</property>
+    <property name="transactional">false</property>
+  </properties>
+  <preprocessingScript>// Modify the message variable below to pre process data
+return message;</preprocessingScript>
+  <postprocessingScript>// This script executes once after a message has been processed
+return;</postprocessingScript>
+  <deployScript>// This script executes once when the channel is deployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+return;</deployScript>
+  <shutdownScript>// This script executes once when the channel is undeployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+return;</shutdownScript>
+</channel>
