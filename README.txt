@@ -4,6 +4,8 @@ Starting a new project under iHub project
 =========================================
 1) To start with the new project, from the 'software' folder, run, "ant create-project -Dnew.project.name=<new_project_name>".
 2) This will create a new project setup under 'projects' folder in the name '<new_project_name>'
+3) You can localise the build.properties for your environment by copying it as local-build.properties
+4) When you checkin, remember to svnignore build, bin and local-build.properties
 
 Setting properties
 ===================

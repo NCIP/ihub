@@ -1,8 +1,11 @@
 package gov.nih.nci.integration.invoker;
 
+import gov.nih.nci.integration.domain.StrategyIdentifier;
+
 public interface ServiceInvocationStrategy {
 	
-	ServiceInvocationResult invoke();
-	ServiceInvocationResult rollback();
+	StrategyIdentifier getStrategyIdentifier();
+	ServiceInvocationResult invoke(String message);
+	ServiceInvocationResult rollback(String message);
 
 }
