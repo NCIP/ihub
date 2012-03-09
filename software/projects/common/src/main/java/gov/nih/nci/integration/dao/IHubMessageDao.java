@@ -10,8 +10,7 @@ public class IHubMessageDao extends AbstractDao<IHubMessage> implements
 	/**
 	 * Constructor.
 	 * 
-	 * @param em
-	 *            JPA EntityManager
+	 * @param em JPA EntityManager
 	 */
 	public IHubMessageDao(EntityManager em) {
 		super(IHubMessage.class, em);

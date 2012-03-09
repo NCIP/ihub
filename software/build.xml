@@ -30,6 +30,9 @@
 		 <subant target="create-project">
 			<fileset dir="./build" includes="common.xml"/>
 		</subant>
+		<subant target="init">
+			<fileset dir="./projects/${new.project.name}" includes="build.xml"/>
+		</subant>
 	</target>	 
 
 	<!-- more targets -->

@@ -28,9 +28,7 @@
 			xmlns:ns1="http://integration.nci.nih.gov/messaging">
 			<ns1:metadata>
 				<ns1:serviceType>Registration</ns1:serviceType>
-				<ns1:externalIdentifier>
-					<xsl:value-of select="$trimMsgId" />
-				</ns1:externalIdentifier>
+				<ns1:externalIdentifier><xsl:value-of select="$trimMsgId" /></ns1:externalIdentifier>
 			</ns1:metadata>
 			<ns1:request>
 				<ns1:businessMessagePayload>

@@ -1,0 +1,9 @@
+package gov.nih.nci.integration.domain;
+
+public enum StrategyIdentifier {
+	CATISSUE_CREATE_REGISTRATION,
+	CATISSUE_UPDATE_REGISTRATION,
+	CAEERS_CREATE_REGISTRATION,
+	CAEERS_UPDATE_REGISTRATION,
+	CAEERS_CREATE_AE;
+}
