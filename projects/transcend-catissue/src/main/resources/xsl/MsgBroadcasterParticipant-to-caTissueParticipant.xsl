@@ -7,31 +7,30 @@
 
 	<!-- Main -->
 	<xsl:template match="/">
-		<xsl:call-template name="ConvertToCaTissueParticipantMsg">
-		</xsl:call-template>
+		<xsl:call-template name="ConvertToCaTissueParticipantMsg"/>
 	</xsl:template>
 	
 	<xsl:template name="ConvertToCaTissueParticipantMsg">
 		<catissue:participant xmlns:catissue="http://domain.catissuecore.wustl.edu/participant">
-			<catissue:activityStatus><xsl:value-of select="//p:activityStatus"/></catissue:activityStatus>
-			<catissue:birthDate><xsl:value-of select="//p:birthDate"/></catissue:birthDate>
-			<catissue:ethnicity><xsl:value-of select="//p:ethnicity"/></catissue:ethnicity>
-			<catissue:firstName><xsl:value-of select="//p:firstName"/></catissue:firstName>
-			<catissue:gender><xsl:value-of select="//p:gender"/></catissue:gender>
-			<catissue:lastName><xsl:value-of select="//p:lastName"/></catissue:lastName>			
-			<catissue:socialSecurityNumber><xsl:value-of select="//p:identifiers/p:organizationAssignedIdentifier[type eq 'SSN']/value"/></catissue:socialSecurityNumber>			
+			<catissue:activityStatus><xsl:value-of select="//p:participant/p:activityStatus"/></catissue:activityStatus>
+			<catissue:birthDate><xsl:value-of select="//p:participant/p:birthDate"/></catissue:birthDate>
+			<catissue:ethnicity><xsl:value-of select="//p:participant/p:ethnicity"/></catissue:ethnicity>
+			<catissue:firstName><xsl:value-of select="//p:participant/p:firstName"/></catissue:firstName>
+			<catissue:gender><xsl:value-of select="//p:participant/p:gender"/></catissue:gender>
+			<catissue:lastName><xsl:value-of select="//p:participant/p:lastName"/></catissue:lastName>			
+			<catissue:socialSecurityNumber><xsl:value-of select="//p:participant/p:identifiers/p:organizationAssignedIdentifier[p:type/text()='SSN']/p:value"/></catissue:socialSecurityNumber>			
 			<catissue:vitalStatus>Alive</catissue:vitalStatus>
 			<catissue:collectionProtocolRegistrationCollection
 				class="set">
 				<catissue:collectionProtocolRegistration>
-					<catissue:activityStatus></catissue:activityStatus>
+					<catissue:activityStatus>Active</catissue:activityStatus>
 					<catissue:consentSignatureDate></catissue:consentSignatureDate>
 					<catissue:protocolParticipantIdentifier />
 					<catissue:registrationDate></catissue:registrationDate>
 					<catissue:specimenCollectionGroupCollection
 						class="set" />
 					<catissue:collectionProtocol>
-						<catissue:title>CP-01</catissue:title>
+						<catissue:title><xsl:value-of select="//p:participant/p:assignments/p:assignment/p:studySite/p:study/p:identifiers/p:identifier[p:type/text()='Study Identifier']/p:value"/></catissue:title>
 						<catissue:collectionProtocolEventCollection
 							class="linked-hash-set" />
 						<catissue:childCollectionProtocolCollection
