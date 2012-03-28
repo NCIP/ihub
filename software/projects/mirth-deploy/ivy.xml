@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="1.4">
+
+    	<info organisation="gov.nih.nci.ihub"
+          	module="mirth-deploy"
+          	status="integration"/>
+
+        <configurations>
+        	<conf name="default" visibility="public" extends="publish,runtime"
+        		description="Dependencies needed for default setting"  />
+        	<conf name="build" visibility="public"
+        		description="Dependencies required for build time, all classpath should have this"/>
+        	<conf name="publish" visibility="public"
+        		description="Dependencies along with this module is published in repository" />
+        	<conf name="distGrid" visibility="public"
+        		description="Dependencies that are required in grid distribution of this module" />
+        	<conf name="dist" visibility="public"
+        		description="Dependencies needed for standalone distribution" />
+        	<conf name="runtime" visibility="public"
+        		description="The dependencies that are needed for runtime" extends="build" />
+        	<conf name="test" visibility="public"
+        		description="Dependencies needed for testing purposes"/>
+        	<conf name="static-analysis" visibility="public"
+        		description="Dependencies needed for static-analysis purposes"/>
+        </configurations>
+
+        <!--  Items to be published  -->
+         <publications>
+    		<artifact name="${ivy.module}" conf="publish,dist,distGrid" type="jar"/>
+    		<artifact name="${ivy.module}-tests" conf="test" type="jar"/>
+  		</publications>
+
+        <dependencies defaultconfmapping="build,dist,distGrid->default(*)">
+        
+        <!--<exclude module="spring-remoting"/>
+        <exclude module="spring-web"/>
+        <exclude org="org.acegisecurity"/>
+              
+        <exclude org="org.jglobus"/>
+        -->
+		<!-- commonIntegration -->
+        <dependency org="gov.nih.nci.ihub" name="transcend-catissue" rev="latest.integration"  conf="runtime->*;test->*;static-analysis->static-analysis"/>
+		
+		</dependencies>
+</ivy-module>

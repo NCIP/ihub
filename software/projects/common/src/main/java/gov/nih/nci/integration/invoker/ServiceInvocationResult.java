@@ -4,6 +4,7 @@ public class ServiceInvocationResult {
 	
 	private String result;
 	private Exception invocationException;
+	private boolean retry = false;
 	
 	public String getResult() {
 		return result;
@@ -22,9 +23,11 @@ public class ServiceInvocationResult {
 		return invocationException != null;
 	}
 	
-	public boolean isRetry() {
-		//TODO: get purpose & Impl
-		return false;
+	public void setRetry(boolean retry) {
+		this.retry = retry;
+	}
+	public boolean isRetry() {		
+		return retry;
 	}
 	
 }

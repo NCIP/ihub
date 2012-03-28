@@ -40,7 +40,7 @@
             <exclude org="org.springframework" module="spring-support" />
             <exclude org="org.springframework" module="spring-remoting" />
             <exclude org="ant" module="ant" />
-			
+            
 			<!-- commonIntegration -->
             <dependency org="gov.nih.nci.ihub" name="common" rev="latest.integration"  conf="runtime->*;test->*;static-analysis->static-analysis"/>
 			

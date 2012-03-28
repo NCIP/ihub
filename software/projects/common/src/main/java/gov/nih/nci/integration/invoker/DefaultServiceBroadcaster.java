@@ -22,17 +22,41 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
 	public ServiceInvocationResult delegateServiceInvocation(
 			Long referenceMessageId, String message,
 			ServiceInvocationStrategy serviceInvocationStrategy) {
+		
 		final Date stTime = new Date(new java.util.Date().getTime());
+		
+		ServiceInvocationResult serviceInvocationResult = delegate(message, serviceInvocationStrategy);
+		
+		if (serviceInvocationResult.isFault()) {
+			//upon receiving the fault can control retry attempts, if it makes sense or not
+			if(serviceInvocationResult.isRetry()) {
+				int retryCnt = serviceInvocationStrategy.getRetryCount();
+				for(int i=0; i<retryCnt; i++) {
+					serviceInvocationResult = delegate(message, serviceInvocationStrategy);
+					if(!serviceInvocationResult.isFault()) {
+						break;
+					}
+				}
+			}
+		}
+		
+		persistServiceInvocationMessage(referenceMessageId, message, stTime,
+				serviceInvocationStrategy.getStrategyIdentifier(),
+				serviceInvocationResult);
+		
+		return serviceInvocationResult;
+	}
+	
+	private ServiceInvocationResult delegate(String message, ServiceInvocationStrategy serviceInvocationStrategy) {
 		ServiceInvocationResult serviceInvocationResult;
 		try {
 			serviceInvocationResult = serviceInvocationStrategy.invoke(message);
 		} catch (Exception e) {
+			//this code must not be reached...ServiceInvocationStrategy must not throw exception
+			//TODO : To handle any exceptions not handled by ServiceInvocationStrategy
 			serviceInvocationResult = new ServiceInvocationResult();
 			serviceInvocationResult.setInvocationException(e);
 		}
-		persistServiceInvocationMessage(referenceMessageId, message, stTime,
-				serviceInvocationStrategy.getStrategyIdentifier(),
-				serviceInvocationResult);
 		return serviceInvocationResult;
 	}
 

@@ -38,11 +38,21 @@
             <exclude org="springframework"  />
             <exclude org="org.springframework" module="spring-dao" />
             <exclude org="org.springframework" module="spring-support" />
-            <exclude org="org.springframework" module="spring-remoting" />
             <exclude org="ant" module="ant" />
 			
 			<!-- commonIntegration -->
             <dependency org="gov.nih.nci.ihub" name="common" rev="latest.integration"  conf="runtime->*;test->*;static-analysis->static-analysis"/>
+			<!-- catissue remoting -->
+			<dependency org="org.springframework" name="spring-remoting" rev="2.0.8"/>						
 			
+			<!-- catissue client required jars -->
+			<dependency org="org.acegisecurity" name="acegi-security" rev="1.0.7"/>
+			<dependency org="mysql" name="mysql-connector-java" rev="5.0.8"/>
+			<dependency org="axis" name="axis" rev="1.4"/>
+			<dependency org="castor" name="castor" rev="1.0"/>
+			<dependency org="commons-codec" name="commons-codec" rev="1.3"/>
+						
+			<!-- not used..but required -->
+			<dependency org="org.jglobus" name="JGlobus-Core" rev="2.0.4"/>
        </dependencies>
 </ivy-module>

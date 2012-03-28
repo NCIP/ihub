@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>2.1.1.5490</version>
   <lastModified>
-    <time>1329507808184</time>
+    <time>1332525041650</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>1</revision>
+  <revision>2</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -56,7 +56,7 @@
         <property name="dispatcherSocketTimeout">30000</property>
         <property name="dispatcherUseAuthentication">0</property>
         <property name="dispatcherUsername"></property>
-        <property name="host">http://localhost:11080</property>
+        <property name="host">http://localhost:12090</property>
         <property name="queuePollInterval">200</property>
         <property name="reconnectMillisecs">10000</property>
         <property name="rotateQueue">0</property>
