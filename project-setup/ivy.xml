@@ -2,7 +2,7 @@
 <ivy-module version="1.4">
 
     	<info organisation="gov.nih.nci.ihub"
-          	module="transcend-caaers"
+          	module="@replace.value@"
           	status="integration"/>
 
         <configurations>

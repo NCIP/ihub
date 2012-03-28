@@ -78,8 +78,6 @@ public class JpaConfig {
         return dataSource;
     }
 
-
-
     /**
      * Hiberante Jpa vendor adapter.
      *

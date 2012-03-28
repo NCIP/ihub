@@ -13,16 +13,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 
 
-public class ParticipantServiceClient {
+public class CaAERSParticipantServiceClient {
 	
 	Unmarshaller unmarshaller = null;
 	
-	public ParticipantServiceClient() throws JAXBException {
+	public CaAERSParticipantServiceClient() throws JAXBException {
 		super();
 		getUnmarshaller();
 	}
@@ -44,8 +45,9 @@ public class ParticipantServiceClient {
 	 * @throws JAXBException
 	 */
 	public ParticipantType parseParticipant(String participantXMLStr) throws JAXBException {
-		return (ParticipantType) getUnmarshaller().unmarshal(
-				new StreamSource(new StringReader(participantXMLStr)));
+		JAXBElement<ParticipantType> jaxbEle = (JAXBElement<ParticipantType>) getUnmarshaller().unmarshal(
+				new StreamSource(new StringReader(participantXMLStr)), ParticipantType.class);
+		return jaxbEle.getValue();
 	}
 	
 	public Response createParticipant(String wsdl, String participantXMLStr) throws JAXBException, MalformedURLException {		

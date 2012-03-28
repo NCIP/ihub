@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:participant id="1" version="1"
+	xmlns:p="http://integration.nci.nih.gov/participant" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://integration.nci.nih.gov/participant Participant.xsd ">
+	<p:firstName>firstName</p:firstName>
+	<p:lastName>lastName</p:lastName>
+	<p:maidenName>maidenName</p:maidenName>
+	<p:middleName>middleName</p:middleName>
+	<p:birthDate>2001-01-01</p:birthDate>
+	<p:gender>Male</p:gender>
+	<p:race>Asian</p:race>
+	<p:ethnicity>Hispanic or Latino</p:ethnicity>
+	<p:activityStatus>ACTIVE</p:activityStatus>
+	<p:identifiers>
+		<p:organizationAssignedIdentifier id="1"
+			version="1">
+			<p:type>MRN</p:type>
+			<p:value>value</p:value>
+			<p:primaryIndicator>true</p:primaryIndicator>
+			<p:organization id="1" version="1">
+				<p:name>name</p:name>
+				<p:nciInstituteCode>nciInstituteCode</p:nciInstituteCode>
+			</p:organization>
+		</p:organizationAssignedIdentifier>
+		<p:organizationAssignedIdentifier id="1"
+			version="1">
+			<p:type>SSN</p:type>
+			<p:value>value</p:value>
+			<p:primaryIndicator>false</p:primaryIndicator>
+			<p:organization id="1" version="1">
+				<p:name>SSN</p:name>
+				<p:nciInstituteCode>SSN</p:nciInstituteCode>
+			</p:organization>
+		</p:organizationAssignedIdentifier>
+		<p:systemAssignedIdentifier id="1" version="1">
+			<p:type>MRN</p:type>
+			<p:value>value</p:value>
+			<p:primaryIndicator>true</p:primaryIndicator>
+			<p:systemName>systemName</p:systemName>
+		</p:systemAssignedIdentifier>
+	</p:identifiers>
+	<p:assignments>
+		<p:assignment id="1" version="1">
+			<p:studySubjectIdentifier>studySubjectIdentifier</p:studySubjectIdentifier>
+			<p:studySite id="1" version="1">
+				<p:study id="1" version="1">
+					<p:identifiers>
+						<p:identifier id="1" version="1">
+							<p:type>Site Identifier</p:type>
+							<p:value>value</p:value>
+						</p:identifier>
+					</p:identifiers>
+				</p:study>
+				<p:organization id="1" version="1">
+					<p:name>name</p:name>
+					<p:nciInstituteCode>nciInstituteCode</p:nciInstituteCode>
+				</p:organization>
+			</p:studySite>
+		</p:assignment>
+	</p:assignments>
+</p:participant>

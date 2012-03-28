@@ -70,7 +70,7 @@
 	<macrodef name="ivyResolve">
 		<attribute name="libDir"/>
 		<attribute name="confs"/>
-		<attribute name="resolveId"/>
+		<attribute name="resolveId"/>		
 		<sequential>
 			<ivy:resolve file="${ivy.file}" conf="@{confs}" resolveid="@{resolveId}" haltonfailure="false" settingsRef="${ivy.settings.id}"/>
 			<ivy:retrieve pattern="@{libDir}/[artifact]-[revision].[ext]" resolveid="@{resolveId}" haltonfailure="false" settingsRef="${ivy.settings.id}"/>
@@ -281,8 +281,9 @@
 		         uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"  />
 		<ivy:settings file="${project.build.dir}/ivysettings-offline.xml" id="${ivy.settings.id}" />
 	</target>
+	
 	<target name="load-ivy" depends="download-ivy,download-jsch, load-online-settings, load-offline-settings" unless="ivy.loaded">
-				<property name="ivy.loaded" location="true"/>
+		<property name="ivy.loaded" location="true"/>
 	</target>
 	
     <!-- ======================================================== 
@@ -309,7 +310,7 @@
     <target name="resolve-test" depends="clean-lib-test, init, load-ivy" unless="already.resolved-test" 
     	description="--> resolve and retrieve 'test' dependencies with ivy">
     	<echo message="Executing ${ant.project.name} : resolve-test" />
-    	<ivyResolve confs="test" libdir="${test.lib.dir}" resolveid="[org]-[module]-test"/>
+    	<ivyResolve confs="test" libdir="${test.lib.dir}" resolveid="[org]-[module]"/>
     	<property name="already.resolved-test" value="true"/>
     </target>
 	
@@ -319,17 +320,17 @@
     <target name="resolve-sa" depends="clean-lib-sa, init, load-ivy" unless="already.resolved-sa" 
     	description="--> resolve and retrieve 'static-analysis' dependencies with ivy">
     	<echo message="Executing ${ant.project.name} : resolve-sa" />
-    	<ivyResolve confs="static-analysis" libdir="${sa.lib.dir}" resolveid="[org]-[module]-sa"/>
+    	<ivyResolve confs="static-analysis" libdir="${sa.lib.dir}" resolveid="[org]-[module]"/>
     	<property name="already.resolved-sa" value="true"/>
     </target>
   
     <!-- ========================================================== 
           target: report              
     	============================================================ -->
-    <target name="report" depends="resolve" description="--> generates a report of dependencies">
+    <target name="report" depends="resolve, resolve-test, resolve-sa" description="--> generates a report of dependencies">
     	<echo message="Executing in ${ant.project.name}" />
     	<mkdir dir="${build.dir}/dependency-reports"/>
-        <ivy:report todir="${build.dir}/dependency-reports" conf="default, runtime, test"/>
+        <ivy:report todir="${build.dir}/dependency-reports" conf="default,test,static-analysis" resolveid="[org]-[module]" settingsRef="${ivy.settings.id}"/>		
     </target>
     
     <!-- =============================================================== 
@@ -396,9 +397,9 @@
 			<format property="today" pattern="yyyy-MM-dd hh:mm:ss" />
 		</tstamp>
     	<!-- create version file in classpath for later inclusion in jar -->
-		<echo message="version=${ivy.new.revision}" file="${classes.dir}/${ant.project.name}.properties" append="false" />
+		<echo message="version=${ivy.new.revision}" file="${classes.dir}/${ant.project.name}-version.properties" append="false" />
 		<!-- load generated version properties file -->
-        <property file="${classes.dir}/${ant.project.name}.properties" />
+        <property file="${classes.dir}/${ant.project.name}-version.properties" />
     </target>
 	<!-- ===============================================================================================
 		target:generate-jaxb
@@ -594,6 +595,14 @@
     	description="--> clean the project">
     	<delete dir="${main.src}" includes="**/*.class" />
 		<delete dir="${test.src}" includes="**/*.class" />
+    </target>
+    
+     <!-- ================================= 
+          target: clean ivy cache             
+         ================================= -->
+    <target name="clean-ivy"  depends="load-ivy"
+    	description="--> clean the ivy cache">
+    	<ivy:cleancache settingsRef="${ivy.settings.id}"/>
     </target>
 	
 	<!-- ============================================================== 

@@ -4,19 +4,12 @@
 
     <persistence-unit name="ihub-messages" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
-		
-		<!--<validation-mode>NONE</validation-mode>
-        -->
-        
+		       
         <properties>
-        <!-- 
-        	<property name="hibernate.dialect" value="@HIBERNATE.DIALECT@"/>
-            <property name="hibernate.hbm2ddl.auto" value="${ihub.messages.hibernate.hbm2ddl.auto}"/>
-		 -->    
-			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="create"/>       
+            <property name="hibernate.hbm2ddl.auto" value="update"/>       
             <property name="hibernate.jdbc.batch_size" value="0"/>
         </properties>
+        
     </persistence-unit>
 
 </persistence>

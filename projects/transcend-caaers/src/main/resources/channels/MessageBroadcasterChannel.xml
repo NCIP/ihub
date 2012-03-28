@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>2.1.1.5490</version>
   <lastModified>
-    <time>1330030816930</time>
+    <time>1332940503516</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>8</revision>
+  <revision>23</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -16,7 +16,38 @@
       <property name="responseValue">ResponseAggregatorConnector</property>
     </properties>
     <transformer>
-      <steps/>
+      <steps>
+        <step>
+          <sequenceNumber>0</sequenceNumber>
+          <name>referenceMsgId</name>
+          <script>var mapping;try { mapping = msg[&apos;ns1:metadata&apos;][&apos;ns1:externalIdentifier&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;referenceMsgId&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+          <type>Mapper</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>referenceMsgId</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;ns1:metadata&apos;][&apos;ns1:externalIdentifier&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>isGlobal</string>
+              <string>channel</string>
+            </entry>
+          </data>
+        </step>
+      </steps>
+      <inboundTemplate encoding="base64"></inboundTemplate>
+      <outboundTemplate encoding="base64"></outboundTemplate>
       <inboundProtocol>XML</inboundProtocol>
       <outboundProtocol>XML</outboundProtocol>
       <inboundProperties>
@@ -113,14 +144,14 @@ PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
             <name>Accept message if &quot;msg[&apos;ns1:metadata&apos;][&apos;ns1:serviceType&apos;].toString()&quot; equals globalMap.get(&apos;AE&apos;)</name>
             <data class="map">
               <entry>
-                <string>Name</string>
-                <string></string>
-              </entry>
-              <entry>
                 <string>Values</string>
                 <list>
                   <string>globalMap.get(&apos;AE&apos;)</string>
                 </list>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string></string>
               </entry>
               <entry>
                 <string>Field</string>
@@ -214,7 +245,7 @@ PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
         <inboundProtocol>XML</inboundProtocol>
         <outboundProtocol>XML</outboundProtocol>
         <inboundProperties>
-          <property name="stripNamespaces">true</property>
+          <property name="stripNamespaces">false</property>
         </inboundProperties>
         <outboundProperties>
           <property name="stripNamespaces">true</property>
@@ -227,14 +258,14 @@ PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
             <name>Accept message if &quot;msg[&apos;ns1:metadata&apos;][&apos;ns1:serviceType&apos;].toString()&quot; equals globalMap.get(&apos;REGN&apos;)</name>
             <data class="map">
               <entry>
-                <string>Name</string>
-                <string></string>
-              </entry>
-              <entry>
                 <string>Values</string>
                 <list>
                   <string>globalMap.get(&apos;REGN&apos;)</string>
                 </list>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string></string>
               </entry>
               <entry>
                 <string>Field</string>
@@ -270,6 +301,11 @@ return false;</script>
         <property name="DataType">JavaScript Writer</property>
         <property name="host">sink</property>
         <property name="script">//supposed to handle CaTissue registration
+var srvcInvcAndAgg = channelMap.get(&quot;serviceInvocatorAndAggregator&quot;);
+
+var catissueSvcInvStrtgy = globalMap.get(&quot;caTissueServiceInvocationStrategy&quot;);
+
+srvcInvcAndAgg.invokeService($(&apos;referenceMsgId&apos;), messageObject.getEncodedData(), catissueSvcInvStrtgy);
 
 return;</property>
       </properties>
@@ -328,7 +364,7 @@ PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
         <inboundProtocol>XML</inboundProtocol>
         <outboundProtocol>XML</outboundProtocol>
         <inboundProperties>
-          <property name="stripNamespaces">true</property>
+          <property name="stripNamespaces">false</property>
         </inboundProperties>
         <outboundProperties>
           <property name="stripNamespaces">true</property>
@@ -341,14 +377,14 @@ PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
             <name>Accept message if &quot;msg[&apos;ns1:metadata&apos;][&apos;ns1:serviceType&apos;].toString()&quot; equals globalMap.get(&apos;REGN&apos;)</name>
             <data class="map">
               <entry>
-                <string>Name</string>
-                <string></string>
-              </entry>
-              <entry>
                 <string>Values</string>
                 <list>
                   <string>globalMap.get(&apos;REGN&apos;)</string>
                 </list>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string></string>
               </entry>
               <entry>
                 <string>Field</string>
@@ -384,6 +420,16 @@ return false;</script>
         <property name="DataType">JavaScript Writer</property>
         <property name="host">sink</property>
         <property name="script">//supposed to aggregate responses and create appropriate response for this channel
+var srvcInvcAndAgg = channelMap.get(&quot;serviceInvocatorAndAggregator&quot;);
+
+var svcInvRes = srvcInvcAndAgg.aggregateResults();
+
+if(svcInvRes.isFault()) {
+	responseMap.put(&quot;ResponseAggregatorConnector&quot;, svcInvRes.getResult());
+} else {
+	responseMap.put(&quot;ResponseAggregatorConnector&quot;, svcInvRes.getInvocationException());
+}
+
 
 return;</property>
       </properties>
@@ -392,7 +438,7 @@ return;</property>
         <inboundProtocol>XML</inboundProtocol>
         <outboundProtocol>XML</outboundProtocol>
         <inboundProperties>
-          <property name="stripNamespaces">true</property>
+          <property name="stripNamespaces">false</property>
         </inboundProperties>
         <outboundProperties>
           <property name="stripNamespaces">true</property>
@@ -419,11 +465,58 @@ return;</property>
     <property name="transactional">false</property>
   </properties>
   <preprocessingScript>// Modify the message variable below to pre process data
+
+var commonAppCtx = globalMap.get(&quot;commonAppCtx&quot;);
+
+var srvcInvcAndAgg  = commonAppCtx.getBean(&quot;serviceInvocatorAndResultAggregator&quot;);
+
+channelMap.put(&quot;serviceInvocatorAndAggregator&quot;, srvcInvcAndAgg );
+
 return message;</preprocessingScript>
   <postprocessingScript>// This script executes once after a message has been processed
 return;</postprocessingScript>
   <deployScript>// This script executes once when the channel is deployed
 // You only have access to the globalMap and globalChannelMap here to persist data
+
+var commonAppCtx = globalMap.get(&quot;commonAppCtx&quot;);
+
+if(commonAppCtx == null) {
+  	commonAppCtx = new Packages.org.springframework.context.support.ClassPathXmlApplicationContext(&quot;classpath*:applicationContext-common.xml&quot;);	
+	globalMap.put(&quot;commonAppCtx&quot;, commonAppCtx);
+}
+
+var transcendCatissueAppCtx = globalMap.get(&quot;transcendCatissueAppCtx&quot;);
+
+if(transcendCatissueAppCtx == null) {
+  	transcendCatissueAppCtx = new Packages.org.springframework.context.support.ClassPathXmlApplicationContext(&quot;classpath*:applicationContext-transcend-catissue.xml&quot;);	
+	globalMap.put(&quot;transcendCatissueAppCtx&quot;, transcendCatissueAppCtx);
+}
+
+var msgBCMessageToCaTissueParticipantTransformer = globalMap.get(&quot;msgBCMessageToCaTissueParticipantTransformer&quot;);
+
+if(msgBCMessageToCaTissueParticipantTransformer == null) {
+	var msgBCMessageToCaTissueParticipantXsl=&quot;MsgBroadcasterParticipant-to-caTissueParticipant.xsl&quot;;
+
+	var baseXSLClasspath=&quot;C:/Users/sb-admin-cp/.integration/ihub/xsl/&quot;;
+
+	msgBCMessageToCaTissueParticipantTransformer = commonAppCtx.getBean(&quot;xsltTransformer&quot;);
+	msgBCMessageToCaTissueParticipantTransformer.initTransformer(msgBCMessageToCaTissueParticipantXsl, baseXSLClasspath);
+
+	globalMap.put(&quot;msgBCMessageToCaTissueParticipantTransformer&quot;, msgBCMessageToCaTissueParticipantTransformer);
+}
+
+var caTissueParticipantClient = globalMap.get(&quot;caTissueParticipantClient&quot;);
+
+if(caTissueParticipantClient == null) {
+	caTissueParticipantClient = transcendCatissueAppCtx.get(&quot;caTissueParticipantClient&quot;);
+}
+
+var caTissueServiceCallRetry=2;
+
+var caTissueServiceInvocationStrategy = new Packages.gov.nih.nci.integration.invoker.CaTissueServiceInvocationStrategy(caTissueServiceCallRetry, caTissueParticipantClient, msgBCMessageToCaTissueParticipantTransformer);
+
+globalMap.put(&quot;caTissueServiceInvocationStrategy&quot;, caTissueServiceInvocationStrategy);
+
 return;</deployScript>
   <shutdownScript>// This script executes once when the channel is undeployed
 // You only have access to the globalMap and globalChannelMap here to persist data

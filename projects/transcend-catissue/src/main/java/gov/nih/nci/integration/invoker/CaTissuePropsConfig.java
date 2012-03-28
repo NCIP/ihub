@@ -1,9 +1,11 @@
-package gov.nih.nci.integration.util;
+package gov.nih.nci.integration.invoker;
+
+import gov.nih.nci.integration.util.CommonsPropertyPlaceholderConfigurer;
 
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 
-public class CommonIntegrationConfig {
+public class CaTissuePropsConfig {
 
 	/**
      * Loads properties from "classpath*:/commonIntegration.properties" location
@@ -13,7 +15,7 @@ public class CommonIntegrationConfig {
     @Bean
     public PropertyPlaceholderConfigurer commonsPropertyPlaceholderConfigurer() {
         final PropertyPlaceholderConfigurer configurer =
-                new CommonsPropertyPlaceholderConfigurer("integration", "commonIntegration.properties");
+                new CommonsPropertyPlaceholderConfigurer("ihub", "transcend-catissue.properties");
         configurer.setSystemPropertiesMode(PropertyPlaceholderConfigurer.SYSTEM_PROPERTIES_MODE_OVERRIDE);
         configurer.setIgnoreUnresolvablePlaceholders(true);
         return configurer;
