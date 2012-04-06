@@ -840,6 +840,7 @@
 	
 	<!-- FIXIT: Until extra required jars location for ivy can be identified-->
 	<target name="resolve-etc-libs" unless="already.etc.libs.resolved" description="resolves extra libs needed">
+		<!-- DONT DO ANYTHING FOR NOW
 		<property name="etc.lib.dir" value="${basedir}/etc/lib"/>
 		<mkdir dir="${etc.lib.dir}" />
 		<copy todir="${lib.dir}" overwrite="true">
@@ -849,6 +850,7 @@
 			<fileset dir="${etc.lib.dir}" includes="**/*.*" excludes=".svn" />
 		</copy>
 		<property name="already.etc.libs.resolved" value="true"/>
+		--> 
 	</target>
 
 </project>
