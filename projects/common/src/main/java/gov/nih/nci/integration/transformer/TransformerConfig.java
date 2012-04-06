@@ -1,8 +1,8 @@
 package gov.nih.nci.integration.transformer;
 
+import gov.nih.nci.integration.exception.IntegrationException;
 import gov.nih.nci.integration.util.AnyBasePathURIResolver;
 
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.URIResolver;
 
@@ -43,11 +43,11 @@ public class TransformerConfig {
      * XSLT Transformer
      * 
      * @return xsltTransformer transformer
-     * @throws TransformerException exception
+     * @throws IntegrationException exception
      */
     @Bean
     @Scope(PROTOTYPE)
-    public XSLTTransformer xsltTransformer() throws TransformerException {
+    public XSLTTransformer xsltTransformer() throws IntegrationException {
         return new XSLTTransformer(xslTransformerFactory());
     }
     

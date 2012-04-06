@@ -1,8 +1,6 @@
 package gov.nih.nci.integration.transformer;
 
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-
+import gov.nih.nci.integration.exception.IntegrationException;
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -20,7 +18,7 @@ public class XSLTTransformerTest {
 	private XSLTTransformer xsltTransformer;
 	
 	@Test
-	public void intialize() throws TransformerConfigurationException, TransformerException {
+	public void intialize() throws IntegrationException {
 		xsltTransformer.initTransformer("MsgBroadcasterParticipant-to-caTissueParticipant.xsl", "C:\\Users\\sb-admin-cp\\.integration\\ihub\\xsl\\");
 		Assert.assertNotNull(xsltTransformer);
 	}

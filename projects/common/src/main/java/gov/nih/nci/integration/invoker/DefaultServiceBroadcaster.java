@@ -77,7 +77,6 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
 				.getInvocationException();
 		if (invocationException != null) {
 			iHubMessage.setStatus(Status.FAILED);
-			// FIXIT : construct proper error message with error code and format
 			serviceInvocationMessage.setInvocationException(invocationException
 					.getMessage());
 		} else {

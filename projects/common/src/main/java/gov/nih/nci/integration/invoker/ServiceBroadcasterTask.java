@@ -1,5 +1,8 @@
 package gov.nih.nci.integration.invoker;
 
+import gov.nih.nci.integration.exception.IntegrationError;
+import gov.nih.nci.integration.exception.IntegrationException;
+
 import java.util.concurrent.Callable;
 
 import org.apache.commons.lang.StringUtils;
@@ -25,21 +28,22 @@ public class ServiceBroadcasterTask implements Callable<ServiceInvocationResult>
 	}
 
 	@Override
-	public ServiceInvocationResult call() throws Exception {
+	public ServiceInvocationResult call() throws IntegrationException {
 		if (serviceBroadcaster == null) {
-			throw new IllegalArgumentException("Requires a ServiceBroadcaster!");
+			throw new IntegrationException(IntegrationError._1062);
+			
 		}
 		
 		if (referenceMessageId < 1) {
-			throw new IllegalArgumentException("Requires a valid referenceMessageId!");
+			throw new IntegrationException(IntegrationError._1063);
 		}		
 		
 		if (StringUtils.isEmpty(message)) {
-			throw new IllegalArgumentException("Requires a non-empty message!");
+			throw new IntegrationException(IntegrationError._1064);
 		}
 		
 		if (serviceInvocationStrategy == null) {
-			throw new IllegalArgumentException("Requires a ServiceInvocationStrategy!");
+			throw new IntegrationException(IntegrationError._1065);
 		}
 		return serviceBroadcaster.delegateServiceInvocation(referenceMessageId, message, serviceInvocationStrategy);
 	}

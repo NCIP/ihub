@@ -2,11 +2,11 @@ package gov.nih.nci.integration.cacis.inbound;
 
 import gov.nih.nci.ihub.cacis.inbound.DefaultAcceptMessage;
 import gov.nih.nci.ihub.cacis.inbound.DefaultAcceptMessageService;
+import gov.nih.nci.integration.exception.IntegrationError;
+import gov.nih.nci.integration.exception.IntegrationException;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import javax.xml.bind.JAXBException;
 
 /**
  * A client to submit request to DefaultAcceptMessage webservice of Mirth
@@ -15,9 +15,14 @@ import javax.xml.bind.JAXBException;
  */
 public class DefaultAcceptMessageClient {
 
-    public String acceptMessage(String wsdl, String requestStr) throws JAXBException, MalformedURLException {
+    public String acceptMessage(String wsdl, String requestStr) throws IntegrationException{
                
-        final URL wsdlUrl = new URL(wsdl);
+        URL wsdlUrl=null;
+		try {
+			wsdlUrl = new URL(wsdl);
+		} catch (MalformedURLException e) {
+			throw new IntegrationException(IntegrationError._1081);
+		}
         final DefaultAcceptMessage service = new
                 DefaultAcceptMessageService(wsdlUrl).getDefaultAcceptMessagePort();
 
@@ -25,18 +30,14 @@ public class DefaultAcceptMessageClient {
     }
     /**
      * @param args
+     * @throws IntegrationException 
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IntegrationException {
         DefaultAcceptMessageClient client = new DefaultAcceptMessageClient();
-        try {
+       
             String res = client.acceptMessage("http://localhost:12085/services/Mirth?wsdl", "<trim>testtrim</trim>");
             System.out.println("response is " + res);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
-
+       
     }
 
 }

@@ -1,5 +1,6 @@
 package gov.nih.nci.integration.exception;
 
+
 public enum IntegrationError {
 	_1000(1000, ErrorType.UNKNOWN, "Unexpected error."),
 	_1001(1001, ErrorType.VALIDATION, "The participant registration format is invalid for caTissue."),
@@ -27,13 +28,36 @@ public enum IntegrationError {
 	_1022(1022, ErrorType.SECURITY, "Error retrieving security information."),
 	_1023(1017, ErrorType.TRANSFORMATION, "Adverse Event transformation could not be found."),
 	_1024(1018, ErrorType.TRANSFORMATION, "Adverse Event transformation failed."),
+	_1025(1025, ErrorType.TRANSFORMATION, "TransformerConfigurationException occured while initializing the transformer."),
+	_1026(1026, ErrorType.TRANSFORMATION, "TransformerException occured while initializing the transformer."),
+	_1027(1027, ErrorType.TRANSFORMATION, "TransformerException occured while performing xsl transformation on source XML."),
 	
 	_1041(1041, ErrorType.TRANSFORMATION, "Transformation to CaCISRequest failed."),
 	_1042(1042, ErrorType.TRANSMISSION, "Could not persist source message."),
 	_1043(1042, ErrorType.TRANSMISSION, "Error routing to CaCISChannel."),
 	_1050(1050, ErrorType.VALIDATION, "Unknown message type."),
+		
+	_1060(1060, ErrorType.VALIDATION, "New Transformer cannot be initialized. TransformerFactory is null!"),
+	_1061(1061, ErrorType.VALIDATION, "New Transformer cannot be initialized. XSL file name cannot be empty!"),
+	_1062(1062, ErrorType.VALIDATION, "Requires a ServiceBroadcaster!"),
+	_1063(1063, ErrorType.VALIDATION, "Requires a valid referenceMessageId!"),
+	_1064(1064, ErrorType.VALIDATION, "Requires a non-empty message!"),
+	_1065(1065, ErrorType.VALIDATION, "Requires a ServiceInvocationStrategy!"),
+	_1066(1066, ErrorType.VALIDATION, "Cannot authenticate user."),
+	_1067(1067, ErrorType.VALIDATION, "Url should be using secured protocol to use Globus Credentials."),
+	_1068(1068, ErrorType.VALIDATION, "Credentials can not be null."),
+	_1069(1069, ErrorType.VALIDATION, "Url security feature for groups is not supported."),
+	_1070(1070, ErrorType.VALIDATION, "User Groups Collection cannot be empty."),
+	_1071(1071, ErrorType.VALIDATION, "Url security feature for username is not supported."),
+	_1072(1072, ErrorType.VALIDATION, "Username cannot be empty."),
+	_1073(1073, ErrorType.VALIDATION, "Error authenticating user:"),
+	_1074(1074, ErrorType.VALIDATION, "Name of the service can not be empty."),
+	_1075(1075, ErrorType.VALIDATION, "Change the configuration file!"),
 	
-	_1051(1051, ErrorType.TRANSMISSION, "Error while invoking CaTissue client.");
+	
+	_1081(1081, ErrorType.MALFORM, "MalformedURLException Occured."),
+	_1082(1082, ErrorType.MALFORM, "GlobusCredentialException Occured."),
+	_1083(1083, ErrorType.MALFORM, "BeansException Occured.");
 		
 	private int errorCode;
 	

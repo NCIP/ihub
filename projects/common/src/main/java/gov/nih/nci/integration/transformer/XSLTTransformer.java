@@ -1,5 +1,8 @@
 package gov.nih.nci.integration.transformer;
 
+import gov.nih.nci.integration.exception.IntegrationError;
+import gov.nih.nci.integration.exception.IntegrationException;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
@@ -49,22 +52,26 @@ public class XSLTTransformer {
      * Initializes the transformer to be used 
      * @param xslFileName - xslFileName for the transformer
      * @param xslBasePath - Base xsl file path for resolver
-     * @throws TransformerException - exception thrown if any
-     * @throws TransformerConfigurationException - exception thrown if any
+     * @throws IntegrationException - exception thrown if any
      */
-    public void initTransformer(String xslFileName, String xslBasePath) throws TransformerConfigurationException, TransformerException {
+    public void initTransformer(String xslFileName, String xslBasePath) throws IntegrationException {
     	if(factory == null) {
-    		throw new IllegalArgumentException("New Transformer cannot be initialized. TransformerFactory is null!");
+    		throw new IntegrationException(IntegrationError._1060);
     	}
     	if(StringUtils.isEmpty(xslFileName)) {
-    		throw new IllegalArgumentException("New Transformer cannot be initialized. XSL file name cannot be empty!");
+    		throw new IntegrationException(IntegrationError._1061);
     	}
     	if(StringUtils.isEmpty(xslBasePath)) {
     		xslBasePath = ".";
-    	}
-    	
-    	transformer = factory.newTransformer(
-                factory.getURIResolver().resolve(xslFileName, xslBasePath));
+    	}	
+    
+    	try {
+			transformer = factory.newTransformer(factory.getURIResolver().resolve(xslFileName, xslBasePath));
+		} catch (TransformerConfigurationException e) {
+			throw new IntegrationException(IntegrationError._1025, e);
+		} catch (TransformerException e) {
+			throw new IntegrationException(IntegrationError._1026, e);
+		}
     }
 
     /**
@@ -73,15 +80,20 @@ public class XSLTTransformer {
      * @param params the set of parameters to pass to the transformation, may be null
      * @param in XML input stream
      * @param out XML output stream
-     * @throws TransformerException exception
+     * @throws IntegrationException exception
      */
-    public void transform(Map<String, String> params, InputStream in, OutputStream out) throws TransformerException {
+    public void transform(Map<String, String> params, InputStream in, OutputStream out) throws IntegrationException {
         if (params != null) {
             for (Entry<String, String> entry : params.entrySet()) {
                 transformer.setParameter(entry.getKey(), entry.getValue());
             }
-        }
-        transformer.transform(new StreamSource(in), new StreamResult(out));
+        }  
+     
+        try {
+			transformer.transform(new StreamSource(in), new StreamResult(out));
+		} catch (TransformerException e) {
+			throw new IntegrationException(IntegrationError._1027, e);
+		}
     }
 }
 
