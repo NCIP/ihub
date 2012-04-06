@@ -36,6 +36,8 @@ public enum IntegrationError {
 	_1042(1042, ErrorType.TRANSMISSION, "Could not persist source message."),
 	_1043(1042, ErrorType.TRANSMISSION, "Error routing to CaCISChannel."),
 	_1050(1050, ErrorType.VALIDATION, "Unknown message type."),
+	
+	_1051(1051, ErrorType.TRANSMISSION, "Error while invoking CaTissueClient."),
 		
 	_1060(1060, ErrorType.VALIDATION, "New Transformer cannot be initialized. TransformerFactory is null!"),
 	_1061(1061, ErrorType.VALIDATION, "New Transformer cannot be initialized. XSL file name cannot be empty!"),
