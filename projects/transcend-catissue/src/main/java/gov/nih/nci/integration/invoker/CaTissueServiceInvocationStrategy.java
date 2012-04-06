@@ -2,6 +2,7 @@ package gov.nih.nci.integration.invoker;
 
 import gov.nih.nci.integration.catissue.CaTissueParticipantClient;
 import gov.nih.nci.integration.domain.StrategyIdentifier;
+import gov.nih.nci.integration.exception.IntegrationException;
 import gov.nih.nci.integration.transformer.XSLTTransformer;
 
 import java.io.ByteArrayInputStream;
@@ -51,7 +52,7 @@ public class CaTissueServiceInvocationStrategy implements
 		try {
 			String participantXMLStr = transformToParticipantXML(arg0);
 			serviceInvocationResult = caTissueParticipantClient.registerParticipant(participantXMLStr);
-		} catch (TransformerException e) {
+		} catch (IntegrationException e) {
 			serviceInvocationResult.setInvocationException(e);
 		}
 		return serviceInvocationResult;
@@ -63,14 +64,14 @@ public class CaTissueServiceInvocationStrategy implements
 		try {
 			String participantXMLStr = transformToParticipantXML(arg0);
 			serviceInvocationResult = caTissueParticipantClient.deleteParticipant(participantXMLStr);
-		} catch (TransformerException e) {
+		} catch (IntegrationException e) {
 			serviceInvocationResult.setInvocationException(e);
 		} 
 		return serviceInvocationResult;
 	}
 
 	private String transformToParticipantXML(String message)
-			throws TransformerException {
+			throws IntegrationException {
 		String participantXMLStr = null;
 		InputStream is = null;
 		ByteArrayOutputStream os = null;
@@ -82,7 +83,7 @@ public class CaTissueServiceInvocationStrategy implements
 			xsltTransformer.transform(null, is, os);
 
 			participantXMLStr = new String(os.toByteArray());
-		} catch (TransformerException e) {
+		} catch (IntegrationException e) {
 			LOG.debug("Error transforming to catissue participant XML!", e);
 			throw e;
 		} finally {
