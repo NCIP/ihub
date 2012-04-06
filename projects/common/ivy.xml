@@ -35,6 +35,7 @@
             <exclude type="source" />
             <exclude type="javadoc" />
 			
+			<exclude org="hibernate" />
             <exclude org="ehcache" />
 			
             <exclude org="springframework"  />
@@ -61,10 +62,10 @@
              
             <dependency org="org.springframework" name="spring-orm" rev="3.0.7.RELEASE"/>
 			 		
-			<dependency org="org.springframework" name="spring-hibernate3" rev="2.0.8" transitive="false"/> 
+			<!--<dependency org="org.springframework" name="spring-hibernate3" rev="2.0.8" transitive="false"/> 
 			
 			
-			<!-- for HibernateDaoSupport -->
+			--><!-- for HibernateDaoSupport -->
 			
 			<!-- Hibernate -->
 			 
@@ -80,16 +81,16 @@
                 <exclude org="org.slf4j"/>
                 <exclude org="javax.xml.bind"/>
                 <exclude org="com.sun.xml.bind"/>
+                <exclude module="hibernate" />
             </dependency>
              
-            <dependency org="org.hibernate" name="hibernate-entitymanager" rev="3.2.0.ga">
+            <dependency org="org.hibernate" name="hibernate-entitymanager" rev="3.6.2.Final">
                 <exclude org="cglib" />
                 <exclude module="hibernate" />
 				<exclude module="javassist" />
             </dependency>
-                        
-             <!-- <dependency org="javax.persistence" name="persistence-api" rev="1.0"/> -->
-             <dependency org="javax.transaction" name="jta" rev="1.1"/>
+            <!-- JTA -->
+            <dependency org="javax.transaction" name="jta" rev="1.1"/>
             
             <!-- Connection Pool  -->
             <dependency org="commons-dbcp" name="commons-dbcp" rev="1.4">
@@ -100,13 +101,11 @@
 			<!-- Databases -->
             <dependency org="postgresql" name="postgresql" rev="8.4-702.jdbc4" conf="build,dist,distGrid->default" />
 			
-			<!-- Validation -->
-			<dependency org="javax.validation" name="validation-api" rev="1.0.0.GA"/>
-			
-            <!-- Caching -->
+			<!-- Caching -->
             <dependency org="net.sf.ehcache" name="ehcache-core" rev="2.4.6">
                 <exclude org="org.slf4j"   />
             </dependency>
+            
             <!-- Java Assist (for hibernate)-->
 			<dependency org="javassist" name="javassist" rev="3.12.0.GA"/>
 
