@@ -33,13 +33,14 @@
 		<attribute name="dest"/>
 		<attribute name="filter" />
 		<sequential>
-			<filter token="databaseConfigurationName" value="${databaseConfigurationName}" />
-			<filter token="project.version" value="${project.version}" />
-			<filter token="buildNumber" value="${today}" />
+			<echoproperties destfile="filter.properties" failonerror="false"/>
+			<filterset id="filters.ref" begintoken="${" endtoken="}">
+			    <filtersfile file="filter.properties"/>
+			</filterset>
 			<copy todir="@{dest}" filtering="@{filter}">
+				<filterset refid="filters.ref"/>
 				<fileset dir="@{src}" includes="**/*">
 					<exclude name=".svn"/>
-					<exclude name="applicationContext-test.xml"/>
 				</fileset>
 			</copy>
 		</sequential>
@@ -147,6 +148,9 @@
 		<fileset dir="${lib.dir}">
 			<include name="**/*.jar" />
 		</fileset>
+		<fileset dir="${ant.project.name}-lib" >
+			<include name="**/*.jar" />
+		</fileset>
 	</path>
 	
 	<!-- This path will contain all the classes that are required to 
@@ -217,6 +221,7 @@
 		description="This target will contain the intiailziation">
 		<echo message="Executing ${ant.project.name} : init" />
 		<mkdir dir="${lib.dir}"/>
+		<mkdir dir="${ant.project.name}-lib"/>
 		<mkdir dir="${test.lib.dir}"/>
 		<mkdir dir="${sa.lib.dir}"/>
 		<mkdir dir="${classes.dir}" />

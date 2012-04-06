@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>2.1.1.5490</version>
   <lastModified>
-    <time>1332940503516</time>
+    <time>1332963741402</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>23</revision>
+  <revision>24</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -508,7 +508,7 @@ if(msgBCMessageToCaTissueParticipantTransformer == null) {
 var caTissueParticipantClient = globalMap.get(&quot;caTissueParticipantClient&quot;);
 
 if(caTissueParticipantClient == null) {
-	caTissueParticipantClient = transcendCatissueAppCtx.get(&quot;caTissueParticipantClient&quot;);
+	caTissueParticipantClient = transcendCatissueAppCtx.getBean(&quot;caTissueParticipantClient&quot;);
 }
 
 var caTissueServiceCallRetry=2;

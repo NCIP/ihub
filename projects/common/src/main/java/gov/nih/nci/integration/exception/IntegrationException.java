@@ -29,7 +29,7 @@ public class IntegrationException extends Exception {
 	public IntegrationException(IntegrationError integrationError, Throwable cause,
 			Object... objects) {
 		this(integrationError.getErrorCode(), integrationError.getErrorType(), cause,
-				integrationError.getMessage(objects));
+				integrationError.getMessage(objects));				
 	}
 	
 	private IntegrationException(int errorCode, ErrorType errorType,
@@ -71,5 +71,16 @@ public class IntegrationException extends Exception {
 	public ErrorType getErrorType() {
 		return errorType;
 	}
+	
+	public String stackTraceAsString() {		
+	    StringBuilder sb = new StringBuilder();
+	    for (StackTraceElement element : getStackTrace()) {
+	        sb.append(element.toString());
+	        sb.append("\n");
+	    }
+	    return sb.toString();
+	}
+
+
 
 }

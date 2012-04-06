@@ -18,5 +18,4 @@
 	<bean class="gov.nih.nci.integration.dao.DefaultDaoConfig"/>
     <bean class="gov.nih.nci.integration.transformer.TransformerConfig"/>
     <bean class="gov.nih.nci.integration.invoker.ServiceInvokerConfig"/>
-    
 </beans>

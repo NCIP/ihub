@@ -33,7 +33,13 @@
 		<subant target="init">
 			<fileset dir="./projects/${new.project.name}" includes="build.xml"/>
 		</subant>
-	</target>	 
+	</target>	
+
+	<target name="start-mc" description="starts MC">
+		<exec executable="${browser}" spawn="true">
+    <arg value="${file}"/>
+</exec>
+	</target>	
 
 	<!-- more targets -->
 </project>

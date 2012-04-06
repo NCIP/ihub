@@ -5,6 +5,7 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 /**
  * Default DAO config package that configures it to use JPA.
@@ -22,7 +23,8 @@ public class DefaultDaoConfig implements DaoConfig {
 	 * @see gov.nih.nci.integration.dao.DaoConfig#iHubMessageDao()
 	 */
     @Bean
-    @Override
+    @Scope("prototype")
+    @Override    
     public IHubMessageDao iHubMessageDao() {
         return new IHubMessageDao(em);
     }
@@ -31,6 +33,7 @@ public class DefaultDaoConfig implements DaoConfig {
 	 * @see gov.nih.nci.integration.dao.DaoConfig#serviceInvocationMessageDao()
 	 */
     @Bean
+    @Scope("prototype")
     @Override
     public ServiceInvocationMessageDao serviceInvocationMessageDao() {
         return new ServiceInvocationMessageDao(em);

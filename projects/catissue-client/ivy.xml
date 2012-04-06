@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="1.4">
+
+    	<info organisation="gov.nih.nci.ihub"
+          	module="catissue-client"
+          	status="integration"/>
+
+        <configurations>
+        	<conf name="default" visibility="public" extends="publish,runtime"
+        		description="Dependencies needed for default setting"  />
+        	<conf name="build" visibility="public"
+        		description="Dependencies required for build time, all classpath should have this"/>
+        	<conf name="publish" visibility="public"
+        		description="Dependencies along with this module is published in repository" />
+        	<conf name="distGrid" visibility="public"
+        		description="Dependencies that are required in grid distribution of this module" />
+        	<conf name="dist" visibility="public"
+        		description="Dependencies needed for standalone distribution" />
+        	<conf name="runtime" visibility="public"
+        		description="The dependencies that are needed for runtime" extends="build" />
+        	<conf name="test" visibility="public"
+        		description="Dependencies needed for testing purposes"/>
+        	<conf name="static-analysis" visibility="public"
+        		description="Dependencies needed for static-analysis purposes"/>
+        </configurations>
+
+        <!--  Items to be published  -->
+         <publications>
+    		<artifact name="${ivy.module}" conf="publish,dist,distGrid" type="jar"/>
+    		<artifact name="${ivy.module}-tests" conf="test" type="jar"/>
+  		</publications>
+
+        <dependencies defaultconfmapping="build,dist,distGrid->default(*)">
+
+            <exclude type="source" />
+            <exclude type="javadoc" />
+
+            <exclude org="springframework"  />
+            <exclude org="org.springframework" module="spring-dao" />
+            <exclude org="org.springframework" module="spring-support" />
+            <exclude org="org.springframework" module="spring-remoting" />
+            <exclude org="ant" module="ant" />
+			
+			<!-- removed common project dependency..this project has self-sustained library -->
+       </dependencies>
+</ivy-module>
