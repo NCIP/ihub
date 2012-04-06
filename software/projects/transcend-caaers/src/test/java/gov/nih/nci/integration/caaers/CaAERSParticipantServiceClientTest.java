@@ -25,12 +25,15 @@ import org.junit.Test;
  */
 public class CaAERSParticipantServiceClientTest {
 	
-	private CaAERSParticipantServiceClient caAERSParticipantServiceClient;
+//	private CaAERSParticipantServiceClient caAERSParticipantServiceClient;
+	
+	private CaAERSParticipantServiceWSClient caAERSParticipantServiceClient;
 	
 	
 	public CaAERSParticipantServiceClientTest() throws JAXBException {
 		super();
-		caAERSParticipantServiceClient = new CaAERSParticipantServiceClient();		
+//		caAERSParticipantServiceClient = new CaAERSParticipantServiceClient();		
+		caAERSParticipantServiceClient = new CaAERSParticipantServiceWSClient("https://dev.semanticbits.com/caaers/services/ParticipantService");
 	}
 	
 	@Test
@@ -48,8 +51,10 @@ public class CaAERSParticipantServiceClientTest {
 	public void createParticipant() throws JAXBException, IOException {		
 		
 		String participantXMLStr = IOUtils.toString(new FileReader(new File("C:\\vin\\SUITE-iHub\\tmp\\sample\\smpl_caaers_participant.xml")));
-		Response response = caAERSParticipantServiceClient.createParticipant(
-				"https://dev.semanticbits.com/caaers/services/ParticipantService?wsdl", participantXMLStr);
+//		Response response = caAERSParticipantServiceClient.createParticipant(
+//				"https://dev.semanticbits.com/caaers/services/ParticipantService?wsdl", participantXMLStr);
+		
+		Response response = caAERSParticipantServiceClient.createParticipant(participantXMLStr);
 		
 		Assert.assertNotNull(response);
 		System.out.println(response.getDescription());

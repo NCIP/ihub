@@ -24,7 +24,16 @@ public enum IntegrationError {
 	_1019(1019, ErrorType.TRANSMISSION, "Could not connect to caTissue."),
 	_1020(1020, ErrorType.TRANSMISSION, "Could not connect to caAERS."),
 	_1021(1021, ErrorType.TRANSMISSION, "Error retrieving routing information."),
-	_1022(1022, ErrorType.SECURITY, "Error retrieving security information.");
+	_1022(1022, ErrorType.SECURITY, "Error retrieving security information."),
+	_1023(1017, ErrorType.TRANSFORMATION, "Adverse Event transformation could not be found."),
+	_1024(1018, ErrorType.TRANSFORMATION, "Adverse Event transformation failed."),
+	
+	_1041(1041, ErrorType.TRANSFORMATION, "Transformation to CaCISRequest failed."),
+	_1042(1042, ErrorType.TRANSMISSION, "Could not persist source message."),
+	_1043(1042, ErrorType.TRANSMISSION, "Error routing to CaCISChannel."),
+	_1050(1050, ErrorType.VALIDATION, "Unknown message type."),
+	
+	_1051(1051, ErrorType.TRANSMISSION, "Error while invoking CaTissue client.");
 		
 	private int errorCode;
 	

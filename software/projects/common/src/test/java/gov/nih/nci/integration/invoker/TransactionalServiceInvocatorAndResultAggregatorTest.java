@@ -66,4 +66,13 @@ public class TransactionalServiceInvocatorAndResultAggregatorTest {
 		assertNotNull(svcStrtgy3.getResult());
 		assertEquals(false, svcStrtgy3.getResult().isFault());
 	}
+	
+	@Test
+	public void aggregateResultsWithoutAnyServiceInvocation() {
+				
+		ServiceInvocationResult serviceInvocationResult = serviceInvocatorAndResultAggregator.aggregateResults();
+		assertNotNull(serviceInvocationResult);
+		assertEquals("Success", serviceInvocationResult.getResult());
+		
+	}
 }

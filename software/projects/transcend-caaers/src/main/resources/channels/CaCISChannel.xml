@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>2.1.1.5490</version>
   <lastModified>
-    <time>1332939466607</time>
+    <time>1332963465624</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>44</revision>
+  <revision>45</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -396,9 +396,9 @@ if(commonAppCtx == null) {
 var baseXSLClasspath=&quot;C:/Users/sb-admin-cp/.integration/ihub/xsl/&quot;;
 
 var crToRegnMsgTransformer = commonAppCtx.getBean(&quot;xsltTransformer&quot;);
-crToMsgBrdCstMsgTransformer.initTransformer(&quot;CaCISRequest-to-MsgBroadcasterInboundMsg.xsl&quot;, baseXSLClasspath);
+crToRegnMsgTransformer.initTransformer(&quot;CaCISRequest-to-MsgBroadcasterInboundMsg.xsl&quot;, baseXSLClasspath);
 
-globalMap.put(&quot;crToRegnMsgTransformer&quot;, crToMsgBrdCstMsgTransformer);
+globalMap.put(&quot;crToRegnMsgTransformer&quot;, crToRegnMsgTransformer);
 
 var crToAeMsgTransformer = commonAppCtx.getBean(&quot;xsltTransformer&quot;);
 crToAeMsgTransformer.initTransformer(&quot;CaCISRequest-to-MsgBroadcasterInboundMsg.xsl&quot;, baseXSLClasspath);

@@ -8,10 +8,10 @@
   <enabled>true</enabled>
   <version>2.1.1.5490</version>
   <lastModified>
-    <time>1332939440427</time>
+    <time>1332962974662</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>62</revision>
+  <revision>63</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -987,7 +987,7 @@ var iHubResMsg = &quot;response from cacis&quot;;
 
 var iHubErrResponse = &quot;&lt;response&gt;&lt;reponseStatus&gt;FAILURE&lt;/responseStatus&gt;&quot;
 			+ &quot;&lt;caXchangeError&gt;&lt;errorCode&gt;1001&lt;/errorCode&gt;&quot;
-			+ &quot;&lt;errorDescription&gt;&quot; + cacisError + &quot;&lt;/errorDescription&gt;&quot;
+			+ &quot;&lt;errorDescription&gt;&quot; + iHubResMsg + &quot;&lt;/errorDescription&gt;&quot;
 			+ &quot;&lt;/caXchangeError&gt;&lt;/response&gt;&quot;;
 
 var iHubSuccessResponse = &quot;&lt;response&gt;&lt;reponseStatus&gt;SUCCESS&lt;/responseStatus&gt;&quot;

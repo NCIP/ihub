@@ -1,0 +1,56 @@
+<filter>
+  <rules>
+    <rule>
+      <sequenceNumber>0</sequenceNumber>
+      <name>test rule</name>
+      <data class="map">
+        <entry>
+          <string>Script</string>
+          <string>logger.info(&quot;msg in filter=&quot; + msg);
+logger.info(&quot;msg in filter2=&quot; + messageObject.getRawData());
+return false;</string>
+        </entry>
+      </data>
+      <type>JavaScript</type>
+      <script>logger.info(&quot;msg in filter=&quot; + msg);
+logger.info(&quot;msg in filter2=&quot; + messageObject.getRawData());
+return false;</script>
+      <operator>NONE</operator>
+    </rule>
+    <rule>
+      <sequenceNumber>1</sequenceNumber>
+      <name>Accept message if &quot;$(&apos;msg&apos;)[&apos;cacis:routingInstructions&apos;][&apos;cacis:exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString()&quot; equals globalMap.get(&apos;REGN&apos;)</name>
+      <data class="map">
+        <entry>
+          <string>Values</string>
+          <list>
+            <string>globalMap.get(&apos;REGN&apos;)</string>
+          </list>
+        </entry>
+        <entry>
+          <string>Name</string>
+          <string></string>
+        </entry>
+        <entry>
+          <string>Field</string>
+          <string>$(&apos;msg&apos;)[&apos;cacis:routingInstructions&apos;][&apos;cacis:exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString()</string>
+        </entry>
+        <entry>
+          <string>OriginalField</string>
+          <string></string>
+        </entry>
+        <entry>
+          <string>Equals</string>
+          <string>1</string>
+        </entry>
+      </data>
+      <type>Rule Builder</type>
+      <script>if($(&apos;msg&apos;)[&apos;cacis:routingInstructions&apos;][&apos;cacis:exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString() == globalMap.get(&apos;REGN&apos;))
+{
+return true;
+}
+return false;</script>
+      <operator>AND</operator>
+    </rule>
+  </rules>
+</filter>

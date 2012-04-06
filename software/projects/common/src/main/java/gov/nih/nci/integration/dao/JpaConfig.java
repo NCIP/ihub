@@ -1,5 +1,8 @@
 package gov.nih.nci.integration.dao;
 
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -8,15 +11,11 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-
 /**
  * @author chandrasekaravr
  */
 @Configuration
 public class JpaConfig {
-	//datasource properties
 	/**
      * The datasource url.
      */
@@ -100,9 +99,10 @@ public class JpaConfig {
     @Bean(name = "entityManagerFactory")
     public EntityManagerFactory entityManagerFactory() {
         final LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+        
         entityManagerFactoryBean.setPersistenceUnitName(PERSISTENCE_UNIT_NAME);
         entityManagerFactoryBean.setDataSource(dataSource());
-        entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter());
+                
         entityManagerFactoryBean.setPersistenceXmlLocation("classpath*:META-INF/ihub-messages-persistence.xml");
 
         // must set the properties

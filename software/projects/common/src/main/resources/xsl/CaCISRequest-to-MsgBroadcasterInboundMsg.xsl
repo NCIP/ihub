@@ -2,7 +2,8 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1trim="urn:tolven-org:trim:4.0"
 	xmlns:xs="http://www.w3.org/TR/2008/REC-xml-20081126#" xmlns:cacis="http://cacis.nci.nih.gov"
-	xmlns:ns1="http://integration.nci.nih.gov/messaging" xmlns:p="http://integration.nci.nih.gov/participant">
+	xmlns:ns1="http://integration.nci.nih.gov/messaging" xmlns:p="http://integration.nci.nih.gov/participant"
+	>
 
 	<xsl:output method="xml" indent="yes" />
 

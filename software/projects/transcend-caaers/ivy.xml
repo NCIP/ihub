@@ -44,5 +44,12 @@
 			<!-- commonIntegration -->
             <dependency org="gov.nih.nci.ihub" name="common" rev="latest.integration"  conf="runtime->*;test->*;static-analysis->static-analysis"/>
 			
+			<!-- CXF ws-security -->
+			<dependency org="org.apache.cxf" name="cxf-rt-frontend-jaxws" rev="2.4.1"/>
+			<dependency org="org.apache.cxf" name="cxf-rt-frontend-simple" rev="2.4.1"/>
+			<dependency org="org.apache.cxf" name="cxf-rt-ws-security" rev="2.4.1"/>
+			<dependency org="org.apache.cxf" name="cxf-rt-ws-policy" rev="2.4.1"/>
+			<dependency org="org.apache.cxf" name="cxf-rt-transports-http" rev="2.4.1"/>
+			
        </dependencies>
 </ivy-module>
