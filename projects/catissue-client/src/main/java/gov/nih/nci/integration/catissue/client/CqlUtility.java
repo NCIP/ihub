@@ -1,4 +1,4 @@
-package gov.nih.nci.integration.catissue;
+package gov.nih.nci.integration.catissue.client;
 
 import edu.wustl.catissuecore.domain.CollectionProtocol;
 import edu.wustl.catissuecore.domain.CollectionProtocolRegistration;

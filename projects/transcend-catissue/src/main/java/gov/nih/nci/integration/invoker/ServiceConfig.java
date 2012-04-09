@@ -5,6 +5,7 @@ import gov.nih.nci.integration.exception.IntegrationException;
 import gov.nih.nci.integration.transformer.XSLTTransformer;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -12,16 +13,26 @@ import org.springframework.context.annotation.Scope;
 @Configuration
 public class ServiceConfig {
 	
+	@Value("${catissue.api.service.retry}")
+    private String retryCntStr;
+		
+	@Value("${integration.transformer.xsl.baseClassPath}")
+    private String baseXSLPath;
+	
+	@Value("${catissue.api.participant.xsl}")
+    private String catissueParticipantXsl;
+	
 	@Autowired
 	private CaTissueParticipantClient caTissueParticipantClient;
 	
 	@Autowired
 	private XSLTTransformer xsltTransformer;
-	
+		
 	@Bean
 	@Scope("prototype")
 	public ServiceInvocationStrategy caTissueServiceInvocationStrategy() throws IntegrationException{
-		xsltTransformer.initTransformer("MsgBroadcasterParticipant-to-caTissueParticipant.xsl", "C:\\Users\\sb-admin-cp\\.integration\\ihub\\xsl\\");
-		return new CaTissueServiceInvocationStrategy(2, caTissueParticipantClient, xsltTransformer);
+		xsltTransformer.initTransformer(catissueParticipantXsl, baseXSLPath);
+		return new CaTissueServiceInvocationStrategy(
+				Integer.parseInt(retryCntStr), caTissueParticipantClient, xsltTransformer);
 	}
 }

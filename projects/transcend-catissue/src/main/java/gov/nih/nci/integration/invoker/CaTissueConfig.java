@@ -20,7 +20,7 @@ public class CaTissueConfig {
 	private String catissueApiPassword;
 	
 	@Bean
-	public CaTissueParticipantClient caTissueClient() throws IntegrationException {
+	public CaTissueParticipantClient caTissueParticipantClient() throws IntegrationException {
 		return new CaTissueParticipantClient(caTissueLibLocation, catissueApiLoginName, catissueApiPassword);
 	}
 	

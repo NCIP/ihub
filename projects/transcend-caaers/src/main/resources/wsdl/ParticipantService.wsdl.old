@@ -1,0 +1,335 @@
+<?xml version="1.0" ?>
+<wsdl:definitions name="ParticipantService"
+	targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/participant"
+	xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://webservice.caaers.cabig.nci.nih.gov/participant"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<wsdl:types>
+		<xs:schema elementFormDefault="unqualified"
+			targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/participant"
+			version="1.0" xmlns:tns="http://webservice.caaers.cabig.nci.nih.gov/participant"
+			xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:element name="CaaersServiceResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element form="qualified" name="Response" type="tns:Response"></xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Response" type="tns:Response"></xs:element>
+			<xs:element name="assignment" type="tns:AssignmentType"></xs:element>
+			<xs:element name="createParticipant" type="tns:createParticipant"></xs:element>
+			<xs:element name="createParticipantResponse" type="tns:createParticipantResponse"></xs:element>
+			<xs:element name="organization" type="tns:OrganizationType"></xs:element>
+			<xs:element name="organizationAssignedIdentifier" type="tns:OrganizationAssignedIdentifierType"></xs:element>
+			<xs:element name="participant" type="tns:ParticipantType"></xs:element>
+			<xs:element name="participants">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element form="qualified" maxOccurs="unbounded"
+							name="participant" type="tns:ParticipantType"></xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="study" type="tns:StudyType"></xs:element>
+			<xs:element name="studySite" type="tns:StudySiteType"></xs:element>
+			<xs:element name="systemAssignedIdentifier" type="tns:SystemAssignedIdentifierType"></xs:element>
+			<xs:element name="updateParticipant" type="tns:updateParticipant"></xs:element>
+			<xs:element name="updateParticipantResponse" type="tns:updateParticipantResponse"></xs:element>
+			<xs:complexType name="createParticipant">
+				<xs:sequence>
+					<xs:element form="qualified" minOccurs="0" name="Participants">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element form="qualified" maxOccurs="unbounded"
+									name="participant" type="tns:ParticipantType"></xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ParticipantType">
+				<xs:complexContent>
+					<xs:extension base="tns:MutableDomainObject">
+						<xs:sequence>
+							<xs:element name="firstName" type="xs:string"></xs:element>
+							<xs:element name="lastName" type="xs:string"></xs:element>
+							<xs:element minOccurs="0" name="maidenName" type="xs:string"></xs:element>
+							<xs:element minOccurs="0" name="middleName" type="xs:string"></xs:element>
+							<xs:element minOccurs="0" name="birthDate" type="xs:date"></xs:element>
+							<xs:element minOccurs="0" name="birthMonth" type="xs:integer"></xs:element>
+							<xs:element minOccurs="0" name="birthYear" type="xs:integer"></xs:element>
+							<xs:element name="gender" type="tns:GenderType"></xs:element>
+							<xs:element name="race" type="tns:RaceType"></xs:element>
+							<xs:element name="ethnicity" type="tns:EthnicityType"></xs:element>
+							<xs:element name="identifiers">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element form="qualified" maxOccurs="unbounded"
+											name="organizationAssignedIdentifier" type="tns:OrganizationAssignedIdentifierType"></xs:element>
+										<xs:element form="qualified" maxOccurs="unbounded"
+											minOccurs="0" name="systemAssignedIdentifier" type="tns:SystemAssignedIdentifierType"></xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="assignments">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element form="qualified" maxOccurs="unbounded"
+											name="assignment" type="tns:AssignmentType"></xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="MutableDomainObject">
+				<xs:complexContent>
+					<xs:extension base="tns:DomainObject">
+						<xs:sequence></xs:sequence>
+						<xs:attribute name="version" type="xs:positiveInteger"></xs:attribute>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="DomainObject">
+				<xs:sequence></xs:sequence>
+				<xs:attribute name="id" type="xs:positiveInteger"></xs:attribute>
+			</xs:complexType>
+			<xs:complexType name="OrganizationAssignedIdentifierType">
+				<xs:complexContent>
+					<xs:extension base="tns:IdentifierType">
+						<xs:sequence>
+							<xs:element form="qualified" name="organization"
+								type="tns:OrganizationType"></xs:element>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="IdentifierType">
+				<xs:complexContent>
+					<xs:extension base="tns:MutableDomainObject">
+						<xs:sequence>
+							<xs:element name="type" type="tns:ParticipantIdentifierType"></xs:element>
+							<xs:element name="value" type="xs:string"></xs:element>
+							<xs:element name="primaryIndicator" type="xs:boolean"></xs:element>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="OrganizationType">
+				<xs:complexContent>
+					<xs:extension base="tns:MutableDomainObject">
+						<xs:sequence>
+							<xs:element name="name" type="xs:string"></xs:element>
+							<xs:element minOccurs="0" name="nciInstituteCode"
+								type="xs:string"></xs:element>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="StudySiteType">
+				<xs:complexContent>
+					<xs:extension base="tns:MutableDomainObject">
+						<xs:sequence>
+							<xs:element form="qualified" name="study" type="tns:StudyType"></xs:element>
+							<xs:element form="qualified" name="organization"
+								type="tns:OrganizationType"></xs:element>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="StudyType">
+				<xs:complexContent>
+					<xs:extension base="tns:MutableDomainObject">
+						<xs:sequence>
+							<xs:element name="identifiers">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="identifier" type="tns:ReducedIdentifierType"></xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="ReducedIdentifierType">
+				<xs:complexContent>
+					<xs:extension base="tns:MutableDomainObject">
+						<xs:sequence>
+							<xs:element name="type" type="tns:StudyIdentifierType"></xs:element>
+							<xs:element name="value" type="xs:string"></xs:element>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="AssignmentType">
+				<xs:complexContent>
+					<xs:extension base="tns:MutableDomainObject">
+						<xs:sequence>
+							<xs:element name="studySubjectIdentifier" type="xs:string"></xs:element>
+							<xs:element form="qualified" name="studySite" type="tns:StudySiteType"></xs:element>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="SystemAssignedIdentifierType">
+				<xs:complexContent>
+					<xs:extension base="tns:IdentifierType">
+						<xs:sequence>
+							<xs:element name="systemName" type="xs:string"></xs:element>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="createParticipantResponse">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="return">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element form="qualified" name="Response" type="tns:Response"></xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="Response">
+				<xs:sequence>
+					<xs:element name="description" type="xs:string"></xs:element>
+					<xs:element maxOccurs="unbounded" minOccurs="0" name="message"
+						nillable="true" type="xs:string"></xs:element>
+				</xs:sequence>
+				<xs:attribute name="responsecode" type="xs:string"></xs:attribute>
+			</xs:complexType>
+			<xs:complexType name="updateParticipant">
+				<xs:sequence>
+					<xs:element form="qualified" minOccurs="0" name="Participants">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element form="qualified" maxOccurs="unbounded"
+									name="participant" type="tns:ParticipantType"></xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="updateParticipantResponse">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="return">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element form="qualified" name="Response" type="tns:Response"></xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:simpleType name="GenderType">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Male"></xs:enumeration>
+					<xs:enumeration value="Female"></xs:enumeration>
+					<xs:enumeration value="Not Reported"></xs:enumeration>
+					<xs:enumeration value="Unknown"></xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="RaceType">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Asian"></xs:enumeration>
+					<xs:enumeration value="White"></xs:enumeration>
+					<xs:enumeration value="Black or African American"></xs:enumeration>
+					<xs:enumeration value="American Indian or Alaska Native"></xs:enumeration>
+					<xs:enumeration value="Native Hawaiian or Other PacificIslander"></xs:enumeration>
+					<xs:enumeration value="Not Reported"></xs:enumeration>
+					<xs:enumeration value="Unknown"></xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="EthnicityType">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Hispanic or Latino"></xs:enumeration>
+					<xs:enumeration value="Not Hispanic or Latino"></xs:enumeration>
+					<xs:enumeration value="Not Reported"></xs:enumeration>
+					<xs:enumeration value="Unknown"></xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="StudyIdentifierType">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Site Identifier"></xs:enumeration>
+					<xs:enumeration value="Site IRB Identifier"></xs:enumeration>
+					<xs:enumeration value="ClinicalTrials.gov Identifier"></xs:enumeration>
+					<xs:enumeration value="Grid Identifier"></xs:enumeration>
+					<xs:enumeration value="C3D Identifier"></xs:enumeration>
+					<xs:enumeration value="Protocol Authority Identifier"></xs:enumeration>
+					<xs:enumeration value="Coordinating Center Identifier"></xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="ParticipantIdentifierType">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="MRN"></xs:enumeration>
+					<xs:enumeration value="CC"></xs:enumeration>
+					<xs:enumeration value="Other"></xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="updateParticipantResponse">
+		<wsdl:part element="tns:updateParticipantResponse" name="parameters">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="createParticipantResponse">
+		<wsdl:part element="tns:createParticipantResponse" name="parameters">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="createParticipant">
+		<wsdl:part element="tns:createParticipant" name="parameters">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="updateParticipant">
+		<wsdl:part element="tns:updateParticipant" name="parameters">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="ParticipantServiceIntf">
+		<wsdl:operation name="createParticipant">
+			<wsdl:input message="tns:createParticipant" name="createParticipant">
+			</wsdl:input>
+			<wsdl:output message="tns:createParticipantResponse"
+				name="createParticipantResponse">
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="updateParticipant">
+			<wsdl:input message="tns:updateParticipant" name="updateParticipant">
+			</wsdl:input>
+			<wsdl:output message="tns:updateParticipantResponse"
+				name="updateParticipantResponse">
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="ParticipantServiceSoapBinding" type="tns:ParticipantServiceIntf">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http"></soap:binding>
+		<wsdl:operation name="createParticipant">
+			<soap:operation soapAction="" style="document"></soap:operation>
+			<wsdl:input name="createParticipant">
+				<soap:body use="literal"></soap:body>
+			</wsdl:input>
+			<wsdl:output name="createParticipantResponse">
+				<soap:body use="literal"></soap:body>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="updateParticipant">
+			<soap:operation soapAction="" style="document"></soap:operation>
+			<wsdl:input name="updateParticipant">
+				<soap:body use="literal"></soap:body>
+			</wsdl:input>
+			<wsdl:output name="updateParticipantResponse">
+				<soap:body use="literal"></soap:body>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="ParticipantService">
+		<wsdl:port binding="tns:ParticipantServiceSoapBinding" name="ParticipantManagementWebServicePort">
+			<soap:address
+				location="https://ncias-d745-v.nci.nih.gov:22443/caaers/services/ParticipantService"></soap:address>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

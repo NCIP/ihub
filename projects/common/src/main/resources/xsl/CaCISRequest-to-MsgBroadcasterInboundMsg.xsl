@@ -21,15 +21,15 @@
 			select="//ns1trim:trim/ns1trim:tolvenEventId/@id" />
 
 
-		<ns1:MessageBroadcasterRequestMessage
-			xmlns:ns1="http://integration.nci.nih.gov/messaging">
-			<ns1:metadata>
-				<ns1:serviceType>Registration</ns1:serviceType>
-				<ns1:externalIdentifier><xsl:value-of select="$trimMsgId" /></ns1:externalIdentifier>
-			</ns1:metadata>
-			<ns1:request>
-				<ns1:businessMessagePayload>
-					<ns1:xmlSchemaDefinition>http://integration.nci.nih.gov/participant</ns1:xmlSchemaDefinition>
+		<MessageBroadcasterRequestMessage
+			xmlns="http://integration.nci.nih.gov/messaging">
+			<metadata>
+				<serviceType><xsl:value-of select="//cacis:exchangeDocument/@exchangeFormat"/></serviceType>
+				<externalIdentifier><xsl:value-of select="$trimMsgId" /></externalIdentifier>
+			</metadata>
+			<request>
+				<businessMessagePayload>
+					<xmlSchemaDefinition>http://integration.nci.nih.gov/participant</xmlSchemaDefinition>
 					<p:participant id="1" version="1"
 						xmlns:p="http://integration.nci.nih.gov/participant" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 						xsi:schemaLocation="http://integration.nci.nih.gov/participant Participant.xsd ">
@@ -45,7 +45,7 @@
 						<xsl:variable name="otherInfoObs" select="$otherInfoAct/ns1trim:observation"/>
 						<p:race><xsl:value-of select="$otherInfoObs/ns1trim:value[ns1trim:label/text()='Race']/ns1trim:SETCE/ns1trim:displayName"/></p:race>
 						<p:ethnicity><xsl:value-of select="$otherInfoObs/ns1trim:value[ns1trim:label/text()='Ethnicity']/ns1trim:CE/ns1trim:displayName"/></p:ethnicity>
-						<p:activityStatus>ACTIVE</p:activityStatus>
+						<p:activityStatus>Active</p:activityStatus>
 						<xsl:variable name="randomPatIdAct" select="//ns1trim:trim/ns1trim:act/ns1trim:relationship[@name='RandomPatientID']/ns1trim:act"/>
 						<p:identifiers>
 							<p:organizationAssignedIdentifier
@@ -96,9 +96,9 @@
 							</p:assignment>
 						</p:assignments>
 					</p:participant>
-				</ns1:businessMessagePayload>
-			</ns1:request>
-		</ns1:MessageBroadcasterRequestMessage>
+				</businessMessagePayload>
+			</request>
+		</MessageBroadcasterRequestMessage>
 	</xsl:template>
 	
 </xsl:stylesheet>
