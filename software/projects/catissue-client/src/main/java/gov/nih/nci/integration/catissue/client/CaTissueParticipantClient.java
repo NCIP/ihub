@@ -1,8 +1,9 @@
-package gov.nih.nci.integration.catissue;
+package gov.nih.nci.integration.catissue.client;
 
 import edu.wustl.catissuecore.domain.CollectionProtocol;
 import edu.wustl.catissuecore.domain.CollectionProtocolRegistration;
 import edu.wustl.catissuecore.domain.Participant;
+import edu.wustl.catissuecore.domain.ParticipantMedicalIdentifier;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 
 import java.io.StringReader;
@@ -19,7 +20,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.basic.DateConverter;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
-public class CaTissueParticipantClient implements CaTissueParticipantClientInterface {
+public class CaTissueParticipantClient {
 	
 	private static Logger LOG = LoggerFactory
 			.getLogger(CaTissueParticipantClient.class);
@@ -40,6 +41,8 @@ public class CaTissueParticipantClient implements CaTissueParticipantClientInter
 		xStream.alias("participant", Participant.class);
 		xStream.alias("collectionProtocol", CollectionProtocol.class);
 		xStream.alias("collectionProtocolRegistration", CollectionProtocolRegistration.class);
+		xStream.alias("participantMedicalIdentifier", ParticipantMedicalIdentifier.class);
+		
 		String[] accFrmts = new String[] {
 				"",
 				"yyyyMMdd", "yyyy-MM-dd", "MM/dd/yyyy", //catissue formats
@@ -77,11 +80,7 @@ public class CaTissueParticipantClient implements CaTissueParticipantClientInter
 		return (Participant) xStream
 				.fromXML(new StringReader(participantXMLStr));
 	}
-	
-	/* (non-Javadoc)
-	 * @see gov.nih.nci.integration.catissue.CaTissueParticipantClientInterface#registerParticipantFromXML(java.lang.String)
-	 */
-	
+		
 	public boolean registerParticipantFromXML(String participantXMLStr) throws Exception {
 		if(registerParticipant(participantXMLStr) != null) {
 			return true;
@@ -113,9 +112,6 @@ public class CaTissueParticipantClient implements CaTissueParticipantClientInter
 		return caTissueAPIClient.insert(participant);
 	}
 	
-	/* (non-Javadoc)
-	 * @see gov.nih.nci.integration.catissue.CaTissueParticipantClientInterface#deleteParticipantFromXML(java.lang.String)
-	 */
 	public boolean deleteParticipantFromXML(String participantXMLStr) throws Exception {
 		if(deleteParticipant(participantXMLStr) != null) {
 			return true;
@@ -155,10 +151,7 @@ public class CaTissueParticipantClient implements CaTissueParticipantClientInter
 		return caTissueAPIClient.getApplicationService().query(CqlUtility
 				.getParticipantsForCP(cpTitle));
 	}
-	
-	/* (non-Javadoc)
-	 * @see gov.nih.nci.integration.catissue.CaTissueParticipantClientInterface#getParticipantForSSN(java.lang.String)
-	 */
+		
 	public Participant getParticipantForSSN(String ssn) throws ApplicationException {
 		List<Participant> prtcpntLst = caTissueAPIClient.getApplicationService().query(CqlUtility
 				.getParticipantForSSN(ssn));

@@ -17,6 +17,7 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.ws.soap.SOAPFaultException;
 
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
@@ -29,8 +30,16 @@ public class CaAERSParticipantServiceWSClient {
 
 	private ParticipantServiceIntf client;
 
-	public CaAERSParticipantServiceWSClient(String wsdl) throws JAXBException {
+	private String userName;
+
+	private ClientPasswordCallback clientPasswordCallback;
+
+	public CaAERSParticipantServiceWSClient(String wsdl, String userName,
+			ClientPasswordCallback clientPasswordCallback) throws JAXBException {
 		super();
+		this.userName = userName;
+		this.clientPasswordCallback = clientPasswordCallback;
+
 		getUnmarshaller();
 
 		initClient(wsdl);
@@ -41,10 +50,9 @@ public class CaAERSParticipantServiceWSClient {
 		Map outProps = new HashMap();
 		outProps.put(WSHandlerConstants.ACTION,
 				WSHandlerConstants.USERNAME_TOKEN);
-		outProps.put(WSHandlerConstants.USER, "mayo-super-user");
+		outProps.put(WSHandlerConstants.USER, userName);
 		outProps.put(WSHandlerConstants.PASSWORD_TYPE, WSConstants.PW_TEXT);
-		outProps.put(WSHandlerConstants.PW_CALLBACK_CLASS,
-				ClientPasswordCallback.class.getName());
+		outProps.put(WSHandlerConstants.PW_CALLBACK_REF, clientPasswordCallback);
 
 		WSS4JOutInterceptor wssOut = new WSS4JOutInterceptor(outProps);
 
@@ -82,22 +90,44 @@ public class CaAERSParticipantServiceWSClient {
 	}
 
 	public Response createParticipant(String participantXMLStr)
-			throws JAXBException, MalformedURLException {
+			throws JAXBException, MalformedURLException, SOAPFaultException {
+		ParticipantType participant = parseParticipant(participantXMLStr);
+		System.out.println(participant.getFirstName());
+		System.out.println(participant.getLastName());
+		System.out.println(participant.getGender());
+		System.out.println(participant.getIdentifiers());
+		CreateParticipant createParticipant = new CreateParticipant();
+		Participants participants = new Participants();
+		participants.getParticipant().add(participant);
+		createParticipant.setParticipants(participants);
+
+		Return retValue = null;
+		try {
+			retValue = client.createParticipant(createParticipant
+					.getParticipants());
+		} catch (SOAPFaultException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return retValue.getResponse();
+	}
+
+	/*public Response deleteParticipant(String participantXMLStr)
+			throws JAXBException, MalformedURLException, SOAPFaultException {
 		ParticipantType participant = parseParticipant(participantXMLStr);
 		CreateParticipant createParticipant = new CreateParticipant();
 		Participants participants = new Participants();
 		participants.getParticipant().add(participant);
 		createParticipant.setParticipants(participants);
-		System.out.println(client);
+
 		Return retValue = null;
 		try {
-			retValue = client.createParticipant(createParticipant
+			retValue = client.deleteParticipant(createParticipant
 					.getParticipants());
-		} catch (javax.xml.ws.soap.SOAPFaultException e) {
+		} catch (SOAPFaultException e) {
 			e.printStackTrace();
-			System.out.println(e.getFault());
 			throw e;
-		} 
+		}
 		return retValue.getResponse();
-	}
+	}*/
 }

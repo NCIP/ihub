@@ -1,13 +1,19 @@
-package gov.nih.nci.integration.catissue;
+package gov.nih.nci.integration.catissue.client;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
 import edu.wustl.catissuecore.domain.CollectionProtocol;
 import edu.wustl.catissuecore.domain.CollectionProtocolRegistration;
 import edu.wustl.catissuecore.domain.Participant;
+import edu.wustl.catissuecore.domain.ParticipantMedicalIdentifier;
+import edu.wustl.catissuecore.domain.Site;
 import edu.wustl.catissuecore.factory.CollectionProtocolFactory;
 import edu.wustl.catissuecore.factory.CollectionProtocolRegistrationFactory;
 import edu.wustl.catissuecore.factory.ParticipantFactory;
+import edu.wustl.catissuecore.factory.ParticipantMedicalIdentifierFactory;
+import edu.wustl.catissuecore.factory.SiteFactory;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 
 import java.io.StringReader;
@@ -19,6 +25,7 @@ import java.util.List;
 import javax.xml.bind.JAXBException;
 
 import org.junit.Test;
+
 import com.thoughtworks.xstream.XStream;
 
 /**
@@ -43,7 +50,7 @@ public class CaTissueParticipantIntegrationTest {
 	 * @throws Exception
 	 *             exception thrown if any
 	 */
-	@Test
+	//@Test
 	public void createParticipantAsPC() throws Exception {
 		final String cpTitle = "CP-01";
 
@@ -85,7 +92,7 @@ public class CaTissueParticipantIntegrationTest {
 
 		XStream xStream = caTissueParticipantClient.getxStream();
 		String participantXML = xStream.toXML(participant);
-
+		System.out.println(participantXML);
 		Participant parsedParticipant = (Participant) xStream
 				.fromXML(new StringReader(participantXML));
 
@@ -103,7 +110,7 @@ public class CaTissueParticipantIntegrationTest {
 		assertNotNull(parsedParticipant);
 	}
 
-	@Test
+	//@Test
 	public void submitRegistrationFromXMLPayload() throws ApplicationException {
 
 		Participant registeredParticipant = caTissueParticipantClient
@@ -133,6 +140,17 @@ public class CaTissueParticipantIntegrationTest {
 		participant.setLastName("DOE5");
 		participant.setVitalStatus("Alive");
 		participant.setSocialSecurityNumber("123-45-6821");
+
+		Site site = SiteFactory.getInstance().createObject();
+		site.setName("UCSF");
+		
+		ParticipantMedicalIdentifier pmi = ParticipantMedicalIdentifierFactory
+				.getInstance().createObject();
+		pmi.setParticipant(participant);
+		pmi.setMedicalRecordNumber("12345");
+		pmi.setSite(site);
+
+		participant.getParticipantMedicalIdentifierCollection().add(pmi);
 
 		return participant;
 	}
@@ -187,7 +205,10 @@ public class CaTissueParticipantIntegrationTest {
 				+ "<participant reference=\"../../..\"></participant>"
 				+ "<isToInsertAnticipatorySCGs>true</isToInsertAnticipatorySCGs></collectionProtocolRegistration>"
 				+ "</collectionProtocolRegistrationCollection><raceCollection class=\"set\"></raceCollection>"
-				+ "<participantMedicalIdentifierCollection class=\"linked-hash-set\"/>"
+				+ "<participantMedicalIdentifierCollection class=\"linked-hash-set\">"
+				+ "<participantMedicalIdentifier><medicalRecordNumber>12345</medicalRecordNumber>"
+				+ "<participant reference=\"../../..\"/></participantMedicalIdentifier>"
+				+ "</participantMedicalIdentifierCollection>"
 				+ "<participantRecordEntryCollection class=\"set\"/></participant>";
 	}
 

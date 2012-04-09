@@ -1,4 +1,4 @@
-package gov.nih.nci.integration.catissue;
+package gov.nih.nci.integration.catissue.client;
 
 import java.net.MalformedURLException;
 import java.util.List;
@@ -31,13 +31,6 @@ public class CaTissueAPIClientWithRegularAuthentication {
 		
 	}
 	
-	public CaTissueAPIClientWithRegularAuthentication(String loginName,
-			String password, String customLibLocation) throws BeansException, MalformedURLException {
-		super();
-		this.loginName = loginName;
-		this.password = password;
-	}
-
 	public final CaTissueWritableAppService getApplicationService()
 			throws ApplicationException {		
 		try {

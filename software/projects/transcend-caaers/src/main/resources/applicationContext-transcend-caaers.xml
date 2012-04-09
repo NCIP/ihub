@@ -14,9 +14,8 @@
     <!-- enable processing of annotations such as @Autowired and @Configuration -->
     <context:annotation-config/>
 	
-	<bean class="gov.nih.nci.integration.invoker.CaTissuePropsConfig"/>	
+	<bean class="gov.nih.nci.integration.caaers.invoker.CaAERSPropsConfig"/>	
     <bean class="gov.nih.nci.integration.transformer.TransformerConfig"/>
-	<bean class="gov.nih.nci.integration.invoker.CaTissueConfig"/>
-    <bean class="gov.nih.nci.integration.invoker.ServiceConfig"/>
+	<bean class="gov.nih.nci.integration.caaers.invoker.CaAERSConfig"/>
     
 </beans>

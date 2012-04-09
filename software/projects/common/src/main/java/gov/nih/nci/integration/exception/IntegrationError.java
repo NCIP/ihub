@@ -38,6 +38,9 @@ public enum IntegrationError {
 	_1050(1050, ErrorType.VALIDATION, "Unknown message type."),
 	
 	_1051(1051, ErrorType.TRANSMISSION, "Error while invoking CaTissueClient."),
+	_1052(1052, ErrorType.TRANSMISSION, "Error initializing CaTissueClient."),
+	_1053(1053, ErrorType.TRANSMISSION, "Error while invoking CaAERSClient."),
+	_1054(1054, ErrorType.TRANSMISSION, "Error initializing CaAERSClient."),
 		
 	_1060(1060, ErrorType.VALIDATION, "New Transformer cannot be initialized. TransformerFactory is null!"),
 	_1061(1061, ErrorType.VALIDATION, "New Transformer cannot be initialized. XSL file name cannot be empty!"),
