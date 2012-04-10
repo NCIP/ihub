@@ -19,6 +19,7 @@ import gov.nih.nci.cabig.caaers.webservice.ParticipantType.Identifiers;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -27,10 +28,12 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
+import javax.xml.transform.stream.StreamSource;
 
 import org.apache.cxf.helpers.IOUtils;
 import org.junit.Assert;
@@ -110,6 +113,16 @@ public class CaAERSParticipantServiceClientTest {
 		getMarshaller().marshal(ptJaxbEle, sw);
 		System.out.println(sw.toString());
 		Assert.assertNotNull(sw.toString());
+				
+		JAXBElement<ParticipantType> jaxbEle = (JAXBElement<ParticipantType>)getUnMarshaller().unmarshal(
+				new StreamSource(new StringReader(sw.toString())), ParticipantType.class);
+		Assert.assertNotNull(jaxbEle);
+		Assert.assertNotNull(jaxbEle.getValue());
+		
+		jaxbEle = (JAXBElement<ParticipantType>) getUnMarshaller().unmarshal(
+				new StreamSource(new StringReader(sw.toString())), ParticipantType.class);
+		Assert.assertNotNull(jaxbEle);
+		Assert.assertNotNull(jaxbEle.getValue());
 	}
 
 
@@ -126,7 +139,7 @@ public class CaAERSParticipantServiceClientTest {
 		System.out.println(response.getMessage());
 	}
 	
-	@Test
+	//@Test
 	public void createParticipant2() throws JAXBException, IOException {		
 		
 		String participantXMLStr = getPStr();
@@ -144,7 +157,12 @@ public class CaAERSParticipantServiceClientTest {
 		return jc.createMarshaller();		
 	}
 	
+	private Unmarshaller getUnMarshaller() throws JAXBException {		
+		JAXBContext jc = JAXBContext.newInstance(ParticipantType.class);		
+		return jc.createUnmarshaller();		
+	}
+	
 	private String getPStr() {
-		return "<?xml version=\"1.0\"?><participant xmlns:p=\"http://integration.nci.nih.gov/participant\" id=\"1\" version=\"1\"><firstName>Cherry</firstName><lastName>Blossom</lastName><maidenName/><middleName/><birthDate>19410502</birthDate><gender>Male</gender><race>White</race><ethnicity>Not Hispanic or Latino</ethnicity><identifiers><organizationAssignedIdentifier id=\"1\" version=\"1\"><type>MRN</type><value>996005</value><primaryIndicator>true</primaryIndicator><organization id=\"1\" version=\"1\"><name>University of California San Francisco (UCSF)</name><nciInstituteCode>UCSF</nciInstituteCode></organization></organizationAssignedIdentifier><organizationAssignedIdentifier id=\"1\" version=\"1\"><type>SSN</type><value>123-45-9994</value><primaryIndicator>false</primaryIndicator><organization id=\"1\" version=\"1\"><name>SSN</name><nciInstituteCode>SSN</nciInstituteCode></organization></organizationAssignedIdentifier><systemAssignedIdentifier id=\"1\" version=\"1\"><type>MRN</type><value>996005</value><primaryIndicator>true</primaryIndicator><systemName>MRN</systemName></systemAssignedIdentifier></identifiers><assignments><assignment id=\"1\" version=\"1\"><studySubjectIdentifier>49864</studySubjectIdentifier><studySite id=\"1\" version=\"1\"><study id=\"1\" version=\"1\"><identifiers><identifier id=\"1\" version=\"1\"><type>Study Identifier</type><value>CP-01</value></identifier></identifiers></study><organization id=\"1\" version=\"1\"><name>University of California San Francisco (UCSF)</name><nciInstituteCode>UCSF</nciInstituteCode></organization></studySite></assignment></assignments></participant>";
+		return "<?xml version=\"1.0\"?><caaers:participant xmlns:caaers=\"http://webservice.caaers.cabig.nci.nih.gov/participant\" xmlns:p=\"http://integration.nci.nih.gov/participant\" id=\"1\" version=\"1\"><firstName>Cherry</firstName><lastName>Blossom</lastName><maidenName/><middleName/><birthDate>19410502</birthDate><gender>Male</gender><race>White</race><ethnicity>Not Hispanic or Latino</ethnicity><identifiers><caaers:organizationAssignedIdentifier id=\"1\" version=\"1\"><type>MRN</type><value>996005</value><primaryIndicator>true</primaryIndicator><caaers:organization id=\"1\" version=\"1\"><name>University of California San Francisco (UCSF)</name><nciInstituteCode>UCSF</nciInstituteCode></caaers:organization></caaers:organizationAssignedIdentifier><caaers:organizationAssignedIdentifier id=\"1\" version=\"1\"><type>SSN</type><value>123-45-9994</value><primaryIndicator>false</primaryIndicator><caaers:organization id=\"1\" version=\"1\"><name>SSN</name><nciInstituteCode>SSN</nciInstituteCode></caaers:organization></caaers:organizationAssignedIdentifier><caaers:systemAssignedIdentifier id=\"1\" version=\"1\"><type>MRN</type><value>996005</value><primaryIndicator>true</primaryIndicator><systemName>MRN</systemName></caaers:systemAssignedIdentifier></identifiers><assignments><caaers:assignment id=\"1\" version=\"1\"><studySubjectIdentifier>49864</studySubjectIdentifier><caaers:studySite id=\"1\" version=\"1\"><caaers:study id=\"1\" version=\"1\"><identifiers><identifier id=\"1\" version=\"1\"><type>Study Identifier</type><value>CP-01</value></identifier></identifiers></caaers:study><caaers:organization id=\"1\" version=\"1\"><name>University of California San Francisco (UCSF)</name><nciInstituteCode>UCSF</nciInstituteCode></caaers:organization></caaers:studySite></caaers:assignment></assignments></caaers:participant>";
 	}
 }

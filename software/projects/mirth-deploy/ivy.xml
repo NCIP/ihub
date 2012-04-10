@@ -40,6 +40,7 @@
         -->
 		<!-- commonIntegration -->
         <dependency org="gov.nih.nci.ihub" name="transcend-catissue" rev="latest.integration"  conf="default->default;runtime->runtime;test->test;static-analysis->static-analysis"/>
+		<dependency org="gov.nih.nci.ihub" name="transcend-caaers" rev="latest.integration"  conf="default->default;runtime->runtime;test->test;static-analysis->static-analysis"/>
 		
 		</dependencies>
 </ivy-module>

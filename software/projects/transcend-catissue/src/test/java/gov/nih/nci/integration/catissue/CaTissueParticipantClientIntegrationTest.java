@@ -1,7 +1,7 @@
 package gov.nih.nci.integration.catissue;
 
-import static org.junit.Assert.*;
-import gov.nih.nci.integration.catissue.CaTissueParticipantClient;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import gov.nih.nci.integration.invoker.ServiceInvocationResult;
 
 import org.junit.Test;
