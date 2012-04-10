@@ -81,19 +81,28 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 	@Override
 	public ServiceInvocationResult rollback(String arg0) {
 		ServiceInvocationResult result = new ServiceInvocationResult();
-		/*
-		 * try { Response response = client.(arg0);
-		 * result.setResult(response.getResponsecode()); } catch
-		 * (SOAPFaultException e) { e.printStackTrace(); IntegrationException ie
-		 * = new IntegrationException(IntegrationError._1019, e, null);
-		 * result.setInvocationException(ie); } catch (MalformedURLException e)
-		 * { e.printStackTrace(); IntegrationException ie = new
-		 * IntegrationException(IntegrationError._1019, e, null);
-		 * result.setInvocationException(ie); } catch (JAXBException e) {
-		 * e.printStackTrace(); IntegrationException ie = new
-		 * IntegrationException(IntegrationError._1018, e, null);
-		 * result.setInvocationException(ie); }
-		 */
+		try {
+			String participantXMLStr = transformToParticipantXML(arg0);
+			Response response = client.deleteParticipant(participantXMLStr);
+			result.setResult(response.getResponsecode());
+		} catch (SOAPFaultException e) {
+			e.printStackTrace();
+			IntegrationException ie = new IntegrationException(
+					IntegrationError._1020, e, null);
+			result.setInvocationException(ie);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			IntegrationException ie = new IntegrationException(
+					IntegrationError._1019, e, null);
+			result.setInvocationException(ie);
+		} catch (JAXBException e) {
+			e.printStackTrace();
+			IntegrationException ie = new IntegrationException(
+					IntegrationError._1018, e, null);
+			result.setInvocationException(ie);
+		} catch (IntegrationException e) {
+			result.setInvocationException(e);
+		}
 		return result;
 	}
 

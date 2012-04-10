@@ -1,6 +1,7 @@
 package gov.nih.nci.integration.caaers;
 
 import gov.nih.nci.cabig.caaers.webservice.CreateParticipant;
+import gov.nih.nci.cabig.caaers.webservice.DeleteParticipant;
 import gov.nih.nci.cabig.caaers.webservice.ParticipantServiceIntf;
 import gov.nih.nci.cabig.caaers.webservice.ParticipantType;
 import gov.nih.nci.cabig.caaers.webservice.Response;
@@ -112,22 +113,23 @@ public class CaAERSParticipantServiceWSClient {
 		return retValue.getResponse();
 	}
 
-	/*public Response deleteParticipant(String participantXMLStr)
+	public Response deleteParticipant(String participantXMLStr)
 			throws JAXBException, MalformedURLException, SOAPFaultException {
 		ParticipantType participant = parseParticipant(participantXMLStr);
-		CreateParticipant createParticipant = new CreateParticipant();
-		Participants participants = new Participants();
+		DeleteParticipant deleteParticipant = new DeleteParticipant();
+		gov.nih.nci.cabig.caaers.webservice.DeleteParticipant.Participants participants = 
+			new gov.nih.nci.cabig.caaers.webservice.DeleteParticipant.Participants();
 		participants.getParticipant().add(participant);
-		createParticipant.setParticipants(participants);
+		deleteParticipant.setParticipants(participants);
 
-		Return retValue = null;
+		gov.nih.nci.cabig.caaers.webservice.DeleteParticipantResponse.Return retValue = null;
 		try {
-			retValue = client.deleteParticipant(createParticipant
+			retValue = client.deleteParticipant(deleteParticipant
 					.getParticipants());
 		} catch (SOAPFaultException e) {
 			e.printStackTrace();
 			throw e;
 		}
 		return retValue.getResponse();
-	}*/
+	}
 }

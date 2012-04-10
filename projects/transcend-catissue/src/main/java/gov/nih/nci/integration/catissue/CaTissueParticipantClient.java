@@ -71,7 +71,7 @@ public class CaTissueParticipantClient {
 					"registerParticipantFromXML", registerMethodParamTypes, participantXMLStr);
 		} catch (Exception e1) {			
 			e1.printStackTrace();
-			result = getServiceInvocationResult(IntegrationError._1052, e1);
+			result = getServiceInvocationResult(IntegrationError._1051, e1);
 			return result;
 		}
 		
@@ -106,7 +106,7 @@ public class CaTissueParticipantClient {
 					"deleteParticipantFromXML", deleteMethodParamTypes, participantXMLStr);
 		} catch (Exception e1) {			
 			e1.printStackTrace();
-			result = getServiceInvocationResult(IntegrationError._1052, e1);
+			result = getServiceInvocationResult(IntegrationError._1051, e1);
 			return result;
 		}
 		

@@ -1,5 +1,9 @@
 package gov.nih.nci.integration.exception;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 /**
  * 
  * @author chandrasekaravr
@@ -25,13 +29,13 @@ public class IntegrationException extends Exception {
 		this(integrationError.getErrorCode(), integrationError.getErrorType(),
 				integrationError.getMessage(objects));
 	}
-	
-	public IntegrationException(IntegrationError integrationError, Throwable cause,
-			Object... objects) {
-		this(integrationError.getErrorCode(), integrationError.getErrorType(), cause,
-				integrationError.getMessage(objects));				
+
+	public IntegrationException(IntegrationError integrationError,
+			Throwable cause, Object... objects) {
+		this(integrationError.getErrorCode(), integrationError.getErrorType(),
+				cause, integrationError.getMessage(objects));
 	}
-	
+
 	private IntegrationException(int errorCode, ErrorType errorType,
 			String message) {
 		super(message);
@@ -39,8 +43,8 @@ public class IntegrationException extends Exception {
 		this.errorType = errorType;
 	}
 
-	private IntegrationException(int errorCode, ErrorType errorType, Throwable cause,
-			String message) {
+	private IntegrationException(int errorCode, ErrorType errorType,
+			Throwable cause, String message) {
 		super(message, cause);
 		this.errorCode = errorCode;
 		this.errorType = errorType;
@@ -71,16 +75,20 @@ public class IntegrationException extends Exception {
 	public ErrorType getErrorType() {
 		return errorType;
 	}
-	
-	public String stackTraceAsString() {		
-	    StringBuilder sb = new StringBuilder();
-	    for (StackTraceElement element : getStackTrace()) {
-	        sb.append(element.toString());
-	        sb.append("\n");
-	    }
-	    return sb.toString();
+
+	public String stackTraceAsString() {
+		String stackTraceStr = getMessage();
+		StringWriter sw;
+		try {
+			sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			printStackTrace(pw);
+			stackTraceStr = sw.toString();
+			pw.close();
+			sw.close();
+		} catch (IOException e) {
+			// DO Nothing
+		}
+		return stackTraceStr;
 	}
-
-
-
 }

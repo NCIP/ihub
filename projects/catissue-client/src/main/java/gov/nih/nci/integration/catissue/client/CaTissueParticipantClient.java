@@ -109,7 +109,14 @@ public class CaTissueParticipantClient {
 		participant.getCollectionProtocolRegistrationCollection().add(
 				initCollectionProtocolRegistration(participant, cpr ));
 		
-		return caTissueAPIClient.insert(participant);
+		Participant existingPartcpnt = getParticipantForSSN(participant.getSocialSecurityNumber());
+		
+		if (existingPartcpnt != null) {
+			participant.setId(existingPartcpnt.getId());
+			return caTissueAPIClient.update(participant);
+		} else {
+			return caTissueAPIClient.insert(participant);
+		}
 	}
 	
 	public boolean deleteParticipantFromXML(String participantXMLStr) throws Exception {
