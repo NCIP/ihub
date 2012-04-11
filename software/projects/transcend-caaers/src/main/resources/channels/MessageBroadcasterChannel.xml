@@ -5,22 +5,22 @@
   <enabled>true</enabled>
   <version>2.1.1.5490</version>
   <lastModified>
-    <time>1332963741402</time>
+    <time>1334177192368</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>24</revision>
+  <revision>95</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
       <property name="DataType">Channel Reader</property>
-      <property name="responseValue">ResponseAggregatorConnector</property>
+      <property name="responseValue">MessageBroadcasterChannelResponse</property>
     </properties>
     <transformer>
       <steps>
         <step>
           <sequenceNumber>0</sequenceNumber>
           <name>referenceMsgId</name>
-          <script>var mapping;try { mapping = msg[&apos;ns1:metadata&apos;][&apos;ns1:externalIdentifier&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;referenceMsgId&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+          <script>var mapping;try { mapping = msg[&apos;metadata&apos;][&apos;externalIdentifier&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;referenceMsgId&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
           <type>Mapper</type>
           <data class="map">
             <entry>
@@ -32,16 +32,60 @@
               <string></string>
             </entry>
             <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;metadata&apos;][&apos;externalIdentifier&apos;].toString()</string>
+            </entry>
+            <entry>
               <string>RegularExpressions</string>
               <list/>
             </entry>
             <entry>
-              <string>Mapping</string>
-              <string>msg[&apos;ns1:metadata&apos;][&apos;ns1:externalIdentifier&apos;].toString()</string>
-            </entry>
-            <entry>
               <string>isGlobal</string>
               <string>channel</string>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>1</sequenceNumber>
+          <name>initializeServiceInvocatorAndAggregator</name>
+          <script>var commonAppCtx = globalMap.get(&quot;commonAppCtx&quot;);
+
+var srvcInvcAndAgg  = commonAppCtx.getBean(&quot;serviceInvocatorAndResultAggregator&quot;);
+
+channelMap.put(&quot;serviceInvocatorAndAggregator&quot;, srvcInvcAndAgg );
+
+logger.debug(&quot;referenceMsgId = &quot; + $(&apos;referenceMsgId&apos;));
+logger.debug(&quot;srvcInvcAndAgg = &quot; + channelMap.get(&quot;serviceInvocatorAndAggregator&quot;));
+
+return;</script>
+          <type>JavaScript</type>
+          <data class="map">
+            <entry>
+              <string>Script</string>
+              <string>var commonAppCtx = globalMap.get(&quot;commonAppCtx&quot;);
+
+var srvcInvcAndAgg  = commonAppCtx.getBean(&quot;serviceInvocatorAndResultAggregator&quot;);
+
+channelMap.put(&quot;serviceInvocatorAndAggregator&quot;, srvcInvcAndAgg );
+
+logger.debug(&quot;referenceMsgId = &quot; + $(&apos;referenceMsgId&apos;));
+logger.debug(&quot;srvcInvcAndAgg = &quot; + channelMap.get(&quot;serviceInvocatorAndAggregator&quot;));
+
+return;</string>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>2</sequenceNumber>
+          <name>initializeChannelResponseRef</name>
+          <script>//placeholder
+responseMap.put(&quot;MessageBroadcasterChannelResponse&quot;, &quot;Success&quot;);</script>
+          <type>JavaScript</type>
+          <data class="map">
+            <entry>
+              <string>Script</string>
+              <string>//placeholder
+responseMap.put(&quot;MessageBroadcasterChannelResponse&quot;, &quot;Success&quot;);</string>
             </entry>
           </data>
         </step>
@@ -141,8 +185,12 @@ PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
         <rules>
           <rule>
             <sequenceNumber>0</sequenceNumber>
-            <name>Accept message if &quot;msg[&apos;ns1:metadata&apos;][&apos;ns1:serviceType&apos;].toString()&quot; equals globalMap.get(&apos;AE&apos;)</name>
+            <name>Accept message if &quot;msg[&apos;metadata&apos;][&apos;serviceType&apos;].toString()&quot; equals globalMap.get(&apos;AE&apos;)</name>
             <data class="map">
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
               <entry>
                 <string>Values</string>
                 <list>
@@ -150,12 +198,8 @@ PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
                 </list>
               </entry>
               <entry>
-                <string>Name</string>
-                <string></string>
-              </entry>
-              <entry>
                 <string>Field</string>
-                <string>msg[&apos;ns1:metadata&apos;][&apos;ns1:serviceType&apos;].toString()</string>
+                <string>msg[&apos;metadata&apos;][&apos;serviceType&apos;].toString()</string>
               </entry>
               <entry>
                 <string>OriginalField</string>
@@ -167,7 +211,7 @@ PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
               </entry>
             </data>
             <type>Rule Builder</type>
-            <script>if(msg[&apos;ns1:metadata&apos;][&apos;ns1:serviceType&apos;].toString() == globalMap.get(&apos;AE&apos;))
+            <script>if(msg[&apos;metadata&apos;][&apos;serviceType&apos;].toString() == globalMap.get(&apos;AE&apos;))
 {
 return true;
 }
@@ -187,6 +231,14 @@ return false;</script>
         <property name="DataType">JavaScript Writer</property>
         <property name="host">sink</property>
         <property name="script">//supposed to handle caAERS registration
+var srvcInvcAndAgg = $(&apos;serviceInvocatorAndAggregator&apos;);
+
+var caaersSvcInvStrtgy = globalMap.get(&quot;caaersServiceInvocationStrategy&quot;);
+
+var refMsgIdStr = $(&apos;referenceMsgId&apos;);
+var refMsgId = Packages.java.lang.Long.parseLong(refMsgIdStr);
+
+srvcInvcAndAgg.invokeService(refMsgId, messageObject.getEncodedData(), caaersSvcInvStrtgy);
 
 return;</property>
       </properties>
@@ -248,14 +300,14 @@ PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
           <property name="stripNamespaces">false</property>
         </inboundProperties>
         <outboundProperties>
-          <property name="stripNamespaces">true</property>
+          <property name="stripNamespaces">false</property>
         </outboundProperties>
       </transformer>
       <filter>
         <rules>
           <rule>
             <sequenceNumber>0</sequenceNumber>
-            <name>Accept message if &quot;msg[&apos;ns1:metadata&apos;][&apos;ns1:serviceType&apos;].toString()&quot; equals globalMap.get(&apos;REGN&apos;)</name>
+            <name>Accept message if &quot;msg[&apos;metadata&apos;][&apos;serviceType&apos;].toString()&quot; equals globalMap.get(&apos;REGN&apos;)</name>
             <data class="map">
               <entry>
                 <string>Values</string>
@@ -269,7 +321,7 @@ PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
               </entry>
               <entry>
                 <string>Field</string>
-                <string>msg[&apos;ns1:metadata&apos;][&apos;ns1:serviceType&apos;].toString()</string>
+                <string>msg[&apos;metadata&apos;][&apos;serviceType&apos;].toString()</string>
               </entry>
               <entry>
                 <string>OriginalField</string>
@@ -281,7 +333,7 @@ PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
               </entry>
             </data>
             <type>Rule Builder</type>
-            <script>if(msg[&apos;ns1:metadata&apos;][&apos;ns1:serviceType&apos;].toString() == globalMap.get(&apos;REGN&apos;))
+            <script>if(msg[&apos;metadata&apos;][&apos;serviceType&apos;].toString() == globalMap.get(&apos;REGN&apos;))
 {
 return true;
 }
@@ -301,11 +353,14 @@ return false;</script>
         <property name="DataType">JavaScript Writer</property>
         <property name="host">sink</property>
         <property name="script">//supposed to handle CaTissue registration
-var srvcInvcAndAgg = channelMap.get(&quot;serviceInvocatorAndAggregator&quot;);
+var srvcInvcAndAgg = $(&apos;serviceInvocatorAndAggregator&apos;);
 
 var catissueSvcInvStrtgy = globalMap.get(&quot;caTissueServiceInvocationStrategy&quot;);
 
-srvcInvcAndAgg.invokeService($(&apos;referenceMsgId&apos;), messageObject.getEncodedData(), catissueSvcInvStrtgy);
+var refMsgIdStr = $(&apos;referenceMsgId&apos;);
+var refMsgId = Packages.java.lang.Long.parseLong(refMsgIdStr);
+
+srvcInvcAndAgg.invokeService(refMsgId, messageObject.getEncodedData(), catissueSvcInvStrtgy);
 
 return;</property>
       </properties>
@@ -367,15 +422,19 @@ PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
           <property name="stripNamespaces">false</property>
         </inboundProperties>
         <outboundProperties>
-          <property name="stripNamespaces">true</property>
+          <property name="stripNamespaces">false</property>
         </outboundProperties>
       </transformer>
       <filter>
         <rules>
           <rule>
             <sequenceNumber>0</sequenceNumber>
-            <name>Accept message if &quot;msg[&apos;ns1:metadata&apos;][&apos;ns1:serviceType&apos;].toString()&quot; equals globalMap.get(&apos;REGN&apos;)</name>
+            <name>Accept message if &quot;msg[&apos;metadata&apos;][&apos;serviceType&apos;].toString()&quot; equals globalMap.get(&apos;REGN&apos;)</name>
             <data class="map">
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
               <entry>
                 <string>Values</string>
                 <list>
@@ -383,12 +442,8 @@ PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
                 </list>
               </entry>
               <entry>
-                <string>Name</string>
-                <string></string>
-              </entry>
-              <entry>
                 <string>Field</string>
-                <string>msg[&apos;ns1:metadata&apos;][&apos;ns1:serviceType&apos;].toString()</string>
+                <string>msg[&apos;metadata&apos;][&apos;serviceType&apos;].toString()</string>
               </entry>
               <entry>
                 <string>OriginalField</string>
@@ -400,7 +455,7 @@ PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
               </entry>
             </data>
             <type>Rule Builder</type>
-            <script>if(msg[&apos;ns1:metadata&apos;][&apos;ns1:serviceType&apos;].toString() == globalMap.get(&apos;REGN&apos;))
+            <script>if(msg[&apos;metadata&apos;][&apos;serviceType&apos;].toString() == globalMap.get(&apos;REGN&apos;))
 {
 return true;
 }
@@ -420,16 +475,46 @@ return false;</script>
         <property name="DataType">JavaScript Writer</property>
         <property name="host">sink</property>
         <property name="script">//supposed to aggregate responses and create appropriate response for this channel
-var srvcInvcAndAgg = channelMap.get(&quot;serviceInvocatorAndAggregator&quot;);
+var svcInvRes = null;
 
-var svcInvRes = srvcInvcAndAgg.aggregateResults();
+var msg = new XML(messageObject.getEncodedData());
+default xml namespace=&quot;http://integration.nci.nih.gov/messaging&quot;;
 
-if(svcInvRes.isFault()) {
-	responseMap.put(&quot;ResponseAggregatorConnector&quot;, svcInvRes.getResult());
+var svcTyp = msg[&apos;metadata&apos;][&apos;serviceType&apos;].toString();
+
+logger.info(&quot;svcTyp in MBC res agg = &quot; + svcTyp);
+
+if(	svcTyp != globalMap.get(&apos;AE&apos;) 
+	&amp;&amp; svcTyp != globalMap.get(&apos;REGN&apos;)
+	) {
+	var msgParams = [&quot;value1&quot;, &quot;value2&quot;];
+
+	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1050, msgParams);
+	
+	svcInvRes = new Packages.gov.nih.nci.integration.invoker.ServiceInvocationResult();
+	svcInvRes.setInvocationException(intgExcp);
+
 } else {
-	responseMap.put(&quot;ResponseAggregatorConnector&quot;, svcInvRes.getInvocationException());
+
+	var srvcInvcAndAgg = $(&apos;serviceInvocatorAndAggregator&apos;);
+
+	svcInvRes = srvcInvcAndAgg.aggregateResults();
+
 }
 
+if(svcInvRes.isFault()){
+	var excep = svcInvRes.getInvocationException();
+	var msgParams = [&quot;value1&quot;, &quot;value2&quot;];
+	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1050, excep, msgParams);
+	
+	//var	retValue = convertIntegrationExceptionToMsgBCError(excep);
+	var	retValue = convertIntegrationExceptionToMsgBCError(intgExcp);
+	logger.debug(&quot;exception in RAC = &quot; + retValue);
+ 
+	responseMap.put(&quot;MessageBroadcasterChannelResponse&quot;, ResponseFactory.getFailureResponse(retValue) );
+} else {
+	responseMap.put(&quot;MessageBroadcasterChannelResponse&quot;, ResponseFactory.getSuccessResponse(svcInvRes.getResult()));
+}
 
 return;</property>
       </properties>
@@ -441,7 +526,7 @@ return;</property>
           <property name="stripNamespaces">false</property>
         </inboundProperties>
         <outboundProperties>
-          <property name="stripNamespaces">true</property>
+          <property name="stripNamespaces">false</property>
         </outboundProperties>
       </transformer>
       <filter>
@@ -466,12 +551,6 @@ return;</property>
   </properties>
   <preprocessingScript>// Modify the message variable below to pre process data
 
-var commonAppCtx = globalMap.get(&quot;commonAppCtx&quot;);
-
-var srvcInvcAndAgg  = commonAppCtx.getBean(&quot;serviceInvocatorAndResultAggregator&quot;);
-
-channelMap.put(&quot;serviceInvocatorAndAggregator&quot;, srvcInvcAndAgg );
-
 return message;</preprocessingScript>
   <postprocessingScript>// This script executes once after a message has been processed
 return;</postprocessingScript>
@@ -481,41 +560,53 @@ return;</postprocessingScript>
 var commonAppCtx = globalMap.get(&quot;commonAppCtx&quot;);
 
 if(commonAppCtx == null) {
-  	commonAppCtx = new Packages.org.springframework.context.support.ClassPathXmlApplicationContext(&quot;classpath*:applicationContext-common.xml&quot;);	
+  	commonAppCtx = new Packages.org.springframework.context.support.ClassPathXmlApplicationContext(&quot;classpath*:applicationContext-common.xml&quot;);
 	globalMap.put(&quot;commonAppCtx&quot;, commonAppCtx);
 }
 
+// init catissue service invocation strategy
 var transcendCatissueAppCtx = globalMap.get(&quot;transcendCatissueAppCtx&quot;);
 
 if(transcendCatissueAppCtx == null) {
-  	transcendCatissueAppCtx = new Packages.org.springframework.context.support.ClassPathXmlApplicationContext(&quot;classpath*:applicationContext-transcend-catissue.xml&quot;);	
+  	transcendCatissueAppCtx = new Packages.org.springframework.context.support.ClassPathXmlApplicationContext(&quot;classpath*:applicationContext-transcend-catissue.xml&quot;);		
 	globalMap.put(&quot;transcendCatissueAppCtx&quot;, transcendCatissueAppCtx);
 }
 
-var msgBCMessageToCaTissueParticipantTransformer = globalMap.get(&quot;msgBCMessageToCaTissueParticipantTransformer&quot;);
 
-if(msgBCMessageToCaTissueParticipantTransformer == null) {
-	var msgBCMessageToCaTissueParticipantXsl=&quot;MsgBroadcasterParticipant-to-caTissueParticipant.xsl&quot;;
+var caTissueServiceInvocationStrategy = globalMap.get(&quot;caTissueServiceInvocationStrategy&quot;);
 
-	var baseXSLClasspath=&quot;C:/Users/sb-admin-cp/.integration/ihub/xsl/&quot;;
-
-	msgBCMessageToCaTissueParticipantTransformer = commonAppCtx.getBean(&quot;xsltTransformer&quot;);
-	msgBCMessageToCaTissueParticipantTransformer.initTransformer(msgBCMessageToCaTissueParticipantXsl, baseXSLClasspath);
-
-	globalMap.put(&quot;msgBCMessageToCaTissueParticipantTransformer&quot;, msgBCMessageToCaTissueParticipantTransformer);
+if(caTissueServiceInvocationStrategy == null) {
+	caTissueServiceInvocationStrategy = transcendCatissueAppCtx.getBean(&quot;caTissueServiceInvocationStrategy&quot;);
 }
-
-var caTissueParticipantClient = globalMap.get(&quot;caTissueParticipantClient&quot;);
-
-if(caTissueParticipantClient == null) {
-	caTissueParticipantClient = transcendCatissueAppCtx.getBean(&quot;caTissueParticipantClient&quot;);
-}
-
-var caTissueServiceCallRetry=2;
-
-var caTissueServiceInvocationStrategy = new Packages.gov.nih.nci.integration.invoker.CaTissueServiceInvocationStrategy(caTissueServiceCallRetry, caTissueParticipantClient, msgBCMessageToCaTissueParticipantTransformer);
 
 globalMap.put(&quot;caTissueServiceInvocationStrategy&quot;, caTissueServiceInvocationStrategy);
+
+// init caAERS service invocation strategy
+/*
+var transcendCaAERSAppCtx = globalMap.get(&quot;transcendCaAERSAppCtx&quot;);
+
+if(transcendCaAERSAppCtx == null) {
+  	transcendCaAERSAppCtx = new Packages.org.springframework.context.support.ClassPathXmlApplicationContext(&quot;classpath*:applicationContext-transcend-caaers.xml&quot;);
+	globalMap.put(&quot;transcendCaAERSAppCtx&quot;, transcendCaAERSAppCtx);
+}
+
+
+var caaersServiceInvocationStrategy = globalMap.get(&quot;caaersServiceInvocationStrategy&quot;);
+
+if(caaersServiceInvocationStrategy == null) {
+	caaersServiceInvocationStrategy = transcendCaAERSAppCtx.getBean(&quot;caAersRegistrationServiceInvocationStrategy&quot;);
+}
+
+globalMap.put(&quot;caaersServiceInvocationStrategy&quot;, caaersServiceInvocationStrategy);
+*/
+
+var caaersServiceInvocationStrategy = globalMap.get(&quot;caaersServiceInvocationStrategy&quot;);
+
+if(caaersServiceInvocationStrategy == null) {
+	caaersServiceInvocationStrategy = Packages.gov.nih.nci.integration.caaers.invoker.CaAERSServiceInvocationStrategyFactory.createCaAERSServiceInvocationStrategy(&quot;caaers-client-lib/&quot;, &quot;classpath*:applicationContext-caaers-client.xml&quot;);
+}
+logger.debug(&quot;caaers svs = &quot; + caaersServiceInvocationStrategy);
+globalMap.put(&quot;caaersServiceInvocationStrategy&quot;, caaersServiceInvocationStrategy);
 
 return;</deployScript>
   <shutdownScript>// This script executes once when the channel is undeployed

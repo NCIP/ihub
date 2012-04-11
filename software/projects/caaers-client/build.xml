@@ -1,0 +1,26 @@
+<project name="caaers-client" basedir=".">
+
+	<property name="project.software.dir" value="${basedir}/../.." />
+	
+	<!-- sub-project level build properties -->
+	<property file="${basedir}/local-build.properties" />
+	<property file="${basedir}/build.properties" />
+	
+	<import file="${basedir}/../../build/common.xml"/>
+    
+    <target name="help" description="Prints usage information.">
+        <echo message="================================================================================" />
+        <echo message="          Service: ${ant.project.name}" />
+        <echo message="--------------------------------------------------------------------------------" />
+        <echo message="|  USAGE:                                                                      |" />
+        <echo message="|    Type 'ant -h' for general help with Ant                                   |" />
+        <echo message="|    Type 'ant -p' for a description of this project's build targets.          |" />
+        <echo message="|    Type 'ant -f ivy-build.xml all' To build all.                             |" />
+        <echo message="================================================================================" />
+    </target>
+	
+	<target name="generate-wsdl" depends="clean-generated-src, init, resolve" description="This target will generate java code from WSDL available in ${main.src.resources}/wsdl or url">
+		<generateWsdlSources genSrcDir="${generated.src.dir}" package="gov.nih.nci.cabig.caaers.webservice" wsdlLocation="${main.src.resources}/wsdl/ParticipantService.wsdl"/>		
+	</target>
+
+</project>

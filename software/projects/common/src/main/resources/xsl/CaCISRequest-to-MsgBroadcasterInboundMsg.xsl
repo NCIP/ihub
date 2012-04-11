@@ -83,7 +83,7 @@
 									<p:study id="1" version="1">
 										<p:identifiers>
 											<p:identifier id="1" version="1">
-												<p:type>Study Identifier</p:type>
+												<p:type>Protocol Authority Identifier</p:type>
 												<p:value><xsl:value-of select="$randomPatIdAct/ns1trim:observation/ns1trim:value[ns1trim:label/text()='Study ID']/ns1trim:ST"/></p:value>
 											</p:identifier>
 										</p:identifiers>

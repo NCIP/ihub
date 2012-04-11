@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>2.1.1.5490</version>
   <lastModified>
-    <time>1332963465624</time>
+    <time>1333958343657</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>45</revision>
+  <revision>135</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -17,7 +17,7 @@
       <property name="port">12085</property>
       <property name="receiverClassName">com.mirth.connect.connectors.ws.DefaultAcceptMessage</property>
       <property name="receiverPasswords">&lt;list/&gt;</property>
-      <property name="receiverResponseValue">ResponseWriter</property>
+      <property name="receiverResponseValue">ResponseWriterConnector</property>
       <property name="receiverServiceName">Mirth</property>
       <property name="receiverUsernames">&lt;list/&gt;</property>
     </properties>
@@ -49,7 +49,6 @@
         <property name="DataType">JavaScript Writer</property>
         <property name="host">sink</property>
         <property name="script">//supposed to do RegistrationTransformation
-channelMap.put(&quot;msgForBroadcaster&quot;, $(&apos;regnMsg&apos;) );
 return;</property>
       </properties>
       <transformer>
@@ -59,15 +58,16 @@ return;</property>
             <name>RegistrationTransformationTransformer</name>
             <script>var regnMsg = null;
 try {
+	logger.debug(&quot;msg in Regn Trns = &quot; +msg);
 	var regnMsgStr = transformMessage(msg, &quot;crToRegnMsgTransformer&quot;);
 
 	regnMsg = new XML(regnMsgStr);
 
-	channelMap.put(&apos;regnMsg&apos;, regnMsg);
+	channelMap.put(&apos;msgForBroadcaster&apos;, regnMsg);
 
 } catch(err) {
-	channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, true);
-	channelMap.put(&apos;CACIS_ERROR&apos;, &quot;Error transforming to Registration broadcaster message!&quot; + err.message);
+	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1018, null);
+	channelMap.put(&apos;CACIS_ERROR&apos;, intgExcp);
 }
 
 return;</script>
@@ -77,15 +77,16 @@ return;</script>
                 <string>Script</string>
                 <string>var regnMsg = null;
 try {
+	logger.debug(&quot;msg in Regn Trns = &quot; +msg);
 	var regnMsgStr = transformMessage(msg, &quot;crToRegnMsgTransformer&quot;);
 
 	regnMsg = new XML(regnMsgStr);
 
-	channelMap.put(&apos;regnMsg&apos;, regnMsg);
+	channelMap.put(&apos;msgForBroadcaster&apos;, regnMsg);
 
 } catch(err) {
-	channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, true);
-	channelMap.put(&apos;CACIS_ERROR&apos;, &quot;Error transforming to Registration broadcaster message!&quot; + err.message);
+	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1018, null);
+	channelMap.put(&apos;CACIS_ERROR&apos;, intgExcp);
 }
 
 return;</string>
@@ -101,14 +102,14 @@ return;</string>
           <property name="stripNamespaces">false</property>
         </inboundProperties>
         <outboundProperties>
-          <property name="stripNamespaces">true</property>
+          <property name="stripNamespaces">false</property>
         </outboundProperties>
       </transformer>
       <filter>
         <rules>
           <rule>
             <sequenceNumber>0</sequenceNumber>
-            <name>Accept message if &quot;msg[&apos;cacis:routingInstructions&apos;][&apos;cacis:exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString()&quot; equals globalMap.get(&apos;REGN&apos;)</name>
+            <name>Accept message if &quot;msg[&apos;routingInstructions&apos;][&apos;exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString()&quot; equals globalMap.get(&apos;REGN&apos;)</name>
             <data class="map">
               <entry>
                 <string>Values</string>
@@ -122,7 +123,7 @@ return;</string>
               </entry>
               <entry>
                 <string>Field</string>
-                <string>msg[&apos;cacis:routingInstructions&apos;][&apos;cacis:exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString()</string>
+                <string>msg[&apos;routingInstructions&apos;][&apos;exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString()</string>
               </entry>
               <entry>
                 <string>OriginalField</string>
@@ -134,7 +135,7 @@ return;</string>
               </entry>
             </data>
             <type>Rule Builder</type>
-            <script>if(msg[&apos;cacis:routingInstructions&apos;][&apos;cacis:exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString() == globalMap.get(&apos;REGN&apos;))
+            <script>if(msg[&apos;routingInstructions&apos;][&apos;exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString() == globalMap.get(&apos;REGN&apos;))
 {
 return true;
 }
@@ -154,7 +155,6 @@ return false;</script>
         <property name="DataType">JavaScript Writer</property>
         <property name="host">sink</property>
         <property name="script">//supposed to handle AE Transformation
-channelMap.put(&quot;msgForBroadcaster&quot;, $(&apos;aeMsg&apos;) );
 return;</property>
       </properties>
       <transformer>
@@ -168,11 +168,11 @@ try {
 
 	aeMsg = new XML(aeMsgStr);
 
-	channelMap.put(&apos;aeMsg&apos;, aeMsg);
+	channelMap.put(&apos;msgForBroadcaster&apos;, aeMsg);
 
 } catch(err) {
-	channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, true);
-	channelMap.put(&apos;CACIS_ERROR&apos;, &quot;Error transforming to Adverse Event broadcaster message!&quot; + err.message);
+	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1024, null);
+	channelMap.put(&apos;CACIS_ERROR&apos;, intgExcp);
 }
 
 return;</script>
@@ -186,11 +186,11 @@ try {
 
 	aeMsg = new XML(aeMsgStr);
 
-	channelMap.put(&apos;aeMsg&apos;, aeMsg);
+	channelMap.put(&apos;msgForBroadcaster&apos;, aeMsg);
 
 } catch(err) {
-	channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, true);
-	channelMap.put(&apos;CACIS_ERROR&apos;, &quot;Error transforming to Adverse Event broadcaster message!&quot; + err.message);
+	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1024, null);
+	channelMap.put(&apos;CACIS_ERROR&apos;, intgExcp);
 }
 
 return;</string>
@@ -206,14 +206,14 @@ return;</string>
           <property name="stripNamespaces">false</property>
         </inboundProperties>
         <outboundProperties>
-          <property name="stripNamespaces">true</property>
+          <property name="stripNamespaces">false</property>
         </outboundProperties>
       </transformer>
       <filter>
         <rules>
           <rule>
             <sequenceNumber>0</sequenceNumber>
-            <name>Accept message if &quot;msg[&apos;cacis:routingInstructions&apos;][&apos;cacis:exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString()&quot; equals globalMap.get(&apos;AE&apos;)</name>
+            <name>Accept message if &quot;msg[&apos;routingInstructions&apos;][&apos;exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString()&quot; equals globalMap.get(&apos;AE&apos;)</name>
             <data class="map">
               <entry>
                 <string>Values</string>
@@ -227,7 +227,7 @@ return;</string>
               </entry>
               <entry>
                 <string>Field</string>
-                <string>msg[&apos;cacis:routingInstructions&apos;][&apos;cacis:exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString()</string>
+                <string>msg[&apos;routingInstructions&apos;][&apos;exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString()</string>
               </entry>
               <entry>
                 <string>OriginalField</string>
@@ -239,7 +239,7 @@ return;</string>
               </entry>
             </data>
             <type>Rule Builder</type>
-            <script>if(msg[&apos;cacis:routingInstructions&apos;][&apos;cacis:exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString() == globalMap.get(&apos;AE&apos;))
+            <script>if(msg[&apos;routingInstructions&apos;][&apos;exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString() == globalMap.get(&apos;AE&apos;))
 {
 return true;
 }
@@ -264,6 +264,7 @@ return false;</script>
       <transformer>
         <steps/>
         <inboundTemplate encoding="base64"></inboundTemplate>
+        <outboundTemplate encoding="base64"></outboundTemplate>
         <inboundProtocol>XML</inboundProtocol>
         <outboundProtocol>XML</outboundProtocol>
         <inboundProperties>
@@ -277,13 +278,13 @@ return false;</script>
         <rules>
           <rule>
             <sequenceNumber>0</sequenceNumber>
-            <name>Accept message if &quot;msg[&apos;cacis:routingInstructions&apos;][&apos;cacis:exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString()&quot; equals globalMap.get(&apos;AE&apos;) or globalMap.get(&apos;REGN&apos;)</name>
+            <name>Accept message if &quot;msg[&apos;routingInstructions&apos;][&apos;exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString()&quot; equals globalMap.get(&apos;REGN&apos;) or globalMap.get(&apos;AE&apos;)</name>
             <data class="map">
               <entry>
                 <string>Values</string>
                 <list>
-                  <string>globalMap.get(&apos;AE&apos;)</string>
                   <string>globalMap.get(&apos;REGN&apos;)</string>
+                  <string>globalMap.get(&apos;AE&apos;)</string>
                 </list>
               </entry>
               <entry>
@@ -292,7 +293,7 @@ return false;</script>
               </entry>
               <entry>
                 <string>Field</string>
-                <string>msg[&apos;cacis:routingInstructions&apos;][&apos;cacis:exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString()</string>
+                <string>msg[&apos;routingInstructions&apos;][&apos;exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString()</string>
               </entry>
               <entry>
                 <string>OriginalField</string>
@@ -304,7 +305,7 @@ return false;</script>
               </entry>
             </data>
             <type>Rule Builder</type>
-            <script>if(msg[&apos;cacis:routingInstructions&apos;][&apos;cacis:exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString() == globalMap.get(&apos;AE&apos;) || msg[&apos;cacis:routingInstructions&apos;][&apos;cacis:exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString() == globalMap.get(&apos;REGN&apos;))
+            <script>if(msg[&apos;routingInstructions&apos;][&apos;exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString() == globalMap.get(&apos;REGN&apos;) || msg[&apos;routingInstructions&apos;][&apos;exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString() == globalMap.get(&apos;AE&apos;))
 {
 return true;
 }
@@ -325,38 +326,83 @@ return false;</script>
         <property name="host">sink</property>
         <property name="script">//handle all responses and create appropriate response for this channel
 
-var msgTyp = msg[&apos;cacis:routingInstructions&apos;][&apos;cacis:exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString();
+var msgTyp = $(&apos;msgTyp&apos;);
+
+logger.info(&quot;msgTyp=&quot;+ msgTyp);
+
 if(	msgTyp != globalMap.get(&apos;AE&apos;) 
 	&amp;&amp; msgTyp != globalMap.get(&apos;REGN&apos;)
 	) {
-	responseMap.put(&quot;ResponseWriter&quot;, &quot;Unable to process messages other than AE and Registration!&quot;);
+	var msgParams = [&quot;value1&quot;, &quot;value2&quot;];
+	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1050, msgParams);
+	responseMap.put(&quot;ResponseWriterConnector&quot;, convertIntegrationExceptionToCaCISError(intgExcp));
+	return;
 }
 
-var iHubError = channelMap.get(&apos;IS_IHUB_PROCESSING_ERROR&apos;);
-if(iHubError) {
-	var cacisError = channelMap.get(&apos;CACIS_ERROR&apos;);
+var cacisError = channelMap.get(&apos;CACIS_ERROR&apos;);
 
-	var cacisResponse = &quot;&lt;caCISError errorType=\&quot;VALIDATION\&quot; errorCode=\&quot;1001\&quot; &quot;
-				+ &quot; errorMessage=\&quot;&quot; + cacisError + &quot; detail=\&quot;\&quot;/&gt; &quot;;
+if(cacisError != null){
+	var cacisResponse = convertIntegrationExceptionToCaCISError(cacisError);
 
 	responseMap.put(&quot;ResponseWriterConnector&quot;, cacisResponse);
 
 	return;
 }
 
-responseMap.put(&quot;ResponseWriter&quot;, responseMap.get(&apos;MessageBroadcasterChannelConnector&apos;));
+
+var msgBCRes = responseMap.get(&apos;MessageBroadcasterChannelConnector&apos;);
+logger.debug(&quot;msgBCRes = &quot; + msgBCRes);
+
+var msgBCResult = msgBCRes.getMessage();
+
+if(msgBCResult.lastIndexOf(&apos;Success&apos;, 0) == 0 ) {
+	responseMap.put(&quot;ResponseWriterConnector&quot;, msgBCRes);	
+} else {	
+	responseMap.put(&quot;ResponseWriterConnector&quot;, ResponseFactory.getFailureResponse(convertMsgBCErrorToCaCISError(msgBCResult)));
+}
+
 return;</property>
       </properties>
       <transformer>
-        <steps/>
+        <steps>
+          <step>
+            <sequenceNumber>0</sequenceNumber>
+            <name>msgTyp</name>
+            <script>var mapping;try { mapping = msg[&apos;routingInstructions&apos;][&apos;exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;msgTyp&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+            <type>Mapper</type>
+            <data class="map">
+              <entry>
+                <string>Variable</string>
+                <string>msgTyp</string>
+              </entry>
+              <entry>
+                <string>DefaultValue</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>RegularExpressions</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>Mapping</string>
+                <string>msg[&apos;routingInstructions&apos;][&apos;exchangeDocument&apos;][&apos;@exchangeFormat&apos;].toString()</string>
+              </entry>
+              <entry>
+                <string>isGlobal</string>
+                <string>channel</string>
+              </entry>
+            </data>
+          </step>
+        </steps>
         <inboundTemplate encoding="base64"></inboundTemplate>
+        <outboundTemplate encoding="base64"></outboundTemplate>
         <inboundProtocol>XML</inboundProtocol>
         <outboundProtocol>XML</outboundProtocol>
         <inboundProperties>
           <property name="stripNamespaces">false</property>
         </inboundProperties>
         <outboundProperties>
-          <property name="stripNamespaces">true</property>
+          <property name="stripNamespaces">false</property>
         </outboundProperties>
       </transformer>
       <filter>
@@ -386,10 +432,11 @@ return;</postprocessingScript>
   <deployScript>// This script executes once when the channel is deployed
 // You only have access to the globalMap and globalChannelMap here to persist data
 
-var commonAppCtx = globalMap.get(&quot;commonsctx&quot;);
+var commonAppCtx = globalMap.get(&quot;commonAppCtx&quot;);
 
 if(commonAppCtx == null) {
   	commonAppCtx = new Packages.org.springframework.context.support.ClassPathXmlApplicationContext(&quot;classpath*:applicationContext-common.xml&quot;);	
+	//commonAppCtx = new Packages.gov.nih.nci.integration.util.CustomClasspathXmlApplicationContext(&quot;./common-lib/&quot;, &quot;classpath*:applicationContext-common.xml&quot;);
 	globalMap.put(&quot;commonAppCtx&quot;, commonAppCtx);
 }
 

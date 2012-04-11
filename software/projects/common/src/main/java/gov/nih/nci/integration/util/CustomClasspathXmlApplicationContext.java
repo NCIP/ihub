@@ -65,5 +65,6 @@ public class CustomClasspathXmlApplicationContext extends ClassPathXmlApplicatio
     private void init(String customLocation) throws MalformedURLException {
         final CustomUrlClassLoader jcl = new CustomUrlClassLoader(customLocation);
         setClassLoader(jcl);
+        Thread.currentThread().setContextClassLoader(jcl);
     }
 }
