@@ -107,16 +107,9 @@ public class CaTissueParticipantClient {
 		}
 		CollectionProtocolRegistration cpr = getCollectionProtocolRegistrationFromParticipant(participant);
 		participant.getCollectionProtocolRegistrationCollection().add(
-				initCollectionProtocolRegistration(participant, cpr ));
+				initCollectionProtocolRegistration(participant, cpr ));		
 		
-		Participant existingPartcpnt = getParticipantForSSN(participant.getSocialSecurityNumber());
-		
-		if (existingPartcpnt != null) {
-			participant.setId(existingPartcpnt.getId());
-			return caTissueAPIClient.update(participant);
-		} else {
-			return caTissueAPIClient.insert(participant);
-		}
+		return caTissueAPIClient.insert(participant);
 	}
 	
 	public boolean deleteParticipantFromXML(String participantXMLStr) throws Exception {
@@ -145,6 +138,9 @@ public class CaTissueParticipantClient {
 		}
 		
 		Participant persistedParticipant = getParticipantForSSN(participant.getSocialSecurityNumber());
+		if(persistedParticipant == null) {
+			return null;
+		}
 		persistedParticipant.setActivityStatus("Disabled");
 		persistedParticipant.setSocialSecurityNumber(null);
 			

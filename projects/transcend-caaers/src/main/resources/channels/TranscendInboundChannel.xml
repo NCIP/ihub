@@ -8,10 +8,10 @@
   <enabled>true</enabled>
   <version>2.1.1.5490</version>
   <lastModified>
-    <time>1332962974662</time>
+    <time>1333998154478</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>63</revision>
+  <revision>95</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -56,9 +56,11 @@ try {
 
 	cacisRequest = new XML(cacisRequestStr);
 
+	channelMap.put(&quot;cacisRequest&quot;, cacisRequest);
+
 } catch(err) {
-	channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, true);
-	channelMap.put(&apos;CACIS_ERROR&apos;, &quot;Error transforming to CaCISRequest!&quot; + err.message);
+	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1041, err, null);
+	channelMap.put(&apos;CACIS_ERROR&apos;, intgExcp);
 }</script>
           <type>JavaScript</type>
           <data class="map">
@@ -70,9 +72,11 @@ try {
 
 	cacisRequest = new XML(cacisRequestStr);
 
+	channelMap.put(&quot;cacisRequest&quot;, cacisRequest);
+
 } catch(err) {
-	channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, true);
-	channelMap.put(&apos;CACIS_ERROR&apos;, &quot;Error transforming to CaCISRequest!&quot; + err.message);
+	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1041, err, null);
+	channelMap.put(&apos;CACIS_ERROR&apos;, intgExcp);
 }</string>
             </entry>
           </data>
@@ -124,14 +128,14 @@ logger.info(&quot;Message Type = &quot; + channelMap.get(&apos;msgTyp&apos;) );<
           <name>Accept message if &quot;msg[&apos;Header&apos;][&apos;mirth.http.listener.user&apos;].toString()&quot; equals globalMap.get(&apos;mirth.http.listener.tolven.user&apos;)</name>
           <data class="map">
             <entry>
+              <string>Name</string>
+              <string></string>
+            </entry>
+            <entry>
               <string>Values</string>
               <list>
                 <string>globalMap.get(&apos;mirth.http.listener.tolven.user&apos;)</string>
               </list>
-            </entry>
-            <entry>
-              <string>Name</string>
-              <string></string>
             </entry>
             <entry>
               <string>Field</string>
@@ -159,14 +163,14 @@ return false;</script>
           <name>Accept message if &quot;msg[&apos;Header&apos;][&apos;mirth.http.listener.password&apos;].toString()&quot; equals globalMap.get(&apos;mirth.http.listener.tolven.password&apos;)</name>
           <data class="map">
             <entry>
+              <string>Name</string>
+              <string></string>
+            </entry>
+            <entry>
               <string>Values</string>
               <list>
                 <string>globalMap.get(&apos;mirth.http.listener.tolven.password&apos;)</string>
               </list>
-            </entry>
-            <entry>
-              <string>Name</string>
-              <string></string>
             </entry>
             <entry>
               <string>Field</string>
@@ -204,11 +208,11 @@ return false;</script>
         <property name="host">sink</property>
         <property name="script">var referenceMessageId = null;
 try {
-	referenceMessageId = persistIHubMessageInDB(msg);
+	referenceMessageId = persistIHubMessageInDB(messageObject.getEncodedData());
 	channelMap.put(&quot;referenceMessageId&quot;, referenceMessageId);
 } catch(err) {
-	channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, true);
-	channelMap.put(&apos;CACIS_ERROR&apos;, &quot;Error transforming to CaCISRequest!&quot; + err.message);
+	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1042, err, null);
+	channelMap.put(&apos;CACIS_ERROR&apos;, intgExcp);
 }
 return;</property>
       </properties>
@@ -537,12 +541,12 @@ return false;</script>
           </rule>
           <rule>
             <sequenceNumber>1</sequenceNumber>
-            <name>Accept message if &quot;channelMap.get(&apos;IS_IHUB_PROCESSING_ERROR&apos;)&quot; equals true</name>
+            <name>Accept message if &quot;channelMap.get(&apos;IS_IHUB_PROCESSING_ERROR&apos;)&quot; equals false</name>
             <data class="map">
               <entry>
                 <string>Values</string>
                 <list>
-                  <string>true</string>
+                  <string>false</string>
                 </list>
               </entry>
               <entry>
@@ -563,7 +567,7 @@ return false;</script>
               </entry>
             </data>
             <type>Rule Builder</type>
-            <script>if(channelMap.get(&apos;IS_IHUB_PROCESSING_ERROR&apos;) == true)
+            <script>if(channelMap.get(&apos;IS_IHUB_PROCESSING_ERROR&apos;) == false)
 {
 return true;
 }
@@ -585,12 +589,15 @@ return false;</script>
         <property name="script">try {
 	var client = globalMap.get(&quot;CaCISClient&quot;);
 	var wsdlUrl = globalMap.get(&quot;CaCISWsdlUrl&quot;);
-	var cacisResponse = client.acceptMessage(wsdlUrl, msg);
-	
-	channelMap.put(&quot;cacisResponse&quot;, cacisResponse);
+
+	var cacisResponse = client.acceptMessage(wsdlUrl, messageObject.getEncodedData());
+
+	logger.info(&quot;cacisResponse=&quot; + cacisResponse);
+	responseMap.put(&apos;caCISRequestSenderConnector&apos;, cacisResponse);
 } catch(err) {
-	channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, true);
-	channelMap.put(&apos;CACIS_ERROR&apos;, &quot;Error sending CaCISRequest to CaCIS!&quot; + err.message);
+	logger.debug(err);
+	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1043, err, null);
+	channelMap.put(&apos;CACIS_ERROR&apos;, intgExcp);
 }
 
 return;</property>
@@ -920,12 +927,12 @@ return false;</script>
           </rule>
           <rule>
             <sequenceNumber>1</sequenceNumber>
-            <name>Accept message if &quot;channelMap.get(&apos;IS_IHUB_PROCESSING_ERROR&apos;)&quot; equals true</name>
+            <name>Accept message if &quot;channelMap.get(&apos;IS_IHUB_PROCESSING_ERROR&apos;)&quot; equals false</name>
             <data class="map">
               <entry>
                 <string>Values</string>
                 <list>
-                  <string>true</string>
+                  <string>false</string>
                 </list>
               </entry>
               <entry>
@@ -946,7 +953,7 @@ return false;</script>
               </entry>
             </data>
             <type>Rule Builder</type>
-            <script>if(channelMap.get(&apos;IS_IHUB_PROCESSING_ERROR&apos;) == true)
+            <script>if(channelMap.get(&apos;IS_IHUB_PROCESSING_ERROR&apos;) == false)
 {
 return true;
 }
@@ -967,33 +974,41 @@ return false;</script>
         <property name="host">sink</property>
         <property name="script">//get all responses from all destinations and constructs a valid response
 
-var iHubError = channelMap.get(&apos;IS_IHUB_PROCESSING_ERROR&apos;);
-if(iHubError) {
-	var cacisError = channelMap.get(&apos;CACIS_ERROR&apos;);
-	
-	var iHubResponse = &quot;&lt;response&gt;&lt;reponseStatus&gt;FAILURE&lt;/responseStatus&gt;&quot;
-			+ &quot;&lt;caXchangeError&gt;&lt;errorCode&gt;1001&lt;/errorCode&gt;&quot;
-			+ &quot;&lt;errorDescription&gt;&quot; + cacisError + &quot;&lt;/errorDescription&gt;&quot;
-			+ &quot;&lt;/caXchangeError&gt;&lt;/response&gt;&quot;;
+var cacisError = $(&apos;CACIS_ERROR&apos;);
+if(cacisError) {
+	logger.debug(&quot;cacisError=&quot;+cacisError);
+	var iHubResponse =  convertIntgExceptionToIHubResponse(cacisError);
 
-	responseMap.put(&quot;ResponseWriterConnector&quot;, iHubResponse);
+	responseMap.put(&quot;ResponseWriterConnector&quot;, ResponseFactory.getFailureResponse(iHubResponse));
+
+	return;
 }
 
-var cacisResponse = channelMap.put(&quot;cacisResponse&quot;);
+var cacisResponseObj = responseMap.get(&apos;caCISRequestSenderConnector&apos;);
+var cacisResponse = cacisResponseObj.getMessage();
 
-//TODO: handle cacis response
+//var cacisResponse = responseMap.get(&apos;caCISRequestSenderConnector&apos;);
 
-var iHubResMsg = &quot;response from cacis&quot;;
+//TODO: handle cacis response correctly, for now deal with String response
+var iHubResponse = null;
+logger.debug(&quot;cacisResponse in RW=&quot;+cacisResponse);
+if(cacisResponse.contains(&quot;CaCISError&quot;)) {
 
-var iHubErrResponse = &quot;&lt;response&gt;&lt;reponseStatus&gt;FAILURE&lt;/responseStatus&gt;&quot;
-			+ &quot;&lt;caXchangeError&gt;&lt;errorCode&gt;1001&lt;/errorCode&gt;&quot;
-			+ &quot;&lt;errorDescription&gt;&quot; + iHubResMsg + &quot;&lt;/errorDescription&gt;&quot;
+	var cacisErrorRes = new XML(cacisResponse);
+	var errCd = cacisErrorRes[&apos;@errorCode&apos;].toString();
+	var errDesc = cacisErrorRes[&apos;@errorMessage&apos;].toString();
+
+	var iHubResponse = &quot;&lt;response&gt;&lt;reponseStatus&gt;FAILURE&lt;/responseStatus&gt;&quot;
+			+ &quot;&lt;caXchangeError&gt;&lt;errorCode&gt;&quot;+ errCd +&quot;&lt;/errorCode&gt;&quot;
+			+ &quot;&lt;errorDescription&gt;&quot; + errDesc + &quot;&lt;/errorDescription&gt;&quot;
 			+ &quot;&lt;/caXchangeError&gt;&lt;/response&gt;&quot;;
-
-var iHubSuccessResponse = &quot;&lt;response&gt;&lt;reponseStatus&gt;SUCCESS&lt;/responseStatus&gt;&quot;
+	responseMap.put(&quot;ResponseWriterConnector&quot;, ResponseFactory.getFailureResponse(iHubResponse));
+} else {
+	var iHubResponse = &quot;&lt;response&gt;&lt;reponseStatus&gt;SUCCESS&lt;/responseStatus&gt;&quot;
 			+ &quot;&lt;/response&gt;&quot;;
+	responseMap.put(&quot;ResponseWriterConnector&quot;, ResponseFactory.getSuccessResponse(iHubResponse));
+}
 
-responseMap.put(&quot;ResponseWriterConnector&quot;, iHubResponse);
 
 
 return;</property>
@@ -1088,12 +1103,13 @@ globalMap.put(&quot;database.password&quot;,&quot;postgres&quot;);
 
 // #########  FILTER Related Constants ##########
 globalMap.put(&quot;AE&quot;,&quot;AE&quot;);
-globalMap.put(&quot;REGN&quot;,&quot;Registration&quot;);
+globalMap.put(&quot;REGN&quot;,&quot;REGISTRATION&quot;);
 
 var commonAppCtx = globalMap.get(&quot;commonAppCtx&quot;);
 
 if(commonAppCtx == null) {
   	commonAppCtx = new Packages.org.springframework.context.support.ClassPathXmlApplicationContext(&quot;classpath*:applicationContext-common.xml&quot;);	
+	//commonAppCtx = new Packages.gov.nih.nci.integration.util.CustomClasspathXmlApplicationContext(&quot;C:\\vin\\SUITE-iHub\\tools\\MC-2.1\\common-lib\\&quot;, &quot;classpath*:applicationContext-common.xml&quot;);
 	globalMap.put(&quot;commonAppCtx&quot;, commonAppCtx);
 }
 
@@ -1101,6 +1117,8 @@ var baseXSLClasspath=&quot;C:/Users/sb-admin-cp/.integration/ihub/xsl/&quot;;
 
 var inboundMsgToCRTransformer = commonAppCtx.getBean(&quot;xsltTransformer&quot;);
 inboundMsgToCRTransformer.initTransformer(&quot;TranscendInboundMsg-to-caCISRequest.xsl&quot;, baseXSLClasspath);
+
+logger.info(&quot;inboundMsgToCRTransformer=&quot; + inboundMsgToCRTransformer);
 
 globalMap.put(&quot;inboundMsgToCRTransformer&quot;, inboundMsgToCRTransformer);
 
