@@ -6,13 +6,8 @@ import gov.nih.nci.caxchange.messaging.Message;
 import gov.nih.nci.caxchange.messaging.Response;
 import gov.nih.nci.caxchange.messaging.ResponseMessage;
 import gov.nih.nci.caxchange.messaging.Statuses;
-import gov.nih.nci.integration.util.CustomUrlClassLoader;
-import gov.nih.nci.integration.util.JAXBMarshaller;
 
 import java.io.StringWriter;
-import java.lang.reflect.Method;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -84,6 +79,8 @@ public class CaXchangeRequestService  extends AcceptMessage{
             }
 
             String mcResponse = webServiceMessageReceiver.processData(reqstr);
+            
+            System.out.println("Inside CaXchangeRequestService... mcResponse is :: " +mcResponse);
 
             LOG.info("MC RESPONSE:" + mcResponse);
             
@@ -132,7 +129,7 @@ public class CaXchangeRequestService  extends AcceptMessage{
         	StringWriter sw = new StringWriter();        	
         	getMarshaller().marshal( message,sw);        	
         	requestXML = sw.toString();        	
-            System.out.println("Inside CaXchangeRequestService...Return RequestXML is : " + requestXML);
+            System.out.println("Inside CaXchangeRequestService... RequestXML is : " + requestXML);
             
             return requestXML;
         } catch (Exception ex) {
