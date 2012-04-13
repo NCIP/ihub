@@ -19,4 +19,7 @@
         <echo message="================================================================================" />
     </target>
 
+	<target name="generate-wsdl" depends="clean-generated-src, init, resolve" description="This target will generate java code from WSDL available in ${main.src.resources}/wsdl or url">
+				<generateWsdlSources genSrcDir="${generated.src.dir}" package="gov.nih.nci.cacis.sa.transcend" wsdlLocation="${main.src.resources}/wsdl/SemanticAdapter.wsdl"/>		
+	</target>
 </project>
