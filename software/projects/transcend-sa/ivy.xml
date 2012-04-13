@@ -44,5 +44,8 @@
 			<!-- commonIntegration -->
             <dependency org="gov.nih.nci.ihub" name="common" rev="latest.integration"  conf="runtime->*;test->*;static-analysis->static-analysis"/>
 			
+			
+			<dependency org="com.mirthconnect" name="ws-server" rev="2.2.1"/>
+			<dependency org="mule" name="mule-core" rev="1.2"/>
        </dependencies>
 </ivy-module>
