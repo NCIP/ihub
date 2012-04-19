@@ -10,38 +10,72 @@ import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.Executors;
 
 public class CaAERSServiceInvocationStrategyFactory {
-
-	public static ServiceInvocationStrategy createCaAERSServiceInvocationStrategy(
-			final String caaersLibLocation, final String caaersConfig) {
-		
-		ExecutorCompletionService<ServiceInvocationStrategy> ecs = new ExecutorCompletionService<ServiceInvocationStrategy>(
+	
+	
+	private static ServiceInvocationStrategy caaersRegistrationServiceInvocationStrategy = null;
+	
+	private static ServiceInvocationStrategy caaersUpdateRegistrationServiceInvocationStrategy = null;
+	
+	private static Boolean initStatus = null;
+	
+	private static synchronized void init(final String caaersLibLocation, final String caaersConfig) {
+		ExecutorCompletionService<Boolean> ecs = new ExecutorCompletionService<Boolean>(
 				Executors.newSingleThreadExecutor());
 
-		ecs.submit(new Callable<ServiceInvocationStrategy>() {
+		ecs.submit(new Callable<Boolean>() {
 
 			@Override
-			public ServiceInvocationStrategy call() throws Exception {
+			public Boolean call() throws Exception {
 				CustomClasspathXmlApplicationContext ctx = new CustomClasspathXmlApplicationContext(
 						caaersLibLocation, caaersConfig);
 				System.out.println("context classloader = "
 						+ Thread.currentThread().getContextClassLoader());
 				System.out.println(ctx.getBeanDefinitionCount());
 				System.out.println(Arrays.asList(ctx.getBeanDefinitionNames()));
-				return (ServiceInvocationStrategy) ctx
+				caaersRegistrationServiceInvocationStrategy = (ServiceInvocationStrategy) ctx
 						.getBean("caAersRegistrationServiceInvocationStrategy");
+				caaersUpdateRegistrationServiceInvocationStrategy = (ServiceInvocationStrategy) ctx
+					.getBean("caAersUpdateRegistrationServiceInvocationStrategy");
+				
+				return Boolean.TRUE;
 			}
 
 		});
 		
-		ServiceInvocationStrategy serviceInvocationStrategy = null;
 		try {
-			serviceInvocationStrategy = ecs.take().get();
+			initStatus = ecs.take().get();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+			initStatus = Boolean.FALSE;
 		} catch (ExecutionException e) {
 			e.printStackTrace();
+			initStatus = Boolean.FALSE;
 		}
+	}
+
+	public static ServiceInvocationStrategy createCaAERSRegistrationServiceInvocationStrategy(
+			final String caaersLibLocation, final String caaersConfig) {
 		
-		return serviceInvocationStrategy;
+		if(initStatus == null && caaersRegistrationServiceInvocationStrategy == null) {
+			init(caaersLibLocation, caaersConfig);
+		}
+		if(initStatus) {
+			return caaersRegistrationServiceInvocationStrategy;
+		} else {
+			return null;
+		}		
+	}
+	
+	public static ServiceInvocationStrategy createCaAERSUpdateRegistrationServiceInvocationStrategy(
+			final String caaersLibLocation, final String caaersConfig) {
+		
+		if(initStatus == null && caaersUpdateRegistrationServiceInvocationStrategy == null) {
+			init(caaersLibLocation, caaersConfig);
+		}
+		if(initStatus) {
+			return caaersUpdateRegistrationServiceInvocationStrategy;
+		} else {
+			return null;
+		}
 	}
 }

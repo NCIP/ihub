@@ -18,5 +18,14 @@
         <echo message="|    Type 'ant -f ivy-build.xml all' To build all.                             |" />
         <echo message="================================================================================" />
     </target>
-
+	
+	<target name="deploy-mc" description="Will deploy to mirth connect.">
+		<mkdir dir="${mirth.home}/catissue-client-lib"/>
+		<delete dir="${mirth.home}/catissue-client-lib" includes="*.jar"/>
+		<copy todir="${mirth.home}/catissue-client-lib" includeemptydirs="true">
+			<fileset dir="${basedir}/catissue-client-lib/" includes="*.jar"></fileset>
+			<fileset dir="${dist.dir}" includes="*.jar"></fileset>
+		</copy>
+	</target>
+	
 </project>

@@ -1,0 +1,1 @@
+for /F "tokens=2" %%I in ('TASKLIST /NH /FI "IMAGENAME eq mcserver.exe"') DO TASKKILL /F /PID %%I

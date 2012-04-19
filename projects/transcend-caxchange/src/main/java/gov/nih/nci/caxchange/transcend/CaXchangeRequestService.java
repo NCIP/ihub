@@ -19,7 +19,8 @@ import javax.xml.bind.Marshaller;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.mirth.connect.connectors.ws.AcceptMessage;
 import com.mirth.connect.connectors.ws.WebServiceMessageReceiver;
@@ -38,7 +39,7 @@ import com.mirth.connect.connectors.ws.WebServiceMessageReceiver;
                       
 public class CaXchangeRequestService  extends AcceptMessage{
 
-    private static final Logger LOG = Logger.getLogger(CaXchangeRequestService.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(CaXchangeRequestService.class.getName());
     
 //    private String customLibDir = "./custom-lib";
     private String customLibDir = "custom-lib/";
@@ -129,7 +130,7 @@ public class CaXchangeRequestService  extends AcceptMessage{
         	StringWriter sw = new StringWriter();        	
         	getMarshaller().marshal( message,sw);        	
         	requestXML = sw.toString();        	
-            System.out.println("Inside CaXchangeRequestService... RequestXML is : " + requestXML);
+        	LOG.error("Inside CaXchangeRequestService... RequestXML is : " + requestXML);
             
             return requestXML;
         } catch (Exception ex) {

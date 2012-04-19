@@ -6,9 +6,18 @@
 	
 	<property name="project.software.dir" value="${basedir}/.." />
 	
+	<path id="user.home.path" path="${user.home}" />
+	
+	<!-- define a property for user.home path as java path string -->
+	<pathconvert property="user.home.java.path" refid="user.home.path" dirsep="/" />
+	
 	<!-- global build properties -->
 	<property file="${project.software.dir}/local-build.properties" />
 	<property file="${project.software.dir}/build.properties" />
+	
+	<!-- define a property for mirth files location as java path string - used in deploy.mc -->
+	<path id="mirth.files.base.dir.path" path="${classes.dir}" />
+	<pathconvert property="mirth.files.base.dir" refid="mirth.files.base.dir.path" dirsep="/" />
 	
 	<condition property="ivy.available">
 		<available file="${ivy.jar.file}" />
@@ -34,7 +43,7 @@
 		<attribute name="filter" />
 		<sequential>
 			<echoproperties destfile="filter.properties" failonerror="false"/>
-			<filterset id="filters.ref" begintoken="${" endtoken="}">
+			<filterset id="filters.ref" begintoken="@{" endtoken="}">
 			    <filtersfile file="filter.properties"/>
 			</filterset>
 			<copy todir="@{dest}" filtering="@{filter}">
@@ -106,19 +115,19 @@
 		<attribute name="wsdlLocation"/>		
 		<sequential>
 			<echo message="wsdl location is @{wsdlLocation}"/>
+			
+			<var name="wsdl2java_args" value="-impl -d @{genSrcDir} "/>
+			<condition property="packagearg" value="" else="-p @{package}">
+				<equals arg1="@{package}" arg2=""/>
+			</condition>
+			<var name="wsdl2java_args" value="${wsdl2java_args} ${packagearg} @{wsdlLocation}"/>
+			
 			<java classname="org.apache.cxf.tools.wsdlto.WSDLToJava" fork="true">
-				<arg value="-impl"/>
-				<arg value="-d"/>
-				<arg value="@{genSrcDir}"/>
-				<arg value="-p"/>
-				<arg value="@{package}"/>
-				<!--<arg value="-wsdlList"/> -->
-				<!--<arg value="@{wsdlLocation}\*.wsdl"/> -->
-				<arg value="@{wsdlLocation}"/>
+				<arg line="${wsdl2java_args}"/>
 				<classpath>
 					<path refid="main.classpath"/>
 				</classpath>
-			</java>
+			</java>	
 		</sequential>
 	</macrodef>
 	
@@ -141,6 +150,11 @@
 		</or>
 	</condition>
 	<fail message="JDK 1.6 is currently required to build this project!" unless="isJDK1.6" />
+	
+	<!--Check for Mirth Connect, we need to make sure that Mirth Connect is installed -->
+		<available file="${mirth.home}" property="is.mc.present"/>
+	
+		<fail message="Mirth Connect is currently required to build this project!" unless="is.mc.present" />
 	
 	<!-- This path will contain all the libraries required to compile
 		the main application -->
@@ -241,6 +255,14 @@
 		<get src="${ivy.sftp.remote}" dest="${ivy.jar.dir}/jsch-0.1.31.jar" verbose="true" usetimestamp="true"/>
 	</target>
 	
+	<!-- ==================================================
+		target : download-ant-contrib
+	====================================================== -->
+	<target name="download-ant-contrib" unless="ant.contrib.available">
+		<echo message="Downloading ant-contrib....." />
+		<get src="${ivy.ant.contrib.jar}" dest="${ivy.jar.dir}/ant-contrib-1.0b3.jar" verbose="true" usetimestamp="true"/>
+	</target>
+	
 	<!-- ====================================================
 		target : download-ivy
 		Download ivy if one is not available.
@@ -274,6 +296,9 @@
 		<taskdef resource="org/apache/ivy/ant/antlib.xml"
 		         uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"  />
 		<ivy:settings file="${project.build.dir}/ivysettings.xml" id="${ivy.settings.id}" />
+		
+		<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="ivy.lib.path"/>
+		
 		<property name="loaded.ivy.settings" value="true" />
 	</target>
 	
@@ -285,9 +310,11 @@
 		<taskdef resource="org/apache/ivy/ant/antlib.xml"
 		         uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"  />
 		<ivy:settings file="${project.build.dir}/ivysettings-offline.xml" id="${ivy.settings.id}" />
+		
+		<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="ivy.lib.path"/>
 	</target>
 	
-	<target name="load-ivy" depends="download-ivy,download-jsch, load-online-settings, load-offline-settings" unless="ivy.loaded">
+	<target name="load-ivy" depends="download-ivy,download-jsch,download-ant-contrib, load-online-settings, load-offline-settings" unless="ivy.loaded">
 		<property name="ivy.loaded" location="true"/>
 	</target>
 	
@@ -836,8 +863,64 @@
 	
 	<target name="generate-wsdl" depends="clean-generated-src, init, resolve" description="Overwrite in sub-projects. This target will generate java code from WSDL available in ${main.src.resources}/wsdl or url.">
 	</target>
-
 	
+	<target name="deploy-mc" description="Will deploy to mirth connect.">
+    </target>
+	
+	<target name="checkos">
+        <condition property="isWindows">
+                <os family="windows" />
+        </condition>
+
+        <condition property="isLinux">
+                <os family="unix" />
+        </condition>
+	</target>
+
+	<target name="if_windows" depends="checkos" if="isWindows">
+	   <property name="mc.script.ext" value=".bat" />
+	</target>
+
+	<target name="if_unix" depends="checkos" if="isLinux">
+		<property name="mc.script.ext" value=".sh" />
+	</target>
+	
+	<target name="start.mirth.connect" depends="if_windows, if_unix">
+		<echo message="will execute ${project.software.dir}/startMC${mc.script.ext}"/>
+		<exec executable="${project.software.dir}/startMC${mc.script.ext}">    
+			<arg path="${mirth.home}"/>
+        </exec>
+
+		<waitfor maxwait="120" maxwaitunit="second" checkevery="30">
+			<http url="${mirth.url}"/>
+		</waitfor>
+		
+    </target>
+
+	<target name="stop.mirth.connect" depends="if_windows, if_unix">
+		<echo message="will execute ${project.software.dir}/stopMC${mc.script.ext}"/>
+		
+        <exec executable="${project.software.dir}/stopMC${mc.script.ext}">    
+			<arg path="${mirth.home}"/>
+        </exec>
+       
+    </target>
+	
+	<target name="run.mirth.script" depends="if_windows, if_unix">
+		
+		<path id="mirth.deploy.script.path" path="${classes.dir}/deploy.mc"/>
+		
+		<property name="mirth.deploy.script" refid="mirth.deploy.script.path"/>
+		
+		<echo message="will execute ${mirth.deploy.script}"/>
+		
+        <exec executable="${project.software.dir}/deployToMC${mc.script.ext}">    
+			<arg path="${mirth.home}"/>
+        	<arg path="${mirth.deploy.script}"/>
+        </exec>
+       
+    </target>
+
 	<!-- FIXIT: Until extra required jars location for ivy can be identified-->
 	<target name="resolve-etc-libs" unless="already.etc.libs.resolved" description="resolves extra libs needed">
 		<!-- DONT DO ANYTHING FOR NOW

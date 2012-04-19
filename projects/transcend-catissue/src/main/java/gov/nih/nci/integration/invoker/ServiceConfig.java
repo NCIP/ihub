@@ -30,9 +30,17 @@ public class ServiceConfig {
 		
 	@Bean
 	@Scope("prototype")
-	public ServiceInvocationStrategy caTissueServiceInvocationStrategy() throws IntegrationException{
+	public ServiceInvocationStrategy CaTissueRegistrationServiceInvocationStrategy() throws IntegrationException{
 		xsltTransformer.initTransformer(catissueParticipantXsl, baseXSLPath);
-		return new CaTissueServiceInvocationStrategy(
+		return new CaTissueRegistrationServiceInvocationStrategy(
+				Integer.parseInt(retryCntStr), caTissueParticipantClient, xsltTransformer);
+	}
+	
+	@Bean
+	@Scope("prototype")
+	public ServiceInvocationStrategy CaTissueUpdateRegistrationServiceInvocationStrategy() throws IntegrationException{
+		xsltTransformer.initTransformer(catissueParticipantXsl, baseXSLPath);
+		return new CaTissueUpdateRegistrationServiceInvocationStrategy(
 				Integer.parseInt(retryCntStr), caTissueParticipantClient, xsltTransformer);
 	}
 }

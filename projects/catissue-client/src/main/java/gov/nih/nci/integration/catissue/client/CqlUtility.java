@@ -4,6 +4,7 @@ import edu.wustl.catissuecore.domain.CollectionProtocol;
 import edu.wustl.catissuecore.domain.CollectionProtocolRegistration;
 import edu.wustl.catissuecore.domain.FluidSpecimen;
 import edu.wustl.catissuecore.domain.Participant;
+import edu.wustl.catissuecore.domain.ParticipantMedicalIdentifier;
 import edu.wustl.catissuecore.domain.ReviewEventParameters;
 import edu.wustl.catissuecore.domain.Specimen;
 import edu.wustl.catissuecore.domain.SpecimenCollectionGroup;
@@ -46,6 +47,18 @@ public class CqlUtility {
 				association1);
 
 		return createTargetQuery(Participant.class, group1);
+	}
+	
+	public static CQLQuery getParticipantForMedicalIdentifier(String mrn) {
+		CQLAttribute targetAttribute2 = createAttribute("lastName",
+				mrn, CQLPredicate.EQUAL_TO);
+
+		CQLAttribute targetAttribute = createAttribute("id", null,
+				CQLPredicate.IS_NOT_NULL);
+		CQLGroup group2 = createGroup(CQLLogicalOperator.AND, targetAttribute,
+				targetAttribute2);
+				
+		return createTargetQuery(Participant.class, group2);
 	}
 	
 	public static CQLQuery getParticipantForSSN(String ssn) {

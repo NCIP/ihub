@@ -1,0 +1,676 @@
+<channel>
+  <id>caa43737-c755-4a8e-bba7-ef610c9b8f2d</id>
+  <name>MessageBroadcasterChannel</name>
+  <description></description>
+  <enabled>true</enabled>
+  <version>2.1.1.5490</version>
+  <lastModified>
+    <time>1334513442490</time>
+    <timezone>America/New_York</timezone>
+  </lastModified>
+  <revision>1</revision>
+  <sourceConnector>
+    <name>sourceConnector</name>
+    <properties>
+      <property name="DataType">Channel Reader</property>
+      <property name="responseValue">MessageBroadcasterChannelResponse</property>
+    </properties>
+    <transformer>
+      <steps>
+        <step>
+          <sequenceNumber>0</sequenceNumber>
+          <name>setDefNs</name>
+          <script>default xml namespace=&apos;http://caXchange.nci.nih.gov/messaging&apos;;</script>
+          <type>JavaScript</type>
+          <data class="map">
+            <entry>
+              <string>Script</string>
+              <string>default xml namespace=&apos;http://caXchange.nci.nih.gov/messaging&apos;;</string>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>1</sequenceNumber>
+          <name>referenceMsgId</name>
+          <script>var mapping;try { mapping = msg[&apos;metadata&apos;][&apos;externalIdentifier&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;referenceMsgId&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+          <type>Mapper</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>referenceMsgId</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;metadata&apos;][&apos;externalIdentifier&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>isGlobal</string>
+              <string>channel</string>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>2</sequenceNumber>
+          <name>operationName</name>
+          <script>var mapping;try { mapping = msg[&apos;metadata&apos;][&apos;operationName&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;operationName&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+          <type>Mapper</type>
+          <data class="map">
+            <entry>
+              <string>Variable</string>
+              <string>operationName</string>
+            </entry>
+            <entry>
+              <string>DefaultValue</string>
+              <string></string>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;metadata&apos;][&apos;operationName&apos;].toString()</string>
+            </entry>
+            <entry>
+              <string>RegularExpressions</string>
+              <list/>
+            </entry>
+            <entry>
+              <string>isGlobal</string>
+              <string>channel</string>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>3</sequenceNumber>
+          <name>initializeServiceInvocatorAndAggregator</name>
+          <script>var commonAppCtx = globalMap.get(&quot;commonAppCtx&quot;);
+
+var srvcInvcAndAgg  = commonAppCtx.getBean(&quot;serviceInvocatorAndResultAggregator&quot;);
+
+channelMap.put(&quot;serviceInvocatorAndAggregator&quot;, srvcInvcAndAgg );
+
+logger.debug(&quot;referenceMsgId = &quot; + $(&apos;referenceMsgId&apos;));
+logger.debug(&quot;srvcInvcAndAgg = &quot; + channelMap.get(&quot;serviceInvocatorAndAggregator&quot;));
+
+return;</script>
+          <type>JavaScript</type>
+          <data class="map">
+            <entry>
+              <string>Script</string>
+              <string>var commonAppCtx = globalMap.get(&quot;commonAppCtx&quot;);
+
+var srvcInvcAndAgg  = commonAppCtx.getBean(&quot;serviceInvocatorAndResultAggregator&quot;);
+
+channelMap.put(&quot;serviceInvocatorAndAggregator&quot;, srvcInvcAndAgg );
+
+logger.debug(&quot;referenceMsgId = &quot; + $(&apos;referenceMsgId&apos;));
+logger.debug(&quot;srvcInvcAndAgg = &quot; + channelMap.get(&quot;serviceInvocatorAndAggregator&quot;));
+
+return;</string>
+            </entry>
+          </data>
+        </step>
+        <step>
+          <sequenceNumber>4</sequenceNumber>
+          <name>initializeChannelResponseRef</name>
+          <script>//placeholder
+responseMap.put(&quot;MessageBroadcasterChannelResponse&quot;, &quot;Success&quot;);</script>
+          <type>JavaScript</type>
+          <data class="map">
+            <entry>
+              <string>Script</string>
+              <string>//placeholder
+responseMap.put(&quot;MessageBroadcasterChannelResponse&quot;, &quot;Success&quot;);</string>
+            </entry>
+          </data>
+        </step>
+      </steps>
+      <inboundTemplate encoding="base64"></inboundTemplate>
+      <outboundTemplate encoding="base64"></outboundTemplate>
+      <inboundProtocol>XML</inboundProtocol>
+      <outboundProtocol>XML</outboundProtocol>
+      <inboundProperties>
+        <property name="stripNamespaces">false</property>
+      </inboundProperties>
+      <outboundProperties>
+        <property name="stripNamespaces">false</property>
+      </outboundProperties>
+    </transformer>
+    <filter>
+      <rules/>
+    </filter>
+    <transportName>Channel Reader</transportName>
+    <mode>SOURCE</mode>
+    <enabled>true</enabled>
+    <version>2.1.1.5490</version>
+  </sourceConnector>
+  <destinationConnectors>
+    <connector>
+      <name>CaAERSAdverseEventConnector</name>
+      <properties>
+        <property name="DataType">JavaScript Writer</property>
+        <property name="host">sink</property>
+        <property name="script">//suppose to handle caAERS Adverse Event
+
+return;
+</property>
+      </properties>
+      <transformer>
+        <steps/>
+        <inboundTemplate encoding="base64">PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPG5zMTpNZXNzYWdlQnJvYWRj
+YXN0ZXJSZXF1ZXN0TWVzc2FnZQoJeG1sbnM6bnMxPSJodHRwOi8vaW50ZWdyYXRpb24ubmNpLm5p
+aC5nb3YvbWVzc2FnaW5nIj4KCTxuczE6bWV0YWRhdGE+CgkJPG5zMTpzZXJ2aWNlVHlwZT5SZWdp
+c3RyYXRpb248L25zMTpzZXJ2aWNlVHlwZT4KCQk8bnMxOmV4dGVybmFsSWRlbnRpZmllcj5teUV4
+dGVybmFsSWRlbnRpZmllcjwvbnMxOmV4dGVybmFsSWRlbnRpZmllcj4KCTwvbnMxOm1ldGFkYXRh
+PgoJPG5zMTpyZXF1ZXN0PgoJCTxuczE6YnVzaW5lc3NNZXNzYWdlUGF5bG9hZD4KCQkJPG5zMTp4
+bWxTY2hlbWFEZWZpbml0aW9uPmh0dHA6Ly9pbnRlZ3JhdGlvbi5uY2kubmloLmdvdi9wYXJ0aWNp
+cGFudAoJCQk8L25zMTp4bWxTY2hlbWFEZWZpbml0aW9uPgoJCQk8cDpwYXJ0aWNpcGFudCBpZD0i
+MSIgdmVyc2lvbj0iMSIKCQkJCXhtbG5zOnA9Imh0dHA6Ly9pbnRlZ3JhdGlvbi5uY2kubmloLmdv
+di9wYXJ0aWNpcGFudCIgeG1sbnM6eHNpPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVt
+YS1pbnN0YW5jZSIKCQkJCXhzaTpzY2hlbWFMb2NhdGlvbj0iaHR0cDovL2ludGVncmF0aW9uLm5j
+aS5uaWguZ292L3BhcnRpY2lwYW50IFBhcnRpY2lwYW50LnhzZCAiPgoJCQkJPHA6Zmlyc3ROYW1l
+PmZpcnN0TmFtZTwvcDpmaXJzdE5hbWU+CgkJCQk8cDpsYXN0TmFtZT5sYXN0TmFtZTwvcDpsYXN0
+TmFtZT4KCQkJCTxwOm1haWRlbk5hbWU+bWFpZGVuTmFtZTwvcDptYWlkZW5OYW1lPgoJCQkJPHA6
+bWlkZGxlTmFtZT5taWRkbGVOYW1lPC9wOm1pZGRsZU5hbWU+CgkJCQk8cDpiaXJ0aERhdGU+MjAw
+MS0wMS0wMTwvcDpiaXJ0aERhdGU+CgkJCQk8cDpnZW5kZXI+TWFsZTwvcDpnZW5kZXI+CgkJCQk8
+cDpyYWNlPkFzaWFuPC9wOnJhY2U+CgkJCQk8cDpldGhuaWNpdHk+SGlzcGFuaWMgb3IgTGF0aW5v
+PC9wOmV0aG5pY2l0eT4KCQkJCTxwOmFjdGl2aXR5U3RhdHVzPkFDVElWRTwvcDphY3Rpdml0eVN0
+YXR1cz4KCQkJCTxwOmlkZW50aWZpZXJzPgoJCQkJCTxwOm9yZ2FuaXphdGlvbkFzc2lnbmVkSWRl
+bnRpZmllcgoJCQkJCQlpZD0iMSIgdmVyc2lvbj0iMSI+CgkJCQkJCTxwOnR5cGU+TVJOPC9wOnR5
+cGU+CgkJCQkJCTxwOnZhbHVlPnZhbHVlPC9wOnZhbHVlPgoJCQkJCQk8cDpwcmltYXJ5SW5kaWNh
+dG9yPnRydWU8L3A6cHJpbWFyeUluZGljYXRvcj4KCQkJCQkJPHA6b3JnYW5pemF0aW9uIGlkPSIx
+IiB2ZXJzaW9uPSIxIj4KCQkJCQkJCTxwOm5hbWU+bmFtZTwvcDpuYW1lPgoJCQkJCQkJPHA6bmNp
+SW5zdGl0dXRlQ29kZT5uY2lJbnN0aXR1dGVDb2RlPC9wOm5jaUluc3RpdHV0ZUNvZGU+CgkJCQkJ
+CTwvcDpvcmdhbml6YXRpb24+CgkJCQkJPC9wOm9yZ2FuaXphdGlvbkFzc2lnbmVkSWRlbnRpZmll
+cj4KCQkJCQk8cDpvcmdhbml6YXRpb25Bc3NpZ25lZElkZW50aWZpZXIKCQkJCQkJaWQ9IjEiIHZl
+cnNpb249IjEiPgoJCQkJCQk8cDp0eXBlPlNTTjwvcDp0eXBlPgoJCQkJCQk8cDp2YWx1ZT52YWx1
+ZTwvcDp2YWx1ZT4KCQkJCQkJPHA6cHJpbWFyeUluZGljYXRvcj5mYWxzZTwvcDpwcmltYXJ5SW5k
+aWNhdG9yPgoJCQkJCQk8cDpvcmdhbml6YXRpb24gaWQ9IjEiIHZlcnNpb249IjEiPgoJCQkJCQkJ
+PHA6bmFtZT5TU048L3A6bmFtZT4KCQkJCQkJCTxwOm5jaUluc3RpdHV0ZUNvZGU+U1NOPC9wOm5j
+aUluc3RpdHV0ZUNvZGU+CgkJCQkJCTwvcDpvcmdhbml6YXRpb24+CgkJCQkJPC9wOm9yZ2FuaXph
+dGlvbkFzc2lnbmVkSWRlbnRpZmllcj4KCQkJCQk8cDpzeXN0ZW1Bc3NpZ25lZElkZW50aWZpZXIg
+aWQ9IjEiCgkJCQkJCXZlcnNpb249IjEiPgoJCQkJCQk8cDp0eXBlPk1STjwvcDp0eXBlPgoJCQkJ
+CQk8cDp2YWx1ZT52YWx1ZTwvcDp2YWx1ZT4KCQkJCQkJPHA6cHJpbWFyeUluZGljYXRvcj50cnVl
+PC9wOnByaW1hcnlJbmRpY2F0b3I+CgkJCQkJCTxwOnN5c3RlbU5hbWU+c3lzdGVtTmFtZTwvcDpz
+eXN0ZW1OYW1lPgoJCQkJCTwvcDpzeXN0ZW1Bc3NpZ25lZElkZW50aWZpZXI+CgkJCQk8L3A6aWRl
+bnRpZmllcnM+CgkJCQk8cDphc3NpZ25tZW50cz4KCQkJCQk8cDphc3NpZ25tZW50IGlkPSIxIiB2
+ZXJzaW9uPSIxIj4KCQkJCQkJPHA6c3R1ZHlTdWJqZWN0SWRlbnRpZmllcj5zdHVkeVN1YmplY3RJ
+ZGVudGlmaWVyCgkJCQkJCTwvcDpzdHVkeVN1YmplY3RJZGVudGlmaWVyPgoJCQkJCQk8cDpzdHVk
+eVNpdGUgaWQ9IjEiIHZlcnNpb249IjEiPgoJCQkJCQkJPHA6c3R1ZHkgaWQ9IjEiIHZlcnNpb249
+IjEiPgoJCQkJCQkJCTxwOmlkZW50aWZpZXJzPgoJCQkJCQkJCQk8cDppZGVudGlmaWVyIGlkPSIx
+IiB2ZXJzaW9uPSIxIj4KCQkJCQkJCQkJCTxwOnR5cGU+U2l0ZSBJZGVudGlmaWVyPC9wOnR5cGU+
+CgkJCQkJCQkJCQk8cDp2YWx1ZT52YWx1ZTwvcDp2YWx1ZT4KCQkJCQkJCQkJPC9wOmlkZW50aWZp
+ZXI+CgkJCQkJCQkJPC9wOmlkZW50aWZpZXJzPgoJCQkJCQkJPC9wOnN0dWR5PgoJCQkJCQkJPHA6
+b3JnYW5pemF0aW9uIGlkPSIxIiB2ZXJzaW9uPSIxIj4KCQkJCQkJCQk8cDpuYW1lPm5hbWU8L3A6
+bmFtZT4KCQkJCQkJCQk8cDpuY2lJbnN0aXR1dGVDb2RlPm5jaUluc3RpdHV0ZUNvZGU8L3A6bmNp
+SW5zdGl0dXRlQ29kZT4KCQkJCQkJCTwvcDpvcmdhbml6YXRpb24+CgkJCQkJCTwvcDpzdHVkeVNp
+dGU+CgkJCQkJPC9wOmFzc2lnbm1lbnQ+CgkJCQk8L3A6YXNzaWdubWVudHM+CgkJCTwvcDpwYXJ0
+aWNpcGFudD4KCQk8L25zMTpidXNpbmVzc01lc3NhZ2VQYXlsb2FkPgoJPC9uczE6cmVxdWVzdD4K
+PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">false</property>
+        </inboundProperties>
+        <outboundProperties>
+          <property name="stripNamespaces">false</property>
+        </outboundProperties>
+      </transformer>
+      <filter>
+        <rules>
+          <rule>
+            <sequenceNumber>0</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;operationName&apos;)&quot; equals globalMap.get(&apos;AE&apos;)</name>
+            <data class="map">
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>globalMap.get(&apos;AE&apos;)</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;operationName&apos;)</string>
+              </entry>
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;operationName&apos;) == globalMap.get(&apos;AE&apos;))
+{
+return true;
+}
+return false;</script>
+            <operator>NONE</operator>
+          </rule>
+        </rules>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <version>2.1.1.5490</version>
+    </connector>
+    <connector>
+      <name>CaAERSRegistrationConnector</name>
+      <properties>
+        <property name="DataType">JavaScript Writer</property>
+        <property name="host">sink</property>
+        <property name="script">//supposed to handle caAERS registration
+var srvcInvcAndAgg = $(&apos;serviceInvocatorAndAggregator&apos;);
+
+var caaersSvcInvStrtgy = null;
+
+if ($(&apos;operationName&apos;) == &apos;REGISTRATION&apos;) {
+	caaersSvcInvStrtgy = globalMap.get(&quot;caaersRegistrationServiceInvocationStrategy&quot;);
+} 
+
+if ($(&apos;operationName&apos;) == &apos;UPDATEREGISTRATION&apos;) {
+	caaersSvcInvStrtgy = globalMap.get(&quot;caaersUpdateRegistrationServiceInvocationStrategy&quot;);
+}
+
+
+var refMsgIdStr = $(&apos;referenceMsgId&apos;);
+var refMsgId = Packages.java.lang.Long.parseLong(refMsgIdStr);
+
+srvcInvcAndAgg.invokeService(refMsgId, messageObject.getEncodedData(), caaersSvcInvStrtgy);
+
+return;</property>
+      </properties>
+      <transformer>
+        <steps/>
+        <inboundTemplate encoding="base64">PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPG5zMTpNZXNzYWdlQnJvYWRj
+YXN0ZXJSZXF1ZXN0TWVzc2FnZQoJeG1sbnM6bnMxPSJodHRwOi8vaW50ZWdyYXRpb24ubmNpLm5p
+aC5nb3YvbWVzc2FnaW5nIj4KCTxuczE6bWV0YWRhdGE+CgkJPG5zMTpzZXJ2aWNlVHlwZT5SZWdp
+c3RyYXRpb248L25zMTpzZXJ2aWNlVHlwZT4KCQk8bnMxOmV4dGVybmFsSWRlbnRpZmllcj5teUV4
+dGVybmFsSWRlbnRpZmllcjwvbnMxOmV4dGVybmFsSWRlbnRpZmllcj4KCTwvbnMxOm1ldGFkYXRh
+PgoJPG5zMTpyZXF1ZXN0PgoJCTxuczE6YnVzaW5lc3NNZXNzYWdlUGF5bG9hZD4KCQkJPG5zMTp4
+bWxTY2hlbWFEZWZpbml0aW9uPmh0dHA6Ly9pbnRlZ3JhdGlvbi5uY2kubmloLmdvdi9wYXJ0aWNp
+cGFudAoJCQk8L25zMTp4bWxTY2hlbWFEZWZpbml0aW9uPgoJCQk8cDpwYXJ0aWNpcGFudCBpZD0i
+MSIgdmVyc2lvbj0iMSIKCQkJCXhtbG5zOnA9Imh0dHA6Ly9pbnRlZ3JhdGlvbi5uY2kubmloLmdv
+di9wYXJ0aWNpcGFudCIgeG1sbnM6eHNpPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVt
+YS1pbnN0YW5jZSIKCQkJCXhzaTpzY2hlbWFMb2NhdGlvbj0iaHR0cDovL2ludGVncmF0aW9uLm5j
+aS5uaWguZ292L3BhcnRpY2lwYW50IFBhcnRpY2lwYW50LnhzZCAiPgoJCQkJPHA6Zmlyc3ROYW1l
+PmZpcnN0TmFtZTwvcDpmaXJzdE5hbWU+CgkJCQk8cDpsYXN0TmFtZT5sYXN0TmFtZTwvcDpsYXN0
+TmFtZT4KCQkJCTxwOm1haWRlbk5hbWU+bWFpZGVuTmFtZTwvcDptYWlkZW5OYW1lPgoJCQkJPHA6
+bWlkZGxlTmFtZT5taWRkbGVOYW1lPC9wOm1pZGRsZU5hbWU+CgkJCQk8cDpiaXJ0aERhdGU+MjAw
+MS0wMS0wMTwvcDpiaXJ0aERhdGU+CgkJCQk8cDpnZW5kZXI+TWFsZTwvcDpnZW5kZXI+CgkJCQk8
+cDpyYWNlPkFzaWFuPC9wOnJhY2U+CgkJCQk8cDpldGhuaWNpdHk+SGlzcGFuaWMgb3IgTGF0aW5v
+PC9wOmV0aG5pY2l0eT4KCQkJCTxwOmFjdGl2aXR5U3RhdHVzPkFDVElWRTwvcDphY3Rpdml0eVN0
+YXR1cz4KCQkJCTxwOmlkZW50aWZpZXJzPgoJCQkJCTxwOm9yZ2FuaXphdGlvbkFzc2lnbmVkSWRl
+bnRpZmllcgoJCQkJCQlpZD0iMSIgdmVyc2lvbj0iMSI+CgkJCQkJCTxwOnR5cGU+TVJOPC9wOnR5
+cGU+CgkJCQkJCTxwOnZhbHVlPnZhbHVlPC9wOnZhbHVlPgoJCQkJCQk8cDpwcmltYXJ5SW5kaWNh
+dG9yPnRydWU8L3A6cHJpbWFyeUluZGljYXRvcj4KCQkJCQkJPHA6b3JnYW5pemF0aW9uIGlkPSIx
+IiB2ZXJzaW9uPSIxIj4KCQkJCQkJCTxwOm5hbWU+bmFtZTwvcDpuYW1lPgoJCQkJCQkJPHA6bmNp
+SW5zdGl0dXRlQ29kZT5uY2lJbnN0aXR1dGVDb2RlPC9wOm5jaUluc3RpdHV0ZUNvZGU+CgkJCQkJ
+CTwvcDpvcmdhbml6YXRpb24+CgkJCQkJPC9wOm9yZ2FuaXphdGlvbkFzc2lnbmVkSWRlbnRpZmll
+cj4KCQkJCQk8cDpvcmdhbml6YXRpb25Bc3NpZ25lZElkZW50aWZpZXIKCQkJCQkJaWQ9IjEiIHZl
+cnNpb249IjEiPgoJCQkJCQk8cDp0eXBlPlNTTjwvcDp0eXBlPgoJCQkJCQk8cDp2YWx1ZT52YWx1
+ZTwvcDp2YWx1ZT4KCQkJCQkJPHA6cHJpbWFyeUluZGljYXRvcj5mYWxzZTwvcDpwcmltYXJ5SW5k
+aWNhdG9yPgoJCQkJCQk8cDpvcmdhbml6YXRpb24gaWQ9IjEiIHZlcnNpb249IjEiPgoJCQkJCQkJ
+PHA6bmFtZT5TU048L3A6bmFtZT4KCQkJCQkJCTxwOm5jaUluc3RpdHV0ZUNvZGU+U1NOPC9wOm5j
+aUluc3RpdHV0ZUNvZGU+CgkJCQkJCTwvcDpvcmdhbml6YXRpb24+CgkJCQkJPC9wOm9yZ2FuaXph
+dGlvbkFzc2lnbmVkSWRlbnRpZmllcj4KCQkJCQk8cDpzeXN0ZW1Bc3NpZ25lZElkZW50aWZpZXIg
+aWQ9IjEiCgkJCQkJCXZlcnNpb249IjEiPgoJCQkJCQk8cDp0eXBlPk1STjwvcDp0eXBlPgoJCQkJ
+CQk8cDp2YWx1ZT52YWx1ZTwvcDp2YWx1ZT4KCQkJCQkJPHA6cHJpbWFyeUluZGljYXRvcj50cnVl
+PC9wOnByaW1hcnlJbmRpY2F0b3I+CgkJCQkJCTxwOnN5c3RlbU5hbWU+c3lzdGVtTmFtZTwvcDpz
+eXN0ZW1OYW1lPgoJCQkJCTwvcDpzeXN0ZW1Bc3NpZ25lZElkZW50aWZpZXI+CgkJCQk8L3A6aWRl
+bnRpZmllcnM+CgkJCQk8cDphc3NpZ25tZW50cz4KCQkJCQk8cDphc3NpZ25tZW50IGlkPSIxIiB2
+ZXJzaW9uPSIxIj4KCQkJCQkJPHA6c3R1ZHlTdWJqZWN0SWRlbnRpZmllcj5zdHVkeVN1YmplY3RJ
+ZGVudGlmaWVyCgkJCQkJCTwvcDpzdHVkeVN1YmplY3RJZGVudGlmaWVyPgoJCQkJCQk8cDpzdHVk
+eVNpdGUgaWQ9IjEiIHZlcnNpb249IjEiPgoJCQkJCQkJPHA6c3R1ZHkgaWQ9IjEiIHZlcnNpb249
+IjEiPgoJCQkJCQkJCTxwOmlkZW50aWZpZXJzPgoJCQkJCQkJCQk8cDppZGVudGlmaWVyIGlkPSIx
+IiB2ZXJzaW9uPSIxIj4KCQkJCQkJCQkJCTxwOnR5cGU+U2l0ZSBJZGVudGlmaWVyPC9wOnR5cGU+
+CgkJCQkJCQkJCQk8cDp2YWx1ZT52YWx1ZTwvcDp2YWx1ZT4KCQkJCQkJCQkJPC9wOmlkZW50aWZp
+ZXI+CgkJCQkJCQkJPC9wOmlkZW50aWZpZXJzPgoJCQkJCQkJPC9wOnN0dWR5PgoJCQkJCQkJPHA6
+b3JnYW5pemF0aW9uIGlkPSIxIiB2ZXJzaW9uPSIxIj4KCQkJCQkJCQk8cDpuYW1lPm5hbWU8L3A6
+bmFtZT4KCQkJCQkJCQk8cDpuY2lJbnN0aXR1dGVDb2RlPm5jaUluc3RpdHV0ZUNvZGU8L3A6bmNp
+SW5zdGl0dXRlQ29kZT4KCQkJCQkJCTwvcDpvcmdhbml6YXRpb24+CgkJCQkJCTwvcDpzdHVkeVNp
+dGU+CgkJCQkJPC9wOmFzc2lnbm1lbnQ+CgkJCQk8L3A6YXNzaWdubWVudHM+CgkJCTwvcDpwYXJ0
+aWNpcGFudD4KCQk8L25zMTpidXNpbmVzc01lc3NhZ2VQYXlsb2FkPgoJPC9uczE6cmVxdWVzdD4K
+PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">false</property>
+        </inboundProperties>
+        <outboundProperties>
+          <property name="stripNamespaces">false</property>
+        </outboundProperties>
+      </transformer>
+      <filter>
+        <rules>
+          <rule>
+            <sequenceNumber>0</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;operationName&apos;)&quot; equals globalMap.get(&apos;REGN&apos;) or globalMap.get(&apos;UPDTREGN&apos;)</name>
+            <data class="map">
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>globalMap.get(&apos;REGN&apos;)</string>
+                  <string>globalMap.get(&apos;UPDTREGN&apos;)</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;operationName&apos;)</string>
+              </entry>
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;operationName&apos;) == globalMap.get(&apos;REGN&apos;) || $(&apos;operationName&apos;) == globalMap.get(&apos;UPDTREGN&apos;))
+{
+return true;
+}
+return false;</script>
+            <operator>NONE</operator>
+          </rule>
+        </rules>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <version>2.1.1.5490</version>
+    </connector>
+    <connector>
+      <name>CaTissueRegistrationConnector</name>
+      <properties>
+        <property name="DataType">JavaScript Writer</property>
+        <property name="host">sink</property>
+        <property name="script">//supposed to handle CaTissue registration
+var srvcInvcAndAgg = $(&apos;serviceInvocatorAndAggregator&apos;);
+
+var catissueSvcInvStrtgy = null;
+
+
+if ($(&apos;operationName&apos;) == &apos;REGISTRATION&apos;) {
+	catissueSvcInvStrtgy = globalMap.get(&quot;caTissueRegistrationServiceInvocationStrategy&quot;);
+} 
+
+if ($(&apos;operationName&apos;) == &apos;UPDATEREGISTRATION&apos;) {
+	catissueSvcInvStrtgy = globalMap.get(&quot;caTissueUpdateRegistrationServiceInvocationStrategy&quot;);
+}
+
+var refMsgIdStr = $(&apos;referenceMsgId&apos;);
+var refMsgId = Packages.java.lang.Long.parseLong(refMsgIdStr);
+
+srvcInvcAndAgg.invokeService(refMsgId, messageObject.getEncodedData(), catissueSvcInvStrtgy);
+
+return;</property>
+      </properties>
+      <transformer>
+        <steps/>
+        <inboundTemplate encoding="base64">PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPG5zMTpNZXNzYWdlQnJvYWRj
+YXN0ZXJSZXF1ZXN0TWVzc2FnZQoJeG1sbnM6bnMxPSJodHRwOi8vaW50ZWdyYXRpb24ubmNpLm5p
+aC5nb3YvbWVzc2FnaW5nIj4KCTxuczE6bWV0YWRhdGE+CgkJPG5zMTpzZXJ2aWNlVHlwZT5SZWdp
+c3RyYXRpb248L25zMTpzZXJ2aWNlVHlwZT4KCQk8bnMxOmV4dGVybmFsSWRlbnRpZmllcj5teUV4
+dGVybmFsSWRlbnRpZmllcjwvbnMxOmV4dGVybmFsSWRlbnRpZmllcj4KCTwvbnMxOm1ldGFkYXRh
+PgoJPG5zMTpyZXF1ZXN0PgoJCTxuczE6YnVzaW5lc3NNZXNzYWdlUGF5bG9hZD4KCQkJPG5zMTp4
+bWxTY2hlbWFEZWZpbml0aW9uPmh0dHA6Ly9pbnRlZ3JhdGlvbi5uY2kubmloLmdvdi9wYXJ0aWNp
+cGFudAoJCQk8L25zMTp4bWxTY2hlbWFEZWZpbml0aW9uPgoJCQk8cDpwYXJ0aWNpcGFudCBpZD0i
+MSIgdmVyc2lvbj0iMSIKCQkJCXhtbG5zOnA9Imh0dHA6Ly9pbnRlZ3JhdGlvbi5uY2kubmloLmdv
+di9wYXJ0aWNpcGFudCIgeG1sbnM6eHNpPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVt
+YS1pbnN0YW5jZSIKCQkJCXhzaTpzY2hlbWFMb2NhdGlvbj0iaHR0cDovL2ludGVncmF0aW9uLm5j
+aS5uaWguZ292L3BhcnRpY2lwYW50IFBhcnRpY2lwYW50LnhzZCAiPgoJCQkJPHA6Zmlyc3ROYW1l
+PmZpcnN0TmFtZTwvcDpmaXJzdE5hbWU+CgkJCQk8cDpsYXN0TmFtZT5sYXN0TmFtZTwvcDpsYXN0
+TmFtZT4KCQkJCTxwOm1haWRlbk5hbWU+bWFpZGVuTmFtZTwvcDptYWlkZW5OYW1lPgoJCQkJPHA6
+bWlkZGxlTmFtZT5taWRkbGVOYW1lPC9wOm1pZGRsZU5hbWU+CgkJCQk8cDpiaXJ0aERhdGU+MjAw
+MS0wMS0wMTwvcDpiaXJ0aERhdGU+CgkJCQk8cDpnZW5kZXI+TWFsZTwvcDpnZW5kZXI+CgkJCQk8
+cDpyYWNlPkFzaWFuPC9wOnJhY2U+CgkJCQk8cDpldGhuaWNpdHk+SGlzcGFuaWMgb3IgTGF0aW5v
+PC9wOmV0aG5pY2l0eT4KCQkJCTxwOmFjdGl2aXR5U3RhdHVzPkFDVElWRTwvcDphY3Rpdml0eVN0
+YXR1cz4KCQkJCTxwOmlkZW50aWZpZXJzPgoJCQkJCTxwOm9yZ2FuaXphdGlvbkFzc2lnbmVkSWRl
+bnRpZmllcgoJCQkJCQlpZD0iMSIgdmVyc2lvbj0iMSI+CgkJCQkJCTxwOnR5cGU+TVJOPC9wOnR5
+cGU+CgkJCQkJCTxwOnZhbHVlPnZhbHVlPC9wOnZhbHVlPgoJCQkJCQk8cDpwcmltYXJ5SW5kaWNh
+dG9yPnRydWU8L3A6cHJpbWFyeUluZGljYXRvcj4KCQkJCQkJPHA6b3JnYW5pemF0aW9uIGlkPSIx
+IiB2ZXJzaW9uPSIxIj4KCQkJCQkJCTxwOm5hbWU+bmFtZTwvcDpuYW1lPgoJCQkJCQkJPHA6bmNp
+SW5zdGl0dXRlQ29kZT5uY2lJbnN0aXR1dGVDb2RlPC9wOm5jaUluc3RpdHV0ZUNvZGU+CgkJCQkJ
+CTwvcDpvcmdhbml6YXRpb24+CgkJCQkJPC9wOm9yZ2FuaXphdGlvbkFzc2lnbmVkSWRlbnRpZmll
+cj4KCQkJCQk8cDpvcmdhbml6YXRpb25Bc3NpZ25lZElkZW50aWZpZXIKCQkJCQkJaWQ9IjEiIHZl
+cnNpb249IjEiPgoJCQkJCQk8cDp0eXBlPlNTTjwvcDp0eXBlPgoJCQkJCQk8cDp2YWx1ZT52YWx1
+ZTwvcDp2YWx1ZT4KCQkJCQkJPHA6cHJpbWFyeUluZGljYXRvcj5mYWxzZTwvcDpwcmltYXJ5SW5k
+aWNhdG9yPgoJCQkJCQk8cDpvcmdhbml6YXRpb24gaWQ9IjEiIHZlcnNpb249IjEiPgoJCQkJCQkJ
+PHA6bmFtZT5TU048L3A6bmFtZT4KCQkJCQkJCTxwOm5jaUluc3RpdHV0ZUNvZGU+U1NOPC9wOm5j
+aUluc3RpdHV0ZUNvZGU+CgkJCQkJCTwvcDpvcmdhbml6YXRpb24+CgkJCQkJPC9wOm9yZ2FuaXph
+dGlvbkFzc2lnbmVkSWRlbnRpZmllcj4KCQkJCQk8cDpzeXN0ZW1Bc3NpZ25lZElkZW50aWZpZXIg
+aWQ9IjEiCgkJCQkJCXZlcnNpb249IjEiPgoJCQkJCQk8cDp0eXBlPk1STjwvcDp0eXBlPgoJCQkJ
+CQk8cDp2YWx1ZT52YWx1ZTwvcDp2YWx1ZT4KCQkJCQkJPHA6cHJpbWFyeUluZGljYXRvcj50cnVl
+PC9wOnByaW1hcnlJbmRpY2F0b3I+CgkJCQkJCTxwOnN5c3RlbU5hbWU+c3lzdGVtTmFtZTwvcDpz
+eXN0ZW1OYW1lPgoJCQkJCTwvcDpzeXN0ZW1Bc3NpZ25lZElkZW50aWZpZXI+CgkJCQk8L3A6aWRl
+bnRpZmllcnM+CgkJCQk8cDphc3NpZ25tZW50cz4KCQkJCQk8cDphc3NpZ25tZW50IGlkPSIxIiB2
+ZXJzaW9uPSIxIj4KCQkJCQkJPHA6c3R1ZHlTdWJqZWN0SWRlbnRpZmllcj5zdHVkeVN1YmplY3RJ
+ZGVudGlmaWVyCgkJCQkJCTwvcDpzdHVkeVN1YmplY3RJZGVudGlmaWVyPgoJCQkJCQk8cDpzdHVk
+eVNpdGUgaWQ9IjEiIHZlcnNpb249IjEiPgoJCQkJCQkJPHA6c3R1ZHkgaWQ9IjEiIHZlcnNpb249
+IjEiPgoJCQkJCQkJCTxwOmlkZW50aWZpZXJzPgoJCQkJCQkJCQk8cDppZGVudGlmaWVyIGlkPSIx
+IiB2ZXJzaW9uPSIxIj4KCQkJCQkJCQkJCTxwOnR5cGU+U2l0ZSBJZGVudGlmaWVyPC9wOnR5cGU+
+CgkJCQkJCQkJCQk8cDp2YWx1ZT52YWx1ZTwvcDp2YWx1ZT4KCQkJCQkJCQkJPC9wOmlkZW50aWZp
+ZXI+CgkJCQkJCQkJPC9wOmlkZW50aWZpZXJzPgoJCQkJCQkJPC9wOnN0dWR5PgoJCQkJCQkJPHA6
+b3JnYW5pemF0aW9uIGlkPSIxIiB2ZXJzaW9uPSIxIj4KCQkJCQkJCQk8cDpuYW1lPm5hbWU8L3A6
+bmFtZT4KCQkJCQkJCQk8cDpuY2lJbnN0aXR1dGVDb2RlPm5jaUluc3RpdHV0ZUNvZGU8L3A6bmNp
+SW5zdGl0dXRlQ29kZT4KCQkJCQkJCTwvcDpvcmdhbml6YXRpb24+CgkJCQkJCTwvcDpzdHVkeVNp
+dGU+CgkJCQkJPC9wOmFzc2lnbm1lbnQ+CgkJCQk8L3A6YXNzaWdubWVudHM+CgkJCTwvcDpwYXJ0
+aWNpcGFudD4KCQk8L25zMTpidXNpbmVzc01lc3NhZ2VQYXlsb2FkPgoJPC9uczE6cmVxdWVzdD4K
+PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">false</property>
+        </inboundProperties>
+        <outboundProperties>
+          <property name="stripNamespaces">false</property>
+        </outboundProperties>
+      </transformer>
+      <filter>
+        <rules>
+          <rule>
+            <sequenceNumber>0</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;operationName&apos;)&quot; equals globalMap.get(&apos;REGN&apos;) or globalMap.get(&apos;UPDTREGN&apos;)</name>
+            <data class="map">
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>globalMap.get(&apos;REGN&apos;)</string>
+                  <string>globalMap.get(&apos;UPDTREGN&apos;)</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;operationName&apos;)</string>
+              </entry>
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;operationName&apos;) == globalMap.get(&apos;REGN&apos;) || $(&apos;operationName&apos;) == globalMap.get(&apos;UPDTREGN&apos;))
+{
+return true;
+}
+return false;</script>
+            <operator>NONE</operator>
+          </rule>
+        </rules>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <version>2.1.1.5490</version>
+    </connector>
+    <connector>
+      <name>ResponseAggregatorConnector</name>
+      <properties>
+        <property name="DataType">JavaScript Writer</property>
+        <property name="host">sink</property>
+        <property name="script">//supposed to aggregate responses and create appropriate response for this channel
+var svcInvRes = null;
+
+var msg = new XML(messageObject.getEncodedData());
+default xml namespace=&quot;http://caXchange.nci.nih.gov/messaging&quot;;
+
+var svcTyp = msg[&apos;metadata&apos;][&apos;operationName&apos;].toString();
+
+logger.info(&quot;svcTyp in MBC res agg = &quot; + svcTyp);
+
+if(	svcTyp != globalMap.get(&apos;AE&apos;) 
+	&amp;&amp; svcTyp != globalMap.get(&apos;REGN&apos;)
+	&amp;&amp; svcTyp != globalMap.get(&apos;UPDTREGN&apos;)
+	) {
+	var msgParams = [&quot;value1&quot;, &quot;value2&quot;];
+
+	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1050, msgParams);
+	
+	svcInvRes = new Packages.gov.nih.nci.integration.invoker.ServiceInvocationResult();
+	svcInvRes.setInvocationException(intgExcp);
+
+} else {
+
+	var srvcInvcAndAgg = $(&apos;serviceInvocatorAndAggregator&apos;);
+
+	svcInvRes = srvcInvcAndAgg.aggregateResults();
+
+}
+
+if(svcInvRes.isFault()){
+	var excep = svcInvRes.getInvocationException();
+	var msgParams = [&quot;value1&quot;, &quot;value2&quot;];
+	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1050, excep, msgParams);
+	
+	//var	retValue = convertIntegrationExceptionToMsgBCError(excep);
+	var	retValue = convertIntegrationExceptionToMsgBCError(intgExcp);
+	logger.debug(&quot;exception in RAC = &quot; + retValue);
+ 
+	responseMap.put(&quot;MessageBroadcasterChannelResponse&quot;, ResponseFactory.getFailureResponse(retValue) );
+} else {
+	responseMap.put(&quot;MessageBroadcasterChannelResponse&quot;, ResponseFactory.getSuccessResponse(svcInvRes.getResult()));
+}
+
+return;</property>
+      </properties>
+      <transformer>
+        <steps/>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">false</property>
+        </inboundProperties>
+        <outboundProperties>
+          <property name="stripNamespaces">false</property>
+        </outboundProperties>
+      </transformer>
+      <filter>
+        <rules/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <version>2.1.1.5490</version>
+    </connector>
+  </destinationConnectors>
+  <properties>
+    <property name="clearGlobalChannelMap">true</property>
+    <property name="dont_store_filtered">false</property>
+    <property name="encryptData">false</property>
+    <property name="error_messages_only">false</property>
+    <property name="initialState">started</property>
+    <property name="max_message_age">-1</property>
+    <property name="store_messages">true</property>
+    <property name="synchronous">true</property>
+    <property name="transactional">false</property>
+  </properties>
+  <preprocessingScript>// Modify the message variable below to pre process data
+
+return message;</preprocessingScript>
+  <postprocessingScript>// This script executes once after a message has been processed
+return;</postprocessingScript>
+  <deployScript>// This script executes once when the channel is deployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+
+var commonAppCtx = globalMap.get(&quot;commonAppCtx&quot;);
+
+if(commonAppCtx == null) {
+  	commonAppCtx = new Packages.org.springframework.context.support.ClassPathXmlApplicationContext(&quot;classpath*:applicationContext-common.xml&quot;);
+	globalMap.put(&quot;commonAppCtx&quot;, commonAppCtx);
+}
+
+// init catissue service invocation strategy
+var transcendCatissueAppCtx = globalMap.get(&quot;transcendCatissueAppCtx&quot;);
+
+if(transcendCatissueAppCtx == null) {
+  	transcendCatissueAppCtx = new Packages.org.springframework.context.support.ClassPathXmlApplicationContext(&quot;classpath*:applicationContext-transcend-catissue.xml&quot;);		
+	globalMap.put(&quot;transcendCatissueAppCtx&quot;, transcendCatissueAppCtx);
+}
+
+//initialize catissue registration service invocation strategy
+var caTissueRegistrationServiceInvocationStrategy = globalMap.get(&quot;caTissueRegistrationServiceInvocationStrategy&quot;);
+
+if(caTissueRegistrationServiceInvocationStrategy == null) {
+	caTissueRegistrationServiceInvocationStrategy = transcendCatissueAppCtx.getBean(&quot;CaTissueRegistrationServiceInvocationStrategy&quot;);
+}
+
+globalMap.put(&quot;caTissueRegistrationServiceInvocationStrategy&quot;, caTissueRegistrationServiceInvocationStrategy);
+
+//initialize catissue update registration service invocation strategy
+var caTissueUpdateRegistrationServiceInvocationStrategy = globalMap.get(&quot;caTissueUpdateRegistrationServiceInvocationStrategy&quot;);
+
+if(caTissueUpdateRegistrationServiceInvocationStrategy == null) {
+	caTissueUpdateRegistrationServiceInvocationStrategy = transcendCatissueAppCtx.getBean(&quot;CaTissueUpdateRegistrationServiceInvocationStrategy&quot;);
+}
+
+globalMap.put(&quot;caTissueUpdateRegistrationServiceInvocationStrategy&quot;, caTissueUpdateRegistrationServiceInvocationStrategy);
+
+//initialize caaers registration service invocation strategy
+var caaersServiceInvocationStrategy = globalMap.get(&quot;caaersRegistrationServiceInvocationStrategy&quot;);
+
+if(caaersServiceInvocationStrategy == null) {
+	caaersServiceInvocationStrategy = Packages.gov.nih.nci.integration.caaers.invoker.CaAERSServiceInvocationStrategyFactory.createCaAERSRegistrationServiceInvocationStrategy(&quot;caaers-client-lib/&quot;, &quot;classpath*:applicationContext-caaers-client.xml&quot;);
+}
+logger.debug(&quot;caaers regn svs = &quot; + caaersServiceInvocationStrategy);
+globalMap.put(&quot;caaersRegistrationServiceInvocationStrategy&quot;, caaersServiceInvocationStrategy);
+
+//initialize caaers update registration service invocation strategy
+var caaersUpdateServiceInvocationStrategy = globalMap.get(&quot;caaersUpdateRegistrationServiceInvocationStrategy&quot;);
+
+if(caaersUpdateServiceInvocationStrategy == null) {
+	caaersUpdateServiceInvocationStrategy = Packages.gov.nih.nci.integration.caaers.invoker.CaAERSServiceInvocationStrategyFactory.createCaAERSUpdateRegistrationServiceInvocationStrategy(&quot;caaers-client-lib/&quot;, &quot;classpath*:applicationContext-caaers-client.xml&quot;);
+}
+logger.debug(&quot;caaers update regn svs = &quot; + caaersUpdateServiceInvocationStrategy);
+globalMap.put(&quot;caaersUpdateRegistrationServiceInvocationStrategy&quot;, caaersUpdateServiceInvocationStrategy);
+
+return;</deployScript>
+  <shutdownScript>// This script executes once when the channel is undeployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+return;</shutdownScript>
+</channel>

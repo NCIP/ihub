@@ -1,20 +1,20 @@
 package gov.nih.nci.integration.caaers;
 
-import gov.nih.nci.cabig.caaers.webservice.AssignmentType;
-import gov.nih.nci.cabig.caaers.webservice.EthnicityType;
-import gov.nih.nci.cabig.caaers.webservice.GenderType;
-import gov.nih.nci.cabig.caaers.webservice.OrganizationAssignedIdentifierType;
-import gov.nih.nci.cabig.caaers.webservice.OrganizationType;
-import gov.nih.nci.cabig.caaers.webservice.ParticipantIdentifierType;
-import gov.nih.nci.cabig.caaers.webservice.ParticipantType;
-import gov.nih.nci.cabig.caaers.webservice.RaceType;
-import gov.nih.nci.cabig.caaers.webservice.ReducedIdentifierType;
-import gov.nih.nci.cabig.caaers.webservice.Response;
-import gov.nih.nci.cabig.caaers.webservice.StudyIdentifierType;
-import gov.nih.nci.cabig.caaers.webservice.StudySiteType;
-import gov.nih.nci.cabig.caaers.webservice.StudyType;
-import gov.nih.nci.cabig.caaers.webservice.ParticipantType.Assignments;
-import gov.nih.nci.cabig.caaers.webservice.ParticipantType.Identifiers;
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.ParticipantIdentifierType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.common.StudyIdentifierType;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.AssignmentType;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.EthnicityType;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.GenderType;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.OrganizationAssignedIdentifierType;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.RaceType;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.ReducedIdentifierType;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.StudySiteType;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.StudyType;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType.Assignments;
 
 import java.io.File;
 import java.io.FileReader;
@@ -48,7 +48,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:applicationContext-transcend-caaers.xml")
+@ContextConfiguration(locations = "classpath:applicationContext-caaers-client.xml")
 public class CaAERSParticipantServiceClientTest {
 	
 	@Autowired
@@ -58,7 +58,7 @@ public class CaAERSParticipantServiceClientTest {
 		super();
 	}
 	
-	@Test
+	//@Test
 	public void marshalParticipantType() throws JAXBException, DatatypeConfigurationException {
 		ParticipantType pt = new ParticipantType();
 		pt.setFirstName("fn");
@@ -79,7 +79,7 @@ public class CaAERSParticipantServiceClientTest {
         ot.setName("UCSF)");
         ot.setNciInstituteCode("UCSF");
         orgId.setOrganization(ot);
-        Identifiers ids = new Identifiers();
+        ParticipantType.Identifiers ids = new ParticipantType.Identifiers();
         ids.getOrganizationAssignedIdentifier().add(orgId);
         pt.setIdentifiers(ids);
         
@@ -129,23 +129,22 @@ public class CaAERSParticipantServiceClientTest {
 		
 		String participantXMLStr = IOUtils.toString(new FileReader(new File("C:\\vin\\SUITE-iHub\\tmp\\sample\\smpl_caaers_participant.xml")));
 
-		Response response = caAERSParticipantServiceClient.createParticipant(participantXMLStr);
-		
+		CaaersServiceResponse caaersresponse = caAERSParticipantServiceClient.createParticipant(participantXMLStr);
+		ServiceResponse response = caaersresponse.getServiceResponse();
 		Assert.assertNotNull(response);
-		System.out.println(response.getDescription());
 		System.out.println(response.getResponsecode());
 		System.out.println(response.getMessage());
 	}
 	
-	//@Test
+	@Test
 	public void createParticipant2() throws JAXBException, IOException {		
 		
 		String participantXMLStr = getPStr();
 
-		Response response = caAERSParticipantServiceClient.createParticipant(participantXMLStr);
+		CaaersServiceResponse caaersresponse = caAERSParticipantServiceClient.createParticipant(participantXMLStr);
+		ServiceResponse response = caaersresponse.getServiceResponse();
 		
 		Assert.assertNotNull(response);
-		System.out.println(response.getDescription());
 		System.out.println(response.getResponsecode());
 		System.out.println(response.getMessage());
 	}
@@ -161,6 +160,7 @@ public class CaAERSParticipantServiceClientTest {
 	}
 	
 	private String getPStr() {
-		return "<caaers:participant xmlns:p=\"http://integration.nci.nih.gov/participant\" xmlns:caaers=\"http://webservice.caaers.cabig.nci.nih.gov/participant\" id=\"1\" version=\"1\"><firstName>Richard</firstName><lastName>Herd</lastName><maidenName>maidenName</maidenName><middleName>Leing</middleName><birthDate>2001-01-01</birthDate><gender>Male</gender><race>Asian</race><ethnicity>Hispanic or Latino</ethnicity><identifiers><caaers:organizationAssignedIdentifier id=\"1\" version=\"1\"><type>MRN</type><value>poi</value><primaryIndicator>true</primaryIndicator><caaers:organization id=\"1\" version=\"1\"><name>Mayo Clinic Hospital</name><nciInstituteCode/></caaers:organization></caaers:organizationAssignedIdentifier><caaers:systemAssignedIdentifier id=\"1\" version=\"1\"><type>MRN</type><value>ikm</value><primaryIndicator>false</primaryIndicator><systemName>Yarois</systemName></caaers:systemAssignedIdentifier></identifiers><assignments><caaers:assignment id=\"1\" version=\"1\"><studySubjectIdentifier>001</studySubjectIdentifier><caaers:studySite id=\"1\" version=\"1\"><caaers:study id=\"1\" version=\"1\"><identifiers><identifier><type>Protocol Authority Identifier</type><value>6482</value></identifier></identifiers></caaers:study><caaers:organization id=\"1\" version=\"1\"><name>QU</name><nciInstituteCode>DCP</nciInstituteCode></caaers:organization></caaers:studySite></caaers:assignment></assignments></caaers:participant>";
+		//return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ns2:participant xmlns:ns2=\"http://webservice.caaers.cabig.nci.nih.gov/participant\"><firstName>fn</firstName><lastName>ln</lastName><birthDate>2012-04-13</birthDate><gender>Male</gender><race>White</race><ethnicity>Not Hispanic or Latino</ethnicity><identifiers><ns2:organizationAssignedIdentifier><type>MRN</type><value>123456</value><primaryIndicator>true</primaryIndicator><ns2:organization><name>QU</name><nciInstituteCode>DCP</nciInstituteCode></ns2:organization></ns2:organizationAssignedIdentifier></identifiers><assignments><ns2:assignment><studySubjectIdentifier>456</studySubjectIdentifier><ns2:studySite><ns2:study><identifiers><identifier><type>Protocol Authority Identifier</type><value>6482</value></identifier></identifiers></ns2:study><ns2:organization><name>QU</name><nciInstituteCode>DCP</nciInstituteCode></ns2:organization></ns2:studySite></ns2:assignment></assignments></ns2:participant>";
+		return "<?xml version=\"1.0\"?><caaers:participant xmlns:caaers=\"http://webservice.caaers.cabig.nci.nih.gov/participant\" xmlns:p=\"http://integration.nci.nih.gov/participant\" id=\"1\" version=\"1\"><firstName>Cherry0415</firstName><lastName>Blossom0415</lastName><maidenName/><middleName/><birthDate>1965-11-24</birthDate><gender>Male</gender><race>White</race><ethnicity>Not Hispanic or Latino</ethnicity><identifiers><caaers:organizationAssignedIdentifier id=\"1\" version=\"1\"><type>MRN</type><value>997025</value><primaryIndicator>true</primaryIndicator><caaers:organization id=\"1\" version=\"1\"><name>QU</name><nciInstituteCode>DCP</nciInstituteCode></caaers:organization></caaers:organizationAssignedIdentifier><caaers:systemAssignedIdentifier id=\"1\" version=\"1\"><type>MRN</type><value>997025</value><primaryIndicator>true</primaryIndicator><systemName>MRN</systemName></caaers:systemAssignedIdentifier></identifiers><assignments><caaers:assignment id=\"1\" version=\"1\"><studySubjectIdentifier>48824</studySubjectIdentifier><caaers:studySite id=\"1\" version=\"1\"><caaers:study id=\"1\" version=\"1\"><identifiers><identifier id=\"1\" version=\"1\"><type>Protocol Authority Identifier</type><value>6482</value></identifier></identifiers></caaers:study><caaers:organization id=\"1\" version=\"1\"><name>QU</name><nciInstituteCode>DCP</nciInstituteCode></caaers:organization></caaers:studySite></caaers:assignment></assignments></caaers:participant>";
 	}
 }

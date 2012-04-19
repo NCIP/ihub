@@ -105,11 +105,55 @@ public class CaTissueParticipantClient {
 		if (participant == null || StringUtils.isEmpty(participant.getSocialSecurityNumber())) {
 			throw new ApplicationException("Participant does not contain the unique identifier, SSN!");
 		}
+		if (participant == null || StringUtils.isEmpty(participant.getLastName())) {
+			throw new ApplicationException("Participant does not contain the unique medical identifier!");
+		}
 		CollectionProtocolRegistration cpr = getCollectionProtocolRegistrationFromParticipant(participant);
 		participant.getCollectionProtocolRegistrationCollection().add(
 				initCollectionProtocolRegistration(participant, cpr ));		
 		
 		return caTissueAPIClient.insert(participant);
+	}
+	
+	public boolean updateParticipantRegistrationFromXML(String participantXMLStr) throws Exception {
+		if(updateParticipantRegistration(participantXMLStr) != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public Participant updateParticipantRegistration(String participantXMLStr) throws ApplicationException {
+		Participant participant = parseParticipant(participantXMLStr);
+		return updateParticipantRegistration(participant);
+	}
+	
+	/**
+	 * updates Participant registration in CaTissue
+	 * 
+	 * @param participant
+	 *            - Participant to be registered
+	 * @return instance of Participant
+	 */
+	public Participant updateParticipantRegistration(Participant participant) throws ApplicationException {
+		if (participant == null || StringUtils.isEmpty(participant.getSocialSecurityNumber())) {
+			throw new ApplicationException("Participant does not contain the unique identifier, SSN!");
+		}
+		if (participant == null || StringUtils.isEmpty(participant.getLastName())) {
+			throw new ApplicationException("Participant does not contain the unique medical identifier!");
+		}
+		CollectionProtocolRegistration cpr = getCollectionProtocolRegistrationFromParticipant(participant);
+		participant.getCollectionProtocolRegistrationCollection().add(
+				initCollectionProtocolRegistration(participant, cpr ));	
+		
+		Participant existingParticipant = getParticipantForMRN(participant.getLastName());
+		if (existingParticipant == null ) {
+			throw new ApplicationException("CaTissue does not contain a participant with the unique identifier, " + participant.getLastName());
+		}
+		
+		participant.setId(existingParticipant.getId());
+		
+		return caTissueAPIClient.update(participant);
 	}
 	
 	public boolean deleteParticipantFromXML(String participantXMLStr) throws Exception {
@@ -137,12 +181,14 @@ public class CaTissueParticipantClient {
 			throw new ApplicationException("Participant does not contain the unique identifier, SSN!");
 		}
 		
-		Participant persistedParticipant = getParticipantForSSN(participant.getSocialSecurityNumber());
+		Participant persistedParticipant = getParticipantForMRN(participant.getLastName());
 		if(persistedParticipant == null) {
 			return null;
 		}
 		persistedParticipant.setActivityStatus("Disabled");
 		persistedParticipant.setSocialSecurityNumber(null);
+		persistedParticipant.setLastName(null);
+		persistedParticipant.getCollectionProtocolRegistrationCollection().clear();
 			
 		return caTissueAPIClient.update(persistedParticipant);
 	}
@@ -158,6 +204,17 @@ public class CaTissueParticipantClient {
 	public Participant getParticipantForSSN(String ssn) throws ApplicationException {
 		List<Participant> prtcpntLst = caTissueAPIClient.getApplicationService().query(CqlUtility
 				.getParticipantForSSN(ssn));
+		if(prtcpntLst==null || prtcpntLst.isEmpty()) {
+			//TODO : decide on throwing exception vs returning null
+			//throw new ApplicationException("No participant found for the SSN!");
+			return null;
+		}
+		return prtcpntLst.get(0);
+	}
+	
+	public Participant getParticipantForMRN(String mrn) throws ApplicationException {
+		List<Participant> prtcpntLst = caTissueAPIClient.getApplicationService().query(CqlUtility
+				.getParticipantForMedicalIdentifier(mrn));
 		if(prtcpntLst==null || prtcpntLst.isEmpty()) {
 			//TODO : decide on throwing exception vs returning null
 			//throw new ApplicationException("No participant found for the SSN!");

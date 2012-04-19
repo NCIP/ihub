@@ -8,7 +8,8 @@ import java.net.MalformedURLException;
 import javax.xml.bind.JAXBException;
 import javax.xml.ws.soap.SOAPFaultException;
 
-import gov.nih.nci.cabig.caaers.webservice.Response;
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.integration.caaers.CaAERSParticipantServiceWSClient;
 import gov.nih.nci.integration.domain.StrategyIdentifier;
 import gov.nih.nci.integration.exception.IntegrationError;
@@ -58,13 +59,14 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 		ServiceInvocationResult result = new ServiceInvocationResult();
 		try {
 			String participantXMLStr = transformToParticipantXML(arg0);
-			Response response = client.createParticipant(participantXMLStr);
+			CaaersServiceResponse caaersresponse = client.createParticipant(participantXMLStr);
+			ServiceResponse response = caaersresponse.getServiceResponse();
 			if ("0".equals(response.getResponsecode())) { 
 				result.setResult(response.getResponsecode() + " : " + response.getMessage());
 			} else {
 				IntegrationException ie = new IntegrationException(
-						IntegrationError._1020, new Throwable(response.getMessage().get(0)), null);
-				result.setInvocationException(ie);
+						IntegrationError._1020, new Throwable(response.getMessage()), null);
+				result.setInvocationException(ie);				
 			}
 		} catch (SOAPFaultException e) {
 			e.printStackTrace();
@@ -92,12 +94,13 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 		ServiceInvocationResult result = new ServiceInvocationResult();
 		try {
 			String participantXMLStr = transformToParticipantXML(arg0);
-			Response response = client.deleteParticipant(participantXMLStr);
+			CaaersServiceResponse caaersresponse = client.deleteParticipant(participantXMLStr);
+			ServiceResponse response = caaersresponse.getServiceResponse();
 			if ("0".equals(response.getResponsecode())) { 
 				result.setResult(response.getResponsecode() + " : " + response.getMessage());
 			} else {
 				IntegrationException ie = new IntegrationException(
-						IntegrationError._1020, new Throwable(response.getMessage().get(0)), null);
+						IntegrationError._1020, new Throwable(response.getMessage()), null);
 				result.setInvocationException(ie);
 			}
 		} catch (SOAPFaultException e) {
