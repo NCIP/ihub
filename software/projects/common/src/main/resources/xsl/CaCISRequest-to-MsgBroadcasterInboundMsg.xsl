@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1trim="urn:tolven-org:trim:4.0"
-	xmlns:xs="http://www.w3.org/TR/2008/REC-xml-20081126#" xmlns:cacis="http://cacis.nci.nih.gov"
-	xmlns:ns1="http://integration.nci.nih.gov/messaging" xmlns:p="http://integration.nci.nih.gov/participant"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+	xmlns:xs="http://www.w3.org/TR/2008/REC-xml-20081126#"
+	xmlns:ns1trim="urn:tolven-org:trim:4.0"
+	xmlns:p="http://integration.nci.nih.gov/participant"
+	xmlns:xr="http://caXchange.nci.nih.gov/caxchangerequest"
+	xmlns:mes="http://caXchange.nci.nih.gov/messaging"
 	>
 
 	<xsl:output method="xml" indent="yes" />
 
 	<!-- Main -->
 	<xsl:template match="/">
-		<xsl:call-template name="ConvertToMessageBroadcasterInboundMsg">
-		</xsl:call-template>
+		<xsl:call-template name="ConvertToMessageBroadcasterInboundMsg"/>
 	</xsl:template>
 
 
@@ -21,14 +23,14 @@
 			select="//ns1trim:trim/ns1trim:tolvenEventId/@id" />
 
 
-		<MessageBroadcasterRequestMessage
-			xmlns="http://integration.nci.nih.gov/messaging">
-			<metadata>
-				<serviceType><xsl:value-of select="//cacis:exchangeDocument/@exchangeFormat"/></serviceType>
-				<externalIdentifier><xsl:value-of select="$trimMsgId" /></externalIdentifier>
-			</metadata>
-			<request>
-				<businessMessagePayload>
+		<xr:caxchangerequest xmlns:xr="http://caXchange.nci.nih.gov/caxchangerequest"
+			xmlns:mes="http://caXchange.nci.nih.gov/messaging">
+			<mes:metadata>
+				<xsl:apply-templates select="//xr:caxchangerequest/mes:metadata/node()|@*"/>
+			</mes:metadata>
+			
+			<mes:request>
+				<mes:businessMessagePayload>
 					<xmlSchemaDefinition>http://integration.nci.nih.gov/participant</xmlSchemaDefinition>
 					<p:participant id="1" version="1"
 						xmlns:p="http://integration.nci.nih.gov/participant" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -96,9 +98,21 @@
 							</p:assignment>
 						</p:assignments>
 					</p:participant>
-				</businessMessagePayload>
-			</request>
-		</MessageBroadcasterRequestMessage>
+				</mes:businessMessagePayload>
+			</mes:request>
+		</xr:caxchangerequest>
+	</xsl:template>
+	
+	<xsl:template match="node()|@*">
+		<xsl:copy>
+		  <xsl:apply-templates select="node()|@*"/>
+		</xsl:copy>
+  </xsl:template>
+	
+	<xsl:template match="p:*">
+		<xsl:element name="{local-name()}" >
+		  <xsl:apply-templates select="node()|@*"/>
+		</xsl:element>		
 	</xsl:template>
 	
 </xsl:stylesheet>

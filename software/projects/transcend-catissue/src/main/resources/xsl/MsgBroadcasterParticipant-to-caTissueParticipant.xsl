@@ -35,8 +35,13 @@
 			<catissue:gender>
 				<xsl:value-of select="key('gender-lookup', //p:participant/p:gender)/g:vocvalue"/>
 			</catissue:gender>
+			<!--
 			<catissue:lastName>
 				<xsl:value-of select="//p:participant/p:lastName"/>
+			</catissue:lastName>
+			-->
+			<catissue:lastName>
+				<xsl:value-of select="//p:participant/p:identifiers/p:organizationAssignedIdentifier[p:type/text()='MRN']/p:value"/>
 			</catissue:lastName>
 			<catissue:socialSecurityNumber>
 				<xsl:value-of select="//p:participant/p:identifiers/p:organizationAssignedIdentifier[p:type/text()='SSN']/p:value"/>
@@ -73,6 +78,7 @@
 				</catissue:collectionProtocolRegistration>
 			</catissue:collectionProtocolRegistrationCollection>
 			<catissue:raceCollection class="set" />
+			<!--
 			<catissue:participantMedicalIdentifierCollection class="linked-hash-set">
 				<catissue:participantMedicalIdentifier>
 					<catissue:medicalRecordNumber><xsl:value-of select="//p:participant/p:identifiers/p:organizationAssignedIdentifier[p:type/text()='MRN']/p:value"/></catissue:medicalRecordNumber>
@@ -84,6 +90,7 @@
 					<catissue:participant reference="../../.."/>
 				</catissue:participantMedicalIdentifier>
 			</catissue:participantMedicalIdentifierCollection>
+			-->
 			<catissue:participantRecordEntryCollection	class="set" />
 		</catissue:participant>
 	</xsl:template>
