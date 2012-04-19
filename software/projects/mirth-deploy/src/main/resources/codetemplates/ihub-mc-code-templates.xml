@@ -1,0 +1,111 @@
+<list>
+  <codeTemplate>
+    <id>54477467-b3ca-4506-9191-64620cfad8e8</id>
+    <name>transformMessage</name>
+    <tooltip>xsl transforms based on the transformer name</tooltip>
+    <code>function transformMessage(messageToTransform, transformerName) {
+	var transformer = globalMap.get(transformerName);
+	logger.info(transformerName + &quot;=&quot; + transformer);
+	var os;
+	var is;
+	try {
+		os = new Packages.java.io.ByteArrayOutputStream();
+		is = new Packages.java.io.ByteArrayInputStream(new Packages.java.lang.String(messageToTransform).getBytes());
+
+		transformer.transform(null, is, os);
+
+		transformedDocument = new Packages.java.lang.String(os.toByteArray());
+
+	} finally {
+		if (is != null) {
+			is.close();
+		}
+		if (os != null) {
+			os.close();
+		}
+	}
+	return transformedDocument;
+}</code>
+    <type>FUNCTION</type>
+    <scope>0</scope>
+    <version>2.1.1.5490</version>
+  </codeTemplate>
+  <codeTemplate>
+    <id>7607950a-c0f2-4454-8cf2-a85f8be6e191</id>
+    <name>persistIHubMessageInDB</name>
+    <tooltip>persists IHubMessageInDB</tooltip>
+    <code>function persistIHubMessageInDB(requestMsg) {
+	var iHubMessageDao = globalMap.get(&quot;iHubMessageDao&quot;);
+
+	return iHubMessageDao.saveMessage(requestMsg);
+	
+}</code>
+    <type>FUNCTION</type>
+    <scope>0</scope>
+    <version>2.1.1.5490</version>
+  </codeTemplate>
+  <codeTemplate>
+    <id>1dc57a01-ef5d-42f3-bbf5-567626e25460</id>
+    <name>convertIntegrationExceptionToCaCISError</name>
+    <tooltip>convert IntegrationException To CaCISError xml string</tooltip>
+    <code>// modify function_name and parameters as you wish.
+// one function per template is recommended. i.e.) create a new code template for each new function.
+function convertIntegrationExceptionToCaCISError(intgExcptn) {
+	var cacisError = &quot;&lt;CaCISError errorType=\&quot;&quot;+ intgExcptn.getErrorType().name() + &quot;\&quot;&quot;
+					+ &quot; errorCode=\&quot;&quot; + intgExcptn.getErrorCode() + &quot;\&quot;&quot;
+					+ &quot; errorMessage=\&quot;&quot; + intgExcptn.getMessage() + &quot;\&quot;&quot;
+					+ &quot; detail=\&quot;&quot; + intgExcptn.stackTraceAsString()+ &quot;\&quot;/&gt; &quot;;
+	return cacisError;
+}</code>
+    <type>FUNCTION</type>
+    <scope>0</scope>
+    <version>2.1.1.5490</version>
+  </codeTemplate>
+  <codeTemplate>
+    <id>97d7c36e-e4bf-4a21-a369-fd8127af17f0</id>
+    <name>convertIntgExceptionToIHubResponse</name>
+    <tooltip>convert Exception To IHubResponse</tooltip>
+    <code>// modify function_name and parameters as you wish.
+// one function per template is recommended. i.e.) create a new code template for each new function.
+function convertIntgExceptionToIHubResponse(intgExcptn) {	
+	var iHubResponse = &quot;&lt;response&gt;&lt;reponseStatus&gt;FAILURE&lt;/responseStatus&gt;&quot;
+			+ &quot;&lt;caXchangeError&gt;&lt;errorCode&gt;&quot;+ intgExcptn.getErrorCode() +&quot;&lt;/errorCode&gt;&quot;
+			+ &quot;&lt;errorDescription&gt;&quot; + intgExcptn.getMessage() + &quot;&lt;/errorDescription&gt;&quot;
+			+ &quot;&lt;/caXchangeError&gt;&lt;/response&gt;&quot;;
+	return iHubResponse;
+}</code>
+    <type>FUNCTION</type>
+    <scope>3</scope>
+    <version>2.1.1.5490</version>
+  </codeTemplate>
+  <codeTemplate>
+    <id>ad77a029-e0f0-4a62-86c5-c25ac359a0d8</id>
+    <name>convertIntegrationExceptionToMsgBCError</name>
+    <tooltip>converts IntegrationException To MsgBC Error</tooltip>
+    <code>// modify function_name and parameters as you wish.
+// one function per template is recommended. i.e.) create a new code template for each new function.
+function convertIntegrationExceptionToMsgBCError(intgExcptn) {
+	var cacisError = &quot;&lt;MessageBroadcasterError errorType=\&quot;&quot;+ intgExcptn.getErrorType().name() + &quot;\&quot;&quot;
+					+ &quot; errorCode=\&quot;&quot; + intgExcptn.getErrorCode() + &quot;\&quot;&quot;
+					+ &quot; errorMessage=\&quot;&quot; + intgExcptn.getMessage() + &quot;\&quot;&quot;
+					+ &quot; detail=\&quot;&quot; + intgExcptn.stackTraceAsString()+ &quot;\&quot;/&gt; &quot;;
+	return cacisError;
+}</code>
+    <type>FUNCTION</type>
+    <scope>0</scope>
+    <version>2.1.1.5490</version>
+  </codeTemplate>
+  <codeTemplate>
+    <id>67c23225-4310-4698-8704-0e60090ea8f0</id>
+    <name>convertMsgBCErrorToCaCISError</name>
+    <tooltip>converts MsgBCError To CaCISError</tooltip>
+    <code>// modify function_name and parameters as you wish.
+// one function per template is recommended. i.e.) create a new code template for each new function.
+function convertMsgBCErrorToCaCISError(msgBCErrorStr) {
+	return	msgBCErrorStr.replace(&quot;MessageBroadcasterError&quot;, &quot;CaCISError&quot;);
+}</code>
+    <type>FUNCTION</type>
+    <scope>3</scope>
+    <version>2.1.1.5490</version>
+  </codeTemplate>
+</list>

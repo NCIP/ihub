@@ -1,17 +1,17 @@
 package gov.nih.nci.cacis.sa.transcend;
 
-import gov.nih.nci.integration.util.CustomUrlClassLoader;
-
-import java.lang.reflect.Method;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
+import java.io.StringWriter;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.mirth.connect.connectors.ws.AcceptMessage;
 import com.mirth.connect.connectors.ws.WebServiceMessageReceiver;
@@ -29,9 +29,9 @@ import com.mirth.connect.connectors.ws.WebServiceMessageReceiver;
                       targetNamespace = "http://cacis.nci.nih.gov",
                       endpointInterface = "gov.nih.nci.cacis.sa.transcend.AcceptSourcePortType")
                       
-public class TranscendSemanticAdapter extends AcceptMessage{
+public class TranscendSemanticAdapter extends AcceptMessage {
 
-    private static final Logger LOG = Logger.getLogger(TranscendSemanticAdapter.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(TranscendSemanticAdapter.class.getName());
     
 //    private String customLibDir = "./custom-lib";
     private String customLibDir = "custom-lib/";
@@ -81,41 +81,29 @@ public class TranscendSemanticAdapter extends AcceptMessage{
             
             return response;
         } catch (java.lang.Exception ex) {
-            LOG.error(ex);
+            LOG.error("Error accepting CaCISRequest", ex);
             throw new AcceptSourceFault("Error accepting Data from Source System!" + ex.getMessage(), ex);
         }
     }
     
     
     private String getCaCISRequestxml(final CaCISRequest parameter) {
-
-        return AccessController.doPrivileged(new PrivilegedAction<String>() {
-
-            public String run() {
-                try {
-                	String requestXML= "";
-                	CustomUrlClassLoader ccl = new CustomUrlClassLoader(customLibDir);
-                    final Class jmClass = Class.forName("gov.nih.nci.integration.util.JAXBMarshaller", true, ccl);
-                    
-                    System.out.println("Loaded Class Name : " +jmClass.getName());
-                    
-                    final Method m = jmClass.getMethod("marshal", Object.class);
-                    
-                    System.out.println("Method Name : " +m.getName() +" About to call the marshal() method ");
-                    
-                    requestXML= (String) m.invoke(jmClass.newInstance(), parameter);
-                    
-                    System.out.println("Return RequestXML is : " + requestXML);
-                    
-                    return requestXML;                    
-                    
-                } catch (Exception ex) {
-                	LOG.error("Error marshalling CaCISRequest!", ex);                	 
-                    return null;
-                }
-            }
-        });
+        try {           
+        	StringWriter sw = new StringWriter();        	
+        	getMarshaller().marshal( parameter,sw);                 	
+        	LOG.info("Inside TranscendSemanticAdapter... RequestXML is : " + sw.toString());
+        	return sw.toString(); 
+        } catch (Exception ex) {
+        	LOG.error("Error marshalling CaXchangeRequest!", ex);                	 
+            return null;
+        } 
 
     }
+    
+    private Marshaller getMarshaller() throws JAXBException {		
+		JAXBContext jc = JAXBContext.newInstance(CaCISRequest.class);		
+		return jc.createMarshaller();		
+	}
+    
 
 }

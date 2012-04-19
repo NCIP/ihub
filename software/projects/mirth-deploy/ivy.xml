@@ -12,10 +12,8 @@
         		description="Dependencies required for build time, all classpath should have this"/>
         	<conf name="publish" visibility="public"
         		description="Dependencies along with this module is published in repository" />
-        	<conf name="distGrid" visibility="public"
-        		description="Dependencies that are required in grid distribution of this module" />
         	<conf name="dist" visibility="public"
-        		description="Dependencies needed for standalone distribution" />
+        		description="Dependencies needed for standalone distribution"/>
         	<conf name="runtime" visibility="public"
         		description="The dependencies that are needed for runtime" extends="build" />
         	<conf name="test" visibility="public"
@@ -26,21 +24,19 @@
 
         <!--  Items to be published  -->
          <publications>
-    		<artifact name="${ivy.module}" conf="publish,dist,distGrid" type="jar"/>
+    		<artifact name="${ivy.module}" conf="publish,dist" type="jar"/>
     		<artifact name="${ivy.module}-tests" conf="test" type="jar"/>
   		</publications>
 
-        <dependencies defaultconfmapping="build,dist,distGrid->default(*)">
+        <dependencies defaultconfmapping="build->default(*)">
         
-        <!--<exclude module="spring-remoting"/>
-        <exclude module="spring-web"/>
-        <exclude org="org.acegisecurity"/>
-              
-        <exclude org="org.jglobus"/>
-        -->
-		<!-- commonIntegration -->
-        <dependency org="gov.nih.nci.ihub" name="transcend-catissue" rev="latest.integration"  conf="default->default;runtime->runtime;test->test;static-analysis->static-analysis"/>
-		<dependency org="gov.nih.nci.ihub" name="transcend-caaers" rev="latest.integration"  conf="default->default;runtime->runtime;test->test;static-analysis->static-analysis"/>
-		
+        <exclude module="jaxb-xjc"/>
+        <exclude module="jaxb-impl"/>
+       
+        <dependency org="gov.nih.nci.ihub" name="transcend-catissue" rev="latest.integration"  conf="runtime->dist;test->test;static-analysis->static-analysis"/>
+		<dependency org="gov.nih.nci.ihub" name="transcend-caaers" rev="latest.integration"  conf="runtime->dist;test->test;static-analysis->static-analysis"/>
+		<dependency org="gov.nih.nci.ihub" name="transcend-caxchange" rev="latest.integration"  conf="runtime->dist;test->test;static-analysis->static-analysis"/>
+		<dependency org="gov.nih.nci.ihub" name="transcend-sa" rev="latest.integration"  conf="runtime->dist;test->test;static-analysis->static-analysis"/>
+				
 		</dependencies>
 </ivy-module>

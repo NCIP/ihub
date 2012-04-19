@@ -12,13 +12,19 @@ public class CaAERSServiceInvocationStrategyFactoryTest {
 	
 	@Test
 	public void createCaAERSServiceInvocationStrategy() {
-		ServiceInvocationStrategy sis = CaAERSServiceInvocationStrategyFactory
-			.createCaAERSServiceInvocationStrategy(
+		ServiceInvocationStrategy sris = CaAERSServiceInvocationStrategyFactory
+			.createCaAERSRegistrationServiceInvocationStrategy(
 					"C:\\vin\\SUITE-iHub\\software\\projects\\transcend-caaers\\caaers-client-lib\\", 
 					"classpath*:applicationContext-caaers-client.xml");
-		System.out.println(sis.getClass().getClassLoader());
-		assertNotNull(sis);
-		ServiceInvocationResult res = sis.invoke(getPStr());
+		ServiceInvocationStrategy suris = CaAERSServiceInvocationStrategyFactory
+		.createCaAERSUpdateRegistrationServiceInvocationStrategy(
+				"C:\\vin\\SUITE-iHub\\software\\projects\\transcend-caaers\\caaers-client-lib\\", 
+				"classpath*:applicationContext-caaers-client.xml");
+		System.out.println(sris.getClass().getClassLoader());
+		assertNotNull(sris);
+		assertNotNull(suris);
+		
+		ServiceInvocationResult res = sris.invoke(getPStr());
 		assertNotNull(res);
 		assertTrue(res.isFault());
 		assertNotNull(res.getInvocationException());

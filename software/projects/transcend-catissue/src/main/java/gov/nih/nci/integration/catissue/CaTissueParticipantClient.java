@@ -26,6 +26,7 @@ public class CaTissueParticipantClient {
 	private String password = null;
 	
 	private static Class[] registerMethodParamTypes = {String.class};
+	private static Class[] updateRegistrationMethodParamTypes = {String.class};
 	private static Class[] deleteMethodParamTypes = {String.class};
 
 	private Executor ex = Executors.newCachedThreadPool();
@@ -84,6 +85,42 @@ public class CaTissueParticipantClient {
 			
 			if (!result.isFault()) {
 				result.setResult("Successfully registered participant in CaTissue!");
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			result = getServiceInvocationResult(IntegrationError._1051, e);
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+			result = getServiceInvocationResult(IntegrationError._1051, e);
+		}
+
+		return result;
+	}
+	
+	public ServiceInvocationResult updateRegistrationParticipant(
+			final String participantXMLStr) {
+		ServiceInvocationResult result = null;
+		
+		CaTissueTask task = null;
+		try {
+			task = new CaTissueTask(caTissueClientClass, loginName, password,
+					"updateParticipantRegistrationFromXML", updateRegistrationMethodParamTypes,
+					participantXMLStr);
+		} catch (Exception e1) {			
+			e1.printStackTrace();
+			result = getServiceInvocationResult(IntegrationError._1051, e1);
+			return result;
+		}
+		
+		try {
+			ExecutorCompletionService<ServiceInvocationResult> ecs = 
+				new ExecutorCompletionService<ServiceInvocationResult>(ex);
+			ecs.submit(task);
+
+			result = ecs.take().get();
+			
+			if (!result.isFault()) {
+				result.setResult("Successfully update participant registration in CaTissue!");
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();

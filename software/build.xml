@@ -2,12 +2,39 @@
 	<macrodef name="iterate">
 		<attribute name="target"/>
 		<sequential>
-			<subant target="@{target}">
-				<fileset dir="./projects" includes="*/build.xml"/>
+			<subant target="@{target}" antfile="build.xml">
+				 <filelist dir="./projects/">
+				  	<file name="common"/>
+				  	<file name="catissue-client"/>
+				  	<file name="caaers-client"/>
+				 	<file name="transcend-catissue"/>
+				 	<file name="transcend-caaers"/>
+				 	<file name="transcend-caxchange"/>
+				 	<file name="transcend-sa"/>
+				 	<file name="mirth-deploy"/>
+				 </filelist>
 			</subant>
 		</sequential>
 	</macrodef>
-
+	
+	<target name="deploy">
+		<antcall target="stopMirth"/>
+		<iterate target="deploy-mc"/>
+		<antcall target="startMirth"/>
+		<antcall target="run.mirth.script"/>
+	</target>
+	
+	<target name="startMirth">		
+		<subant target="start.mirth.connect" buildpath="./projects/common/" antfile="build.xml"/>
+	</target>
+	
+	<target name="stopMirth">		
+		<subant target="stop.mirth.connect" buildpath="./projects/common/" antfile="build.xml"/>
+	</target>
+	
+	<target name="run.mirth.script">		
+		<subant target="run.mirth.script" buildpath="./projects/mirth-deploy/" antfile="build.xml"/>
+	</target>
 
 	<target name="all">
 		<iterate target="all"/>
@@ -27,18 +54,8 @@
 	
 	<target name="create-project" 
 		 description="Will create sub project structure under the project folder if it is not available">
-		 <subant target="create-project">
-			<fileset dir="./build" includes="common.xml"/>
-		</subant>
-		<subant target="init">
-			<fileset dir="./projects/${new.project.name}" includes="build.xml"/>
-		</subant>
-	</target>	
-
-	<target name="start-mc" description="starts MC">
-		<exec executable="${browser}" spawn="true">
-    <arg value="${file}"/>
-</exec>
+		 <subant target="create-project" buildpath="./build" antfile="common.xml"/>
+		 <subant target="init" buildpath="./projects/${new.project.name}" antfile="build.xml"/>
 	</target>	
 
 	<!-- more targets -->

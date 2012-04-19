@@ -43,14 +43,19 @@ public class CaTissueParticipantIntegrationTest {
 		caTissueParticipantClient = new CaTissueParticipantClient(
 				"admin@admin.com", "Aa_111111");
 	}
-
+	
+	//@Test
+	public void fetchParticipantByMRN() throws ApplicationException {
+		Participant p = caTissueParticipantClient.getParticipantForMRN("12349");
+		assertNotNull(p);
+	}
 	/**
 	 * Tests creating and registering participant with collection protocol
 	 * 
 	 * @throws Exception
 	 *             exception thrown if any
 	 */
-	//@Test
+	@Test
 	public void createParticipantAsPC() throws Exception {
 		final String cpTitle = "CP-01";
 
@@ -110,7 +115,7 @@ public class CaTissueParticipantIntegrationTest {
 		assertNotNull(parsedParticipant);
 	}
 
-	//@Test
+	@Test
 	public void submitRegistrationFromXMLPayload() throws ApplicationException {
 
 		Participant registeredParticipant = caTissueParticipantClient
@@ -119,12 +124,12 @@ public class CaTissueParticipantIntegrationTest {
 		assertNotNull(registeredParticipant);
 		assertNotNull(registeredParticipant.getObjectId());
 
-		assertEquals("123-45-6822", registeredParticipant
+		assertEquals("123-45-6823", registeredParticipant
 				.getSocialSecurityNumber());
 
 		caTissueParticipantClient.deleteParticipant(getParticipantXMLStr());
 		final Participant result2 = caTissueParticipantClient
-				.getParticipantForSSN("123-45-6822");
+				.getParticipantForSSN("123-45-6823");
 		assertNull(result2);
 	}
 
@@ -137,20 +142,22 @@ public class CaTissueParticipantIntegrationTest {
 		participant.setEthnicity("Unknown");
 		participant.setGender("Unspecified");
 		participant.setFirstName("JOHN5");
-		participant.setLastName("DOE5");
+		//participant.setLastName("DOE5");
+		//MRN or Medical Identifier is being set as lastName for identification
+		participant.setLastName("995678");
 		participant.setVitalStatus("Alive");
-		participant.setSocialSecurityNumber("123-45-6821");
+		participant.setSocialSecurityNumber("123-45-6823");
 
 		Site site = SiteFactory.getInstance().createObject();
-		site.setName("UCSF");
+		site.setName("In Transit");
 		
-		ParticipantMedicalIdentifier pmi = ParticipantMedicalIdentifierFactory
+		/*ParticipantMedicalIdentifier pmi = ParticipantMedicalIdentifierFactory
 				.getInstance().createObject();
 		pmi.setParticipant(participant);
-		pmi.setMedicalRecordNumber("12345");
+		pmi.setMedicalRecordNumber("12349");
 		pmi.setSite(site);
 
-		participant.getParticipantMedicalIdentifierCollection().add(pmi);
+		participant.getParticipantMedicalIdentifierCollection().add(pmi);*/
 
 		return participant;
 	}
@@ -184,8 +191,8 @@ public class CaTissueParticipantIntegrationTest {
 	private String getParticipantXMLStr() {
 		return "<?xml version=\"1.0\" ?><participant><activityStatus>Active</activityStatus>"
 				+ "<birthDate>1941-05-02 00:00:00.0 EDT</birthDate><ethnicity>Unknown</ethnicity>"
-				+ "<firstName>JOHN5</firstName><gender>Unspecified</gender><lastName>DOE5</lastName>"
-				+ "<socialSecurityNumber>123-45-6822</socialSecurityNumber><vitalStatus>Alive</vitalStatus>"
+				+ "<firstName>JOHN5</firstName><gender>Unspecified</gender><lastName>995678</lastName>"
+				+ "<socialSecurityNumber>123-45-6823</socialSecurityNumber><vitalStatus>Alive</vitalStatus>"
 				+ "<collectionProtocolRegistrationCollection class=\"set\"><collectionProtocolRegistration>"
 				+ "<activityStatus>Active</activityStatus>"
 				+ "<consentSignatureDate>2012-03-30 14:36:24.822 EDT</consentSignatureDate>"
@@ -205,10 +212,7 @@ public class CaTissueParticipantIntegrationTest {
 				+ "<participant reference=\"../../..\"></participant>"
 				+ "<isToInsertAnticipatorySCGs>true</isToInsertAnticipatorySCGs></collectionProtocolRegistration>"
 				+ "</collectionProtocolRegistrationCollection><raceCollection class=\"set\"></raceCollection>"
-				+ "<participantMedicalIdentifierCollection class=\"linked-hash-set\">"
-				+ "<participantMedicalIdentifier><medicalRecordNumber>12345</medicalRecordNumber>"
-				+ "<participant reference=\"../../..\"/></participantMedicalIdentifier>"
-				+ "</participantMedicalIdentifierCollection>"
+				+ "<participantMedicalIdentifierCollection class=\"linked-hash-set\"/>"				
 				+ "<participantRecordEntryCollection class=\"set\"/></participant>";
 	}
 

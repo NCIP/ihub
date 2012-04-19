@@ -20,8 +20,8 @@ public class JAXBMarshaller {
      * @return marshalled string
      * @throws JAXBException exception thrown, if any
      */
-    public String marshal(Object obj) throws JAXBException {
-        final JAXBContext jc = JAXBContext.newInstance(obj.getClass());
+    public String marshal(Class claz, Object obj) throws JAXBException {
+        final JAXBContext jc = JAXBContext.newInstance(claz);
         
         final Marshaller m = jc.createMarshaller();
         final StringWriter sw = new StringWriter();
