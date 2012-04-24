@@ -85,6 +85,8 @@ public class CaTissueParticipantClient {
 			
 			if (!result.isFault()) {
 				result.setResult("Successfully registered participant in CaTissue!");
+			} else {
+			
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();

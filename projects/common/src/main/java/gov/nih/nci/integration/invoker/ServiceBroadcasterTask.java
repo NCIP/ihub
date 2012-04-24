@@ -30,8 +30,7 @@ public class ServiceBroadcasterTask implements Callable<ServiceInvocationResult>
 	@Override
 	public ServiceInvocationResult call() throws IntegrationException {
 		if (serviceBroadcaster == null) {
-			throw new IntegrationException(IntegrationError._1062);
-			
+			throw new IntegrationException(IntegrationError._1062);			
 		}
 		
 		if (referenceMessageId < 1) {

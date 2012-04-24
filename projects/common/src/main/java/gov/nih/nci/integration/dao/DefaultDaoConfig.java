@@ -26,7 +26,7 @@ public class DefaultDaoConfig implements DaoConfig {
     @Scope("prototype")
     @Override    
     public IHubMessageDao iHubMessageDao() {
-        return new IHubMessageDao(em);
+        return new DefaultIHubMessageDao(em);
     }
 
     /* (non-Javadoc)
@@ -36,7 +36,7 @@ public class DefaultDaoConfig implements DaoConfig {
     @Scope("prototype")
     @Override
     public ServiceInvocationMessageDao serviceInvocationMessageDao() {
-        return new ServiceInvocationMessageDao(em);
+        return new DefaultServiceInvocationMessageDao(em);
     }
 
 }

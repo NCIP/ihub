@@ -1,6 +1,11 @@
 package gov.nih.nci.integration.invoker;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +20,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContext-common-test.xml")
 public class TransactionalServiceInvocatorAndResultAggregatorTest {
+	
+	@PersistenceContext
+	private EntityManager em;
 
 	@Autowired
 	ServiceInvocatorAndResultAggregator serviceInvocatorAndResultAggregator;
-
+	
 	@Test
 	public void aggregateResults() {
 		long refMsgId = 12345L;
@@ -31,7 +39,7 @@ public class TransactionalServiceInvocatorAndResultAggregatorTest {
 		serviceInvocatorAndResultAggregator.invokeService(refMsgId, message, svcStrtgy2);
 		serviceInvocatorAndResultAggregator.invokeService(refMsgId, message, svcStrtgy3);
 
-		ServiceInvocationResult serviceInvocationResult = serviceInvocatorAndResultAggregator.aggregateResults();
+		ServiceInvocationResult serviceInvocationResult = serviceInvocatorAndResultAggregator.aggregateResults(refMsgId);
 		assertNotNull(serviceInvocationResult);
 		assertEquals("Success", serviceInvocationResult.getResult());
 		
@@ -45,7 +53,7 @@ public class TransactionalServiceInvocatorAndResultAggregatorTest {
 	
 	@Test
 	public void aggregateResultsWithError() {
-		long refMsgId = 12345L;
+		long refMsgId = 12346L;
 		String message = "Test message";
 		SleeperServiceInvocationStrategy svcStrtgy1 = new SleeperServiceInvocationStrategy(3000, false);
 		SleeperServiceInvocationStrategy svcStrtgy2 = new SleeperServiceInvocationStrategy(8000, true);
@@ -55,7 +63,7 @@ public class TransactionalServiceInvocatorAndResultAggregatorTest {
 		serviceInvocatorAndResultAggregator.invokeService(refMsgId, message, svcStrtgy2);
 		serviceInvocatorAndResultAggregator.invokeService(refMsgId, message, svcStrtgy3);
 
-		ServiceInvocationResult serviceInvocationResult = serviceInvocatorAndResultAggregator.aggregateResults();
+		ServiceInvocationResult serviceInvocationResult = serviceInvocatorAndResultAggregator.aggregateResults(refMsgId);
 		assertNotNull(serviceInvocationResult);
 		assertEquals(true, serviceInvocationResult.isFault());
 		
@@ -69,8 +77,8 @@ public class TransactionalServiceInvocatorAndResultAggregatorTest {
 	
 	@Test
 	public void aggregateResultsWithoutAnyServiceInvocation() {
-				
-		ServiceInvocationResult serviceInvocationResult = serviceInvocatorAndResultAggregator.aggregateResults();
+		long refMsgId = 12347L;
+		ServiceInvocationResult serviceInvocationResult = serviceInvocatorAndResultAggregator.aggregateResults(refMsgId);
 		assertNotNull(serviceInvocationResult);
 		assertEquals("Success", serviceInvocationResult.getResult());
 		

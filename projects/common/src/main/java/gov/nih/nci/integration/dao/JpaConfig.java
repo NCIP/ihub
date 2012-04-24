@@ -7,11 +7,8 @@ import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.orm.jpa.JpaDialect;
 import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 /**
@@ -76,7 +73,7 @@ public class JpaConfig {
         dataSource.setPassword(password);
         dataSource.setUsername(username);
         dataSource.setDriverClassName(driverClassName);
-
+        
         return dataSource;
     }
 
@@ -88,7 +85,6 @@ public class JpaConfig {
     @Bean
     public HibernateJpaVendorAdapter jpaVendorAdapter() {
         final HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
-        System.out.println("databasePlatform = " + databasePlatform);
         jpaVendorAdapter.setDatabasePlatform(databasePlatform);
         jpaVendorAdapter.setShowSql(showSql);
         
@@ -107,7 +103,6 @@ public class JpaConfig {
         entityManagerFactoryBean.setPersistenceUnitName(PERSISTENCE_UNIT_NAME);
         entityManagerFactoryBean.setDataSource(dataSource());
         entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter());
-        
         entityManagerFactoryBean.setPersistenceXmlLocation("classpath*:META-INF/ihub-messages-persistence.xml");
 
         // must set the properties
@@ -125,6 +120,9 @@ public class JpaConfig {
         final JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
         jpaTransactionManager.setEntityManagerFactory(entityManagerFactory());
         jpaTransactionManager.setDataSource(dataSource());
+        
+        // must set the properties
+        jpaTransactionManager.afterPropertiesSet();
         return jpaTransactionManager;
     }
 

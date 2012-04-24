@@ -5,7 +5,7 @@
   <enabled>true</enabled>
   <version>2.1.1.5490</version>
   <lastModified>
-    <time>1334513442490</time>
+    <time>1335208116140</time>
     <timezone>America/New_York</timezone>
   </lastModified>
   <revision>1</revision>
@@ -44,12 +44,12 @@
               <string></string>
             </entry>
             <entry>
-              <string>Mapping</string>
-              <string>msg[&apos;metadata&apos;][&apos;externalIdentifier&apos;].toString()</string>
-            </entry>
-            <entry>
               <string>RegularExpressions</string>
               <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;metadata&apos;][&apos;externalIdentifier&apos;].toString()</string>
             </entry>
             <entry>
               <string>isGlobal</string>
@@ -72,12 +72,12 @@
               <string></string>
             </entry>
             <entry>
-              <string>Mapping</string>
-              <string>msg[&apos;metadata&apos;][&apos;operationName&apos;].toString()</string>
-            </entry>
-            <entry>
               <string>RegularExpressions</string>
               <list/>
+            </entry>
+            <entry>
+              <string>Mapping</string>
+              <string>msg[&apos;metadata&apos;][&apos;operationName&apos;].toString()</string>
             </entry>
             <entry>
               <string>isGlobal</string>
@@ -228,14 +228,14 @@ PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
             <name>Accept message if &quot;$(&apos;operationName&apos;)&quot; equals globalMap.get(&apos;AE&apos;)</name>
             <data class="map">
               <entry>
-                <string>Name</string>
-                <string></string>
-              </entry>
-              <entry>
                 <string>Values</string>
                 <list>
                   <string>globalMap.get(&apos;AE&apos;)</string>
                 </list>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string></string>
               </entry>
               <entry>
                 <string>Field</string>
@@ -359,15 +359,15 @@ PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
             <name>Accept message if &quot;$(&apos;operationName&apos;)&quot; equals globalMap.get(&apos;REGN&apos;) or globalMap.get(&apos;UPDTREGN&apos;)</name>
             <data class="map">
               <entry>
-                <string>Name</string>
-                <string></string>
-              </entry>
-              <entry>
                 <string>Values</string>
                 <list>
                   <string>globalMap.get(&apos;REGN&apos;)</string>
                   <string>globalMap.get(&apos;UPDTREGN&apos;)</string>
                 </list>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string></string>
               </entry>
               <entry>
                 <string>Field</string>
@@ -491,15 +491,15 @@ PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
             <name>Accept message if &quot;$(&apos;operationName&apos;)&quot; equals globalMap.get(&apos;REGN&apos;) or globalMap.get(&apos;UPDTREGN&apos;)</name>
             <data class="map">
               <entry>
-                <string>Name</string>
-                <string></string>
-              </entry>
-              <entry>
                 <string>Values</string>
                 <list>
                   <string>globalMap.get(&apos;REGN&apos;)</string>
                   <string>globalMap.get(&apos;UPDTREGN&apos;)</string>
                 </list>
+              </entry>
+              <entry>
+                <string>Name</string>
+                <string></string>
               </entry>
               <entry>
                 <string>Field</string>
@@ -558,8 +558,8 @@ if(	svcTyp != globalMap.get(&apos;AE&apos;)
 } else {
 
 	var srvcInvcAndAgg = $(&apos;serviceInvocatorAndAggregator&apos;);
-
-	svcInvRes = srvcInvcAndAgg.aggregateResults();
+	var refMsgId = Packages.java.lang.Long.parseLong($(&apos;referenceMsgId&apos;));
+	svcInvRes = srvcInvcAndAgg.aggregateResults(refMsgId);
 
 }
 
@@ -651,11 +651,13 @@ if(caTissueUpdateRegistrationServiceInvocationStrategy == null) {
 
 globalMap.put(&quot;caTissueUpdateRegistrationServiceInvocationStrategy&quot;, caTissueUpdateRegistrationServiceInvocationStrategy);
 
+var caaersCustomLibLocations = new Array(&quot;caaers-client-lib/&quot;);
+
 //initialize caaers registration service invocation strategy
 var caaersServiceInvocationStrategy = globalMap.get(&quot;caaersRegistrationServiceInvocationStrategy&quot;);
 
 if(caaersServiceInvocationStrategy == null) {
-	caaersServiceInvocationStrategy = Packages.gov.nih.nci.integration.caaers.invoker.CaAERSServiceInvocationStrategyFactory.createCaAERSRegistrationServiceInvocationStrategy(&quot;caaers-client-lib/&quot;, &quot;classpath*:applicationContext-caaers-client.xml&quot;);
+	caaersServiceInvocationStrategy = Packages.gov.nih.nci.integration.caaers.invoker.CaAERSServiceInvocationStrategyFactory.createCaAERSRegistrationServiceInvocationStrategy(caaersCustomLibLocations, &quot;classpath*:applicationContext-caaers-client.xml&quot;);
 }
 logger.debug(&quot;caaers regn svs = &quot; + caaersServiceInvocationStrategy);
 globalMap.put(&quot;caaersRegistrationServiceInvocationStrategy&quot;, caaersServiceInvocationStrategy);
@@ -664,7 +666,7 @@ globalMap.put(&quot;caaersRegistrationServiceInvocationStrategy&quot;, caaersSer
 var caaersUpdateServiceInvocationStrategy = globalMap.get(&quot;caaersUpdateRegistrationServiceInvocationStrategy&quot;);
 
 if(caaersUpdateServiceInvocationStrategy == null) {
-	caaersUpdateServiceInvocationStrategy = Packages.gov.nih.nci.integration.caaers.invoker.CaAERSServiceInvocationStrategyFactory.createCaAERSUpdateRegistrationServiceInvocationStrategy(&quot;caaers-client-lib/&quot;, &quot;classpath*:applicationContext-caaers-client.xml&quot;);
+	caaersUpdateServiceInvocationStrategy = Packages.gov.nih.nci.integration.caaers.invoker.CaAERSServiceInvocationStrategyFactory.createCaAERSUpdateRegistrationServiceInvocationStrategy(caaersCustomLibLocations, &quot;classpath*:applicationContext-caaers-client.xml&quot;);
 }
 logger.debug(&quot;caaers update regn svs = &quot; + caaersUpdateServiceInvocationStrategy);
 globalMap.put(&quot;caaersUpdateRegistrationServiceInvocationStrategy&quot;, caaersUpdateServiceInvocationStrategy);

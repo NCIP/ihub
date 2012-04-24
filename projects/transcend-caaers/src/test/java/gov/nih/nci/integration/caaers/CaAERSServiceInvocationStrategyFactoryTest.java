@@ -1,6 +1,14 @@
 package gov.nih.nci.integration.caaers;
 
+import java.io.File;
+import java.sql.Date;
+
+import javax.swing.text.DefaultEditorKit.CutAction;
+
 import gov.nih.nci.integration.caaers.invoker.CaAERSServiceInvocationStrategyFactory;
+import gov.nih.nci.integration.domain.IHubMessage;
+import gov.nih.nci.integration.domain.ServiceInvocationMessage;
+import gov.nih.nci.integration.domain.StrategyIdentifier;
 import gov.nih.nci.integration.invoker.ServiceInvocationResult;
 import gov.nih.nci.integration.invoker.ServiceInvocationStrategy;
 
@@ -12,19 +20,36 @@ public class CaAERSServiceInvocationStrategyFactoryTest {
 	
 	@Test
 	public void createCaAERSServiceInvocationStrategy() {
+		File customLibLoc = new File("..\\caaers-client\\caaers-client-lib\\");
+		File distLoc = new File("..\\caaers-client\\build\\dist\\");
+		System.out.println(customLibLoc.getAbsolutePath());
 		ServiceInvocationStrategy sris = CaAERSServiceInvocationStrategyFactory
 			.createCaAERSRegistrationServiceInvocationStrategy(
-					"C:\\vin\\SUITE-iHub\\software\\projects\\transcend-caaers\\caaers-client-lib\\", 
+					new String[] { 
+							customLibLoc.getAbsolutePath(),
+							distLoc.getAbsolutePath()
+					}, 
 					"classpath*:applicationContext-caaers-client.xml");
 		ServiceInvocationStrategy suris = CaAERSServiceInvocationStrategyFactory
 		.createCaAERSUpdateRegistrationServiceInvocationStrategy(
-				"C:\\vin\\SUITE-iHub\\software\\projects\\transcend-caaers\\caaers-client-lib\\", 
+				new String[] { 
+						customLibLoc.getAbsolutePath(),
+						distLoc.getAbsolutePath()
+				}, 
 				"classpath*:applicationContext-caaers-client.xml");
 		System.out.println(sris.getClass().getClassLoader());
 		assertNotNull(sris);
 		assertNotNull(suris);
 		
-		ServiceInvocationResult res = sris.invoke(getPStr());
+		ServiceInvocationMessage msg = new ServiceInvocationMessage();
+		msg.setStrategyIdentifier(StrategyIdentifier.CAEERS_CREATE_REGISTRATION);
+		IHubMessage iHubMessage = new IHubMessage();
+		iHubMessage.setRequest(getPStr());
+		final Date stTime = new Date(new java.util.Date().getTime());
+		iHubMessage.setStartTime(stTime);
+		msg.setMessage(iHubMessage);
+		
+		ServiceInvocationResult res = sris.invoke(msg);
 		assertNotNull(res);
 		assertTrue(res.isFault());
 		assertNotNull(res.getInvocationException());

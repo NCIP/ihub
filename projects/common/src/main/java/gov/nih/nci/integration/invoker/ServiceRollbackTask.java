@@ -1,19 +1,18 @@
 package gov.nih.nci.integration.invoker;
 
+import gov.nih.nci.integration.domain.ServiceInvocationMessage;
 import gov.nih.nci.integration.exception.IntegrationError;
 import gov.nih.nci.integration.exception.IntegrationException;
 
 import java.util.concurrent.Callable;
 
-import org.apache.commons.lang.StringUtils;
-
 public class ServiceRollbackTask implements Callable<ServiceInvocationResult> {
 			
-	private String message;
+	private ServiceInvocationMessage message;
 	
 	private ServiceInvocationStrategy serviceInvocationStrategy;
 
-	public ServiceRollbackTask(String message,
+	public ServiceRollbackTask(ServiceInvocationMessage message,
 			ServiceInvocationStrategy serviceInvocationStrategy) {
 		super();
 		this.message = message;
@@ -23,8 +22,7 @@ public class ServiceRollbackTask implements Callable<ServiceInvocationResult> {
 	@Override
 	public ServiceInvocationResult call() throws IntegrationException {
 		
-		
-		if (StringUtils.isEmpty(message)) {
+		if (message == null) {
 			throw new IntegrationException(IntegrationError._1064);
 		}
 		

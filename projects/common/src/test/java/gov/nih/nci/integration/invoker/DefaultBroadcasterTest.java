@@ -8,7 +8,7 @@ import gov.nih.nci.integration.domain.ServiceInvocationMessage;
 import gov.nih.nci.integration.domain.Status;
 import gov.nih.nci.integration.domain.StrategyIdentifier;
 
-import java.util.List;
+import java.util.Map;
 
 import org.easymock.EasyMock;
 import org.junit.Before;
@@ -54,14 +54,14 @@ public class DefaultBroadcasterTest {
 	public void prepareMockServiceInvocationStrategy() {
 		serviceInvocationStrategy = EasyMock
 				.createNiceMock(ServiceInvocationStrategy.class);
-
+		
 		serviceInvocationResult = new ServiceInvocationResult();		
 
 		EasyMock.expect(serviceInvocationStrategy.getStrategyIdentifier())
 				.andReturn(StrategyIdentifier.CAEERS_CREATE_REGISTRATION);
 		
 		EasyMock.expect(
-				serviceInvocationStrategy.invoke(MOCK_REQUEST_MESSAGE))
+				serviceInvocationStrategy.invoke((ServiceInvocationMessage)EasyMock.anyObject()))
 				.andReturn(serviceInvocationResult);
 		
 		EasyMock.expect(
@@ -88,17 +88,19 @@ public class DefaultBroadcasterTest {
 		assertNotNull(serviceInvocationResultActual);
 		assertEquals(serviceInvocationResult, serviceInvocationResultActual);
 
-		final List<ServiceInvocationMessage> svcInvMsgs = serviceInvocationMessageDao
+		final Map<StrategyIdentifier, ServiceInvocationMessage> svcInvMsgs = serviceInvocationMessageDao
 				.getAllByReferenceMessageId(REF_MSG_ID);
 		assertNotNull(svcInvMsgs);
 		assertEquals(1, svcInvMsgs.size());
 		
-		final ServiceInvocationMessage svcInvMsgRetrieved = svcInvMsgs.get(0);
+		final ServiceInvocationMessage svcInvMsgRetrieved = svcInvMsgs.get(StrategyIdentifier.CAEERS_CREATE_REGISTRATION);
+		assertNotNull(svcInvMsgRetrieved);
 		assertEquals(StrategyIdentifier.CAEERS_CREATE_REGISTRATION, svcInvMsgRetrieved.getStrategyIdentifier());
 		assertNotNull(svcInvMsgRetrieved.getMessage());
 		assertNotNull(svcInvMsgRetrieved.getMessage().getId());
 		assertEquals(Status.SUCCESS, svcInvMsgRetrieved.getMessage().getStatus());
-		assertEquals(MOCK_REQUEST_RESPONSE, svcInvMsgs.get(0).getMessage().getResponse());
+		assertEquals(MOCK_REQUEST_MESSAGE, svcInvMsgRetrieved.getMessage().getRequest());
+		assertEquals(MOCK_REQUEST_RESPONSE, svcInvMsgRetrieved.getMessage().getResponse());
 		assertNull(svcInvMsgRetrieved.getInvocationException());
 	}
 	
@@ -116,7 +118,7 @@ public class DefaultBroadcasterTest {
 		serviceInvocationResult.setRetry(true);
 		
 		//verify 3 times called, 1 main + 2 retries
-		EasyMock.expect(serviceInvocationStrategy.invoke(MOCK_REQUEST_MESSAGE))
+		EasyMock.expect(serviceInvocationStrategy.invoke((ServiceInvocationMessage)EasyMock.anyObject()))
 				.andReturn(serviceInvocationResult).times(RETRY_CNT);
 		
 		EasyMock.replay(serviceInvocationStrategy);
@@ -128,16 +130,18 @@ public class DefaultBroadcasterTest {
 		assertNotNull(serviceInvocationResultActual);
 		assertEquals(serviceInvocationResult, serviceInvocationResultActual);
 
-		final List<ServiceInvocationMessage> svcInvMsgs = serviceInvocationMessageDao
+		final Map<StrategyIdentifier, ServiceInvocationMessage> svcInvMsgs = serviceInvocationMessageDao
 				.getAllByReferenceMessageId(REF_MSG_ID);
 		assertNotNull(svcInvMsgs);
 		assertEquals(1, svcInvMsgs.size());
 		
-		final ServiceInvocationMessage svcInvMsgRetrieved = svcInvMsgs.get(0);
+		final ServiceInvocationMessage svcInvMsgRetrieved = svcInvMsgs.get(StrategyIdentifier.CAEERS_CREATE_REGISTRATION);
+		assertNotNull(svcInvMsgRetrieved);
 		assertEquals(StrategyIdentifier.CAEERS_CREATE_REGISTRATION, svcInvMsgRetrieved.getStrategyIdentifier());
 		assertNotNull(svcInvMsgRetrieved.getMessage());
 		assertNotNull(svcInvMsgRetrieved.getMessage().getId());
 		assertEquals(Status.FAILED, svcInvMsgRetrieved.getMessage().getStatus());
+		assertEquals(MOCK_REQUEST_MESSAGE, svcInvMsgRetrieved.getMessage().getRequest());
 		assertNull(svcInvMsgRetrieved.getMessage().getResponse());
 		assertEquals("Exception from ServiceInvocation", svcInvMsgRetrieved.getInvocationException());
 		
