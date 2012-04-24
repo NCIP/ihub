@@ -18,7 +18,7 @@ public class CaAERSServiceInvocationStrategyFactory {
 	
 	private static Boolean initStatus = null;
 	
-	private static synchronized void init(final String caaersLibLocation, final String caaersConfig) {
+	private static synchronized void init(final String[] caaersLibLocation, final String... caaersConfig) {
 		ExecutorCompletionService<Boolean> ecs = new ExecutorCompletionService<Boolean>(
 				Executors.newSingleThreadExecutor());
 
@@ -54,7 +54,7 @@ public class CaAERSServiceInvocationStrategyFactory {
 	}
 
 	public static ServiceInvocationStrategy createCaAERSRegistrationServiceInvocationStrategy(
-			final String caaersLibLocation, final String caaersConfig) {
+			final String caaersLibLocation[], final String... caaersConfig) {
 		
 		if(initStatus == null && caaersRegistrationServiceInvocationStrategy == null) {
 			init(caaersLibLocation, caaersConfig);
@@ -67,7 +67,7 @@ public class CaAERSServiceInvocationStrategyFactory {
 	}
 	
 	public static ServiceInvocationStrategy createCaAERSUpdateRegistrationServiceInvocationStrategy(
-			final String caaersLibLocation, final String caaersConfig) {
+			final String caaersLibLocation[], final String... caaersConfig) {
 		
 		if(initStatus == null && caaersUpdateRegistrationServiceInvocationStrategy == null) {
 			init(caaersLibLocation, caaersConfig);

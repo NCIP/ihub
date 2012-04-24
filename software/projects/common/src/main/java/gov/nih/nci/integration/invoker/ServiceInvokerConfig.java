@@ -1,6 +1,7 @@
 package gov.nih.nci.integration.invoker;
 
 import gov.nih.nci.integration.dao.IHubMessageDao;
+import gov.nih.nci.integration.dao.DefaultServiceInvocationMessageDao;
 import gov.nih.nci.integration.dao.ServiceInvocationMessageDao;
 
 import java.util.concurrent.Executor;
@@ -39,6 +40,6 @@ public class ServiceInvokerConfig {
 	@Bean
 	@Scope("prototype")
 	public ServiceInvocatorAndResultAggregator serviceInvocatorAndResultAggregator() {
-		return new TransactionalServiceInvocatorAndResultAggregator(serviceBroadcaster(), executor());
+		return new TransactionalServiceInvocatorAndResultAggregator(serviceBroadcaster(), serviceInvocationMessageDao, executor());
 	}
 }

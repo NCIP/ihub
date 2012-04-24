@@ -4,6 +4,8 @@ import gov.nih.nci.integration.domain.AbstractIdentity;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * Base Dao interface. Defines common methods for operating on an entity. The intent is for there to be a single Dao
  * interface per entity (entity subclasses don't need a separate dao interface).
@@ -11,6 +13,7 @@ import java.util.List;
  * @author chandrasekaravr
  * @param <T> the type of the entity for this dao
  */
+@Transactional
 public interface Dao<T extends AbstractIdentity> {
 
     /**

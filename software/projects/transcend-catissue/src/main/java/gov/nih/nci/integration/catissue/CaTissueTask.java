@@ -36,9 +36,11 @@ public class CaTissueTask implements Callable<ServiceInvocationResult> {
 	public ServiceInvocationResult call() {
 		ServiceInvocationResult result = new ServiceInvocationResult();
 		try {
-			methodToInvoke.invoke(caTissueClientInstance, message);
+			Object retValue = methodToInvoke.invoke(caTissueClientInstance, message);
+			result.setDataChanged(true);
+			result.setOriginalData(retValue);
 		} catch (Exception e) {
-			e.printStackTrace();
+			//TODO : handle individual exceptions
 			IntegrationException ie = new IntegrationException(
 					IntegrationError._1051, e.getCause());
 			result.setInvocationException(ie);

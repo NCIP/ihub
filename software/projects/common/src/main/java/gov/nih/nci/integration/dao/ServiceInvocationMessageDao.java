@@ -1,33 +1,20 @@
 package gov.nih.nci.integration.dao;
 
-import java.util.List;
-
 import gov.nih.nci.integration.domain.ServiceInvocationMessage;
+import gov.nih.nci.integration.domain.StrategyIdentifier;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import java.util.Map;
 
-public class ServiceInvocationMessageDao extends
-		AbstractDao<ServiceInvocationMessage> implements
-		Dao<ServiceInvocationMessage> {
+import org.springframework.transaction.annotation.Transactional;
+
+@Transactional
+public interface ServiceInvocationMessageDao extends Dao<ServiceInvocationMessage> {
 
 	/**
-	 * Constructor.
-	 * 
-	 * @param em JPA EntityManager
+	 * {@inheritDoc}
 	 */
-	public ServiceInvocationMessageDao(EntityManager em) {
-		super(ServiceInvocationMessage.class, em);
-	}
-	
-	/**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    public List<ServiceInvocationMessage> getAllByReferenceMessageId(Long refMsgId) {
-    	final Query msgsQuery = this.getEntityManager().createQuery("from " + getDomainClass().getSimpleName()
-                + " svcInvMsg where svcInvMsg.referenceMessageId = :referenceMessageId ");
-    	msgsQuery.setParameter("referenceMessageId", refMsgId);
-        return msgsQuery.getResultList();
-    }
+	@SuppressWarnings("unchecked")
+	public abstract Map<StrategyIdentifier, ServiceInvocationMessage> getAllByReferenceMessageId(
+			Long refMsgId);
+
 }

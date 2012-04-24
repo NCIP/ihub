@@ -9,7 +9,6 @@ import gov.nih.nci.system.applicationservice.ApplicationException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -81,17 +80,15 @@ public class CaTissueParticipantClient {
 				.fromXML(new StringReader(participantXMLStr));
 	}
 		
-	public boolean registerParticipantFromXML(String participantXMLStr) throws Exception {
-		if(registerParticipant(participantXMLStr) != null) {
-			return true;
-		} else {
-			return false;
-		}
+	public String registerParticipantFromXML(String participantXMLStr) throws Exception {
+		return registerParticipant(participantXMLStr);
 	}
 	
-	public Participant registerParticipant(String participantXMLStr) throws ApplicationException {
+	public String registerParticipant(String participantXMLStr) throws ApplicationException {
 		Participant participant = parseParticipant(participantXMLStr);
-		return registerParticipant(participant);
+		registerParticipant(participant);
+		
+		return null;
 	}
 	
 	/**
@@ -108,24 +105,24 @@ public class CaTissueParticipantClient {
 		if (participant == null || StringUtils.isEmpty(participant.getLastName())) {
 			throw new ApplicationException("Participant does not contain the unique medical identifier!");
 		}
-		CollectionProtocolRegistration cpr = getCollectionProtocolRegistrationFromParticipant(participant);
-		participant.getCollectionProtocolRegistrationCollection().add(
-				initCollectionProtocolRegistration(participant, cpr ));		
+//		CollectionProtocolRegistration cpr = getCollectionProtocolRegistrationFromParticipant(participant);
+//		Collection<CollectionProtocolRegistration> cprCollection = participant.getCollectionProtocolRegistrationCollection();
+//		cprCollection.clear();
+//		cprCollection.add(initCollectionProtocolRegistration(participant, cpr ));		
 		
-		return caTissueAPIClient.insert(participant);
+		caTissueAPIClient.insert(participant);
+		
+		return null;
 	}
 	
-	public boolean updateParticipantRegistrationFromXML(String participantXMLStr) throws Exception {
-		if(updateParticipantRegistration(participantXMLStr) != null) {
-			return true;
-		} else {
-			return false;
-		}
+	public String updateParticipantRegistrationFromXML(String participantXMLStr) throws Exception {
+		return updateParticipantRegistration(participantXMLStr);
 	}
 	
-	public Participant updateParticipantRegistration(String participantXMLStr) throws ApplicationException {
+	public String updateParticipantRegistration(String participantXMLStr) throws ApplicationException {
 		Participant participant = parseParticipant(participantXMLStr);
-		return updateParticipantRegistration(participant);
+		participant = updateParticipantRegistration(participant);
+		return xStream.toXML(participant);
 	}
 	
 	/**
@@ -142,9 +139,7 @@ public class CaTissueParticipantClient {
 		if (participant == null || StringUtils.isEmpty(participant.getLastName())) {
 			throw new ApplicationException("Participant does not contain the unique medical identifier!");
 		}
-		CollectionProtocolRegistration cpr = getCollectionProtocolRegistrationFromParticipant(participant);
-		participant.getCollectionProtocolRegistrationCollection().add(
-				initCollectionProtocolRegistration(participant, cpr ));	
+//		CollectionProtocolRegistration cpr = getCollectionProtocolRegistrationFromParticipant(participant);
 		
 		Participant existingParticipant = getParticipantForMRN(participant.getLastName());
 		if (existingParticipant == null ) {
@@ -153,7 +148,13 @@ public class CaTissueParticipantClient {
 		
 		participant.setId(existingParticipant.getId());
 		
-		return caTissueAPIClient.update(participant);
+//		Collection<CollectionProtocolRegistration> cprCollection = existingParticipant.getCollectionProtocolRegistrationCollection();
+//		cprCollection.clear();
+//		cprCollection.add(initCollectionProtocolRegistration(participant, cpr ));
+		
+		caTissueAPIClient.update(participant);
+		
+		return existingParticipant;
 	}
 	
 	public boolean deleteParticipantFromXML(String participantXMLStr) throws Exception {
@@ -193,8 +194,8 @@ public class CaTissueParticipantClient {
 		return caTissueAPIClient.update(persistedParticipant);
 	}
 	
-	/* (non-Javadoc)
-	 * @see gov.nih.nci.integration.catissue.CaTissueParticipantClientInterface#getParticipantsForCollectionProtocol(java.lang.String)
+	/**
+	 * retrieve participants registered to a collection protocol
 	 */
 	public List<Participant> getParticipantsForCollectionProtocol(String cpTitle) throws ApplicationException {
 		return caTissueAPIClient.getApplicationService().query(CqlUtility
@@ -217,28 +218,9 @@ public class CaTissueParticipantClient {
 				.getParticipantForMedicalIdentifier(mrn));
 		if(prtcpntLst==null || prtcpntLst.isEmpty()) {
 			//TODO : decide on throwing exception vs returning null
-			//throw new ApplicationException("No participant found for the SSN!");
 			return null;
 		}
 		return prtcpntLst.get(0);
-	}
-	
-	/**
-	 * Creates a CollectionProtocolRegistration
-	 * 
-	 * @param participant - Participant object
-	 * @param collectionProtocol - CollectionProtocol object
-	 * @return instance of CollectionProtocolRegistration
-	 */
-	public CollectionProtocolRegistration initCollectionProtocolRegistration(
-			Participant participant, CollectionProtocolRegistration collectionProtocolRegistration) {
-
-		collectionProtocolRegistration.setParticipant(participant);
-		collectionProtocolRegistration.setProtocolParticipantIdentifier("");
-		collectionProtocolRegistration.setActivityStatus("Active");
-		collectionProtocolRegistration.setRegistrationDate(new Date());
-		collectionProtocolRegistration.setConsentSignatureDate(new Date());
-		return collectionProtocolRegistration;
 	}
 	
 	private CollectionProtocolRegistration getCollectionProtocolRegistrationFromParticipant(Participant participant) throws ApplicationException {

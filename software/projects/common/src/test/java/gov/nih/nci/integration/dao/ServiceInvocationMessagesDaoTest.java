@@ -8,7 +8,7 @@ import gov.nih.nci.integration.domain.Status;
 import gov.nih.nci.integration.domain.StrategyIdentifier;
 
 import java.sql.Date;
-import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 @ContextConfiguration(locations = "classpath:applicationContext-common-test.xml")
 @Transactional
 public class ServiceInvocationMessagesDaoTest {
@@ -56,7 +56,6 @@ public class ServiceInvocationMessagesDaoTest {
 	 * Tests saving a ServiceInvocationMessage
 	 */
 	@Test
-	@Rollback(true)
 	public void save() {
 		final int sizeBefore = serviceInvocationMessageDao.getAll().size();
 		final ServiceInvocationMessage serviceInvocationMessage = createServiceInvocationMessage();
@@ -83,7 +82,6 @@ public class ServiceInvocationMessagesDaoTest {
 	 * Tests retrieving list of ServiceInvocationMessage by reference message id
 	 */
 	@Test
-	@Rollback(true)
 	public void getAllByReferenceMessageId() {
 		final ServiceInvocationMessage serviceInvocationMessage = createServiceInvocationMessage();
 		serviceInvocationMessage.setReferenceMessageId(refMsgId);
@@ -92,11 +90,12 @@ public class ServiceInvocationMessagesDaoTest {
 				.save(serviceInvocationMessage);
 		assertNotNull(id);
 		
-		List<ServiceInvocationMessage> svcInvMsgs = serviceInvocationMessageDao.getAllByReferenceMessageId(refMsgId);
+		Map<StrategyIdentifier, ServiceInvocationMessage> svcInvMsgs = serviceInvocationMessageDao.getAllByReferenceMessageId(refMsgId);
 		assertNotNull(svcInvMsgs);
 		assertEquals(1, svcInvMsgs.size());
 		
-		final ServiceInvocationMessage savedServiceInvocationMessage = svcInvMsgs.get(0);
+		final ServiceInvocationMessage savedServiceInvocationMessage = svcInvMsgs.get(serviceInvocationMessage.getStrategyIdentifier());
+		assertNotNull(savedServiceInvocationMessage);
 		assertEquals(serviceInvocationMessage.getStrategyIdentifier(),
 				savedServiceInvocationMessage.getStrategyIdentifier());
 		assertEquals(serviceInvocationMessage.getReferenceMessageId(),

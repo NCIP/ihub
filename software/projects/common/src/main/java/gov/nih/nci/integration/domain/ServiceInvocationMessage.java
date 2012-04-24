@@ -12,6 +12,10 @@ public class ServiceInvocationMessage extends AbstractIdentity {
 	Long referenceMessageId;
 	String invocationException;
 	StrategyIdentifier strategyIdentifier;
+	
+	boolean dataChanged = false;
+	
+	String originalData = null;
 
 	IHubMessage message;
 
@@ -42,7 +46,7 @@ public class ServiceInvocationMessage extends AbstractIdentity {
 		this.strategyIdentifier = strategyIdentifier;
 	}
 
-	@OneToOne(cascade=CascadeType.PERSIST)
+	@OneToOne(cascade=CascadeType.ALL)
 	@NotNull
 	public IHubMessage getMessage() {
 		return message;
@@ -52,4 +56,19 @@ public class ServiceInvocationMessage extends AbstractIdentity {
 		this.message = message;
 	}
 
+	public boolean isDataChanged() {
+		return dataChanged;
+	}
+
+	public void setDataChanged(boolean dataChanged) {
+		this.dataChanged = dataChanged;
+	}
+
+	public String getOriginalData() {
+		return originalData;
+	}
+
+	public void setOriginalData(String originalData) {
+		this.originalData = originalData;
+	}
 }

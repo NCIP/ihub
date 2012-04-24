@@ -3,6 +3,7 @@ package gov.nih.nci.integration.caaers.invoker;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.integration.caaers.CaAERSParticipantServiceWSClient;
+import gov.nih.nci.integration.domain.ServiceInvocationMessage;
 import gov.nih.nci.integration.domain.StrategyIdentifier;
 import gov.nih.nci.integration.exception.IntegrationError;
 import gov.nih.nci.integration.exception.IntegrationException;
@@ -18,6 +19,9 @@ import java.net.MalformedURLException;
 import javax.xml.bind.JAXBException;
 import javax.xml.ws.soap.SOAPFaultException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * 
  * @author chandrasekaravr
@@ -25,6 +29,9 @@ import javax.xml.ws.soap.SOAPFaultException;
  */
 public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 		ServiceInvocationStrategy {
+	
+	private static Logger LOG = LoggerFactory
+		.getLogger(CaAERSUpdateRegistrationServiceInvocationStrategy.class);
 
 	private CaAERSParticipantServiceWSClient client;
 
@@ -55,10 +62,19 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 	}
 
 	@Override
-	public ServiceInvocationResult invoke(String arg0) {
+	public ServiceInvocationResult invoke(ServiceInvocationMessage msg) {
 		ServiceInvocationResult result = new ServiceInvocationResult();
 		try {
-			String participantXMLStr = transformToParticipantXML(arg0);
+			//TODO : get actual original participant data, for now, do some mock up
+			String orginalData = msg.getMessage().getRequest();
+			String markup =	"firstName>";
+			orginalData.replaceAll(markup, markup + "original-");
+			LOG.debug("orginalData >> " + orginalData);
+			
+			result.setOriginalData(orginalData);
+			
+			String participantXMLStr = transformToParticipantXML(msg.getMessage().getRequest());
+			LOG.debug("from caaers >> " + participantXMLStr);
 			CaaersServiceResponse caaersresponse = client.updateParticipant(participantXMLStr);
 			ServiceResponse response = caaersresponse.getServiceResponse();
 			if ("0".equals(response.getResponsecode())) { 
@@ -90,11 +106,11 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 	}
 
 	@Override
-	public ServiceInvocationResult rollback(String arg0) {
+	public ServiceInvocationResult rollback(ServiceInvocationMessage msg) {
 		ServiceInvocationResult result = new ServiceInvocationResult();
 		try {
-			String participantXMLStr = transformToParticipantXML(arg0);
-			CaaersServiceResponse caaersresponse = client.deleteParticipant(participantXMLStr);
+			String participantXMLStr = transformToParticipantXML(msg.getOriginalData());
+			CaaersServiceResponse caaersresponse = client.updateParticipant(participantXMLStr);
 			ServiceResponse response = caaersresponse.getServiceResponse();
 			if ("0".equals(response.getResponsecode())) { 
 				result.setResult(response.getResponsecode() + " : " + response.getMessage());

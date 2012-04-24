@@ -2,6 +2,7 @@ package gov.nih.nci.integration.exception;
 
 
 public enum IntegrationError {
+	
 	_1000(1000, ErrorType.UNKNOWN, "Unexpected error."),
 	_1001(1001, ErrorType.VALIDATION, "The participant registration format is invalid for caTissue."),
 	_1002(1002, ErrorType.VALIDATION, "No collection protocol was found in caTissue for the identifier ${0}."),

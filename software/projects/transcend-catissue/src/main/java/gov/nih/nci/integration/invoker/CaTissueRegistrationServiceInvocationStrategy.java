@@ -1,6 +1,7 @@
 package gov.nih.nci.integration.invoker;
 
 import gov.nih.nci.integration.catissue.CaTissueParticipantClient;
+import gov.nih.nci.integration.domain.ServiceInvocationMessage;
 import gov.nih.nci.integration.domain.StrategyIdentifier;
 import gov.nih.nci.integration.exception.IntegrationException;
 import gov.nih.nci.integration.transformer.XSLTTransformer;
@@ -45,10 +46,10 @@ public class CaTissueRegistrationServiceInvocationStrategy implements
 	}
 
 	@Override
-	public ServiceInvocationResult invoke(String arg0) {
+	public ServiceInvocationResult invoke(ServiceInvocationMessage msg) {
 		ServiceInvocationResult serviceInvocationResult = new ServiceInvocationResult();
 		try {
-			String participantXMLStr = transformToParticipantXML(arg0);
+			String participantXMLStr = transformToParticipantXML(msg.getMessage().getRequest());
 			serviceInvocationResult = caTissueParticipantClient.registerParticipant(participantXMLStr);
 		} catch (IntegrationException e) {
 			serviceInvocationResult.setInvocationException(e);
@@ -57,10 +58,10 @@ public class CaTissueRegistrationServiceInvocationStrategy implements
 	}
 
 	@Override
-	public ServiceInvocationResult rollback(String arg0) {
+	public ServiceInvocationResult rollback(ServiceInvocationMessage msg) {
 		ServiceInvocationResult serviceInvocationResult = new ServiceInvocationResult();
 		try {
-			String participantXMLStr = transformToParticipantXML(arg0);
+			String participantXMLStr = transformToParticipantXML(msg.getMessage().getRequest());
 			serviceInvocationResult = caTissueParticipantClient.deleteParticipant(participantXMLStr);
 		} catch (IntegrationException e) {
 			serviceInvocationResult.setInvocationException(e);

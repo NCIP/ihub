@@ -13,7 +13,6 @@ import javax.persistence.PersistenceContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -25,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 @ContextConfiguration(locations = "classpath:applicationContext-common-test.xml")
 @Transactional
 public class IHubMessagesDaoTest {
@@ -40,7 +39,6 @@ public class IHubMessagesDaoTest {
 	 * Tests saving a iHubMessage
 	 */
 	@Test
-	@Rollback(true)
 	public void save() {
 		final int sizeBefore = iHubMessageDao.getAll().size();
 		final IHubMessage iHubMessage = createIHubMessage();

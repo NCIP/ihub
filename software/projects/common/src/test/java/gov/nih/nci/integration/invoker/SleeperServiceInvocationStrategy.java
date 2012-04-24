@@ -1,5 +1,6 @@
 package gov.nih.nci.integration.invoker;
 
+import gov.nih.nci.integration.domain.ServiceInvocationMessage;
 import gov.nih.nci.integration.domain.StrategyIdentifier;
 
 public class SleeperServiceInvocationStrategy implements
@@ -28,7 +29,7 @@ public class SleeperServiceInvocationStrategy implements
 	}
 
 	@Override
-	public ServiceInvocationResult invoke(String message) {
+	public ServiceInvocationResult invoke(ServiceInvocationMessage message) {
 		try {
 			Thread.sleep(sleeptime);
 		} catch (InterruptedException e) {
@@ -39,13 +40,14 @@ public class SleeperServiceInvocationStrategy implements
 			result.setInvocationException(new RuntimeException("Sleeper service throws exception"));
 		} else {
 			result.setResult("Successfully waited for " + sleeptime + " ms.");
+			result.setDataChanged(true);
 		}
 		
 		return result;
 	}
 
 	@Override
-	public ServiceInvocationResult rollback(String message) {
+	public ServiceInvocationResult rollback(ServiceInvocationMessage message) {
 		ServiceInvocationResult rlbkRes = new ServiceInvocationResult();
 		rlbkRes.setResult("Successfully rollback");		
 		return rlbkRes; 

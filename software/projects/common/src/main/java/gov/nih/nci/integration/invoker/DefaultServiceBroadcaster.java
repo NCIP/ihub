@@ -1,12 +1,14 @@
 package gov.nih.nci.integration.invoker;
 
-import java.sql.Date;
-
 import gov.nih.nci.integration.dao.ServiceInvocationMessageDao;
 import gov.nih.nci.integration.domain.IHubMessage;
 import gov.nih.nci.integration.domain.ServiceInvocationMessage;
 import gov.nih.nci.integration.domain.Status;
 import gov.nih.nci.integration.domain.StrategyIdentifier;
+import gov.nih.nci.integration.exception.IntegrationError;
+import gov.nih.nci.integration.exception.IntegrationException;
+
+import java.sql.Date;
 
 public class DefaultServiceBroadcaster implements ServiceBroadcaster {
 
@@ -16,6 +18,7 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
 			ServiceInvocationMessageDao serviceInvocationMessageDao) {
 		super();
 		this.serviceInvocationMessageDao = serviceInvocationMessageDao;
+		System.out.println("serviceInvocationMessageDao is " + serviceInvocationMessageDao);
 	}
 
 	@Override
@@ -25,14 +28,18 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
 		
 		final Date stTime = new Date(new java.util.Date().getTime());
 		
-		ServiceInvocationResult serviceInvocationResult = delegate(message, serviceInvocationStrategy);
+		ServiceInvocationMessage serviceInvocationMessage =
+			prepareServiceInvocationMessage(referenceMessageId, message, stTime,
+				serviceInvocationStrategy.getStrategyIdentifier());
+		
+		ServiceInvocationResult serviceInvocationResult = delegate(serviceInvocationMessage, serviceInvocationStrategy);
 		
 		if (serviceInvocationResult.isFault()) {
 			//upon receiving the fault can control retry attempts, if it makes sense or not
 			if(serviceInvocationResult.isRetry()) {
 				int retryCnt = serviceInvocationStrategy.getRetryCount();
 				for(int i=0; i<retryCnt; i++) {
-					serviceInvocationResult = delegate(message, serviceInvocationStrategy);
+					serviceInvocationResult = delegate(serviceInvocationMessage, serviceInvocationStrategy);
 					if(!serviceInvocationResult.isFault()) {
 						break;
 					}
@@ -40,31 +47,30 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
 			}
 		}
 		
-		persistServiceInvocationMessage(referenceMessageId, message, stTime,
-				serviceInvocationStrategy.getStrategyIdentifier(),
-				serviceInvocationResult);
+		persistServiceInvocationMessage(serviceInvocationMessage, serviceInvocationResult);
 		
 		return serviceInvocationResult;
 	}
 	
-	private ServiceInvocationResult delegate(String message, ServiceInvocationStrategy serviceInvocationStrategy) {
+	private ServiceInvocationResult delegate(ServiceInvocationMessage serviceInvocationMessage, ServiceInvocationStrategy serviceInvocationStrategy) {
 		ServiceInvocationResult serviceInvocationResult;
 		try {
-			serviceInvocationResult = serviceInvocationStrategy.invoke(message);
+			serviceInvocationResult = serviceInvocationStrategy.invoke(serviceInvocationMessage);
 		} catch (Exception e) {
 			//this code must not be reached...ServiceInvocationStrategy must not throw exception
 			//TODO : To handle any exceptions not handled by ServiceInvocationStrategy
+			if ( !(e instanceof IntegrationException) ) {
+				e = new IntegrationException(IntegrationError._1000, e.getCause(), (Object)null);
+			}
 			serviceInvocationResult = new ServiceInvocationResult();
 			serviceInvocationResult.setInvocationException(e);
 		}
 		return serviceInvocationResult;
 	}
-
-	private void persistServiceInvocationMessage(Long referenceMessageId,
+	
+	private ServiceInvocationMessage prepareServiceInvocationMessage(Long referenceMessageId,
 			String message, Date startTime,
-			StrategyIdentifier strategyIdentifier,
-			ServiceInvocationResult serviceInvocationResult) {
-
+			StrategyIdentifier strategyIdentifier) {
 		final ServiceInvocationMessage serviceInvocationMessage = new ServiceInvocationMessage();
 		serviceInvocationMessage.setStrategyIdentifier(strategyIdentifier);
 
@@ -72,9 +78,19 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
 		iHubMessage.setStartTime(startTime);
 		iHubMessage.setEndTime(new Date(new java.util.Date().getTime()));
 		iHubMessage.setRequest(message);
+		
+		serviceInvocationMessage.setReferenceMessageId(referenceMessageId);
+		serviceInvocationMessage.setMessage(iHubMessage);
+		
+		return serviceInvocationMessage;
+	}
 
+	private void persistServiceInvocationMessage(ServiceInvocationMessage serviceInvocationMessage,
+			ServiceInvocationResult serviceInvocationResult) {
+		
 		final Exception invocationException = serviceInvocationResult
 				.getInvocationException();
+		final IHubMessage iHubMessage = serviceInvocationMessage.getMessage();
 		if (invocationException != null) {
 			iHubMessage.setStatus(Status.FAILED);
 			serviceInvocationMessage.setInvocationException(invocationException
@@ -83,12 +99,13 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
 			iHubMessage.setStatus(Status.SUCCESS);
 			iHubMessage.setResponse(serviceInvocationResult.getResult());
 		}
-
-		serviceInvocationMessage.setReferenceMessageId(referenceMessageId);
-		serviceInvocationMessage.setMessage(iHubMessage);
-
+		serviceInvocationMessage.setDataChanged(serviceInvocationResult.isDataChanged());
+		serviceInvocationMessage.setOriginalData((String)serviceInvocationResult.getOriginalData());
+		
 		final Long id = serviceInvocationMessageDao
 				.save(serviceInvocationMessage);
+		
+		serviceInvocationResult.setMessageId(id);
 	}
 
 }

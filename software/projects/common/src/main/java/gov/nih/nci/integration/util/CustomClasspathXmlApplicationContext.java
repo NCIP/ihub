@@ -26,15 +26,6 @@ public class CustomClasspathXmlApplicationContext extends ClassPathXmlApplicatio
     }
 
     /**
-     * @param configLocation spring xml file location
-     * @throws BeansException - Exception thrown, if any
-     * @throws MalformedURLException - Exception thrown, if any
-     */
-    public CustomClasspathXmlApplicationContext(String configLocation) throws BeansException, MalformedURLException {
-        this(MC_IHUB_LIB, configLocation);
-    }
-
-    /**
      * @param customLocation cutom lib location
      * @param configLocations Array of spring xml file locations
      * @throws BeansException - Exception thrown, if any
@@ -42,27 +33,24 @@ public class CustomClasspathXmlApplicationContext extends ClassPathXmlApplicatio
      */
     public CustomClasspathXmlApplicationContext(String customLocation, String... configLocations) throws BeansException,
             MalformedURLException {
-        super();
-        init(customLocation);
-        setConfigLocations(configLocations);
-        refresh();
+        this(new String[]{customLocation}, configLocations);
     }
-
+    
     /**
-     * @param customLocation custom lib location
-     * @param configLocation spring xml file location
+     * @param customLocations cutom lib locations
+     * @param configLocations Array of spring xml file locations
      * @throws BeansException - Exception thrown, if any
      * @throws MalformedURLException - Exception thrown, if any
      */
-    public CustomClasspathXmlApplicationContext(String customLocation, String configLocation) throws BeansException,
+    public CustomClasspathXmlApplicationContext(String[] customLocations, String... configLocations) throws BeansException,
             MalformedURLException {
         super();
-        init(customLocation);
-        setConfigLocation(configLocation);
+        init(customLocations);
+        setConfigLocations(configLocations);
         refresh();
     }
-
-    private void init(String customLocation) throws MalformedURLException {
+    
+    private void init(String[] customLocation) throws MalformedURLException {
         final CustomUrlClassLoader jcl = new CustomUrlClassLoader(customLocation);
         setClassLoader(jcl);
         Thread.currentThread().setContextClassLoader(jcl);

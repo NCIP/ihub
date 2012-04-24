@@ -4,6 +4,7 @@
 		<sequential>
 			<subant target="@{target}" antfile="build.xml">
 				 <filelist dir="./projects/">
+				 <!-- order is preserved here -->
 				  	<file name="common"/>
 				  	<file name="catissue-client"/>
 				  	<file name="caaers-client"/>

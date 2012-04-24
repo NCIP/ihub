@@ -43,12 +43,7 @@ public class CaTissueParticipantIntegrationTest {
 		caTissueParticipantClient = new CaTissueParticipantClient(
 				"admin@admin.com", "Aa_111111");
 	}
-	
-	//@Test
-	public void fetchParticipantByMRN() throws ApplicationException {
-		Participant p = caTissueParticipantClient.getParticipantForMRN("12349");
-		assertNotNull(p);
-	}
+		
 	/**
 	 * Tests creating and registering participant with collection protocol
 	 * 
@@ -118,18 +113,20 @@ public class CaTissueParticipantIntegrationTest {
 	@Test
 	public void submitRegistrationFromXMLPayload() throws ApplicationException {
 
-		Participant registeredParticipant = caTissueParticipantClient
+		String registeredParticipantStr = caTissueParticipantClient
 				.registerParticipant(getParticipantXMLStr());
+		System.out.println(registeredParticipantStr);
+		Participant registeredParticipant = caTissueParticipantClient.getParticipantForMRN("995683");
 
 		assertNotNull(registeredParticipant);
 		assertNotNull(registeredParticipant.getObjectId());
 
-		assertEquals("123-45-6823", registeredParticipant
+		assertEquals("123-45-6814", registeredParticipant
 				.getSocialSecurityNumber());
 
 		caTissueParticipantClient.deleteParticipant(getParticipantXMLStr());
 		final Participant result2 = caTissueParticipantClient
-				.getParticipantForSSN("123-45-6823");
+				.getParticipantForSSN("123-45-6814");
 		assertNull(result2);
 	}
 
@@ -144,20 +141,12 @@ public class CaTissueParticipantIntegrationTest {
 		participant.setFirstName("JOHN5");
 		//participant.setLastName("DOE5");
 		//MRN or Medical Identifier is being set as lastName for identification
-		participant.setLastName("995678");
+		participant.setLastName("995679");
 		participant.setVitalStatus("Alive");
-		participant.setSocialSecurityNumber("123-45-6823");
+		participant.setSocialSecurityNumber("123-45-6824");
 
 		Site site = SiteFactory.getInstance().createObject();
 		site.setName("In Transit");
-		
-		/*ParticipantMedicalIdentifier pmi = ParticipantMedicalIdentifierFactory
-				.getInstance().createObject();
-		pmi.setParticipant(participant);
-		pmi.setMedicalRecordNumber("12349");
-		pmi.setSite(site);
-
-		participant.getParticipantMedicalIdentifierCollection().add(pmi);*/
 
 		return participant;
 	}
@@ -191,8 +180,8 @@ public class CaTissueParticipantIntegrationTest {
 	private String getParticipantXMLStr() {
 		return "<?xml version=\"1.0\" ?><participant><activityStatus>Active</activityStatus>"
 				+ "<birthDate>1941-05-02 00:00:00.0 EDT</birthDate><ethnicity>Unknown</ethnicity>"
-				+ "<firstName>JOHN5</firstName><gender>Unspecified</gender><lastName>995678</lastName>"
-				+ "<socialSecurityNumber>123-45-6823</socialSecurityNumber><vitalStatus>Alive</vitalStatus>"
+				+ "<firstName>JOHN5</firstName><gender>Unspecified</gender><lastName>995683</lastName>"
+				+ "<socialSecurityNumber>123-45-6814</socialSecurityNumber><vitalStatus>Alive</vitalStatus>"
 				+ "<collectionProtocolRegistrationCollection class=\"set\"><collectionProtocolRegistration>"
 				+ "<activityStatus>Active</activityStatus>"
 				+ "<consentSignatureDate>2012-03-30 14:36:24.822 EDT</consentSignatureDate>"
