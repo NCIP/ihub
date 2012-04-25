@@ -90,8 +90,7 @@ public class TranscendSemanticAdapter extends AcceptMessage {
     private String getCaCISRequestxml(final CaCISRequest parameter) {
         try {           
         	StringWriter sw = new StringWriter();        	
-        	getMarshaller().marshal( parameter,sw);                 	
-        	LOG.info("Inside TranscendSemanticAdapter... RequestXML is : " + sw.toString());
+        	getMarshaller().marshal( parameter,sw);  
         	return sw.toString(); 
         } catch (Exception ex) {
         	LOG.error("Error marshalling CaXchangeRequest!", ex);                	 

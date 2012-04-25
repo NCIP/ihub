@@ -520,6 +520,7 @@
 	<xs:simpleType name="Status">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="Processed"></xs:enumeration>
+			<xs:enumeration value="Partially Processed"></xs:enumeration>
 			<xs:enumeration value="Failed to Process"></xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
@@ -538,10 +539,11 @@
         <xs:sequence>
         	<xs:element maxOccurs="1" minOccurs="0" name="klassName" type="xs:string"></xs:element>
             <xs:element maxOccurs="1" minOccurs="1" name="businessIdentifier" type="xs:string"></xs:element>
-            <xs:element maxOccurs="unbounded" minOccurs="0" name="message" type="xs:string"></xs:element>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="message" nillable="true" type="xs:string"></xs:element>
             <xs:element minOccurs="0" name="dataBaseId" type="xs:string"></xs:element>
             <xs:element minOccurs="0" name="correlationId" type="xs:string"></xs:element>
             <xs:element minOccurs="0" name="correlationDescription" type="xs:string"></xs:element>
+            <xs:element default="false" minOccurs="0" name="failed" type="xs:boolean"></xs:element>
         </xs:sequence>
     </xs:complexType>
 
@@ -558,10 +560,17 @@
     		<xs:element maxOccurs="unbounded" minOccurs="0" name="wsError" type="WsError"></xs:element>
     		<xs:element minOccurs="0" ref="entityProcessingOutcomes"></xs:element>
             <xs:element minOccurs="0" name="message" type="xs:string"></xs:element>
-
+            <xs:element minOccurs="0" ref="responseData"></xs:element>
     	</xs:sequence>
         <!-- migrated from study xsd -->
         <xs:attribute name="responsecode" type="ResponseCodeType"></xs:attribute>
+    </xs:complexType>
+    
+    <xs:element name="responseData" type="responseDataType"></xs:element>
+    <xs:complexType name="responseDataType">
+    		<xs:sequence>
+   				<xs:any maxOccurs="1" minOccurs="0"></xs:any>
+   			</xs:sequence>
     </xs:complexType>
     
     <xs:element name="CaaersServiceResponse">
@@ -577,7 +586,7 @@
 	
 	<xs:complexType name="BaseFault">
 		<xs:sequence>
-			<xs:element name="message" type="xs:string"></xs:element>
+			<xs:element name="message" nillable="true" type="xs:string"></xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="SecurityExceptionFault">
@@ -587,7 +596,6 @@
 	</xs:complexType>
 
 </xs:schema>
-
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/participant" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/participant" xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common"></xs:import>
 <xs:element name="participants">
@@ -759,6 +767,20 @@
 <xs:enumeration value="Unknown"></xs:enumeration>
 </xs:restriction>
 </xs:simpleType>
+<xs:element name="participantRef">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="identifiers">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" ref="organizationAssignedIdentifier"></xs:element>
+<xs:element maxOccurs="unbounded" minOccurs="0" ref="systemAssignedIdentifier"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
 <xs:element name="createParticipant" type="createParticipant"></xs:element>
 <xs:complexType name="createParticipant">
 <xs:sequence>
@@ -795,6 +817,18 @@
 <xs:element minOccurs="0" ref="cct:CaaersServiceResponse"></xs:element>
 </xs:sequence>
 </xs:complexType>
+<xs:element name="getParticipant" type="getParticipant"></xs:element>
+<xs:complexType name="getParticipant">
+<xs:sequence>
+<xs:element minOccurs="0" ref="participantRef"></xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="getParticipantResponse" type="getParticipantResponse"></xs:element>
+<xs:complexType name="getParticipantResponse">
+<xs:sequence>
+<xs:element minOccurs="0" ref="cct:CaaersServiceResponse"></xs:element>
+</xs:sequence>
+</xs:complexType>
 </xs:schema>
   </wsdl:types>
   <wsdl:message name="createParticipant">
@@ -817,8 +851,16 @@
     <wsdl:part element="tns:createParticipantResponse" name="parameters">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="getParticipant">
+    <wsdl:part element="tns:getParticipant" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="updateParticipant">
     <wsdl:part element="tns:updateParticipant" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getParticipantResponse">
+    <wsdl:part element="tns:getParticipantResponse" name="parameters">
     </wsdl:part>
   </wsdl:message>
   <wsdl:portType name="ParticipantServiceInterface">
@@ -838,6 +880,12 @@
       <wsdl:input message="tns:updateParticipant" name="updateParticipant">
     </wsdl:input>
       <wsdl:output message="tns:updateParticipantResponse" name="updateParticipantResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getParticipant">
+      <wsdl:input message="tns:getParticipant" name="getParticipant">
+    </wsdl:input>
+      <wsdl:output message="tns:getParticipantResponse" name="getParticipantResponse">
     </wsdl:output>
     </wsdl:operation>
   </wsdl:portType>
@@ -867,6 +915,15 @@
         <soap:body use="literal"></soap:body>
       </wsdl:input>
       <wsdl:output name="updateParticipantResponse">
+        <soap:body use="literal"></soap:body>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getParticipant">
+      <soap:operation soapAction="" style="document"></soap:operation>
+      <wsdl:input name="getParticipant">
+        <soap:body use="literal"></soap:body>
+      </wsdl:input>
+      <wsdl:output name="getParticipantResponse">
         <soap:body use="literal"></soap:body>
       </wsdl:output>
     </wsdl:operation>

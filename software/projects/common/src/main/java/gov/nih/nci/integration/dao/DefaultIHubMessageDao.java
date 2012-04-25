@@ -7,6 +7,9 @@ import java.sql.Date;
 
 import javax.persistence.EntityManager;
 
+import org.springframework.transaction.annotation.Transactional;
+
+@Transactional
 public class DefaultIHubMessageDao extends AbstractDao<IHubMessage> implements
 		Dao<IHubMessage>, IHubMessageDao {
 

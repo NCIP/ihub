@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Scope;
 @Configuration
 public class DefaultDaoConfig implements DaoConfig {
 
-    @PersistenceContext
+    @PersistenceContext(unitName="ihub-messages")
     private EntityManager em;
     
     /* (non-Javadoc)

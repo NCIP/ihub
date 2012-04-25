@@ -97,5 +97,5 @@ public class CaTissueUpdateRegistrationServiceInvocationStrategy implements
 		}
 		return participantXMLStr;
 	}
-
+	
 }

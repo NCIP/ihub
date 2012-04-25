@@ -2,6 +2,7 @@ package gov.nih.nci.integration.caaers.invoker;
 
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType;
 import gov.nih.nci.integration.caaers.CaAERSParticipantServiceWSClient;
 import gov.nih.nci.integration.domain.ServiceInvocationMessage;
 import gov.nih.nci.integration.domain.StrategyIdentifier;
@@ -14,9 +15,16 @@ import gov.nih.nci.integration.transformer.XSLTTransformer;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.namespace.QName;
 import javax.xml.ws.soap.SOAPFaultException;
 
 import org.slf4j.Logger;
@@ -38,14 +46,18 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 	private int retryCount;
 
 	private XSLTTransformer xsltTransformer;
+	
+	private Marshaller marshaller = null;
 
 	public CaAERSUpdateRegistrationServiceInvocationStrategy(
 			XSLTTransformer xsltTransformer,
-			CaAERSParticipantServiceWSClient client, int retryCount) {
+			CaAERSParticipantServiceWSClient client, int retryCount) throws JAXBException {
 		super();
 		this.xsltTransformer = xsltTransformer;
 		this.client = client;
 		this.retryCount = retryCount;
+		
+		getMarshaller();
 		
 		System.out.println("sis cl " + getClass().getClassLoader());
 		System.out.println("client cl " + client.getClass().getClassLoader());
@@ -65,20 +77,36 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 	public ServiceInvocationResult invoke(ServiceInvocationMessage msg) {
 		ServiceInvocationResult result = new ServiceInvocationResult();
 		try {
-			//TODO : get actual original participant data, for now, do some mock up
-			String orginalData = msg.getMessage().getRequest();
-			String markup =	"firstName>";
-			orginalData.replaceAll(markup, markup + "original-");
-			LOG.debug("orginalData >> " + orginalData);
-			
-			result.setOriginalData(orginalData);
 			
 			String participantXMLStr = transformToParticipantXML(msg.getMessage().getRequest());
-			LOG.debug("from caaers >> " + participantXMLStr);
-			CaaersServiceResponse caaersresponse = client.updateParticipant(participantXMLStr);
-			ServiceResponse response = caaersresponse.getServiceResponse();
+			
+			//TODO : get actual original participant data, for now, do some mock up
+			/*String orginalData = participantXMLStr;
+			String markup =	"firstName>";
+			orginalData = orginalData.replaceAll(markup, markup + "original-");
+			result.setDataChanged(true);
+			result.setOriginalData(orginalData);*/
+			
+			//TODO : once caaers server is fixed uncomment it
+			CaaersServiceResponse caaersGetResponse = client.getParticipant(participantXMLStr);	
+			ServiceResponse response = caaersGetResponse.getServiceResponse();
+			ParticipantType existingPrtcpnt = null;
 			if ("0".equals(response.getResponsecode())) { 
 				result.setResult(response.getResponsecode() + " : " + response.getMessage());
+				//ParticipantType existingPrtcpnt = (Participa)response.getResponseData().getAny();
+			} else {
+				IntegrationException ie = new IntegrationException(
+						IntegrationError._1020, new Throwable(response.getMessage()), null);
+				result.setInvocationException(ie);
+			}
+			String originalData = marshalParticipantType(existingPrtcpnt);
+			
+			CaaersServiceResponse caaersresponse = client.updateParticipant(participantXMLStr);
+			response = caaersresponse.getServiceResponse();
+			if ("0".equals(response.getResponsecode())) { 
+				result.setResult(response.getResponsecode() + " : " + response.getMessage());
+				result.setDataChanged(true);
+				result.setOriginalData(originalData);
 			} else {
 				IntegrationException ie = new IntegrationException(
 						IntegrationError._1020, new Throwable(response.getMessage()), null);
@@ -167,6 +195,22 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 			}
 		}
 		return participantXMLStr;
+	}	
+	
+	private String marshalParticipantType(ParticipantType participantType) throws JAXBException {
+		QName qname = new QName("http://schema.integration.caaers.cabig.nci.nih.gov/participant", "participant");
+		JAXBElement<ParticipantType> jaxbEle = new JAXBElement<ParticipantType>(qname, ParticipantType.class, null, participantType);
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		getMarshaller().marshal(jaxbEle, pw);
+		return sw.toString();
 	}
-
+	
+	private Marshaller getMarshaller() throws JAXBException {
+		if (marshaller == null) {
+			JAXBContext jc = JAXBContext.newInstance(ParticipantType.class);
+			marshaller = jc.createMarshaller();
+		}
+		return marshaller;
+	}
 }

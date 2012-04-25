@@ -5,13 +5,15 @@ import gov.nih.nci.cabig.caaers.integration.schema.participant.CreateParticipant
 import gov.nih.nci.cabig.caaers.integration.schema.participant.CreateParticipantResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.DeleteParticipant;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.DeleteParticipantResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.GetParticipant;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.GetParticipantResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantRef;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantServiceInterface;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.Participants;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.UpdateParticipant;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.UpdateParticipantResponse;
 
-import java.io.PrintWriter;
 import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.util.HashMap;
@@ -27,7 +29,6 @@ import javax.xml.ws.soap.SOAPFaultException;
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
-import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
@@ -62,7 +63,8 @@ public class CaAERSParticipantServiceWSClient {
 				WSHandlerConstants.USERNAME_TOKEN);
 		outProps.put(WSHandlerConstants.USER, userName);
 		outProps.put(WSHandlerConstants.PASSWORD_TYPE, WSConstants.PW_TEXT);
-		outProps.put(WSHandlerConstants.PW_CALLBACK_REF, clientPasswordCallback);
+		outProps
+				.put(WSHandlerConstants.PW_CALLBACK_REF, clientPasswordCallback);
 
 		WSS4JOutInterceptor wssOut = new WSS4JOutInterceptor(outProps);
 
@@ -71,13 +73,13 @@ public class CaAERSParticipantServiceWSClient {
 		factory.getOutInterceptors().add(wssOut);
 		factory.setServiceClass(ParticipantServiceInterface.class);
 		factory.setAddress(wsdl);
-		
+
 		client = (ParticipantServiceInterface) factory.create();
-		
+
 		Client clientProxy = ClientProxy.getClient(client);
 		HTTPConduit http = (HTTPConduit) clientProxy.getConduit();
 		TLSClientParameters tlsClientParams = new TLSClientParameters();
-		tlsClientParams.setDisableCNCheck(true);		
+		tlsClientParams.setDisableCNCheck(true);
 		http.setTlsClientParameters(tlsClientParams);
 
 		System.out.println("cxf client cl "
@@ -164,6 +166,31 @@ public class CaAERSParticipantServiceWSClient {
 		UpdateParticipantResponse retValue = null;
 		try {
 			retValue = client.updateParticipant(updateParticipant);
+		} catch (SOAPFaultException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return retValue.getCaaersServiceResponse();
+	}
+
+	public CaaersServiceResponse getParticipant(String participantXMLStr)
+			throws JAXBException, MalformedURLException, SOAPFaultException {
+		ParticipantType participant = parseParticipant(participantXMLStr);	
+		
+		GetParticipant getParticipant = new GetParticipant();
+		ParticipantRef participantRef = new ParticipantRef();
+		ParticipantRef.Identifiers refIds = new ParticipantRef.Identifiers();
+		participantRef.setIdentifiers(refIds);
+		ParticipantType.Identifiers prtcpntIds = participant.getIdentifiers();
+		
+		refIds.getOrganizationAssignedIdentifier().addAll(prtcpntIds.getOrganizationAssignedIdentifier());
+		refIds.getSystemAssignedIdentifier().addAll(prtcpntIds.getSystemAssignedIdentifier());
+		
+		getParticipant.setParticipantRef(participantRef);
+		
+		GetParticipantResponse retValue = null;
+		try {
+			retValue = client.getParticipant(getParticipant);
 		} catch (SOAPFaultException e) {
 			e.printStackTrace();
 			throw e;

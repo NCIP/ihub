@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.basic.DateConverter;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
+import com.thoughtworks.xstream.mapper.Mapper;
 
 public class CaTissueParticipantClient {
 	
@@ -36,7 +37,23 @@ public class CaTissueParticipantClient {
 		
 		this.caTissueAPIClient = new CaTissueAPIClientWithRegularAuthentication(loginName, password);
 		
-
+		initXStream();
+	}
+	
+	private void initXStream() {
+		//CGLIB - related settings start
+		/*xStream.addDefaultImplementation(
+		        org.hibernate.collection.PersistentList.class, java.util.List.class);
+		xStream.addDefaultImplementation(
+				org.hibernate.collection.PersistentMap.class, java.util.Map.class);
+		xStream.addDefaultImplementation(
+				org.hibernate.collection.PersistentSet.class, java.util.Set.class);
+		
+		Mapper mapper = xStream.getMapper();
+		xStream.registerConverter(new HibernateCollectionConverter(mapper));
+		xStream.registerConverter(new HibernateMapConverter(mapper));*/
+		//CGLIB - related settings end  
+		
 		xStream.alias("participant", Participant.class);
 		xStream.alias("collectionProtocol", CollectionProtocol.class);
 		xStream.alias("collectionProtocolRegistration", CollectionProtocolRegistration.class);
@@ -49,6 +66,7 @@ public class CaTissueParticipantClient {
                 "yyyy-MM-dd HH:mm:ssz", "yyyy-MM-dd HH:mm:ss z", // JDK 1.3 needs both versions
                 "yyyy-MM-dd HH:mm:ssa" }; // backwards compatibility
 		xStream.registerConverter(new DateConverter("yyyy-MM-dd HH:mm:ss.S z", accFrmts, true));
+		
 		
 	}
 	
@@ -105,11 +123,6 @@ public class CaTissueParticipantClient {
 		if (participant == null || StringUtils.isEmpty(participant.getLastName())) {
 			throw new ApplicationException("Participant does not contain the unique medical identifier!");
 		}
-//		CollectionProtocolRegistration cpr = getCollectionProtocolRegistrationFromParticipant(participant);
-//		Collection<CollectionProtocolRegistration> cprCollection = participant.getCollectionProtocolRegistrationCollection();
-//		cprCollection.clear();
-//		cprCollection.add(initCollectionProtocolRegistration(participant, cpr ));		
-		
 		caTissueAPIClient.insert(participant);
 		
 		return null;
@@ -139,7 +152,6 @@ public class CaTissueParticipantClient {
 		if (participant == null || StringUtils.isEmpty(participant.getLastName())) {
 			throw new ApplicationException("Participant does not contain the unique medical identifier!");
 		}
-//		CollectionProtocolRegistration cpr = getCollectionProtocolRegistrationFromParticipant(participant);
 		
 		Participant existingParticipant = getParticipantForMRN(participant.getLastName());
 		if (existingParticipant == null ) {
@@ -148,13 +160,9 @@ public class CaTissueParticipantClient {
 		
 		participant.setId(existingParticipant.getId());
 		
-//		Collection<CollectionProtocolRegistration> cprCollection = existingParticipant.getCollectionProtocolRegistrationCollection();
-//		cprCollection.clear();
-//		cprCollection.add(initCollectionProtocolRegistration(participant, cpr ));
-		
 		caTissueAPIClient.update(participant);
 		
-		return existingParticipant;
+		return copyFrom(existingParticipant);
 	}
 	
 	public boolean deleteParticipantFromXML(String participantXMLStr) throws Exception {
@@ -250,4 +258,22 @@ public class CaTissueParticipantClient {
 		
 		return cp;
 	}
+	
+	private Participant copyFrom(Participant participant) {
+		Participant p = new Participant();
+		
+		p.setId(participant.getId());
+		p.setActivityStatus(participant.getActivityStatus());
+		p.setBirthDate(participant.getBirthDate());
+		p.setEthnicity(participant.getEthnicity());
+		p.setFirstName(participant.getFirstName());
+		p.setLastName(participant.getLastName());
+		p.setGender(participant.getGender());
+		p.setMetaPhoneCode(participant.getMetaPhoneCode());
+		p.setSocialSecurityNumber(participant.getSocialSecurityNumber());
+		p.setVitalStatus(participant.getVitalStatus());
+		
+		return p;
+	}
+	
 }

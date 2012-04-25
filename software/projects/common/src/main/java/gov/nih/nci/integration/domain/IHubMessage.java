@@ -2,6 +2,7 @@ package gov.nih.nci.integration.domain;
 
 import java.sql.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
@@ -30,7 +31,9 @@ public class IHubMessage extends AbstractIdentity {
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
+	
 	@NotNull
+	@Column(length = 50000)
 	public String getRequest() {
 		return request;
 	}

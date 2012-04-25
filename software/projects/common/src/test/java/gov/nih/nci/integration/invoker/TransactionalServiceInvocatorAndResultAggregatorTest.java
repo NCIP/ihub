@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = "classpath:applicationContext-common-test.xml")
 public class TransactionalServiceInvocatorAndResultAggregatorTest {
 	
-	@PersistenceContext
+	@PersistenceContext(unitName="ihub-messages")
 	private EntityManager em;
 
 	@Autowired
