@@ -3,6 +3,7 @@ package gov.nih.nci.integration.caaers.invoker;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.Participants;
 import gov.nih.nci.integration.caaers.CaAERSParticipantServiceWSClient;
 import gov.nih.nci.integration.domain.ServiceInvocationMessage;
 import gov.nih.nci.integration.domain.StrategyIdentifier;
@@ -23,7 +24,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.namespace.QName;
 import javax.xml.ws.soap.SOAPFaultException;
 
@@ -93,11 +93,13 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 			ParticipantType existingPrtcpnt = null;
 			if ("0".equals(response.getResponsecode())) { 
 				result.setResult(response.getResponsecode() + " : " + response.getMessage());
-				//ParticipantType existingPrtcpnt = (Participa)response.getResponseData().getAny();
+				Participants prtcpnts = (Participants)response.getResponseData().getAny();
+				existingPrtcpnt = prtcpnts.getParticipant().get(0);
 			} else {
 				IntegrationException ie = new IntegrationException(
 						IntegrationError._1020, new Throwable(response.getMessage()), null);
 				result.setInvocationException(ie);
+				return result;
 			}
 			String originalData = marshalParticipantType(existingPrtcpnt);
 			
