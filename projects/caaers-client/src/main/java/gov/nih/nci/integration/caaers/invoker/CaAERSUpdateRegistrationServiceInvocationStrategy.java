@@ -139,7 +139,7 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 	public ServiceInvocationResult rollback(ServiceInvocationMessage msg) {
 		ServiceInvocationResult result = new ServiceInvocationResult();
 		try {
-			String participantXMLStr = transformToParticipantXML(msg.getOriginalData());
+			String participantXMLStr = msg.getOriginalData();
 			CaaersServiceResponse caaersresponse = client.updateParticipant(participantXMLStr);
 			ServiceResponse response = caaersresponse.getServiceResponse();
 			if ("0".equals(response.getResponsecode())) { 
