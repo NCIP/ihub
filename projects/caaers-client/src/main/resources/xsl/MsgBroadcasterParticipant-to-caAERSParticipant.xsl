@@ -22,7 +22,7 @@ xmlns:caaers="http://schema.integration.caaers.cabig.nci.nih.gov/participant">
   </xsl:template>
 	
 	<xsl:template match="p:*">
-		<xsl:element name="caaers:{local-name()}" >
+		<xsl:element name="{local-name()}" >
 		  <xsl:apply-templates select="node()|@*"/>
 		</xsl:element>		
 	</xsl:template>
