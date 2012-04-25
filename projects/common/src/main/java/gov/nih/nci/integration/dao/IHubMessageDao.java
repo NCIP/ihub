@@ -1,10 +1,7 @@
 package gov.nih.nci.integration.dao;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import gov.nih.nci.integration.domain.IHubMessage;
 
-@Transactional
 public interface IHubMessageDao extends Dao<IHubMessage> {
 
 	/**

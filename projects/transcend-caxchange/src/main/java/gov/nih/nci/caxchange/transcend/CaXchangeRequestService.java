@@ -129,8 +129,7 @@ public class CaXchangeRequestService  extends AcceptMessage{
         	JAXBElement<Message> message = new JAXBElement<Message>(qname, Message.class, parameter);            
         	StringWriter sw = new StringWriter();        	
         	getMarshaller().marshal( message,sw);        	
-        	requestXML = sw.toString();        	
-        	LOG.error("Inside CaXchangeRequestService... RequestXML is : " + requestXML);
+        	requestXML = sw.toString(); 
             
             return requestXML;
         } catch (Exception ex) {

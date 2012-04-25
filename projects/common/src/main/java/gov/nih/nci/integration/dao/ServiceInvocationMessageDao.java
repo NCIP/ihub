@@ -5,9 +5,6 @@ import gov.nih.nci.integration.domain.StrategyIdentifier;
 
 import java.util.Map;
 
-import org.springframework.transaction.annotation.Transactional;
-
-@Transactional
 public interface ServiceInvocationMessageDao extends Dao<ServiceInvocationMessage> {
 
 	/**

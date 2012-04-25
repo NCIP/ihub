@@ -10,6 +10,9 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.springframework.transaction.annotation.Transactional;
+
+@Transactional
 public class DefaultServiceInvocationMessageDao extends
 		AbstractDao<ServiceInvocationMessage> implements
 		ServiceInvocationMessageDao {
@@ -21,6 +24,7 @@ public class DefaultServiceInvocationMessageDao extends
 	 */
 	public DefaultServiceInvocationMessageDao(EntityManager em) {
 		super(ServiceInvocationMessage.class, em);
+		System.out.println("em in constr is " + em );
 	}
 	
 	/* (non-Javadoc)
@@ -28,7 +32,8 @@ public class DefaultServiceInvocationMessageDao extends
 	 */
     @SuppressWarnings("unchecked")
     public Map<StrategyIdentifier, ServiceInvocationMessage> getAllByReferenceMessageId(Long refMsgId) {
-    	final Query msgsQuery = this.getEntityManager().createQuery("from " + getDomainClass().getSimpleName()
+    	System.out.println("got em from abstract dao " + this.getEm());
+    	final Query msgsQuery = this.getEm().createQuery("from " + getDomainClass().getSimpleName()
                 + " svcInvMsg where svcInvMsg.referenceMessageId = :referenceMessageId ");
     	msgsQuery.setParameter("referenceMessageId", refMsgId);
         List<ServiceInvocationMessage> msgs = msgsQuery.getResultList();

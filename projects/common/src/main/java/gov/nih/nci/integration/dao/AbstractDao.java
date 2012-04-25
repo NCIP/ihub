@@ -5,6 +5,7 @@ import gov.nih.nci.integration.domain.AbstractIdentity;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,14 +18,27 @@ import org.springframework.transaction.annotation.Transactional;
  * @param <T> entity
  *            
  */
+
 @Transactional
 public abstract class AbstractDao<T extends AbstractIdentity> implements Dao<T> {
 
 	private static final Logger LOG = LoggerFactory
 			.getLogger(AbstractDao.class);
 	private final Class<T> domainClass;
-
-	private final EntityManager em;
+	
+	@PersistenceContext(unitName="ihub-messages")
+	private EntityManager em;
+	
+	/**
+	 * @param domainClass
+	 *            - entity class
+	 * @param em
+	 *            JPA EntityManager
+	 */
+	public AbstractDao(final Class<T> domainClass) {
+		super();
+		this.domainClass = domainClass;
+	}
 
 	/**
 	 * @param domainClass
@@ -32,7 +46,8 @@ public abstract class AbstractDao<T extends AbstractIdentity> implements Dao<T> 
 	 * @param em
 	 *            JPA EntityManager
 	 */
-	protected AbstractDao(final Class<T> domainClass, EntityManager em) {
+	public AbstractDao(final Class<T> domainClass, EntityManager em) {
+		super();
 		this.domainClass = domainClass;
 		this.em = em;
 	}
@@ -80,10 +95,13 @@ public abstract class AbstractDao<T extends AbstractIdentity> implements Dao<T> 
 		return entity.getId();
 	}
 
-	/**
-	 * @return em
-	 */
-	protected EntityManager getEntityManager() {
+	public EntityManager getEm() {
 		return em;
 	}
+	
+	public void setEm(EntityManager em) {
+		this.em = em;
+	}
+
+	
 }

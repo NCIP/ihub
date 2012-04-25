@@ -71,6 +71,8 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 			ServiceResponse response = caaersresponse.getServiceResponse();
 			if ("0".equals(response.getResponsecode())) { 
 				result.setResult(response.getResponsecode() + " : " + response.getMessage());
+				result.setDataChanged(true);
+				//there is no original data
 			} else {
 				IntegrationException ie = new IntegrationException(
 						IntegrationError._1020, new Throwable(response.getMessage()), null);

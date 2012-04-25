@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @author chandrasekaravr
  * @param <T> the type of the entity for this dao
  */
-@Transactional
 public interface Dao<T extends AbstractIdentity> {
 
     /**
