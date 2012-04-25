@@ -66,7 +66,7 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 		ServiceInvocationResult result = new ServiceInvocationResult();
 		try {
 			String participantXMLStr = transformToParticipantXML(msg.getMessage().getRequest());
-			LOG.debug("from caaers >> " + participantXMLStr);
+			
 			CaaersServiceResponse caaersresponse = client.createParticipant(participantXMLStr);
 			ServiceResponse response = caaersresponse.getServiceResponse();
 			if ("0".equals(response.getResponsecode())) { 
