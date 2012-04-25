@@ -63,7 +63,10 @@
         <xs:complexContent>
             <xs:extension base="DomainObjectType">
                 <xs:sequence>
-                    <xs:element name="text" type="CustomStringType"></xs:element>
+                    <xs:element minOccurs="1" name="text" type="CustomStringType"></xs:element>
+                    <xs:element minOccurs="1" name="meddraLltCode" type="xs:string"></xs:element>
+                    <xs:element minOccurs="0" name="meddraLlt" type="xs:string"></xs:element>
+                    <xs:element minOccurs="0" name="meddraHlgt" type="xs:string"></xs:element>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -82,7 +85,10 @@
         <xs:complexContent>
             <xs:extension base="DomainObjectType">
                 <xs:sequence>
-                    <xs:element name="text" type="CustomStringType"></xs:element>
+                    <xs:element minOccurs="1" name="text" type="CustomStringType"></xs:element>
+                    <xs:element minOccurs="1" name="meddraCode" type="CustomStringType"></xs:element>
+                    <xs:element name="meddraTerm" type="xs:string"></xs:element>
+                    <xs:element name="therapyType" type="xs:string"></xs:element>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -445,9 +451,14 @@
         <xs:complexContent>
             <xs:extension base="MutableDomainObjectType">
                 <xs:sequence>
-                    <xs:element minOccurs="0" name="commonName" type="xs:string"></xs:element>
-                    <xs:element minOccurs="0" name="brandName" type="xs:string"></xs:element>
+                    <xs:element minOccurs="1" name="commonName" type="xs:string"></xs:element>
+                    <xs:element minOccurs="1" name="brandName" type="xs:string"></xs:element>
                     <xs:element minOccurs="0" name="type" type="xs:string"></xs:element>
+                    <xs:element minOccurs="0" name="ctepDbIdentifier" type="xs:string">
+                       <xs:annotation>
+                           <xs:documentation>An identifier issued by CTEP for the device, which at the moment is the DB ID of AdEERS.</xs:documentation>
+                       </xs:annotation>
+                    </xs:element>
                     <xs:element maxOccurs="1" minOccurs="0" name="status" type="ActiveInactiveStatusType"></xs:element>
                 </xs:sequence>
             </xs:extension>

@@ -61,9 +61,9 @@ public class CaTissueUpdateRegistrationServiceInvocationStrategy implements
 	public ServiceInvocationResult rollback(ServiceInvocationMessage msg) {
 		ServiceInvocationResult serviceInvocationResult = new ServiceInvocationResult();
 		try {
-			String participantXMLStr = transformToParticipantXML(msg.getOriginalData());
+			String participantXMLStr = msg.getOriginalData();
 			serviceInvocationResult = caTissueParticipantClient.updateRegistrationParticipant(participantXMLStr);
-		} catch (IntegrationException e) {
+		} catch (Exception e) {
 			serviceInvocationResult.setInvocationException(e);
 		} 
 		return serviceInvocationResult;
