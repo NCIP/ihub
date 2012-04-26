@@ -1,13 +1,13 @@
 <project name="transcend-caaers" basedir=".">
 
-	<property name="project.software.dir" value="${basedir}/../.." />
+	<property name="project.software.dir" value="${basedir}/../.."/>
 	
-	<!-- sub-project level build properties -->
+	<import file="${project.software.dir}/build/common.xml"/>
+	
+	<!-- sub-project level build properties, if not present globally in project.software.dir properties, these will be used -->
 	<property file="${basedir}/local-build.properties" />
 	<property file="${basedir}/build.properties" />
-	
-	<import file="${basedir}/../../build/common.xml"/>
-    
+	    
     <target name="help" description="Prints usage information.">
         <echo message="================================================================================" />
         <echo message="          Service: ${ant.project.name}" />

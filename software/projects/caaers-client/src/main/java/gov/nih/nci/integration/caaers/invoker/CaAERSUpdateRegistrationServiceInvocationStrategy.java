@@ -164,9 +164,7 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 			IntegrationException ie = new IntegrationException(
 					IntegrationError._1018, e, null);
 			result.setInvocationException(ie);
-		} catch (IntegrationException e) {
-			result.setInvocationException(e);
-		}
+		} 
 		return result;
 	}
 

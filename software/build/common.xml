@@ -864,6 +864,9 @@
 	<target name="generate-wsdl" depends="clean-generated-src, init, resolve" description="Overwrite in sub-projects. This target will generate java code from WSDL available in ${main.src.resources}/wsdl or url.">
 	</target>
 	
+	<target name="deploy.resources" description="Will deploy supporting resources">
+    </target>
+	
 	<target name="deploy-mc" description="Will deploy to mirth connect.">
     </target>
 	
@@ -890,7 +893,7 @@
 		<exec executable="${project.software.dir}/startMC${mc.script.ext}">    
 			<arg path="${mirth.home}"/>
         </exec>
-
+		<echo message="Waiting for mirth to start...."/>
 		<waitfor maxwait="120" maxwaitunit="second" checkevery="30">
 			<http url="${mirth.url}"/>
 		</waitfor>
@@ -920,6 +923,9 @@
         </exec>
        
     </target>
+	
+	<target name="prepare.mirth" description="Can be used to do any preparation at Mirth side like cleanup">
+	</target>
 
 	<!-- FIXIT: Until extra required jars location for ivy can be identified-->
 	<target name="resolve-etc-libs" unless="already.etc.libs.resolved" description="resolves extra libs needed">
