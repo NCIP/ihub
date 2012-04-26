@@ -20,17 +20,19 @@
 	
 	<target name="deploy">
 		<antcall target="stopMirth"/>
+		<iterate target="deploy.resources"/>
+		<iterate target="prepare.mirth"/>
 		<iterate target="deploy-mc"/>
 		<antcall target="startMirth"/>
 		<antcall target="run.mirth.script"/>
 	</target>
 	
 	<target name="startMirth">		
-		<subant target="start.mirth.connect" buildpath="./projects/common/" antfile="build.xml"/>
+		<subant target="start.mirth.connect" buildpath="./projects/mirth-deploy/" antfile="build.xml"/>
 	</target>
 	
 	<target name="stopMirth">		
-		<subant target="stop.mirth.connect" buildpath="./projects/common/" antfile="build.xml"/>
+		<subant target="stop.mirth.connect" buildpath="./projects/mirth-deploy/" antfile="build.xml"/>
 	</target>
 	
 	<target name="run.mirth.script">		

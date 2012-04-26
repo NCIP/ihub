@@ -1,12 +1,12 @@
 <project name="common" basedir=".">
 	
-	<property name="project.software.dir" value="${basedir}/../.." />
+	<property name="project.software.dir" value="${basedir}/../.."/>
 	
-	<!-- sub-project level build properties -->
+	<import file="${project.software.dir}/build/common.xml"/>
+	
+	<!-- sub-project level build properties, if not present globally in project.software.dir properties, these will be used -->
 	<property file="${basedir}/local-build.properties" />
 	<property file="${basedir}/build.properties" />
-	
-	<import file="${basedir}/../../build/common.xml"/>
 	    
     <target name="help" description="Prints usage information.">
         <echo message="================================================================================" />
@@ -22,5 +22,14 @@
 	<target name="generate-wsdl" depends="clean-generated-src, init, resolve" description="This target will generate java code from WSDL available in ${main.src.resources}/wsdl or url">
 		<generateWsdlSources genSrcDir="${generated.src.dir}" package="gov.nih.nci.ihub.cacis.inbound" wsdlLocation="${main.src.resources}/wsdl/Mirth.wsdl"/>		
 	</target>
+	
+	<target name="deploy.resources" description="Will deploy supporting resources">
+		<copy todir="${user.home}/.integration/ihub">
+			<fileset dir="${classes.dir}">
+				<include name="**/*.xsl"/>
+				<exclude name="**/.svn"/>
+			</fileset>
+		</copy>
+    </target>
 	
 </project>
