@@ -10,8 +10,10 @@ import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.SDKQuery;
 import gov.nih.nci.system.query.SDKQueryResult;
+import gov.nih.nci.system.query.example.DeleteExampleQuery;
 import gov.nih.nci.system.query.example.InsertExampleQuery;
 import gov.nih.nci.system.query.example.UpdateExampleQuery;
+import gov.nih.nci.system.query.hql.DeleteHQLQuery;
 
 /**
  * 
@@ -51,6 +53,17 @@ public class CaTissueAPIClientWithRegularAuthentication {
 		SDKQueryResult result = getApplicationService().executeQuery(query);
 		return (T) result.getObjectResult();
 	}
+	
+	public <T> T delete(T object) throws ApplicationException {
+		SDKQuery query = new DeleteExampleQuery(object);		
+		SDKQueryResult result = getApplicationService().executeQuery(query);
+		return (T) result.getObjectResult();
+	}
+	
+	public void delete(String hql) throws ApplicationException {
+		SDKQuery query = new DeleteHQLQuery(hql);		
+		SDKQueryResult result = getApplicationService().executeQuery(query);		
+	}
 
 	public <T> List<T> searchByExample(Class<T> klass, T example)
 			throws ApplicationException {
@@ -70,8 +83,5 @@ public class CaTissueAPIClientWithRegularAuthentication {
 			String password) throws Exception {		
 		return (CaTissueWritableAppService) ApplicationServiceProvider
 				.getApplicationService(username, password);
-//		CaTissueApplicationServiceProvider.initialize();
-//		return (CaTissueWritableAppService) CaTissueApplicationServiceProvider
-//			.getApplicationService(username, password);
 	}
 }
