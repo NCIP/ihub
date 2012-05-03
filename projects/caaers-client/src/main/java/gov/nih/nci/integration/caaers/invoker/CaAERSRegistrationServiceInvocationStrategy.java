@@ -46,9 +46,6 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 		this.xsltTransformer = xsltTransformer;
 		this.client = client;
 		this.retryCount = retryCount;
-		
-		System.out.println("sis cl " + getClass().getClassLoader());
-		System.out.println("client cl " + client.getClass().getClassLoader());
 	}
 
 	@Override
@@ -75,23 +72,23 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 				//there is no original data
 			} else {
 				IntegrationException ie = new IntegrationException(
-						IntegrationError._1020, new Throwable(response.getMessage()), null);
+						IntegrationError._1053, response.getMessage());
 				result.setInvocationException(ie);				
 			}
 		} catch (SOAPFaultException e) {
 			e.printStackTrace();
 			IntegrationException ie = new IntegrationException(
-					IntegrationError._1020, e, null);
+					IntegrationError._1053, e, e.getMessage());
 			result.setInvocationException(ie);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 			IntegrationException ie = new IntegrationException(
-					IntegrationError._1019, e, null);
+					IntegrationError._1053, e, e.getMessage());
 			result.setInvocationException(ie);
 		} catch (JAXBException e) {
 			e.printStackTrace();
 			IntegrationException ie = new IntegrationException(
-					IntegrationError._1018, e, null);
+					IntegrationError._1053, e, e.getMessage());
 			result.setInvocationException(ie);
 		} catch (IntegrationException e) {
 			result.setInvocationException(e);
@@ -110,23 +107,23 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 				result.setResult(response.getResponsecode() + " : " + response.getMessage());
 			} else {
 				IntegrationException ie = new IntegrationException(
-						IntegrationError._1020, new Throwable(response.getMessage()), null);
+						IntegrationError._1053, response.getMessage());
 				result.setInvocationException(ie);
 			}
 		} catch (SOAPFaultException e) {
 			e.printStackTrace();
 			IntegrationException ie = new IntegrationException(
-					IntegrationError._1020, e, null);
+					IntegrationError._1053, e, e.getMessage());
 			result.setInvocationException(ie);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 			IntegrationException ie = new IntegrationException(
-					IntegrationError._1019, e, null);
+					IntegrationError._1053, e, e.getMessage());
 			result.setInvocationException(ie);
 		} catch (JAXBException e) {
 			e.printStackTrace();
 			IntegrationException ie = new IntegrationException(
-					IntegrationError._1018, e, null);
+					IntegrationError._1053, e, e.getMessage());
 			result.setInvocationException(ie);
 		} catch (IntegrationException e) {
 			result.setInvocationException(e);

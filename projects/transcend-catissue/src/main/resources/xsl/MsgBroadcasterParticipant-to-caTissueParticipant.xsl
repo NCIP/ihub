@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:p="http://integration.nci.nih.gov/participant" 	xmlns:catissue="http://domain.catissuecore.wustl.edu/participant" 	xmlns:g="http://catissue/gender/data">
 	<xsl:output method="xml" indent="yes" />
-	<!-- Gender lookup -->
-	<xsl:key name="gender-lookup" match="g:gender" use="g:vockey"/>
+	<!-- Gender lookup -->	
 	<g:genders>
 		<g:gender>
 			<g:vockey>Male</g:vockey>
@@ -13,7 +12,14 @@
 			<g:vocvalue>Female Gender</g:vocvalue>
 		</g:gender>
 	</g:genders>
+	<xsl:key name="gender-lookup" match="g:gender" use="g:vockey"/>
 	<xsl:variable name="genders-top" select="document('')/*/g:genders"/>
+	
+	<xsl:template match="g:genders">
+		<xsl:param name="curr-key"/>
+		<xsl:value-of select="key('gender-lookup', $curr-key)/g:vocvalue"/>
+	</xsl:template>
+
 	<!-- Main -->
 	<xsl:template match="/">
 		<xsl:call-template name="ConvertToCaTissueParticipantMsg"/>
@@ -33,16 +39,23 @@
 				<xsl:value-of select="//p:participant/p:firstName"/>
 			</catissue:firstName>
 			<catissue:gender>
-				<xsl:value-of select="key('gender-lookup', //p:participant/p:gender)/g:vocvalue"/>
+				<xsl:apply-templates select="$genders-top">
+					<xsl:with-param name="curr-key" select="//p:participant/p:gender"/>
+				</xsl:apply-templates> 
 			</catissue:gender>
 			<!--
 			<catissue:lastName>
 				<xsl:value-of select="//p:participant/p:lastName"/>
 			</catissue:lastName>
-			-->
+			
 			<catissue:lastName>
 				<xsl:value-of select="//p:participant/p:identifiers/p:organizationAssignedIdentifier[p:type/text()='MRN']/p:value"/>
 			</catissue:lastName>
+			-->
+			<xsl:variable name="studySubjectIdentifier" select="//p:participant/p:assignments/p:assignment/p:studySubjectIdentifier"/>
+			<catissue:lastName>
+				<xsl:value-of select="$studySubjectIdentifier"/>
+			</catissue:lastName>			
 			<catissue:socialSecurityNumber>
 				<xsl:value-of select="//p:participant/p:identifiers/p:organizationAssignedIdentifier[p:type/text()='SSN']/p:value"/>
 			</catissue:socialSecurityNumber>
@@ -51,11 +64,13 @@
 				<catissue:collectionProtocolRegistration>
 					<catissue:activityStatus>Active</catissue:activityStatus>
 					<catissue:consentSignatureDate>
-						<xsl:value-of  select="substring-before(current-dateTime(),'T')"/>
+						<!--<xsl:value-of  select="substring-before(current-dateTime(),'T')"/> -->
 					</catissue:consentSignatureDate>
-					<catissue:protocolParticipantIdentifier />
+					<catissue:protocolParticipantIdentifier>
+						<xsl:value-of select="$studySubjectIdentifier"/>
+					</catissue:protocolParticipantIdentifier>
 					<catissue:registrationDate>
-						<xsl:value-of  select="substring-before(current-dateTime(),'T')"/>
+						<xsl:value-of select="//p:participant/p:registrationDate"/>
 					</catissue:registrationDate>
 					<catissue:specimenCollectionGroupCollection	class="set" />
 					<catissue:collectionProtocol>
@@ -77,9 +92,17 @@
 					<catissue:isToInsertAnticipatorySCGs>true</catissue:isToInsertAnticipatorySCGs>
 				</catissue:collectionProtocolRegistration>
 			</catissue:collectionProtocolRegistrationCollection>
-			<catissue:raceCollection class="set" />
+			<catissue:raceCollection class="set">
+				<catissue:race>
+					<catissue:raceName>
+						<xsl:value-of select="//p:participant/p:race"/>
+					</catissue:raceName>
+					<catissue:participant reference="../../.."/>
+				</catissue:race>
+			</catissue:raceCollection>
+			<catissue:participantMedicalIdentifierCollection class="set" />
 			<!--
-			<catissue:participantMedicalIdentifierCollection class="linked-hash-set">
+			<catissue:participantMedicalIdentifierCollection class="linked-hash-set">			
 				<catissue:participantMedicalIdentifier>
 					<catissue:medicalRecordNumber><xsl:value-of select="//p:participant/p:identifiers/p:organizationAssignedIdentifier[p:type/text()='MRN']/p:value"/></catissue:medicalRecordNumber>
 					<catissue:site>

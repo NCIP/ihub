@@ -20,14 +20,19 @@ public class CaTissueTask implements Callable<ServiceInvocationResult> {
 
 	public CaTissueTask(Class caTissueParticipantClientClass, String loginName,
 			String password, String methodName, Class[] paramClasses,
-			String message) throws Exception {
+			String message) throws IntegrationException  {
 		super();
-		Constructor constructor = caTissueParticipantClientClass
-				.getDeclaredConstructor(String.class, String.class);
-		this.caTissueClientInstance = constructor.newInstance(loginName,
-				password);
-		methodToInvoke = caTissueParticipantClientClass.getDeclaredMethod(
-				methodName, String.class);
+		try {
+			Constructor constructor = caTissueParticipantClientClass
+					.getDeclaredConstructor(String.class, String.class);
+			this.caTissueClientInstance = constructor.newInstance(loginName,
+					password);
+			methodToInvoke = caTissueParticipantClientClass.getDeclaredMethod(
+					methodName, String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new IntegrationException(IntegrationError._1052, e.getMessage());
+		}
 
 		this.message = message;
 	}
@@ -40,9 +45,9 @@ public class CaTissueTask implements Callable<ServiceInvocationResult> {
 			result.setDataChanged(true);
 			result.setOriginalData(retValue);
 		} catch (Exception e) {
-			//TODO : handle individual exceptions
+			//must not reach here, exceptions must be handled inside client
 			IntegrationException ie = new IntegrationException(
-					IntegrationError._1051, e.getCause());
+					IntegrationError._1051, e.getCause(), e.getMessage());
 			result.setInvocationException(ie);
 		}
 

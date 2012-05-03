@@ -13,6 +13,8 @@ import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.Participants;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.UpdateParticipant;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.UpdateParticipantResponse;
+import gov.nih.nci.integration.exception.IntegrationError;
+import gov.nih.nci.integration.exception.IntegrationException;
 
 import java.io.StringReader;
 import java.net.MalformedURLException;
@@ -46,14 +48,19 @@ public class CaAERSParticipantServiceWSClient {
 	private ClientPasswordCallback clientPasswordCallback;
 
 	public CaAERSParticipantServiceWSClient(String wsdl, String userName,
-			ClientPasswordCallback clientPasswordCallback) throws JAXBException {
+			ClientPasswordCallback clientPasswordCallback) throws IntegrationException {
 		super();
 		this.userName = userName;
 		this.clientPasswordCallback = clientPasswordCallback;
 
-		getUnmarshaller();
+		try {
+			getUnmarshaller();
 
-		initClient(wsdl);
+			initClient(wsdl);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new IntegrationException(IntegrationError._1054, e.getMessage());
+		}
 	}
 
 	private void initClient(String wsdl) {
@@ -81,9 +88,6 @@ public class CaAERSParticipantServiceWSClient {
 		TLSClientParameters tlsClientParams = new TLSClientParameters();
 		tlsClientParams.setDisableCNCheck(true);
 		http.setTlsClientParameters(tlsClientParams);
-
-		System.out.println("cxf client cl "
-				+ client.getClass().getClassLoader());
 	}
 
 	private Unmarshaller getUnmarshaller() throws JAXBException {
@@ -114,10 +118,7 @@ public class CaAERSParticipantServiceWSClient {
 	public CaaersServiceResponse createParticipant(String participantXMLStr)
 			throws JAXBException, MalformedURLException, SOAPFaultException {
 		ParticipantType participant = parseParticipant(participantXMLStr);
-		System.out.println(participant.getFirstName());
-		System.out.println(participant.getLastName());
-		System.out.println(participant.getGender());
-		System.out.println(participant.getIdentifiers());
+		
 		CreateParticipant createParticipant = new CreateParticipant();
 		Participants participants = new Participants();
 		participants.getParticipant().add(participant);
@@ -127,7 +128,7 @@ public class CaAERSParticipantServiceWSClient {
 		try {
 			retValue = client.createParticipant(createParticipant);
 		} catch (SOAPFaultException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			throw e;
 		}
 		return retValue.getCaaersServiceResponse();
@@ -136,6 +137,7 @@ public class CaAERSParticipantServiceWSClient {
 	public CaaersServiceResponse deleteParticipant(String participantXMLStr)
 			throws JAXBException, MalformedURLException, SOAPFaultException {
 		ParticipantType participant = parseParticipant(participantXMLStr);
+		
 		DeleteParticipant deleteParticipant = new DeleteParticipant();
 		Participants participants = new Participants();
 		participants.getParticipant().add(participant);
@@ -145,7 +147,7 @@ public class CaAERSParticipantServiceWSClient {
 		try {
 			retValue = client.deleteParticipant(deleteParticipant);
 		} catch (SOAPFaultException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			throw e;
 		}
 		return retValue.getCaaersServiceResponse();
@@ -154,10 +156,7 @@ public class CaAERSParticipantServiceWSClient {
 	public CaaersServiceResponse updateParticipant(String participantXMLStr)
 			throws JAXBException, MalformedURLException, SOAPFaultException {
 		ParticipantType participant = parseParticipant(participantXMLStr);
-		System.out.println(participant.getFirstName());
-		System.out.println(participant.getLastName());
-		System.out.println(participant.getGender());
-		System.out.println(participant.getIdentifiers());
+		
 		UpdateParticipant updateParticipant = new UpdateParticipant();
 		Participants participants = new Participants();
 		participants.getParticipant().add(participant);
@@ -167,7 +166,7 @@ public class CaAERSParticipantServiceWSClient {
 		try {
 			retValue = client.updateParticipant(updateParticipant);
 		} catch (SOAPFaultException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			throw e;
 		}
 		return retValue.getCaaersServiceResponse();
@@ -192,7 +191,7 @@ public class CaAERSParticipantServiceWSClient {
 		try {
 			retValue = client.getParticipant(getParticipant);
 		} catch (SOAPFaultException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			throw e;
 		}
 		return retValue.getCaaersServiceResponse();

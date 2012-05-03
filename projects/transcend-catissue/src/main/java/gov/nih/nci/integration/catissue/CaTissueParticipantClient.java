@@ -57,7 +57,7 @@ public class CaTissueParticipantClient {
 			// CHECKSTYLE:OFF
 		} catch (Exception e) { // NOPMD
 			e.printStackTrace();
-			throw new IntegrationException(IntegrationError._1000, e);
+			throw new IntegrationException(IntegrationError._1052, e.getMessage());
 		}
 		// CHECKSTYLE:ON
 	}
@@ -171,7 +171,7 @@ public class CaTissueParticipantClient {
 	private ServiceInvocationResult getServiceInvocationResult(
 			IntegrationError error, Exception e) {
 		ServiceInvocationResult result = new ServiceInvocationResult();
-		result.setInvocationException(new IntegrationException(error, e));
+		result.setInvocationException(new IntegrationException(error, e, e.getMessage()));
 		return result;
 	}
 

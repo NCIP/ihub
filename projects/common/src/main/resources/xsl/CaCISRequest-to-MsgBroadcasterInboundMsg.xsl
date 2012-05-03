@@ -48,6 +48,7 @@
 						<p:race><xsl:value-of select="$otherInfoObs/ns1trim:value[ns1trim:label/text()='Race']/ns1trim:SETCE/ns1trim:displayName"/></p:race>
 						<p:ethnicity><xsl:value-of select="$otherInfoObs/ns1trim:value[ns1trim:label/text()='Ethnicity']/ns1trim:CE/ns1trim:displayName"/></p:ethnicity>
 						<p:activityStatus>Active</p:activityStatus>
+						<p:registrationDate><xsl:value-of select="//ns1trim:trim/ns1trim:act/ns1trim:relationship[@name='registration']/ns1trim:act/ns1trim:observation/ns1trim:value[ns1trim:label/text()='Registration Date']/ns1trim:TS/ns1trim:value"/></p:registrationDate>
 						<xsl:variable name="randomPatIdAct" select="//ns1trim:trim/ns1trim:act/ns1trim:relationship[@name='RandomPatientID']/ns1trim:act"/>
 						<p:identifiers>
 							<p:organizationAssignedIdentifier
@@ -61,7 +62,7 @@
 								</p:organization>
 							</p:organizationAssignedIdentifier>
 							<p:organizationAssignedIdentifier
-								id="1" version="1">
+								id="2" version="1">
 								<p:type>SSN</p:type>
 								<p:value><xsl:value-of select="$otherInfoObs/ns1trim:value[ns1trim:label/text()='SSN']/ns1trim:ST"/></p:value>
 								<p:primaryIndicator>false</p:primaryIndicator>
@@ -69,7 +70,7 @@
 									<p:name>SSN</p:name>
 									<p:nciInstituteCode>SSN</p:nciInstituteCode>
 								</p:organization>
-							</p:organizationAssignedIdentifier>
+							</p:organizationAssignedIdentifier>							
 							<p:systemAssignedIdentifier id="1"
 								version="1">
 								<p:type>MRN</p:type>

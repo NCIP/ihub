@@ -1,16 +1,14 @@
 package gov.nih.nci.integration.catissue.client;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import edu.wustl.catissuecore.domain.CollectionProtocol;
 import edu.wustl.catissuecore.domain.CollectionProtocolRegistration;
 import edu.wustl.catissuecore.domain.Participant;
+import edu.wustl.catissuecore.domain.Race;
 import edu.wustl.catissuecore.factory.CollectionProtocolFactory;
 import edu.wustl.catissuecore.factory.CollectionProtocolRegistrationFactory;
 import edu.wustl.catissuecore.factory.ParticipantFactory;
+import edu.wustl.catissuecore.factory.RaceFactory;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 
 import java.io.StringReader;
@@ -48,7 +46,8 @@ public class CaTissueParticipantIntegrationTest {
 	 *             exception thrown if any
 	 */
 	@Test
-	public void createParticipantAsPC() throws Exception {
+	public void handleParticipantRegistration() throws Exception {
+		//create sample participant registration
 		final String cpTitle = "CP-01";
 
 		final CollectionProtocolFactory cpFact = CollectionProtocolFactory
@@ -59,35 +58,58 @@ public class CaTissueParticipantIntegrationTest {
 		final Participant participant = getParticipant();
 		participant.getCollectionProtocolRegistrationCollection().add(
 				initCollectionProtocolRegistration(participant, cp));
-
-//		caTissueParticipantClient
-//				.registerParticipant(participant);
 		
+		String participantXML = caTissueParticipantClient.getxStream().toXML(participant);
+		System.out.println(participantXML);
+		
+		//register participant
+		caTissueParticipantClient
+				.registerParticipant(participant);
+		
+		//retrieve participant by cp
 		final List<Participant> partcpnts = caTissueParticipantClient
 				.getParticipantsForCollectionProtocol(cpTitle);
 		assertNotNull(partcpnts);
 		assertEquals(false, partcpnts.isEmpty());
 		
+		//retrieve participant by MRN
 		Participant existParticipant = caTissueParticipantClient
-			.getParticipantForMRN(participant.getLastName());
+			.getParticipantForPatientId(participant.getLastName());
 		assertNotNull(existParticipant);
 		
+		//update participant
 		existParticipant.setFirstName(existParticipant.getFirstName() + "orig");
 		existParticipant = caTissueParticipantClient
 				.updateParticipantRegistration(existParticipant);
 		assertNotNull(existParticipant);
-		assertTrue(existParticipant.getFirstName().endsWith("orig"));
+		assertTrue(!existParticipant.getFirstName().endsWith("orig"));
 		
+		//check serializing orig participant registration before update
 		String existingPrtcpntStr = caTissueParticipantClient.getxStream().toXML(existParticipant);
 		assertNotNull(existingPrtcpntStr);
 		System.out.println("existingPrtcpntStr >>> " + existingPrtcpntStr);
 		
+		//simulate rollback update, by deleting the update participant registration
 		caTissueParticipantClient.deleteParticipant(participant);
 		
-		existParticipant = caTissueParticipantClient
-				.getParticipantForMRN(participant.getLastName());
+		//assert deletion
+		Participant afterDel = caTissueParticipantClient
+				.getParticipantForPatientId(participant.getLastName());
 		
-		assertNull(existParticipant);
+		assertNull(afterDel);
+		
+		//re-register with the original participant retrieved before update
+		caTissueParticipantClient
+			.registerParticipant(existParticipant);
+		
+		//assert presence by retreival
+		Participant afterReinsert = caTissueParticipantClient
+			.getParticipantForPatientId(participant.getLastName());
+		
+		assertNotNull(afterReinsert);
+		
+		//cleanup by deletion
+		caTissueParticipantClient.deleteParticipant(participant);
 	}
 
 	//@Test
@@ -126,7 +148,7 @@ public class CaTissueParticipantIntegrationTest {
 		String registeredParticipantStr = caTissueParticipantClient
 				.registerParticipant(getParticipantXMLStr());
 		System.out.println(registeredParticipantStr);
-		Participant registeredParticipant = caTissueParticipantClient.getParticipantForMRN("995683");
+		Participant registeredParticipant = caTissueParticipantClient.getParticipantForPatientId("995683");
 
 		assertNotNull(registeredParticipant);
 		assertNotNull(registeredParticipant.getObjectId());
@@ -136,7 +158,7 @@ public class CaTissueParticipantIntegrationTest {
 
 		caTissueParticipantClient.deleteParticipant(getParticipantXMLStr());
 		final Participant result2 = caTissueParticipantClient
-				.getParticipantForMRN("995683");
+				.getParticipantForPatientId("995683");
 		assertNull(result2);
 	}
 
@@ -151,10 +173,26 @@ public class CaTissueParticipantIntegrationTest {
 		participant.setFirstName("JOHN5");
 		//participant.setLastName("DOE5");
 		//MRN or Medical Identifier is being set as lastName for identification
-		participant.setLastName("995679");
+		participant.setLastName("9050201");
 		participant.setVitalStatus("Alive");
-		participant.setSocialSecurityNumber("123-45-6824");
+		participant.setSocialSecurityNumber("123-05-0201");
+		
+		Race race = RaceFactory.getInstance().createObject();
+		race.setParticipant(participant);
+		race.setRaceName("White");
+		participant.getRaceCollection().add(race);
+		
+		/*Site site = SiteFactory.getInstance().createObject();
+		site.setName("DCP");
+		
+		ParticipantMedicalIdentifier pmi = ParticipantMedicalIdentifierFactory
+				.getInstance().createObject();
+		pmi.setParticipant(participant);
+		pmi.setMedicalRecordNumber("9050201");
+		pmi.setSite(site);
 
+		participant.getParticipantMedicalIdentifierCollection().add(pmi);*/
+		
 		return participant;
 	}
 
@@ -181,6 +219,7 @@ public class CaTissueParticipantIntegrationTest {
 		collectionProtocolRegistration.setActivityStatus("Active");
 		collectionProtocolRegistration.setRegistrationDate(new Date());
 		collectionProtocolRegistration.setConsentSignatureDate(new Date());
+		collectionProtocolRegistration.setProtocolParticipantIdentifier("123050201");
 		return collectionProtocolRegistration;
 	}
 
