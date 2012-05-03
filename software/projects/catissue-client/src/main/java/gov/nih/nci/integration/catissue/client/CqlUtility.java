@@ -49,7 +49,7 @@ public class CqlUtility {
 		return createTargetQuery(Participant.class, group1);
 	}
 	
-	public static CQLQuery getParticipantForMedicalIdentifier(String mrn) {
+	public static CQLQuery getParticipantForPatientId(String mrn) {
 		CQLAttribute targetAttribute2 = createAttribute("lastName",
 				mrn, CQLPredicate.EQUAL_TO);
 

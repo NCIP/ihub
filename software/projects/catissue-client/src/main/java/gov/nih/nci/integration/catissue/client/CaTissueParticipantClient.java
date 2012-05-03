@@ -4,11 +4,17 @@ import edu.wustl.catissuecore.domain.CollectionProtocol;
 import edu.wustl.catissuecore.domain.CollectionProtocolRegistration;
 import edu.wustl.catissuecore.domain.Participant;
 import edu.wustl.catissuecore.domain.ParticipantMedicalIdentifier;
+import edu.wustl.catissuecore.domain.Race;
+import edu.wustl.catissuecore.factory.CollectionProtocolFactory;
+import edu.wustl.catissuecore.factory.CollectionProtocolRegistrationFactory;
+import edu.wustl.catissuecore.factory.ParticipantFactory;
+import edu.wustl.catissuecore.factory.RaceFactory;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -18,7 +24,6 @@ import org.slf4j.LoggerFactory;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.basic.DateConverter;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
-import com.thoughtworks.xstream.mapper.Mapper;
 
 public class CaTissueParticipantClient {
 	
@@ -55,6 +60,7 @@ public class CaTissueParticipantClient {
 		//CGLIB - related settings end  
 		
 		xStream.alias("participant", Participant.class);
+		xStream.alias("race", Race.class);
 		xStream.alias("collectionProtocol", CollectionProtocol.class);
 		xStream.alias("collectionProtocolRegistration", CollectionProtocolRegistration.class);
 		xStream.alias("participantMedicalIdentifier", ParticipantMedicalIdentifier.class);
@@ -65,8 +71,7 @@ public class CaTissueParticipantClient {
                 "yyyy-MM-dd HH:mm:ss.S a", 
                 "yyyy-MM-dd HH:mm:ssz", "yyyy-MM-dd HH:mm:ss z", // JDK 1.3 needs both versions
                 "yyyy-MM-dd HH:mm:ssa" }; // backwards compatibility
-		xStream.registerConverter(new DateConverter("yyyy-MM-dd HH:mm:ss.S z", accFrmts, true));
-		
+		xStream.registerConverter(new DateConverter("yyyy-MM-dd HH:mm:ss.S z", accFrmts, true));		
 		
 	}
 	
@@ -153,7 +158,7 @@ public class CaTissueParticipantClient {
 			throw new ApplicationException("Participant does not contain the unique medical identifier!");
 		}
 		
-		Participant existingParticipant = getParticipantForMRN(participant.getLastName());
+		Participant existingParticipant = getParticipantForPatientId(participant.getLastName());
 		if (existingParticipant == null ) {
 			throw new ApplicationException("CaTissue does not contain a participant with the unique identifier, " + participant.getLastName());
 		}
@@ -190,14 +195,32 @@ public class CaTissueParticipantClient {
 			throw new ApplicationException("Participant does not contain the unique identifier, SSN!");
 		}
 		
-		Participant persistedParticipant = getParticipantForMRN(participant.getLastName());
+		Participant persistedParticipant = getParticipantForPatientId(participant.getLastName());
 		if(persistedParticipant == null) {
 			return null;
 		}
 		persistedParticipant.setActivityStatus("Disabled");
 		persistedParticipant.setSocialSecurityNumber(null);
 		persistedParticipant.setLastName(null);
-		persistedParticipant.getCollectionProtocolRegistrationCollection().clear();
+		
+		Iterator<CollectionProtocolRegistration> iter = persistedParticipant.getCollectionProtocolRegistrationCollection().iterator();
+		while (iter.hasNext()) {
+			CollectionProtocolRegistration collectionProtocolRegistration = (CollectionProtocolRegistration) iter
+					.next();
+			collectionProtocolRegistration.setProtocolParticipantIdentifier("");
+			collectionProtocolRegistration.setActivityStatus("Disabled");
+			caTissueAPIClient.update(collectionProtocolRegistration);
+		}	
+		
+		/*Iterator<ParticipantMedicalIdentifier> iter = persistedParticipant.getParticipantMedicalIdentifierCollection().iterator();
+		while (iter.hasNext()) {
+			ParticipantMedicalIdentifier participantMedicalIdentifier = (ParticipantMedicalIdentifier) iter
+					.next();			
+			//caTissueAPIClient.delete("Delete from ParticipantMedicalIdentifier pmi where pmi.id=" + participantMedicalIdentifier.getId());
+			caTissueAPIClient.delete(participantMedicalIdentifier);
+		}*/
+		
+		persistedParticipant.getParticipantMedicalIdentifierCollection().clear();
 			
 		return caTissueAPIClient.update(persistedParticipant);
 	}
@@ -221,9 +244,9 @@ public class CaTissueParticipantClient {
 		return prtcpntLst.get(0);
 	}
 	
-	public Participant getParticipantForMRN(String mrn) throws ApplicationException {
+	public Participant getParticipantForPatientId(String mrn) throws ApplicationException {
 		List<Participant> prtcpntLst = caTissueAPIClient.getApplicationService().query(CqlUtility
-				.getParticipantForMedicalIdentifier(mrn));
+				.getParticipantForPatientId(mrn));
 		if(prtcpntLst==null || prtcpntLst.isEmpty()) {
 			//TODO : decide on throwing exception vs returning null
 			return null;
@@ -260,7 +283,7 @@ public class CaTissueParticipantClient {
 	}
 	
 	private Participant copyFrom(Participant participant) {
-		Participant p = new Participant();
+		Participant p = ParticipantFactory.getInstance().createObject();
 		
 		p.setId(participant.getId());
 		p.setActivityStatus(participant.getActivityStatus());
@@ -272,6 +295,35 @@ public class CaTissueParticipantClient {
 		p.setMetaPhoneCode(participant.getMetaPhoneCode());
 		p.setSocialSecurityNumber(participant.getSocialSecurityNumber());
 		p.setVitalStatus(participant.getVitalStatus());
+		
+		Iterator<Race> iter = participant.getRaceCollection().iterator();
+		while (iter.hasNext()) {
+			Race race = (Race) iter.next();
+			Race r = RaceFactory.getInstance().createObject();
+			r.setParticipant(p);	
+			r.setRaceName(race.getRaceName());
+			p.getRaceCollection().add(r);
+		}
+		
+		Iterator<CollectionProtocolRegistration> cprIter = participant.getCollectionProtocolRegistrationCollection().iterator();
+		while (cprIter.hasNext()) {
+			CollectionProtocolRegistration collectionProtocolRegistration = (CollectionProtocolRegistration) cprIter
+					.next();
+			
+			CollectionProtocol collectionProtocol = collectionProtocolRegistration.getCollectionProtocol();
+			CollectionProtocol cp = CollectionProtocolFactory.getInstance().createObject();
+			cp.setActivityStatus(collectionProtocol.getActivityStatus());
+			cp.setTitle(collectionProtocol.getTitle());
+			
+			CollectionProtocolRegistration cpr = CollectionProtocolRegistrationFactory.getInstance().createObject();			
+			cpr.setParticipant(p);
+			cpr.setConsentSignatureDate(collectionProtocolRegistration.getConsentSignatureDate());
+			cpr.setRegistrationDate(collectionProtocolRegistration.getRegistrationDate());
+			cpr.setProtocolParticipantIdentifier(collectionProtocolRegistration.getProtocolParticipantIdentifier());
+			
+			cpr.setCollectionProtocol(cp);
+			p.getCollectionProtocolRegistrationCollection().add(cpr);
+		}
 		
 		return p;
 	}
