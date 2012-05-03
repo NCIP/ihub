@@ -20,7 +20,6 @@
     </target>
 	
 	<target name="deploy-mc" description="Will deploy to mirth connect.">
-		<delete dir="${mirth.home}/custom-lib" includes="*.jar"/>
 		<copy todir="${mirth.home}/custom-lib" includeemptydirs="true">
 			<fileset dir="${build.dir}/lib/" includes="*.jar"></fileset>
 		</copy>
