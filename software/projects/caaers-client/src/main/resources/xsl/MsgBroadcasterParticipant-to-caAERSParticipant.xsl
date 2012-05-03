@@ -30,6 +30,9 @@ xmlns:caaers="http://schema.integration.caaers.cabig.nci.nih.gov/participant">
 	<!-- TO ignore activityStatus -->
 	<xsl:template match="p:activityStatus"/>
 	
+	<!-- TO ignore registration date -->
+	<xsl:template match="p:registrationDate"/>
+	
 	<xsl:template match="p:organizationAssignedIdentifier[p:type/text() = 'SSN']"/>
 	
 	<xsl:template match="p:organizationAssignedIdentifier">

@@ -8,7 +8,7 @@
   <enabled>true</enabled>
   <version>2.1.1.5490</version>
   <lastModified>
-    <time>1334698920063</time>
+    <time>1335463168865</time>
     <timezone>America/New_York</timezone>
   </lastModified>
   <revision>1</revision>
@@ -68,7 +68,7 @@ try {
 	channelMap.put(&quot;cacisRequest&quot;, cacisRequest);
 
 } catch(err) {
-	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1041, err, null);
+	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1041, err, err.message);
 	channelMap.put(&apos;CACIS_ERROR&apos;, intgExcp);
 }</script>
           <type>JavaScript</type>
@@ -84,7 +84,7 @@ try {
 	channelMap.put(&quot;cacisRequest&quot;, cacisRequest);
 
 } catch(err) {
-	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1041, err, null);
+	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1041, err, err.message);
 	channelMap.put(&apos;CACIS_ERROR&apos;, intgExcp);
 }</string>
             </entry>
@@ -1390,8 +1390,8 @@ return false;</script>
 
 	xChngReq[&apos;metadata&apos;][&apos;caXchangeIdentifier&apos;]=channelMap.get(&apos;referenceMessageId&apos;);
 	
-	logger.info(&apos;srcDt after setting refmsgid = &apos;+ srcDt );
-	logger.info(&apos;msg after setting refmsgid = &apos;+ cr );
+	//logger.info(&apos;srcDt after setting refmsgid = &apos;+ srcDt );
+	//logger.info(&apos;msg after setting refmsgid = &apos;+ cr );
 
 	//var cacisResponse = client.acceptMessage(wsdlUrl, cr.toString());
 	var cacisResponse = client.acceptSource(wsdlUrl, cr.toString());
@@ -1399,8 +1399,8 @@ return false;</script>
 	logger.info(&quot;cacisResponse=&quot; + cacisResponse);
 	responseMap.put(&apos;caCISRequestSenderConnector&apos;, cacisResponse);
 } catch(err) {
-	logger.debug(err);
-	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1043, err, null);
+	logger.debug(&quot;cacis channel error = &quot; + err.message);
+	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1043, err, err.message);
 	channelMap.put(&apos;CACIS_ERROR&apos;, intgExcp);
 }
 

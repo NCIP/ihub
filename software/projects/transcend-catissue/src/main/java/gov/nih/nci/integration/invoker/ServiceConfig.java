@@ -6,6 +6,7 @@ import gov.nih.nci.integration.transformer.XSLTTransformer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -30,7 +31,7 @@ public class ServiceConfig {
 		
 	@Bean
 	@Scope("prototype")
-	public ServiceInvocationStrategy CaTissueRegistrationServiceInvocationStrategy() throws IntegrationException{
+	public ServiceInvocationStrategy CaTissueRegistrationServiceInvocationStrategy() throws IntegrationException{		
 		xsltTransformer.initTransformer(catissueParticipantXsl, baseXSLPath);
 		return new CaTissueRegistrationServiceInvocationStrategy(
 				Integer.parseInt(retryCntStr), caTissueParticipantClient, xsltTransformer);

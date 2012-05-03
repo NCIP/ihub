@@ -44,8 +44,8 @@ public class CaAERSConfig {
 	}
 
 	@Bean
-	public CaAERSParticipantServiceWSClient caAERSParticipantServiceWSClient()
-			throws JAXBException {
+	public CaAERSParticipantServiceWSClient caAERSParticipantServiceWSClient() 
+		throws IntegrationException {
 		return new CaAERSParticipantServiceWSClient(serviceUrl + "?wsdl",
 				userName, clientPasswordCallback());
 	}
@@ -57,16 +57,13 @@ public class CaAERSConfig {
 		
 		try {
 			xsltTransformer.initTransformer(caaersParticipantXsl, baseXSLPath);
-			System.out.println(xsltTransformer);
 			return new CaAERSRegistrationServiceInvocationStrategy(xsltTransformer,
 					caAERSParticipantServiceWSClient(), Integer
 							.parseInt(retryCountStr));
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
-			throw new IntegrationException(IntegrationError._1051, e, null);
-		} catch (JAXBException e) {
-			throw new IntegrationException(IntegrationError._1051, e, null);
-		}
+			throw new IntegrationException(IntegrationError._1051, e, (Object)null);
+		} 
 	}
 	
 	@Bean
@@ -76,15 +73,12 @@ public class CaAERSConfig {
 		
 		try {
 			xsltTransformer.initTransformer(caaersParticipantXsl, baseXSLPath);
-			System.out.println(xsltTransformer);
 			return new CaAERSUpdateRegistrationServiceInvocationStrategy(xsltTransformer,
 					caAERSParticipantServiceWSClient(), Integer
 							.parseInt(retryCountStr));
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
-			throw new IntegrationException(IntegrationError._1051, e, null);
-		} catch (JAXBException e) {
-			throw new IntegrationException(IntegrationError._1051, e, null);
-		}
+			throw new IntegrationException(IntegrationError._1051, e, (Object)null);
+		} 
 	}
 }

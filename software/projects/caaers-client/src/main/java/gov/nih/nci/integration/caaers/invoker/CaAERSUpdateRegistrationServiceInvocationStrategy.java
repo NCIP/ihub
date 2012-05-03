@@ -40,6 +40,8 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 	
 	private static Logger LOG = LoggerFactory
 		.getLogger(CaAERSUpdateRegistrationServiceInvocationStrategy.class);
+	
+	private static QName QNAME = new QName("http://schema.integration.caaers.cabig.nci.nih.gov/participant", "participant");;
 
 	private CaAERSParticipantServiceWSClient client;
 
@@ -51,16 +53,11 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 
 	public CaAERSUpdateRegistrationServiceInvocationStrategy(
 			XSLTTransformer xsltTransformer,
-			CaAERSParticipantServiceWSClient client, int retryCount) throws JAXBException {
+			CaAERSParticipantServiceWSClient client, int retryCount) {
 		super();
 		this.xsltTransformer = xsltTransformer;
 		this.client = client;
 		this.retryCount = retryCount;
-		
-		getMarshaller();
-		
-		System.out.println("sis cl " + getClass().getClassLoader());
-		System.out.println("client cl " + client.getClass().getClassLoader());
 	}
 
 	@Override
@@ -97,7 +94,7 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 				existingPrtcpnt = prtcpnts.getParticipant().get(0);
 			} else {
 				IntegrationException ie = new IntegrationException(
-						IntegrationError._1020, new Throwable(response.getMessage()), null);
+						IntegrationError._1053, response.getMessage());
 				result.setInvocationException(ie);
 				return result;
 			}
@@ -111,23 +108,23 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 				result.setOriginalData(originalData);
 			} else {
 				IntegrationException ie = new IntegrationException(
-						IntegrationError._1020, new Throwable(response.getMessage()), null);
+						IntegrationError._1053, response.getMessage());
 				result.setInvocationException(ie);
 			}
 		} catch (SOAPFaultException e) {
 			e.printStackTrace();
 			IntegrationException ie = new IntegrationException(
-					IntegrationError._1020, e, null);
+					IntegrationError._1053, e, e.getMessage());
 			result.setInvocationException(ie);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 			IntegrationException ie = new IntegrationException(
-					IntegrationError._1019, e, null);
+					IntegrationError._1053, e, e.getMessage());
 			result.setInvocationException(ie);
 		} catch (JAXBException e) {
 			e.printStackTrace();
 			IntegrationException ie = new IntegrationException(
-					IntegrationError._1018, e, null);
+					IntegrationError._1053, e, e.getMessage());
 			result.setInvocationException(ie);
 		} catch (IntegrationException e) {
 			result.setInvocationException(e);
@@ -146,23 +143,23 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 				result.setResult(response.getResponsecode() + " : " + response.getMessage());
 			} else {
 				IntegrationException ie = new IntegrationException(
-						IntegrationError._1020, new Throwable(response.getMessage()), null);
+						IntegrationError._1053, response.getMessage());
 				result.setInvocationException(ie);
 			}
 		} catch (SOAPFaultException e) {
 			e.printStackTrace();
 			IntegrationException ie = new IntegrationException(
-					IntegrationError._1020, e, null);
+					IntegrationError._1053, e, e.getMessage());
 			result.setInvocationException(ie);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 			IntegrationException ie = new IntegrationException(
-					IntegrationError._1019, e, null);
+					IntegrationError._1053, e, e.getMessage());
 			result.setInvocationException(ie);
 		} catch (JAXBException e) {
 			e.printStackTrace();
 			IntegrationException ie = new IntegrationException(
-					IntegrationError._1018, e, null);
+					IntegrationError._1053, e, e.getMessage());
 			result.setInvocationException(ie);
 		} 
 		return result;
@@ -197,12 +194,18 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 		return participantXMLStr;
 	}	
 	
-	private String marshalParticipantType(ParticipantType participantType) throws JAXBException {
-		QName qname = new QName("http://schema.integration.caaers.cabig.nci.nih.gov/participant", "participant");
-		JAXBElement<ParticipantType> jaxbEle = new JAXBElement<ParticipantType>(qname, ParticipantType.class, null, participantType);
+	private String marshalParticipantType(ParticipantType participantType) throws IntegrationException {		
 		StringWriter sw = new StringWriter();
-		PrintWriter pw = new PrintWriter(sw);
-		getMarshaller().marshal(jaxbEle, pw);
+		
+		try {
+			JAXBElement<ParticipantType> jaxbEle = new JAXBElement<ParticipantType>(QNAME, ParticipantType.class, null, participantType);		
+			PrintWriter pw = new PrintWriter(sw);
+			getMarshaller().marshal(jaxbEle, pw);
+		} catch (JAXBException e) {
+			IntegrationException ie = new IntegrationException(
+					IntegrationError._1053, e, "Unable to serialize retrieved Participant");
+			throw ie;
+		}
 		return sw.toString();
 	}
 	

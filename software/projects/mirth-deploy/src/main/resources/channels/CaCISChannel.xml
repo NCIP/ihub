@@ -5,7 +5,7 @@
   <enabled>true</enabled>
   <version>2.1.1.5490</version>
   <lastModified>
-    <time>1334698994832</time>
+    <time>1335463052567</time>
     <timezone>America/New_York</timezone>
   </lastModified>
   <revision>1</revision>
@@ -109,7 +109,7 @@ try {
 	channelMap.put(&apos;msgForBroadcaster&apos;, regnMsg);
 
 } catch(err) {
-	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1018, null);
+	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1018, err, err.message);
 	channelMap.put(&apos;CACIS_ERROR&apos;, intgExcp);
 }
 
@@ -128,7 +128,7 @@ try {
 	channelMap.put(&apos;msgForBroadcaster&apos;, regnMsg);
 
 } catch(err) {
-	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1018, null);
+	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1018, err, err.message);
 	channelMap.put(&apos;CACIS_ERROR&apos;, intgExcp);
 }
 
@@ -215,7 +215,7 @@ try {
 	channelMap.put(&apos;msgForBroadcaster&apos;, aeMsg);
 
 } catch(err) {
-	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1024, null);
+	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1024, err, err.message);
 	channelMap.put(&apos;CACIS_ERROR&apos;, intgExcp);
 }
 
@@ -233,7 +233,7 @@ try {
 	channelMap.put(&apos;msgForBroadcaster&apos;, aeMsg);
 
 } catch(err) {
-	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1024, null);
+	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1024, err, err.message);
 	channelMap.put(&apos;CACIS_ERROR&apos;, intgExcp);
 }
 
