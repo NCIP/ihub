@@ -32,11 +32,13 @@
         
         <exclude module="jaxb-xjc"/>
         <exclude module="jaxb-impl"/>
-       
+		
+		<dependency org="gov.nih.nci.ihub" name="common" rev="latest.integration"  conf="runtime->dist;test->test;static-analysis->static-analysis"/>
         <dependency org="gov.nih.nci.ihub" name="transcend-catissue" rev="latest.integration"  conf="runtime->dist;test->test;static-analysis->static-analysis"/>
 		<dependency org="gov.nih.nci.ihub" name="transcend-caaers" rev="latest.integration"  conf="runtime->dist;test->test;static-analysis->static-analysis"/>
 		<dependency org="gov.nih.nci.ihub" name="transcend-caxchange" rev="latest.integration"  conf="runtime->dist;test->test;static-analysis->static-analysis"/>
 		<dependency org="gov.nih.nci.ihub" name="transcend-sa" rev="latest.integration"  conf="runtime->dist;test->test;static-analysis->static-analysis"/>
-				
+		
+						
 		</dependencies>
 </ivy-module>
