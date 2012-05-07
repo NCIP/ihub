@@ -2,18 +2,19 @@
 <xsl:stylesheet version="1.0" 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:p="http://integration.nci.nih.gov/participant" 	xmlns:catissue="http://domain.catissuecore.wustl.edu/participant" 	xmlns:g="http://catissue/gender/data">
 	<xsl:output method="xml" indent="yes" />
 	<!-- Gender lookup -->	
-	<g:genders>
-		<g:gender>
-			<g:vockey>Male</g:vockey>
-			<g:vocvalue>Male Gender</g:vocvalue>
-		</g:gender>
-		<g:gender>
-			<g:vockey>Female</g:vockey>
-			<g:vocvalue>Female Gender</g:vocvalue>
-		</g:gender>
-	</g:genders>
+<g:genders>
+	<g:gender>
+		<g:vockey>Male</g:vockey>
+		<g:vocvalue>Male Gender</g:vocvalue>
+	</g:gender>
+	<g:gender>
+		<g:vockey>Female</g:vockey>
+		<g:vocvalue>Female Gender</g:vocvalue>
+	</g:gender>
+</g:genders>
 	<xsl:key name="gender-lookup" match="g:gender" use="g:vockey"/>
-	<xsl:variable name="genders-top" select="document('')/*/g:genders"/>
+<!--<xsl:variable name="genders-top" select="document('')/*/g:genders"/> -->
+<xsl:variable name="genders-top" select="document('genders-lookup.xml')/*"/> 
 	
 	<xsl:template match="g:genders">
 		<xsl:param name="curr-key"/>
@@ -64,7 +65,7 @@
 				<catissue:collectionProtocolRegistration>
 					<catissue:activityStatus>Active</catissue:activityStatus>
 					<catissue:consentSignatureDate>
-						<!--<xsl:value-of  select="substring-before(current-dateTime(),'T')"/> -->
+						<xsl:value-of  select="substring-before(current-dateTime(),'T')"/>-->
 					</catissue:consentSignatureDate>
 					<catissue:protocolParticipantIdentifier>
 						<xsl:value-of select="$studySubjectIdentifier"/>

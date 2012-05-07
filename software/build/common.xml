@@ -105,6 +105,22 @@
 						    		overwrite="true" settingsRef="${ivy.settings.id}"/>
 			</sequential>
 	</macrodef>
+	
+	<!-- ==================================================================================
+			ivyReport: Will generate the ivy dependency report
+		======================================================================================= -->
+		<macrodef name="ivyReport">
+				<attribute name="todir"/>
+				<attribute name="conf"/>
+				<attribute name="resolveid"/>
+				<attribute name="settingsRef"/>
+				<sequential>
+					<ivy:report todir="@{todir}" 
+									conf="@{conf}" 
+									resolveid="@{resolveid}" 
+									settingsRef="@{settingsRef}"/>
+				</sequential>
+		</macrodef>
 
 	<!-- ===================================================================
 		generate-wsdl : Generates java code from WSDL usinc WSDL2Java from apache cxf
@@ -362,7 +378,7 @@
     <target name="report" depends="resolve, resolve-test, resolve-sa" description="--> generates a report of dependencies">
     	<echo message="Executing in ${ant.project.name}" />
     	<mkdir dir="${build.dir}/dependency-reports"/>
-        <ivy:report todir="${build.dir}/dependency-reports" conf="default,test,static-analysis" resolveid="[org]-[module]" settingsRef="${ivy.settings.id}"/>		
+        <ivyReport todir="${build.dir}/dependency-reports" conf="default,test,static-analysis" resolveid="[org]-[module]" settingsRef="${ivy.settings.id}"/>		
     </target>
     
     <!-- =============================================================== 
@@ -925,6 +941,9 @@
     </target>
 	
 	<target name="prepare.mirth" description="Can be used to do any preparation at Mirth side like cleanup">
+		<!-- delete dist for the project jar -->
+		<echo message="deleting project jar...${mirth.home}/custom-lib/${project.name}*.jar"/>
+		<delete dir="${mirth.home}/custom-lib/" includes="${project.name}*.jar"/>
 	</target>
 
 	<!-- FIXIT: Until extra required jars location for ivy can be identified-->

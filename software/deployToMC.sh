@@ -1,3 +1,3 @@
-set "MC_Home=%1"
-echo %MC_Home%
-%MC_Home%/mccommand -s %2
+echo MIRTH_HOME=$1
+echo $MIRTH_HOME
+$MIRTH_HOME/mccommand -s $2

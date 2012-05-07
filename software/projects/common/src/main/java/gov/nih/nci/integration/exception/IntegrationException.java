@@ -36,14 +36,14 @@ public class IntegrationException extends Exception {
 				cause, integrationError.getMessage(objects));
 	}
 
-	private IntegrationException(int errorCode, ErrorType errorType,
+	public IntegrationException(int errorCode, ErrorType errorType,
 			String message) {
 		super(message);
 		this.errorCode = errorCode;
 		this.errorType = errorType;
 	}
 
-	private IntegrationException(int errorCode, ErrorType errorType,
+	public IntegrationException(int errorCode, ErrorType errorType,
 			Throwable cause, String message) {
 		super(message, cause);
 		this.errorCode = errorCode;

@@ -20,6 +20,10 @@
         		description="Dependencies needed for testing purposes"/>
         	<conf name="static-analysis" visibility="public"
         		description="Dependencies needed for static-analysis purposes"/>
+        	
+        	<!-- caaers-client-lib -->
+        	<conf name="client" visibility="public"
+        		description="Dependencies needed for caaers-client"/>
         </configurations>
 
         <!--  Items to be published  -->
@@ -28,7 +32,7 @@
     		<artifact name="${ivy.module}-tests" conf="test" type="jar"/>
   		</publications>
 
-        <dependencies defaultconfmapping="build,dist->default(*)">
+        <dependencies defaultconfmapping="build,dist,client->default(*)">
 
             <exclude type="source" />
             <exclude type="javadoc" />
@@ -38,17 +42,36 @@
             <exclude org="org.springframework" module="spring-support" />
             <exclude org="org.springframework" module="spring-remoting" />
             <exclude org="ant" module="ant" />
-            
+                        
 			<!-- commonIntegration -->
-            <dependency org="gov.nih.nci.ihub" name="common" rev="latest.integration" conf="build,dist->default(*);test->test;static-analysis->static-analysis"/>
-			
+            <dependency org="gov.nih.nci.ihub" name="common" rev="latest.integration" conf="build,dist->default(*);test->test;static-analysis->static-analysis"/>		
+		
 			<!-- CXF client with ws-security -->
-					
-			<dependency org="org.apache.cxf" name="cxf-rt-frontend-jaxws" rev="2.4.1"/>
-			<dependency org="org.apache.cxf" name="cxf-rt-frontend-simple" rev="2.4.1"/>
-			<dependency org="org.apache.cxf" name="cxf-rt-ws-security" rev="2.4.1"/>
-			<dependency org="org.apache.cxf" name="cxf-rt-ws-policy" rev="2.4.1"/>
-			<dependency org="org.apache.cxf" name="cxf-rt-transports-http" rev="2.4.1"/>
+			<dependency org="org.apache.cxf" name="cxf-rt-frontend-jaxws" rev="2.3.2" transitive="false"/>
+			<dependency org="org.apache.cxf" name="cxf-rt-frontend-simple" rev="2.3.2"  transitive="false"/>
+			<dependency org="org.apache.cxf" name="cxf-rt-ws-security" rev="2.3.2" transitive="false"/>
+			<dependency org="org.apache.cxf" name="cxf-rt-ws-policy" rev="2.3.2" transitive="false"/>
+			<dependency org="org.apache.cxf" name="cxf-rt-transports-http" rev="2.3.2" transitive="false"/>
+			
+			<dependency org="org.apache.cxf" name="cxf-rt-bindings-soap" rev="2.3.2" transitive="false"/>
+			<dependency org="org.apache.cxf" name="cxf-rt-bindings-xml" rev="2.3.2" transitive="false"/>
+			<dependency org="org.apache.cxf" name="cxf-rt-databinding-jaxb" rev="2.3.2" transitive="false"/>
+			<dependency org="org.apache.cxf" name="cxf-rt-transports-common" rev="2.3.2" transitive="false"/>
+			<dependency org="org.apache.cxf" name="cxf-rt-ws-addr" rev="2.3.2" transitive="false"/>
+			
+			<dependency org="org.opensaml" name="opensaml" rev="2.4.1" transitive="false"/>
+			<dependency org="org.opensaml" name="openws" rev="1.4.1" transitive="false"/>
+			<dependency org="org.opensaml" name="xmltooling" rev="1.3.1" transitive="false"/>
+			<dependency org="org.springframework" name="spring-web" rev="3.0.2.RELEASE" transitive="false"/>
+			
+			<dependency org="wsdl4j" name="wsdl4j" rev="1.6.2" transitive="false"/>
+			<dependency org="org.apache.ws.security" name="wss4j" rev="1.5.11" transitive="false"/>
+			<dependency org="joda-time" name="joda-time" rev="1.6.2" transitive="false"/>
+			
+			<dependency org="xalan" name="xalan" rev="2.7.1" transitive="false"/>
+			<dependency org="xalan" name="serializer" rev="2.7.1" transitive="false"/>
+			
+			<dependency org="org.apache" name="xmlsec" rev="1.4.3" transitive="false"/>
 			
        </dependencies>
 </ivy-module>

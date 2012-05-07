@@ -8,7 +8,7 @@
   <enabled>true</enabled>
   <version>2.1.1.5490</version>
   <lastModified>
-    <time>1335463168865</time>
+    <time>1336398331671</time>
     <timezone>America/New_York</timezone>
   </lastModified>
   <revision>1</revision>
@@ -1788,9 +1788,10 @@ if(	msgTyp != globalMap.get(&apos;AE&apos;)
 	) {
 	var msgParams = [&quot;value1&quot;, &quot;value2&quot;];
 	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1050, msgParams);
-	var retVal = convertIntegrationExceptionToCaCISError(intgExcp);
-	responseMap.put(&quot;ResponseWriterConnector&quot;, ResponseFactory.getFailureResponse(retVal));
-	return;
+	//var retVal = convertIntegrationExceptionToCaCISError(intgExcp);
+	//responseMap.put(&quot;ResponseWriterConnector&quot;, ResponseFactory.getFailureResponse(retVal));	
+	//return;
+	channelMap.put(&apos;CACIS_ERROR&apos;, intgExcp);
 }
 
 var cacisError = $(&apos;CACIS_ERROR&apos;);
@@ -1811,20 +1812,20 @@ var cacisResponse = cacisResponseObj.getMessage();
 //TODO: handle cacis response correctly, for now deal with String response
 var iHubResponse = null;
 logger.debug(&quot;cacisResponse in RW=&quot;+cacisResponse);
-if(cacisResponse.contains(&quot;CaCISError&quot;)) {
+if(cacisResponse.contains(&quot;caCISError&quot;)) {
 
 	var cacisErrorRes = new XML(cacisResponse);
 	var errCd = cacisErrorRes[&apos;@errorCode&apos;].toString();
 	var errDesc = cacisErrorRes[&apos;@errorMessage&apos;].toString();
 
-	var iHubResponse = &quot;&lt;response&gt;&lt;reponseStatus&gt;FAILURE&lt;/responseStatus&gt;&quot;
-			+ &quot;&lt;caXchangeError&gt;&lt;errorCode&gt;&quot;+ errCd +&quot;&lt;/errorCode&gt;&quot;
+	var iHubResponse = &quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot; standalone=\&quot;yes\&quot;?&gt;&quot;
+			+ &quot;&lt;caXchangeError xmlns=\&quot;http://caXchange.nci.nih.gov/messaging\&quot;&gt;&quot;
+			+ &quot;&lt;errorCode&gt;&quot;+ errCd +&quot;&lt;/errorCode&gt;&quot;
 			+ &quot;&lt;errorDescription&gt;&quot; + errDesc + &quot;&lt;/errorDescription&gt;&quot;
-			+ &quot;&lt;/caXchangeError&gt;&lt;/response&gt;&quot;;
+			+ &quot;&lt;/caXchangeError&gt;&quot;;
 	responseMap.put(&quot;ResponseWriterConnector&quot;, ResponseFactory.getFailureResponse(iHubResponse));
 } else {
-	var iHubResponse = &quot;&lt;response&gt;&lt;reponseStatus&gt;SUCCESS&lt;/responseStatus&gt;&quot;
-			+ &quot;&lt;/response&gt;&quot;;
+	var iHubResponse = &quot;SUCCESS&quot;;
 	responseMap.put(&quot;ResponseWriterConnector&quot;, ResponseFactory.getSuccessResponse(iHubResponse));
 }
 
