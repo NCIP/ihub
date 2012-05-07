@@ -121,8 +121,8 @@
 			<dependency org="antlr" name="antlr" rev="2.7.6"/>
 			
             <!-- ASM dependency (Spring & Hibernate) 2.2.3 -->
-            <dependency org="asm" name="asm-commons" rev="3.3"/>
-            <dependency org="asm" name="asm" rev="3.1"/>
+            <dependency org="asm" name="asm-commons" rev="3.1" force="true"/>
+            <dependency org="asm" name="asm" rev="3.1" force="true"/>
 
             <!-- compile only dependencies -->
         	<dependency org="org.apache.ant" name="ant" rev="1.8.0" conf="build->master(*)"/>
