@@ -65,7 +65,7 @@
 				<catissue:collectionProtocolRegistration>
 					<catissue:activityStatus>Active</catissue:activityStatus>
 					<catissue:consentSignatureDate>
-						<xsl:value-of  select="substring-before(current-dateTime(),'T')"/>-->
+						<xsl:value-of  select="substring-before(current-dateTime(),'T')"/>
 					</catissue:consentSignatureDate>
 					<catissue:protocolParticipantIdentifier>
 						<xsl:value-of select="$studySubjectIdentifier"/>
