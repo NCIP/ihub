@@ -164,6 +164,15 @@ public class CaTissueParticipantClient {
 		}
 		
 		participant.setId(existingParticipant.getId());
+		ArrayList<CollectionProtocolRegistration> existingCprLst = new ArrayList<CollectionProtocolRegistration>(existingParticipant.getCollectionProtocolRegistrationCollection());
+		Collection<CollectionProtocolRegistration> cprColl = participant.getCollectionProtocolRegistrationCollection();
+		int cnt = 0;
+		for (Iterator iterator = cprColl.iterator(); iterator.hasNext();) {
+			CollectionProtocolRegistration collectionProtocolRegistration = (CollectionProtocolRegistration) iterator
+					.next();
+			collectionProtocolRegistration.setId(existingCprLst.get(cnt).getId());
+			cnt++;
+		}
 		
 		caTissueAPIClient.update(participant);
 		

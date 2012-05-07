@@ -171,7 +171,11 @@ public class CaTissueParticipantClient {
 	private ServiceInvocationResult getServiceInvocationResult(
 			IntegrationError error, Exception e) {
 		ServiceInvocationResult result = new ServiceInvocationResult();
-		result.setInvocationException(new IntegrationException(error, e, e.getMessage()));
+		if(e instanceof IntegrationException){
+			result.setInvocationException(e);
+		} else {
+			result.setInvocationException(new IntegrationException(error, e, e.getMessage()));
+		}
 		return result;
 	}
 

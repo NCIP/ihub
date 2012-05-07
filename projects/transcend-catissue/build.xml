@@ -23,6 +23,7 @@
 		<copy todir="${user.home}/.integration/ihub">
 			<fileset dir="${classes.dir}">
 				<include name="**/*.xsl"/>
+				<include name="**/*-lookup.xml"/>
 				<exclude name="**/.svn"/>
 			</fileset>
 		</copy>

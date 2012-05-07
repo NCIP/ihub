@@ -1,6 +1,8 @@
 package gov.nih.nci.caxchange.messaging;
 
 
+import gov.nih.nci.integration.util.JAXBMarshaller;
+
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -12,13 +14,11 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.namespace.QName;
 
-import gov.nih.nci.integration.util.JAXBMarshaller;
-
 import org.junit.Test;
 
 public class RequestMarshallingTest {
 	
-	@Test
+	//@Test
 	public void marshallMessage() throws JAXBException {
 		Object obj = unmarshall(getMessage(), Message.class);
 		System.out.println(obj);
@@ -29,8 +29,32 @@ public class RequestMarshallingTest {
 		
 		QName qname = new QName("http://caXchange.nci.nih.gov/caxchangerequest", "caxchangerequest");
     	JAXBElement<Message> message = new JAXBElement<Message>(qname, Message.class, msg);
-		String s = marshal(message);
+		String s = marshal(message, Message.class);
 		System.out.println(s);
+	}
+	
+	@Test
+	public void marshallError() throws JAXBException {
+		ErrorDetails errorDetails = new ErrorDetails();
+  		errorDetails.setErrorCode("EC");
+  		errorDetails.setErrorDescription("ED");
+		Response response = new Response();
+  		response.setCaXchangeError(errorDetails);
+        response.setResponseStatus(Statuses.FAILURE);
+        
+        QName qname = new QName("http://caXchange.nci.nih.gov/messaging", "response");
+        
+        JAXBElement<Response> respJ = 
+    		new JAXBElement<Response>(qname, Response.class, response);
+        
+        String xml = marshal(respJ, Response.class);
+        System.out.println(xml);
+        
+        QName ceQname = new QName("http://caXchange.nci.nih.gov/messaging", "caXchangeError");
+        JAXBElement<ErrorDetails> edJ = 
+    		new JAXBElement<ErrorDetails>(ceQname, ErrorDetails.class, errorDetails);
+        xml = marshal(edJ, ErrorDetails.class);
+        System.out.println(xml);
 	}
 	
 	/**
@@ -46,8 +70,8 @@ public class RequestMarshallingTest {
         return m.unmarshal(new StringReader(xmlstr));        
     }
     
-    public String marshal(Object obj) throws JAXBException {
-        final JAXBContext jc = JAXBContext.newInstance(Message.class);
+    public String marshal(Object obj, Class claz) throws JAXBException {
+        final JAXBContext jc = JAXBContext.newInstance(claz);
         
         final Marshaller m = jc.createMarshaller();
         final StringWriter sw = new StringWriter();

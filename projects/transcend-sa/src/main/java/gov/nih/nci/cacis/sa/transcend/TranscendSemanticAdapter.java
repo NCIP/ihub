@@ -1,13 +1,21 @@
 package gov.nih.nci.cacis.sa.transcend;
 
+import gov.nih.nci.integration.exception.IntegrationError;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringReader;
 import java.io.StringWriter;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -33,8 +41,9 @@ public class TranscendSemanticAdapter extends AcceptMessage {
 
     private static final Logger LOG = LoggerFactory.getLogger(TranscendSemanticAdapter.class.getName());
     
-//    private String customLibDir = "./custom-lib";
     private String customLibDir = "custom-lib/";
+    
+    private JAXBContext jc = null; 
     
     public TranscendSemanticAdapter(WebServiceMessageReceiver webServiceMessageReceiver) {
         super(webServiceMessageReceiver);
@@ -75,14 +84,29 @@ public class TranscendSemanticAdapter extends AcceptMessage {
                      && (mcResponse.indexOf("Error") > -1 || mcResponse.indexOf("Exception") > -1
                              || mcResponse.indexOf("ERROR") > -1 || mcResponse.indexOf("error") > -1)) {
                  mcResponse = StringUtils.remove(mcResponse, "SUCCESS:");
-                 throw new AcceptSourceFault("Error processing Data from Source System: " + mcResponse);
+                 mcResponse = StringUtils.remove(mcResponse, "FAILURE:");
+                 AcceptSourceFault fault = 
+                	 new AcceptSourceFault("Error processing Data from Source System", getCaCISFaultFromXml(mcResponse));                 
+                 throw fault;
              }
              response.setStatus(ResponseStatusType.SUCCESS);
             
             return response;
         } catch (java.lang.Exception ex) {
-            LOG.error("Error accepting CaCISRequest", ex);
-            throw new AcceptSourceFault("Error accepting Data from Source System!" + ex.getMessage(), ex);
+        	if(ex instanceof AcceptSourceFault) {
+        		throw (AcceptSourceFault)ex;
+        	}
+        	CaCISFault cf = new CaCISFault();
+    		CaCISError ce = new CaCISError();
+    		IntegrationError ie = IntegrationError._1000;
+    		ce.setErrorCode(String.valueOf(ie.getErrorCode()));
+    		ce.setErrorMessage(ie.getMessage((Object)null));
+    		ce.setErrorType(ErrorType.TRANSMISSION);
+    		ce.setDetail(stackTraceAsString(ex));
+    		cf.getCaCISError().add(ce);
+        	AcceptSourceFault fault = 
+        		new AcceptSourceFault("Error accepting Data from Source System!" + ex.getMessage(), ex);
+        	throw fault;
         }
     }
     
@@ -93,15 +117,45 @@ public class TranscendSemanticAdapter extends AcceptMessage {
         	getMarshaller().marshal( parameter,sw);  
         	return sw.toString(); 
         } catch (Exception ex) {
-        	LOG.error("Error marshalling CaXchangeRequest!", ex);                	 
+        	LOG.error("Error marshalling CaCISRequest!", ex);                	 
             return null;
         } 
 
     }
     
-    private Marshaller getMarshaller() throws JAXBException {		
-		JAXBContext jc = JAXBContext.newInstance(CaCISRequest.class);		
+    private CaCISFault getCaCISFaultFromXml(String faultXML) throws JAXBException {
+		StreamSource ss = new StreamSource(new StringReader(faultXML));
+		return ((JAXBElement<CaCISFault>)getUnmarshaller().unmarshal(ss, CaCISFault.class)).getValue();
+	}
+    
+    private Marshaller getMarshaller() throws JAXBException {	
+    	if(jc == null) {
+    		jc = JAXBContext.newInstance(CaCISRequest.class);
+    	}
 		return jc.createMarshaller();		
+	}
+    
+    private Unmarshaller getUnmarshaller() throws JAXBException {		
+    	if(jc == null) {
+    		jc = JAXBContext.newInstance(CaCISRequest.class);
+    	}		
+		return jc.createUnmarshaller();		
+	}
+    
+    private String stackTraceAsString(Exception e) {
+		String stackTraceStr = e.getMessage();
+		StringWriter sw;
+		try {
+			sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			e.printStackTrace(pw);
+			stackTraceStr = sw.toString();
+			pw.close();
+			sw.close();
+		} catch (IOException ie) {
+			// DO Nothing
+		}
+		return stackTraceStr;
 	}
     
 

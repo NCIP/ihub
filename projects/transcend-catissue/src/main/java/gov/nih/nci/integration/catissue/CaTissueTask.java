@@ -5,6 +5,7 @@ import gov.nih.nci.integration.exception.IntegrationException;
 import gov.nih.nci.integration.invoker.ServiceInvocationResult;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.Callable;
 
@@ -44,6 +45,11 @@ public class CaTissueTask implements Callable<ServiceInvocationResult> {
 			Object retValue = methodToInvoke.invoke(caTissueClientInstance, message);
 			result.setDataChanged(true);
 			result.setOriginalData(retValue);
+		} catch (InvocationTargetException e) {
+			//must not reach here, exceptions must be handled inside client
+			IntegrationException ie = new IntegrationException(
+					IntegrationError._1051, e.getTargetException().getCause(), e.getTargetException().getMessage());
+			result.setInvocationException(ie);
 		} catch (Exception e) {
 			//must not reach here, exceptions must be handled inside client
 			IntegrationException ie = new IntegrationException(

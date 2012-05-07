@@ -1,7 +1,5 @@
 package gov.nih.nci.integration.caaers.invoker;
 
-import javax.xml.bind.JAXBException;
-
 import gov.nih.nci.integration.caaers.CaAERSParticipantServiceWSClient;
 import gov.nih.nci.integration.caaers.ClientPasswordCallback;
 import gov.nih.nci.integration.exception.IntegrationError;

@@ -3,10 +3,16 @@ package gov.nih.nci.caxchange.transcend;
 
 import gov.nih.nci.caxchange.messaging.ErrorDetails;
 import gov.nih.nci.caxchange.messaging.Message;
+import gov.nih.nci.caxchange.messaging.MessagePayload;
+import gov.nih.nci.caxchange.messaging.MessageStatuses;
+import gov.nih.nci.caxchange.messaging.Metadata;
 import gov.nih.nci.caxchange.messaging.Response;
 import gov.nih.nci.caxchange.messaging.ResponseMessage;
+import gov.nih.nci.caxchange.messaging.ResponseMetadata;
 import gov.nih.nci.caxchange.messaging.Statuses;
+import gov.nih.nci.caxchange.messaging.TargetResponseMessage;
 
+import java.io.StringReader;
 import java.io.StringWriter;
 
 import javax.jws.WebMethod;
@@ -16,7 +22,9 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.namespace.QName;
+import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -41,9 +49,9 @@ public class CaXchangeRequestService  extends AcceptMessage{
 
     private static final Logger LOG = LoggerFactory.getLogger(CaXchangeRequestService.class.getName());
     
-//    private String customLibDir = "./custom-lib";
     private String customLibDir = "custom-lib/";
     
+    private JAXBContext jc = null; 
     
     public CaXchangeRequestService(WebServiceMessageReceiver webServiceMessageReceiver) {
         super(webServiceMessageReceiver);
@@ -60,6 +68,11 @@ public class CaXchangeRequestService  extends AcceptMessage{
         System.out.println("Message : " + parameters.getRequest().getBusinessMessagePayload().getXmlSchemaDefinition().toString());
         
         gov.nih.nci.caxchange.messaging.ResponseMessage respMessage = new ResponseMessage();
+        ResponseMetadata rm = new ResponseMetadata();
+        rm.setExternalIdentifier(parameters.getMetadata().getExternalIdentifier());
+        //TODO : need to find a way to get this identifier from MC or set this id from here
+        rm.setCaXchangeIdentifier(parameters.getMetadata().getCaXchangeIdentifier());
+        respMessage.setResponseMetadata(rm);
         
         try {
         
@@ -89,12 +102,10 @@ public class CaXchangeRequestService  extends AcceptMessage{
                     && (mcResponse.indexOf("Error") > -1 || mcResponse.indexOf("Exception") > -1
                             || mcResponse.indexOf("ERROR") > -1 || mcResponse.indexOf("error") > -1)) {
                 mcResponse = StringUtils.remove(mcResponse, "SUCCESS:");
-                ErrorDetails errorDetails = new ErrorDetails();
-          		errorDetails.setErrorCode("Error_Processing_Data");
-          		errorDetails.setErrorDescription("Error processing Data from Source System: " + mcResponse);
-          		 
+                mcResponse = StringUtils.remove(mcResponse, "FAILURE:");
+                          		 
           		Response response = new Response();
-          		response.setCaXchangeError(errorDetails);
+          		response.setCaXchangeError(getErrorDetailsFromCaXchangeError(mcResponse));
                 response.setResponseStatus(Statuses.FAILURE);
                 
                 respMessage.setResponse(response);
@@ -103,13 +114,14 @@ public class CaXchangeRequestService  extends AcceptMessage{
             
             Response response = new Response();
             response.setResponseStatus(Statuses.SUCCESS);
+            response.getTargetResponse().add(prepareTargetResponse(parameters));
             respMessage.setResponse(response);            
             
             return respMessage;
         } catch (java.lang.Exception ex) {        	
         	ErrorDetails errorDetails = new ErrorDetails();
-      		errorDetails.setErrorCode("Error_Processing_Data");
-      		errorDetails.setErrorDescription("Error processing Data from Source System: " + ex);
+      		errorDetails.setErrorCode("1000");
+      		errorDetails.setErrorDescription("UNKNOWN: " + ex.getMessage());
       		
         	Response response = new Response();
         	response.setCaXchangeError(errorDetails);
@@ -119,8 +131,6 @@ public class CaXchangeRequestService  extends AcceptMessage{
             return respMessage;
         }
     }
-    
-    
     
     private String getCaXchangeRequestxml(final Message parameter) {
         try {
@@ -136,13 +146,38 @@ public class CaXchangeRequestService  extends AcceptMessage{
         	LOG.error("Error marshalling CaXchangeRequest!", ex);                	 
             return null;
         } 
-
     }
     
-    private Marshaller getMarshaller() throws JAXBException {		
-		JAXBContext jc = JAXBContext.newInstance(Message.class);		
+    private ErrorDetails getErrorDetailsFromCaXchangeError(String errorXml) throws JAXBException {
+    	StreamSource ss = new StreamSource(new StringReader(errorXml));
+    	return ((JAXBElement<ErrorDetails>)getUnmarshaller(ErrorDetails.class)
+    				.unmarshal(ss, ErrorDetails.class)).getValue();
+    }
+    
+    private Marshaller getMarshaller() throws JAXBException {
+		if(jc == null) {
+    		jc = JAXBContext.newInstance(Message.class);
+    	}	
 		return jc.createMarshaller();		
 	}
     
+    private Unmarshaller getUnmarshaller(Class claz) throws JAXBException {		
+    	if(jc == null) {
+    		jc = JAXBContext.newInstance(claz);
+    	}		
+		return jc.createUnmarshaller();		
+	}
     
+    private TargetResponseMessage prepareTargetResponse(Message parameters) {
+    	TargetResponseMessage trm = new TargetResponseMessage();
+    	Metadata md = parameters.getMetadata();
+    	trm.setTargetServiceIdentifier(md.getServiceType());
+    	trm.setTargetServiceOperation(md.getOperationName().getValue());
+    	trm.setTargetMessageStatus(MessageStatuses.RESPONSE);
+    	MessagePayload mp = new MessagePayload();
+    	mp.setXmlSchemaDefinition("http://caXchange.nci.nih.gov/messaging");
+    	trm.setTargetBusinessMessage(mp);
+    	return trm;
+    }
+        
 }

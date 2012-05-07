@@ -14,6 +14,7 @@ import gov.nih.nci.system.applicationservice.ApplicationException;
 import java.io.StringReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -78,16 +79,30 @@ public class CaTissueParticipantIntegrationTest {
 		assertNotNull(existParticipant);
 		
 		//update participant
-		existParticipant.setFirstName(existParticipant.getFirstName() + "orig");
+		existParticipant.setFirstName(existParticipant.getFirstName() + "-updated");
 		existParticipant = caTissueParticipantClient
 				.updateParticipantRegistration(existParticipant);
 		assertNotNull(existParticipant);
-		assertTrue(!existParticipant.getFirstName().endsWith("orig"));
+		assertTrue(!existParticipant.getFirstName().endsWith("updated"));
+		
+		existParticipant.setFirstName(existParticipant.getFirstName() + "-updated2");
+		existParticipant = caTissueParticipantClient
+				.updateParticipantRegistration(existParticipant);
+		assertNotNull(existParticipant);
+		assertTrue(!existParticipant.getFirstName().endsWith("updated2"));
 		
 		//check serializing orig participant registration before update
 		String existingPrtcpntStr = caTissueParticipantClient.getxStream().toXML(existParticipant);
 		assertNotNull(existingPrtcpntStr);
 		System.out.println("existingPrtcpntStr >>> " + existingPrtcpntStr);
+		
+		//update with original incoming msg - equivalent to update msg
+		ArrayList<CollectionProtocolRegistration> cprList = new ArrayList<CollectionProtocolRegistration>(participant.getCollectionProtocolRegistrationCollection());
+		cprList.get(0).getCollectionProtocol().setTitle("6482");
+		existParticipant = caTissueParticipantClient
+				.updateParticipantRegistration(participant);
+		assertNotNull(existParticipant);
+		assertTrue(!existParticipant.getFirstName().endsWith("updated"));
 		
 		//simulate rollback update, by deleting the update participant registration
 		caTissueParticipantClient.deleteParticipant(participant);
@@ -173,9 +188,9 @@ public class CaTissueParticipantIntegrationTest {
 		participant.setFirstName("JOHN5");
 		//participant.setLastName("DOE5");
 		//MRN or Medical Identifier is being set as lastName for identification
-		participant.setLastName("9050201");
+		participant.setLastName("9050608");
 		participant.setVitalStatus("Alive");
-		participant.setSocialSecurityNumber("123-05-0201");
+		participant.setSocialSecurityNumber("123-05-0608");
 		
 		Race race = RaceFactory.getInstance().createObject();
 		race.setParticipant(participant);
@@ -188,7 +203,7 @@ public class CaTissueParticipantIntegrationTest {
 		ParticipantMedicalIdentifier pmi = ParticipantMedicalIdentifierFactory
 				.getInstance().createObject();
 		pmi.setParticipant(participant);
-		pmi.setMedicalRecordNumber("9050201");
+		pmi.setMedicalRecordNumber("9050608");
 		pmi.setSite(site);
 
 		participant.getParticipantMedicalIdentifierCollection().add(pmi);*/
@@ -215,11 +230,10 @@ public class CaTissueParticipantIntegrationTest {
 				.setCollectionProtocol(collectionProtocol);
 
 		collectionProtocolRegistration.setParticipant(participant);
-		collectionProtocolRegistration.setProtocolParticipantIdentifier("");
 		collectionProtocolRegistration.setActivityStatus("Active");
 		collectionProtocolRegistration.setRegistrationDate(new Date());
 		collectionProtocolRegistration.setConsentSignatureDate(new Date());
-		collectionProtocolRegistration.setProtocolParticipantIdentifier("123050201");
+		collectionProtocolRegistration.setProtocolParticipantIdentifier("123050608");
 		return collectionProtocolRegistration;
 	}
 

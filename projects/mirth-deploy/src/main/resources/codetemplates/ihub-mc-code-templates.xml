@@ -51,10 +51,12 @@
     <code>// modify function_name and parameters as you wish.
 // one function per template is recommended. i.e.) create a new code template for each new function.
 function convertIntegrationExceptionToCaCISError(intgExcptn) {
-	var cacisError = &quot;&lt;CaCISError errorType=\&quot;&quot;+ intgExcptn.getErrorType().name() + &quot;\&quot;&quot;
-					+ &quot; errorCode=\&quot;&quot; + intgExcptn.getErrorCode() + &quot;\&quot;&quot;
-					+ &quot; errorMessage=\&quot;&quot; + intgExcptn.getMessage() + &quot;\&quot;&quot;
-					+ &quot; detail=\&quot;&quot; + intgExcptn.stackTraceAsString()+ &quot;\&quot;/&gt; &quot;;
+
+	var cacisError =  &quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot; standalone=\&quot;yes\&quot;?&gt;&quot; +
+		&quot;&lt;caCISFault xmlns=\&quot;http://cacis.nci.nih.gov\&quot;&gt;&quot; +
+		&quot;&lt;caCISError errorType=\&quot;&quot;+ intgExcptn.getErrorType().name() + &quot;\&quot; errorCode=\&quot;&quot; + intgExcptn.getErrorCode() + &quot;\&quot;&quot; +
+		&quot; errorMessage=\&quot;&quot; + intgExcptn.getMessage() + &quot;\&quot;&quot; + &quot; detail=\&quot;&quot; + intgExcptn.stackTraceAsString()+ &quot;\&quot;/&gt; &lt;/caCISFault&gt;&quot;;
+
 	return cacisError;
 }</code>
     <type>FUNCTION</type>
@@ -68,8 +70,9 @@ function convertIntegrationExceptionToCaCISError(intgExcptn) {
     <code>// modify function_name and parameters as you wish.
 // one function per template is recommended. i.e.) create a new code template for each new function.
 function convertIntgExceptionToIHubResponse(intgExcptn) {	
-	var iHubResponse = &quot;&lt;response&gt;&lt;reponseStatus&gt;FAILURE&lt;/responseStatus&gt;&quot;
-			+ &quot;&lt;caXchangeError&gt;&lt;errorCode&gt;&quot;+ intgExcptn.getErrorCode() +&quot;&lt;/errorCode&gt;&quot;
+	var iHubResponse = &quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot; standalone=\&quot;yes\&quot;?&gt;&quot;
+			+ &quot;&lt;caXchangeError xmlns=\&quot;http://caXchange.nci.nih.gov/messaging\&quot;&gt;&quot;
+			+ &quot;&lt;errorCode&gt;&quot;+ intgExcptn.getErrorCode() +&quot;&lt;/errorCode&gt;&quot;
 			+ &quot;&lt;errorDescription&gt;&quot; + intgExcptn.getMessage() + &quot;&lt;/errorDescription&gt;&quot;
 			+ &quot;&lt;/caXchangeError&gt;&lt;/response&gt;&quot;;
 	return iHubResponse;
@@ -102,7 +105,12 @@ function convertIntegrationExceptionToMsgBCError(intgExcptn) {
     <code>// modify function_name and parameters as you wish.
 // one function per template is recommended. i.e.) create a new code template for each new function.
 function convertMsgBCErrorToCaCISError(msgBCErrorStr) {
-	return	msgBCErrorStr.replace(&quot;MessageBroadcasterError&quot;, &quot;CaCISError&quot;);
+	var cacisError = msgBCErrorStr.replace(&quot;MessageBroadcasterError&quot;, &quot;caCISError&quot;);
+
+	cacisError = &quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot; standalone=\&quot;yes\&quot;?&gt;&quot; +
+		&quot;&lt;caCISFault xmlns=\&quot;http://cacis.nci.nih.gov\&quot;&gt;&quot; + cacisError + &quot;&lt;/caCISFault&gt;&quot;;
+
+	return cacisError;
 }</code>
     <type>FUNCTION</type>
     <scope>3</scope>
