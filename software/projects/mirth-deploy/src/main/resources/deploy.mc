@@ -12,5 +12,4 @@ import "@{mirth.files.base.dir}/channels/CaCISChannel.xml"  force
 import "@{mirth.files.base.dir}/channels/MessageBroadcasterChannel.xml" force
 
 deploy
-
 channel list
