@@ -1,3 +1,4 @@
-MC_HOME=$1
-echo $MC_HOME
-$MC_HOME/mccommand -s $2
+export MIRTH_HOME=$1
+echo "Rohit Gupta - Inside deployToMC"
+echo $MIRTH_HOME
+$MIRTH_HOME/mccommand -s $2
