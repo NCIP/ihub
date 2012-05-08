@@ -8,10 +8,10 @@
   <enabled>true</enabled>
   <version>2.1.1.5490</version>
   <lastModified>
-    <time>1336398331671</time>
+    <time>1336479757605</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>1</revision>
+  <revision>2</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -1874,8 +1874,8 @@ return;</postprocessingScript>
 
 /***************** THESE CAN GO INTO GLOBAL SCRIPTS ****************/
 // ################# TranscendInboundChannel authentication values ###########
-globalMap.put(&quot;transcend.ihub.client.user&quot;,&quot;tolvenuser&quot;);
-globalMap.put(&quot;transcend.ihub.client.password&quot;,&quot;changeme&quot;);
+globalMap.put(&quot;transcend.ihub.client.user&quot;,&quot;@{ihub.user}&quot;);
+globalMap.put(&quot;transcend.ihub.client.password&quot;,&quot;@{ihub.password}&quot;);
 
 // #########  FILTER Related Constants ##########
 globalMap.put(&quot;AE&quot;,&quot;AE&quot;);
@@ -1890,7 +1890,7 @@ if(commonAppCtx == null) {
 	globalMap.put(&quot;commonAppCtx&quot;, commonAppCtx);
 }
 
-var baseXSLClasspath=&quot;C:/Users/sb-admin-cp/.integration/ihub/xsl/&quot;;
+var baseXSLClasspath=&quot;@{integration.transformer.xsl.baseClassPath}&quot;;
 
 var inboundMsgToCRTransformer = commonAppCtx.getBean(&quot;xsltTransformer&quot;);
 inboundMsgToCRTransformer.initTransformer(&quot;TranscendInboundMsg-to-caCISRequest.xsl&quot;, baseXSLClasspath);
@@ -1903,7 +1903,7 @@ var iHubMessageDao = commonAppCtx.getBean(&quot;iHubMessageDao&quot;);
 globalMap.put(&quot;iHubMessageDao&quot;, iHubMessageDao);
 
 //var cacisWsdlUrl = &quot;http://localhost:12085/services/Mirth?wsdl&quot;;
-var cacisWsdlUrl = &quot;http://localhost:12085/services/TranscendSemanticAdapter?wsdl&quot;;
+var cacisWsdlUrl = &quot;@{transcend.sa.url}?wsdl&quot;;
 globalMap.put(&quot;CaCISWsdlUrl&quot;, cacisWsdlUrl);
 
 //var client = new Packages.gov.nih.nci.integration.cacis.inbound.DefaultAcceptMessageClient();

@@ -2,6 +2,10 @@
 mirth.home=C:/vin/SUITE-iHub/tools/blank-MC/
 mirth.url=http://localhost:14080/
 
+## ihub authentication
+ihub.user=tolvenuser
+ihub.password=changeme
+
 ## catissue-client properties
 catissue.client.service.url=http://localhost:8080/catissuecore/http/applicationService
 catissue.client.auth.url=http://localhost:8080/catissuecore/http/remoteAuthenticationManager
