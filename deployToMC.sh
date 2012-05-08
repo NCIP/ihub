@@ -1,3 +1,3 @@
-echo MIRTH_HOME=$1
-echo $MIRTH_HOME
-$MIRTH_HOME/mccommand -s $2
+MC_HOME=$1
+echo $MC_HOME
+$MC_HOME/mccommand -s $2
