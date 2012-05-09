@@ -25,7 +25,7 @@
                     <xs:element name="race" type="RaceType"  minOccurs="1" maxOccurs="1"/>
                     <xs:element name="ethnicity" type="EthnicityType"  minOccurs="1" maxOccurs="1"/>
                     <xs:element name="activityStatus" type="ActivityStatusType" minOccurs="1" maxOccurs="1"/>
-                    
+                    <xs:element name="registrationDate" type="xs:date" minOccurs="1" maxOccurs="1" />
                     <xs:element name="identifiers" minOccurs="1" maxOccurs="1">
                         <xs:complexType>
                             <xs:sequence>
@@ -206,8 +206,8 @@
     
      <xs:simpleType name="ActivityStatusType">
         <xs:restriction base="xs:string">
-            <xs:enumeration value="ACTIVE"/>
-            <xs:enumeration value="INACTIVE"/>
+            <xs:enumeration value="Active"/>
+            <xs:enumeration value="Disabled"/>
         </xs:restriction>
     </xs:simpleType>
     
