@@ -1,79 +1,150 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema attributeFormDefault="unqualified"
-	elementFormDefault="qualified" targetNamespace="http://cacis.nci.nih.gov"
+<xs:schema targetNamespace="http://cacis.nci.nih.gov"
+	elementFormDefault="qualified" xmlns="http://cacis.nci.nih.gov"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
-	<xs:element name="specimens" type="cac:specimensType"
-		xmlns:cac="http://cacis.nci.nih.gov" />
-	<xs:complexType name="collectionProtocolType">
-		<xs:sequence>
-			<xs:element type="xs:string" name="title" />
-			<xs:element type="xs:string" name="shortTitle" />
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="specimenCharacteristicsType">
-		<xs:sequence>
-			<xs:element type="xs:string" name="tissueSite" />
-			<xs:element type="xs:string" name="tissueSide" />
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="specimenDetailType">
-		<xs:sequence>
-			<xs:element type="cac:specimenType" name="specimen"
-				xmlns:cac="http://cacis.nci.nih.gov" />
-			<xs:element type="cac:collectionProtocolType" name="collectionProtocol"
-				xmlns:cac="http://cacis.nci.nih.gov" />
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="specimenType">
-		<xs:sequence>
-			<xs:element type="xs:string" name="cdmsSpecimenId" />
-			<xs:element type="xs:string" name="barcode" />
-			<xs:element type="cac:activityStatusType" name="activityStatus"  
-					xmlns:cac="http://cacis.nci.nih.gov"/>
-			<xs:element type="cac:specimenClassType" name="specimenClass" 
-					xmlns:cac="http://cacis.nci.nih.gov"/>
-			<xs:element type="xs:string" name="specimenType" />
-			<xs:element type="xs:string" name="pathologicalStatus" />
-			<xs:element type="xs:string" name="initialQuantity" />
-			<xs:element type="xs:string" name="availableQuantity" />
-			<xs:element type="cac:specimenCharacteristicsType" name="specimenCharacteristics"
-				xmlns:cac="http://cacis.nci.nih.gov" />
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="specimenDetailsListType">
-		<xs:sequence>
-			<xs:element type="cac:specimenDetailType" name="specimenDetail"
-				xmlns:cac="http://cacis.nci.nih.gov" />
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="specimensType">
-		<xs:sequence>
-			<xs:element type="cac:participantType" name="participant"
-				xmlns:cac="http://cacis.nci.nih.gov" />
-			<xs:element type="cac:specimenDetailsListType" name="specimenDetailsList"
-				xmlns:cac="http://cacis.nci.nih.gov" />
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="participantType">
-		<xs:sequence>
-			<xs:element type="cac:activityStatusType" name="activityStatus" 
-					xmlns:cac="http://cacis.nci.nih.gov"/>
-			<xs:element type="xs:string" name="cdmsSubjectId" />
-		</xs:sequence>
-	</xs:complexType>
-	
+	<xs:element name="specimens">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="participant">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="activityStatus" type="activityStatusType" />
+							<xs:element name="cdmsSubjectId" type="xs:int" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="specimenDetailsList">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="specimenDetail">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="specimen">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="cdmsSpecimenId" type="xs:string" />
+													<xs:element name="barcode" type="xs:string" />
+													<xs:element name="activityStatus" type="activityStatusType" />
+													<xs:element name="specimenClass" type="specimenClassType" />
+													<xs:element name="specimenType" type="specimenTypeType" />
+													<xs:element name="pathologicalStatus" type="pathologicalStatusType" />
+													<xs:element name="initialQuantity" type="xs:byte" />
+													<xs:element name="availableQuantity" type="xs:byte" />
+													<xs:element name="specimenCharacteristics">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="tissueSite" type="xs:string" />
+																<xs:element name="tissueSide" type="tissueSideType" />
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="collectionProtocol">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="title" type="xs:int" />
+													<xs:element name="shortTitle" type="xs:int" />
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
 	<xs:simpleType name="activityStatusType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="Active"/>
-            <xs:enumeration value="Closed"/>
-            <xs:enumeration value="Disabled"/>
-        </xs:restriction>
-    </xs:simpleType>
-    
-    <xs:simpleType name="specimenClassType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="Tissue"/>
-            <xs:enumeration value="Fluid"/>
-        </xs:restriction>
-    </xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Active" />
+			<xs:enumeration value="Closed" />
+			<xs:enumeration value="Disabled" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="specimenClassType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Molecular" />
+			<xs:enumeration value="Cell" />
+			<xs:enumeration value="Tissue" />
+			<xs:enumeration value="Fluid" />
+		</xs:restriction>
+	</xs:simpleType>
+
+
+	<xs:simpleType name="specimenTypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="RNA, poly-A enriched" />
+			<xs:enumeration value="RNA, nuclear" />
+			<xs:enumeration value="protein" />
+			<xs:enumeration value="cDNA" />
+			<xs:enumeration value="RNA" />
+			<xs:enumeration value="DNA" />
+			<xs:enumeration value="RNA, cytoplasmic" />
+			<xs:enumeration value="Frozen Cell Pellet" />
+			<xs:enumeration value="Fixed Cell Block" />
+			<xs:enumeration value="Frozen Cell Block" />
+			<xs:enumeration value="Cryopreserved Cells" />
+			<xs:enumeration value="Fixed Tissue" />
+			<xs:enumeration value="Fixed Tissue Block" />
+			<xs:enumeration value="Fixed Tissue Slide" />
+			<xs:enumeration value="Fresh Tissue" />
+			<xs:enumeration value="Frozen Tissue" />
+			<xs:enumeration value="Frozen Tissue Block" />
+			<xs:enumeration value="Frozen Tissue Slide" />
+			<xs:enumeration value="Microdissected" />
+			<xs:enumeration value="Not Specified" />
+			<xs:enumeration value="Amniotic Fluid" />
+			<xs:enumeration value="Bile" />
+			<xs:enumeration value="Body Cavity Fluid" />
+			<xs:enumeration value="Bone Marrow" />
+			<xs:enumeration value="Bone Marrow Plasma" />
+			<xs:enumeration value="Buffy coat" />
+			<xs:enumeration value="Cerebrospinal Fluid" />
+			<xs:enumeration value="Feces" />
+			<xs:enumeration value="Bile" />
+			<xs:enumeration value="Gastric Fluid" />
+			<xs:enumeration value="Lavage" />
+			<xs:enumeration value="Milk" />
+			<xs:enumeration value="Pericardial Fluid" />
+			<xs:enumeration value="Plasma" />
+			<xs:enumeration value="Saliva" />
+			<xs:enumeration value="Serum" />
+			<xs:enumeration value="Sputum" />
+			<xs:enumeration value="Sweat" />
+			<xs:enumeration value="Synovial Fluid" />
+			<xs:enumeration value="Urine" />
+			<xs:enumeration value="Vitreous Fluid" />
+			<xs:enumeration value="Whole Blood" />
+			<xs:enumeration value="Whole Bone Marrow" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="tissueSideType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Left" />
+			<xs:enumeration value="Right" />
+			<xs:enumeration value="Not Applicable" />
+			<xs:enumeration value="Not Specified" />
+		</xs:restriction>
+	</xs:simpleType>
+
+
+	<xs:simpleType name="pathologicalStatusType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Malignant, Invasive" />
+			<xs:enumeration value="Malignant, Pre-Invasive" />
+			<xs:enumeration value="Malignant" />
+			<xs:enumeration value="Non-Malignant, Diseased" />
+			<xs:enumeration value="Pre-Malignant" />
+			<xs:enumeration value="Not Specified" />
+			<xs:enumeration value="Metastatic" />
+
+		</xs:restriction>
+	</xs:simpleType>
 </xs:schema>
