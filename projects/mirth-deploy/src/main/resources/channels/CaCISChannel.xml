@@ -302,7 +302,7 @@ return false;</script>
       <properties>
         <property name="DataType">JavaScript Writer</property>
         <property name="host">sink</property>
-        <property name="script">//supposed to do RegistrationTransformation
+        <property name="script">//supposed to do SpecimenTransformation
 return;</property>
       </properties>
       <transformer>
@@ -568,7 +568,7 @@ if(commonAppCtx == null) {
 	globalMap.put(&quot;commonAppCtx&quot;, commonAppCtx);
 }
 
-var baseXSLClasspath=&quot;C:/Users/RohitG/.integration/ihub/xsl/&quot;;
+var baseXSLClasspath=&quot;@{integration.transformer.xsl.baseClassPath}&quot;;
 
 var crToRegnMsgTransformer = commonAppCtx.getBean(&quot;xsltTransformer&quot;);
 crToRegnMsgTransformer.initTransformer(&quot;CaCISRequest-to-MsgBroadcasterInboundMsg.xsl&quot;, baseXSLClasspath);
