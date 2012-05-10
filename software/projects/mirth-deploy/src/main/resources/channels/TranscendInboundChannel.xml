@@ -1880,8 +1880,8 @@ return;</postprocessingScript>
 
 /***************** THESE CAN GO INTO GLOBAL SCRIPTS ****************/
 // ################# TranscendInboundChannel authentication values ###########
-globalMap.put(&quot;transcend.ihub.client.user&quot;,&quot;tolvenuser&quot;);
-globalMap.put(&quot;transcend.ihub.client.password&quot;,&quot;changeme&quot;);
+globalMap.put(&quot;transcend.ihub.client.user&quot;,&quot;@{ihub.user}&quot;);
+globalMap.put(&quot;transcend.ihub.client.password&quot;,&quot;@{ihub.password}&quot;);
 
 // #########  FILTER Related Constants ##########
 globalMap.put(&quot;AE&quot;,&quot;AE&quot;);
