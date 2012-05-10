@@ -1,6 +1,7 @@
 package gov.nih.nci.integration.invoker;
 
 import gov.nih.nci.integration.catissue.CaTissueParticipantClient;
+import gov.nih.nci.integration.catissue.CaTissueSpecimenClient;
 import gov.nih.nci.integration.exception.IntegrationException;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +23,11 @@ public class CaTissueConfig {
 	@Bean
 	public CaTissueParticipantClient caTissueParticipantClient() throws IntegrationException {
 		return new CaTissueParticipantClient(caTissueLibLocation, catissueApiLoginName, catissueApiPassword);
+	}
+	
+	@Bean
+	public CaTissueSpecimenClient caTissueSpecimenClient() throws IntegrationException {
+		return new CaTissueSpecimenClient(caTissueLibLocation, catissueApiLoginName, catissueApiPassword);
 	}
 	
 }
