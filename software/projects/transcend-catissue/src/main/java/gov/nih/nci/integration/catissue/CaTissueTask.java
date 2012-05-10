@@ -47,14 +47,29 @@ public class CaTissueTask implements Callable<ServiceInvocationResult> {
 			result.setOriginalData(retValue);
 		} catch (InvocationTargetException e) {
 			//must not reach here, exceptions must be handled inside client
-			IntegrationException ie = new IntegrationException(
-					IntegrationError._1051, e.getTargetException().getCause(), e.getTargetException().getMessage());
-			result.setInvocationException(ie);
+			String exceptionMessage = e.getTargetException().getMessage() ;
+			System.out.println("Inside CaTissueTask..Exception Message is :: " + exceptionMessage);				
+			if(exceptionMessage.contains("NO_COLLECTION_PROTOCOL_")){
+//				System.out.println("Inside CaTissueTask... inside call().. inside catch(InvocationTargetException).NO_COLLECTION_PROTOCOL..");
+				IntegrationException ie = new IntegrationException(IntegrationError._1002, exceptionMessage.substring(23,exceptionMessage.length()));
+				result.setInvocationException(ie);					
+			}
+			else if(exceptionMessage.contains("PARTICIPANT_NOT_REGISTERED_")){
+//				System.out.println("Inside CaTissueTask... inside call().. inside catch(InvocationTargetException).PARTICIPANT_NOT_REGISTERED..");
+				String lncpStr =exceptionMessage.substring(27,exceptionMessage.length());			
+				String ln = lncpStr.substring(3, lncpStr.indexOf("_CP_"));
+				String cp=lncpStr.substring(lncpStr.indexOf("_CP_")+4, lncpStr.length());
+				IntegrationException ie = new IntegrationException(IntegrationError._1003, ln,cp);
+				result.setInvocationException(ie);					
+			}else{
+				IntegrationException ie = new IntegrationException(IntegrationError._1051, exceptionMessage.substring(27,exceptionMessage.length()));
+				result.setInvocationException(ie);	
+//				System.out.println("Inside CaTissueTask... inside call().. inside catch(InvocationTargetException)..ELSE Bolck..");
+			}
 		} catch (Exception e) {
-			//must not reach here, exceptions must be handled inside client
-			IntegrationException ie = new IntegrationException(
-					IntegrationError._1051, e.getCause(), e.getMessage());
-			result.setInvocationException(ie);
+			//must not reach here, exceptions must be handled inside client					
+			IntegrationException ie = new IntegrationException(IntegrationError._1051, e.getCause(), e.getMessage());
+			result.setInvocationException(ie);		
 		}
 
 		return result;
