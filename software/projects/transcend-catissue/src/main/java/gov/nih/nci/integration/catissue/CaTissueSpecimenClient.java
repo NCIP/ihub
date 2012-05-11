@@ -77,23 +77,53 @@ public class CaTissueSpecimenClient {
 			ecs.submit(task);
 	
 			result = ecs.take().get();
-			System.out.println("result.isFault() :: "+result.isFault());			
-			System.out.println("result.getInvocationException() :: " +result.getInvocationException());
-			System.out.println("result.getInvocationException().getMessage() :: "+result.getInvocationException().getMessage());
-			
+		
 			if (!result.isFault()) {
-				System.out.println("Inside CaTissueSpecimenClient.createSpecimens()..Inside IF Block... ");
 				result.setResult("Successfully created Specimens in CaTissue!");
 			} else {
-				System.out.println("Inside CaTissueSpecimenClient.createSpecimens()..Inside ELSE Block... ");
 				
 			}
 		} catch (InterruptedException e) {
-			System.out.println("Catch Inside CaTissueSpecimenClient.createSpecimens()..InterruptedException... ");
 			result = getServiceInvocationResult(IntegrationError._1051, e);
 		} catch (ExecutionException e) {
-			System.out.println("Catch Inside CaTissueSpecimenClient..createSpecimens()..ExecutionException... ");
-			System.out.println("Exception is:: " +e);
+			result = getServiceInvocationResult(IntegrationError._1051, e);
+		}
+
+		return result;
+	}
+	
+	
+	
+
+	public ServiceInvocationResult updateSpecimens(final String specimenListXMLStr) {
+		ServiceInvocationResult result = null;
+		
+		CaTissueTask task = null;
+		try {
+			task = new CaTissueTask(caTissueSpecimenClientClass, loginName, password,
+					"updateSpecimens", updateSpecimensParamTypes, specimenListXMLStr);
+		} catch (Exception e1) {			
+			e1.printStackTrace();
+			result = getServiceInvocationResult(IntegrationError._1051, e1);
+			return result;
+		}
+		
+		try {
+			ExecutorCompletionService<ServiceInvocationResult> ecs = new ExecutorCompletionService<ServiceInvocationResult>(ex);
+			ecs.submit(task);
+
+			result = ecs.take().get();
+			
+			if (!result.isFault()) {
+				result.setResult("Successfully updated Specimens in CaTissue!");
+			} else {
+			
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			result = getServiceInvocationResult(IntegrationError._1051, e);
+		} catch (ExecutionException e) {
+			e.printStackTrace();
 			result = getServiceInvocationResult(IntegrationError._1051, e);
 		}
 
@@ -132,43 +162,6 @@ public class CaTissueSpecimenClient {
 
 		return result;
 	}
-	
-
-	public ServiceInvocationResult updateSpecimens(final String specimenListXMLStr) {
-		ServiceInvocationResult result = null;
-		
-		CaTissueTask task = null;
-		try {
-			task = new CaTissueTask(caTissueSpecimenClientClass, loginName, password,
-					"updateSpecimens", updateSpecimensParamTypes, specimenListXMLStr);
-		} catch (Exception e1) {			
-			e1.printStackTrace();
-			result = getServiceInvocationResult(IntegrationError._1051, e1);
-			return result;
-		}
-		
-		try {
-			ExecutorCompletionService<ServiceInvocationResult> ecs = new ExecutorCompletionService<ServiceInvocationResult>(ex);
-			ecs.submit(task);
-
-			result = ecs.take().get();
-			
-			if (!result.isFault()) {
-				result.setResult("Successfully updated Specimens in CaTissue!");
-			} else {
-			
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-			result = getServiceInvocationResult(IntegrationError._1051, e);
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-			result = getServiceInvocationResult(IntegrationError._1051, e);
-		}
-
-		return result;
-	}
-	
 
 	
 	private ServiceInvocationResult getServiceInvocationResult(IntegrationError error, Exception e) {
