@@ -70,7 +70,7 @@ public class CaTissueSpecimenClient {
 	 */
 	public String createSpecimens(String specimenListXMLStr) throws ApplicationException{
 		
-		LOG.info("Inside CaTissueSpecimenClient...The Incoming XML for createSpecimens() is --> " + specimenListXMLStr);
+		LOG.debug("Inside CaTissueSpecimenClient...The Incoming XML for createSpecimens() is --> " + specimenListXMLStr);
 		
 		// Parse the incoming XML String. The returned object will contain data from the incoming specimens XML
 		Specimens specimens = parseSpecimenListXML(specimenListXMLStr);
@@ -93,7 +93,7 @@ public class CaTissueSpecimenClient {
 	 */
 	public String updateSpecimens(String specimenListXMLStr) throws ApplicationException{
 		
-		LOG.info("Inside CaTissueSpecimenClient... updateSpecimens()..The Incoming XML is --> " + specimenListXMLStr);
+		LOG.debug("Inside CaTissueSpecimenClient... updateSpecimens()..The Incoming XML is --> " + specimenListXMLStr);
 		
 		// This object contain data from the incoming specimens xml
 		Specimens specimens = parseSpecimenListXML(specimenListXMLStr);
@@ -114,7 +114,7 @@ public class CaTissueSpecimenClient {
 	 */
 	public String rollbackSpecimens(String specimenListXMLStr) throws ApplicationException{
 		
-		LOG.info("Inside CaTissueSpecimenClient... rollbackSpecimens()..The Incoming XML is --> " + specimenListXMLStr);
+		LOG.debug("Inside CaTissueSpecimenClient... rollbackSpecimens()..The Incoming XML is --> " + specimenListXMLStr);
 		
 		// This object contain data from the incoming specimens xml
 		Specimens specimens = parseSpecimenListXML(specimenListXMLStr);
@@ -181,7 +181,7 @@ public class CaTissueSpecimenClient {
 				flag = 1; // SpecimenCollectionGroup list is not empty
 				for (SpecimenCollectionGroup scg : scgList) {
 					CollectionProtocol cpObj = scg.getCollectionProtocolRegistration().getCollectionProtocol();
-					if ((cpObj.getTitle().equals(cp.getTitle()))&& (cpObj.getShortTitle().equals(cp.getShortTitle()))) {
+					if (cpObj.getTitle().equals(cp.getTitle())) {
 						flag = 2; // Participant has a SpecimenCollectionGroup under the given protocol
 						specimen.setSpecimenCollectionGroup(scg);	
 						break;
@@ -262,8 +262,7 @@ public class CaTissueSpecimenClient {
 		while (scgItr.hasNext()) {
 			scg = (SpecimenCollectionGroup) scgItr.next();
 			cpObj = scg.getCollectionProtocolRegistration().getCollectionProtocol();
-			if ((cpObj.getShortTitle().equals(cp.getShortTitle()))
-					&& (cpObj.getTitle().equals(cp.getTitle())))
+			if (cpObj.getTitle().equals(cp.getTitle()))
 				break;
 		}
 		return scg;
@@ -301,13 +300,16 @@ public class CaTissueSpecimenClient {
 			{			
 				specimenDetail = specimenDetailItr.next();
 				Specimen incomingSpecimen = specimenDetail.getSpecimen();
-				Specimen existingSpecimen = getExistingSpecimen(incomingSpecimen.getLabel());
-				incomingSpecimen.setId(existingSpecimen.getId());
-				incomingSpecimen.setLineage(existingSpecimen.getLineage());//Lineage should not be changed while updating the specimen
-				incomingSpecimen.setSpecimenCollectionGroup(existingSpecimen.getSpecimenCollectionGroup());//Specimen Collection Group is required.		
-				incomingSpecimen.getSpecimenCharacteristics().setId(existingSpecimen.getSpecimenCharacteristics().getId());		
 				
-				updateSpecimen(specimenDetail.getSpecimen());			
+				// Get the corresponding existing Specimen using the Label 
+				Specimen existingSpecimen = getExistingSpecimen(incomingSpecimen.getLabel());				
+				incomingSpecimen.setId(existingSpecimen.getId());				
+				
+				incomingSpecimen.setSpecimenCollectionGroup(existingSpecimen.getSpecimenCollectionGroup());//Specimen Collection Group is required.				
+				incomingSpecimen.setLineage(existingSpecimen.getLineage());//Lineage should not be changed while updating the specimen		
+				incomingSpecimen.getSpecimenCharacteristics().setId(existingSpecimen.getSpecimenCharacteristics().getId());	// The given object has a null identifier: SpecimenCharacteristics	
+				
+				updateSpecimen(incomingSpecimen);			
 				
 				// setting the existing Specimen, which will be required in case of rollback
 				existSpecimenList.add(existingSpecimen);
@@ -370,6 +372,10 @@ public class CaTissueSpecimenClient {
 			specimen.setAvailableQuantity(existingSpecimen.getAvailableQuantity());
 			specimen.setBarcode(existingSpecimen.getBarcode());
 			specimen.setLabel(existingSpecimen.getLabel());
+			
+			SpecimenCollectionGroup specimenCollectionGroup = new SpecimenCollectionGroup();			
+			specimenCollectionGroup.setId(existingSpecimen.getSpecimenCollectionGroup().getId());
+			specimen.setSpecimenCollectionGroup(specimenCollectionGroup);
 			
 			specimenList.add(specimen);
 		}
