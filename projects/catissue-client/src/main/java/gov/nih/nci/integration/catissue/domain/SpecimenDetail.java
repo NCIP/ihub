@@ -13,6 +13,17 @@ public class SpecimenDetail {
 	private Specimen specimen;
 	
 	private CollectionProtocol collectionProtocol;
+	
+	private String collectionProtocolEvent;
+	
+
+	public String getCollectionProtocolEvent() {
+		return collectionProtocolEvent;
+	}
+
+	public void setCollectionProtocolEvent(String collectionProtocolEvent) {
+		this.collectionProtocolEvent = collectionProtocolEvent;
+	}
 
 	public Specimen getSpecimen() {
 		return specimen;
