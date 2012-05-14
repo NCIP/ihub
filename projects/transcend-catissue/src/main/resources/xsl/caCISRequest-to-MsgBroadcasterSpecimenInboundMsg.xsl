@@ -34,8 +34,13 @@
 									<xsl:for-each select="ns1:act/ns1:relationship">
 										<specimenDetail>
 											<xsl:if test="@name = 'specimen'">
+												<xsl:for-each select="ns1:act/ns1:relationship">
+													<xsl:if test="@name = 'collectionProtocolEvent'">
+														<collectionProtocolEvent><xsl:value-of select="ns1:act/ns1:observation/ns1:value/ns1:ST" /></collectionProtocolEvent>
+													</xsl:if>
+												</xsl:for-each>													
 												<specimen>
-													<xsl:for-each select="ns1:act/ns1:relationship">
+													<xsl:for-each select="ns1:act/ns1:relationship">														
 														<xsl:if test="@name = 'cdmsSpecimenId'">
 															<cdmsSpecimenId><xsl:value-of select="ns1:act/ns1:observation/ns1:value/ns1:ST" /></cdmsSpecimenId>
 														</xsl:if>
