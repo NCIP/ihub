@@ -1,7 +1,6 @@
 package gov.nih.nci.integration.catissue.client;
 
 import edu.wustl.catissuecore.domain.CollectionProtocol;
-import edu.wustl.catissuecore.domain.CollectionProtocolRegistration;
 import edu.wustl.catissuecore.domain.DisposalEventParameters;
 import edu.wustl.catissuecore.domain.FluidSpecimen;
 import edu.wustl.catissuecore.domain.Participant;
@@ -12,14 +11,11 @@ import edu.wustl.catissuecore.domain.User;
 import gov.nih.nci.integration.catissue.domain.SpecimenDetail;
 import gov.nih.nci.integration.catissue.domain.Specimens;
 import gov.nih.nci.system.applicationservice.ApplicationException;
-//import gov.nih.nci.integration.exception.IntegrationError;
-//import gov.nih.nci.integration.exception.IntegrationException;
 
 import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -145,25 +141,8 @@ public class CaTissueSpecimenClient {
 	 * @throws Exception
 	 */
 	private void performCreateSpecimens(Specimens specimens) throws ApplicationException{
-		List<Specimen> createdSpecimenList = new ArrayList<Specimen>();
-		
-		Participant participant = getParticipantForSpecimens(specimens);
-		
-		List<SpecimenCollectionGroup> scgList = new ArrayList<SpecimenCollectionGroup>();		
-		
-		String query = "edu.wustl.catissuecore.domain.CollectionProtocolRegistration,edu.wustl.catissuecore.domain.Participant";		
-		List<CollectionProtocolRegistration> cprList = caTissueAPIClient.getApplicationService().search(query, participant);
-		
-		query = "edu.wustl.catissuecore.domain.SpecimenCollectionGroup,edu.wustl.catissuecore.domain.CollectionProtocolRegistration";
-		CollectionProtocolRegistration cprKey = new CollectionProtocolRegistration();
-		
-		// Retrieves SpecimenCollectionGroups
-		for (CollectionProtocolRegistration cpr : cprList) {
-			cprKey.setId(cpr.getId());
-			Collection<SpecimenCollectionGroup> collection = caTissueAPIClient.getApplicationService().search(query, cprKey);
-			scgList.addAll(collection);
-		}
-		
+		List<Specimen> createdSpecimenList = new ArrayList<Specimen>();		
+			
 		List<SpecimenDetail> specimenDetailList = specimens.getSpecimenDetailList();
 		Iterator<SpecimenDetail> specimenDetailItr = null;
 		Specimen specimen = null;
@@ -174,44 +153,29 @@ public class CaTissueSpecimenClient {
 			specimenDetail = (SpecimenDetail)specimenDetailItr.next();	
 			CollectionProtocol cp = specimenDetail.getCollectionProtocol();
 			
-			specimen= specimenDetail.getSpecimen();
+			specimen= specimenDetail.getSpecimen();			
+		
+			boolean scgFound = false;
+			List<SpecimenCollectionGroup> scgList = getSpecimenCollectionGroupList(specimenDetail);
 			
-			int flag = 0;
-			if ((scgList != null) && (scgList.size() > 0)) {
-				flag = 1; // SpecimenCollectionGroup list is not empty
-				for (SpecimenCollectionGroup scg : scgList) {
-					CollectionProtocol cpObj = scg.getCollectionProtocolRegistration().getCollectionProtocol();
+			System.out.println("scgList.size --> " + scgList.size());
+			
+			if ((scgList != null) && (scgList.size() > 0)) {				
+				for (SpecimenCollectionGroup scg : scgList) {					
+					CollectionProtocol cpObj = scg.getCollectionProtocolRegistration().getCollectionProtocol();					
 					if (cpObj.getTitle().equals(cp.getTitle())) {
-						flag = 2; // Participant has a SpecimenCollectionGroup under the given protocol
+						scgFound= true; // Participant has a SpecimenCollectionGroup under the given protocol
 						specimen.setSpecimenCollectionGroup(scg);	
 						break;
 					}
 				}
 			}
-			
-			if (flag < 2) {	
-				List<CollectionProtocol> cpList = caTissueAPIClient.searchByExample(CollectionProtocol.class, cp);				
-				try {
-					cp = cpList.get(0);
-				} catch (Exception e) {
-					LOG.error("No collection protocol was found in caTissue for the identifier " + cp.getTitle());
-					throw new ApplicationException( "NO_COLLECTION_PROTOCOL_"+cp.getTitle());
-				}	
-				
-				List<Participant> participantList = caTissueAPIClient.searchByExample(Participant.class, participant);				
-				Participant participantObj = null;
-				try {
-					participantObj = participantList.get(0);
-				} catch (Exception e) {
-					LOG.error("Participant "+ participant.getLastName()+" is not registered to collection protocol " + cp.getTitle());
-					throw new ApplicationException("PARTICIPANT_NOT_REGISTERED_"+ "LN_"+participant.getLastName()+ "_CP_"+cp.getTitle());
-				}				
-							
-				CollectionProtocolRegistration cprObj = (CollectionProtocolRegistration) caTissueAPIClient.insert(initCollectionProtocolRegistration(participantObj, cp));			
-				SpecimenCollectionGroup scg = getSpecimenCollectionGroup(cprObj.getSpecimenCollectionGroupCollection(), cp);
-				specimen.setSpecimenCollectionGroup(scg);	
-				scgList.add(scg);
-			}	
+						
+			if(scgFound== false){
+				// throw exception
+				LOG.error("Specimen Collection Group was found in caTissue for Label " + specimen.getLabel());
+				throw new ApplicationException( "Specimen_Collection_Group_Not_Found");
+			}
 			
 			Specimen retSpecimen = null;
 			try{
@@ -236,50 +200,6 @@ public class CaTissueSpecimenClient {
 	}
 
 
-	/**
-	 * Creates a CollectionProtocolRegistration
-	 */
-	private CollectionProtocolRegistration initCollectionProtocolRegistration(
-			Participant participant, CollectionProtocol collectionProtocol) {
-		CollectionProtocolRegistration collectionProtocolRegistration = new CollectionProtocolRegistration();
-		collectionProtocolRegistration.setCollectionProtocol(collectionProtocol);
-		collectionProtocolRegistration.setParticipant(participant);
-		collectionProtocolRegistration.setProtocolParticipantIdentifier("");
-		collectionProtocolRegistration.setActivityStatus(ACTIVITY_STATUS_ACTIVE);
-		collectionProtocolRegistration.setRegistrationDate(new Date());
-		collectionProtocolRegistration.setConsentSignatureDate(new Date());
-		return collectionProtocolRegistration;
-	}
-	
-	
-	/**
-	 * Gets the SpecimenCollectionGroup object from specimenCollectionGroupCollection with given CollectionProtocol
-	 */
-	private SpecimenCollectionGroup getSpecimenCollectionGroup(Collection<SpecimenCollectionGroup> specimenCollectionGroupCollection, CollectionProtocol cp) {
-		SpecimenCollectionGroup scg = null;
-		CollectionProtocol cpObj = null;
-		Iterator<SpecimenCollectionGroup> scgItr = specimenCollectionGroupCollection.iterator();
-		while (scgItr.hasNext()) {
-			scg = (SpecimenCollectionGroup) scgItr.next();
-			cpObj = scg.getCollectionProtocolRegistration().getCollectionProtocol();
-			if (cpObj.getTitle().equals(cp.getTitle()))
-				break;
-		}
-		return scg;
-	}
-	
-	
-	private Participant getParticipantForSpecimens(Specimens specimens) {
-		Participant partcipant = new Participant();				
-		if(specimens!= null && specimens.getParticipant()!=null){
-			partcipant.setLastName(specimens.getParticipant().getLastName());			
-			partcipant.setActivityStatus(specimens.getParticipant().getActivityStatus());
-		}		
-				
-		return partcipant;
-	}
-	
-	
 	
 	/**
 	 * This method has the code/logic to Update the Specimens.
@@ -303,8 +223,7 @@ public class CaTissueSpecimenClient {
 				
 				// Get the corresponding existing Specimen using the Label 
 				Specimen existingSpecimen = getExistingSpecimen(incomingSpecimen.getLabel());				
-				incomingSpecimen.setId(existingSpecimen.getId());				
-				
+				incomingSpecimen.setId(existingSpecimen.getId());					
 				incomingSpecimen.setSpecimenCollectionGroup(existingSpecimen.getSpecimenCollectionGroup());//Specimen Collection Group is required.				
 				incomingSpecimen.setLineage(existingSpecimen.getLineage());//Lineage should not be changed while updating the specimen		
 				incomingSpecimen.getSpecimenCharacteristics().setId(existingSpecimen.getSpecimenCharacteristics().getId());	// The given object has a null identifier: SpecimenCharacteristics	
@@ -469,4 +388,13 @@ public class CaTissueSpecimenClient {
 		user = caTissueAPIClient.searchById(User.class, user);	
 		return user;
 	}
+	
+	
+	private List<SpecimenCollectionGroup> getSpecimenCollectionGroupList(SpecimenDetail specimenDetail) throws ApplicationException{
+		String shortTitle = specimenDetail.getCollectionProtocol().getShortTitle() ;
+		String label = specimenDetail.getCollectionProtocolEvent();
+		return caTissueAPIClient.getApplicationService().query(CqlUtility.getSpecimenCollectionGroupListQuery(shortTitle, label));		
+	}
+	
+	
 }
