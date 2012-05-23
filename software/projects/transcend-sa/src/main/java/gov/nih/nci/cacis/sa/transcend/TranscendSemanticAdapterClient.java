@@ -19,7 +19,7 @@ public class TranscendSemanticAdapterClient {
 			wsdlUrl = new URL(wsdl);
 		} catch (MalformedURLException e) {
 			IntegrationException ie = new IntegrationException(IntegrationError._1081);
-			return populateCaCISError(ie.getErrorType().name(), String.valueOf(ie.getErrorCode()), ie.getMessage());
+			return populateCaCISError(ie.getErrorType().name(), String.valueOf(ie.getErrorCode()), ie.getMessage(), "");
 		}
         final AcceptSourcePortType saClient = new
         			TranscendSemanticAdapterService(wsdlUrl).getAcceptSourcePortSoap11();
@@ -29,13 +29,13 @@ public class TranscendSemanticAdapterClient {
 			return response.getStatus().toString();
 		} catch (AcceptSourceFault e) {
 			CaCISError ce = e.getFaultInfo().getCaCISError().get(0);
-			return populateCaCISError(ce.getErrorType().name(), ce.getErrorCode(), ce.getErrorMessage());
+			return populateCaCISError(ce.getErrorType().name(), ce.getErrorCode(), ce.getErrorMessage(), ce.getDetail());
 		} catch (JAXBException e) {
 			IntegrationException ie = new IntegrationException(IntegrationError._1041, e, e.getMessage());
-			return populateCaCISError(ie.getErrorType().name(), String.valueOf(ie.getErrorCode()), ie.getMessage());
+			return populateCaCISError(ie.getErrorType().name(), String.valueOf(ie.getErrorCode()), ie.getMessage(), "");
 		} catch (Exception e) {
 			IntegrationException ie = new IntegrationException(IntegrationError._1043, e, e.getMessage());
-			return populateCaCISError(ie.getErrorType().name(), String.valueOf(ie.getErrorCode()), ie.getMessage());
+			return populateCaCISError(ie.getErrorType().name(), String.valueOf(ie.getErrorCode()), ie.getMessage(), "");
 		}
     }
 	
@@ -44,8 +44,8 @@ public class TranscendSemanticAdapterClient {
 		return (CaCISRequest) ctx.createUnmarshaller().unmarshal(new StringReader(requestStr));
 	}
 	
-	private String populateCaCISError(String errorType, String errorCode, String message) {
+	private String populateCaCISError(String errorType, String errorCode, String message, String detail) {
 		return "<caCISError errorType=\""+ errorType + "\" errorCode=\"" + errorCode + "\"" +
-		" errorMessage=\"" + message + "\"" + " detail=\"\"/>";
+		" errorMessage=\"" + message + "\"" + " detail=\""+ detail +"\"/>";
 	}
 }
