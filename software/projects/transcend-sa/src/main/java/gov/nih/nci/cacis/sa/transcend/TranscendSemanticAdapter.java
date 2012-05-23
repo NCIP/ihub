@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -18,6 +20,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -105,7 +108,7 @@ public class TranscendSemanticAdapter extends AcceptMessage {
     		ce.setDetail(stackTraceAsString(ex));
     		cf.getCaCISError().add(ce);
         	AcceptSourceFault fault = 
-        		new AcceptSourceFault("Error accepting Data from Source System!" + ex.getMessage(), ex);
+        		new AcceptSourceFault("Error accepting Data from Source System!" + ex.getMessage(), cf);
         	throw fault;
         }
     }
@@ -142,20 +145,12 @@ public class TranscendSemanticAdapter extends AcceptMessage {
 		return jc.createUnmarshaller();		
 	}
     
-    private String stackTraceAsString(Exception e) {
-		String stackTraceStr = e.getMessage();
-		StringWriter sw;
-		try {
-			sw = new StringWriter();
-			PrintWriter pw = new PrintWriter(sw);
-			e.printStackTrace(pw);
-			stackTraceStr = sw.toString();
-			pw.close();
-			sw.close();
-		} catch (IOException ie) {
-			// DO Nothing
+    private String stackTraceAsString(Exception e) {    	
+    	try {
+			return URLEncoder.encode(ExceptionUtils.getFullStackTrace(e), "UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			return e.getMessage();
 		}
-		return stackTraceStr;
 	}
     
 

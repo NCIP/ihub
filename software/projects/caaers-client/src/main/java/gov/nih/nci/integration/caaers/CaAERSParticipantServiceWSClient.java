@@ -25,6 +25,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.ws.soap.SOAPFaultException;
 
@@ -36,6 +37,7 @@ import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 import org.apache.ws.security.WSConstants;
 import org.apache.ws.security.handler.WSHandlerConstants;
+import org.springframework.remoting.soap.SoapFaultException;
 
 public class CaAERSParticipantServiceWSClient {
 
@@ -116,7 +118,7 @@ public class CaAERSParticipantServiceWSClient {
 	}
 
 	public CaaersServiceResponse createParticipant(String participantXMLStr)
-			throws JAXBException, MalformedURLException, SOAPFaultException {
+			throws JAXBException, MalformedURLException, SOAPFaultException, IntegrationException {
 		ParticipantType participant = parseParticipant(participantXMLStr);
 		
 		CreateParticipant createParticipant = new CreateParticipant();
@@ -128,8 +130,11 @@ public class CaAERSParticipantServiceWSClient {
 		try {
 			retValue = client.createParticipant(createParticipant);
 		} catch (SOAPFaultException e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new IntegrationException(IntegrationError._1053, e, (Object) null);
 		}
 		return retValue.getCaaersServiceResponse();
 	}

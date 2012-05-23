@@ -3,6 +3,7 @@ package gov.nih.nci.integration.invoker;
 import gov.nih.nci.integration.catissue.CaTissueParticipantClient;
 import gov.nih.nci.integration.domain.ServiceInvocationMessage;
 import gov.nih.nci.integration.domain.StrategyIdentifier;
+import gov.nih.nci.integration.exception.IntegrationError;
 import gov.nih.nci.integration.exception.IntegrationException;
 import gov.nih.nci.integration.transformer.XSLTTransformer;
 
@@ -10,6 +11,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,6 +98,27 @@ public class CaTissueUpdateRegistrationServiceInvocationStrategy implements
 			}
 		}
 		return participantXMLStr;
+	}
+	
+	private void handleException(ServiceInvocationResult result) {
+		if(!result.isFault()) {
+			return;
+		}
+		
+		Exception exception = result.getInvocationException();
+		Throwable cause = exception;
+		while(cause instanceof IntegrationException) {
+			cause = cause.getCause();
+		}
+		if(cause == null){
+			return;
+		}
+		String stackTrace = ExceptionUtils.getFullStackTrace(cause);
+		IntegrationException newie = (IntegrationException) exception;
+		if(stackTrace.contains("Error authenticating user")){
+			newie = new IntegrationException(IntegrationError._1019, (Object)null );
+		}
+		result.setInvocationException(newie);
 	}
 	
 }

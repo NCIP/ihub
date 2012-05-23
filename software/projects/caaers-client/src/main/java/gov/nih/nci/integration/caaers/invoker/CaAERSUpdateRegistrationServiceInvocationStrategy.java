@@ -27,6 +27,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.namespace.QName;
 import javax.xml.ws.soap.SOAPFaultException;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -129,6 +130,7 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 		} catch (IntegrationException e) {
 			result.setInvocationException(e);
 		}
+		handleException(result);
 		return result;
 	}
 
@@ -216,4 +218,28 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 		}
 		return marshaller;
 	}
+	
+	private void handleException(ServiceInvocationResult result) {
+		if(!result.isFault()) {
+			return;
+		}
+		
+		Exception exception = result.getInvocationException();
+		Throwable cause = exception;
+		while(cause instanceof IntegrationException) {
+			cause = cause.getCause();
+		}
+		if(cause == null){
+			return;
+		}
+		String stackTrace = ExceptionUtils.getFullStackTrace(cause);
+		IntegrationException newie = (IntegrationException) exception;
+		if(stackTrace.contains("Invalid Username/Password")){
+			newie = new IntegrationException(IntegrationError._1011, cause, (Object)null );
+		} else if (stackTrace.contains("Could not send message")){
+			newie = new IntegrationException(IntegrationError._1020, cause, (Object)null );
+		} 
+		result.setInvocationException(newie);
+	}
+
 }

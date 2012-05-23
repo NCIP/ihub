@@ -15,6 +15,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.participant.ReducedIdentifier
 import gov.nih.nci.cabig.caaers.integration.schema.participant.StudySiteType;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.StudyType;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType.Assignments;
+import gov.nih.nci.integration.exception.IntegrationException;
 
 import java.io.File;
 import java.io.FileReader;
@@ -33,6 +34,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.ws.soap.SOAPFaultException;
 
 import org.apache.cxf.helpers.IOUtils;
 import org.junit.Assert;
@@ -125,7 +127,7 @@ public class CaAERSParticipantServiceClientTest {
 
 
 	//@Test
-	public void createParticipant() throws JAXBException, IOException {		
+	public void createParticipant() throws JAXBException, IOException, SOAPFaultException, IntegrationException {		
 		
 		String participantXMLStr = IOUtils.toString(new FileReader(new File("C:\\vin\\SUITE-iHub\\tmp\\sample\\smpl_caaers_participant.xml")));
 
@@ -137,7 +139,7 @@ public class CaAERSParticipantServiceClientTest {
 	}
 	
 	@Test
-	public void createParticipant2() throws JAXBException, IOException {		
+	public void createParticipant2() throws JAXBException, IOException, SOAPFaultException, IntegrationException {		
 		
 		String participantXMLStr = getPStr();
 
