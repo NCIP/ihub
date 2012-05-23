@@ -3,6 +3,10 @@ package gov.nih.nci.integration.exception;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
+import org.apache.commons.lang.exception.ExceptionUtils;
 
 /**
  * 
@@ -77,17 +81,13 @@ public class IntegrationException extends Exception {
 	}
 
 	public String stackTraceAsString() {
-		String stackTraceStr = getMessage();
-		StringWriter sw;
-		try {
-			sw = new StringWriter();
-			PrintWriter pw = new PrintWriter(sw);
-			printStackTrace(pw);
-			stackTraceStr = sw.toString();
-			pw.close();
-			sw.close();
-		} catch (IOException e) {
-			// DO Nothing
+		String stackTraceStr = getMessage();		
+		if(getCause() != null){
+			try {
+				stackTraceStr = URLEncoder.encode(ExceptionUtils.getFullStackTrace(getCause()), "UTF-8");
+			} catch (UnsupportedEncodingException e1) {
+				stackTraceStr = getMessage();
+			}
 		}
 		return stackTraceStr;
 	}

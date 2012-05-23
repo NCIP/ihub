@@ -27,6 +27,7 @@
 		<copy todir="${user.home}/.integration/ihub">
 			<fileset dir="${classes.dir}">
 				<include name="**/*.xsl"/>
+				<include name="transcend-ihub.properties"/>
 				<exclude name="**/.svn"/>
 			</fileset>
 		</copy>

@@ -1,7 +1,6 @@
 package gov.nih.nci.integration.invoker;
 
 import gov.nih.nci.integration.dao.IHubMessageDao;
-import gov.nih.nci.integration.dao.DefaultServiceInvocationMessageDao;
 import gov.nih.nci.integration.dao.ServiceInvocationMessageDao;
 
 import java.util.concurrent.Executor;

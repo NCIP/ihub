@@ -910,7 +910,7 @@
 			<arg path="${mirth.home}"/>
         </exec>
 		<echo message="Waiting for mirth to start...."/>
-		<waitfor maxwait="120" maxwaitunit="second" checkevery="30">
+		<waitfor maxwait="120" maxwaitunit="second" checkevery="60" checkeveryunit="second">
 			<http url="${mirth.url}"/>
 		</waitfor>
 		

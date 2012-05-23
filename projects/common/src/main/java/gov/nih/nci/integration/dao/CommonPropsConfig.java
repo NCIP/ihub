@@ -19,7 +19,7 @@ public class CommonPropsConfig {
     @Bean
     public PropertyPlaceholderConfigurer commonPropertyPlaceholderConfigurer() {
         final PropertyPlaceholderConfigurer configurer =
-                new CommonsPropertyPlaceholderConfigurer("ihub", "common.properties");
+                new CommonsPropertyPlaceholderConfigurer("ihub", "transcend-ihub.properties");
         configurer.setSystemPropertiesMode(PropertyPlaceholderConfigurer.SYSTEM_PROPERTIES_MODE_OVERRIDE);
         configurer.setIgnoreUnresolvablePlaceholders(true);
         return configurer;

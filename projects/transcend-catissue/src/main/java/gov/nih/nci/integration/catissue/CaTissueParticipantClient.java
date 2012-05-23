@@ -122,7 +122,7 @@ public class CaTissueParticipantClient {
 			result = ecs.take().get();
 			
 			if (!result.isFault()) {
-				result.setResult("Successfully update participant registration in CaTissue!");
+				result.setResult("Successfully updated participant registration in CaTissue!");
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();

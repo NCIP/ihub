@@ -298,7 +298,7 @@ function convertIntgExceptionToIHubResponse(intgExcptn) {
 			+ &quot;&lt;caXchangeError xmlns=\&quot;http://caXchange.nci.nih.gov/messaging\&quot;&gt;&quot;
 			+ &quot;&lt;errorCode&gt;&quot;+ intgExcptn.getErrorCode() +&quot;&lt;/errorCode&gt;&quot;
 			+ &quot;&lt;errorDescription&gt;&quot; + intgExcptn.getMessage() + &quot;&lt;/errorDescription&gt;&quot;
-			+ &quot;&lt;/caXchangeError&gt;&lt;/response&gt;&quot;;
+			+ &quot;&lt;/caXchangeError&gt;&quot;;
 	return iHubResponse;
 }</code>
     <type>FUNCTION</type>

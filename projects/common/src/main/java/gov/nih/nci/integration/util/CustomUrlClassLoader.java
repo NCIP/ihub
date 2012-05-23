@@ -50,14 +50,11 @@ public class CustomUrlClassLoader extends URLClassLoader {
     	final File loc = new File(customLocation);
         if (!loc.exists()) {
             throw new IllegalArgumentException("The specified custom location does not exist, " + customLocation);
-        }else{
-        	System.out.println("location exists!");
         }
+        
         final File[] jarFiles = loc.listFiles();
         if (jarFiles == null || jarFiles.length == 0) {
             throw new IllegalArgumentException("The specified custom location does not contain any files, " + customLocation);
-        }else{
-        	System.out.println(Arrays.asList(jarFiles));
         }
        
         for (File file : jarFiles) {

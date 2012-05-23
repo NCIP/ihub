@@ -2,6 +2,7 @@ package gov.nih.nci.integration.caaers.invoker;
 
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
 import gov.nih.nci.integration.caaers.CaAERSParticipantServiceWSClient;
 import gov.nih.nci.integration.domain.ServiceInvocationMessage;
 import gov.nih.nci.integration.domain.StrategyIdentifier;
@@ -15,10 +16,12 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.util.List;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.ws.soap.SOAPFaultException;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,8 +74,17 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 				result.setDataChanged(true);
 				//there is no original data
 			} else {
-				IntegrationException ie = new IntegrationException(
-						IntegrationError._1053, response.getMessage());
+				List<WsError> wserrors = response.getWsError();
+				WsError error = null;
+				IntegrationException ie = null;
+				if(wserrors != null && !wserrors.isEmpty()){
+					error = wserrors.get(0);
+					ie = new IntegrationException(
+						IntegrationError._1053, new Throwable(error.getException()), error.getErrorDesc() );
+				} else {
+					ie = new IntegrationException(
+						IntegrationError._1053, response.getMessage() );
+				}
 				result.setInvocationException(ie);				
 			}
 		} catch (SOAPFaultException e) {
@@ -93,6 +105,7 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 		} catch (IntegrationException e) {
 			result.setInvocationException(e);
 		}
+		handleException(result);
 		return result;
 	}
 
@@ -128,6 +141,7 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 		} catch (IntegrationException e) {
 			result.setInvocationException(e);
 		}
+		
 		return result;
 	}
 
@@ -158,6 +172,29 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 			}
 		}
 		return participantXMLStr;
+	}
+	
+	private void handleException(ServiceInvocationResult result) {
+		if(!result.isFault()) {
+			return;
+		}
+		
+		Exception exception = result.getInvocationException();
+		Throwable cause = exception;
+		while(cause instanceof IntegrationException) {
+			cause = cause.getCause();
+		}
+		if(cause == null){
+			return;
+		}
+		String stackTrace = ExceptionUtils.getFullStackTrace(cause);
+		IntegrationException newie = (IntegrationException) exception;
+		if(stackTrace.contains("Invalid Username/Password")){
+			newie = new IntegrationException(IntegrationError._1011, cause, (Object)null );
+		} else if (stackTrace.contains("Could not send Message")){
+			newie = new IntegrationException(IntegrationError._1020, cause, (Object)null );
+		} 
+		result.setInvocationException(newie);
 	}
 
 }

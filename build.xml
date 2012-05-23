@@ -43,6 +43,10 @@
 		<iterate target="all"/>
 	</target>
 	
+	<target name="prepare.mirth">
+		<iterate target="prepare.mirth"/>
+	</target>
+	
 	<target name="publish-local">
 		<iterate target="publish-local"/>
 	</target>
