@@ -73,7 +73,8 @@ public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocat
 			String specimenListXMLStr = transformToSpecimenXML(msg.getMessage().getRequest());
 		
 			// call the method to rollback Specimens
-			serviceInvocationResult = caTissueSpecimenClient.rollbackSpecimens(specimenListXMLStr);			
+			serviceInvocationResult = caTissueSpecimenClient.rollbackCreatedSpecimens(specimenListXMLStr);			
+			
 		} catch (IntegrationException e) {
 			serviceInvocationResult.setInvocationException(e);
 		} catch (Exception e) {

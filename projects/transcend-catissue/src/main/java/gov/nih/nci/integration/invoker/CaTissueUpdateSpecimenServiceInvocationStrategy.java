@@ -58,6 +58,7 @@ public class CaTissueUpdateSpecimenServiceInvocationStrategy implements ServiceI
 			
 			// call the method to update Specimens
 			serviceInvocationResult = caTissueSpecimenClient.updateSpecimens(specimenListXMLStr);
+
 		} catch (IntegrationException e) {
 			serviceInvocationResult.setInvocationException(e);
 		} catch (Exception e) {
@@ -70,13 +71,11 @@ public class CaTissueUpdateSpecimenServiceInvocationStrategy implements ServiceI
 	public ServiceInvocationResult rollback(ServiceInvocationMessage msg) {
 		ServiceInvocationResult serviceInvocationResult = new ServiceInvocationResult();
 		try {			
-			String specimenListXMLStr = transformToSpecimenXML(msg.getMessage().getRequest());
-			
+			String specimenListXMLStr = msg.getOriginalData();			
+				
 			// call the method to rollback Specimens
-			serviceInvocationResult = caTissueSpecimenClient.rollbackSpecimens(specimenListXMLStr);			
-		} catch (IntegrationException e) {
-			serviceInvocationResult.setInvocationException(e);
-		} catch (Exception e) {
+			serviceInvocationResult = caTissueSpecimenClient.rollbackUpdatedSpecimens(specimenListXMLStr);			
+		}catch (Exception e) {
 			serviceInvocationResult.setInvocationException(e);
 		} 
 		return serviceInvocationResult;
