@@ -1,5 +1,6 @@
 package gov.nih.nci.integration.invoker;
 
+import gov.nih.nci.integration.catissue.CaTissueConsentClient;
 import gov.nih.nci.integration.catissue.CaTissueParticipantClient;
 import gov.nih.nci.integration.catissue.CaTissueSpecimenClient;
 import gov.nih.nci.integration.exception.IntegrationException;
@@ -26,6 +27,10 @@ public class ServiceConfig {
 	@Value("${catissue.api.specimen.xsl}")
     private String catissueSpecimenXsl;	
 	
+	@Value("${catissue.api.consent.xsl}")
+    private String catissueConsentXsl;
+	
+	
 	@Autowired
 	private CaTissueParticipantClient caTissueParticipantClient;
 	
@@ -33,10 +38,16 @@ public class ServiceConfig {
 	private CaTissueSpecimenClient caTissueSpecimenClient;
 	
 	@Autowired
+	private CaTissueConsentClient caTissueConsentClient;
+	
+	@Autowired
 	private XSLTTransformer xsltTransformer;	
 	
 	@Autowired
 	private XSLTTransformer xsltTransformerSpecimen;
+	
+	@Autowired
+	private XSLTTransformer xsltTransformerConsent;
 		
 	@Bean
 	@Scope("prototype")
@@ -69,5 +80,13 @@ public class ServiceConfig {
 		xsltTransformerSpecimen.initTransformer(catissueSpecimenXsl, baseXSLPath);
 		return new CaTissueUpdateSpecimenServiceInvocationStrategy(
 				Integer.parseInt(retryCntStr), caTissueSpecimenClient, xsltTransformerSpecimen);
+	}
+	
+	@Bean
+	@Scope("prototype")
+	public ServiceInvocationStrategy CaTissueConsentServiceInvocationStrategy() throws IntegrationException{
+		xsltTransformerConsent.initTransformer(catissueConsentXsl, baseXSLPath);
+		return new CaTissueConsentServiceInvocationStrategy(
+				Integer.parseInt(retryCntStr), caTissueConsentClient, xsltTransformerConsent);
 	}
 }
