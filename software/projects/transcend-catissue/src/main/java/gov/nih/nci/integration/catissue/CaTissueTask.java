@@ -49,13 +49,13 @@ public class CaTissueTask implements Callable<ServiceInvocationResult> {
 			result.setOriginalData(retValue);
 		} catch (InvocationTargetException e) {
 			String exceptionMessage = e.getTargetException().getMessage() ;
-			System.out.println("Inside CaTissueTask..call()..InvocationTargetException Message is :: " + exceptionMessage);	
+//			System.out.println("Inside CaTissueTask..call()..InvocationTargetException Message is :: " + exceptionMessage);	
 			LOG.error("Inside CaTissueTask..call()..InvocationTargetException Message is :: " + exceptionMessage);	
 			IntegrationException ie = new IntegrationException(IntegrationError._1051, e.getTargetException(), exceptionMessage);
 			result.setInvocationException(ie);					
 		} catch (Exception e) {	
 			String exceptionMessage = e.getMessage() ;
-			System.out.println("Inside CaTissueTask..call()..Exception Message is :: " + exceptionMessage);	
+//			System.out.println("Inside CaTissueTask..call()..Exception Message is :: " + exceptionMessage);	
 			LOG.error("Inside CaTissueTask..call()..Exception Message is :: " + exceptionMessage);	
 			IntegrationException ie = new IntegrationException(IntegrationError._1051, e, exceptionMessage);
 			result.setInvocationException(ie);
