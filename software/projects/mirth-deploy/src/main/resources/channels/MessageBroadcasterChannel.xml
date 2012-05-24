@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>2.1.1.5490</version>
   <lastModified>
-    <time>1336607654001</time>
+    <time>1337611743019</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>9</revision>
+  <revision>21</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -491,15 +491,15 @@ PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
             <name>Accept message if &quot;$(&apos;operationName&apos;)&quot; equals globalMap.get(&apos;REGN&apos;) or globalMap.get(&apos;UPDTREGN&apos;)</name>
             <data class="map">
               <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
                 <string>Values</string>
                 <list>
                   <string>globalMap.get(&apos;REGN&apos;)</string>
                   <string>globalMap.get(&apos;UPDTREGN&apos;)</string>
                 </list>
-              </entry>
-              <entry>
-                <string>Name</string>
-                <string></string>
               </entry>
               <entry>
                 <string>Field</string>
@@ -550,6 +550,8 @@ if ($(&apos;operationName&apos;) == &apos;UPDATESPECIMEN&apos;) {
 
 var refMsgIdStr = $(&apos;referenceMsgId&apos;);
 var refMsgId = Packages.java.lang.Long.parseLong(refMsgIdStr);
+
+logger.debug(&quot;RG -- inside MBC -- SpecimenConnector -- Interim XML is --&gt; &quot; + messageObject.getEncodedData());
 
 srvcInvcAndAgg.invokeService(refMsgId, messageObject.getEncodedData(), catissueSvcInvStrtgy);
 
@@ -662,6 +664,138 @@ return false;</script>
       <version>2.1.1.5490</version>
     </connector>
     <connector>
+      <name>CaTissueConsentConnector</name>
+      <properties>
+        <property name="DataType">JavaScript Writer</property>
+        <property name="host">sink</property>
+        <property name="script">//supposed to handle CaTissue Consent Registration
+var srvcInvcAndAgg = $(&apos;serviceInvocatorAndAggregator&apos;);
+
+var catissueSvcInvStrtgy = null;
+
+
+if ($(&apos;operationName&apos;) == &apos;REGISTERCONSENT&apos;) {
+	catissueSvcInvStrtgy = globalMap.get(&quot;caTissueConsentServiceInvocationStrategy&quot;);										  
+} 
+
+logger.debug(&quot;RG -- inside MBC -- CaTissueConsentConnector -- Interim XML is --&gt; &quot; + messageObject.getEncodedData());
+
+
+var refMsgIdStr = $(&apos;referenceMsgId&apos;);
+var refMsgId = Packages.java.lang.Long.parseLong(refMsgIdStr);
+
+logger.debug(&quot;RG -- inside MBC -- CaTissueConsentConnector -- refMsgIdStr --&gt; &quot; + refMsgIdStr);
+
+srvcInvcAndAgg.invokeService(refMsgId, messageObject.getEncodedData(), catissueSvcInvStrtgy);
+
+return;</property>
+      </properties>
+      <transformer>
+        <steps/>
+        <inboundTemplate encoding="base64">PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPG5zMTpNZXNzYWdlQnJvYWRj
+YXN0ZXJSZXF1ZXN0TWVzc2FnZQoJeG1sbnM6bnMxPSJodHRwOi8vaW50ZWdyYXRpb24ubmNpLm5p
+aC5nb3YvbWVzc2FnaW5nIj4KCTxuczE6bWV0YWRhdGE+CgkJPG5zMTpzZXJ2aWNlVHlwZT5SZWdp
+c3RyYXRpb248L25zMTpzZXJ2aWNlVHlwZT4KCQk8bnMxOmV4dGVybmFsSWRlbnRpZmllcj5teUV4
+dGVybmFsSWRlbnRpZmllcjwvbnMxOmV4dGVybmFsSWRlbnRpZmllcj4KCTwvbnMxOm1ldGFkYXRh
+PgoJPG5zMTpyZXF1ZXN0PgoJCTxuczE6YnVzaW5lc3NNZXNzYWdlUGF5bG9hZD4KCQkJPG5zMTp4
+bWxTY2hlbWFEZWZpbml0aW9uPmh0dHA6Ly9pbnRlZ3JhdGlvbi5uY2kubmloLmdvdi9wYXJ0aWNp
+cGFudAoJCQk8L25zMTp4bWxTY2hlbWFEZWZpbml0aW9uPgoJCQk8cDpwYXJ0aWNpcGFudCBpZD0i
+MSIgdmVyc2lvbj0iMSIKCQkJCXhtbG5zOnA9Imh0dHA6Ly9pbnRlZ3JhdGlvbi5uY2kubmloLmdv
+di9wYXJ0aWNpcGFudCIgeG1sbnM6eHNpPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVt
+YS1pbnN0YW5jZSIKCQkJCXhzaTpzY2hlbWFMb2NhdGlvbj0iaHR0cDovL2ludGVncmF0aW9uLm5j
+aS5uaWguZ292L3BhcnRpY2lwYW50IFBhcnRpY2lwYW50LnhzZCAiPgoJCQkJPHA6Zmlyc3ROYW1l
+PmZpcnN0TmFtZTwvcDpmaXJzdE5hbWU+CgkJCQk8cDpsYXN0TmFtZT5sYXN0TmFtZTwvcDpsYXN0
+TmFtZT4KCQkJCTxwOm1haWRlbk5hbWU+bWFpZGVuTmFtZTwvcDptYWlkZW5OYW1lPgoJCQkJPHA6
+bWlkZGxlTmFtZT5taWRkbGVOYW1lPC9wOm1pZGRsZU5hbWU+CgkJCQk8cDpiaXJ0aERhdGU+MjAw
+MS0wMS0wMTwvcDpiaXJ0aERhdGU+CgkJCQk8cDpnZW5kZXI+TWFsZTwvcDpnZW5kZXI+CgkJCQk8
+cDpyYWNlPkFzaWFuPC9wOnJhY2U+CgkJCQk8cDpldGhuaWNpdHk+SGlzcGFuaWMgb3IgTGF0aW5v
+PC9wOmV0aG5pY2l0eT4KCQkJCTxwOmFjdGl2aXR5U3RhdHVzPkFDVElWRTwvcDphY3Rpdml0eVN0
+YXR1cz4KCQkJCTxwOmlkZW50aWZpZXJzPgoJCQkJCTxwOm9yZ2FuaXphdGlvbkFzc2lnbmVkSWRl
+bnRpZmllcgoJCQkJCQlpZD0iMSIgdmVyc2lvbj0iMSI+CgkJCQkJCTxwOnR5cGU+TVJOPC9wOnR5
+cGU+CgkJCQkJCTxwOnZhbHVlPnZhbHVlPC9wOnZhbHVlPgoJCQkJCQk8cDpwcmltYXJ5SW5kaWNh
+dG9yPnRydWU8L3A6cHJpbWFyeUluZGljYXRvcj4KCQkJCQkJPHA6b3JnYW5pemF0aW9uIGlkPSIx
+IiB2ZXJzaW9uPSIxIj4KCQkJCQkJCTxwOm5hbWU+bmFtZTwvcDpuYW1lPgoJCQkJCQkJPHA6bmNp
+SW5zdGl0dXRlQ29kZT5uY2lJbnN0aXR1dGVDb2RlPC9wOm5jaUluc3RpdHV0ZUNvZGU+CgkJCQkJ
+CTwvcDpvcmdhbml6YXRpb24+CgkJCQkJPC9wOm9yZ2FuaXphdGlvbkFzc2lnbmVkSWRlbnRpZmll
+cj4KCQkJCQk8cDpvcmdhbml6YXRpb25Bc3NpZ25lZElkZW50aWZpZXIKCQkJCQkJaWQ9IjEiIHZl
+cnNpb249IjEiPgoJCQkJCQk8cDp0eXBlPlNTTjwvcDp0eXBlPgoJCQkJCQk8cDp2YWx1ZT52YWx1
+ZTwvcDp2YWx1ZT4KCQkJCQkJPHA6cHJpbWFyeUluZGljYXRvcj5mYWxzZTwvcDpwcmltYXJ5SW5k
+aWNhdG9yPgoJCQkJCQk8cDpvcmdhbml6YXRpb24gaWQ9IjEiIHZlcnNpb249IjEiPgoJCQkJCQkJ
+PHA6bmFtZT5TU048L3A6bmFtZT4KCQkJCQkJCTxwOm5jaUluc3RpdHV0ZUNvZGU+U1NOPC9wOm5j
+aUluc3RpdHV0ZUNvZGU+CgkJCQkJCTwvcDpvcmdhbml6YXRpb24+CgkJCQkJPC9wOm9yZ2FuaXph
+dGlvbkFzc2lnbmVkSWRlbnRpZmllcj4KCQkJCQk8cDpzeXN0ZW1Bc3NpZ25lZElkZW50aWZpZXIg
+aWQ9IjEiCgkJCQkJCXZlcnNpb249IjEiPgoJCQkJCQk8cDp0eXBlPk1STjwvcDp0eXBlPgoJCQkJ
+CQk8cDp2YWx1ZT52YWx1ZTwvcDp2YWx1ZT4KCQkJCQkJPHA6cHJpbWFyeUluZGljYXRvcj50cnVl
+PC9wOnByaW1hcnlJbmRpY2F0b3I+CgkJCQkJCTxwOnN5c3RlbU5hbWU+c3lzdGVtTmFtZTwvcDpz
+eXN0ZW1OYW1lPgoJCQkJCTwvcDpzeXN0ZW1Bc3NpZ25lZElkZW50aWZpZXI+CgkJCQk8L3A6aWRl
+bnRpZmllcnM+CgkJCQk8cDphc3NpZ25tZW50cz4KCQkJCQk8cDphc3NpZ25tZW50IGlkPSIxIiB2
+ZXJzaW9uPSIxIj4KCQkJCQkJPHA6c3R1ZHlTdWJqZWN0SWRlbnRpZmllcj5zdHVkeVN1YmplY3RJ
+ZGVudGlmaWVyCgkJCQkJCTwvcDpzdHVkeVN1YmplY3RJZGVudGlmaWVyPgoJCQkJCQk8cDpzdHVk
+eVNpdGUgaWQ9IjEiIHZlcnNpb249IjEiPgoJCQkJCQkJPHA6c3R1ZHkgaWQ9IjEiIHZlcnNpb249
+IjEiPgoJCQkJCQkJCTxwOmlkZW50aWZpZXJzPgoJCQkJCQkJCQk8cDppZGVudGlmaWVyIGlkPSIx
+IiB2ZXJzaW9uPSIxIj4KCQkJCQkJCQkJCTxwOnR5cGU+U2l0ZSBJZGVudGlmaWVyPC9wOnR5cGU+
+CgkJCQkJCQkJCQk8cDp2YWx1ZT52YWx1ZTwvcDp2YWx1ZT4KCQkJCQkJCQkJPC9wOmlkZW50aWZp
+ZXI+CgkJCQkJCQkJPC9wOmlkZW50aWZpZXJzPgoJCQkJCQkJPC9wOnN0dWR5PgoJCQkJCQkJPHA6
+b3JnYW5pemF0aW9uIGlkPSIxIiB2ZXJzaW9uPSIxIj4KCQkJCQkJCQk8cDpuYW1lPm5hbWU8L3A6
+bmFtZT4KCQkJCQkJCQk8cDpuY2lJbnN0aXR1dGVDb2RlPm5jaUluc3RpdHV0ZUNvZGU8L3A6bmNp
+SW5zdGl0dXRlQ29kZT4KCQkJCQkJCTwvcDpvcmdhbml6YXRpb24+CgkJCQkJCTwvcDpzdHVkeVNp
+dGU+CgkJCQkJPC9wOmFzc2lnbm1lbnQ+CgkJCQk8L3A6YXNzaWdubWVudHM+CgkJCTwvcDpwYXJ0
+aWNpcGFudD4KCQk8L25zMTpidXNpbmVzc01lc3NhZ2VQYXlsb2FkPgoJPC9uczE6cmVxdWVzdD4K
+PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">false</property>
+        </inboundProperties>
+        <outboundProperties>
+          <property name="stripNamespaces">false</property>
+        </outboundProperties>
+      </transformer>
+      <filter>
+        <rules>
+          <rule>
+            <sequenceNumber>0</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;operationName&apos;)&quot; equals globalMap.get(&apos;REGTCNST&apos;)</name>
+            <data class="map">
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>globalMap.get(&apos;REGTCNST&apos;)</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;operationName&apos;)</string>
+              </entry>
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;operationName&apos;) == globalMap.get(&apos;REGTCNST&apos;))
+{
+return true;
+}
+return false;</script>
+            <operator>NONE</operator>
+          </rule>
+        </rules>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <version>2.1.1.5490</version>
+    </connector>
+    <connector>
       <name>ResponseAggregatorConnector</name>
       <properties>
         <property name="DataType">JavaScript Writer</property>
@@ -681,6 +815,7 @@ if(	svcTyp != globalMap.get(&apos;AE&apos;)
 	&amp;&amp; svcTyp != globalMap.get(&apos;UPDTREGN&apos;)
 	&amp;&amp; svcTyp != globalMap.get(&apos;SPMN&apos;)
 	&amp;&amp; svcTyp != globalMap.get(&apos;UPDTSPMN&apos;)
+	&amp;&amp; svcTyp != globalMap.get(&apos;REGTCNST&apos;)
 	) {
 	var msgParams = [&quot;value1&quot;, &quot;value2&quot;];
 
@@ -806,6 +941,14 @@ if(caTissueUpdateSpecimenServiceInvocationStrategy == null) {
 globalMap.put(&quot;caTissueUpdateSpecimenServiceInvocationStrategy&quot;, caTissueUpdateSpecimenServiceInvocationStrategy);
 
 
+//initialize catissue Consent service invocation strategy
+var caTissueConsentServiceInvocationStrategy = globalMap.get(&quot;caTissueConsentServiceInvocationStrategy&quot;);
+
+if(caTissueConsentServiceInvocationStrategy == null) {
+	caTissueConsentServiceInvocationStrategy = transcendCatissueAppCtx.getBean(&quot;CaTissueConsentServiceInvocationStrategy&quot;);
+}
+
+globalMap.put(&quot;caTissueConsentServiceInvocationStrategy&quot;, caTissueConsentServiceInvocationStrategy);
 
 
 var caaersCustomLibLocations = new Array(&quot;caaers-client-lib/&quot;);

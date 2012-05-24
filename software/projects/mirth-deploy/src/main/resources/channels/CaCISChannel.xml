@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>2.1.1.5490</version>
   <lastModified>
-    <time>1336607156405</time>
+    <time>1337612504196</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>11</revision>
+  <revision>21</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -302,7 +302,7 @@ return false;</script>
       <properties>
         <property name="DataType">JavaScript Writer</property>
         <property name="host">sink</property>
-        <property name="script">//supposed to do SpecimenTransformation
+        <property name="script">//supposed to do RegistrationTransformation
 return;</property>
       </properties>
       <transformer>
@@ -405,6 +405,112 @@ return false;</script>
       <version>2.1.1.5490</version>
     </connector>
     <connector>
+      <name>ConsentTransformationConnector</name>
+      <properties>
+        <property name="DataType">JavaScript Writer</property>
+        <property name="host">sink</property>
+        <property name="script">//supposed to do RegistrationTransformation
+return;</property>
+      </properties>
+      <transformer>
+        <steps>
+          <step>
+            <sequenceNumber>0</sequenceNumber>
+            <name>ConsentTransformationConnector</name>
+            <script>var regnMsg = null;
+try {
+	logger.debug(&quot;msg in CaCISChannel-Consent-Trns (Wrapper TRIM Request) = &quot; +msg);
+	var regnMsgStr = transformMessage(msg, &quot;crToConsentMsgTransformer&quot;);
+
+	regnMsg = new XML(regnMsgStr);
+
+	channelMap.put(&apos;msgForBroadcaster&apos;, regnMsg);
+
+} catch(err) {
+	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1018, err, err.message);
+	channelMap.put(&apos;CACIS_ERROR&apos;, intgExcp);
+}
+
+return;</script>
+            <type>JavaScript</type>
+            <data class="map">
+              <entry>
+                <string>Script</string>
+                <string>var regnMsg = null;
+try {
+	logger.debug(&quot;msg in CaCISChannel-Consent-Trns (Wrapper TRIM Request) = &quot; +msg);
+	var regnMsgStr = transformMessage(msg, &quot;crToConsentMsgTransformer&quot;);
+
+	regnMsg = new XML(regnMsgStr);
+
+	channelMap.put(&apos;msgForBroadcaster&apos;, regnMsg);
+
+} catch(err) {
+	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1018, err, err.message);
+	channelMap.put(&apos;CACIS_ERROR&apos;, intgExcp);
+}
+
+return;</string>
+              </entry>
+            </data>
+          </step>
+        </steps>
+        <inboundTemplate encoding="base64"></inboundTemplate>
+        <outboundTemplate encoding="base64"></outboundTemplate>
+        <inboundProtocol>XML</inboundProtocol>
+        <outboundProtocol>XML</outboundProtocol>
+        <inboundProperties>
+          <property name="stripNamespaces">false</property>
+        </inboundProperties>
+        <outboundProperties>
+          <property name="stripNamespaces">false</property>
+        </outboundProperties>
+      </transformer>
+      <filter>
+        <rules>
+          <rule>
+            <sequenceNumber>0</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;msgTyp&apos;)&quot; equals globalMap.get(&apos;REGTCNST&apos;)</name>
+            <data class="map">
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list>
+                  <string>globalMap.get(&apos;REGTCNST&apos;)</string>
+                </list>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;msgTyp&apos;)</string>
+              </entry>
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>1</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;msgTyp&apos;) == globalMap.get(&apos;REGTCNST&apos;))
+{
+return true;
+}
+return false;</script>
+            <operator>NONE</operator>
+          </rule>
+        </rules>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <version>2.1.1.5490</version>
+    </connector>
+    <connector>
       <name>MessageBroadcasterChannelConnector</name>
       <properties>
         <property name="DataType">Channel Writer</property>
@@ -429,7 +535,7 @@ return false;</script>
         <rules>
           <rule>
             <sequenceNumber>0</sequenceNumber>
-            <name>Accept message if &quot;$(&apos;msgTyp&apos;)&quot; equals globalMap.get(&apos;REGN&apos;) or globalMap.get(&apos;AE&apos;) or globalMap.get(&apos;UPDTREGN&apos;) or globalMap.get(&apos;SPMN&apos;) or globalMap.get(&apos;UPDTSPMN&apos;)</name>
+            <name>Accept message if &quot;$(&apos;msgTyp&apos;)&quot; equals globalMap.get(&apos;REGN&apos;) or globalMap.get(&apos;AE&apos;) or globalMap.get(&apos;UPDTREGN&apos;) or globalMap.get(&apos;SPMN&apos;) or globalMap.get(&apos;UPDTSPMN&apos;) or globalMap.get(&apos;REGTCNST&apos;)</name>
             <data class="map">
               <entry>
                 <string>Name</string>
@@ -443,6 +549,7 @@ return false;</script>
                   <string>globalMap.get(&apos;UPDTREGN&apos;)</string>
                   <string>globalMap.get(&apos;SPMN&apos;)</string>
                   <string>globalMap.get(&apos;UPDTSPMN&apos;)</string>
+                  <string>globalMap.get(&apos;REGTCNST&apos;)</string>
                 </list>
               </entry>
               <entry>
@@ -459,7 +566,7 @@ return false;</script>
               </entry>
             </data>
             <type>Rule Builder</type>
-            <script>if($(&apos;msgTyp&apos;) == globalMap.get(&apos;REGN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;AE&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTREGN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;SPMN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTSPMN&apos;))
+            <script>if($(&apos;msgTyp&apos;) == globalMap.get(&apos;REGN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;AE&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTREGN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;SPMN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTSPMN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;REGTCNST&apos;))
 {
 return true;
 }
@@ -489,6 +596,7 @@ if(	msgTyp != globalMap.get(&apos;AE&apos;)
 	&amp;&amp; msgTyp != globalMap.get(&apos;UPDTREGN&apos;)
 	&amp;&amp; msgTyp != globalMap.get(&apos;SPMN&apos;)
 	&amp;&amp; msgTyp != globalMap.get(&apos;UPDTSPMN&apos;)
+	&amp;&amp; msgTyp != globalMap.get(&apos;REGTCNST&apos;)
 	) {
 	var msgParams = [&quot;value1&quot;, &quot;value2&quot;];
 	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1050, msgParams);
@@ -580,6 +688,12 @@ var crToSpmnMsgTransformer = commonAppCtx.getBean(&quot;xsltTransformer&quot;);
 crToSpmnMsgTransformer.initTransformer(&quot;caCISRequest-to-MsgBroadcasterSpecimenInboundMsg.xsl&quot;, baseXSLClasspath);
 
 globalMap.put(&quot;crToSpmnMsgTransformer&quot;, crToSpmnMsgTransformer);
+
+
+var crToConsentMsgTransformer = commonAppCtx.getBean(&quot;xsltTransformer&quot;);
+crToConsentMsgTransformer.initTransformer(&quot;caCISRequest-to-MsgBroadcasterConsentInboundMsg.xsl&quot;, baseXSLClasspath);
+
+globalMap.put(&quot;crToConsentMsgTransformer&quot;, crToConsentMsgTransformer);
 
 
 var crToAeMsgTransformer = commonAppCtx.getBean(&quot;xsltTransformer&quot;);
