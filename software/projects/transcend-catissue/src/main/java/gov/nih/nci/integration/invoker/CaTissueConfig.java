@@ -1,5 +1,6 @@
 package gov.nih.nci.integration.invoker;
 
+import gov.nih.nci.integration.catissue.CaTissueConsentClient;
 import gov.nih.nci.integration.catissue.CaTissueParticipantClient;
 import gov.nih.nci.integration.catissue.CaTissueSpecimenClient;
 import gov.nih.nci.integration.exception.IntegrationException;
@@ -28,6 +29,11 @@ public class CaTissueConfig {
 	@Bean
 	public CaTissueSpecimenClient caTissueSpecimenClient() throws IntegrationException {
 		return new CaTissueSpecimenClient(caTissueLibLocation, catissueApiLoginName, catissueApiPassword);
+	}
+	
+	@Bean
+	public CaTissueConsentClient caTissueConsentClient() throws IntegrationException {
+		return new CaTissueConsentClient(caTissueLibLocation, catissueApiLoginName, catissueApiPassword);
 	}
 	
 }
