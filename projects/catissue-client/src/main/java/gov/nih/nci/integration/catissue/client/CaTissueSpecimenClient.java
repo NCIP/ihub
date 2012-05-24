@@ -317,17 +317,22 @@ public class CaTissueSpecimenClient {
 		String existCPE= existingSpecimen.getSpecimenCollectionGroup().getCollectionProtocolEvent().getCollectionPointLabel();
 		String inCP = inSpecimenDetail.getCollectionProtocol().getTitle();
 		String existCP = existingSpecimen.getSpecimenCollectionGroup().getCollectionProtocolEvent().getCollectionProtocol().getTitle();
+		String inSC = inSpecimenDetail.getSpecimen().getSpecimenClass();
+		String existSC= existingSpecimen.getSpecimenClass();
 		
-		if( ! inCPE.equalsIgnoreCase(existCPE) || !inCP.equalsIgnoreCase(existCP)){
+		if( ! inCPE.equalsIgnoreCase(existCPE) || !inCP.equalsIgnoreCase(existCP) || !inSC.equalsIgnoreCase(existSC)){
 			hasValidData = false;
 		}		
 		
 		return hasValidData;
 	}
 	
-	private void performRollbackUpdatedSpecimens(Specimens specimens){
-//		System.out.println("Inside Specimen Client Impl... Rollback...");
-		
+	
+	/**
+	 * This method will rollback the specimens for Update_Specimen flow
+	 * @param specimens
+	 */
+	private void performRollbackUpdatedSpecimens(Specimens specimens){		
 		List<SpecimenDetail> specimenDetailList = specimens.getSpecimenDetailList();
 		Iterator<SpecimenDetail> specimenDetailItr = specimenDetailList.iterator();
 		
@@ -337,8 +342,7 @@ public class CaTissueSpecimenClient {
 			try {
 				updateSpecimen(existingSpecimen);
 			} catch (ApplicationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				LOG.error("Exception during Rollback of Specimen " + existingSpecimen.getLabel());
 			}
 		}
 	
@@ -347,8 +351,6 @@ public class CaTissueSpecimenClient {
 	/**
 	 * This method is used to get a specimen on the basis of the Label
 	 * @param label
-	 * @return
-	 * @throws ApplicationException
 	 */
 	private Specimen getExistingSpecimen(String label) throws ApplicationException{		
 		Specimen specimen = new Specimen();
@@ -372,8 +374,7 @@ public class CaTissueSpecimenClient {
 		for(specimenItr = existingSpecimenList.iterator(); specimenItr.hasNext();)
 		{	
 			Specimen existingSpecimen =specimenItr.next(); 
-			Specimen specimen = null;	
-			
+			Specimen specimen = null;				
 			if("Tissue".equalsIgnoreCase(existingSpecimen.getSpecimenClass())){
 				specimen= new TissueSpecimen();
 			}else if("Fluid".equalsIgnoreCase(existingSpecimen.getSpecimenClass())){
@@ -388,34 +389,32 @@ public class CaTissueSpecimenClient {
 			specimen.setActivityStatus(existingSpecimen.getActivityStatus());
 			specimen.setAvailableQuantity(existingSpecimen.getAvailableQuantity());
 			specimen.setBarcode(existingSpecimen.getBarcode());
-			specimen.setLabel(existingSpecimen.getLabel());
-			
+			specimen.setLabel(existingSpecimen.getLabel());			
 			SpecimenCollectionGroup specimenCollectionGroup = new SpecimenCollectionGroup();			
 			specimenCollectionGroup.setId(existingSpecimen.getSpecimenCollectionGroup().getId());
 			specimen.setSpecimenCollectionGroup(specimenCollectionGroup);
-
 			SpecimenCharacteristics chars = new SpecimenCharacteristics();
 			chars.setTissueSide(existingSpecimen.getSpecimenCharacteristics().getTissueSide());
 			chars.setTissueSite(existingSpecimen.getSpecimenCharacteristics().getTissueSite());
 			specimen.setSpecimenCharacteristics(chars);
-			specimen.getSpecimenCharacteristics().setId(existingSpecimen.getSpecimenCharacteristics().getId());	
-			
-			specimen.setLineage(existingSpecimen.getLineage());			
-			
+			specimen.getSpecimenCharacteristics().setId(existingSpecimen.getSpecimenCharacteristics().getId());				
+			specimen.setLineage(existingSpecimen.getLineage());					
 			specimen.setIsAvailable(existingSpecimen.getIsAvailable());
-			specimen.setCollectionStatus(existingSpecimen.getCollectionStatus());
-			
+			specimen.setCollectionStatus(existingSpecimen.getCollectionStatus());			
 			SpecimenDetail specimenDetail = new SpecimenDetail();
-			specimenDetail.setSpecimen(specimen);
-			
-			existingSpecimens.add(specimenDetail);
-			
+			specimenDetail.setSpecimen(specimen);			
+			existingSpecimens.add(specimenDetail);			
 		}
 		
 		return existingSpecimens;
 	}
 	
-	private void performRollbackCreatedSpecimens(Specimens specimens) throws ApplicationException{		
+	
+	/**
+	 * This method will rollback the specimens for Create_Specimen flow
+	 * @param specimens
+	 */
+	private void performRollbackCreatedSpecimens(Specimens specimens){		
 		List<SpecimenDetail> specimenDetailList = specimens.getSpecimenDetailList();
 		Iterator<SpecimenDetail> specimenDetailItr = specimenDetailList.iterator();
 		while(specimenDetailItr.hasNext()){
@@ -425,10 +424,15 @@ public class CaTissueSpecimenClient {
 			try {
 				existingSpecimen = getExistingSpecimen(specimenLabel);
 			} catch (ApplicationException e) {
+				LOG.error("Specimen not found during Rollback of Specimen " + specimenLabel);
 				return;
 			}
 			
-			softDeleteSpecimen(existingSpecimen);
+			try {
+				softDeleteSpecimen(existingSpecimen);
+			} catch (ApplicationException e) {
+				LOG.error("Exception During Rollback of Specimen " + specimenLabel);
+			}
 		}
 	}
 	
