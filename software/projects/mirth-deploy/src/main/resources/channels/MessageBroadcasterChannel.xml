@@ -275,11 +275,11 @@ var srvcInvcAndAgg = $(&apos;serviceInvocatorAndAggregator&apos;);
 
 var caaersSvcInvStrtgy = null;
 
-if ($(&apos;operationName&apos;) == &apos;REGISTRATION&apos;) {
+if ($(&apos;operationName&apos;) == &apos;Create Registration&apos;) {
 	caaersSvcInvStrtgy = globalMap.get(&quot;caaersRegistrationServiceInvocationStrategy&quot;);
 } 
 
-if ($(&apos;operationName&apos;) == &apos;UPDATEREGISTRATION&apos;) {
+if ($(&apos;operationName&apos;) == &apos;Update Registration&apos;) {
 	caaersSvcInvStrtgy = globalMap.get(&quot;caaersUpdateRegistrationServiceInvocationStrategy&quot;);
 }
 
@@ -408,11 +408,11 @@ var srvcInvcAndAgg = $(&apos;serviceInvocatorAndAggregator&apos;);
 var catissueSvcInvStrtgy = null;
 
 
-if ($(&apos;operationName&apos;) == &apos;REGISTRATION&apos;) {
+if ($(&apos;operationName&apos;) == &apos;Create Registration&apos;) {
 	catissueSvcInvStrtgy = globalMap.get(&quot;caTissueRegistrationServiceInvocationStrategy&quot;);
 } 
 
-if ($(&apos;operationName&apos;) == &apos;UPDATEREGISTRATION&apos;) {
+if ($(&apos;operationName&apos;) == &apos;Update Registration&apos;) {
 	catissueSvcInvStrtgy = globalMap.get(&quot;caTissueUpdateRegistrationServiceInvocationStrategy&quot;);
 }
 
@@ -540,11 +540,11 @@ var srvcInvcAndAgg = $(&apos;serviceInvocatorAndAggregator&apos;);
 var catissueSvcInvStrtgy = null;
 
 
-if ($(&apos;operationName&apos;) == &apos;SPECIMEN&apos;) {
+if ($(&apos;operationName&apos;) == &apos;Create Biospecimen&apos;) {
 	catissueSvcInvStrtgy = globalMap.get(&quot;caTissueSpecimenServiceInvocationStrategy&quot;);
 } 
 
-if ($(&apos;operationName&apos;) == &apos;UPDATESPECIMEN&apos;) {
+if ($(&apos;operationName&apos;) == &apos;Update Biospecimen&apos;) {
 	catissueSvcInvStrtgy = globalMap.get(&quot;caTissueUpdateSpecimenServiceInvocationStrategy&quot;);
 }
 
@@ -674,17 +674,15 @@ var srvcInvcAndAgg = $(&apos;serviceInvocatorAndAggregator&apos;);
 var catissueSvcInvStrtgy = null;
 
 
-if ($(&apos;operationName&apos;) == &apos;REGISTERCONSENT&apos;) {
+if ($(&apos;operationName&apos;) == &apos;Register Consent&apos;) {
 	catissueSvcInvStrtgy = globalMap.get(&quot;caTissueConsentServiceInvocationStrategy&quot;);										  
 } 
 
-logger.debug(&quot;RG -- inside MBC -- CaTissueConsentConnector -- Interim XML is --&gt; &quot; + messageObject.getEncodedData());
+logger.debug(&quot;inside MBC -- CaTissueConsentConnector -- Interim XML is --&gt; &quot; + messageObject.getEncodedData());
 
 
 var refMsgIdStr = $(&apos;referenceMsgId&apos;);
 var refMsgId = Packages.java.lang.Long.parseLong(refMsgIdStr);
-
-logger.debug(&quot;RG -- inside MBC -- CaTissueConsentConnector -- refMsgIdStr --&gt; &quot; + refMsgIdStr);
 
 srvcInvcAndAgg.invokeService(refMsgId, messageObject.getEncodedData(), catissueSvcInvStrtgy);
 

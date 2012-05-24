@@ -1888,18 +1888,17 @@ globalMap.put(&quot;transcend.ihub.client.password&quot;,&quot;@{ihub.password}&
 
 // #########  FILTER Related Constants ##########
 globalMap.put(&quot;AE&quot;,&quot;AE&quot;);
-globalMap.put(&quot;REGN&quot;,&quot;REGISTRATION&quot;);
-globalMap.put(&quot;UPDTREGN&quot;,&quot;UPDATEREGISTRATION&quot;);
-globalMap.put(&quot;SPMN&quot;,&quot;SPECIMEN&quot;);
-globalMap.put(&quot;UPDTSPMN&quot;,&quot;UPDATESPECIMEN&quot;);
-globalMap.put(&quot;REGTCNST&quot;,&quot;REGISTERCONSENT&quot;);
+globalMap.put(&quot;REGN&quot;,&quot;Create Registration&quot;);
+globalMap.put(&quot;UPDTREGN&quot;,&quot;Update Registration&quot;);
+globalMap.put(&quot;SPMN&quot;,&quot;Create Biospecimen&quot;);
+globalMap.put(&quot;UPDTSPMN&quot;,&quot;Update Biospecimen&quot;);
+globalMap.put(&quot;REGTCNST&quot;,&quot;Register Consent&quot;);
 
 				      
 var commonAppCtx = globalMap.get(&quot;commonAppCtx&quot;);
 
 if(commonAppCtx == null) {
   	commonAppCtx = new Packages.org.springframework.context.support.ClassPathXmlApplicationContext(&quot;classpath*:applicationContext-common.xml&quot;);	
-	//commonAppCtx = new Packages.gov.nih.nci.integration.util.CustomClasspathXmlApplicationContext(&quot;C:\\vin\\SUITE-iHub\\tools\\MC-2.1\\common-lib\\&quot;, &quot;classpath*:applicationContext-common.xml&quot;);
 	globalMap.put(&quot;commonAppCtx&quot;, commonAppCtx);
 }
 
