@@ -1,6 +1,6 @@
 ## mirth properties
-mirth.home=C:/vin/SUITE-iHub/tools/blank-MC/
-mirth.url=http://localhost:14080/
+mirth.home=/usr/local/mirthconnect/
+mirth.url=http://localhost:9080/
 
 ## ihub authentication
 ihub.user=tolvenuser
@@ -10,26 +10,31 @@ ihub.password=changeme
 catissue.client.service.url=http://localhost:8080/catissuecore/http/applicationService
 catissue.client.auth.url=http://localhost:8080/catissuecore/http/remoteAuthenticationManager
 
-## caaers-client properties
-caaers.client.user=SYSTEM
-caaers.client.psswd=Hello-12
-caaers.registration.service.url=https://localhost:9443/caaers/services/ParticipantService
-caaers.retry.count=2
-caaers.participant.xsl=MsgBroadcasterParticipant-to-caAERSParticipant.xsl
-
 ## transcend-catissue properties
 catissue.custom.lib.location=catissue-client-lib/
 catissue.api.login.username=admin@admin.com
 catissue.api.login.password=Aa_111111
 catissue.api.service.retry=2
 catissue.api.participant.xsl=MsgBroadcasterParticipant-to-caTissueParticipant.xsl
+catissue.api.specimen.xsl=MsgBroadcasterSpecimen-to-caTissueSpecimens.xsl
+catissue.api.consent.xsl=MsgBroadcasterConsent-to-caTissueConsents.xsl
+
+## caaers-client properties
+caaers.client.user=SYSTEM_ADMIN
+caaers.client.psswd=system_admin
+caaers.registration.service.url=https://localhost:9443/caaers/services/ParticipantService
+caaers.retry.count=2
+caaers.participant.xsl=MsgBroadcasterParticipant-to-caAERSParticipant.xsl
 
 ## common properties
 #datasource properties
-ihub.messages.db.url=jdbc:postgresql://localhost:5433/ihub_msgs_db
+ihub.messages.db.url=jdbc:postgresql://localhost:5432/ihub_msgs_db
 ihub.messages.db.username=postgres
 ihub.messages.db.password=postgres
+ihub.messages.db.driver=org.postgresql.Driver
 
+ihub.messages.db.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+ihub.messages.db.hibernate.showsql=true
 
 ## XSL Transformer properties
 integration.transformer.xsl.baseClassPath=@{user.home.java.path}/.integration/ihub/xsl/

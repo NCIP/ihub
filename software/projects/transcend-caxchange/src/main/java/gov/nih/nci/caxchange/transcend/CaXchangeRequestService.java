@@ -11,6 +11,7 @@ import gov.nih.nci.caxchange.messaging.ResponseMessage;
 import gov.nih.nci.caxchange.messaging.ResponseMetadata;
 import gov.nih.nci.caxchange.messaging.Statuses;
 import gov.nih.nci.caxchange.messaging.TargetResponseMessage;
+import gov.nih.nci.integration.exception.IntegrationError;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -119,9 +120,9 @@ public class CaXchangeRequestService  extends AcceptMessage{
             
             return respMessage;
         } catch (java.lang.Exception ex) {        	
-        	ErrorDetails errorDetails = new ErrorDetails();
-      		errorDetails.setErrorCode("1000");
-      		errorDetails.setErrorDescription("UNKNOWN: " + ex.getMessage());
+        	ErrorDetails errorDetails = new ErrorDetails();        	
+      		errorDetails.setErrorCode(String.valueOf(IntegrationError._1000.getErrorCode()));
+      		errorDetails.setErrorDescription(IntegrationError._1000.getMessage(null) + ex.getMessage());
       		
         	Response response = new Response();
         	response.setCaXchangeError(errorDetails);
