@@ -198,7 +198,7 @@ public class CaTissueSpecimenClient {
 			}
 			
 		}		
-		return null;
+		return "SPECIMEN_NOT_EXISTING";
 	}
 	
 	
@@ -211,7 +211,7 @@ public class CaTissueSpecimenClient {
 			Specimen existingSpecimen= getExistingSpecimen(specimenDetail.getSpecimen().getLabel());
 			// check if the request data is correct by doing validation checks
 			if(! isUpdateSpecimenRequestDataValid(specimenDetail, existingSpecimen)){
-				throw new ApplicationException("UpdateSpecimen Request Failed for Label"+ specimenDetail.getSpecimen().getLabel() +" and exception is COLLECTION_PROTOCOL or COLLECTION_PROTOCOL_EVENT NOT MATCHING with Existing Specimen");
+				throw new ApplicationException("UpdateSpecimen Request Failed for Label"+ specimenDetail.getSpecimen().getLabel() +" and exception is CP or CPE or Specimen_Class NOT MATCHING with Existing Specimen");
 			}
 			
 			existingSpecimenList.add(existingSpecimen);
@@ -278,7 +278,7 @@ public class CaTissueSpecimenClient {
 	 */
 	private List<Specimen> performUpdateSpecimens(Specimens specimens) throws ApplicationException {
 		
-		List<Specimen> existSpecimenList = new ArrayList<Specimen>();
+		List<Specimen> updatedSpecimenList = new ArrayList<Specimen>();
 		
 		List<SpecimenDetail> specimenDetailList = specimens.getSpecimenDetailList();
 		Iterator<SpecimenDetail> specimenDetailItr = null;
@@ -299,15 +299,14 @@ public class CaTissueSpecimenClient {
 				
 				updateSpecimen(incomingSpecimen);			
 				
-				// setting the existing Specimen, which will be required in case of rollback
-				existSpecimenList.add(existingSpecimen);
+				updatedSpecimenList.add(incomingSpecimen);
 			}
 		}catch(Exception e){			
 			throw new ApplicationException("UpdateSpecimen Failed for Label"+ specimenDetail.getSpecimen().getLabel() +" and exception is " +e.getCause());	
 		}
 		
 		
-		return existSpecimenList;
+		return updatedSpecimenList;
 	}
 	
 	
