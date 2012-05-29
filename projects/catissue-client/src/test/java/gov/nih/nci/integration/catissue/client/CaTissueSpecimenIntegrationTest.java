@@ -113,7 +113,7 @@ public class CaTissueSpecimenIntegrationTest {
 	}
 	
 	
-	@Test
+//	@Test
 	public void createInvalidPathologicalStatus(){		
 		CaTissueSpecimenClient caTissueSpecimenClient ;	
 		String existXML = null;
@@ -166,22 +166,82 @@ public class CaTissueSpecimenIntegrationTest {
 		assertNull(createdXML);	
 	}
 	
-//	@Test
-	public void updateSpecimens() throws Exception{		
-		CaTissueSpecimenClient caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");			
-		String retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenXMLStr());		
-		
-	}
 	
 //	@Test
-	public void updateSpecimensInvalidCollectionProtocol(){		
+	public void updateSpecimens(){		
+		String retXML = null;
+		CaTissueSpecimenClient caTissueSpecimenClient;
+		try {
+			caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+			retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenXMLStr());		
+		} catch (Exception e) {
+			
+		}					
+		assertNotNull(retXML);		
+	}
+	
+	
+//	@Test
+	public void updateSpecimensSpecimenNotExist(){		
+		CaTissueSpecimenClient caTissueSpecimenClient;
+		String retXML = null;
+		try {
+			caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+			retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenNotExistXMLStr());			
+		} catch (Exception e) {
+			
+		}		
+		assertNull(retXML);		
+	}
+	
+	
+//	@Test
+	public void updateSpecimensInvalidAvailableQtyXMLStr(){		
 		CaTissueSpecimenClient caTissueSpecimenClient;
 		String retXML = null;
 		try {
 			caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
 			retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenInvalidAvailableQtyXMLStr());			
 		} catch (Exception e) {
+			retXML = null;
 		}		
+		assertNull(retXML);		
+	}
+	
+	
+//	@Test
+	public void updateSpecimensCollectionProtocolChangeXMLStr(){		
+		CaTissueSpecimenClient caTissueSpecimenClient;
+		String retXML = null;
+		String existXML="UPDATING_SPECIMEN";
+		try {
+			caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+			existXML = caTissueSpecimenClient.getExistingSpecimens(getUpdateSpecimenCollectionProtocolChangeXMLStr());
+			retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenCollectionProtocolChangeXMLStr());			
+		} catch (Exception e) {
+			existXML=null;
+			retXML=null;
+		}				
+		assertNull(existXML);	
+		assertNull(retXML);		
+	}
+	
+	
+	
+//	@Test
+	public void updateSpecimensCollectionEventProtocolChangeXMLStr(){		
+		CaTissueSpecimenClient caTissueSpecimenClient;
+		String retXML = null;
+		String existXML="UPDATING_SPECIMEN";
+		try {
+			caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+			existXML = caTissueSpecimenClient.getExistingSpecimens(getUpdateSpecimenCollectionProtocolEventChangeXMLStr());
+			retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenCollectionProtocolEventChangeXMLStr());			
+		} catch (Exception e) {
+			existXML=null;
+			retXML=null;
+		}				
+		assertNull(existXML);	
 		assertNull(retXML);		
 	}
 	
@@ -189,21 +249,87 @@ public class CaTissueSpecimenIntegrationTest {
 	public void updateSpecimensSpecimenClassChange(){		
 		CaTissueSpecimenClient caTissueSpecimenClient;
 		String retXML = null;
+		String existXML="UPDATING_SPECIMEN";
 		try {
 			caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+			existXML = caTissueSpecimenClient.getExistingSpecimens(getUpdateSpecimenClassChangeXMLStr());
 			retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenClassChangeXMLStr());			
 		} catch (Exception e) {
-		}		
+			existXML=null;
+			retXML=null;
+		}	
+		assertNull(existXML);	
 		assertNull(retXML);		
 	}
 	
 	
+//	@Test
+	public void updateSpecimensInvalidSpecimenType(){		
+		CaTissueSpecimenClient caTissueSpecimenClient;
+		String retXML = null;
+		String existXML="UPDATING_SPECIMEN";
+		try {
+			caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+			existXML = caTissueSpecimenClient.getExistingSpecimens(getUpdateSpecimenInvalidSpecimenTypeXMLStr());
+			retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenInvalidSpecimenTypeXMLStr());			
+		} catch (Exception e) {
+			existXML=null;
+			retXML=null;
+		}	
+		assertNull(existXML);	
+		assertNull(retXML);		
+	}
+	
 	
 //	@Test
-	public void rollbackSpecimens() throws Exception{		
-		CaTissueSpecimenClient caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");		
-		caTissueSpecimenClient.rollbackCreatedSpecimens(getRollbackSpecimenXMLStr());	
-		
+	public void updateSpecimensInvalidTissueSide(){		
+		CaTissueSpecimenClient caTissueSpecimenClient;
+		String retXML = null;
+		String existXML="UPDATING_SPECIMEN";
+		try {
+			caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+			existXML = caTissueSpecimenClient.getExistingSpecimens(getUpdateSpecimenInvalidTissueSideXMLStr());
+			retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenInvalidTissueSideXMLStr());			
+		} catch (Exception e) {
+			existXML=null;
+			retXML=null;
+		}	
+		assertNull(existXML);	
+		assertNull(retXML);		
+	}
+	
+	
+//	@Test
+	public void updateSpecimensInvalidTissueSite(){		
+		CaTissueSpecimenClient caTissueSpecimenClient;
+		String retXML = null;
+		String existXML="UPDATING_SPECIMEN";
+		try {
+			caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+			existXML = caTissueSpecimenClient.getExistingSpecimens(getUpdateSpecimenInvalidTissueSiteXMLStr());
+			retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenInvalidTissueSiteXMLStr());			
+		} catch (Exception e) {
+			existXML=null;
+			retXML=null;
+		}	
+		assertNull(existXML);	
+		assertNull(retXML);		
+	}
+	
+	
+	@Test
+	public void rollbackSpecimens(){	
+		String retXML="DELETE_SPECIMEN";
+		CaTissueSpecimenClient caTissueSpecimenClient;
+		try {
+			caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+			caTissueSpecimenClient.rollbackCreatedSpecimens(getRollbackSpecimenXMLStr());	
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			retXML = null;
+		}				
+		assertNotNull(retXML);		
 	}
 	
 
@@ -246,19 +372,46 @@ public class CaTissueSpecimenIntegrationTest {
 	
 	
 	private String getUpdateSpecimenXMLStr() {				
-		return"<?xml version=\"1.0\" ?><specimens><participant><lastName>66604232</lastName><activityStatus>Active</activityStatus></participant><specimenDetail><collectionProtocolEvent>CPL1</collectionProtocolEvent><specimen class=\"TissueSpecimen\"><initialQuantity>9.0</initialQuantity><pathologicalStatus>Malignant</pathologicalStatus><specimenClass>Tissue</specimenClass><specimenType>Fixed Tissue</specimenType><specimenCharacteristics><tissueSide>Right</tissueSide><tissueSite>Placenta</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>5.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen163</barcode><label>TolvenTestUser252TissueSpecimen163</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"FluidSpecimen\"><initialQuantity>8.0</initialQuantity><pathologicalStatus>Not Specified</pathologicalStatus><specimenClass>Fluid</specimenClass><specimenType>Not Specified</specimenType><specimenCharacteristics><tissueSide>Not Specified</tissueSide><tissueSite>Not Specified</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>1.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen160</barcode><label>TolvenTestUser252TissueSpecimen160</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail></specimens>";	
+		return"<?xml version=\"1.0\" ?><specimens><participant><lastName>66604232</lastName><activityStatus>Active</activityStatus></participant><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"TissueSpecimen\"><initialQuantity>9.0</initialQuantity><pathologicalStatus>Malignant</pathologicalStatus><specimenClass>Fluid</specimenClass><specimenType>Fixed Tissue</specimenType><specimenCharacteristics><tissueSide>Right</tissueSide><tissueSite>Placenta</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>4.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen171</barcode><label>TolvenTestUser252TissueSpecimen171</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"FluidSpecimen\"><initialQuantity>8.0</initialQuantity><pathologicalStatus>Not Specified</pathologicalStatus><specimenClass>Fluid</specimenClass><specimenType>Not Specified</specimenType><specimenCharacteristics><tissueSide>Not Specified</tissueSide><tissueSite>Not Specified</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>2.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen172</barcode><label>TolvenTestUser252TissueSpecimen172</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail></specimens>";	
+	}
+	
+	private String getUpdateSpecimenNotExistXMLStr() {				
+		return"<?xml version=\"1.0\" ?><specimens><participant><lastName>66604232</lastName><activityStatus>Active</activityStatus></participant><specimenDetail><collectionProtocolEvent>CPL1</collectionProtocolEvent><specimen class=\"TissueSpecimen\"><initialQuantity>9.0</initialQuantity><pathologicalStatus>Malignant</pathologicalStatus><specimenClass>Tissue</specimenClass><specimenType>Fixed Tissue</specimenType><specimenCharacteristics><tissueSide>Right</tissueSide><tissueSite>Placenta</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>5.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen185</barcode><label>TolvenTestUser252TissueSpecimen185</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"FluidSpecimen\"><initialQuantity>8.0</initialQuantity><pathologicalStatus>Not Specified</pathologicalStatus><specimenClass>Fluid</specimenClass><specimenType>Not Specified</specimenType><specimenCharacteristics><tissueSide>Not Specified</tissueSide><tissueSite>Not Specified</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>1.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen186</barcode><label>TolvenTestUser252TissueSpecimen186</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail></specimens>";	
 	}
 	
 	private String getUpdateSpecimenInvalidAvailableQtyXMLStr() {				
 		return"<?xml version=\"1.0\" ?><specimens><participant><lastName>66604232</lastName><activityStatus>Active</activityStatus></participant><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"TissueSpecimen\"><initialQuantity>9.0</initialQuantity><pathologicalStatus>Malignant</pathologicalStatus><specimenClass>Tissue</specimenClass><specimenType>Fixed Tissue</specimenType><specimenCharacteristics><tissueSide>Right</tissueSide><tissueSite>Placenta</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>400.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen171</barcode><label>TolvenTestUser252TissueSpecimen171</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"FluidSpecimen\"><initialQuantity>8.0</initialQuantity><pathologicalStatus>Not Specified</pathologicalStatus><specimenClass>Fluid</specimenClass><specimenType>Not Specified</specimenType><specimenCharacteristics><tissueSide>Not Specified</tissueSide><tissueSite>Not Specified</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>2.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen172</barcode><label>TolvenTestUser252TissueSpecimen172</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail></specimens>";	
 	}
 	
+	private String getUpdateSpecimenCollectionProtocolChangeXMLStr() {				
+		return"<?xml version=\"1.0\" ?><specimens><participant><lastName>66604232</lastName><activityStatus>Active</activityStatus></participant><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"TissueSpecimen\"><initialQuantity>9.0</initialQuantity><pathologicalStatus>Malignant</pathologicalStatus><specimenClass>Tissue</specimenClass><specimenType>Fixed Tissue</specimenType><specimenCharacteristics><tissueSide>Right</tissueSide><tissueSite>Placenta</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>5.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen171</barcode><label>TolvenTestUser252TissueSpecimen171</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6483</title><shortTitle>6483</shortTitle></collectionProtocol></specimenDetail><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"FluidSpecimen\"><initialQuantity>8.0</initialQuantity><pathologicalStatus>Not Specified</pathologicalStatus><specimenClass>Fluid</specimenClass><specimenType>Not Specified</specimenType><specimenCharacteristics><tissueSide>Not Specified</tissueSide><tissueSite>Not Specified</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>2.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen172</barcode><label>TolvenTestUser252TissueSpecimen172</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail></specimens>";	
+	}
+	
+	private String getUpdateSpecimenCollectionProtocolEventChangeXMLStr() {				
+		return"<?xml version=\"1.0\" ?><specimens><participant><lastName>66604232</lastName><activityStatus>Active</activityStatus></participant><specimenDetail><collectionProtocolEvent>CPL123</collectionProtocolEvent><specimen class=\"TissueSpecimen\"><initialQuantity>9.0</initialQuantity><pathologicalStatus>Malignant</pathologicalStatus><specimenClass>Tissue</specimenClass><specimenType>Fixed Tissue</specimenType><specimenCharacteristics><tissueSide>Right</tissueSide><tissueSite>Placenta</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>5.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen171</barcode><label>TolvenTestUser252TissueSpecimen171</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"FluidSpecimen\"><initialQuantity>8.0</initialQuantity><pathologicalStatus>Not Specified</pathologicalStatus><specimenClass>Fluid</specimenClass><specimenType>Not Specified</specimenType><specimenCharacteristics><tissueSide>Not Specified</tissueSide><tissueSite>Not Specified</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>2.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen172</barcode><label>TolvenTestUser252TissueSpecimen172</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail></specimens>";	
+	}
+	
 	private String getUpdateSpecimenClassChangeXMLStr() {				
 		return"<?xml version=\"1.0\" ?><specimens><participant><lastName>66604232</lastName><activityStatus>Active</activityStatus></participant><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"TissueSpecimen\"><initialQuantity>9.0</initialQuantity><pathologicalStatus>Malignant</pathologicalStatus><specimenClass>Fluid</specimenClass><specimenType>Fixed Tissue</specimenType><specimenCharacteristics><tissueSide>Right</tissueSide><tissueSite>Placenta</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>4.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen171</barcode><label>TolvenTestUser252TissueSpecimen171</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"FluidSpecimen\"><initialQuantity>8.0</initialQuantity><pathologicalStatus>Not Specified</pathologicalStatus><specimenClass>Fluid</specimenClass><specimenType>Not Specified</specimenType><specimenCharacteristics><tissueSide>Not Specified</tissueSide><tissueSite>Not Specified</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>2.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen172</barcode><label>TolvenTestUser252TissueSpecimen172</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail></specimens>";	
 	}
 	
+	
+	private String getUpdateSpecimenInvalidSpecimenTypeXMLStr() {				
+		return"<?xml version=\"1.0\" ?><specimens><participant><lastName>66604232</lastName><activityStatus>Active</activityStatus></participant><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"TissueSpecimen\"><initialQuantity>9.0</initialQuantity><pathologicalStatus>Malignant</pathologicalStatus><specimenClass>Tissue</specimenClass><specimenType>Fixed Tissue123</specimenType><specimenCharacteristics><tissueSide>Right</tissueSide><tissueSite>Placenta</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>5.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen171</barcode><label>TolvenTestUser252TissueSpecimen171</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"FluidSpecimen\"><initialQuantity>8.0</initialQuantity><pathologicalStatus>Not Specified</pathologicalStatus><specimenClass>Fluid</specimenClass><specimenType>Not Specified</specimenType><specimenCharacteristics><tissueSide>Not Specified</tissueSide><tissueSite>Not Specified</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>2.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen172</barcode><label>TolvenTestUser252TissueSpecimen172</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail></specimens>";	
+	}
+	
+	
+	private String getUpdateSpecimenInvalidTissueSideXMLStr() {				
+		return"<?xml version=\"1.0\" ?><specimens><participant><lastName>66604232</lastName><activityStatus>Active</activityStatus></participant><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"TissueSpecimen\"><initialQuantity>9.0</initialQuantity><pathologicalStatus>Malignant</pathologicalStatus><specimenClass>Tissue</specimenClass><specimenType>Fixed Tissue</specimenType><specimenCharacteristics><tissueSide>Right123</tissueSide><tissueSite>Placenta</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>5.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen171</barcode><label>TolvenTestUser252TissueSpecimen171</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"FluidSpecimen\"><initialQuantity>8.0</initialQuantity><pathologicalStatus>Not Specified</pathologicalStatus><specimenClass>Fluid</specimenClass><specimenType>Not Specified</specimenType><specimenCharacteristics><tissueSide>Not Specified</tissueSide><tissueSite>Not Specified</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>2.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen172</barcode><label>TolvenTestUser252TissueSpecimen172</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail></specimens>";	
+	}
+	
+	
+	private String getUpdateSpecimenInvalidTissueSiteXMLStr() {				
+		return"<?xml version=\"1.0\" ?><specimens><participant><lastName>66604232</lastName><activityStatus>Active</activityStatus></participant><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"TissueSpecimen\"><initialQuantity>9.0</initialQuantity><pathologicalStatus>Malignant</pathologicalStatus><specimenClass>Tissue</specimenClass><specimenType>Fixed Tissue</specimenType><specimenCharacteristics><tissueSide>Right</tissueSide><tissueSite>Placenta123</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>5.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen171</barcode><label>TolvenTestUser252TissueSpecimen171</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"FluidSpecimen\"><initialQuantity>8.0</initialQuantity><pathologicalStatus>Not Specified</pathologicalStatus><specimenClass>Fluid</specimenClass><specimenType>Not Specified</specimenType><specimenCharacteristics><tissueSide>Not Specified</tissueSide><tissueSite>Not Specified</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>2.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen172</barcode><label>TolvenTestUser252TissueSpecimen172</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail></specimens>";	
+	}
+	
 	private String getRollbackSpecimenXMLStr() {			
-		return"<?xml version=\"1.0\" ?><specimens><participant><lastName>66604232</lastName><activityStatus>Active</activityStatus></participant><specimenDetail><collectionProtocolEvent>CPL1</collectionProtocolEvent><specimen class=\"TissueSpecimen\"><initialQuantity>9.0</initialQuantity><pathologicalStatus>Malignant</pathologicalStatus><specimenClass>Tissue</specimenClass><specimenType>Fixed Tissue</specimenType><specimenCharacteristics><tissueSide>Right</tissueSide><tissueSite>Placenta</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>5.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen163</barcode><label>TolvenTestUser252TissueSpecimen163</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"FluidSpecimen\"><initialQuantity>8.0</initialQuantity><pathologicalStatus>Not Specified</pathologicalStatus><specimenClass>Fluid</specimenClass><specimenType>Not Specified</specimenType><specimenCharacteristics><tissueSide>Not Specified</tissueSide><tissueSite>Not Specified</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>1.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen160</barcode><label>TolvenTestUser252TissueSpecimen160</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail></specimens>";	
+		return"<?xml version=\"1.0\" ?><specimens><participant><lastName>66604232</lastName><activityStatus>Active</activityStatus></participant><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"TissueSpecimen\"><initialQuantity>9.0</initialQuantity><pathologicalStatus>Malignant</pathologicalStatus><specimenClass>Tissue</specimenClass><specimenType>Fixed Tissue</specimenType><specimenCharacteristics><tissueSide>Right</tissueSide><tissueSite>Placenta</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>5.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen171</barcode><label>TolvenTestUser252TissueSpecimen171</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"FluidSpecimen\"><initialQuantity>8.0</initialQuantity><pathologicalStatus>Not Specified</pathologicalStatus><specimenClass>Fluid</specimenClass><specimenType>Not Specified</specimenType><specimenCharacteristics><tissueSide>Not Specified</tissueSide><tissueSite>Not Specified</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>2.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen172</barcode><label>TolvenTestUser252TissueSpecimen172</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail></specimens>";	
 	}
 	
 	
