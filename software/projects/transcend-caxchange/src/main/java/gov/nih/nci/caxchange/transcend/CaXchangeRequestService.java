@@ -99,8 +99,11 @@ public class CaXchangeRequestService  extends AcceptMessage{
 
             LOG.info("MC RESPONSE:" + mcResponse);
             
-            if (mcResponse != null
-                    && (mcResponse.indexOf("Error") > -1 || mcResponse.indexOf("Exception") > -1
+            if(StringUtils.isEmpty(mcResponse)) {
+            	throw new Exception("No proper response from iHub");
+            }
+            
+            if ( (mcResponse.indexOf("Error") > -1 || mcResponse.indexOf("Exception") > -1
                             || mcResponse.indexOf("ERROR") > -1 || mcResponse.indexOf("error") > -1)) {
                 mcResponse = StringUtils.remove(mcResponse, "SUCCESS:");
                 mcResponse = StringUtils.remove(mcResponse, "FAILURE:");
