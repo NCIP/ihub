@@ -28,7 +28,8 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 /**
- * This is the client class for Specimen Flow. It provide operation like CreateSpecimen, UpdateSpecimen, RollbackSpecimen
+ * This is the client class for Specimen Flow. 
+ * It provide operation like CreateSpecimen, UpdateSpecimen, RollbackSpecimen
  * @author Rohit Gupta
  */
 
@@ -127,10 +128,10 @@ public class CaTissueSpecimenClient {
 		Specimens specimens = parseSpecimenListXML(specimenListXMLStr);
 		
 		// perform the actual logic to Updating the Specimens.. 	
-		List<Specimen> existingSpecimenList = performUpdateSpecimens(specimens);
+		List<Specimen> updatedSpecimenList = performUpdateSpecimens(specimens);
 		
 		// Copy the exiting Specimen and return in the form of XML
-		return xStream.toXML(copyFromExistingSpecimen(existingSpecimenList));
+		return xStream.toXML(copyFromExistingSpecimen(updatedSpecimenList));
 		
 	}
 	
@@ -186,6 +187,11 @@ public class CaTissueSpecimenClient {
 	}
 	
 	
+	/**
+	 * This method is used to check if the specimens already exist
+	 * @param specimens
+	 * @throws ApplicationException if specimen already exist
+	 */
 	private String isSpecimensAlreadyExist(Specimens specimens) throws ApplicationException{
 		List<SpecimenDetail> specimenDetailList = specimens.getSpecimenDetailList();
 		Iterator<SpecimenDetail> specimenDetailItr = specimenDetailList.iterator();
@@ -310,6 +316,11 @@ public class CaTissueSpecimenClient {
 	}
 	
 	
+	/**
+	 * This method is used to check if the updateSpecimen request had valid data by comparing the values of incoming specimen
+	 * and existing specimen (doing check only for CP, CPE & SC).
+	 * @return
+	 */
 	private boolean isUpdateSpecimenRequestDataValid(SpecimenDetail inSpecimenDetail, Specimen existingSpecimen){
 		boolean hasValidData = true;
 		String inCPE= inSpecimenDetail.getCollectionProtocolEvent();
@@ -436,6 +447,12 @@ public class CaTissueSpecimenClient {
 	}
 	
 	
+	
+	/**
+	 * This method is used to Soft delete the Created Specimen
+	 * @param existingSpecimen
+	 * @throws ApplicationException
+	 */
 	private void softDeleteSpecimen(Specimen existingSpecimen) throws ApplicationException{
 		// First change the Label of the Specimen to some dummy value.. like "DELETED_Label_+Timestamp" 
         Specimen updatedSpecimen = updateSpecimenLabel(existingSpecimen);
