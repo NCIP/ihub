@@ -2,6 +2,7 @@ package gov.nih.nci.integration.caaers.invoker;
 
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.Participants;
 import gov.nih.nci.integration.caaers.CaAERSParticipantServiceWSClient;
@@ -19,12 +20,19 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.namespace.QName;
+import javax.xml.ws.WebServiceException;
 import javax.xml.ws.soap.SOAPFaultException;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -51,6 +59,8 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 	private XSLTTransformer xsltTransformer;
 	
 	private Marshaller marshaller = null;
+	
+	Map<String, IntegrationError> msgToErrMap;
 
 	public CaAERSUpdateRegistrationServiceInvocationStrategy(
 			XSLTTransformer xsltTransformer,
@@ -59,6 +69,17 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 		this.xsltTransformer = xsltTransformer;
 		this.client = client;
 		this.retryCount = retryCount;
+		
+		HashMap<String, IntegrationError> msgToErrMapBase = new LinkedHashMap<String, IntegrationError>();
+		
+		msgToErrMapBase.put("User is not authorized on this Study", IntegrationError._1009);
+		msgToErrMapBase.put("Unable to retrieve participant", IntegrationError._1010);
+		msgToErrMapBase.put("Invalid Username/Password", IntegrationError._1011);
+		msgToErrMapBase.put("User is not authorized on this Organization", IntegrationError._1012);
+		msgToErrMapBase.put("could not be created in caAERS", IntegrationError._1014);
+		msgToErrMapBase.put("Could not send Message", IntegrationError._1020);
+		
+		msgToErrMap = Collections.synchronizedMap(msgToErrMapBase);
 	}
 
 	@Override
@@ -77,15 +98,7 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 		try {
 			
 			String participantXMLStr = transformToParticipantXML(msg.getMessage().getRequest());
-			
-			//TODO : get actual original participant data, for now, do some mock up
-			/*String orginalData = participantXMLStr;
-			String markup =	"firstName>";
-			orginalData = orginalData.replaceAll(markup, markup + "original-");
-			result.setDataChanged(true);
-			result.setOriginalData(orginalData);*/
-			
-			//TODO : once caaers server is fixed uncomment it
+						
 			CaaersServiceResponse caaersGetResponse = client.getParticipant(participantXMLStr);	
 			ServiceResponse response = caaersGetResponse.getServiceResponse();
 			ParticipantType existingPrtcpnt = null;
@@ -94,9 +107,8 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 				Participants prtcpnts = (Participants)response.getResponseData().getAny();
 				existingPrtcpnt = prtcpnts.getParticipant().get(0);
 			} else {
-				IntegrationException ie = new IntegrationException(
-						IntegrationError._1053, response.getMessage());
-				result.setInvocationException(ie);
+				handleErrorResponse(response, result);
+				handleException(result);
 				return result;
 			}
 			String originalData = marshalParticipantType(existingPrtcpnt);
@@ -108,9 +120,7 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 				result.setDataChanged(true);
 				result.setOriginalData(originalData);
 			} else {
-				IntegrationException ie = new IntegrationException(
-						IntegrationError._1053, response.getMessage());
-				result.setInvocationException(ie);
+				handleErrorResponse(response, result);
 			}
 		} catch (SOAPFaultException e) {
 			e.printStackTrace();
@@ -123,6 +133,11 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 					IntegrationError._1053, e, e.getMessage());
 			result.setInvocationException(ie);
 		} catch (JAXBException e) {
+			e.printStackTrace();
+			IntegrationException ie = new IntegrationException(
+					IntegrationError._1053, e, e.getMessage());
+			result.setInvocationException(ie);
+		} catch (WebServiceException e) {
 			e.printStackTrace();
 			IntegrationException ie = new IntegrationException(
 					IntegrationError._1053, e, e.getMessage());
@@ -144,9 +159,7 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 			if ("0".equals(response.getResponsecode())) { 
 				result.setResult(response.getResponsecode() + " : " + response.getMessage());
 			} else {
-				IntegrationException ie = new IntegrationException(
-						IntegrationError._1053, response.getMessage());
-				result.setInvocationException(ie);
+				handleErrorResponse(response, result);
 			}
 		} catch (SOAPFaultException e) {
 			e.printStackTrace();
@@ -159,6 +172,11 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 					IntegrationError._1053, e, e.getMessage());
 			result.setInvocationException(ie);
 		} catch (JAXBException e) {
+			e.printStackTrace();
+			IntegrationException ie = new IntegrationException(
+					IntegrationError._1053, e, e.getMessage());
+			result.setInvocationException(ie);
+		} catch (WebServiceException e) {
 			e.printStackTrace();
 			IntegrationException ie = new IntegrationException(
 					IntegrationError._1053, e, e.getMessage());
@@ -219,6 +237,21 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 		return marshaller;
 	}
 	
+	private void handleErrorResponse(ServiceResponse response, ServiceInvocationResult result) {
+		List<WsError> wserrors = response.getWsError();
+		WsError error = null;
+		IntegrationException ie = null;
+		if(wserrors != null && !wserrors.isEmpty()){
+			error = wserrors.get(0);
+			ie = new IntegrationException(
+				IntegrationError._1053, new Throwable(error.getException()), error.getErrorDesc() );
+		} else {
+			ie = new IntegrationException(
+					IntegrationError._1053, new Throwable(response.getMessage()), response.getMessage());
+		}
+		result.setInvocationException(ie);		
+	}
+	
 	private void handleException(ServiceInvocationResult result) {
 		if(!result.isFault()) {
 			return;
@@ -232,14 +265,38 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 		if(cause == null){
 			return;
 		}
-		String stackTrace = ExceptionUtils.getFullStackTrace(cause);
+		String[] throwableMsgs = getThrowableMsgs(cause);
 		IntegrationException newie = (IntegrationException) exception;
-		if(stackTrace.contains("Invalid Username/Password")){
-			newie = new IntegrationException(IntegrationError._1011, cause, (Object)null );
-		} else if (stackTrace.contains("Could not send message")){
-			newie = new IntegrationException(IntegrationError._1020, cause, (Object)null );
-		} 
+		
+		Set<String> keys = msgToErrMap.keySet();
+		
+		for (String lkupStr : keys) {
+			String msg = getMatchingMsg(lkupStr, throwableMsgs);
+			if(msg != null) {
+				newie = new IntegrationException(msgToErrMap.get(lkupStr), cause, msg );				
+				break;
+			}
+		}
+		
 		result.setInvocationException(newie);
+	}
+
+	private String[] getThrowableMsgs(Throwable cause) {
+		Throwable[] throwables = ExceptionUtils.getThrowables(cause);
+		String[] msgs = new String[throwables.length];
+		for (int i = 0; i < throwables.length; i++) {
+			msgs[i] = throwables[i].getMessage();
+		}
+		return msgs;
+	}
+	
+	private String getMatchingMsg(String lookupStr, String[] msgs) {
+		for (String string : msgs) {
+			if(string.contains(lookupStr)) {
+				return string;
+			}
+		}
+		return null;
 	}
 
 }

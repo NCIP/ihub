@@ -13,12 +13,12 @@ public enum IntegrationError {
 	_1007(1007, ErrorType.VALIDATION, "Participant %1$s is already registered to collection protocol %2$s."),
 	
 	_1008(1008, ErrorType.VALIDATION, "The participant registration format is invalid for caAERS."),
-	_1009(1009, ErrorType.VALIDATION, "No study was found in caAERS for the identifier %1$s."),
-	_1010(1010, ErrorType.VALIDATION, "Participant %1$s is not registered to study %2$s."), //USED
+	_1009(1009, ErrorType.VALIDATION, "No study was found in caAERS or %1$s."),
+	_1010(1010, ErrorType.VALIDATION, "Unable to retrieve participant from caAERS. Check the identifier"), //USED
 	_1011(1011, ErrorType.SECURITY, "Authentication to caAERS failed."),
-	_1012(1012, ErrorType.SECURITY, "Insufficient privileges to register participant %1$s to caAERS %2$s."),
+	_1012(1012, ErrorType.VALIDATION, "Organisation not found in caAERS or %1$s"), 
 	_1013(1013, ErrorType.SECURITY, "Insufficient privileges to deregister participant %1$s to study %2$s."),
-	_1014(1014, ErrorType.VALIDATION, "Participant %1$s is already registered to study %2$s."),	
+	_1014(1014, ErrorType.VALIDATION, "%1$s or participant may be already registered to study."),	
 	_1015(1015, ErrorType.SECURITY, "Authentication to iHub failed."),
 	_1016(1016, ErrorType.VALIDATION, "The TRIM registration message is invalid."),
 	_1017(1017, ErrorType.TRANSFORMATION, "Registration transformation could not be found."),

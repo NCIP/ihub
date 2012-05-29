@@ -10,6 +10,10 @@ import gov.nih.nci.integration.transformer.XSLTTransformer;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
@@ -27,6 +31,7 @@ public class CaTissueRegistrationServiceInvocationStrategy implements
 
 	private XSLTTransformer xsltTransformer;
 	
+	Map<String, IntegrationError> msgToErrMap;
 	
 	public CaTissueRegistrationServiceInvocationStrategy(int retryCount,
 			CaTissueParticipantClient caTissueParticipantClient,
@@ -35,6 +40,12 @@ public class CaTissueRegistrationServiceInvocationStrategy implements
 		this.retryCount = retryCount;
 		this.caTissueParticipantClient = caTissueParticipantClient;
 		this.xsltTransformer = xsltTransformer;
+		
+		HashMap<String, IntegrationError> msgToErrMapBase = new LinkedHashMap<String, IntegrationError>();
+		
+		msgToErrMapBase.put("Error authenticating user", IntegrationError._1019);		
+		
+		msgToErrMap = Collections.synchronizedMap(msgToErrMapBase);
 	}
 
 	@Override

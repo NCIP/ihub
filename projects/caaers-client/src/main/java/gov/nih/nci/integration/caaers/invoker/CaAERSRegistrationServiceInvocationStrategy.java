@@ -16,9 +16,15 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.xml.bind.JAXBException;
+import javax.xml.ws.WebServiceException;
 import javax.xml.ws.soap.SOAPFaultException;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -41,6 +47,8 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 	private int retryCount;
 
 	private XSLTTransformer xsltTransformer;
+	
+	Map<String, IntegrationError> msgToErrMap;
 
 	public CaAERSRegistrationServiceInvocationStrategy(
 			XSLTTransformer xsltTransformer,
@@ -49,6 +57,17 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 		this.xsltTransformer = xsltTransformer;
 		this.client = client;
 		this.retryCount = retryCount;
+		
+		HashMap<String, IntegrationError> msgToErrMapBase = new LinkedHashMap<String, IntegrationError>();
+		
+		msgToErrMapBase.put("User is not authorized on this Study", IntegrationError._1009);
+		msgToErrMapBase.put("Invalid Username/Password", IntegrationError._1011);
+		msgToErrMapBase.put("User is not authorized on this Organization", IntegrationError._1012);
+		msgToErrMapBase.put("could not be created in caAERS", IntegrationError._1014);
+		msgToErrMapBase.put("Could not send Message", IntegrationError._1020);
+		
+		
+		msgToErrMap = Collections.synchronizedMap(msgToErrMapBase);
 	}
 
 	@Override
@@ -74,18 +93,7 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 				result.setDataChanged(true);
 				//there is no original data
 			} else {
-				List<WsError> wserrors = response.getWsError();
-				WsError error = null;
-				IntegrationException ie = null;
-				if(wserrors != null && !wserrors.isEmpty()){
-					error = wserrors.get(0);
-					ie = new IntegrationException(
-						IntegrationError._1053, new Throwable(error.getException()), error.getErrorDesc() );
-				} else {
-					ie = new IntegrationException(
-						IntegrationError._1053, response.getMessage() );
-				}
-				result.setInvocationException(ie);				
+				handleErrorResponse(response, result);		
 			}
 		} catch (SOAPFaultException e) {
 			e.printStackTrace();
@@ -98,6 +106,11 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 					IntegrationError._1053, e, e.getMessage());
 			result.setInvocationException(ie);
 		} catch (JAXBException e) {
+			e.printStackTrace();
+			IntegrationException ie = new IntegrationException(
+					IntegrationError._1053, e, e.getMessage());
+			result.setInvocationException(ie);
+		} catch (WebServiceException e) {
 			e.printStackTrace();
 			IntegrationException ie = new IntegrationException(
 					IntegrationError._1053, e, e.getMessage());
@@ -119,9 +132,7 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 			if ("0".equals(response.getResponsecode())) { 
 				result.setResult(response.getResponsecode() + " : " + response.getMessage());
 			} else {
-				IntegrationException ie = new IntegrationException(
-						IntegrationError._1053, response.getMessage());
-				result.setInvocationException(ie);
+				handleErrorResponse(response, result);
 			}
 		} catch (SOAPFaultException e) {
 			e.printStackTrace();
@@ -134,6 +145,11 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 					IntegrationError._1053, e, e.getMessage());
 			result.setInvocationException(ie);
 		} catch (JAXBException e) {
+			e.printStackTrace();
+			IntegrationException ie = new IntegrationException(
+					IntegrationError._1053, e, e.getMessage());
+			result.setInvocationException(ie);
+		} catch (WebServiceException e) {
 			e.printStackTrace();
 			IntegrationException ie = new IntegrationException(
 					IntegrationError._1053, e, e.getMessage());
@@ -174,6 +190,21 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 		return participantXMLStr;
 	}
 	
+	private void handleErrorResponse(ServiceResponse response, ServiceInvocationResult result) {
+		List<WsError> wserrors = response.getWsError();
+		WsError error = null;
+		IntegrationException ie = null;
+		if(wserrors != null && !wserrors.isEmpty()){
+			error = wserrors.get(0);
+			ie = new IntegrationException(
+				IntegrationError._1053, new Throwable(error.getException()), error.getErrorDesc() );
+		} else {
+			ie = new IntegrationException(
+					IntegrationError._1053, new Throwable(response.getMessage()), response.getMessage());
+		}
+		result.setInvocationException(ie);		
+	}
+	
 	private void handleException(ServiceInvocationResult result) {
 		if(!result.isFault()) {
 			return;
@@ -187,14 +218,39 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 		if(cause == null){
 			return;
 		}
-		String stackTrace = ExceptionUtils.getFullStackTrace(cause);
+		
+		String[] throwableMsgs = getThrowableMsgs(cause);
 		IntegrationException newie = (IntegrationException) exception;
-		if(stackTrace.contains("Invalid Username/Password")){
-			newie = new IntegrationException(IntegrationError._1011, cause, (Object)null );
-		} else if (stackTrace.contains("Could not send Message")){
-			newie = new IntegrationException(IntegrationError._1020, cause, (Object)null );
-		} 
+		
+		Set<String> keys = msgToErrMap.keySet();
+		
+		for (String lkupStr : keys) {
+			String msg = getMatchingMsg(lkupStr, throwableMsgs);
+			if(msg != null) {
+				newie = new IntegrationException(msgToErrMap.get(lkupStr), cause, msg );				
+				break;
+			}
+		}
+		
 		result.setInvocationException(newie);
+	}
+
+	private String[] getThrowableMsgs(Throwable cause) {
+		Throwable[] throwables = ExceptionUtils.getThrowables(cause);
+		String[] msgs = new String[throwables.length];
+		for (int i = 0; i < throwables.length; i++) {
+			msgs[i] = throwables[i].getMessage();
+		}
+		return msgs;
+	}
+	
+	private String getMatchingMsg(String lookupStr, String[] msgs) {
+		for (String string : msgs) {
+			if(string.contains(lookupStr)) {
+				return string;
+			}
+		}
+		return null;
 	}
 
 }
