@@ -40,6 +40,10 @@ public class CaTissueSpecimenClient {
 	private XStream xStream = new XStream(new StaxDriver());
 	
 	private static final String ACTIVITY_STATUS_DISABLED = "Disabled";
+	private static final String TISSUE = "Tissue";
+	private static final String FLUID = "Fluid";
+	private static final String SPECIMEN_NOT_EXISTING = "SPECIMEN_NOT_EXISTING";
+	
 	
 	
 	public CaTissueSpecimenClient(String loginName, String password) throws Exception
@@ -200,11 +204,11 @@ public class CaTissueSpecimenClient {
 			String specimenLabel = specimenDetail.getSpecimen().getLabel();
 			Specimen existingSpecimen= getExistingSpecimen(specimenLabel);
 			if(existingSpecimen!=null){
-				throw new ApplicationException( "Submission failed since a Specimen with the same LABEL already exists.");
+				throw new ApplicationException( "Specimen with the same LABEL already exists.");
 			}
 			
 		}		
-		return "SPECIMEN_NOT_EXISTING";
+		return SPECIMEN_NOT_EXISTING;
 	}
 	
 	
@@ -214,13 +218,15 @@ public class CaTissueSpecimenClient {
 		Iterator<SpecimenDetail> specimenDetailItr = specimenDetailList.iterator();
 		while(specimenDetailItr.hasNext()){
 			SpecimenDetail specimenDetail = specimenDetailItr.next();
-			Specimen existingSpecimen= getExistingSpecimen(specimenDetail.getSpecimen().getLabel());
-			// check if the request data is correct by doing validation checks
-			if(! isUpdateSpecimenRequestDataValid(specimenDetail, existingSpecimen)){
-				throw new ApplicationException("UpdateSpecimen Request Failed for Label"+ specimenDetail.getSpecimen().getLabel() +" and exception is CP or CPE or Specimen_Class NOT MATCHING with Existing Specimen");
+			Specimen existingSpecimen= getExistingSpecimen(specimenDetail.getSpecimen().getLabel());			
+			if(existingSpecimen == null){
+				throw new ApplicationException( "Specimen for given LABEL doesn't exist.");
 			}
 			
-			existingSpecimenList.add(existingSpecimen);
+			// check if the request data is correct by doing validation checks
+			if(isUpdateSpecimenRequestDataValid(specimenDetail, existingSpecimen)){
+				existingSpecimenList.add(existingSpecimen);
+			}
 		}
 	
 		return copyFromExistingSpecimen(existingSpecimenList);
@@ -259,15 +265,16 @@ public class CaTissueSpecimenClient {
 						
 			if(scgFound== false){
 				// throw exception
-				LOG.error("Specimen Collection Group was found in caTissue for Label " + specimen.getLabel());
-				throw new ApplicationException( "Specimen_Collection_Group_Not_Found");
+				LOG.error("Specimen Collection Group was not found in caTissue for Label " + specimen.getLabel());
+				throw new ApplicationException( "Specimen Collection Group not found in caTissue");
 			}
 			
 			try{
 				// method call to createSpecimen
 				createSpecimen(specimen);
 			}catch(Exception e){
-				throw new ApplicationException("CreateSpecimen Failed for Label"+ specimen.getLabel() +" and exception is " +e.getCause());				
+				LOG.error("CreateSpecimen Failed for Label"+ specimen.getLabel() +" and exception is " +e.getCause());	
+				throw new ApplicationException(e.getCause());				
 			}						
 		}		
 	}
@@ -321,7 +328,7 @@ public class CaTissueSpecimenClient {
 	 * and existing specimen (doing check only for CP, CPE & SC).
 	 * @return
 	 */
-	private boolean isUpdateSpecimenRequestDataValid(SpecimenDetail inSpecimenDetail, Specimen existingSpecimen){
+	private boolean isUpdateSpecimenRequestDataValid(SpecimenDetail inSpecimenDetail, Specimen existingSpecimen) throws ApplicationException{
 		boolean hasValidData = true;
 		String inCPE= inSpecimenDetail.getCollectionProtocolEvent();
 		String existCPE= existingSpecimen.getSpecimenCollectionGroup().getCollectionProtocolEvent().getCollectionPointLabel();
@@ -330,9 +337,24 @@ public class CaTissueSpecimenClient {
 		String inSC = inSpecimenDetail.getSpecimen().getSpecimenClass();
 		String existSC= existingSpecimen.getSpecimenClass();
 		
-		if( ! inCPE.equalsIgnoreCase(existCPE) || !inCP.equalsIgnoreCase(existCP) || !inSC.equalsIgnoreCase(existSC)){
+		if( ! inCPE.equals(existCPE)){
 			hasValidData = false;
-		}		
+			LOG.error("UpdateSpecimen Request Failed for Label"+ existingSpecimen.getLabel() +" and exception is Collection Protocol Event can't be changed while updating the Specimen");
+			throw new ApplicationException("Collection Protocol Event can't be changed while updating the Specimen");
+		}	
+		
+		if(!inCP.equals(existCP) ){
+			hasValidData = false;
+			LOG.error("UpdateSpecimen Request Failed for Label"+ existingSpecimen.getLabel() +" and exception is Collection Protocol can't be changed while updating the Specimen");
+			throw new ApplicationException("Collection Protocol can't be changed while updating the Specimen");
+		}
+		
+		if(!inSC.equals(existSC)){
+			hasValidData = false;
+//			throw new ApplicationException("UpdateSpecimen Request Failed for Label"+ existingSpecimen.getLabel() +" and exception is Specimen Class can't be changed while updating the Specimen");
+			LOG.error("UpdateSpecimen Request Failed for Label"+ existingSpecimen.getLabel() +" and exception is Specimen Class can't be changed while updating the Specimen");
+			throw new ApplicationException("Specimen Class can't be changed while updating the Specimen");
+		}
 		
 		return hasValidData;
 	}
@@ -385,9 +407,9 @@ public class CaTissueSpecimenClient {
 		{	
 			Specimen existingSpecimen =specimenItr.next(); 
 			Specimen specimen = null;				
-			if("Tissue".equalsIgnoreCase(existingSpecimen.getSpecimenClass())){
+			if(TISSUE.equalsIgnoreCase(existingSpecimen.getSpecimenClass())){
 				specimen= new TissueSpecimen();
-			}else if("Fluid".equalsIgnoreCase(existingSpecimen.getSpecimenClass())){
+			}else if(FLUID.equalsIgnoreCase(existingSpecimen.getSpecimenClass())){
 				specimen = new FluidSpecimen();
 			}
 					
@@ -506,4 +528,6 @@ public class CaTissueSpecimenClient {
 	
 	
 }
+
+
 
