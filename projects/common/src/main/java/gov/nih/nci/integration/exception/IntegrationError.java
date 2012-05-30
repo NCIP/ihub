@@ -37,13 +37,14 @@ public enum IntegrationError {
 	
 	_1041(1041, ErrorType.TRANSFORMATION, "Transformation to CaCISRequest failed.%1$s"), //USED
 	_1042(1042, ErrorType.TRANSMISSION, "Could not persist source message."), //USED
-	_1043(1042, ErrorType.TRANSMISSION, "Error from CaCISChannel: %1$s"), //USED
+	_1043(1043, ErrorType.TRANSMISSION, "Error from CaCISChannel: %1$s"), //USED
 	_1050(1050, ErrorType.VALIDATION, "Unknown message type."), //USED
 	
 	_1051(1051, ErrorType.TRANSMISSION, "Error while invoking CaTissueClient: %1$s"), //USED
 	_1052(1052, ErrorType.TRANSMISSION, "Error initializing CaTissueClient: %1$s"), //USED
 	_1053(1053, ErrorType.TRANSMISSION, "Error while invoking CaAERSClient: %1$s"), //USED
 	_1054(1054, ErrorType.TRANSMISSION, "Error initializing CaAERSClient: %1$s"), //USED
+	_1055(1055, ErrorType.TRANSMISSION, "Could not connect to CaCISChannel!"), // USED
 		
 	_1060(1060, ErrorType.VALIDATION, "New Transformer cannot be initialized. TransformerFactory is null!"), //USED
 	_1061(1061, ErrorType.VALIDATION, "New Transformer cannot be initialized. XSL file name cannot be empty!"), //USED
@@ -61,8 +62,19 @@ public enum IntegrationError {
 	_1074(1074, ErrorType.VALIDATION, "Name of the service can not be empty."),
 	_1075(1075, ErrorType.VALIDATION, "Change the configuration file!"),
 	
-	_1081(1081, ErrorType.TRANSMISSION, "Could not connect to CaCISChannel!");
+	_1080(1080, ErrorType.VALIDATION, "Specimen with the same LABEL already exists."), //USED
+	_1081(1081, ErrorType.VALIDATION, "Specimen Type is invalid."), //USED 
+	_1082(1082, ErrorType.VALIDATION, "Tissue Side is invalid."), //USED
+	_1083(1083, ErrorType.VALIDATION, "Tissue Site is invalid."), //USED
+	_1084(1084, ErrorType.VALIDATION, "Specimen Collection Group not found in caTissue."),//USED
+	_1085(1085, ErrorType.VALIDATION, "Available Quantity cannot be greater than the Initial Quantity."),//USED
+	_1086(1086, ErrorType.VALIDATION, "Pathological Status is invalid."),//USED
+	_1087(1087, ErrorType.VALIDATION, "Collection Protocol Event can't be changed while updating the Specimen."),//USED
+	_1088(1088, ErrorType.VALIDATION, "Collection Protocol can't be changed while updating the Specimen."),//USED
+	_1089(1089, ErrorType.VALIDATION, "Specimen Class can't be changed while updating the Specimen."),//USED
+	_1090(1090, ErrorType.VALIDATION, "Specimen for given LABEL doesn't exist."); //USED
 		
+	
 	private int errorCode;
 	
 	private ErrorType errorType;
