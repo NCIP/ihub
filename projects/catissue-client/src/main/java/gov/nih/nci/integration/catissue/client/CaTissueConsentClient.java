@@ -5,7 +5,6 @@ import edu.wustl.catissuecore.domain.ConsentTier;
 import edu.wustl.catissuecore.domain.ConsentTierStatus;
 import edu.wustl.catissuecore.domain.Participant;
 import edu.wustl.catissuecore.domain.Specimen;
-import edu.wustl.catissuecore.factory.ConsentTierStatusFactory;
 import gov.nih.nci.integration.catissue.domain.ConsentData;
 import gov.nih.nci.integration.catissue.domain.ConsentDetail;
 import gov.nih.nci.integration.catissue.domain.Consents;
@@ -112,7 +111,7 @@ public class CaTissueConsentClient {
 	
 	
 	/**
-	 * This method will fetch the existing consents
+	 * This method will fetch the existing consents which will be used incase of rollback
 	 * @param incomingConsents
 	 * @return
 	 * @throws ApplicationException
@@ -123,9 +122,11 @@ public class CaTissueConsentClient {
 		Iterator<ConsentDetail> incomingConsentDetailItr = incomingConsents.getConsentsDetailsList().iterator();		
 		while(incomingConsentDetailItr.hasNext()){
 			ConsentDetail consentDetail = incomingConsentDetailItr.next();	
-			ConsentDetail existingConsentDetail = new ConsentDetail();					
-			Specimen existingSpecimen = getExistingSpecimen(consentDetail.getConsentData().getSpecimenLabel().trim());
+			ConsentDetail existingConsentDetail = new ConsentDetail();	
+			String specimenLabel = consentDetail.getConsentData().getSpecimenLabel().trim();
+			Specimen existingSpecimen = getExistingSpecimen(specimenLabel);
 			if(existingSpecimen == null){
+				LOG.error("Specimen for given LABEL "+ specimenLabel +" doesn't exist.");
 				throw new ApplicationException( "Specimen for given LABEL doesn't exist");
 			}
 			existingConsentDetail.setConsentData(getConsentData(existingSpecimen));			
@@ -157,8 +158,9 @@ public class CaTissueConsentClient {
 				// update the child specimen(s) now
 				performRegisterConsentsForChildSpecimens(existingSpecimen, consentDetail);								
 			}
-		}catch(ApplicationException ae){		
-			throw new ApplicationException("Register Consent Failed for Specimen"+ existingSpecimen.getLabel() +" and exception is " +ae.getCause());
+		}catch(ApplicationException ae){	
+			LOG.error("Register Consent Failed for Specimen"+ existingSpecimen.getLabel() +" and exception is " +ae.getCause() + ae.getMessage());
+			throw new ApplicationException("Register Consent Failed for Specimen"+ existingSpecimen.getLabel() +" and exception is " +ae.getCause() + ae.getMessage());
 		}			
 	}
 	
@@ -187,6 +189,7 @@ public class CaTissueConsentClient {
 		Iterator<ConsentTierStatus> itrTierStatus = conTierStatusSet.iterator();
 		// iterate thru all the consentTierStatus's statement
 		while(itrTierStatus.hasNext()){
+			boolean isTierIdFound= false;
 			ConsentTierStatus tierStatus = itrTierStatus.next();
 			String stmt = tierStatus.getConsentTier().getStatement();
 			// get the CollectionProtocol and then its consentTierCollection
@@ -199,10 +202,21 @@ public class CaTissueConsentClient {
 					ConsentTier consentTier = itrConsentTier.next();
 					if(stmt.equalsIgnoreCase(consentTier.getStatement())){
 						tierStatus.getConsentTier().setId(consentTier.getId());
+						isTierIdFound=true;
 						break;
 					}
 				}
-			}									
+			} else{
+				// i.e collection protocol not found is caTissue
+				LOG.error("populateConsentTierId failed as Collection Protocol was not found in caTissue for the identifier " + consentDetail.getCollectionProtocol().getTitle());
+				throw new ApplicationException("Collection Protocol was not found in caTissue");
+			}
+			
+			if(!isTierIdFound){
+				// i.e tierId not found for given CollectionProtocol & Statement combination
+				LOG.error("populateConsentTierId failed as ConsentTier Statement was not found for given CollectionProtocol " + consentDetail.getCollectionProtocol().getTitle() + "in caTissue.");
+				throw new ApplicationException("ConsentTier Statement was not found for given CollectionProtocol in caTissue");
+			}
 		}
 		
 		return consentDetail;
@@ -254,6 +268,7 @@ public class CaTissueConsentClient {
 			}
 		}catch(Exception e){
 			
+			// throw new ....
 		}
 			
 	}
