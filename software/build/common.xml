@@ -733,7 +733,7 @@
 		<isfalse value="${run.cobertura.check}"/>
 	</condition>
 	<target name="cobertura-check" unless="skip.cobertura.check" description="-> Will check the corbetura coverage rate">
-		<cobertura-check branchrate="80" totalbranchrate="80" totallinerate="80" 
+		<cobertura-check branchrate="${cobertura.branchrate}" totalbranchrate="${cobertura.totalbranchrate}" totallinerate="${cobertura.totallinerate}" 
 			haltonfailure="false" failureproperty="cobertura.check.failure" 
 			datafile="${cobertura.report.dir}/cobertura.ser" />
 	</target>
