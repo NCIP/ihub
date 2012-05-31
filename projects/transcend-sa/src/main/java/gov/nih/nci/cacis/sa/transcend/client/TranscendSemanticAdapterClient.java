@@ -23,7 +23,7 @@ public class TranscendSemanticAdapterClient {
 		try {
 			wsdlUrl = new URL(wsdl);
 		} catch (MalformedURLException e) {
-			IntegrationException ie = new IntegrationException(IntegrationError._1081);
+			IntegrationException ie = new IntegrationException(IntegrationError._1055);
 			return populateCaCISError(ie.getErrorType().name(), String.valueOf(ie.getErrorCode()), ie.getMessage(), "");
 		}
         final AcceptSourcePortType saClient = new
