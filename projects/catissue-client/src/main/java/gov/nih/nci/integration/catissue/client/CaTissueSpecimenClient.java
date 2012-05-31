@@ -372,7 +372,7 @@ public class CaTissueSpecimenClient {
 	 * This method will rollback the specimens for Update_Specimen flow
 	 * @param specimens
 	 */
-	private void performRollbackUpdatedSpecimens(Specimens specimens){		
+	private void performRollbackUpdatedSpecimens(Specimens specimens) throws ApplicationException{		
 		List<SpecimenDetail> specimenDetailList = specimens.getSpecimenDetailList();
 		Iterator<SpecimenDetail> specimenDetailItr = specimenDetailList.iterator();
 		
@@ -382,7 +382,8 @@ public class CaTissueSpecimenClient {
 			try {
 				updateSpecimen(existingSpecimen);
 			} catch (ApplicationException e) {
-				LOG.error("Exception during Rollback of Specimen " + existingSpecimen.getLabel());
+				LOG.error("Exception occured during Rollback of UpdateSpecimen " + existingSpecimen.getLabel() +" and exception is " + e.getCause());
+				throw new ApplicationException("Exception occured during Rollback of UpdateSpecimen " + existingSpecimen.getLabel() +" and exception is " + e.getCause());
 			}
 		}
 	
@@ -454,7 +455,7 @@ public class CaTissueSpecimenClient {
 	 * This method will rollback the specimens for Create_Specimen flow
 	 * @param specimens
 	 */
-	private void performRollbackCreatedSpecimens(Specimens specimens){		
+	private void performRollbackCreatedSpecimens(Specimens specimens) throws ApplicationException{		
 		List<SpecimenDetail> specimenDetailList = specimens.getSpecimenDetailList();
 		Iterator<SpecimenDetail> specimenDetailItr = specimenDetailList.iterator();
 		while(specimenDetailItr.hasNext()){
@@ -463,15 +464,10 @@ public class CaTissueSpecimenClient {
 			Specimen existingSpecimen;
 			try {
 				existingSpecimen = getExistingSpecimen(specimenLabel);
-			} catch (ApplicationException e) {
-				LOG.error("Specimen not found during Rollback of Specimen " + specimenLabel);
-				return;
-			}
-			
-			try {
 				softDeleteSpecimen(existingSpecimen);
-			} catch (ApplicationException e) {
-				LOG.error("Exception During Rollback of Specimen " + specimenLabel);
+			}catch (ApplicationException e) {
+				LOG.error("Exception occured during Rollback of CreateSpecimen " + specimenLabel +" and exception is " +e.getCause());
+				throw new ApplicationException("Exception occured during Rollback of CreateSpecimen " + specimenLabel +" and exception is " +e.getCause());
 			}
 		}
 	}
@@ -484,7 +480,7 @@ public class CaTissueSpecimenClient {
 	 * @throws ApplicationException
 	 */
 	private void softDeleteSpecimen(Specimen existingSpecimen) throws ApplicationException{
-		// First change the Label of the Specimen to some dummy value.. like "DELETED_Label_+Timestamp" 
+		// First change the Label of the Specimen to some dummy value.. like "DELETED_+ label/barcode +Timestamp" 
         Specimen updatedSpecimen = updateSpecimenLabel(existingSpecimen);
         
         // Then set the Specimen to Disabled
@@ -500,15 +496,20 @@ public class CaTissueSpecimenClient {
         caTissueAPIClient.insert(disposalEventParameters);
 	}
 	
+	
+	/**
+	 * This method is used to update the specimen label & barcode
+	 * 
+	 */
 	private Specimen updateSpecimenLabel(Specimen specimen) throws ApplicationException{	
-		specimen.setLabel("DELETED_Label_"+getCurrentDateTime() );
-		specimen.setBarcode("DELETED_Barcode_"+getCurrentDateTime());
+		specimen.setLabel("DELETED_"+ specimen.getLabel()+"_"+getCurrentDateTime() );
+		specimen.setBarcode("DELETED_"+ specimen.getBarcode()+"_"+getCurrentDateTime());
 		Specimen updatedSpecimen = updateSpecimen(specimen);
 		return updatedSpecimen;
 	}
 	
 	
-	 private String getCurrentDateTime() {
+	private String getCurrentDateTime() {
 		    Calendar cal = Calendar.getInstance();
 		    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		    return sdf.format(cal.getTime());
