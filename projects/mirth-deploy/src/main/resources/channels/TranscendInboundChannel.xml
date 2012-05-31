@@ -1863,7 +1863,7 @@ var cacisWsdlUrl = &quot;@{transcend.sa.url}?wsdl&quot;;
 globalMap.put(&quot;CaCISWsdlUrl&quot;, cacisWsdlUrl);
 
 //var client = new Packages.gov.nih.nci.integration.cacis.inbound.DefaultAcceptMessageClient();
-var client = new Packages.gov.nih.nci.cacis.sa.transcend.TranscendSemanticAdapterClient();
+var client = new Packages.gov.nih.nci.cacis.sa.transcend.client.TranscendSemanticAdapterClient();
 globalMap.put(&quot;CaCISClient&quot;, client);
 
 return;</deployScript>

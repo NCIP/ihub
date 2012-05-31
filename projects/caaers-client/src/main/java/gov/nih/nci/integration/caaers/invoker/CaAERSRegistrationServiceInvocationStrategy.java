@@ -83,6 +83,7 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 	@Override
 	public ServiceInvocationResult invoke(ServiceInvocationMessage msg) {
 		ServiceInvocationResult result = new ServiceInvocationResult();
+		IntegrationException ie = null;
 		try {
 			String participantXMLStr = transformToParticipantXML(msg.getMessage().getRequest());
 			
@@ -97,26 +98,25 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 			}
 		} catch (SOAPFaultException e) {
 			e.printStackTrace();
-			IntegrationException ie = new IntegrationException(
+			ie = new IntegrationException(
 					IntegrationError._1053, e, e.getMessage());
-			result.setInvocationException(ie);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-			IntegrationException ie = new IntegrationException(
+			ie = new IntegrationException(
 					IntegrationError._1053, e, e.getMessage());
-			result.setInvocationException(ie);
 		} catch (JAXBException e) {
 			e.printStackTrace();
-			IntegrationException ie = new IntegrationException(
+			ie = new IntegrationException(
 					IntegrationError._1053, e, e.getMessage());
-			result.setInvocationException(ie);
 		} catch (WebServiceException e) {
 			e.printStackTrace();
-			IntegrationException ie = new IntegrationException(
+			ie = new IntegrationException(
 					IntegrationError._1053, e, e.getMessage());
-			result.setInvocationException(ie);
 		} catch (IntegrationException e) {
-			result.setInvocationException(e);
+			ie = e;
+		}
+		if(!result.isFault()) {
+			result.setInvocationException(ie);
 		}
 		handleException(result);
 		return result;
@@ -125,6 +125,7 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 	@Override
 	public ServiceInvocationResult rollback(ServiceInvocationMessage msg) {
 		ServiceInvocationResult result = new ServiceInvocationResult();
+		IntegrationException ie = null;
 		try {
 			String participantXMLStr = transformToParticipantXML(msg.getMessage().getRequest());
 			CaaersServiceResponse caaersresponse = client.deleteParticipant(participantXMLStr);
@@ -136,28 +137,27 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 			}
 		} catch (SOAPFaultException e) {
 			e.printStackTrace();
-			IntegrationException ie = new IntegrationException(
+			ie = new IntegrationException(
 					IntegrationError._1053, e, e.getMessage());
-			result.setInvocationException(ie);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-			IntegrationException ie = new IntegrationException(
+			ie = new IntegrationException(
 					IntegrationError._1053, e, e.getMessage());
-			result.setInvocationException(ie);
 		} catch (JAXBException e) {
 			e.printStackTrace();
-			IntegrationException ie = new IntegrationException(
+			ie = new IntegrationException(
 					IntegrationError._1053, e, e.getMessage());
-			result.setInvocationException(ie);
 		} catch (WebServiceException e) {
 			e.printStackTrace();
-			IntegrationException ie = new IntegrationException(
+			ie = new IntegrationException(
 					IntegrationError._1053, e, e.getMessage());
-			result.setInvocationException(ie);
 		} catch (IntegrationException e) {
-			result.setInvocationException(e);
+			ie = e;
 		}
-		
+		if(!result.isFault()) {
+			result.setInvocationException(ie);
+		}
+		handleException(result);
 		return result;
 	}
 

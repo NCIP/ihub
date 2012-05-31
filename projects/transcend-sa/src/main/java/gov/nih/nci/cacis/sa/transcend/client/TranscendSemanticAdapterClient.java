@@ -1,5 +1,10 @@
-package gov.nih.nci.cacis.sa.transcend;
+package gov.nih.nci.cacis.sa.transcend.client;
 
+import gov.nih.nci.cacis.sa.transcend.AcceptSourceFault;
+import gov.nih.nci.cacis.sa.transcend.AcceptSourcePortType;
+import gov.nih.nci.cacis.sa.transcend.CaCISError;
+import gov.nih.nci.cacis.sa.transcend.CaCISRequest;
+import gov.nih.nci.cacis.sa.transcend.CaCISResponse;
 import gov.nih.nci.integration.exception.IntegrationError;
 import gov.nih.nci.integration.exception.IntegrationException;
 

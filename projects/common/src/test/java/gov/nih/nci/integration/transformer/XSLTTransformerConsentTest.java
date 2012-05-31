@@ -11,6 +11,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -27,28 +28,33 @@ public class XSLTTransformerConsentTest {
 	@Autowired
 	private XSLTTransformer xsltTransformer;
 	
+	@Value("${integration.transformer.xsl.baseClassPath}")
+    private String baseXSLPath;
+	
+	@Value("${catissue.api.consent.xsl}")
+    private String catissueConsentXsl;
 		
-//	@Test
+	@Test
 	public void transformIncomingToWrapperXMLTest() throws IntegrationException {
-		xsltTransformer.initTransformer("TranscendInboundMsg-to-caCISRequest.xsl", "C:/Users/RohitG/.integration/ihub/xsl/");		
+		xsltTransformer.initTransformer("TranscendInboundMsg-to-caCISRequest.xsl", baseXSLPath);		
 		String trnsfrmdMsg = transformXML(getConsentIncomingRequestMessage());		
 		Assert.assertNotNull(trnsfrmdMsg);		
 		System.out.println(trnsfrmdMsg);
 	}
 	
 	
-//	@Test
+	@Test
 	public void transformWrapperToInterimXMLTest() throws IntegrationException {
-		xsltTransformer.initTransformer("caCISRequest-to-MsgBroadcasterConsentInboundMsg.xsl", "C:/Users/RohitG/.integration/ihub/xsl/");		
+		xsltTransformer.initTransformer("caCISRequest-to-MsgBroadcasterConsentInboundMsg.xsl", baseXSLPath);		
 		String trnsfrmdMsg = transformXML(getConsentWrapperMessage());		
 		Assert.assertNotNull(trnsfrmdMsg);		
 		System.out.println(trnsfrmdMsg);
 	}
 	
 
-//	@Test
+	@Test
 	public void transformInterimToXMLStringTest() throws IntegrationException {
-		xsltTransformer.initTransformer("MsgBroadcasterConsent-to-caTissueConsents.xsl", "C:/Users/RohitG/.integration/ihub/xsl/");		
+		xsltTransformer.initTransformer(catissueConsentXsl, baseXSLPath);		
 		String trnsfrmdMsg = transformXML(getConsentInterimMessage());		
 		Assert.assertNotNull(trnsfrmdMsg);		
 		System.out.println(trnsfrmdMsg);

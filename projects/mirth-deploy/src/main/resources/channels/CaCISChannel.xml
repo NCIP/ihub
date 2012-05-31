@@ -15,7 +15,7 @@
       <property name="DataType">Web Service Listener</property>
       <property name="host">0.0.0.0</property>
       <property name="port">12085</property>
-      <property name="receiverClassName">gov.nih.nci.cacis.sa.transcend.TranscendSemanticAdapter</property>
+      <property name="receiverClassName">gov.nih.nci.cacis.sa.transcend.client.TranscendSemanticAdapter</property>
       <property name="receiverPasswords">&lt;list/&gt;</property>
       <property name="receiverResponseValue">ResponseWriterConnector</property>
       <property name="receiverServiceName">TranscendSemanticAdapter</property>

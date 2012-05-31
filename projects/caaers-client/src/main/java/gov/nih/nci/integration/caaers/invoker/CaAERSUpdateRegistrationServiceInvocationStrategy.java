@@ -95,6 +95,7 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 	@Override
 	public ServiceInvocationResult invoke(ServiceInvocationMessage msg) {
 		ServiceInvocationResult result = new ServiceInvocationResult();
+		IntegrationException ie = null;
 		try {
 			
 			String participantXMLStr = transformToParticipantXML(msg.getMessage().getRequest());
@@ -124,26 +125,25 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 			}
 		} catch (SOAPFaultException e) {
 			e.printStackTrace();
-			IntegrationException ie = new IntegrationException(
+			ie = new IntegrationException(
 					IntegrationError._1053, e, e.getMessage());
-			result.setInvocationException(ie);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-			IntegrationException ie = new IntegrationException(
+			ie = new IntegrationException(
 					IntegrationError._1053, e, e.getMessage());
-			result.setInvocationException(ie);
 		} catch (JAXBException e) {
 			e.printStackTrace();
-			IntegrationException ie = new IntegrationException(
+			ie = new IntegrationException(
 					IntegrationError._1053, e, e.getMessage());
-			result.setInvocationException(ie);
 		} catch (WebServiceException e) {
 			e.printStackTrace();
-			IntegrationException ie = new IntegrationException(
+			ie = new IntegrationException(
 					IntegrationError._1053, e, e.getMessage());
-			result.setInvocationException(ie);
 		} catch (IntegrationException e) {
-			result.setInvocationException(e);
+			ie = e;
+		}
+		if(!result.isFault()) {
+			result.setInvocationException(ie);
 		}
 		handleException(result);
 		return result;
@@ -152,6 +152,7 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 	@Override
 	public ServiceInvocationResult rollback(ServiceInvocationMessage msg) {
 		ServiceInvocationResult result = new ServiceInvocationResult();
+		IntegrationException ie = null;
 		try {
 			String participantXMLStr = msg.getOriginalData();
 			CaaersServiceResponse caaersresponse = client.updateParticipant(participantXMLStr);
@@ -163,25 +164,27 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 			}
 		} catch (SOAPFaultException e) {
 			e.printStackTrace();
-			IntegrationException ie = new IntegrationException(
+			ie = new IntegrationException(
 					IntegrationError._1053, e, e.getMessage());
-			result.setInvocationException(ie);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-			IntegrationException ie = new IntegrationException(
+			ie = new IntegrationException(
 					IntegrationError._1053, e, e.getMessage());
-			result.setInvocationException(ie);
 		} catch (JAXBException e) {
 			e.printStackTrace();
-			IntegrationException ie = new IntegrationException(
+			ie = new IntegrationException(
 					IntegrationError._1053, e, e.getMessage());
-			result.setInvocationException(ie);
 		} catch (WebServiceException e) {
 			e.printStackTrace();
-			IntegrationException ie = new IntegrationException(
+			ie = new IntegrationException(
 					IntegrationError._1053, e, e.getMessage());
-			result.setInvocationException(ie);
+		} catch (IntegrationException e) {
+			ie = e;
 		} 
+		if(!result.isFault()) {
+			result.setInvocationException(ie);
+		}
+		handleException(result);
 		return result;
 	}
 

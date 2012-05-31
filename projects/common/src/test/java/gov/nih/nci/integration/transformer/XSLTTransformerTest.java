@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -25,11 +26,17 @@ public class XSLTTransformerTest {
 	@Autowired
 	private XSLTTransformer xsltTransformer;
 	
+	@Value("${integration.transformer.xsl.baseClassPath}")
+    private String baseXSLPath;
+	
+	@Value("${catissue.api.participant.xsl}")
+    private String catissueParticipantXsl;
+	
 	@Test
 	@Before
 	public void intialize() throws IntegrationException {
-		xsltTransformer.initTransformer("MsgBroadcasterParticipant-to-caTissueParticipant.xsl", 
-		"C:/Users/sb-admin-cp/.integration/ihub/xsl/");
+		xsltTransformer.initTransformer(catissueParticipantXsl, 
+				baseXSLPath);
 		Assert.assertNotNull(xsltTransformer);
 	}
 	
@@ -37,8 +44,8 @@ public class XSLTTransformerTest {
 	@Test
 	public void transformMsgBCMsg() throws IntegrationException {
 		xsltTransformer.initTransformer(
-				"MsgBroadcasterParticipant-to-caTissueParticipant.xsl",
-				"C:/Users/sb-admin-cp/.integration/ihub/xsl/");
+				catissueParticipantXsl,
+				baseXSLPath);
 		
 		String trnsfrmdMsg = transformToParticipantXML(getMsgBCMsg());
 		Assert.assertNotNull(trnsfrmdMsg);

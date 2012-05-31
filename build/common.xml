@@ -673,8 +673,13 @@
 					</fileset>
 				</classpath>
 			</taskdef>
+			<echo message="excluded from instrument ${cobertura.instrument.exclude}"/>
+			<condition property="instrument.exclude.pattern" value="${cobertura.instrument.exclude}" else="">
+				<isset property="cobertura.instrument.exclude"/>
+			</condition>
+
 			<cobertura-instrument todir="${instrumented.classes.dir}" datafile="${cobertura.report.dir}/cobertura.ser">
-			    <fileset dir="${classes.dir}">
+				<fileset dir="${classes.dir}" excludes="${instrument.exclude.pattern}">
 			        <include name="**/*.class"/>
 			    </fileset>
 			</cobertura-instrument>
@@ -683,7 +688,7 @@
 	<!-- ============================================================== 
 		target: test                                                
 	============================================================== -->
-	<condition property="testPattern" value="**/${test}.class" else="gov/nih/nci/transcend/integration/**/*Test.class">
+	<condition property="testPattern" value="**/${test}.class" else="**/*Test.class">
 		<isset property="test"/>
 	</condition>
 	<target name="test" if="run.test" depends="corbetura-init , clean-test-results" description="Runs the testcases">
@@ -691,9 +696,10 @@
 		<echo message="Test results dir: ${test.results.dir}, with pattern ${testPattern} and classes from ${test.classes.dir}" />
 		<echo message="Questionable props: ${test.run.classpath}" />
 		<mkdir dir="${test.results.dir}" />
-		
+				
 		<junit printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" 
-			showoutput="true" fork="true" forkmode="once" timeout="600000" >
+			showoutput="false" outputtoformatters="false" fork="true" forkmode="once" timeout="600000" 
+			dir="${basedir}">
 						
 			<classpath location="${instrumented.classes.dir}" />
 			<classpath refid="test.run.classpath" />
@@ -705,6 +711,7 @@
 			<batchtest fork="yes" todir="${test.results.dir}">
 				<fileset dir="${test.classes.dir}">
 					<include name="${testPattern}" />
+					<exclude name="**/*IntegrationTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>
@@ -720,9 +727,21 @@
 	</target>
 	
 	<!-- ============================================================== 
+				target: cobertura-check                                            
+		============================================================== -->
+	<condition property="skip.cobertura.check" value="true">
+		<isfalse value="${run.cobertura.check}"/>
+	</condition>
+	<target name="cobertura-check" unless="skip.cobertura.check" description="-> Will check the corbetura coverage rate">
+		<cobertura-check branchrate="80" totalbranchrate="80" totallinerate="80" 
+			haltonfailure="false" failureproperty="cobertura.check.failure" 
+			datafile="${cobertura.report.dir}/cobertura.ser" />
+	</target>
+	
+	<!-- ============================================================== 
 		target: test-report                                                
 	============================================================== -->
-	<target name="test-report" if="run.test" depends="test,cobertura-report">
+	<target name="test-report" if="run.test" depends="test,cobertura-report, cobertura-check">
 		<echo message="Executing in ${ant.project.name}" />
 		<mkdir dir="${test.reports.dir}"/>
         <junitreport todir="${test.reports.dir}">
@@ -733,6 +752,8 @@
         </junitreport>
 		<fail message="Tests failed! ${ant.project.name} , Check test reports in ${test.reports.dir} for more details." 
 					if="test.failed" />
+		<fail message="Cobertura check failed! ${ant.project.name} , Check cobertura reports in ${cobertura.report.dir} for more details." 
+					if="cobertura.check.failure" />
 	</target>
 	
 	

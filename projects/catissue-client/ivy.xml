@@ -39,6 +39,8 @@
             <exclude org="org.springframework" module="spring-remoting" />
             <exclude org="ant" module="ant" />
 			
-			<!-- removed common project dependency..this project has self-sustained library -->
+			<!-- modified common project dependency..this project has self-sustained library -->
+			<!-- commonIntegration -->
+            <dependency org="gov.nih.nci.ihub" name="common" rev="latest.integration" conf="test->test;static-analysis->static-analysis"/>
        </dependencies>
 </ivy-module>

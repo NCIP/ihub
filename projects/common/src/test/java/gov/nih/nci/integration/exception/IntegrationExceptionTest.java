@@ -10,8 +10,8 @@ public class IntegrationExceptionTest {
 	public void msgFormat() {
 		Throwable t = new Throwable("test throwable");
 		IntegrationException ie = 
-			new IntegrationException(IntegrationError._1012, t, "P-id", "CP-id" );
+			new IntegrationException(IntegrationError._1013, t, "P-id", "CP-id" );
 		
-		assertEquals("Insufficient privileges to register participant P-id to caAERS CP-id.", ie.getMessage());
+		assertEquals("Insufficient privileges to deregister participant P-id to study CP-id.", ie.getMessage());
 	}
 }
