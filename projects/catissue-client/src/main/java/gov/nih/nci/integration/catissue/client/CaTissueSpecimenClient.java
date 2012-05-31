@@ -204,6 +204,7 @@ public class CaTissueSpecimenClient {
 			String specimenLabel = specimenDetail.getSpecimen().getLabel();
 			Specimen existingSpecimen= getExistingSpecimen(specimenLabel);
 			if(existingSpecimen!=null){
+				LOG.error("Specimen with the same LABEL already exists for Specimen " + specimenLabel);
 				throw new ApplicationException( "Specimen with the same LABEL already exists.");
 			}
 			
@@ -212,6 +213,11 @@ public class CaTissueSpecimenClient {
 	}
 	
 	
+	/**
+	 * This method is used to fetch the existing specimen(s) for corresponding incoming specimen label.
+	 * This will be used incase rollback is required. 
+	 * @param incomingSpecimens
+	 */
 	private Specimens fetchExistingSpecimens(Specimens incomingSpecimens ) throws ApplicationException{
 		List<Specimen> existingSpecimenList = new ArrayList<Specimen>();
 		List<SpecimenDetail> specimenDetailList = incomingSpecimens.getSpecimenDetailList();
@@ -220,6 +226,7 @@ public class CaTissueSpecimenClient {
 			SpecimenDetail specimenDetail = specimenDetailItr.next();
 			Specimen existingSpecimen= getExistingSpecimen(specimenDetail.getSpecimen().getLabel());			
 			if(existingSpecimen == null){
+				LOG.error("Specimen for given LABEL "+ specimenDetail.getSpecimen().getLabel() +" doesn't exist.");
 				throw new ApplicationException( "Specimen for given LABEL doesn't exist.");
 			}
 			
@@ -229,6 +236,7 @@ public class CaTissueSpecimenClient {
 			}
 		}
 	
+		// copy the data from the list into 'Specimens' object -- to get rid of Hibernate CGLib issue
 		return copyFromExistingSpecimen(existingSpecimenList);
 	}
 	
@@ -274,7 +282,7 @@ public class CaTissueSpecimenClient {
 				createSpecimen(specimen);
 			}catch(Exception e){
 				LOG.error("CreateSpecimen Failed for Label"+ specimen.getLabel() +" and exception is " +e.getCause());	
-				throw new ApplicationException(e.getCause());				
+				throw new ApplicationException("CreateSpecimen Failed for Label"+ specimenDetail.getSpecimen().getLabel() +" and exception is " +e.getCause());				
 			}						
 		}		
 	}
@@ -314,7 +322,8 @@ public class CaTissueSpecimenClient {
 				
 				updatedSpecimenList.add(incomingSpecimen);
 			}
-		}catch(Exception e){			
+		}catch(Exception e){	
+			LOG.error("UpdateSpecimen Failed for Label"+ specimenDetail.getSpecimen().getLabel() +" and exception is " +e.getCause());
 			throw new ApplicationException("UpdateSpecimen Failed for Label"+ specimenDetail.getSpecimen().getLabel() +" and exception is " +e.getCause());	
 		}
 		
@@ -351,7 +360,6 @@ public class CaTissueSpecimenClient {
 		
 		if(!inSC.equals(existSC)){
 			hasValidData = false;
-//			throw new ApplicationException("UpdateSpecimen Request Failed for Label"+ existingSpecimen.getLabel() +" and exception is Specimen Class can't be changed while updating the Specimen");
 			LOG.error("UpdateSpecimen Request Failed for Label"+ existingSpecimen.getLabel() +" and exception is Specimen Class can't be changed while updating the Specimen");
 			throw new ApplicationException("Specimen Class can't be changed while updating the Specimen");
 		}
