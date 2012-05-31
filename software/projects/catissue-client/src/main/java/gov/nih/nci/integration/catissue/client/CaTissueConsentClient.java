@@ -13,8 +13,8 @@ import gov.nih.nci.system.applicationservice.ApplicationException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -100,7 +100,7 @@ public class CaTissueConsentClient {
 	 */
 	public void rollbackConsentRegistration(String consentsListXMLStr) throws ApplicationException{
 		LOG.debug("Inside rollbackConsentRegistration...The Incoming XML for rollbackConsentRegistration() is --> " + consentsListXMLStr);
-		System.out.println("Inside rollbackConsentRegistration...The Incoming XML for rollbackConsentRegistration() is --> " + consentsListXMLStr);
+//		System.out.println("Inside rollbackConsentRegistration...The Incoming XML for rollbackConsentRegistration() is --> " + consentsListXMLStr);
 		
 		// Parse the incoming XML String. The returned object will contain data from the incoming specimens XML
 		Consents incomingConsents = parseConsentsListXML(consentsListXMLStr);
@@ -242,9 +242,9 @@ public class CaTissueConsentClient {
 		try{
 			for(consentDetailItr = consentDetailList.iterator(); consentDetailItr.hasNext();)
 			{
-				consentDetail = consentDetailItr.next();	
+				consentDetail = consentDetailItr.next();
 				existingSpecimen = getExistingSpecimen(consentDetail.getConsentData().getSpecimenLabel());
-				existingSpecimen.setConsentTierStatusCollection(consentDetail.getConsentData().getConsentTierStatusSet());
+				existingSpecimen.setConsentTierStatusCollection(consentDetail.getConsentData().getConsentTierStatusSet());				
 				updateSpecimen(existingSpecimen);
 				performRollbackConsentForChildSpecimens(existingSpecimen, consentDetail);
 			}
@@ -255,9 +255,10 @@ public class CaTissueConsentClient {
 		}				
 	}
 	
-	private void performRollbackConsentForChildSpecimens(Specimen existingSpecimen, ConsentDetail consentDetail ) {
+	private void performRollbackConsentForChildSpecimens(Specimen existingSpecimen, ConsentDetail consentDetail ) throws ApplicationException{
 		try{
 			Collection<AbstractSpecimen> childSpecimenCollection = existingSpecimen.getChildSpecimenCollection();
+			
 			Iterator<AbstractSpecimen> itrChildSpecimen = childSpecimenCollection.iterator();
 			while(itrChildSpecimen.hasNext()){
 				Specimen childSpecimen= (Specimen) itrChildSpecimen.next();
@@ -267,8 +268,8 @@ public class CaTissueConsentClient {
 				performRollbackConsentForChildSpecimens(childSpecimen, consentDetail);
 			}
 		}catch(Exception e){
-			
-			// throw new ....
+			LOG.error("Exception During Rollback of Consent for ChildSpecimen with SpecimenLabel as " + consentDetail.getConsentData().getSpecimenLabel());
+			throw new ApplicationException("Rollback Consent Failed for ChildSpecimen "+ consentDetail.getConsentData().getSpecimenLabel() +" and exception is " +e.getCause());
 		}
 			
 	}
@@ -292,7 +293,7 @@ public class CaTissueConsentClient {
 	 */
 	private ConsentData getConsentData(Specimen existingSpecimen){
 		ConsentData existingConsentData = new ConsentData();			
-		Set<ConsentTierStatus> existingTierStatusCollection = new HashSet<ConsentTierStatus>(); 		
+		Set<ConsentTierStatus> existingTierStatusCollection = new LinkedHashSet<ConsentTierStatus>(); 		
 		Collection<ConsentTierStatus> consentTierStatusCollection = existingSpecimen.getConsentTierStatusCollection();
 		
 		if(consentTierStatusCollection!=null){
