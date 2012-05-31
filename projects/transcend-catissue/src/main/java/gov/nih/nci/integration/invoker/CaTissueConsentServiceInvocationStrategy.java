@@ -47,6 +47,8 @@ public class CaTissueConsentServiceInvocationStrategy implements ServiceInvocati
 		
 		HashMap<String, IntegrationError> msgToErrMapBase = new LinkedHashMap<String, IntegrationError>();
 		msgToErrMapBase.put("Specimen for given LABEL doesn't exist", IntegrationError._1090);
+		msgToErrMapBase.put("Collection Protocol was not found in caTissue", IntegrationError._1091);
+		msgToErrMapBase.put("ConsentTier Statement was not found for given CollectionProtocol in caTissue", IntegrationError._1092);
 		
 		msgToErrMap = Collections.synchronizedMap(msgToErrMapBase);
 	}
@@ -173,3 +175,4 @@ public class CaTissueConsentServiceInvocationStrategy implements ServiceInvocati
 		return null;
 	}
 }
+
