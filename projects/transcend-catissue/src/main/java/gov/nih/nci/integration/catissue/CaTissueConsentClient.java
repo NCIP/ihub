@@ -12,9 +12,8 @@ import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.Executors;
 
 /**
- * 
+ * This is the Wrapper client class for RegisterConsent client class.
  * @author Rohit Gupta
- * 
  */
 public class CaTissueConsentClient {
 	
@@ -59,6 +58,8 @@ public class CaTissueConsentClient {
 	public ServiceInvocationResult registerConsents(final String consentListXMLStr)  {
 		ServiceInvocationResult result1, result2, finalResult = null;		
 		CaTissueTask task1,task2 = null;		
+		
+		// First get the existing Specimen/Consent data - which will be needed incase of Rollback 
 		try {
 			task1 = new CaTissueTask(caTissueConsentClientClass, loginName, password,
 					"getExistingConsents", registerConsentsParamTypes, consentListXMLStr);		
@@ -85,9 +86,11 @@ public class CaTissueConsentClient {
 		}
 		
 		if(result1.getInvocationException() != null){
+			// return if some issue while fetching the data itself.
 			return result1;
 		}
 		
+		// now perform registerConsent operation
 		try {			
 			task2 = new CaTissueTask(caTissueConsentClientClass, loginName, password,
 					"registerConsents", registerConsentsParamTypes, consentListXMLStr);
@@ -98,10 +101,8 @@ public class CaTissueConsentClient {
 		
 		try {
 			ExecutorCompletionService<ServiceInvocationResult> ecs = new ExecutorCompletionService<ServiceInvocationResult>(ex);
-			ecs.submit(task2);
-	
-			result2 = ecs.take().get();
-		
+			ecs.submit(task2);	
+			result2 = ecs.take().get();		
 			if (!result2.isFault()) {
 				result2.setResult("Successfully Registered Consent in CaTissue!");
 			} else {
@@ -113,6 +114,7 @@ public class CaTissueConsentClient {
 			result2 = getServiceInvocationResult(IntegrationError._1051, e);
 		}
 
+		// Merge result1 & result2 to get the final result
 		if(result2.getInvocationException() !=null){
 			finalResult = new ServiceInvocationResult();
 			finalResult.setDataChanged(true);
@@ -122,20 +124,13 @@ public class CaTissueConsentClient {
 			finalResult = result2;
 		}
 		
-//		System.out.println("finalResult.isDataChanged() --> " +finalResult.isDataChanged());
-//		System.out.println("finalResult.getOriginalData() -->" +finalResult.getOriginalData());
-//		System.out.println("finalResult.getInvocationException() -->" +finalResult.getInvocationException());
-		
 		return finalResult;
 	}
 	
 	
 	
 	public ServiceInvocationResult rollbackConsents(final String consentListXMLStr) {
-		ServiceInvocationResult result = null;
-		
-		System.out.println("Inside Wrapper Consent Client... rollbackConsents()..consentListXMLStr--> " + consentListXMLStr);
-		
+		ServiceInvocationResult result = null;		
 		CaTissueTask task = null;
 		try {
 			task = new CaTissueTask(caTissueConsentClientClass, loginName, password,
@@ -147,12 +142,9 @@ public class CaTissueConsentClient {
 		}
 		
 		try {
-			ExecutorCompletionService<ServiceInvocationResult> ecs = 
-				new ExecutorCompletionService<ServiceInvocationResult>(ex);
+			ExecutorCompletionService<ServiceInvocationResult> ecs = new ExecutorCompletionService<ServiceInvocationResult>(ex);
 			ecs.submit(task);
-
-			result = ecs.take().get();
-			
+			result = ecs.take().get();			
 			if (!result.isFault()) {
 				result.setResult("Successfully rollback Consents from CaTissue!");
 			}
