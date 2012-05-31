@@ -1,7 +1,6 @@
 package gov.nih.nci.integration.catissue.domain;
 
-import java.util.HashSet;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import edu.wustl.catissuecore.domain.ConsentTierStatus;
@@ -22,7 +21,7 @@ public class ConsentData {
 	private String specimenLabel;
 
 	public ConsentData() {
-		consentTierStatusSet = new HashSet<ConsentTierStatus>();
+		consentTierStatusSet = new LinkedHashSet<ConsentTierStatus>();
 	}
 	
 	public String getSpecimenLabel() {
