@@ -16,7 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:applicationContext-transcend-catissue.xml")
+@ContextConfiguration(locations = "classpath:applicationContext-transcend-catissue-test.xml")
 public class XSLTTransformerTest {
 
 	@Autowired
@@ -44,7 +44,6 @@ public class XSLTTransformerTest {
 		
 		String trnsfrmdMsg = transformToParticipantXML(getMsgBCMsg());
 		Assert.assertNotNull(trnsfrmdMsg);
-		System.out.println(trnsfrmdMsg);
 	}
 
 	private String transformToParticipantXML(String message)

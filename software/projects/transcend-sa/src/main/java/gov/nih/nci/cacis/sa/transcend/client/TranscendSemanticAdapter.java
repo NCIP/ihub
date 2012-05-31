@@ -1,9 +1,14 @@
-package gov.nih.nci.cacis.sa.transcend;
+package gov.nih.nci.cacis.sa.transcend.client;
 
+import gov.nih.nci.cacis.sa.transcend.AcceptSourceFault;
+import gov.nih.nci.cacis.sa.transcend.CaCISError;
+import gov.nih.nci.cacis.sa.transcend.CaCISFault;
+import gov.nih.nci.cacis.sa.transcend.CaCISRequest;
+import gov.nih.nci.cacis.sa.transcend.CaCISResponse;
+import gov.nih.nci.cacis.sa.transcend.ErrorType;
+import gov.nih.nci.cacis.sa.transcend.ResponseStatusType;
 import gov.nih.nci.integration.exception.IntegrationError;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;

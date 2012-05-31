@@ -1,4 +1,6 @@
-package gov.nih.nci.cacis.sa.transcend;
+package gov.nih.nci.cacis.sa.transcend.client;
+
+import gov.nih.nci.cacis.sa.transcend.AcceptSourcePortType;
 
 import java.net.MalformedURLException;
 import java.net.URL;

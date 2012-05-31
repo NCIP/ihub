@@ -27,6 +27,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.ws.BindingProvider;
 import javax.xml.ws.soap.SOAPFaultException;
 
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
@@ -49,7 +50,7 @@ public class CaAERSParticipantServiceWSClient {
 
 	private ClientPasswordCallback clientPasswordCallback;
 
-	public CaAERSParticipantServiceWSClient(String wsdl, String userName,
+	public CaAERSParticipantServiceWSClient(String serviceUrl, String userName,
 			ClientPasswordCallback clientPasswordCallback) throws IntegrationException {
 		super();
 		this.userName = userName;
@@ -58,14 +59,14 @@ public class CaAERSParticipantServiceWSClient {
 		try {
 			getUnmarshaller();
 
-			initClient(wsdl);
+			initClient(serviceUrl);			
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new IntegrationException(IntegrationError._1054, e.getMessage());
 		}
 	}
 
-	private void initClient(String wsdl) {
+	private void initClient(String serviceUrl) {
 		// Manual WSS4JOutInterceptor interceptor process - start
 		Map outProps = new HashMap();
 		outProps.put(WSHandlerConstants.ACTION,
@@ -81,11 +82,12 @@ public class CaAERSParticipantServiceWSClient {
 
 		factory.getOutInterceptors().add(wssOut);
 		factory.setServiceClass(ParticipantServiceInterface.class);
-		factory.setAddress(wsdl);
+		factory.setAddress(serviceUrl);
 
 		client = (ParticipantServiceInterface) factory.create();
 
 		Client clientProxy = ClientProxy.getClient(client);
+		
 		HTTPConduit http = (HTTPConduit) clientProxy.getConduit();
 		TLSClientParameters tlsClientParams = new TLSClientParameters();
 		tlsClientParams.setDisableCNCheck(true);
@@ -140,7 +142,7 @@ public class CaAERSParticipantServiceWSClient {
 	}
 
 	public CaaersServiceResponse deleteParticipant(String participantXMLStr)
-			throws JAXBException, MalformedURLException, SOAPFaultException {
+			throws JAXBException, MalformedURLException, SOAPFaultException, IntegrationException {
 		ParticipantType participant = parseParticipant(participantXMLStr);
 		
 		DeleteParticipant deleteParticipant = new DeleteParticipant();
@@ -154,12 +156,15 @@ public class CaAERSParticipantServiceWSClient {
 		} catch (SOAPFaultException e) {
 			//e.printStackTrace();
 			throw e;
+		} catch (Exception e) {
+			//e.printStackTrace();
+			throw new IntegrationException(IntegrationError._1053, e, (Object) null);
 		}
 		return retValue.getCaaersServiceResponse();
 	}
 
 	public CaaersServiceResponse updateParticipant(String participantXMLStr)
-			throws JAXBException, MalformedURLException, SOAPFaultException {
+			throws JAXBException, MalformedURLException, SOAPFaultException, IntegrationException {
 		ParticipantType participant = parseParticipant(participantXMLStr);
 		
 		UpdateParticipant updateParticipant = new UpdateParticipant();
@@ -173,12 +178,15 @@ public class CaAERSParticipantServiceWSClient {
 		} catch (SOAPFaultException e) {
 			//e.printStackTrace();
 			throw e;
+		} catch (Exception e) {
+			//e.printStackTrace();
+			throw new IntegrationException(IntegrationError._1053, e, (Object) null);
 		}
 		return retValue.getCaaersServiceResponse();
 	}
 
 	public CaaersServiceResponse getParticipant(String participantXMLStr)
-			throws JAXBException, MalformedURLException, SOAPFaultException {
+			throws JAXBException, MalformedURLException, SOAPFaultException, IntegrationException {
 		ParticipantType participant = parseParticipant(participantXMLStr);	
 		
 		GetParticipant getParticipant = new GetParticipant();
@@ -198,6 +206,9 @@ public class CaAERSParticipantServiceWSClient {
 		} catch (SOAPFaultException e) {
 			//e.printStackTrace();
 			throw e;
+		} catch (Exception e) {
+			//e.printStackTrace();
+			throw new IntegrationException(IntegrationError._1053, e, (Object) null);
 		}
 		return retValue.getCaaersServiceResponse();
 	}

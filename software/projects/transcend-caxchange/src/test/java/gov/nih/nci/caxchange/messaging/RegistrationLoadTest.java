@@ -2,9 +2,13 @@ package gov.nih.nci.caxchange.messaging;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.http.HttpEntity;
@@ -29,20 +33,38 @@ public class RegistrationLoadTest {
 	
 	private Date currDt = new Date();
 	
+	ExecutorService es = Executors.newFixedThreadPool(10);
+	
 	@Test
 	public void sendRegistrationMessage() throws InterruptedException {
-		ExecutorService es = Executors.newFixedThreadPool(10);
-		es.execute(getRunnable(0));
-		es.execute(getRunnable(1));
-		es.execute(getRunnable(2));
-		es.execute(getRunnable(3));
-		es.execute(getRunnable(4));
-		es.execute(getRunnable(5));
-		es.execute(getRunnable(6));
-		es.execute(getRunnable(7));
-		es.execute(getRunnable(8));
 		
-		es.awaitTermination(3, TimeUnit.MINUTES);		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(currDt.getTime() + 5000);
+		currDt = calendar.getTime();
+		
+		Timer timer = new Timer();
+		timer.schedule(getTimerTask(0), currDt);
+		timer.schedule(getTimerTask(1), currDt);
+		timer.schedule(getTimerTask(2), currDt);
+		timer.schedule(getTimerTask(3), currDt);
+		timer.schedule(getTimerTask(4), currDt);
+		timer.schedule(getTimerTask(5), currDt);
+		timer.schedule(getTimerTask(6), currDt);
+		timer.schedule(getTimerTask(7), currDt);
+		timer.schedule(getTimerTask(8), currDt);
+		timer.schedule(getTimerTask(9), currDt);
+		timer.schedule(getTimerTask(10), currDt);
+		timer.schedule(getTimerTask(11), currDt);
+		timer.schedule(getTimerTask(12), currDt);
+		timer.schedule(getTimerTask(13), currDt);
+		timer.schedule(getTimerTask(14), currDt);
+		timer.schedule(getTimerTask(15), currDt);
+		timer.schedule(getTimerTask(16), currDt);
+		timer.schedule(getTimerTask(17), currDt);
+		timer.schedule(getTimerTask(18), currDt);
+		timer.schedule(getTimerTask(19), currDt);
+		
+		es.awaitTermination(3, TimeUnit.MINUTES);
 	}
 	
 	private void sendMessage(int sfx) {
@@ -89,6 +111,15 @@ public class RegistrationLoadTest {
 			public void run() {
 				sendMessage(sfx);
 				
+			}
+		};
+	}
+	
+	private TimerTask getTimerTask(final int sfx) {
+		return new TimerTask() {			
+			@Override
+			public void run() {
+				es.execute(getRunnable(sfx));				
 			}
 		};
 	}

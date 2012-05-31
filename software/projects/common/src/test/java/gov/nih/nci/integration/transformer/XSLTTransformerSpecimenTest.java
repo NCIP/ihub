@@ -11,6 +11,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -21,12 +22,18 @@ public class XSLTTransformerSpecimenTest {
 	
 	@Autowired
 	private XSLTTransformer xsltTransformer;
+	
+	@Value("${integration.transformer.xsl.baseClassPath}")
+    private String baseXSLPath;
+	
+	@Value("${catissue.api.specimen.xsl}")
+    private String catissueSpecimenXsl;
 		
 	
-//	@Test
+	@Test
 	public void transformSpecimenInterimToXMLStringTest() throws IntegrationException {
 		
-		xsltTransformer.initTransformer("MsgBroadcasterSpecimen-to-caTissueSpecimens.xsl", "C:/Users/RohitG/.integration/ihub/xsl/");
+		xsltTransformer.initTransformer(catissueSpecimenXsl, baseXSLPath);
 		
 		String trnsfrmdMsg = transformXML(getInterimSpecimenXML());
 		

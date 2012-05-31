@@ -165,7 +165,7 @@
             <!-- Test -->            
         	<dependency org="org.easymock" name="easymockclassextension" rev="2.5.2" conf="test->default(*)" />
         	<dependency org="junit" name="junit" rev="4.8.2" conf="test->default(*)"/>
-        	<dependency org="cobertura" name="cobertura" rev="1.8" conf="test->default(*)"/>
+        	<dependency org="cobertura" name="cobertura" rev="1.9.3" conf="test->default(*)"/>
         	<dependency org="org.springframework" name="spring-test" rev="3.0.2.RELEASE" conf="test->default(*)"/>
         	<dependency org="org.hsqldb" name="hsqldb" rev="2.0.0" conf="test->default(*)"/>
         	

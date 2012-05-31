@@ -20,7 +20,6 @@ public class ClientPasswordCallback implements CallbackHandler {
 
 	public void handle(Callback[] callbacks) throws IOException, 
             UnsupportedCallbackException {
-		System.out.println("psswd clbck cl " + getClass().getClassLoader());
         WSPasswordCallback pc = (WSPasswordCallback) callbacks[0];
         if (userName.equals(pc.getIdentifier())) {
             pc.setPassword(password);
