@@ -72,7 +72,9 @@ public enum IntegrationError {
 	_1087(1087, ErrorType.VALIDATION, "Collection Protocol Event can't be changed while updating the Specimen."),//USED
 	_1088(1088, ErrorType.VALIDATION, "Collection Protocol can't be changed while updating the Specimen."),//USED
 	_1089(1089, ErrorType.VALIDATION, "Specimen Class can't be changed while updating the Specimen."),//USED
-	_1090(1090, ErrorType.VALIDATION, "Specimen for given LABEL doesn't exist."); //USED
+	_1090(1090, ErrorType.VALIDATION, "Specimen for given LABEL doesn't exist."),//USED
+	_1091(1091, ErrorType.VALIDATION, "Collection Protocol was not found in caTissue."),//USED
+	_1092(1092, ErrorType.VALIDATION, "ConsentTier Statement was not found for given CollectionProtocol in caTissue."); //USED
 		
 	
 	private int errorCode;
