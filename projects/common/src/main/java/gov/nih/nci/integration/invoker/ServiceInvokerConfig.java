@@ -19,26 +19,28 @@ public class ServiceInvokerConfig {
 
 	@Autowired
 	ServiceInvocationMessageDao serviceInvocationMessageDao;
-	
+
 	int corePoolSize = 10;
 
 	@Bean
 	public ServiceBroadcaster serviceBroadcaster() {
 		return new DefaultServiceBroadcaster(serviceInvocationMessageDao);
 	}
-	
+
 	@Bean
 	public Executor executor() {
 		return Executors.newScheduledThreadPool(10);
 	}
-	
+
 	/**
 	 * This must not be used as singleton, one must be created for each message
+	 * 
 	 * @return ServiceInvocatorAndResultAggregator
 	 */
 	@Bean
 	@Scope("prototype")
 	public ServiceInvocatorAndResultAggregator serviceInvocatorAndResultAggregator() {
-		return new TransactionalServiceInvocatorAndResultAggregator(serviceBroadcaster(), serviceInvocationMessageDao, executor());
+		return new TransactionalServiceInvocatorAndResultAggregator(
+				serviceBroadcaster(), serviceInvocationMessageDao, executor());
 	}
 }

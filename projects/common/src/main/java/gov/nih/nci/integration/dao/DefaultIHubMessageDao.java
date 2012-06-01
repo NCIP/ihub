@@ -16,14 +16,19 @@ public class DefaultIHubMessageDao extends AbstractDao<IHubMessage> implements
 	/**
 	 * Constructor.
 	 * 
-	 * @param em JPA EntityManager
+	 * @param em
+	 *            JPA EntityManager
 	 */
 	public DefaultIHubMessageDao(EntityManager em) {
 		super(IHubMessage.class, em);
 	}
-	
-	/* (non-Javadoc)
-	 * @see gov.nih.nci.integration.dao.IHubMessageDaoIntf#saveMessage(java.lang.String)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * gov.nih.nci.integration.dao.IHubMessageDaoIntf#saveMessage(java.lang.
+	 * String)
 	 */
 	public Long saveMessage(String request) {
 		IHubMessage iHubMessage = new IHubMessage();
@@ -31,7 +36,7 @@ public class DefaultIHubMessageDao extends AbstractDao<IHubMessage> implements
 		iHubMessage.setStartTime(new Date(currDt.getTime()));
 		iHubMessage.setRequest(request);
 		iHubMessage.setStatus(Status.PROCESS);
-		
+
 		return save(iHubMessage);
 	}
 

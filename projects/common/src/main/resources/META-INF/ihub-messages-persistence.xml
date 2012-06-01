@@ -1,16 +1,18 @@
-<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
-             version="2.0">
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0">
 
-    <persistence-unit name="ihub-messages" transaction-type="RESOURCE_LOCAL">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
-		       
-        <properties>
-            <property name="hibernate.hbm2ddl.auto" value="update"/>       
-            <property name="hibernate.jdbc.batch_size" value="0"/>
-            <property name="hibernate.connection.autocommit" value="true"/>             
-        </properties>
-        
-    </persistence-unit>
+	<persistence-unit name="ihub-messages"
+		transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+		<properties>
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.jdbc.batch_size" value="0" />
+			<property name="hibernate.connection.autocommit" value="true" />
+		</properties>
+
+	</persistence-unit>
 
 </persistence>

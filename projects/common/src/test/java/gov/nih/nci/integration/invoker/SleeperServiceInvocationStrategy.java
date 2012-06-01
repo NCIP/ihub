@@ -5,13 +5,13 @@ import gov.nih.nci.integration.domain.StrategyIdentifier;
 
 public class SleeperServiceInvocationStrategy implements
 		ServiceInvocationStrategy {
-	
+
 	private long sleeptime;
-	
+
 	private boolean makefault;
-	
+
 	private ServiceInvocationResult result;
-		
+
 	public SleeperServiceInvocationStrategy(long sleeptime, boolean makefault) {
 		super();
 		this.sleeptime = sleeptime;
@@ -37,20 +37,21 @@ public class SleeperServiceInvocationStrategy implements
 		}
 		result = new ServiceInvocationResult();
 		if (makefault) {
-			result.setInvocationException(new RuntimeException("Sleeper service throws exception"));
+			result.setInvocationException(new RuntimeException(
+					"Sleeper service throws exception"));
 		} else {
 			result.setResult("Successfully waited for " + sleeptime + " ms.");
 			result.setDataChanged(true);
 		}
-		
+
 		return result;
 	}
 
 	@Override
 	public ServiceInvocationResult rollback(ServiceInvocationMessage message) {
 		ServiceInvocationResult rlbkRes = new ServiceInvocationResult();
-		rlbkRes.setResult("Successfully rollback");		
-		return rlbkRes; 
+		rlbkRes.setResult("Successfully rollback");
+		return rlbkRes;
 	}
 
 	public ServiceInvocationResult getResult() {

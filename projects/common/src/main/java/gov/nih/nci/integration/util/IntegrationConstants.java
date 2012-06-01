@@ -1,8 +1,8 @@
 package gov.nih.nci.integration.util;
 
 public class IntegrationConstants {
-	
-	//response tags
+
+	// response tags
 	public static final String NS = "http://caXchange.nci.nih.gov/messaging";
 	public static final String ROOT_NODE = "caXchangeRequestMessage";
 	public static final String REQUEST_ELEMENT = "request";
@@ -22,7 +22,7 @@ public class IntegrationConstants {
 	public static final String OPERATION_NAME_ELEMENT = "operationName";
 	public static final String SERVICE_TYPE_ELEMENT = "serviceType";
 
-	//error codes
+	// error codes
 	public static final String OK = "000";
 	public static final String UNKNOWN = "001";
 	public static final String AXIS_FAULT = "101";
@@ -43,28 +43,28 @@ public class IntegrationConstants {
 	public static final String PERMISSION_DENIED_FAULT = "503";
 	public static final String PAYLOAD_VALIDATION_EXCEPTION = "600";
 	public static final String ERROR_GETTING_METADATA = "650";
-	
-	//message status
+
+	// message status
 	public static final String MESSAGE_STATUS_OPEN = "OPEN";
 	public static final String MESSAGE_STATUS_IN_PROCESS = "IN_PROCESS";
 	public static final String MESSAGE_STATUS_PROCESSED = "PROCESSED";
 	public static final String MESSAGE_STATUS_RESPONSE_RETURNED = "RESPONSE_RETURNED";
-	
+
 	public static final String SERVICE_TYPE_REGISTRATION = "Registration";
 	public static final String SERVICE_TYPE_AE = "AE";
-	
-	//overall response status
+
+	// overall response status
 	public static final String OVERALL_RESPONSE_STATUS_SUCCESS = "SUCCESS";
 	public static final String OVERALL_RESPONSE_STATUS_FAILURE = "FAILURE";
-	
-	//target response status
+
+	// target response status
 	public static final String TARGET_RESPONSE_STATUS_SUCCESSFUL = "SUCCESSFUL";
 	public static final String TARGET_RESPONSE_STATUS_FAULT = "FAULT";
 	public static final String TARGET_RESPONSE_STATUS_TIMEOUT = "TIMEOUT";
-	
-	//target details
-	public static final String TARGET_DETAIL_CAAERS = "caAERS";	
-	//FIXIT: Keeping these to match lookup table type_ihub
+
+	// target details
+	public static final String TARGET_DETAIL_CAAERS = "caAERS";
+	// FIXIT: Keeping these to match lookup table type_ihub
 	public static final String TARGET_DETAIL_PSC = "PSC";
 	public static final String TARGET_DETAIL_CTOM = "CTOM";
 	public static final String TARGET_DETAIL_C3PR = "C3PR";
@@ -74,9 +74,9 @@ public class IntegrationConstants {
 	public static final String TARGET_DETAIL_VALIDATION = "VALIDATION";
 	public static final String TARGET_DETAIL_AUTHENTICATION = "AUTHENTICATION";
 
-	//static responses
+	// static responses
 	public static final String SUCCESS_RESULT_ON_VOID_RETURN = "<result>success</result>";
-	
+
 	public static final String MIRTH_HTTP_LISTENER_USER = "mirth.http.listener.user";
 	public static final String MIRTH_HTTP_LISTENER_PASSWORD = "mirth.http.listener.password";
 	public static final String MIRTH_HTTP_LISTENER_URL = "mirth.http.listener.url";

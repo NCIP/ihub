@@ -183,14 +183,19 @@
 		</fileset>
 	</path>
 	
+	<!-- This path will contain all the jars for running test setup -->
+	<path id="test.lib.classpath">
+		<fileset dir="${test.lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	
 	<!-- This path will contain all the classes that are required to 
 		compile test cases -->
 	<path id="test.classpath">
 		<pathelement path="${jar.file}" />
 		<path refid="main.classpath" />
-		<fileset dir="${test.lib.dir}">
-			<include name="**/*.jar" />
-		</fileset>
+		<path refid="test.lib.classpath" />
 	</path>
 	
 	<!-- This path will contain all the lib that are required to 
@@ -666,13 +671,8 @@
 			-->
 			<mkdir dir="${cobertura.report.dir}" />
 			<mkdir dir="${cobertura.report.dir}/xmlreport" />
-			<taskdef  resource="tasks.properties">
-				<classpath>
-					<fileset dir="${test.lib.dir}">
-						<include name="**/*.jar" />
-					</fileset>
-				</classpath>
-			</taskdef>
+			<taskdef  resource="tasks.properties" classpathref="test.lib.classpath"/>
+		
 			<echo message="excluded from instrument ${cobertura.instrument.exclude}"/>
 			<condition property="instrument.exclude.pattern" value="${cobertura.instrument.exclude}" else="">
 				<isset property="cobertura.instrument.exclude"/>
@@ -717,11 +717,43 @@
 		</junit>
 		
 	</target>
-
+	
+	<!-- ============================================================== 
+			target: integration-test                                                
+		============================================================== -->
+		
+	<target name="test.integration" if="run.test" description="Runs the integration testcases">
+		<echo message="Executing in ${ant.project.name}" />
+		<echo message="Test results dir: ${test.results.dir}, with pattern **/*IntegrationTest.class and classes from ${test.classes.dir}" />
+		<echo message="Questionable props: ${test.run.classpath}" />
+		<mkdir dir="${test.results.dir}" />
+				
+		<junit printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" 
+			showoutput="false" outputtoformatters="false" fork="true" forkmode="once" timeout="600000" 
+			dir="${basedir}">
+						
+			<classpath location="${instrumented.classes.dir}" />
+			<classpath refid="test.run.classpath" />
+			
+			<sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.report.dir}/cobertura.ser" />
+			
+			<formatter type="plain"/>
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${test.results.dir}">
+				<fileset dir="${test.classes.dir}">
+					<include name="**/*IntegrationTest.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+		
+	</target>
+	
  	<!-- ============================================================== 
 			target: cobertura-report                                                
 	============================================================== -->
 	<target name="cobertura-report" unless="skip.review.reports" description="-> Will create the corbetura coverage report">
+		<taskdef  resource="tasks.properties" classpathref="test.lib.classpath"/>
+		
 		<cobertura-report format="html" destdir="${cobertura.report.dir}" srcdir="${main.src}" datafile="${cobertura.report.dir}/cobertura.ser"/>
 		<cobertura-report format="xml" destdir="${cobertura.report.dir}/xmlreport" srcdir="${main.src}" datafile="${cobertura.report.dir}/cobertura.ser"/>
 	</target>
@@ -733,6 +765,7 @@
 		<isfalse value="${run.cobertura.check}"/>
 	</condition>
 	<target name="cobertura-check" unless="skip.cobertura.check" description="-> Will check the corbetura coverage rate">
+		<taskdef  resource="tasks.properties" classpathref="test.lib.classpath"/>
 		<cobertura-check branchrate="${cobertura.branchrate}" totalbranchrate="${cobertura.totalbranchrate}" totallinerate="${cobertura.totallinerate}" 
 			haltonfailure="false" failureproperty="cobertura.check.failure" 
 			datafile="${cobertura.report.dir}/cobertura.ser" />

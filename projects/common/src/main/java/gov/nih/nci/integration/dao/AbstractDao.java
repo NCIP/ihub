@@ -15,8 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
  * Base class for Dao implementations.
  * 
  * @author chandrasekaravr
- * @param <T> entity
- *            
+ * @param <T>
+ *            entity
+ * 
  */
 
 @Transactional
@@ -25,10 +26,10 @@ public abstract class AbstractDao<T extends AbstractIdentity> implements Dao<T> 
 	private static final Logger LOG = LoggerFactory
 			.getLogger(AbstractDao.class);
 	private final Class<T> domainClass;
-	
-	@PersistenceContext(unitName="ihub-messages")
+
+	@PersistenceContext(unitName = "ihub-messages")
 	private EntityManager em;
-	
+
 	/**
 	 * @param domainClass
 	 *            - entity class
@@ -98,10 +99,9 @@ public abstract class AbstractDao<T extends AbstractIdentity> implements Dao<T> 
 	public EntityManager getEm() {
 		return em;
 	}
-	
+
 	public void setEm(EntityManager em) {
 		this.em = em;
 	}
 
-	
 }

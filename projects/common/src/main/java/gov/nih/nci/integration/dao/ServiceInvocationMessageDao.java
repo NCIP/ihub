@@ -5,7 +5,8 @@ import gov.nih.nci.integration.domain.StrategyIdentifier;
 
 import java.util.Map;
 
-public interface ServiceInvocationMessageDao extends Dao<ServiceInvocationMessage> {
+public interface ServiceInvocationMessageDao extends
+		Dao<ServiceInvocationMessage> {
 
 	/**
 	 * {@inheritDoc}

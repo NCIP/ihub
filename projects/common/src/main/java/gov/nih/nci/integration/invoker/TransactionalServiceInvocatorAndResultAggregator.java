@@ -22,32 +22,34 @@ import org.slf4j.LoggerFactory;
  */
 public class TransactionalServiceInvocatorAndResultAggregator implements
 		ServiceInvocatorAndResultAggregator {
-	
+
 	private ServiceBroadcaster serviceBroadcaster;
 	private ServiceInvocationMessageDao serviceInvocationMessageDao;
 	private ExecutorCompletionService<ServiceInvocationResult> executorCompletionService;
 
 	private Collection<ServiceInvocationStrategy> serviceInvocationStrategies;
-	
+
 	private static Logger LOG = LoggerFactory
-		.getLogger(TransactionalServiceInvocatorAndResultAggregator.class);
+			.getLogger(TransactionalServiceInvocatorAndResultAggregator.class);
 
 	public TransactionalServiceInvocatorAndResultAggregator(
 			ServiceBroadcaster serviceBroadcaster,
 			ServiceInvocationMessageDao serviceInvocationMessageDao,
 			Executor executor) {
-		super();		
+		super();
 		this.serviceBroadcaster = serviceBroadcaster;
 		this.serviceInvocationMessageDao = serviceInvocationMessageDao;
-		this.executorCompletionService = new ExecutorCompletionService<ServiceInvocationResult>(executor);
+		this.executorCompletionService = new ExecutorCompletionService<ServiceInvocationResult>(
+				executor);
 		this.serviceInvocationStrategies = new ArrayList<ServiceInvocationStrategy>();
-		
-		System.out.println("serviceInvocationMessageDao 2 is " + serviceInvocationMessageDao);
+
+		System.out.println("serviceInvocationMessageDao 2 is "
+				+ serviceInvocationMessageDao);
 	}
 
 	@Override
-	public synchronized void invokeService(Long referenceMessageId, String message,
-			ServiceInvocationStrategy serviceInvocationStrategy) {
+	public synchronized void invokeService(Long referenceMessageId,
+			String message, ServiceInvocationStrategy serviceInvocationStrategy) {
 
 		executorCompletionService.submit(new ServiceBroadcasterTask(
 				serviceBroadcaster, referenceMessageId, message,
@@ -58,16 +60,17 @@ public class TransactionalServiceInvocatorAndResultAggregator implements
 	@Override
 	public ServiceInvocationResult aggregateResults(Long refMsgId) {
 		ServiceInvocationResult serviceInvocationResult = null;
-		
-		//TODO is check required to match refMsgId
-		
+
+		// TODO is check required to match refMsgId
+
 		List<ServiceInvocationResult> serviceInvocationResultLst = new ArrayList<ServiceInvocationResult>();
 		final int noOfTasks = serviceInvocationStrategies.size();
-		
+
 		boolean isRollback = false;
 		for (int i = 0; i < noOfTasks; i++) {
 			try {
-				serviceInvocationResult = executorCompletionService.take().get();				
+				serviceInvocationResult = executorCompletionService.take()
+						.get();
 			} catch (InterruptedException e) {
 				serviceInvocationResult = new ServiceInvocationResult();
 				serviceInvocationResult.setInvocationException(e);
@@ -81,15 +84,17 @@ public class TransactionalServiceInvocatorAndResultAggregator implements
 		}// end of for
 
 		if (isRollback) {
-			LOG.debug("Exception while service invocation", serviceInvocationResult.getInvocationException());
+			LOG.debug("Exception while service invocation",
+					serviceInvocationResult.getInvocationException());
 			executeRollback(refMsgId);
 			return serviceInvocationResult;
 		}
-	
+
 		serviceInvocationResult = checkRollback(serviceInvocationResultLst);
-		
+
 		if (serviceInvocationResult.isFault()) {
-			LOG.debug("Exception from service", serviceInvocationResult.getInvocationException());
+			LOG.debug("Exception from service", serviceInvocationResult
+					.getInvocationException());
 			executeRollback(refMsgId);
 		}
 		return serviceInvocationResult;
@@ -97,16 +102,17 @@ public class TransactionalServiceInvocatorAndResultAggregator implements
 
 	private void executeRollback(Long referenceMessageId) {
 		LOG.debug("Executing rollback");
-		Map<StrategyIdentifier, ServiceInvocationMessage> msgsMap =
-			serviceInvocationMessageDao.getAllByReferenceMessageId(referenceMessageId);
-		
+		Map<StrategyIdentifier, ServiceInvocationMessage> msgsMap = serviceInvocationMessageDao
+				.getAllByReferenceMessageId(referenceMessageId);
+
 		for (ServiceInvocationStrategy serviceInvocationStrategy : serviceInvocationStrategies) {
-			ServiceInvocationMessage msg = msgsMap.get(serviceInvocationStrategy.getStrategyIdentifier());
+			ServiceInvocationMessage msg = msgsMap
+					.get(serviceInvocationStrategy.getStrategyIdentifier());
 			if (!msg.isDataChanged()) {
 				continue;
 			}
-			executorCompletionService.submit(new ServiceRollbackTask(
-					msg, serviceInvocationStrategy));
+			executorCompletionService.submit(new ServiceRollbackTask(msg,
+					serviceInvocationStrategy));
 		}
 	}
 

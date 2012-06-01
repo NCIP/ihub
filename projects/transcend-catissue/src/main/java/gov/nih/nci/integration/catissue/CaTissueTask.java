@@ -21,20 +21,24 @@ public class CaTissueTask implements Callable<ServiceInvocationResult> {
 	public Object caTissueClientInstance;
 	public Method methodToInvoke;
 	public String message;
-	
+
 	private static Logger LOG = LoggerFactory.getLogger(CaTissueTask.class);
 
 	public CaTissueTask(Class caTissueParticipantClientClass, String loginName,
 			String password, String methodName, Class[] paramClasses,
-			String message) throws IntegrationException  {
+			String message) throws IntegrationException {
 		super();
 		try {
-			Constructor constructor = caTissueParticipantClientClass.getDeclaredConstructor(String.class, String.class);
-			this.caTissueClientInstance = constructor.newInstance(loginName,password);
-			methodToInvoke = caTissueParticipantClientClass.getDeclaredMethod(methodName, String.class);
+			Constructor constructor = caTissueParticipantClientClass
+					.getDeclaredConstructor(String.class, String.class);
+			this.caTissueClientInstance = constructor.newInstance(loginName,
+					password);
+			methodToInvoke = caTissueParticipantClientClass.getDeclaredMethod(
+					methodName, String.class);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new IntegrationException(IntegrationError._1052, e.getMessage());
+			throw new IntegrationException(IntegrationError._1052, e
+					.getMessage());
 		}
 
 		this.message = message;
@@ -44,23 +48,32 @@ public class CaTissueTask implements Callable<ServiceInvocationResult> {
 	public ServiceInvocationResult call() {
 		ServiceInvocationResult result = new ServiceInvocationResult();
 		try {
-			Object retValue = methodToInvoke.invoke(caTissueClientInstance, message);
+			Object retValue = methodToInvoke.invoke(caTissueClientInstance,
+					message);
 			result.setDataChanged(true);
 			result.setOriginalData(retValue);
 		} catch (InvocationTargetException e) {
-			String exceptionMessage = e.getTargetException().getMessage() ;
-//			System.out.println("Inside CaTissueTask..call()..InvocationTargetException Message is :: " + exceptionMessage);	
-			LOG.error("Inside CaTissueTask..call()..InvocationTargetException Message is :: " + exceptionMessage);	
-			IntegrationException ie = new IntegrationException(IntegrationError._1051, e.getTargetException(), exceptionMessage);
-			result.setInvocationException(ie);					
-		} catch (Exception e) {	
-			String exceptionMessage = e.getMessage() ;
-//			System.out.println("Inside CaTissueTask..call()..Exception Message is :: " + exceptionMessage);	
-			LOG.error("Inside CaTissueTask..call()..Exception Message is :: " + exceptionMessage);	
-			IntegrationException ie = new IntegrationException(IntegrationError._1051, e, exceptionMessage);
+			String exceptionMessage = e.getTargetException().getMessage();
+			// System.out.println("Inside CaTissueTask..call()..InvocationTargetException Message is :: "
+			// + exceptionMessage);
+			LOG
+					.error("Inside CaTissueTask..call()..InvocationTargetException Message is :: "
+							+ exceptionMessage);
+			IntegrationException ie = new IntegrationException(
+					IntegrationError._1051, e.getTargetException(),
+					exceptionMessage);
 			result.setInvocationException(ie);
-		} 	
-	
+		} catch (Exception e) {
+			String exceptionMessage = e.getMessage();
+			// System.out.println("Inside CaTissueTask..call()..Exception Message is :: "
+			// + exceptionMessage);
+			LOG.error("Inside CaTissueTask..call()..Exception Message is :: "
+					+ exceptionMessage);
+			IntegrationException ie = new IntegrationException(
+					IntegrationError._1051, e, exceptionMessage);
+			result.setInvocationException(ie);
+		}
+
 		return result;
 	}
 }

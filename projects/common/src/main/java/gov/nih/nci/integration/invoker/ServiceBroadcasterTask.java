@@ -7,14 +7,15 @@ import java.util.concurrent.Callable;
 
 import org.apache.commons.lang.StringUtils;
 
-public class ServiceBroadcasterTask implements Callable<ServiceInvocationResult> {
-	
+public class ServiceBroadcasterTask implements
+		Callable<ServiceInvocationResult> {
+
 	private ServiceBroadcaster serviceBroadcaster;
-	
+
 	private Long referenceMessageId;
-	
+
 	private String message;
-	
+
 	private ServiceInvocationStrategy serviceInvocationStrategy;
 
 	public ServiceBroadcasterTask(ServiceBroadcaster serviceBroadcaster,
@@ -30,21 +31,22 @@ public class ServiceBroadcasterTask implements Callable<ServiceInvocationResult>
 	@Override
 	public ServiceInvocationResult call() throws IntegrationException {
 		if (serviceBroadcaster == null) {
-			throw new IntegrationException(IntegrationError._1062);			
+			throw new IntegrationException(IntegrationError._1062);
 		}
-		
+
 		if (referenceMessageId < 1) {
 			throw new IntegrationException(IntegrationError._1063);
-		}		
-		
+		}
+
 		if (StringUtils.isEmpty(message)) {
 			throw new IntegrationException(IntegrationError._1064);
 		}
-		
+
 		if (serviceInvocationStrategy == null) {
 			throw new IntegrationException(IntegrationError._1065);
 		}
-		return serviceBroadcaster.delegateServiceInvocation(referenceMessageId, message, serviceInvocationStrategy);
+		return serviceBroadcaster.delegateServiceInvocation(referenceMessageId,
+				message, serviceInvocationStrategy);
 	}
-		
+
 }
