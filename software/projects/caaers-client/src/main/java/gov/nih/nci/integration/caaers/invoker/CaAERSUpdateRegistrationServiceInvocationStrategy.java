@@ -50,7 +50,7 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 	private static final Logger LOG = LoggerFactory
 			.getLogger(CaAERSUpdateRegistrationServiceInvocationStrategy.class);
 
-	private static QName QNAME = new QName(
+	private static QName QNAME = new QName(// NOPMD
 			"http://schema.integration.caaers.cabig.nci.nih.gov/participant",
 			"participant");;
 
@@ -266,10 +266,10 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 		if (wserrors != null && !wserrors.isEmpty()) {
 			error = wserrors.get(0);
 			ie = new IntegrationException(IntegrationError._1053,
-					new Throwable(error.getException()), error.getErrorDesc());
+					new Throwable(error.getException()), error.getErrorDesc());// NOPMD
 		} else {
 			ie = new IntegrationException(IntegrationError._1053,
-					new Throwable(response.getMessage()), response.getMessage());
+					new Throwable(response.getMessage()), response.getMessage());// NOPMD
 		}
 		result.setInvocationException(ie);
 	}
