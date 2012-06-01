@@ -43,8 +43,7 @@ public class XSLTTransformer {
 	/**
 	 * Constructor
 	 * 
-	 * @param TransformerFactory
-	 *            xslt transformer factory
+	 * @param transformerFactory - xslt transformer factory
 	 */
 	public XSLTTransformer(TransformerFactory transformerFactory) {
 		this.factory = transformerFactory;
