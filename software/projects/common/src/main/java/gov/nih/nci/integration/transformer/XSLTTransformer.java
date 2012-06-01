@@ -22,90 +22,79 @@ import org.apache.commons.lang.StringUtils;
  */
 public class XSLTTransformer {
 
-	/**
-	 * Transformer using XSLT.
-	 */
-	private Transformer transformer = null;
+    /**
+     * Transformer using XSLT.
+     */
+    private Transformer transformer = null;
 
-	private TransformerFactory factory = null;
+    private TransformerFactory factory = null;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param transformer
-	 *            xslt transformer
-	 */
-	public XSLTTransformer(Transformer transformer) {
-		this.transformer = transformer;
-		this.factory = null;
-	}
+    /**
+     * Constructor
+     * 
+     * @param transformer xslt transformer
+     */
+    public XSLTTransformer(Transformer transformer) {
+        this.transformer = transformer;
+        this.factory = null;
+    }
 
-	/**
-	 * Constructor
-	 * 
-	 * @param transformerFactory - xslt transformer factory
-	 */
-	public XSLTTransformer(TransformerFactory transformerFactory) {
-		this.factory = transformerFactory;
-	}
+    /**
+     * Constructor
+     * 
+     * @param transformerFactory - xslt transformer factory
+     */
+    public XSLTTransformer(TransformerFactory transformerFactory) {
+        this.factory = transformerFactory;
+    }
 
-	/**
-	 * Initializes the transformer to be used
-	 * 
-	 * @param xslFileName
-	 *            - xslFileName for the transformer
-	 * @param xslBasePath
-	 *            - Base xsl file path for resolver
-	 * @throws IntegrationException
-	 *             - exception thrown if any
-	 */
-	public void initTransformer(String xslFileName, String xslBasePath)// NOPMD
-			throws IntegrationException {
-		if (factory == null) {
-			throw new IntegrationException(IntegrationError._1060);
-		}
-		if (StringUtils.isEmpty(xslFileName)) {
-			throw new IntegrationException(IntegrationError._1061);
-		}
-		if (StringUtils.isEmpty(xslBasePath)) {
-			xslBasePath = ".";
-		}
+    /**
+     * Initializes the transformer to be used
+     * 
+     * @param xslFileName - xslFileName for the transformer
+     * @param xslBasePath - Base xsl file path for resolver
+     * @throws IntegrationException - exception thrown if any
+     */
+    public void initTransformer(String xslFileName, String xslBasePath)// NOPMD
+            throws IntegrationException {
+        if (factory == null) {
+            throw new IntegrationException(IntegrationError._1060);
+        }
+        if (StringUtils.isEmpty(xslFileName)) {
+            throw new IntegrationException(IntegrationError._1061);
+        }
+        if (StringUtils.isEmpty(xslBasePath)) {
+            xslBasePath = ".";
+        }
 
-		try {
-			transformer = factory.newTransformer(factory.getURIResolver()
-					.resolve(xslFileName, xslBasePath));
-		} catch (TransformerConfigurationException e) {
-			throw new IntegrationException(IntegrationError._1025, e);
-		} catch (TransformerException e) {
-			throw new IntegrationException(IntegrationError._1026, e);
-		}
-	}
+        try {
+            transformer = factory.newTransformer(factory.getURIResolver().resolve(xslFileName, xslBasePath));
+        } catch (TransformerConfigurationException e) {
+            throw new IntegrationException(IntegrationError._1025, e);
+        } catch (TransformerException e) {
+            throw new IntegrationException(IntegrationError._1026, e);
+        }
+    }
 
-	/**
-	 * Performs xsl transformation on source XML
-	 * 
-	 * @param params
-	 *            the set of parameters to pass to the transformation, may be
-	 *            null
-	 * @param in
-	 *            XML input stream
-	 * @param out
-	 *            XML output stream
-	 * @throws IntegrationException
-	 *             exception
-	 */
-	public void transform(Map<String, String> params, InputStream in,
-			OutputStream out) throws IntegrationException {
-		if (params != null) {
-			for (Entry<String, String> entry : params.entrySet()) {
-				transformer.setParameter(entry.getKey(), entry.getValue());
-			}
-		}
+    /**
+     * Performs xsl transformation on source XML
+     * 
+     * @param params the set of parameters to pass to the transformation, may be null
+     * @param in XML input stream
+     * @param out XML output stream
+     * @throws IntegrationException exception
+     */
+    public void transform(Map<String, String> params, InputStream in, OutputStream out) throws IntegrationException {
+        if (params != null) {
+            for (Entry<String, String> entry : params.entrySet()) {
+                transformer.setParameter(entry.getKey(), entry.getValue());
+            }
+        }
 
-		try {
-			transformer.transform(new StreamSource(in), new StreamResult(out));
-		} catch (TransformerException e) {
-			throw new IntegrationException(IntegrationError._1027, e);
-		}
-	}
+        try {
+            transformer.transform(new StreamSource(in), new StreamResult(out));
+        } catch (TransformerException e) {
+            throw new IntegrationException(IntegrationError._1027, e);
+        }
+    }
 }

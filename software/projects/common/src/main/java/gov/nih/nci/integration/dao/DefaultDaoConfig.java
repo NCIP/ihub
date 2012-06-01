@@ -16,31 +16,31 @@ import org.springframework.context.annotation.Scope;
 @Configuration
 public class DefaultDaoConfig implements DaoConfig {
 
-	@PersistenceContext(unitName = "ihub-messages")
-	private EntityManager em;
+    @PersistenceContext(unitName = "ihub-messages")
+    private EntityManager em;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gov.nih.nci.integration.dao.DaoConfig#iHubMessageDao()
-	 */
-	@Bean
-	@Scope("prototype")
-	@Override
-	public IHubMessageDao iHubMessageDao() {
-		return new DefaultIHubMessageDao(em);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see gov.nih.nci.integration.dao.DaoConfig#iHubMessageDao()
+     */
+    @Bean
+    @Scope("prototype")
+    @Override
+    public IHubMessageDao iHubMessageDao() {
+        return new DefaultIHubMessageDao(em);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gov.nih.nci.integration.dao.DaoConfig#serviceInvocationMessageDao()
-	 */
-	@Bean
-	@Scope("prototype")
-	@Override
-	public ServiceInvocationMessageDao serviceInvocationMessageDao() {
-		return new DefaultServiceInvocationMessageDao(em);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see gov.nih.nci.integration.dao.DaoConfig#serviceInvocationMessageDao()
+     */
+    @Bean
+    @Scope("prototype")
+    @Override
+    public ServiceInvocationMessageDao serviceInvocationMessageDao() {
+        return new DefaultServiceInvocationMessageDao(em);
+    }
 
 }

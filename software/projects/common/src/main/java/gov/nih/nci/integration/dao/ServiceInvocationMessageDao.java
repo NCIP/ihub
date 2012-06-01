@@ -7,19 +7,19 @@ import java.util.Map;
 
 /**
  * ServiceInvocationMessageDao
+ * 
  * @author Vinodh
- *
+ * 
  */
-public interface ServiceInvocationMessageDao extends
-		Dao<ServiceInvocationMessage> {
+public interface ServiceInvocationMessageDao extends Dao<ServiceInvocationMessage> {
 
-	/**
-	 * getAllByReferenceMessageId
-	 * @param refMsgId - MessageId
-	 * @return Map
-	 */
-	@SuppressWarnings("unchecked")
-	public abstract Map<StrategyIdentifier, ServiceInvocationMessage> getAllByReferenceMessageId(
-			Long refMsgId);
+    /**
+     * getAllByReferenceMessageId
+     * 
+     * @param refMsgId - MessageId
+     * @return Map
+     */
+    @SuppressWarnings("unchecked")
+    public abstract Map<StrategyIdentifier, ServiceInvocationMessage> getAllByReferenceMessageId(Long refMsgId);
 
 }

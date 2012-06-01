@@ -21,81 +21,69 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = "classpath:applicationContext-common-test.xml")
 public class TransactionalServiceInvocatorAndResultAggregatorTest {
 
-	@PersistenceContext(unitName = "ihub-messages")
-	private EntityManager em;
+    @PersistenceContext(unitName = "ihub-messages")
+    private EntityManager em;
 
-	@Autowired
-	ServiceInvocatorAndResultAggregator serviceInvocatorAndResultAggregator;
+    @Autowired
+    ServiceInvocatorAndResultAggregator serviceInvocatorAndResultAggregator;
 
-	@Test
-	public void aggregateResults() {
-		long refMsgId = 12345L;
-		String message = "Test message";
-		SleeperServiceInvocationStrategy svcStrtgy1 = new SleeperServiceInvocationStrategy(
-				3000, false);
-		SleeperServiceInvocationStrategy svcStrtgy2 = new SleeperServiceInvocationStrategy(
-				8000, false);
-		SleeperServiceInvocationStrategy svcStrtgy3 = new SleeperServiceInvocationStrategy(
-				5000, false);
+    @Test
+    public void aggregateResults() {
+        long refMsgId = 12345L;
+        String message = "Test message";
+        SleeperServiceInvocationStrategy svcStrtgy1 = new SleeperServiceInvocationStrategy(3000, false);
+        SleeperServiceInvocationStrategy svcStrtgy2 = new SleeperServiceInvocationStrategy(8000, false);
+        SleeperServiceInvocationStrategy svcStrtgy3 = new SleeperServiceInvocationStrategy(5000, false);
 
-		serviceInvocatorAndResultAggregator.invokeService(refMsgId, message,
-				svcStrtgy1);
-		serviceInvocatorAndResultAggregator.invokeService(refMsgId, message,
-				svcStrtgy2);
-		serviceInvocatorAndResultAggregator.invokeService(refMsgId, message,
-				svcStrtgy3);
+        serviceInvocatorAndResultAggregator.invokeService(refMsgId, message, svcStrtgy1);
+        serviceInvocatorAndResultAggregator.invokeService(refMsgId, message, svcStrtgy2);
+        serviceInvocatorAndResultAggregator.invokeService(refMsgId, message, svcStrtgy3);
 
-		ServiceInvocationResult serviceInvocationResult = serviceInvocatorAndResultAggregator
-				.aggregateResults(refMsgId);
-		assertNotNull(serviceInvocationResult);
-		assertEquals("Success", serviceInvocationResult.getResult());
+        ServiceInvocationResult serviceInvocationResult = serviceInvocatorAndResultAggregator
+                .aggregateResults(refMsgId);
+        assertNotNull(serviceInvocationResult);
+        assertEquals("Success", serviceInvocationResult.getResult());
 
-		assertNotNull(svcStrtgy1.getResult());
-		assertEquals(false, svcStrtgy1.getResult().isFault());
-		assertNotNull(svcStrtgy2.getResult());
-		assertEquals(false, svcStrtgy2.getResult().isFault());
-		assertNotNull(svcStrtgy3.getResult());
-		assertEquals(false, svcStrtgy3.getResult().isFault());
-	}
+        assertNotNull(svcStrtgy1.getResult());
+        assertEquals(false, svcStrtgy1.getResult().isFault());
+        assertNotNull(svcStrtgy2.getResult());
+        assertEquals(false, svcStrtgy2.getResult().isFault());
+        assertNotNull(svcStrtgy3.getResult());
+        assertEquals(false, svcStrtgy3.getResult().isFault());
+    }
 
-	@Test
-	public void aggregateResultsWithError() {
-		long refMsgId = 12346L;
-		String message = "Test message";
-		SleeperServiceInvocationStrategy svcStrtgy1 = new SleeperServiceInvocationStrategy(
-				3000, false);
-		SleeperServiceInvocationStrategy svcStrtgy2 = new SleeperServiceInvocationStrategy(
-				8000, true);
-		SleeperServiceInvocationStrategy svcStrtgy3 = new SleeperServiceInvocationStrategy(
-				5000, false);
+    @Test
+    public void aggregateResultsWithError() {
+        long refMsgId = 12346L;
+        String message = "Test message";
+        SleeperServiceInvocationStrategy svcStrtgy1 = new SleeperServiceInvocationStrategy(3000, false);
+        SleeperServiceInvocationStrategy svcStrtgy2 = new SleeperServiceInvocationStrategy(8000, true);
+        SleeperServiceInvocationStrategy svcStrtgy3 = new SleeperServiceInvocationStrategy(5000, false);
 
-		serviceInvocatorAndResultAggregator.invokeService(refMsgId, message,
-				svcStrtgy1);
-		serviceInvocatorAndResultAggregator.invokeService(refMsgId, message,
-				svcStrtgy2);
-		serviceInvocatorAndResultAggregator.invokeService(refMsgId, message,
-				svcStrtgy3);
+        serviceInvocatorAndResultAggregator.invokeService(refMsgId, message, svcStrtgy1);
+        serviceInvocatorAndResultAggregator.invokeService(refMsgId, message, svcStrtgy2);
+        serviceInvocatorAndResultAggregator.invokeService(refMsgId, message, svcStrtgy3);
 
-		ServiceInvocationResult serviceInvocationResult = serviceInvocatorAndResultAggregator
-				.aggregateResults(refMsgId);
-		assertNotNull(serviceInvocationResult);
-		assertEquals(true, serviceInvocationResult.isFault());
+        ServiceInvocationResult serviceInvocationResult = serviceInvocatorAndResultAggregator
+                .aggregateResults(refMsgId);
+        assertNotNull(serviceInvocationResult);
+        assertEquals(true, serviceInvocationResult.isFault());
 
-		assertNotNull(svcStrtgy1.getResult());
-		assertEquals(false, svcStrtgy1.getResult().isFault());
-		assertNotNull(svcStrtgy2.getResult());
-		assertEquals(true, svcStrtgy2.getResult().isFault());
-		assertNotNull(svcStrtgy3.getResult());
-		assertEquals(false, svcStrtgy3.getResult().isFault());
-	}
+        assertNotNull(svcStrtgy1.getResult());
+        assertEquals(false, svcStrtgy1.getResult().isFault());
+        assertNotNull(svcStrtgy2.getResult());
+        assertEquals(true, svcStrtgy2.getResult().isFault());
+        assertNotNull(svcStrtgy3.getResult());
+        assertEquals(false, svcStrtgy3.getResult().isFault());
+    }
 
-	@Test
-	public void aggregateResultsWithoutAnyServiceInvocation() {
-		long refMsgId = 12347L;
-		ServiceInvocationResult serviceInvocationResult = serviceInvocatorAndResultAggregator
-				.aggregateResults(refMsgId);
-		assertNotNull(serviceInvocationResult);
-		assertEquals("Success", serviceInvocationResult.getResult());
+    @Test
+    public void aggregateResultsWithoutAnyServiceInvocation() {
+        long refMsgId = 12347L;
+        ServiceInvocationResult serviceInvocationResult = serviceInvocatorAndResultAggregator
+                .aggregateResults(refMsgId);
+        assertNotNull(serviceInvocationResult);
+        assertEquals("Success", serviceInvocationResult.getResult());
 
-	}
+    }
 }

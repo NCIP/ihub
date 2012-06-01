@@ -12,32 +12,32 @@ import java.util.List;
  */
 public class Consents {
 
-	List<ConsentDetail> consentDetailsList;
+    List<ConsentDetail> consentDetailsList;
 
-	private Participant participant;
+    private Participant participant;
 
-	public Consents() {
-		consentDetailsList = new ArrayList<ConsentDetail>();
-	}
+    public Consents() {
+        consentDetailsList = new ArrayList<ConsentDetail>();
+    }
 
-	public void add(ConsentDetail consentDetail) {
-		consentDetailsList.add(consentDetail);
-	}
+    public void add(ConsentDetail consentDetail) {
+        consentDetailsList.add(consentDetail);
+    }
 
-	public List<ConsentDetail> getConsentsDetailsList() {
-		return consentDetailsList;
-	}
+    public List<ConsentDetail> getConsentsDetailsList() {
+        return consentDetailsList;
+    }
 
-	public void setConsentsDetailsList(List<ConsentDetail> consentDetailsList) {
-		this.consentDetailsList = consentDetailsList;
-	}
+    public void setConsentsDetailsList(List<ConsentDetail> consentDetailsList) {
+        this.consentDetailsList = consentDetailsList;
+    }
 
-	public Participant getParticipant() {
-		return participant;
-	}
+    public Participant getParticipant() {
+        return participant;
+    }
 
-	public void setParticipant(Participant participant) {
-		this.participant = participant;
-	}
+    public void setParticipant(Participant participant) {
+        this.participant = participant;
+    }
 
 }

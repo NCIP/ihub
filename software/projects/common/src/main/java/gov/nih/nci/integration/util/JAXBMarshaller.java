@@ -15,25 +15,22 @@ import javax.xml.bind.Marshaller;
  */
 public class JAXBMarshaller {
 
-	/**
-	 * Marshals Object to its xml format, based on its context
-	 * 
-	 * @param claz
-	 *            - classes that the new context object needs to recognize
-	 * @param obj
-	 *            - object to be marshalled
-	 * @return marshalled string
-	 * @throws JAXBException
-	 *             exception thrown, if any
-	 */
-	public String marshal(Class claz, Object obj) throws JAXBException {
-		final JAXBContext jc = JAXBContext.newInstance(claz);
+    /**
+     * Marshals Object to its xml format, based on its context
+     * 
+     * @param claz - classes that the new context object needs to recognize
+     * @param obj - object to be marshalled
+     * @return marshalled string
+     * @throws JAXBException exception thrown, if any
+     */
+    public String marshal(Class claz, Object obj) throws JAXBException {
+        final JAXBContext jc = JAXBContext.newInstance(claz);
 
-		final Marshaller m = jc.createMarshaller();
-		final StringWriter sw = new StringWriter();
-		final PrintWriter pw = new PrintWriter(sw);
-		m.marshal(obj, pw);
+        final Marshaller m = jc.createMarshaller();
+        final StringWriter sw = new StringWriter();
+        final PrintWriter pw = new PrintWriter(sw);
+        m.marshal(obj, pw);
 
-		return sw.toString();
-	}
+        return sw.toString();
+    }
 }

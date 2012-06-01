@@ -7,20 +7,20 @@ package gov.nih.nci.integration.domain;
  * 
  */
 public enum Status {
-	/**
-	 * Process
-	 */
-	PROCESS,
-	/**
-	 * Success
-	 */
-	SUCCESS,
-	/**
-	 * Failed
-	 */
-	FAILED,
-	/**
-	 * Retry
-	 */
-	RETRY;
+    /**
+     * Process
+     */
+    PROCESS,
+    /**
+     * Success
+     */
+    SUCCESS,
+    /**
+     * Failed
+     */
+    FAILED,
+    /**
+     * Retry
+     */
+    RETRY;
 }

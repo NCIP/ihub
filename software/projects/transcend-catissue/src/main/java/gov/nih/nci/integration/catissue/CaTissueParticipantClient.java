@@ -18,169 +18,159 @@ import java.util.concurrent.Executors;
  */
 public class CaTissueParticipantClient {
 
-	private static final String CLIENT_CLASSNM = "gov.nih.nci.integration.catissue.client.CaTissueParticipantClient";
-	private Class caTissueClientClass = null;
+    private static final String CLIENT_CLASSNM = "gov.nih.nci.integration.catissue.client.CaTissueParticipantClient";
+    private Class caTissueClientClass = null;
 
-	private String caTissueLibLocation = "";
-	private String loginName = null;
-	private String password = null;
+    private String caTissueLibLocation = "";
+    private String loginName = null;
+    private String password = null;
 
-	private static Class[] registerMethodParamTypes = { String.class };
-	private static Class[] updateRegistrationMethodParamTypes = { String.class };
-	private static Class[] deleteMethodParamTypes = { String.class };
+    private static Class[] registerMethodParamTypes = { String.class };
+    private static Class[] updateRegistrationMethodParamTypes = { String.class };
+    private static Class[] deleteMethodParamTypes = { String.class };
 
-	private Executor ex = Executors.newCachedThreadPool();
+    private Executor ex = Executors.newCachedThreadPool();
 
-	public CaTissueParticipantClient(String caTissueLibLocation,
-			String loginName, String password) throws IntegrationException {
-		super();
-		this.caTissueLibLocation = caTissueLibLocation;
-		this.loginName = loginName;
-		this.password = password;
+    public CaTissueParticipantClient(String caTissueLibLocation, String loginName, String password)
+            throws IntegrationException {
+        super();
+        this.caTissueLibLocation = caTissueLibLocation;
+        this.loginName = loginName;
+        this.password = password;
 
-		init();
-	}
+        init();
+    }
 
-	private void init() throws IntegrationException {
-		try {
-			File libFile = new File(caTissueLibLocation);
+    private void init() throws IntegrationException {
+        try {
+            File libFile = new File(caTissueLibLocation);
 
-			// System.out.println(caTissueLibLocation);
+            // System.out.println(caTissueLibLocation);
 
-			// creating the custom classloader that bypasses the
-			// systemclassloader
-			CustomUrlClassLoader ccl = new CustomUrlClassLoader(ClassLoader
-					.getSystemClassLoader().getParent(),
-					libFile.getAbsolutePath());
-			caTissueClientClass = ccl.loadClass(CLIENT_CLASSNM);
+            // creating the custom classloader that bypasses the
+            // systemclassloader
+            CustomUrlClassLoader ccl = new CustomUrlClassLoader(ClassLoader.getSystemClassLoader().getParent(), libFile
+                    .getAbsolutePath());
+            caTissueClientClass = ccl.loadClass(CLIENT_CLASSNM);
 
-			// CHECKSTYLE:OFF
-		} catch (Exception e) { // NOPMD
-			e.printStackTrace();
-			throw new IntegrationException(IntegrationError._1052,
-					e.getMessage());
-		}
-		// CHECKSTYLE:ON
-	}
+            // CHECKSTYLE:OFF
+        } catch (Exception e) { // NOPMD
+            e.printStackTrace();
+            throw new IntegrationException(IntegrationError._1052, e.getMessage());
+        }
+        // CHECKSTYLE:ON
+    }
 
-	public ServiceInvocationResult registerParticipant(
-			final String participantXMLStr) {
-		ServiceInvocationResult result = null;
+    public ServiceInvocationResult registerParticipant(final String participantXMLStr) {
+        ServiceInvocationResult result = null;
 
-		CaTissueTask task = null;
-		try {
-			task = new CaTissueTask(caTissueClientClass, loginName, password,
-					"registerParticipantFromXML", registerMethodParamTypes,
-					participantXMLStr);
-		} catch (Exception e1) {
-			e1.printStackTrace();
-			result = getServiceInvocationResult(IntegrationError._1051, e1);
-			return result;
-		}
+        CaTissueTask task = null;
+        try {
+            task = new CaTissueTask(caTissueClientClass, loginName, password, "registerParticipantFromXML",
+                    registerMethodParamTypes, participantXMLStr);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+            result = getServiceInvocationResult(IntegrationError._1051, e1);
+            return result;
+        }
 
-		try {
-			ExecutorCompletionService<ServiceInvocationResult> ecs = new ExecutorCompletionService<ServiceInvocationResult>(
-					ex);
-			ecs.submit(task);
+        try {
+            ExecutorCompletionService<ServiceInvocationResult> ecs = new ExecutorCompletionService<ServiceInvocationResult>(
+                    ex);
+            ecs.submit(task);
 
-			result = ecs.take().get();
+            result = ecs.take().get();
 
-			if (!result.isFault()) {
-				result.setResult("Successfully registered participant in CaTissue!");
-			} else {
+            if (!result.isFault()) {
+                result.setResult("Successfully registered participant in CaTissue!");
+            } else {
 
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-			result = getServiceInvocationResult(IntegrationError._1051, e);
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-			result = getServiceInvocationResult(IntegrationError._1051, e);
-		}
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            result = getServiceInvocationResult(IntegrationError._1051, e);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            result = getServiceInvocationResult(IntegrationError._1051, e);
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	public ServiceInvocationResult updateRegistrationParticipant(
-			final String participantXMLStr) {
-		ServiceInvocationResult result = null;
+    public ServiceInvocationResult updateRegistrationParticipant(final String participantXMLStr) {
+        ServiceInvocationResult result = null;
 
-		CaTissueTask task = null;
-		try {
-			task = new CaTissueTask(caTissueClientClass, loginName, password,
-					"updateParticipantRegistrationFromXML",
-					updateRegistrationMethodParamTypes, participantXMLStr);
-		} catch (Exception e1) {
-			e1.printStackTrace();
-			result = getServiceInvocationResult(IntegrationError._1051, e1);
-			return result;
-		}
+        CaTissueTask task = null;
+        try {
+            task = new CaTissueTask(caTissueClientClass, loginName, password, "updateParticipantRegistrationFromXML",
+                    updateRegistrationMethodParamTypes, participantXMLStr);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+            result = getServiceInvocationResult(IntegrationError._1051, e1);
+            return result;
+        }
 
-		try {
-			ExecutorCompletionService<ServiceInvocationResult> ecs = new ExecutorCompletionService<ServiceInvocationResult>(
-					ex);
-			ecs.submit(task);
+        try {
+            ExecutorCompletionService<ServiceInvocationResult> ecs = new ExecutorCompletionService<ServiceInvocationResult>(
+                    ex);
+            ecs.submit(task);
 
-			result = ecs.take().get();
+            result = ecs.take().get();
 
-			if (!result.isFault()) {
-				result.setResult("Successfully updated participant registration in CaTissue!");
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-			result = getServiceInvocationResult(IntegrationError._1051, e);
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-			result = getServiceInvocationResult(IntegrationError._1051, e);
-		}
+            if (!result.isFault()) {
+                result.setResult("Successfully updated participant registration in CaTissue!");
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            result = getServiceInvocationResult(IntegrationError._1051, e);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            result = getServiceInvocationResult(IntegrationError._1051, e);
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	public ServiceInvocationResult deleteParticipant(
-			final String participantXMLStr) {
-		ServiceInvocationResult result = null;
+    public ServiceInvocationResult deleteParticipant(final String participantXMLStr) {
+        ServiceInvocationResult result = null;
 
-		CaTissueTask task = null;
-		try {
-			task = new CaTissueTask(caTissueClientClass, loginName, password,
-					"deleteParticipantFromXML", deleteMethodParamTypes,
-					participantXMLStr);
-		} catch (Exception e1) {
-			e1.printStackTrace();
-			result = getServiceInvocationResult(IntegrationError._1051, e1);
-			return result;
-		}
+        CaTissueTask task = null;
+        try {
+            task = new CaTissueTask(caTissueClientClass, loginName, password, "deleteParticipantFromXML",
+                    deleteMethodParamTypes, participantXMLStr);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+            result = getServiceInvocationResult(IntegrationError._1051, e1);
+            return result;
+        }
 
-		try {
-			ExecutorCompletionService<ServiceInvocationResult> ecs = new ExecutorCompletionService<ServiceInvocationResult>(
-					ex);
-			ecs.submit(task);
+        try {
+            ExecutorCompletionService<ServiceInvocationResult> ecs = new ExecutorCompletionService<ServiceInvocationResult>(
+                    ex);
+            ecs.submit(task);
 
-			result = ecs.take().get();
+            result = ecs.take().get();
 
-			if (!result.isFault()) {
-				result.setResult("Successfully rollabck participant from CaTissue!");
-			}
-		} catch (InterruptedException e) {
-			result = getServiceInvocationResult(IntegrationError._1051, e);
-		} catch (ExecutionException e) {
-			result = getServiceInvocationResult(IntegrationError._1051, e);
-		}
+            if (!result.isFault()) {
+                result.setResult("Successfully rollabck participant from CaTissue!");
+            }
+        } catch (InterruptedException e) {
+            result = getServiceInvocationResult(IntegrationError._1051, e);
+        } catch (ExecutionException e) {
+            result = getServiceInvocationResult(IntegrationError._1051, e);
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	private ServiceInvocationResult getServiceInvocationResult(
-			IntegrationError error, Exception e) {
-		ServiceInvocationResult result = new ServiceInvocationResult();
-		if (e instanceof IntegrationException) {
-			result.setInvocationException(e);
-		} else {
-			result.setInvocationException(new IntegrationException(error, e, e
-					.getMessage()));
-		}
-		return result;
-	}
+    private ServiceInvocationResult getServiceInvocationResult(IntegrationError error, Exception e) {
+        ServiceInvocationResult result = new ServiceInvocationResult();
+        if (e instanceof IntegrationException) {
+            result.setInvocationException(e);
+        } else {
+            result.setInvocationException(new IntegrationException(error, e, e.getMessage()));
+        }
+        return result;
+    }
 
 }
