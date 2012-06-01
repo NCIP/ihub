@@ -2,6 +2,7 @@ package gov.nih.nci.integration.util;
 
 public class IntegrationConstants {
 
+
 	// response tags
 	public static final String NS = "http://caXchange.nci.nih.gov/messaging";
 	public static final String ROOT_NODE = "caXchangeRequestMessage";
@@ -80,4 +81,6 @@ public class IntegrationConstants {
 	public static final String MIRTH_HTTP_LISTENER_USER = "mirth.http.listener.user";
 	public static final String MIRTH_HTTP_LISTENER_PASSWORD = "mirth.http.listener.password";
 	public static final String MIRTH_HTTP_LISTENER_URL = "mirth.http.listener.url";
+	
+
 }
