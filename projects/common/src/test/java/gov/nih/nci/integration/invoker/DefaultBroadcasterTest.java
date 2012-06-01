@@ -120,7 +120,7 @@ public class DefaultBroadcasterTest {
 	@Rollback(true)
 	public void broadcastWithMockServiceInvocationStrategyForFailureWithRetry() {
 
-		serviceInvocationResult.setInvocationException(new RuntimeException(
+		serviceInvocationResult.setInvocationException(new RuntimeException(// NOPMD
 				"Exception from ServiceInvocation"));
 
 		serviceInvocationResult.setRetry(true);
