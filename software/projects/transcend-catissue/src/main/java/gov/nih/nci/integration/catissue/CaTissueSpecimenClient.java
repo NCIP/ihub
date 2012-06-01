@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  */
 public class CaTissueSpecimenClient {
 
-	private static String CLIENT_CLASSNAME = "gov.nih.nci.integration.catissue.client.CaTissueSpecimenClient";
+	private static final String CLIENT_CLASSNAME = "gov.nih.nci.integration.catissue.client.CaTissueSpecimenClient";
 	private Class caTissueSpecimenClientClass = null;
 
 	private String caTissueLibLocation = "";
@@ -35,7 +35,7 @@ public class CaTissueSpecimenClient {
 
 	private Executor ex = Executors.newCachedThreadPool();
 
-	private static Logger LOG = LoggerFactory
+	private static final Logger LOG = LoggerFactory
 			.getLogger(CaTissueSpecimenClient.class);
 
 	public CaTissueSpecimenClient(String caTissueLibLocation, String loginName,

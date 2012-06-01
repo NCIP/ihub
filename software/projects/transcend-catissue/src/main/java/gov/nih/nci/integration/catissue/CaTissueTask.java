@@ -22,7 +22,8 @@ public class CaTissueTask implements Callable<ServiceInvocationResult> {
 	public Method methodToInvoke;
 	public String message;
 
-	private static Logger LOG = LoggerFactory.getLogger(CaTissueTask.class);
+	private static final Logger LOG = LoggerFactory
+			.getLogger(CaTissueTask.class);
 
 	public CaTissueTask(Class caTissueParticipantClientClass, String loginName,
 			String password, String methodName, Class[] paramClasses,
@@ -37,8 +38,8 @@ public class CaTissueTask implements Callable<ServiceInvocationResult> {
 					methodName, String.class);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new IntegrationException(IntegrationError._1052, e
-					.getMessage());
+			throw new IntegrationException(IntegrationError._1052,
+					e.getMessage());
 		}
 
 		this.message = message;
@@ -56,9 +57,8 @@ public class CaTissueTask implements Callable<ServiceInvocationResult> {
 			String exceptionMessage = e.getTargetException().getMessage();
 			// System.out.println("Inside CaTissueTask..call()..InvocationTargetException Message is :: "
 			// + exceptionMessage);
-			LOG
-					.error("Inside CaTissueTask..call()..InvocationTargetException Message is :: "
-							+ exceptionMessage);
+			LOG.error("Inside CaTissueTask..call()..InvocationTargetException Message is :: "
+					+ exceptionMessage);
 			IntegrationException ie = new IntegrationException(
 					IntegrationError._1051, e.getTargetException(),
 					exceptionMessage);

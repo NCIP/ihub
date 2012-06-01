@@ -27,8 +27,6 @@ public class CaTissueConsentClientIntegrationTest {
 				.registerConsents(getRegisterConsentXMLStr());
 
 		if (svc.isDataChanged() && svc.getInvocationException() != null) {
-			System.out
-					.println("...Calling The Rollback Method as there is exception....");
 			caTissueConsentClient.rollbackConsents(svc.getOriginalData()
 					.toString());
 		}

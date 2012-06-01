@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 public class CaTissueRegistrationServiceInvocationStrategy implements
 		ServiceInvocationStrategy {
 
-	private static Logger LOG = LoggerFactory
+	private static final Logger LOG = LoggerFactory
 			.getLogger(CaTissueRegistrationServiceInvocationStrategy.class);
 
 	private int retryCount = 0;

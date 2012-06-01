@@ -18,7 +18,7 @@ import java.util.concurrent.Executors;
  */
 public class CaTissueParticipantClient {
 
-	private static String CLIENT_CLASSNM = "gov.nih.nci.integration.catissue.client.CaTissueParticipantClient";
+	private static final String CLIENT_CLASSNM = "gov.nih.nci.integration.catissue.client.CaTissueParticipantClient";
 	private Class caTissueClientClass = null;
 
 	private String caTissueLibLocation = "";
@@ -45,20 +45,20 @@ public class CaTissueParticipantClient {
 		try {
 			File libFile = new File(caTissueLibLocation);
 
-			System.out.println(caTissueLibLocation);
+			// System.out.println(caTissueLibLocation);
 
 			// creating the custom classloader that bypasses the
 			// systemclassloader
 			CustomUrlClassLoader ccl = new CustomUrlClassLoader(ClassLoader
-					.getSystemClassLoader().getParent(), libFile
-					.getAbsolutePath());
+					.getSystemClassLoader().getParent(),
+					libFile.getAbsolutePath());
 			caTissueClientClass = ccl.loadClass(CLIENT_CLASSNM);
 
 			// CHECKSTYLE:OFF
 		} catch (Exception e) { // NOPMD
 			e.printStackTrace();
-			throw new IntegrationException(IntegrationError._1052, e
-					.getMessage());
+			throw new IntegrationException(IntegrationError._1052,
+					e.getMessage());
 		}
 		// CHECKSTYLE:ON
 	}
@@ -86,8 +86,7 @@ public class CaTissueParticipantClient {
 			result = ecs.take().get();
 
 			if (!result.isFault()) {
-				result
-						.setResult("Successfully registered participant in CaTissue!");
+				result.setResult("Successfully registered participant in CaTissue!");
 			} else {
 
 			}
@@ -125,8 +124,7 @@ public class CaTissueParticipantClient {
 			result = ecs.take().get();
 
 			if (!result.isFault()) {
-				result
-						.setResult("Successfully updated participant registration in CaTissue!");
+				result.setResult("Successfully updated participant registration in CaTissue!");
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -162,8 +160,7 @@ public class CaTissueParticipantClient {
 			result = ecs.take().get();
 
 			if (!result.isFault()) {
-				result
-						.setResult("Successfully rollabck participant from CaTissue!");
+				result.setResult("Successfully rollabck participant from CaTissue!");
 			}
 		} catch (InterruptedException e) {
 			result = getServiceInvocationResult(IntegrationError._1051, e);
