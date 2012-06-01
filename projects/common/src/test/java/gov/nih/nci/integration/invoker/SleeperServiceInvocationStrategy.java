@@ -37,7 +37,7 @@ public class SleeperServiceInvocationStrategy implements
 		}
 		result = new ServiceInvocationResult();
 		if (makefault) {
-			result.setInvocationException(new RuntimeException(
+			result.setInvocationException(new RuntimeException(// NOPMD
 					"Sleeper service throws exception"));
 		} else {
 			result.setResult("Successfully waited for " + sleeptime + " ms.");

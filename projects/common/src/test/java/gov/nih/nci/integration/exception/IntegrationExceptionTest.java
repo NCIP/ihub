@@ -8,7 +8,7 @@ public class IntegrationExceptionTest {
 
 	@Test
 	public void msgFormat() {
-		Throwable t = new Throwable("test throwable");
+		Throwable t = new Throwable("test throwable");// NOPMD
 		IntegrationException ie = new IntegrationException(
 				IntegrationError._1013, t, "P-id", "CP-id");
 
