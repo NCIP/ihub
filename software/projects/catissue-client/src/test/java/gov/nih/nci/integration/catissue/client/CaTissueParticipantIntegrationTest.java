@@ -66,7 +66,7 @@ public class CaTissueParticipantIntegrationTest {
 
 		String participantXML = caTissueParticipantClient.getxStream().toXML(
 				participant);
-		System.out.println(participantXML);
+//		System.out.println(participantXML);
 
 		// register participant
 		caTissueParticipantClient.registerParticipant(participant);
@@ -101,7 +101,7 @@ public class CaTissueParticipantIntegrationTest {
 		String existingPrtcpntStr = caTissueParticipantClient.getxStream()
 				.toXML(existParticipant);
 		assertNotNull(existingPrtcpntStr);
-		System.out.println("existingPrtcpntStr >>> " + existingPrtcpntStr);
+//		System.out.println("existingPrtcpntStr >>> " + existingPrtcpntStr);
 
 		// update with original incoming msg - equivalent to update msg
 		ArrayList<CollectionProtocolRegistration> cprList = new ArrayList<CollectionProtocolRegistration>(
@@ -147,7 +147,7 @@ public class CaTissueParticipantIntegrationTest {
 
 		XStream xStream = caTissueParticipantClient.getxStream();
 		String participantXML = xStream.toXML(participant);
-		System.out.println(participantXML);
+//		System.out.println(participantXML);
 		Participant parsedParticipant = (Participant) xStream
 				.fromXML(new StringReader(participantXML));
 
@@ -170,7 +170,7 @@ public class CaTissueParticipantIntegrationTest {
 
 		String registeredParticipantStr = caTissueParticipantClient
 				.registerParticipant(getParticipantXMLStr());
-		System.out.println(registeredParticipantStr);
+//		System.out.println(registeredParticipantStr);
 		Participant registeredParticipant = caTissueParticipantClient
 				.getParticipantForPatientId("995683");
 

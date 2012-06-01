@@ -34,7 +34,7 @@ import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 public class CaTissueConsentClient {
 
-	private static Logger LOG = LoggerFactory
+	private static final Logger LOG = LoggerFactory
 			.getLogger(CaTissueConsentClient.class);
 	private final CaTissueAPIClientWithRegularAuthentication caTissueAPIClient;
 	private XStream xStream = new XStream(new StaxDriver());
