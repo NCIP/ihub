@@ -76,7 +76,7 @@ public enum IntegrationError {
 	_1091(1091, ErrorType.VALIDATION, "Collection Protocol was not found in caTissue."),//USED
 	_1092(1092, ErrorType.VALIDATION, "ConsentTier Statement was not found for given CollectionProtocol in caTissue."); //USED
 		
-	// CHECKSTYLE:ON
+	
 	
 	private int errorCode;
 	
@@ -105,4 +105,5 @@ public enum IntegrationError {
 		return String.format(msgTemplate, objects);
 	}
 	
+	// CHECKSTYLE:ON
 }
