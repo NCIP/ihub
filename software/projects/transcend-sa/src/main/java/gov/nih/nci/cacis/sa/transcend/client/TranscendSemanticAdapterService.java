@@ -23,7 +23,7 @@ public class TranscendSemanticAdapterService extends Service {
 
 	public final static QName SERVICE = new QName("http://cacis.nci.nih.gov",
 			"TranscendSemanticAdapter");
-	public final static QName AcceptSourcePortSoap11 = new QName(
+	public final static QName AcceptSourcePortSoap11 = new QName(// NOPMD
 			"http://cacis.nci.nih.gov", "AcceptSource_Port_Soap11");
 	static {
 		URL url = null;

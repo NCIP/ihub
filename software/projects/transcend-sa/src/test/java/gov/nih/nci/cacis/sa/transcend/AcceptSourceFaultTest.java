@@ -16,7 +16,7 @@ import org.junit.Test;
 
 public class AcceptSourceFaultTest {
 
-	private final static QName _CaCISFault_QNAME = new QName(
+	private final static QName _CaCISFault_QNAME = new QName(// NOPMD
 			"http://cacis.nci.nih.gov", "caCISFault");
 
 	@Test
