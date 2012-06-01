@@ -57,18 +57,15 @@ public class CaTissueUpdateSpecimenServiceInvocationStrategy implements
 		msgToErrMapBase.put("Specimen Collection Group not found in caTissue",
 				IntegrationError._1084);
 		msgToErrMapBase
-				.put(
-						"Available Quantity cannot be greater than the Initial Quantity",
+				.put("Available Quantity cannot be greater than the Initial Quantity",
 						IntegrationError._1085);
 		msgToErrMapBase.put("Pathological Status is invalid",
 				IntegrationError._1086);
 		msgToErrMapBase
-				.put(
-						"Collection Protocol Event can't be changed while updating the Specimen",
+				.put("Collection Protocol Event can't be changed while updating the Specimen",
 						IntegrationError._1087);
 		msgToErrMapBase
-				.put(
-						"Collection Protocol can't be changed while updating the Specimen",
+				.put("Collection Protocol can't be changed while updating the Specimen",
 						IntegrationError._1088);
 		msgToErrMapBase.put(
 				"Specimen Class can't be changed while updating the Specimen",

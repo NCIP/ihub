@@ -11,7 +11,11 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.Executors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
+ * This is the Wrapper client class for Specimen client class.
  * 
  * @author Rohit Gupta
  * 
@@ -31,6 +35,9 @@ public class CaTissueSpecimenClient {
 
 	private Executor ex = Executors.newCachedThreadPool();
 
+	private static Logger LOG = LoggerFactory
+			.getLogger(CaTissueSpecimenClient.class);
+
 	public CaTissueSpecimenClient(String caTissueLibLocation, String loginName,
 			String password) throws IntegrationException {
 		super();
@@ -45,23 +52,31 @@ public class CaTissueSpecimenClient {
 		try {
 			File libFile = new File(caTissueLibLocation);
 
-			// System.out.println(caTissueLibLocation);
-
 			// creating the custom classloader that bypasses the
 			// systemclassloader
 			CustomUrlClassLoader ccl = new CustomUrlClassLoader(ClassLoader
-					.getSystemClassLoader().getParent(), libFile
-					.getAbsolutePath());
+					.getSystemClassLoader().getParent(),
+					libFile.getAbsolutePath());
 
 			caTissueSpecimenClientClass = ccl.loadClass(CLIENT_CLASSNAME);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error(
+					"Exception occured while initializing CaTissueSpecimenClient.",
+					e);
 			throw new IntegrationException(IntegrationError._1000, e);
 		}
-
 	}
 
+	/**
+	 * This method is used to create bio-specimens in caTissue
+	 * 
+	 * @param specimenListXMLStr
+	 *            - The XMLString for creating the bio-specimen which may
+	 *            contain multiple specimens.
+	 * @return ServiceInvocationResult - which may contain things like
+	 *         actualResult, isDataChanged, exception etc
+	 */
 	public ServiceInvocationResult createSpecimens(
 			final String specimenListXMLStr) {
 		ServiceInvocationResult result1, result2 = null;
@@ -72,6 +87,9 @@ public class CaTissueSpecimenClient {
 					password, "isSpecimensExist", createSpecimensParamTypes,
 					specimenListXMLStr);
 		} catch (Exception e1) {
+			LOG.error(
+					"Exception occured while instantiating CaTissueTask for isSpecimenExist.",
+					e1);
 			result1 = getServiceInvocationResult(IntegrationError._1051, e1);
 			return result1;
 		}
@@ -82,7 +100,6 @@ public class CaTissueSpecimenClient {
 			ecs.submit(task1);
 
 			result1 = ecs.take().get();
-
 			if (!result1.isFault()) {
 				result1.setResult("Successfully called isSpecimensExist !");
 			} else {
@@ -121,8 +138,7 @@ public class CaTissueSpecimenClient {
 			result2 = ecs.take().get();
 
 			if (!result2.isFault()) {
-				result2
-						.setResult("Successfully created Specimens in CaTissue!");
+				result2.setResult("Successfully created Specimens in CaTissue!");
 			} else {
 
 			}
@@ -144,6 +160,15 @@ public class CaTissueSpecimenClient {
 		return result2;
 	}
 
+	/**
+	 * This method is used to Rollback the specimen changes for createSpecimen
+	 * flow
+	 * 
+	 * @param specimenListXMLStr
+	 *            - XMLString containing the specimens to be rollback
+	 * @return ServiceInvocationResult - which may contain things like
+	 *         actualResult, isDataChanged, exception etc
+	 */
 	public ServiceInvocationResult rollbackCreatedSpecimens(
 			final String specimenListXMLStr) {
 		ServiceInvocationResult result = null;
@@ -153,7 +178,7 @@ public class CaTissueSpecimenClient {
 					password, "rollbackCreatedSpecimens",
 					rollbackSpecimensParamTypes, specimenListXMLStr);
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			LOG.error("Exception occured while Rollbacking createSpecimen.", e1);
 			result = getServiceInvocationResult(IntegrationError._1051, e1);
 			return result;
 		}
@@ -166,8 +191,7 @@ public class CaTissueSpecimenClient {
 			result = ecs.take().get();
 
 			if (!result.isFault()) {
-				result
-						.setResult("Successfully rollback Specimens from CaTissue!");
+				result.setResult("Successfully rollback Specimens from CaTissue!");
 			}
 		} catch (InterruptedException e) {
 			result = getServiceInvocationResult(IntegrationError._1051, e);
@@ -178,6 +202,15 @@ public class CaTissueSpecimenClient {
 		return result;
 	}
 
+	/**
+	 * This method is used to update bio-specimens in caTissue
+	 * 
+	 * @param specimenListXMLStr
+	 *            - The XML string for creating the specimens which may contain
+	 *            multiple specimens.
+	 * @return ServiceInvocationResult - which may contain things like
+	 *         actualResult, isDataChanged, exception etc
+	 */
 	public ServiceInvocationResult updateSpecimens(
 			final String specimenListXMLStr) {
 		ServiceInvocationResult result1, result2, finalResult = null;
@@ -188,7 +221,9 @@ public class CaTissueSpecimenClient {
 					password, "getExistingSpecimens",
 					updateSpecimensParamTypes, specimenListXMLStr);
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			LOG.error(
+					"Exception occured while instantiating CaTissueTask for getExistingSpecimens.",
+					e1);
 			result1 = getServiceInvocationResult(IntegrationError._1051, e1);
 			return result1;
 		}
@@ -201,16 +236,13 @@ public class CaTissueSpecimenClient {
 			result1 = ecs.take().get();
 
 			if (!result1.isFault()) {
-				result1
-						.setResult("Successfully fetched Specimens from CaTissue!");
+				result1.setResult("Successfully fetched Specimens from CaTissue!");
 			} else {
 
 			}
 		} catch (InterruptedException e) {
-			e.printStackTrace();
 			result1 = getServiceInvocationResult(IntegrationError._1051, e);
 		} catch (ExecutionException e) {
-			e.printStackTrace();
 			result1 = getServiceInvocationResult(IntegrationError._1051, e);
 		}
 
@@ -238,16 +270,13 @@ public class CaTissueSpecimenClient {
 			result2 = ecs.take().get();
 
 			if (!result2.isFault()) {
-				result2
-						.setResult("Successfully Updated Specimens from CaTissue!");
+				result2.setResult("Successfully Updated Specimens from CaTissue!");
 			} else {
 
 			}
 		} catch (InterruptedException e) {
-			e.printStackTrace();
 			result2 = getServiceInvocationResult(IntegrationError._1051, e);
 		} catch (ExecutionException e) {
-			e.printStackTrace();
 			result2 = getServiceInvocationResult(IntegrationError._1051, e);
 		}
 
@@ -264,6 +293,16 @@ public class CaTissueSpecimenClient {
 		return finalResult;
 	}
 
+	/**
+	 * This method is used to Rollback the specimen changes for updateSpecimen
+	 * flow
+	 * 
+	 * @param specimenListXMLStr
+	 *            - XMLString containing the specimens to be rollback
+	 * @return ServiceInvocationResult - which may contain things like
+	 *         actualResult, isDataChanged, exception etc
+	 */
+
 	public ServiceInvocationResult rollbackUpdatedSpecimens(
 			final String specimenListXMLStr) {
 		ServiceInvocationResult result = null;
@@ -273,7 +312,9 @@ public class CaTissueSpecimenClient {
 					password, "rollbackUpdatedSpecimens",
 					rollbackSpecimensParamTypes, specimenListXMLStr);
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			LOG.error(
+					"Exception occured while instantiating CaTissueTask for rollbackUpdatedSpecimens.",
+					e1);
 			result = getServiceInvocationResult(IntegrationError._1051, e1);
 			return result;
 		}
@@ -286,8 +327,7 @@ public class CaTissueSpecimenClient {
 			result = ecs.take().get();
 
 			if (!result.isFault()) {
-				result
-						.setResult("Successfully rollback Specimens from CaTissue!");
+				result.setResult("Successfully rollback Specimens from CaTissue!");
 			}
 		} catch (InterruptedException e) {
 			result = getServiceInvocationResult(IntegrationError._1051, e);

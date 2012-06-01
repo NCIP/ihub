@@ -57,8 +57,7 @@ public class CaTissueSpecimenServiceInvocationStrategy implements
 		msgToErrMapBase.put("Specimen Collection Group not found in caTissue",
 				IntegrationError._1084);
 		msgToErrMapBase
-				.put(
-						"Available Quantity cannot be greater than the Initial Quantity",
+				.put("Available Quantity cannot be greater than the Initial Quantity",
 						IntegrationError._1085);
 		msgToErrMapBase.put("Pathological Status is invalid",
 				IntegrationError._1086);

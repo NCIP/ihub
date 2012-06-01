@@ -53,8 +53,7 @@ public class CaTissueConsentServiceInvocationStrategy implements
 		msgToErrMapBase.put("Collection Protocol was not found in caTissue",
 				IntegrationError._1091);
 		msgToErrMapBase
-				.put(
-						"ConsentTier Statement was not found for given CollectionProtocol in caTissue",
+				.put("ConsentTier Statement was not found for given CollectionProtocol in caTissue",
 						IntegrationError._1092);
 
 		msgToErrMap = Collections.synchronizedMap(msgToErrMapBase);
