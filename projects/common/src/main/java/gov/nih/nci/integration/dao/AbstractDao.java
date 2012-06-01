@@ -61,7 +61,8 @@ public abstract class AbstractDao<T extends AbstractIdentity> implements Dao<T> 
 
 	/**
 	 * getById
-	 * @return T
+	 * @param id -Id
+	 * @return T - Entity
 	 */
 	public T getById(final Long id) {
 		return em.find(domainClass, id);
@@ -79,7 +80,8 @@ public abstract class AbstractDao<T extends AbstractIdentity> implements Dao<T> 
 
 	/**
 	 * save
-	 * @param - T
+	 * @param entity - Entity
+	 * @return Id
 	 */
 	public Long save(final T entity) {
 		em.persist(entity);

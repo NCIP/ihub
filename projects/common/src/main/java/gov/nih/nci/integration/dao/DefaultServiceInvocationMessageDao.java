@@ -11,7 +11,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.springframework.transaction.annotation.Transactional;
-
+/**
+ * DefaultServiceInvocationMessageDao
+ * @author Vinodh
+ *
+ */
 @Transactional
 public class DefaultServiceInvocationMessageDao extends
 		AbstractDao<ServiceInvocationMessage> implements
@@ -28,11 +32,10 @@ public class DefaultServiceInvocationMessageDao extends
 //		System.out.println("em in constr is " + em);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seegov.nih.nci.integration.dao.ServiceInvocationMessageDaoIntf#
-	 * getAllByReferenceMessageId(java.lang.Long)
+	/**
+	 * getAllByReferenceMessageId
+	 * @param refMsgId- messageId
+	 * @return Map
 	 */
 	@SuppressWarnings("unchecked")
 	public Map<StrategyIdentifier, ServiceInvocationMessage> getAllByReferenceMessageId(

@@ -11,9 +11,17 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public interface DaoConfig {
 
+	/**
+	 * iHubMessageDao
+	 * @return IHubMessageDao
+	 */
 	@Bean
 	IHubMessageDao iHubMessageDao();
 
+	/**
+	 * serviceInvocationMessageDao
+	 * @return ServiceInvocationMessageDao
+	 */
 	@Bean
 	ServiceInvocationMessageDao serviceInvocationMessageDao();
 
