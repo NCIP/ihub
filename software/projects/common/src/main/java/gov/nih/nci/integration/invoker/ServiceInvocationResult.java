@@ -1,5 +1,11 @@
 package gov.nih.nci.integration.invoker;
 
+/**
+ * This class contains the result of the service invocation
+ * 
+ * @author Vinodh
+ * 
+ */
 public class ServiceInvocationResult {
 
 	private String result;
