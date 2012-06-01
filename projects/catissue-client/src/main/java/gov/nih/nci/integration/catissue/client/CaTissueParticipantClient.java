@@ -27,7 +27,7 @@ import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 public class CaTissueParticipantClient {
 
-	private static Logger LOG = LoggerFactory
+	private static final Logger LOG = LoggerFactory
 			.getLogger(CaTissueParticipantClient.class);
 
 	private final CaTissueAPIClientWithRegularAuthentication caTissueAPIClient;
