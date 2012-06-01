@@ -11,38 +11,34 @@ import gov.nih.nci.integration.domain.StrategyIdentifier;
  */
 public interface ServiceInvocationStrategy {
 
-	/**
-	 * getStrategyIdentifier
-	 * 
-	 * @return Strategy Identifier
-	 */
-	StrategyIdentifier getStrategyIdentifier();
+    /**
+     * getStrategyIdentifier
+     * 
+     * @return Strategy Identifier
+     */
+    StrategyIdentifier getStrategyIdentifier();
 
-	/**
-	 * getRetryCount
-	 * 
-	 * @return Retry Count
-	 */
-	int getRetryCount();
+    /**
+     * getRetryCount
+     * 
+     * @return Retry Count
+     */
+    int getRetryCount();
 
-	/**
-	 * invoke
-	 * 
-	 * @param serviceInvocationMessage
-	 *            - serviceInvocationMessage
-	 * @return ServiceInvocationResult
-	 */
-	ServiceInvocationResult invoke(
-			ServiceInvocationMessage serviceInvocationMessage);
+    /**
+     * invoke
+     * 
+     * @param serviceInvocationMessage - serviceInvocationMessage
+     * @return ServiceInvocationResult
+     */
+    ServiceInvocationResult invoke(ServiceInvocationMessage serviceInvocationMessage);
 
-	/**
-	 * rollback
-	 * 
-	 * @param serviceInvocationMessage
-	 *            - ServiceInvocationMessage
-	 * @return ServiceInvocationResult containing rollback info
-	 */
-	ServiceInvocationResult rollback(
-			ServiceInvocationMessage serviceInvocationMessage);
+    /**
+     * rollback
+     * 
+     * @param serviceInvocationMessage - ServiceInvocationMessage
+     * @return ServiceInvocationResult containing rollback info
+     */
+    ServiceInvocationResult rollback(ServiceInvocationMessage serviceInvocationMessage);
 
 }

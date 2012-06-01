@@ -10,34 +10,34 @@ import edu.wustl.catissuecore.domain.Specimen;
  */
 public class SpecimenDetail {
 
-	private Specimen specimen;
+    private Specimen specimen;
 
-	private CollectionProtocol collectionProtocol;
+    private CollectionProtocol collectionProtocol;
 
-	private String collectionProtocolEvent;
+    private String collectionProtocolEvent;
 
-	public String getCollectionProtocolEvent() {
-		return collectionProtocolEvent;
-	}
+    public String getCollectionProtocolEvent() {
+        return collectionProtocolEvent;
+    }
 
-	public void setCollectionProtocolEvent(String collectionProtocolEvent) {
-		this.collectionProtocolEvent = collectionProtocolEvent;
-	}
+    public void setCollectionProtocolEvent(String collectionProtocolEvent) {
+        this.collectionProtocolEvent = collectionProtocolEvent;
+    }
 
-	public Specimen getSpecimen() {
-		return specimen;
-	}
+    public Specimen getSpecimen() {
+        return specimen;
+    }
 
-	public void setSpecimen(Specimen specimen) {
-		this.specimen = specimen;
-	}
+    public void setSpecimen(Specimen specimen) {
+        this.specimen = specimen;
+    }
 
-	public CollectionProtocol getCollectionProtocol() {
-		return collectionProtocol;
-	}
+    public CollectionProtocol getCollectionProtocol() {
+        return collectionProtocol;
+    }
 
-	public void setCollectionProtocol(CollectionProtocol collectionProtocol) {
-		this.collectionProtocol = collectionProtocol;
-	}
+    public void setCollectionProtocol(CollectionProtocol collectionProtocol) {
+        this.collectionProtocol = collectionProtocol;
+    }
 
 }

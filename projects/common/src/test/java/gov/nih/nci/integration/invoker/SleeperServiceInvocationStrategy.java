@@ -3,59 +3,58 @@ package gov.nih.nci.integration.invoker;
 import gov.nih.nci.integration.domain.ServiceInvocationMessage;
 import gov.nih.nci.integration.domain.StrategyIdentifier;
 
-public class SleeperServiceInvocationStrategy implements
-		ServiceInvocationStrategy {
+public class SleeperServiceInvocationStrategy implements ServiceInvocationStrategy {
 
-	private long sleeptime;
+    private long sleeptime;
 
-	private boolean makefault;
+    private boolean makefault;
 
-	private ServiceInvocationResult result;
+    private ServiceInvocationResult result;
 
-	public SleeperServiceInvocationStrategy(long sleeptime, boolean makefault) {
-		super();
-		this.sleeptime = sleeptime;
-		this.makefault = makefault;
-	}
+    public SleeperServiceInvocationStrategy(long sleeptime, boolean makefault) {
+        super();
+        this.sleeptime = sleeptime;
+        this.makefault = makefault;
+    }
 
-	@Override
-	public int getRetryCount() {
-		return 3;
-	}
+    @Override
+    public int getRetryCount() {
+        return 3;
+    }
 
-	@Override
-	public StrategyIdentifier getStrategyIdentifier() {
-		return StrategyIdentifier.CAEERS_CREATE_REGISTRATION;
-	}
+    @Override
+    public StrategyIdentifier getStrategyIdentifier() {
+        return StrategyIdentifier.CAEERS_CREATE_REGISTRATION;
+    }
 
-	@Override
-	public ServiceInvocationResult invoke(ServiceInvocationMessage message) {
-		try {
-			Thread.sleep(sleeptime);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		result = new ServiceInvocationResult();
-		if (makefault) {
-			result.setInvocationException(new RuntimeException(// NOPMD
-					"Sleeper service throws exception"));
-		} else {
-			result.setResult("Successfully waited for " + sleeptime + " ms.");
-			result.setDataChanged(true);
-		}
+    @Override
+    public ServiceInvocationResult invoke(ServiceInvocationMessage message) {
+        try {
+            Thread.sleep(sleeptime);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        result = new ServiceInvocationResult();
+        if (makefault) {
+            result.setInvocationException(new RuntimeException(// NOPMD
+                    "Sleeper service throws exception"));
+        } else {
+            result.setResult("Successfully waited for " + sleeptime + " ms.");
+            result.setDataChanged(true);
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	@Override
-	public ServiceInvocationResult rollback(ServiceInvocationMessage message) {
-		ServiceInvocationResult rlbkRes = new ServiceInvocationResult();
-		rlbkRes.setResult("Successfully rollback");
-		return rlbkRes;
-	}
+    @Override
+    public ServiceInvocationResult rollback(ServiceInvocationMessage message) {
+        ServiceInvocationResult rlbkRes = new ServiceInvocationResult();
+        rlbkRes.setResult("Successfully rollback");
+        return rlbkRes;
+    }
 
-	public ServiceInvocationResult getResult() {
-		return result;
-	}
+    public ServiceInvocationResult getResult() {
+        return result;
+    }
 
 }

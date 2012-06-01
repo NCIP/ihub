@@ -11,18 +11,17 @@ import org.springframework.context.annotation.Import;
 @Configuration
 public class CommonPropsTestConfig {
 
-	/**
-	 * Loads properties from classpath
-	 * 
-	 * @return the property place holder configures
-	 */
-	@Bean
-	public PropertyPlaceholderConfigurer commonPropertyPlaceholderConfigurer() {
-		final PropertyPlaceholderConfigurer configurer = new CommonsPropertyPlaceholderConfigurer(
-				"ihub", "transcend-ihub-test.properties");
-		configurer
-				.setSystemPropertiesMode(PropertyPlaceholderConfigurer.SYSTEM_PROPERTIES_MODE_OVERRIDE);
-		configurer.setIgnoreUnresolvablePlaceholders(true);
-		return configurer;
-	}
+    /**
+     * Loads properties from classpath
+     * 
+     * @return the property place holder configures
+     */
+    @Bean
+    public PropertyPlaceholderConfigurer commonPropertyPlaceholderConfigurer() {
+        final PropertyPlaceholderConfigurer configurer = new CommonsPropertyPlaceholderConfigurer("ihub",
+                "transcend-ihub-test.properties");
+        configurer.setSystemPropertiesMode(PropertyPlaceholderConfigurer.SYSTEM_PROPERTIES_MODE_OVERRIDE);
+        configurer.setIgnoreUnresolvablePlaceholders(true);
+        return configurer;
+    }
 }

@@ -5,12 +5,11 @@ import com.thoughtworks.xstream.mapper.Mapper;
 
 public class HibernateMapConverter extends MapConverter {
 
-	HibernateMapConverter(Mapper mapper) {
-		super(mapper);
-	}
+    HibernateMapConverter(Mapper mapper) {
+        super(mapper);
+    }
 
-	public boolean canConvert(Class type) {
-		return super.canConvert(type)
-				|| org.hibernate.collection.PersistentMap.class.equals(type);
-	}
+    public boolean canConvert(Class type) {
+        return super.canConvert(type) || org.hibernate.collection.PersistentMap.class.equals(type);
+    }
 }

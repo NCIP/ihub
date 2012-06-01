@@ -12,28 +12,28 @@ import java.util.List;
  */
 public class Specimens {
 
-	List<SpecimenDetail> specimenDetailList;
+    List<SpecimenDetail> specimenDetailList;
 
-	private Participant participant;
+    private Participant participant;
 
-	public Specimens() {
-		specimenDetailList = new ArrayList<SpecimenDetail>();
-	}
+    public Specimens() {
+        specimenDetailList = new ArrayList<SpecimenDetail>();
+    }
 
-	public void add(SpecimenDetail specimenDetail) {
-		specimenDetailList.add(specimenDetail);
-	}
+    public void add(SpecimenDetail specimenDetail) {
+        specimenDetailList.add(specimenDetail);
+    }
 
-	public List<SpecimenDetail> getSpecimenDetailList() {
-		return specimenDetailList;
-	}
+    public List<SpecimenDetail> getSpecimenDetailList() {
+        return specimenDetailList;
+    }
 
-	public Participant getParticipant() {
-		return participant;
-	}
+    public Participant getParticipant() {
+        return participant;
+    }
 
-	public void setParticipant(Participant participant) {
-		this.participant = participant;
-	}
+    public void setParticipant(Participant participant) {
+        this.participant = participant;
+    }
 
 }

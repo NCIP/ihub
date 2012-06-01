@@ -29,36 +29,35 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class IHubMessagesDaoTest {
 
-	@Autowired
-	private IHubMessageDao iHubMessageDao;
+    @Autowired
+    private IHubMessageDao iHubMessageDao;
 
-	@PersistenceContext
-	private EntityManager em;
+    @PersistenceContext
+    private EntityManager em;
 
-	/**
-	 * Tests saving a iHubMessage
-	 */
-	@Test
-	public void save() {
-		final int sizeBefore = iHubMessageDao.getAll().size();
-		final IHubMessage iHubMessage = createIHubMessage();
+    /**
+     * Tests saving a iHubMessage
+     */
+    @Test
+    public void save() {
+        final int sizeBefore = iHubMessageDao.getAll().size();
+        final IHubMessage iHubMessage = createIHubMessage();
 
-		final Long id = iHubMessageDao.save(iHubMessage);
-		assertNotNull(id);
-		assertEquals(id, iHubMessage.getId());
-		assertEquals(sizeBefore + 1, iHubMessageDao.getAll().size());
+        final Long id = iHubMessageDao.save(iHubMessage);
+        assertNotNull(id);
+        assertEquals(id, iHubMessage.getId());
+        assertEquals(sizeBefore + 1, iHubMessageDao.getAll().size());
 
-		final IHubMessage saveIHubMessage = iHubMessageDao.getById(iHubMessage
-				.getId());
-		assertEquals(iHubMessage.getRequest(), saveIHubMessage.getRequest());
-	}
+        final IHubMessage saveIHubMessage = iHubMessageDao.getById(iHubMessage.getId());
+        assertEquals(iHubMessage.getRequest(), saveIHubMessage.getRequest());
+    }
 
-	private IHubMessage createIHubMessage() {
-		IHubMessage iHubMessage = new IHubMessage();
-		iHubMessage.setRequest("request string");
-		iHubMessage.setStartTime(new Date(new java.util.Date().getTime()));
-		iHubMessage.setStatus(Status.PROCESS);
+    private IHubMessage createIHubMessage() {
+        IHubMessage iHubMessage = new IHubMessage();
+        iHubMessage.setRequest("request string");
+        iHubMessage.setStartTime(new Date(new java.util.Date().getTime()));
+        iHubMessage.setStatus(Status.PROCESS);
 
-		return iHubMessage;
-	}
+        return iHubMessage;
+    }
 }

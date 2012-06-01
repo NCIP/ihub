@@ -42,186 +42,168 @@ import org.springframework.remoting.soap.SoapFaultException;
 
 public class CaAERSParticipantServiceWSClient {
 
-	private Unmarshaller unmarshaller = null;
+    private Unmarshaller unmarshaller = null;
 
-	private ParticipantServiceInterface client;
+    private ParticipantServiceInterface client;
 
-	private String userName;
+    private String userName;
 
-	private ClientPasswordCallback clientPasswordCallback;
+    private ClientPasswordCallback clientPasswordCallback;
 
-	public CaAERSParticipantServiceWSClient(String serviceUrl, String userName,
-			ClientPasswordCallback clientPasswordCallback)
-			throws IntegrationException {
-		super();
-		this.userName = userName;
-		this.clientPasswordCallback = clientPasswordCallback;
+    public CaAERSParticipantServiceWSClient(String serviceUrl, String userName,
+            ClientPasswordCallback clientPasswordCallback) throws IntegrationException {
+        super();
+        this.userName = userName;
+        this.clientPasswordCallback = clientPasswordCallback;
 
-		try {
-			getUnmarshaller();
+        try {
+            getUnmarshaller();
 
-			initClient(serviceUrl);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new IntegrationException(IntegrationError._1054, e
-					.getMessage());
-		}
-	}
+            initClient(serviceUrl);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IntegrationException(IntegrationError._1054, e.getMessage());
+        }
+    }
 
-	private void initClient(String serviceUrl) {
-		// Manual WSS4JOutInterceptor interceptor process - start
-		Map outProps = new HashMap();
-		outProps.put(WSHandlerConstants.ACTION,
-				WSHandlerConstants.USERNAME_TOKEN);
-		outProps.put(WSHandlerConstants.USER, userName);
-		outProps.put(WSHandlerConstants.PASSWORD_TYPE, WSConstants.PW_TEXT);
-		outProps
-				.put(WSHandlerConstants.PW_CALLBACK_REF, clientPasswordCallback);
+    private void initClient(String serviceUrl) {
+        // Manual WSS4JOutInterceptor interceptor process - start
+        Map outProps = new HashMap();
+        outProps.put(WSHandlerConstants.ACTION, WSHandlerConstants.USERNAME_TOKEN);
+        outProps.put(WSHandlerConstants.USER, userName);
+        outProps.put(WSHandlerConstants.PASSWORD_TYPE, WSConstants.PW_TEXT);
+        outProps.put(WSHandlerConstants.PW_CALLBACK_REF, clientPasswordCallback);
 
-		WSS4JOutInterceptor wssOut = new WSS4JOutInterceptor(outProps);
+        WSS4JOutInterceptor wssOut = new WSS4JOutInterceptor(outProps);
 
-		JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
+        JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
 
-		factory.getOutInterceptors().add(wssOut);
-		factory.setServiceClass(ParticipantServiceInterface.class);
-		factory.setAddress(serviceUrl);
+        factory.getOutInterceptors().add(wssOut);
+        factory.setServiceClass(ParticipantServiceInterface.class);
+        factory.setAddress(serviceUrl);
 
-		client = (ParticipantServiceInterface) factory.create();
+        client = (ParticipantServiceInterface) factory.create();
 
-		Client clientProxy = ClientProxy.getClient(client);
+        Client clientProxy = ClientProxy.getClient(client);
 
-		HTTPConduit http = (HTTPConduit) clientProxy.getConduit();
-		TLSClientParameters tlsClientParams = new TLSClientParameters();
-		tlsClientParams.setDisableCNCheck(true);
-		http.setTlsClientParameters(tlsClientParams);
-	}
+        HTTPConduit http = (HTTPConduit) clientProxy.getConduit();
+        TLSClientParameters tlsClientParams = new TLSClientParameters();
+        tlsClientParams.setDisableCNCheck(true);
+        http.setTlsClientParameters(tlsClientParams);
+    }
 
-	private Unmarshaller getUnmarshaller() throws JAXBException {
-		if (unmarshaller == null) {
-			JAXBContext jc = JAXBContext.newInstance(ParticipantType.class);
-			unmarshaller = jc.createUnmarshaller();
-		}
-		return unmarshaller;
-	}
+    private Unmarshaller getUnmarshaller() throws JAXBException {
+        if (unmarshaller == null) {
+            JAXBContext jc = JAXBContext.newInstance(ParticipantType.class);
+            unmarshaller = jc.createUnmarshaller();
+        }
+        return unmarshaller;
+    }
 
-	/**
-	 * Unmarshalls a ParticipantType object from an xml string
-	 * 
-	 * @param participantXMLStr
-	 *            - the Participant xml string
-	 * @return ParticipantType object
-	 * @throws JAXBException
-	 */
-	public ParticipantType parseParticipant(String participantXMLStr)
-			throws JAXBException {
-		JAXBElement<ParticipantType> jaxbEle = (JAXBElement<ParticipantType>) getUnmarshaller()
-				.unmarshal(
-						new StreamSource(new StringReader(participantXMLStr)),
-						ParticipantType.class);
-		return jaxbEle.getValue();
-	}
+    /**
+     * Unmarshalls a ParticipantType object from an xml string
+     * 
+     * @param participantXMLStr - the Participant xml string
+     * @return ParticipantType object
+     * @throws JAXBException
+     */
+    public ParticipantType parseParticipant(String participantXMLStr) throws JAXBException {
+        JAXBElement<ParticipantType> jaxbEle = (JAXBElement<ParticipantType>) getUnmarshaller().unmarshal(
+                new StreamSource(new StringReader(participantXMLStr)), ParticipantType.class);
+        return jaxbEle.getValue();
+    }
 
-	public CaaersServiceResponse createParticipant(String participantXMLStr)
-			throws JAXBException, MalformedURLException, SOAPFaultException,
-			IntegrationException {
-		ParticipantType participant = parseParticipant(participantXMLStr);
+    public CaaersServiceResponse createParticipant(String participantXMLStr) throws JAXBException,
+            MalformedURLException, SOAPFaultException, IntegrationException {
+        ParticipantType participant = parseParticipant(participantXMLStr);
 
-		CreateParticipant createParticipant = new CreateParticipant();
-		Participants participants = new Participants();
-		participants.getParticipant().add(participant);
-		createParticipant.setParticipants(participants);
+        CreateParticipant createParticipant = new CreateParticipant();
+        Participants participants = new Participants();
+        participants.getParticipant().add(participant);
+        createParticipant.setParticipants(participants);
 
-		CreateParticipantResponse retValue = null;
-		try {
-			retValue = client.createParticipant(createParticipant);
-		} catch (SOAPFaultException e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new IntegrationException(IntegrationError._1053, e,
-					(Object) null);
-		}
-		return retValue.getCaaersServiceResponse();
-	}
+        CreateParticipantResponse retValue = null;
+        try {
+            retValue = client.createParticipant(createParticipant);
+        } catch (SOAPFaultException e) {
+            e.printStackTrace();
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IntegrationException(IntegrationError._1053, e, (Object) null);
+        }
+        return retValue.getCaaersServiceResponse();
+    }
 
-	public CaaersServiceResponse deleteParticipant(String participantXMLStr)
-			throws JAXBException, MalformedURLException, SOAPFaultException,
-			IntegrationException {
-		ParticipantType participant = parseParticipant(participantXMLStr);
+    public CaaersServiceResponse deleteParticipant(String participantXMLStr) throws JAXBException,
+            MalformedURLException, SOAPFaultException, IntegrationException {
+        ParticipantType participant = parseParticipant(participantXMLStr);
 
-		DeleteParticipant deleteParticipant = new DeleteParticipant();
-		Participants participants = new Participants();
-		participants.getParticipant().add(participant);
-		deleteParticipant.setParticipants(participants);
+        DeleteParticipant deleteParticipant = new DeleteParticipant();
+        Participants participants = new Participants();
+        participants.getParticipant().add(participant);
+        deleteParticipant.setParticipants(participants);
 
-		DeleteParticipantResponse retValue = null;
-		try {
-			retValue = client.deleteParticipant(deleteParticipant);
-		} catch (SOAPFaultException e) {
-			// e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			// e.printStackTrace();
-			throw new IntegrationException(IntegrationError._1053, e,
-					(Object) null);
-		}
-		return retValue.getCaaersServiceResponse();
-	}
+        DeleteParticipantResponse retValue = null;
+        try {
+            retValue = client.deleteParticipant(deleteParticipant);
+        } catch (SOAPFaultException e) {
+            // e.printStackTrace();
+            throw e;
+        } catch (Exception e) {
+            // e.printStackTrace();
+            throw new IntegrationException(IntegrationError._1053, e, (Object) null);
+        }
+        return retValue.getCaaersServiceResponse();
+    }
 
-	public CaaersServiceResponse updateParticipant(String participantXMLStr)
-			throws JAXBException, MalformedURLException, SOAPFaultException,
-			IntegrationException {
-		ParticipantType participant = parseParticipant(participantXMLStr);
+    public CaaersServiceResponse updateParticipant(String participantXMLStr) throws JAXBException,
+            MalformedURLException, SOAPFaultException, IntegrationException {
+        ParticipantType participant = parseParticipant(participantXMLStr);
 
-		UpdateParticipant updateParticipant = new UpdateParticipant();
-		Participants participants = new Participants();
-		participants.getParticipant().add(participant);
-		updateParticipant.setParticipants(participants);
+        UpdateParticipant updateParticipant = new UpdateParticipant();
+        Participants participants = new Participants();
+        participants.getParticipant().add(participant);
+        updateParticipant.setParticipants(participants);
 
-		UpdateParticipantResponse retValue = null;
-		try {
-			retValue = client.updateParticipant(updateParticipant);
-		} catch (SOAPFaultException e) {
-			// e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			// e.printStackTrace();
-			throw new IntegrationException(IntegrationError._1053, e,
-					(Object) null);
-		}
-		return retValue.getCaaersServiceResponse();
-	}
+        UpdateParticipantResponse retValue = null;
+        try {
+            retValue = client.updateParticipant(updateParticipant);
+        } catch (SOAPFaultException e) {
+            // e.printStackTrace();
+            throw e;
+        } catch (Exception e) {
+            // e.printStackTrace();
+            throw new IntegrationException(IntegrationError._1053, e, (Object) null);
+        }
+        return retValue.getCaaersServiceResponse();
+    }
 
-	public CaaersServiceResponse getParticipant(String participantXMLStr)
-			throws JAXBException, MalformedURLException, SOAPFaultException,
-			IntegrationException {
-		ParticipantType participant = parseParticipant(participantXMLStr);
+    public CaaersServiceResponse getParticipant(String participantXMLStr) throws JAXBException, MalformedURLException,
+            SOAPFaultException, IntegrationException {
+        ParticipantType participant = parseParticipant(participantXMLStr);
 
-		GetParticipant getParticipant = new GetParticipant();
-		ParticipantRef participantRef = new ParticipantRef();
-		ParticipantRef.Identifiers refIds = new ParticipantRef.Identifiers();
-		participantRef.setIdentifiers(refIds);
-		ParticipantType.Identifiers prtcpntIds = participant.getIdentifiers();
+        GetParticipant getParticipant = new GetParticipant();
+        ParticipantRef participantRef = new ParticipantRef();
+        ParticipantRef.Identifiers refIds = new ParticipantRef.Identifiers();
+        participantRef.setIdentifiers(refIds);
+        ParticipantType.Identifiers prtcpntIds = participant.getIdentifiers();
 
-		refIds.getOrganizationAssignedIdentifier().addAll(
-				prtcpntIds.getOrganizationAssignedIdentifier());
-		refIds.getSystemAssignedIdentifier().addAll(
-				prtcpntIds.getSystemAssignedIdentifier());
+        refIds.getOrganizationAssignedIdentifier().addAll(prtcpntIds.getOrganizationAssignedIdentifier());
+        refIds.getSystemAssignedIdentifier().addAll(prtcpntIds.getSystemAssignedIdentifier());
 
-		getParticipant.setParticipantRef(participantRef);
+        getParticipant.setParticipantRef(participantRef);
 
-		GetParticipantResponse retValue = null;
-		try {
-			retValue = client.getParticipant(getParticipant);
-		} catch (SOAPFaultException e) {
-			// e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			// e.printStackTrace();
-			throw new IntegrationException(IntegrationError._1053, e,
-					(Object) null);
-		}
-		return retValue.getCaaersServiceResponse();
-	}
+        GetParticipantResponse retValue = null;
+        try {
+            retValue = client.getParticipant(getParticipant);
+        } catch (SOAPFaultException e) {
+            // e.printStackTrace();
+            throw e;
+        } catch (Exception e) {
+            // e.printStackTrace();
+            throw new IntegrationException(IntegrationError._1053, e, (Object) null);
+        }
+        return retValue.getCaaersServiceResponse();
+    }
 }

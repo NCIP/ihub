@@ -5,8 +5,7 @@ import java.util.Properties;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 
 /**
- * PropertyPlaceholderConfigurer that resolves properties from any of following
- * locations in the same order
+ * PropertyPlaceholderConfigurer that resolves properties from any of following locations in the same order
  * <p/>
  * 
  * <pre>
@@ -17,38 +16,32 @@ import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
  * 
  * @author Chandrasekaravr
  */
-public final class CommonsPropertyPlaceholderConfigurer extends
-		PropertyPlaceholderConfigurer {
+public final class CommonsPropertyPlaceholderConfigurer extends PropertyPlaceholderConfigurer {
 
-	private final Properties props;
+    private final Properties props;
 
-	/**
-	 * 
-	 * @param projectName
-	 *            - project name
-	 * @param propertyFileName
-	 *            - property file name
-	 */
-	public CommonsPropertyPlaceholderConfigurer(String projectName,
-			String propertyFileName) {
-		super();
-		props = CommonsPropertyLoaderUtil.loadProperties(projectName,
-				propertyFileName);
-		this.setProperties(props);
-	}
+    /**
+     * 
+     * @param projectName - project name
+     * @param propertyFileName - property file name
+     */
+    public CommonsPropertyPlaceholderConfigurer(String projectName, String propertyFileName) {
+        super();
+        props = CommonsPropertyLoaderUtil.loadProperties(projectName, propertyFileName);
+        this.setProperties(props);
+    }
 
-	/**
-	 * Get property method to get the property value programmatically
-	 * 
-	 * @param key
-	 *            String representing the key
-	 * @return String value of the property
-	 */
-	public String getProperty(String key) {
-		if (props == null) {
-			return null;
-		}
-		return props.getProperty(key);
-	}
+    /**
+     * Get property method to get the property value programmatically
+     * 
+     * @param key String representing the key
+     * @return String value of the property
+     */
+    public String getProperty(String key) {
+        if (props == null) {
+            return null;
+        }
+        return props.getProperty(key);
+    }
 
 }
