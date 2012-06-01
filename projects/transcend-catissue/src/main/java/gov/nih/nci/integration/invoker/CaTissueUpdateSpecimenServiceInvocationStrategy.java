@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 public class CaTissueUpdateSpecimenServiceInvocationStrategy implements
 		ServiceInvocationStrategy {
 
-	private static Logger LOG = LoggerFactory
+	private static final Logger LOG = LoggerFactory
 			.getLogger(CaTissueUpdateSpecimenServiceInvocationStrategy.class);
 
 	private int retryCount = 0;

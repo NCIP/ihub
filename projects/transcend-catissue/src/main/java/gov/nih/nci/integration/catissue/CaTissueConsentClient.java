@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  */
 public class CaTissueConsentClient {
 
-	private static String CLIENT_CLASSNAME = "gov.nih.nci.integration.catissue.client.CaTissueConsentClient";
+	private static final String CLIENT_CLASSNAME = "gov.nih.nci.integration.catissue.client.CaTissueConsentClient";
 	private Class caTissueConsentClientClass = null;
 
 	private String caTissueLibLocation = "";
@@ -32,7 +32,7 @@ public class CaTissueConsentClient {
 	private static Class[] rollbackConsentParamTypes = { String.class };
 
 	private Executor ex = Executors.newCachedThreadPool();
-	private static Logger LOG = LoggerFactory
+	private static final Logger LOG = LoggerFactory
 			.getLogger(CaTissueConsentClient.class);
 
 	public CaTissueConsentClient(String caTissueLibLocation, String loginName,
