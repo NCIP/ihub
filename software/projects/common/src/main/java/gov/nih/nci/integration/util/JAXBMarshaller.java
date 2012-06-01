@@ -16,6 +16,7 @@ public class JAXBMarshaller {
 
     /**
      * Marshals Object to its xml format, based on its context
+     * @param claz - classes that the new context object needs to recognize
      * @param obj - object to be marshalled
      * @return marshalled string
      * @throws JAXBException exception thrown, if any
