@@ -8,7 +8,11 @@ import java.sql.Date;
 import javax.persistence.EntityManager;
 
 import org.springframework.transaction.annotation.Transactional;
-
+/**
+ * DefaultIHubMessageDao
+ * @author Vinodh
+ *
+ */
 @Transactional
 public class DefaultIHubMessageDao extends AbstractDao<IHubMessage> implements
 		Dao<IHubMessage>, IHubMessageDao {
@@ -23,12 +27,10 @@ public class DefaultIHubMessageDao extends AbstractDao<IHubMessage> implements
 		super(IHubMessage.class, em);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * gov.nih.nci.integration.dao.IHubMessageDaoIntf#saveMessage(java.lang.
-	 * String)
+	/**
+	 * saveMessage
+	 * @param request
+	 * @return Id
 	 */
 	public Long saveMessage(String request) {
 		IHubMessage iHubMessage = new IHubMessage();

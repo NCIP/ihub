@@ -2,6 +2,11 @@ package gov.nih.nci.integration.dao;
 
 import gov.nih.nci.integration.domain.IHubMessage;
 
+/**
+ * IHubMessageDao
+ * @author Vinodh
+ *
+ */
 public interface IHubMessageDao extends Dao<IHubMessage> {
 
 	/**
@@ -11,6 +16,6 @@ public interface IHubMessageDao extends Dao<IHubMessage> {
 	 *            request string
 	 * @return entity id
 	 */
-	public abstract Long saveMessage(String request);
+	Long saveMessage(String request);
 
 }
