@@ -42,7 +42,7 @@ public class XSLTTransformerTest {
 
 		String trnsfrmdMsg = transformToParticipantXML(getMsgBCMsg());
 		Assert.assertNotNull(trnsfrmdMsg);
-		System.out.println(trnsfrmdMsg);
+//		System.out.println(trnsfrmdMsg);
 	}
 
 	private String transformToParticipantXML(String message)

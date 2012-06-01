@@ -25,7 +25,7 @@ public class DefaultServiceInvocationMessageDao extends
 	 */
 	public DefaultServiceInvocationMessageDao(EntityManager em) {
 		super(ServiceInvocationMessage.class, em);
-		System.out.println("em in constr is " + em);
+//		System.out.println("em in constr is " + em);
 	}
 
 	/*
@@ -37,7 +37,7 @@ public class DefaultServiceInvocationMessageDao extends
 	@SuppressWarnings("unchecked")
 	public Map<StrategyIdentifier, ServiceInvocationMessage> getAllByReferenceMessageId(
 			Long refMsgId) {
-		System.out.println("got em from abstract dao " + this.getEm());
+//		System.out.println("got em from abstract dao " + this.getEm());
 		final Query msgsQuery = this
 				.getEm()
 				.createQuery(

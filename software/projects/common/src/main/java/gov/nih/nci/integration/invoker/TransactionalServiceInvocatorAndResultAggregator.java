@@ -29,7 +29,7 @@ public class TransactionalServiceInvocatorAndResultAggregator implements
 
 	private Collection<ServiceInvocationStrategy> serviceInvocationStrategies;
 
-	private static Logger LOG = LoggerFactory
+	private static final Logger LOG = LoggerFactory
 			.getLogger(TransactionalServiceInvocatorAndResultAggregator.class);
 
 	public TransactionalServiceInvocatorAndResultAggregator(
@@ -43,8 +43,8 @@ public class TransactionalServiceInvocatorAndResultAggregator implements
 				executor);
 		this.serviceInvocationStrategies = new ArrayList<ServiceInvocationStrategy>();
 
-		System.out.println("serviceInvocationMessageDao 2 is "
-				+ serviceInvocationMessageDao);
+//		System.out.println("serviceInvocationMessageDao 2 is "
+//				+ serviceInvocationMessageDao);
 	}
 
 	@Override
