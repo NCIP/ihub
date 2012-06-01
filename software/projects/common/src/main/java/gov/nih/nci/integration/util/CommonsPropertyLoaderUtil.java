@@ -141,7 +141,7 @@ public final class CommonsPropertyLoaderUtil {
 			final String message = "error while loading properties from resource"
 					+ resource;
 			LOG.error(message, e);
-			throw new RuntimeException(message, e);
+			throw new RuntimeException(message, e);// NOPMD
 		}
 	}
 

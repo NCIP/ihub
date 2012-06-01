@@ -60,7 +60,7 @@ public class XSLTTransformer {
 	 * @throws IntegrationException
 	 *             - exception thrown if any
 	 */
-	public void initTransformer(String xslFileName, String xslBasePath)
+	public void initTransformer(String xslFileName, String xslBasePath)// NOPMD
 			throws IntegrationException {
 		if (factory == null) {
 			throw new IntegrationException(IntegrationError._1060);
