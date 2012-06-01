@@ -18,8 +18,8 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
 			ServiceInvocationMessageDao serviceInvocationMessageDao) {
 		super();
 		this.serviceInvocationMessageDao = serviceInvocationMessageDao;
-		System.out.println("serviceInvocationMessageDao is "
-				+ serviceInvocationMessageDao);
+//		System.out.println("serviceInvocationMessageDao is "
+//				+ serviceInvocationMessageDao);
 	}
 
 	@Override

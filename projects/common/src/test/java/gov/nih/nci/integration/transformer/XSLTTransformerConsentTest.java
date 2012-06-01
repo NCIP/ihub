@@ -41,7 +41,7 @@ public class XSLTTransformerConsentTest {
 				"TranscendInboundMsg-to-caCISRequest.xsl", baseXSLPath);
 		String trnsfrmdMsg = transformXML(getConsentIncomingRequestMessage());
 		Assert.assertNotNull(trnsfrmdMsg);
-		System.out.println(trnsfrmdMsg);
+//		System.out.println(trnsfrmdMsg);
 	}
 
 	@Test
@@ -51,7 +51,7 @@ public class XSLTTransformerConsentTest {
 				baseXSLPath);
 		String trnsfrmdMsg = transformXML(getConsentWrapperMessage());
 		Assert.assertNotNull(trnsfrmdMsg);
-		System.out.println(trnsfrmdMsg);
+//		System.out.println(trnsfrmdMsg);
 	}
 
 	@Test
@@ -59,7 +59,7 @@ public class XSLTTransformerConsentTest {
 		xsltTransformer.initTransformer(catissueConsentXsl, baseXSLPath);
 		String trnsfrmdMsg = transformXML(getConsentInterimMessage());
 		Assert.assertNotNull(trnsfrmdMsg);
-		System.out.println(trnsfrmdMsg);
+//		System.out.println(trnsfrmdMsg);
 	}
 
 	private String getConsentIncomingRequestMessage() {
