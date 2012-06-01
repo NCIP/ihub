@@ -1,5 +1,43 @@
 package gov.nih.nci.integration.exception;
 
 public enum ErrorType {
-	UNKNOWN, VALIDATION, SECURITY, TRANSFORMATION, TRANSMISSION, MALFORM, STORAGE, IDENTITY_RESOLUTION;
+	/**
+	 * Unknown
+	 */
+	UNKNOWN,
+
+	/**
+	 * Validation
+	 */
+	VALIDATION,
+
+	/**
+	 * Security
+	 */
+	SECURITY,
+
+	/**
+	 * Transformation
+	 */
+	TRANSFORMATION,
+
+	/**
+	 * Transmission
+	 */
+	TRANSMISSION,
+
+	/**
+	 * Malform
+	 */
+	MALFORM,
+
+	/**
+	 * Storage
+	 */
+	STORAGE,
+
+	/**
+	 * Identity Resolution
+	 */
+	IDENTITY_RESOLUTION;
 }

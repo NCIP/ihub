@@ -11,16 +11,21 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
+/**
+ * ServiceInvokerConfig Class
+ * @author Vinodh
+ *
+ */
 @Configuration
 public class ServiceInvokerConfig {
 
 	@Autowired
-	IHubMessageDao iHubMessageDao;
+	private IHubMessageDao iHubMessageDao;
 
 	@Autowired
-	ServiceInvocationMessageDao serviceInvocationMessageDao;
+	private ServiceInvocationMessageDao serviceInvocationMessageDao;
 
-	int corePoolSize = 10;
+	private int corePoolSize = 10;
 
 	@Bean
 	public ServiceBroadcaster serviceBroadcaster() {
