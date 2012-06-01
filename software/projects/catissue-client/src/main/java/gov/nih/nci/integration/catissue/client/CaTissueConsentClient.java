@@ -54,9 +54,7 @@ public class CaTissueConsentClient {
 		xStream.alias("collectionProtocol", CollectionProtocol.class);
 		xStream.alias("consentTierStatus", ConsentTierStatus.class);
 		xStream.alias("consentTier", ConsentTier.class);
-		xStream
-				.addImplicitCollection(ConsentData.class,
-						"consentTierStatusSet");
+		xStream.addImplicitCollection(ConsentData.class, "consentTierStatusSet");
 		xStream.addImplicitCollection(Consents.class, "consentDetailsList");
 	}
 
@@ -64,15 +62,17 @@ public class CaTissueConsentClient {
 	 * This method is used to fetch the existing Consents
 	 * 
 	 * @param consentsListXMLStr
-	 * @return
+	 *            - XMLString containing the list of consents for which data is
+	 *            to be fetched
+	 * @return String - XMLString representation of the retrieved data
 	 * @throws ApplicationException
+	 *             - if any exception occurred during data retrieval
 	 */
 	public String getExistingConsents(String consentsListXMLStr)
 			throws ApplicationException {
 
-		LOG
-				.debug("Inside getExistingConsentsData...The Incoming XML for getExistingConsentsData() is --> "
-						+ consentsListXMLStr);
+		LOG.debug("Inside getExistingConsentsData...The Incoming XML for getExistingConsentsData() is --> "
+				+ consentsListXMLStr);
 
 		// Parse the incoming XML String. The returned object will contain data
 		// from the incoming consents XML
@@ -88,12 +88,16 @@ public class CaTissueConsentClient {
 	 * This method is used Register the Consents
 	 * 
 	 * @param consentsListXMLStr
+	 *            - XMLString containing the list of consents for which
+	 *            registration has to be done
+	 * @return String - currently returning null
+	 * @throws ApplicationException
+	 *             - if any exception occurred during data insertion
 	 */
 	public String registerConsents(String consentsListXMLStr)
 			throws ApplicationException {
-		LOG
-				.debug("Inside CaTissueConsentClient...The Incoming XML for registerConsents() is --> "
-						+ consentsListXMLStr);
+		LOG.debug("Inside CaTissueConsentClient...The Incoming XML for registerConsents() is --> "
+				+ consentsListXMLStr);
 		// System.out.println("Inside CaTissueConsentClient...The Incoming XML for registerConsents() is --> "
 		// + consentsListXMLStr);
 
@@ -115,13 +119,14 @@ public class CaTissueConsentClient {
 	 * This method is used to Rollback the Consents
 	 * 
 	 * @param consentsListXMLStr
+	 *            - XMLString containing the specimens/consents to be rollback
 	 * @throws ApplicationException
+	 *             - if any exception occurred during rollback itself
 	 */
 	public void rollbackConsentRegistration(String consentsListXMLStr)
 			throws ApplicationException {
-		LOG
-				.debug("Inside rollbackConsentRegistration...The Incoming XML for rollbackConsentRegistration() is --> "
-						+ consentsListXMLStr);
+		LOG.debug("Inside rollbackConsentRegistration...The Incoming XML for rollbackConsentRegistration() is --> "
+				+ consentsListXMLStr);
 		// System.out.println("Inside rollbackConsentRegistration...The Incoming XML for rollbackConsentRegistration() is --> "
 		// + consentsListXMLStr);
 
@@ -203,9 +208,9 @@ public class CaTissueConsentClient {
 						consentDetail);
 			}
 		} catch (ApplicationException ae) {
-			LOG.error("Register Consent Failed for Specimen"
-					+ existingSpecimen.getLabel() + " and exception is "
-					+ ae.getCause() + ae.getMessage());
+			LOG.error(
+					"Register Consent Failed for Specimen"
+							+ existingSpecimen.getLabel(), ae);
 			throw new ApplicationException(
 					"Register Consent Failed for Specimen"
 							+ existingSpecimen.getLabel()
@@ -227,7 +232,16 @@ public class CaTissueConsentClient {
 					.getConsentData().getConsentTierStatusSet());
 			updateSpecimen(childSpecimen);
 
-			// do it recursively
+			// do it recursively for child specimen
+			/*
+			 * Currently this is working only when Main Specimen has 1 level of
+			 * child specimen. If the child specimen further has child
+			 * specimens, then the below code doesn't work properly. This is a
+			 * known issue at the moment and the KC link is
+			 * https://cabig-kc.nci.
+			 * nih.gov/Biospecimen/forums/viewtopic.php?f=19
+			 * &t=1600&sid=005c36d237d7af0ef232dc5b1daecb31
+			 */
 			performRegisterConsentsForChildSpecimens(childSpecimen,
 					consentDetail);
 		}
@@ -271,10 +285,8 @@ public class CaTissueConsentClient {
 				}
 			} else {
 				// i.e collection protocol not found is caTissue
-				LOG
-						.error("populateConsentTierId failed as Collection Protocol was not found in caTissue for the identifier "
-								+ consentDetail.getCollectionProtocol()
-										.getTitle());
+				LOG.error("populateConsentTierId failed as Collection Protocol was not found in caTissue for the identifier "
+						+ consentDetail.getCollectionProtocol().getTitle());
 				throw new ApplicationException(
 						"Collection Protocol was not found in caTissue");
 			}
@@ -282,10 +294,9 @@ public class CaTissueConsentClient {
 			if (!isTierIdFound) {
 				// i.e tierId not found for given CollectionProtocol & Statement
 				// combination
-				LOG
-						.error("populateConsentTierId failed as ConsentTier Statement was not found for given CollectionProtocol "
-								+ consentDetail.getCollectionProtocol()
-										.getTitle() + "in caTissue.");
+				LOG.error("populateConsentTierId failed as ConsentTier Statement was not found for given CollectionProtocol "
+						+ consentDetail.getCollectionProtocol().getTitle()
+						+ "in caTissue.");
 				throw new ApplicationException(
 						"ConsentTier Statement was not found for given CollectionProtocol in caTissue");
 			}
@@ -324,14 +335,17 @@ public class CaTissueConsentClient {
 				existingSpecimen.setConsentTierStatusCollection(consentDetail
 						.getConsentData().getConsentTierStatusSet());
 				updateSpecimen(existingSpecimen);
+				// throw new
+				// ApplicationException("Rollback Consent Failed for Specimen....");
 				performRollbackConsentForChildSpecimens(existingSpecimen,
 						consentDetail);
 			}
 		} catch (ApplicationException ae) {
 			// code for handling the exception
-			LOG
-					.error("Exception During Rollback of Consent with SpecimenLabel as "
-							+ consentDetail.getConsentData().getSpecimenLabel());
+			LOG.error(
+					"Exception During Rollback of Consent with SpecimenLabel as "
+							+ consentDetail.getConsentData().getSpecimenLabel(),
+					ae);
 			throw new ApplicationException(
 					"Rollback Consent Failed for Specimen"
 							+ consentDetail.getConsentData().getSpecimenLabel()
@@ -358,9 +372,10 @@ public class CaTissueConsentClient {
 						consentDetail);
 			}
 		} catch (Exception e) {
-			LOG
-					.error("Exception During Rollback of Consent for ChildSpecimen with SpecimenLabel as "
-							+ consentDetail.getConsentData().getSpecimenLabel());
+			LOG.error(
+					"Exception During Rollback of Consent for ChildSpecimen with SpecimenLabel as "
+							+ consentDetail.getConsentData().getSpecimenLabel(),
+					e);
 			throw new ApplicationException(
 					"Rollback Consent Failed for ChildSpecimen "
 							+ consentDetail.getConsentData().getSpecimenLabel()

@@ -67,15 +67,18 @@ public class CaTissueSpecimenClient {
 	/**
 	 * This method is used to check if Specimen(s) already exist in caTissue
 	 * 
+	 * @param specimenListXMLStr
+	 *            - XMLString containing list of specimens which has to be check
+	 *            if they are existing.
+	 * @return String as 'SPECIMEN_NOT_EXISTING' if specimen doesn't exist
 	 * @throws ApplicationException
 	 *             - Throws exception if Specimen already exist
 	 */
 	public String isSpecimensExist(String specimenListXMLStr)
 			throws ApplicationException {
 
-		LOG
-				.debug("Inside isSpecimensExist...The Incoming XML for isSpecimensExist() is --> "
-						+ specimenListXMLStr);
+		LOG.debug("Inside isSpecimensExist...The Incoming XML for isSpecimensExist() is --> "
+				+ specimenListXMLStr);
 		// System.out.println("Inside isSpecimensExist...The Incoming XML for isSpecimensExist() is --> "
 		// + specimenListXMLStr);
 
@@ -90,14 +93,18 @@ public class CaTissueSpecimenClient {
 	 * This method is used to fetch the Specimen(s) details for given specimen
 	 * XMLString
 	 * 
+	 * @param specimenListXMLStr
+	 *            - XMLString containing list of specimens for which specimen
+	 *            details are to be fetched
+	 * @return XMLString for the retrieved specimens
 	 * @throws ApplicationException
+	 *             - if any exception occurred during data retrieval
 	 */
 	public String getExistingSpecimens(String specimenListXMLStr)
 			throws ApplicationException {
 
-		LOG
-				.debug("Inside getExistingSpecimens...The Incoming XML for getExistingSpecimens() is --> "
-						+ specimenListXMLStr);
+		LOG.debug("Inside getExistingSpecimens...The Incoming XML for getExistingSpecimens() is --> "
+				+ specimenListXMLStr);
 		// System.out.println("Inside getExistingSpecimens...The Incoming XML for getExistingSpecimens() is --> "
 		// + specimenListXMLStr);
 
@@ -112,18 +119,20 @@ public class CaTissueSpecimenClient {
 	}
 
 	/**
-	 * Creates specimens in caTissue
+	 * This method is used to create bio-specimens in caTissue
 	 * 
 	 * @param specimenListXMLStr
-	 *            -- The XML string for creating the bio-specimen which may
+	 *            - The XMLString for creating the bio-specimen which may
 	 *            contain multiple specimens.
+	 * @return String - currently returning null
+	 * @throws ApplicationException
+	 *             - if any exception occurred during data insertion
 	 */
 	public String createSpecimens(String specimenListXMLStr)
 			throws ApplicationException {
 
-		LOG
-				.debug("Inside CaTissueSpecimenClient...The Incoming XML for createSpecimens() is --> "
-						+ specimenListXMLStr);
+		LOG.debug("Inside CaTissueSpecimenClient...The Incoming XML for createSpecimens() is --> "
+				+ specimenListXMLStr);
 		// System.out.println("Inside CaTissueSpecimenClient...The Incoming XML for createSpecimens() is --> "
 		// + specimenListXMLStr);
 
@@ -142,18 +151,20 @@ public class CaTissueSpecimenClient {
 	}
 
 	/**
-	 * Updates specimens in caTissue
+	 * This method is used to update bio-specimens in caTissue
 	 * 
 	 * @param specimenListXMLStr
-	 *            -- The XML string for creating the specimens which may contain
+	 *            - The XML string for creating the specimens which may contain
 	 *            multiple specimens.
+	 * @return String - XMLString representation of updated specimens
+	 * @throws ApplicationException
+	 *             - if any exception occurred during data updation
 	 */
 	public String updateSpecimens(String specimenListXMLStr)
 			throws ApplicationException {
 
-		LOG
-				.debug("Inside CaTissueSpecimenClient... updateSpecimens()..The Incoming XML is --> "
-						+ specimenListXMLStr);
+		LOG.debug("Inside CaTissueSpecimenClient... updateSpecimens()..The Incoming XML is --> "
+				+ specimenListXMLStr);
 		// System.out.println("Inside CaTissueSpecimenClient... updateSpecimens()..The Incoming XML is --> "
 		// + specimenListXMLStr);
 
@@ -171,13 +182,18 @@ public class CaTissueSpecimenClient {
 	/**
 	 * This method is used to Rollback the specimen changes for createSpecimen
 	 * flow
+	 * 
+	 * @param specimenListXMLStr
+	 *            - XMLString containing the specimens to be rollback
+	 * @return String - currently returning null
+	 * @throws ApplicationException
+	 *             - if any exception occurred during rollback itself
 	 */
 	public String rollbackCreatedSpecimens(String specimenListXMLStr)
 			throws ApplicationException {
 
-		LOG
-				.debug("Inside CaTissueSpecimenClient... rollbackCreatedSpecimens()..The Incoming XML is --> "
-						+ specimenListXMLStr);
+		LOG.debug("Inside CaTissueSpecimenClient... rollbackCreatedSpecimens()..The Incoming XML is --> "
+				+ specimenListXMLStr);
 		// System.out.println("Inside CaTissueSpecimenClient Impl Class... rollbackSpecimens()..The Incoming XML is --> "
 		// + specimenListXMLStr);
 
@@ -194,14 +210,17 @@ public class CaTissueSpecimenClient {
 	 * This method is used to Rollback the specimen changes for updateSpecimen
 	 * flow
 	 * 
+	 * @param specimenListXMLStr
+	 *            - XMLString containing the specimens to be rollback
+	 * @return String - currently returning null
 	 * @throws ApplicationException
+	 *             - if any exception occurred during rollback itself
 	 */
 	public String rollbackUpdatedSpecimens(String specimenListXMLStr)
 			throws ApplicationException {
 
-		LOG
-				.debug("Inside CaTissueSpecimenClient... rollbackUpdatedSpecimens()..The Incoming XML is --> "
-						+ specimenListXMLStr);
+		LOG.debug("Inside CaTissueSpecimenClient... rollbackUpdatedSpecimens()..The Incoming XML is --> "
+				+ specimenListXMLStr);
 		// System.out.println("Inside CaTissueSpecimenClient Impl Class... rollbackUpdatedSpecimens()..The Incoming XML is --> "
 		// + specimenListXMLStr);
 
@@ -245,9 +264,8 @@ public class CaTissueSpecimenClient {
 			String specimenLabel = specimenDetail.getSpecimen().getLabel();
 			Specimen existingSpecimen = getExistingSpecimen(specimenLabel);
 			if (existingSpecimen != null) {
-				LOG
-						.error("Specimen with the same LABEL already exists for Specimen "
-								+ specimenLabel);
+				LOG.error("Specimen with the same LABEL already exists for Specimen "
+						+ specimenLabel);
 				throw new ApplicationException(
 						"Specimen with the same LABEL already exists.");
 			}
@@ -333,9 +351,8 @@ public class CaTissueSpecimenClient {
 
 			if (scgFound == false) {
 				// throw exception
-				LOG
-						.error("Specimen Collection Group was not found in caTissue for Label "
-								+ specimen.getLabel());
+				LOG.error("Specimen Collection Group was not found in caTissue for Label "
+						+ specimen.getLabel());
 				throw new ApplicationException(
 						"Specimen Collection Group not found in caTissue");
 			}
@@ -344,9 +361,9 @@ public class CaTissueSpecimenClient {
 				// method call to createSpecimen
 				createSpecimen(specimen);
 			} catch (Exception e) {
-				LOG.error("CreateSpecimen Failed for Label"
-						+ specimen.getLabel() + " and exception is "
-						+ e.getCause());
+				LOG.error(
+						"CreateSpecimen Failed for Label" + specimen.getLabel(),
+						e);
 				throw new ApplicationException(
 						"CreateSpecimen Failed for Label"
 								+ specimenDetail.getSpecimen().getLabel()
@@ -413,8 +430,7 @@ public class CaTissueSpecimenClient {
 			}
 		} catch (Exception e) {
 			LOG.error("UpdateSpecimen Failed for Label"
-					+ specimenDetail.getSpecimen().getLabel()
-					+ " and exception is " + e.getCause());
+					+ specimenDetail.getSpecimen().getLabel(), e);
 			throw new ApplicationException("UpdateSpecimen Failed for Label"
 					+ specimenDetail.getSpecimen().getLabel()
 					+ " and exception is " + e.getCause());
@@ -446,30 +462,27 @@ public class CaTissueSpecimenClient {
 
 		if (!inCPE.equals(existCPE)) {
 			hasValidData = false;
-			LOG
-					.error("UpdateSpecimen Request Failed for Label"
-							+ existingSpecimen.getLabel()
-							+ " and exception is Collection Protocol Event can't be changed while updating the Specimen");
+			LOG.error("UpdateSpecimen Request Failed for Label"
+					+ existingSpecimen.getLabel()
+					+ " and exception is Collection Protocol Event can't be changed while updating the Specimen");
 			throw new ApplicationException(
 					"Collection Protocol Event can't be changed while updating the Specimen");
 		}
 
 		if (!inCP.equals(existCP)) {
 			hasValidData = false;
-			LOG
-					.error("UpdateSpecimen Request Failed for Label"
-							+ existingSpecimen.getLabel()
-							+ " and exception is Collection Protocol can't be changed while updating the Specimen");
+			LOG.error("UpdateSpecimen Request Failed for Label"
+					+ existingSpecimen.getLabel()
+					+ " and exception is Collection Protocol can't be changed while updating the Specimen");
 			throw new ApplicationException(
 					"Collection Protocol can't be changed while updating the Specimen");
 		}
 
 		if (!inSC.equals(existSC)) {
 			hasValidData = false;
-			LOG
-					.error("UpdateSpecimen Request Failed for Label"
-							+ existingSpecimen.getLabel()
-							+ " and exception is Specimen Class can't be changed while updating the Specimen");
+			LOG.error("UpdateSpecimen Request Failed for Label"
+					+ existingSpecimen.getLabel()
+					+ " and exception is Specimen Class can't be changed while updating the Specimen");
 			throw new ApplicationException(
 					"Specimen Class can't be changed while updating the Specimen");
 		}
@@ -495,10 +508,9 @@ public class CaTissueSpecimenClient {
 			try {
 				updateSpecimen(existingSpecimen);
 			} catch (ApplicationException e) {
-				LOG
-						.error("Exception occured during Rollback of UpdateSpecimen "
-								+ existingSpecimen.getLabel()
-								+ " and exception is " + e.getCause());
+				LOG.error(
+						"Exception occured during Rollback of UpdateSpecimen "
+								+ existingSpecimen.getLabel(), e);
 				throw new ApplicationException(
 						"Exception occured during Rollback of UpdateSpecimen "
 								+ existingSpecimen.getLabel()
@@ -569,8 +581,7 @@ public class CaTissueSpecimenClient {
 					existingSpecimen.getSpecimenCharacteristics().getId());
 			specimen.setLineage(existingSpecimen.getLineage());
 			specimen.setIsAvailable(existingSpecimen.getIsAvailable());
-			specimen
-					.setCollectionStatus(existingSpecimen.getCollectionStatus());
+			specimen.setCollectionStatus(existingSpecimen.getCollectionStatus());
 			SpecimenDetail specimenDetail = new SpecimenDetail();
 			specimenDetail.setSpecimen(specimen);
 			existingSpecimens.add(specimenDetail);
@@ -598,11 +609,9 @@ public class CaTissueSpecimenClient {
 				existingSpecimen = getExistingSpecimen(specimenLabel);
 				softDeleteSpecimen(existingSpecimen);
 			} catch (ApplicationException e) {
-				LOG
-						.error("Exception occured during Rollback of CreateSpecimen "
-								+ specimenLabel
-								+ " and exception is "
-								+ e.getCause());
+				LOG.error(
+						"Exception occured during Rollback of CreateSpecimen "
+								+ specimenLabel, e);
 				throw new ApplicationException(
 						"Exception occured during Rollback of CreateSpecimen "
 								+ specimenLabel + " and exception is "

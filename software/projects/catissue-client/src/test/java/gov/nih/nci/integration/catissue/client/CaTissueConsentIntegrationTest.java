@@ -41,27 +41,6 @@ public class CaTissueConsentIntegrationTest {
 			caTissueConsentClient
 					.registerConsents(getRegisterConsentSpecimenNotExistXMLStr());
 		} catch (Exception e) {
-			e.printStackTrace();
-			existXML = null;
-			retXML = null;
-		}
-		assertNull(existXML);
-		assertNull(retXML);
-	}
-
-	// @Test
-	public void registerConsentsStatementNotExist() {
-		String existXML = "SPECIMEN_EXIST";
-		String retXML = "REGISTER_SPECIMEN";
-		CaTissueConsentClient caTissueConsentClient;
-		try {
-			caTissueConsentClient = new CaTissueConsentClient(
-					"admin@admin.com", "Rohit123");
-			caTissueConsentClient
-					.getExistingConsents(getRegisterConsentStatementNotExistXMLStr());
-			caTissueConsentClient
-					.registerConsents(getRegisterConsentStatementNotExistXMLStr());
-		} catch (Exception e) {
 			existXML = null;
 			retXML = null;
 		}
@@ -81,6 +60,26 @@ public class CaTissueConsentIntegrationTest {
 					.getExistingConsents(getRegisterConsentCollectionProtocolNotExistXMLStr());
 			caTissueConsentClient
 					.registerConsents(getRegisterConsentCollectionProtocolNotExistXMLStr());
+		} catch (Exception e) {
+			existXML = null;
+			retXML = null;
+		}
+		assertNull(existXML);
+		assertNull(retXML);
+	}
+
+	// @Test
+	public void registerConsentsStatementNotExist() {
+		String existXML = "SPECIMEN_EXIST";
+		String retXML = "REGISTER_SPECIMEN";
+		CaTissueConsentClient caTissueConsentClient;
+		try {
+			caTissueConsentClient = new CaTissueConsentClient(
+					"admin@admin.com", "Rohit123");
+			caTissueConsentClient
+					.getExistingConsents(getRegisterConsentStatementNotExistXMLStr());
+			caTissueConsentClient
+					.registerConsents(getRegisterConsentStatementNotExistXMLStr());
 		} catch (Exception e) {
 			existXML = null;
 			retXML = null;
@@ -112,7 +111,7 @@ public class CaTissueConsentIntegrationTest {
 	}
 
 	private String getRegisterConsentXMLStr() {
-		return "<?xml version=\"1.0\" ?><consents><participant><lastName>66604232</lastName></participant><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><consentData><specimenLabel>TolvenTestUser252TissueSpecimen151</specimenLabel><consentTierStatus><consentTier><statement>This is a statement</statement></consentTier><status>Yes</status></consentTierStatus><consentTierStatus><consentTier><statement>This is a second statement.</statement></consentTier><status>No</status></consentTierStatus></consentData><collectionProtocol><title>Tolven Tissue Protocol</title><shortTitle>ttp</shortTitle></collectionProtocol></consentDetails></consents>";
+		return "<?xml version=\"1.0\" ?><consents><participant><lastName>66604232</lastName></participant><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><consentData><specimenLabel>TolvenTestUser252TissueSpecimen173</specimenLabel><consentTierStatus><consentTier><statement>This is a statement</statement></consentTier><status>Yes</status></consentTierStatus><consentTierStatus><consentTier><statement>This is a second statement.</statement></consentTier><status>No</status></consentTierStatus></consentData><collectionProtocol><title>Tolven Tissue Protocol</title><shortTitle>ttp</shortTitle></collectionProtocol></consentDetails></consents>";
 	}
 
 	private String getRegisterConsentSpecimenNotExistXMLStr() {
@@ -120,15 +119,15 @@ public class CaTissueConsentIntegrationTest {
 	}
 
 	private String getRegisterConsentStatementNotExistXMLStr() {
-		return "<?xml version=\"1.0\" ?><consents><participant><lastName>66604232</lastName></participant><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><consentData><specimenLabel>TolvenTestUser252TissueSpecimen156</specimenLabel><consentTierStatus><consentTier><statement>This statement does not exist</statement></consentTier><status>Yes</status></consentTierStatus><consentTierStatus><consentTier><statement>This is a second statement.</statement></consentTier><status>No</status></consentTierStatus></consentData><collectionProtocol><title>Tolven Tissue Protocol</title><shortTitle>ttp</shortTitle></collectionProtocol></consentDetails></consents>";
+		return "<?xml version=\"1.0\" ?><consents><participant><lastName>66604232</lastName></participant><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><consentData><specimenLabel>TolvenTestUser252TissueSpecimen173</specimenLabel><consentTierStatus><consentTier><statement>This statement does not exist</statement></consentTier><status>Yes</status></consentTierStatus><consentTierStatus><consentTier><statement>This is a second statement.</statement></consentTier><status>No</status></consentTierStatus></consentData><collectionProtocol><title>Tolven Tissue Protocol</title><shortTitle>ttp</shortTitle></collectionProtocol></consentDetails></consents>";
 	}
 
 	private String getRegisterConsentCollectionProtocolNotExistXMLStr() {
-		return "<?xml version=\"1.0\" ?><consents><participant><lastName>66604232</lastName></participant><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><consentData><specimenLabel>TolvenTestUser252TissueSpecimen156</specimenLabel><consentTierStatus><consentTier><statement>This is a statement</statement></consentTier><status>Yes</status></consentTierStatus><consentTierStatus><consentTier><statement>This is a second statement.</statement></consentTier><status>No</status></consentTierStatus></consentData><collectionProtocol><title>Tolven Tissue Protocol123</title><shortTitle>ttp123</shortTitle></collectionProtocol></consentDetails></consents>";
+		return "<?xml version=\"1.0\" ?><consents><participant><lastName>66604232</lastName></participant><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><consentData><specimenLabel>TolvenTestUser252TissueSpecimen173</specimenLabel><consentTierStatus><consentTier><statement>This is a statement</statement></consentTier><status>Yes</status></consentTierStatus><consentTierStatus><consentTier><statement>This is a second statement.</statement></consentTier><status>No</status></consentTierStatus></consentData><collectionProtocol><title>Tolven Tissue Protocol123</title><shortTitle>ttp123</shortTitle></collectionProtocol></consentDetails></consents>";
 	}
 
 	private String getRollbackConsentXMLStr() {
-		return "<?xml version=\"1.0\" ?><consents><participant><lastName>66604232</lastName></participant><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><consentData><specimenLabel>TolvenTestUser252TissueSpecimen156</specimenLabel><consentTierStatus><consentTier><statement>This is a statement</statement></consentTier><status>Yes</status></consentTierStatus><consentTierStatus><consentTier><statement>This is a second statement.</statement></consentTier><status>No</status></consentTierStatus></consentData><collectionProtocol><title>Tolven Tissue Protocol</title><shortTitle>ttp</shortTitle></collectionProtocol></consentDetails></consents>";
+		return "<?xml version=\"1.0\" ?><consents><participant><lastName>66604232</lastName></participant><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><consentData><specimenLabel>TolvenTestUser252TissueSpecimen173</specimenLabel><consentTierStatus><consentTier><statement>This is a statement</statement></consentTier><status>Yes</status></consentTierStatus><consentTierStatus><consentTier><statement>This is a second statement.</statement></consentTier><status>No</status></consentTierStatus></consentData><collectionProtocol><title>Tolven Tissue Protocol</title><shortTitle>ttp</shortTitle></collectionProtocol></consentDetails></consents>";
 	}
 
 }
