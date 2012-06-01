@@ -47,7 +47,7 @@ import org.slf4j.LoggerFactory;
 public class CaAERSUpdateRegistrationServiceInvocationStrategy implements
 		ServiceInvocationStrategy {
 
-	private static Logger LOG = LoggerFactory
+	private static final Logger LOG = LoggerFactory
 			.getLogger(CaAERSUpdateRegistrationServiceInvocationStrategy.class);
 
 	private static QName QNAME = new QName(

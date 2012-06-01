@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
 public class CaAERSRegistrationServiceInvocationStrategy implements
 		ServiceInvocationStrategy {
 
-	private static Logger LOG = LoggerFactory
+	private static final Logger LOG = LoggerFactory
 			.getLogger(CaAERSRegistrationServiceInvocationStrategy.class);
 
 	private CaAERSParticipantServiceWSClient client;
