@@ -132,14 +132,26 @@ public class IntegrationException extends Exception {
 		this.errorType = IntegrationError._1000.getErrorType();
 	}
 
+	/**
+	 * getErrorCode
+	 * @return errorCode
+	 */
 	public int getErrorCode() {
 		return errorCode;
 	}
 
+	/**
+	 * getErrorType
+	 * @return errorType
+	 */
 	public ErrorType getErrorType() {
 		return errorType;
 	}
 
+	/**
+	 * stackTraceAsString
+	 * @return String
+	 */
 	public String stackTraceAsString() {
 		String stackTraceStr = getMessage();
 		if (getCause() != null) {
