@@ -33,8 +33,6 @@ public abstract class AbstractDao<T extends AbstractIdentity> implements Dao<T> 
 	/**
 	 * @param domainClass
 	 *            - entity class
-	 * @param em
-	 *            JPA EntityManager
 	 */
 	public AbstractDao(final Class<T> domainClass) {
 		super();
@@ -54,25 +52,24 @@ public abstract class AbstractDao<T extends AbstractIdentity> implements Dao<T> 
 	}
 
 	/**
+	 * getDomainClass
 	 * @return domain class
 	 */
 	public Class<T> getDomainClass() {
 		return domainClass;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gov.nih.nci.integration.dao.AbstractDaoIntf#getById(java.lang.Long)
+	/**
+	 * getById
+	 * @return T
 	 */
 	public T getById(final Long id) {
 		return em.find(domainClass, id);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gov.nih.nci.integration.dao.AbstractDaoIntf#getAll()
+	/**
+	 * getAll
+	 * @return List<T>
 	 */
 	@SuppressWarnings("unchecked")
 	public List<T> getAll() {
@@ -80,10 +77,9 @@ public abstract class AbstractDao<T extends AbstractIdentity> implements Dao<T> 
 				.getResultList();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gov.nih.nci.integration.dao.AbstractDaoIntf#save(T)
+	/**
+	 * save
+	 * @param - T
 	 */
 	public Long save(final T entity) {
 		em.persist(entity);
@@ -96,10 +92,18 @@ public abstract class AbstractDao<T extends AbstractIdentity> implements Dao<T> 
 		return entity.getId();
 	}
 
+	/**
+	 * getEm
+	 * @return EntityManager
+	 */
 	public EntityManager getEm() {
 		return em;
 	}
 
+	/**
+	 * set EntityManager
+	 * @param em EntityManager
+	 */
 	public void setEm(EntityManager em) {
 		this.em = em;
 	}
