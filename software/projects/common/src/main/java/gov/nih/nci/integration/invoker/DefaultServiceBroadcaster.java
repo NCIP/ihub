@@ -10,10 +10,19 @@ import gov.nih.nci.integration.exception.IntegrationException;
 
 import java.sql.Date;
 
+/**
+ * DefaultServiceBroadcaster
+ * @author Vinodh
+ *
+ */
 public class DefaultServiceBroadcaster implements ServiceBroadcaster {
 
-	ServiceInvocationMessageDao serviceInvocationMessageDao;
+	private ServiceInvocationMessageDao serviceInvocationMessageDao;
 
+	/**
+	 * Constructor
+	 * @param serviceInvocationMessageDao ServiceInvocationMessageDao
+	 */
 	public DefaultServiceBroadcaster(
 			ServiceInvocationMessageDao serviceInvocationMessageDao) {
 		super();
