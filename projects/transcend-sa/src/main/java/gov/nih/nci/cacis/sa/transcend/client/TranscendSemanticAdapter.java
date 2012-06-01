@@ -70,7 +70,7 @@ public class TranscendSemanticAdapter extends AcceptMessage {
 			throws AcceptSourceFault {
 
 		LOG.info("Executing operation acceptSource");
-		System.out.println(parameter);
+//		System.out.println(parameter);
 
 		gov.nih.nci.cacis.sa.transcend.CaCISResponse response = new CaCISResponse();
 

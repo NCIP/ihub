@@ -59,9 +59,9 @@ public class CaXchangeRequestService extends AcceptMessage {
 	public gov.nih.nci.caxchange.messaging.ResponseMessage processRequest(
 			@WebParam(partName = "parameters", name = "message", targetNamespace = "http://caXchange.nci.nih.gov/caxchangerequest") Message parameters) {
 		LOG.info("Executing operation processRequest");
-		System.out.println("Message : "
-				+ parameters.getRequest().getBusinessMessagePayload()
-						.getXmlSchemaDefinition().toString());
+//		System.out.println("Message : "
+//				+ parameters.getRequest().getBusinessMessagePayload()
+//						.getXmlSchemaDefinition().toString());
 
 		gov.nih.nci.caxchange.messaging.ResponseMessage respMessage = new ResponseMessage();
 		ResponseMetadata rm = new ResponseMetadata();
@@ -92,10 +92,6 @@ public class CaXchangeRequestService extends AcceptMessage {
 			}
 
 			String mcResponse = webServiceMessageReceiver.processData(reqstr);
-
-			System.out
-					.println("Inside CaXchangeRequestService... mcResponse is :: "
-							+ mcResponse);
 
 			LOG.info("MC RESPONSE:" + mcResponse);
 
