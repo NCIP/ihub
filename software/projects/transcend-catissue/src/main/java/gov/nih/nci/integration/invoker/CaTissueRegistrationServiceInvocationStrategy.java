@@ -30,9 +30,9 @@ public class CaTissueRegistrationServiceInvocationStrategy implements
 	private CaTissueParticipantClient caTissueParticipantClient;
 
 	private XSLTTransformer xsltTransformer;
-	
+
 	Map<String, IntegrationError> msgToErrMap;
-	
+
 	public CaTissueRegistrationServiceInvocationStrategy(int retryCount,
 			CaTissueParticipantClient caTissueParticipantClient,
 			XSLTTransformer xsltTransformer) {
@@ -40,11 +40,12 @@ public class CaTissueRegistrationServiceInvocationStrategy implements
 		this.retryCount = retryCount;
 		this.caTissueParticipantClient = caTissueParticipantClient;
 		this.xsltTransformer = xsltTransformer;
-		
+
 		HashMap<String, IntegrationError> msgToErrMapBase = new LinkedHashMap<String, IntegrationError>();
-		
-		msgToErrMapBase.put("Error authenticating user", IntegrationError._1019);		
-		
+
+		msgToErrMapBase
+				.put("Error authenticating user", IntegrationError._1019);
+
 		msgToErrMap = Collections.synchronizedMap(msgToErrMapBase);
 	}
 
@@ -62,8 +63,10 @@ public class CaTissueRegistrationServiceInvocationStrategy implements
 	public ServiceInvocationResult invoke(ServiceInvocationMessage msg) {
 		ServiceInvocationResult serviceInvocationResult = new ServiceInvocationResult();
 		try {
-			String participantXMLStr = transformToParticipantXML(msg.getMessage().getRequest());
-			serviceInvocationResult = caTissueParticipantClient.registerParticipant(participantXMLStr);
+			String participantXMLStr = transformToParticipantXML(msg
+					.getMessage().getRequest());
+			serviceInvocationResult = caTissueParticipantClient
+					.registerParticipant(participantXMLStr);
 		} catch (IntegrationException e) {
 			serviceInvocationResult.setInvocationException(e);
 		}
@@ -75,11 +78,13 @@ public class CaTissueRegistrationServiceInvocationStrategy implements
 	public ServiceInvocationResult rollback(ServiceInvocationMessage msg) {
 		ServiceInvocationResult serviceInvocationResult = new ServiceInvocationResult();
 		try {
-			String participantXMLStr = transformToParticipantXML(msg.getMessage().getRequest());
-			serviceInvocationResult = caTissueParticipantClient.deleteParticipant(participantXMLStr);
+			String participantXMLStr = transformToParticipantXML(msg
+					.getMessage().getRequest());
+			serviceInvocationResult = caTissueParticipantClient
+					.deleteParticipant(participantXMLStr);
 		} catch (IntegrationException e) {
 			serviceInvocationResult.setInvocationException(e);
-		} 
+		}
 		handleException(serviceInvocationResult);
 		return serviceInvocationResult;
 	}
@@ -112,27 +117,27 @@ public class CaTissueRegistrationServiceInvocationStrategy implements
 		}
 		return participantXMLStr;
 	}
-	
+
 	private void handleException(ServiceInvocationResult result) {
-		if(!result.isFault()) {
+		if (!result.isFault()) {
 			return;
 		}
-		
+
 		Exception exception = result.getInvocationException();
 		Throwable cause = exception;
-		while(cause instanceof IntegrationException) {
+		while (cause instanceof IntegrationException) {
 			cause = cause.getCause();
 		}
-		if(cause == null){
+		if (cause == null) {
 			return;
 		}
 		String stackTrace = ExceptionUtils.getFullStackTrace(cause);
 		IntegrationException newie = (IntegrationException) exception;
-		if(stackTrace.contains("Error authenticating user")){
-			newie = new IntegrationException(IntegrationError._1019, (Object)null );
+		if (stackTrace.contains("Error authenticating user")) {
+			newie = new IntegrationException(IntegrationError._1019,
+					(Object) null);
 		}
 		result.setInvocationException(newie);
 	}
-
 
 }

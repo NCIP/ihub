@@ -30,11 +30,11 @@ public class CaTissueAPIClientWithRegularAuthentication {
 		super();
 		this.loginName = loginName;
 		this.password = password;
-		
+
 	}
-	
+
 	public final CaTissueWritableAppService getApplicationService()
-			throws ApplicationException {		
+			throws ApplicationException {
 		try {
 			return getAppService(loginName, password);
 		} catch (Exception e) {
@@ -53,16 +53,16 @@ public class CaTissueAPIClientWithRegularAuthentication {
 		SDKQueryResult result = getApplicationService().executeQuery(query);
 		return (T) result.getObjectResult();
 	}
-	
+
 	public <T> T delete(T object) throws ApplicationException {
-		SDKQuery query = new DeleteExampleQuery(object);		
+		SDKQuery query = new DeleteExampleQuery(object);
 		SDKQueryResult result = getApplicationService().executeQuery(query);
 		return (T) result.getObjectResult();
 	}
-	
+
 	public void delete(String hql) throws ApplicationException {
-		SDKQuery query = new DeleteHQLQuery(hql);		
-		SDKQueryResult result = getApplicationService().executeQuery(query);		
+		SDKQuery query = new DeleteHQLQuery(hql);
+		SDKQueryResult result = getApplicationService().executeQuery(query);
 	}
 
 	public <T> List<T> searchByExample(Class<T> klass, T example)
@@ -80,7 +80,7 @@ public class CaTissueAPIClientWithRegularAuthentication {
 	}
 
 	final protected CaTissueWritableAppService getAppService(String username,
-			String password) throws Exception {		
+			String password) throws Exception {
 		return (CaTissueWritableAppService) ApplicationServiceProvider
 				.getApplicationService(username, password);
 	}

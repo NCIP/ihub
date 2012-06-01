@@ -23,20 +23,22 @@ import org.slf4j.LoggerFactory;
 /**
  * 
  * @author Rohit Gupta
- *
+ * 
  */
-public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocationStrategy {
+public class CaTissueSpecimenServiceInvocationStrategy implements
+		ServiceInvocationStrategy {
 
-	private static Logger LOG = LoggerFactory.getLogger(CaTissueSpecimenServiceInvocationStrategy.class);
+	private static Logger LOG = LoggerFactory
+			.getLogger(CaTissueSpecimenServiceInvocationStrategy.class);
 
 	private int retryCount = 0;
 
 	private CaTissueSpecimenClient caTissueSpecimenClient;
 
 	private XSLTTransformer xsltTransformer;
-	
-	Map<String, IntegrationError> msgToErrMap;	
-	
+
+	Map<String, IntegrationError> msgToErrMap;
+
 	public CaTissueSpecimenServiceInvocationStrategy(int retryCount,
 			CaTissueSpecimenClient caTissueSpecimenClient,
 			XSLTTransformer xsltTransformer) {
@@ -44,17 +46,23 @@ public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocat
 		this.retryCount = retryCount;
 		this.caTissueSpecimenClient = caTissueSpecimenClient;
 		this.xsltTransformer = xsltTransformer;
-		
+
 		HashMap<String, IntegrationError> msgToErrMapBase = new LinkedHashMap<String, IntegrationError>();
-		
-		msgToErrMapBase.put("Specimen with the same LABEL already exists", IntegrationError._1080);
+
+		msgToErrMapBase.put("Specimen with the same LABEL already exists",
+				IntegrationError._1080);
 		msgToErrMapBase.put("Specimen Type is invalid", IntegrationError._1081);
 		msgToErrMapBase.put("Tissue Side is invalid", IntegrationError._1082);
 		msgToErrMapBase.put("Tissue Site is invalid", IntegrationError._1083);
-		msgToErrMapBase.put("Specimen Collection Group not found in caTissue", IntegrationError._1084);	
-		msgToErrMapBase.put("Available Quantity cannot be greater than the Initial Quantity", IntegrationError._1085);
-		msgToErrMapBase.put("Pathological Status is invalid", IntegrationError._1086);
-		
+		msgToErrMapBase.put("Specimen Collection Group not found in caTissue",
+				IntegrationError._1084);
+		msgToErrMapBase
+				.put(
+						"Available Quantity cannot be greater than the Initial Quantity",
+						IntegrationError._1085);
+		msgToErrMapBase.put("Pathological Status is invalid",
+				IntegrationError._1086);
+
 		msgToErrMap = Collections.synchronizedMap(msgToErrMapBase);
 	}
 
@@ -66,7 +74,7 @@ public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocat
 	@Override
 	public StrategyIdentifier getStrategyIdentifier() {
 		return StrategyIdentifier.CATISSUE_CREATE_SPECIMEN;
-		
+
 	}
 
 	@Override
@@ -74,14 +82,16 @@ public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocat
 		ServiceInvocationResult serviceInvocationResult = new ServiceInvocationResult();
 		try {
 			// transform the InterimCreateSpecimenXML into CreateSpecimenXML
-			String specimenListXMLStr = transformToSpecimenXML(msg.getMessage().getRequest());	
-			
+			String specimenListXMLStr = transformToSpecimenXML(msg.getMessage()
+					.getRequest());
+
 			// call the method to create Specimens
-			serviceInvocationResult = caTissueSpecimenClient.createSpecimens(specimenListXMLStr);
+			serviceInvocationResult = caTissueSpecimenClient
+					.createSpecimens(specimenListXMLStr);
 		} catch (IntegrationException e) {
 			serviceInvocationResult.setInvocationException(e);
-		} 
-		
+		}
+
 		handleException(serviceInvocationResult);
 		return serviceInvocationResult;
 	}
@@ -89,29 +99,33 @@ public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocat
 	@Override
 	public ServiceInvocationResult rollback(ServiceInvocationMessage msg) {
 		ServiceInvocationResult serviceInvocationResult = new ServiceInvocationResult();
-		
-		try {			
-			
-			String specimenListXMLStr = transformToSpecimenXML(msg.getMessage().getRequest());
-		
+
+		try {
+
+			String specimenListXMLStr = transformToSpecimenXML(msg.getMessage()
+					.getRequest());
+
 			// call the method to rollback Specimens
-			serviceInvocationResult = caTissueSpecimenClient.rollbackCreatedSpecimens(specimenListXMLStr);			
-			
+			serviceInvocationResult = caTissueSpecimenClient
+					.rollbackCreatedSpecimens(specimenListXMLStr);
+
 		} catch (IntegrationException e) {
 			serviceInvocationResult.setInvocationException(e);
 		} catch (Exception e) {
 			serviceInvocationResult.setInvocationException(e);
-		} 
+		}
 		return serviceInvocationResult;
 	}
 
 	/**
 	 * This method is used to transform the InterimXML into the SpecimenXML.
+	 * 
 	 * @param message
 	 * @return
 	 * @throws IntegrationException
 	 */
-	private String transformToSpecimenXML(String message)throws IntegrationException {
+	private String transformToSpecimenXML(String message)
+			throws IntegrationException {
 		String specimenXMLStr = null;
 		InputStream is = null;
 		ByteArrayOutputStream os = null;
@@ -136,34 +150,34 @@ public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocat
 		return specimenXMLStr;
 	}
 
-	
 	private void handleException(ServiceInvocationResult result) {
-		if(!result.isFault()) {
+		if (!result.isFault()) {
 			return;
 		}
-		
+
 		Exception exception = result.getInvocationException();
 		Throwable cause = exception;
-		while(cause instanceof IntegrationException) {
+		while (cause instanceof IntegrationException) {
 			cause = cause.getCause();
 		}
-		if(cause == null){
+		if (cause == null) {
 			return;
 		}
-		
+
 		String[] throwableMsgs = getThrowableMsgs(cause);
 		IntegrationException newie = (IntegrationException) exception;
-		
+
 		Set<String> keys = msgToErrMap.keySet();
-		
+
 		for (String lkupStr : keys) {
-			String msg = getMatchingMsg(lkupStr, throwableMsgs);			
-			if(msg != null) {
-				newie = new IntegrationException(msgToErrMap.get(lkupStr), cause, msg );				
+			String msg = getMatchingMsg(lkupStr, throwableMsgs);
+			if (msg != null) {
+				newie = new IntegrationException(msgToErrMap.get(lkupStr),
+						cause, msg);
 				break;
 			}
 		}
-		
+
 		result.setInvocationException(newie);
 	}
 
@@ -175,10 +189,10 @@ public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocat
 		}
 		return msgs;
 	}
-	
+
 	private String getMatchingMsg(String lookupStr, String[] msgs) {
 		for (String string : msgs) {
-			if(string.contains(lookupStr)) {
+			if (string.contains(lookupStr)) {
 				return string;
 			}
 		}

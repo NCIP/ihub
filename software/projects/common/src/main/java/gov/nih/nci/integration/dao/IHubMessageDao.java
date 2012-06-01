@@ -6,7 +6,9 @@ public interface IHubMessageDao extends Dao<IHubMessage> {
 
 	/**
 	 * Persists the request message as IHubMessage
-	 * @param request request string
+	 * 
+	 * @param request
+	 *            request string
 	 * @return entity id
 	 */
 	public abstract Long saveMessage(String request);

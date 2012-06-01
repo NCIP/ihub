@@ -1,14 +1,14 @@
 package gov.nih.nci.integration.catissue.domain;
 
+import edu.wustl.catissuecore.domain.Participant;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import edu.wustl.catissuecore.domain.Participant;
 
 /**
  * 
  * @author Rohit Gupta
- *
+ * 
  */
 public class Specimens {
 

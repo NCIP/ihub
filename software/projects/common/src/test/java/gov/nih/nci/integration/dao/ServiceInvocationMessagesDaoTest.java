@@ -17,7 +17,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -69,7 +68,7 @@ public class ServiceInvocationMessagesDaoTest {
 		assertNotNull(serviceInvocationMessage.getMessage().getId());
 		assertEquals(sizeBefore + 1, serviceInvocationMessageDao.getAll()
 				.size());
-		
+
 		final ServiceInvocationMessage savedServiceInvocationMessage = serviceInvocationMessageDao
 				.getById(serviceInvocationMessage.getId());
 		assertEquals(serviceInvocationMessage.getStrategyIdentifier(),
@@ -77,7 +76,7 @@ public class ServiceInvocationMessagesDaoTest {
 		assertEquals(serviceInvocationMessage.getReferenceMessageId(),
 				savedServiceInvocationMessage.getReferenceMessageId());
 	}
-	
+
 	/**
 	 * Tests retrieving list of ServiceInvocationMessage by reference message id
 	 */
@@ -89,12 +88,14 @@ public class ServiceInvocationMessagesDaoTest {
 		final Long id = serviceInvocationMessageDao
 				.save(serviceInvocationMessage);
 		assertNotNull(id);
-		
-		Map<StrategyIdentifier, ServiceInvocationMessage> svcInvMsgs = serviceInvocationMessageDao.getAllByReferenceMessageId(refMsgId);
+
+		Map<StrategyIdentifier, ServiceInvocationMessage> svcInvMsgs = serviceInvocationMessageDao
+				.getAllByReferenceMessageId(refMsgId);
 		assertNotNull(svcInvMsgs);
 		assertEquals(1, svcInvMsgs.size());
-		
-		final ServiceInvocationMessage savedServiceInvocationMessage = svcInvMsgs.get(serviceInvocationMessage.getStrategyIdentifier());
+
+		final ServiceInvocationMessage savedServiceInvocationMessage = svcInvMsgs
+				.get(serviceInvocationMessage.getStrategyIdentifier());
 		assertNotNull(savedServiceInvocationMessage);
 		assertEquals(serviceInvocationMessage.getStrategyIdentifier(),
 				savedServiceInvocationMessage.getStrategyIdentifier());

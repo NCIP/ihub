@@ -7,9 +7,9 @@ import gov.nih.nci.integration.exception.IntegrationException;
 import java.util.concurrent.Callable;
 
 public class ServiceRollbackTask implements Callable<ServiceInvocationResult> {
-			
+
 	private ServiceInvocationMessage message;
-	
+
 	private ServiceInvocationStrategy serviceInvocationStrategy;
 
 	public ServiceRollbackTask(ServiceInvocationMessage message,
@@ -21,15 +21,15 @@ public class ServiceRollbackTask implements Callable<ServiceInvocationResult> {
 
 	@Override
 	public ServiceInvocationResult call() throws IntegrationException {
-		
+
 		if (message == null) {
 			throw new IntegrationException(IntegrationError._1064);
 		}
-		
+
 		if (serviceInvocationStrategy == null) {
 			throw new IntegrationException(IntegrationError._1065);
 		}
 		return serviceInvocationStrategy.rollback(message);
 	}
-		
+
 }

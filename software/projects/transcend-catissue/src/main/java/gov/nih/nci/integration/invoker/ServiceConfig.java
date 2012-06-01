@@ -14,79 +14,89 @@ import org.springframework.context.annotation.Scope;
 
 @Configuration
 public class ServiceConfig {
-	
+
 	@Value("${catissue.api.service.retry}")
-    private String retryCntStr;
-		
+	private String retryCntStr;
+
 	@Value("${integration.transformer.xsl.baseClassPath}")
-    private String baseXSLPath;
-	
+	private String baseXSLPath;
+
 	@Value("${catissue.api.participant.xsl}")
-    private String catissueParticipantXsl;
-	
+	private String catissueParticipantXsl;
+
 	@Value("${catissue.api.specimen.xsl}")
-    private String catissueSpecimenXsl;	
-	
+	private String catissueSpecimenXsl;
+
 	@Value("${catissue.api.consent.xsl}")
-    private String catissueConsentXsl;
-	
-	
+	private String catissueConsentXsl;
+
 	@Autowired
 	private CaTissueParticipantClient caTissueParticipantClient;
-	
+
 	@Autowired
 	private CaTissueSpecimenClient caTissueSpecimenClient;
-	
+
 	@Autowired
 	private CaTissueConsentClient caTissueConsentClient;
-	
+
 	@Autowired
-	private XSLTTransformer xsltTransformer;	
-	
+	private XSLTTransformer xsltTransformer;
+
 	@Autowired
 	private XSLTTransformer xsltTransformerSpecimen;
-	
+
 	@Autowired
 	private XSLTTransformer xsltTransformerConsent;
-		
+
 	@Bean
 	@Scope("prototype")
-	public ServiceInvocationStrategy CaTissueRegistrationServiceInvocationStrategy() throws IntegrationException{		
+	public ServiceInvocationStrategy CaTissueRegistrationServiceInvocationStrategy()
+			throws IntegrationException {
 		xsltTransformer.initTransformer(catissueParticipantXsl, baseXSLPath);
-		return new CaTissueRegistrationServiceInvocationStrategy(
-				Integer.parseInt(retryCntStr), caTissueParticipantClient, xsltTransformer);
+		return new CaTissueRegistrationServiceInvocationStrategy(Integer
+				.parseInt(retryCntStr), caTissueParticipantClient,
+				xsltTransformer);
 	}
-	
+
 	@Bean
 	@Scope("prototype")
-	public ServiceInvocationStrategy CaTissueUpdateRegistrationServiceInvocationStrategy() throws IntegrationException{
+	public ServiceInvocationStrategy CaTissueUpdateRegistrationServiceInvocationStrategy()
+			throws IntegrationException {
 		xsltTransformer.initTransformer(catissueParticipantXsl, baseXSLPath);
-		return new CaTissueUpdateRegistrationServiceInvocationStrategy(
-				Integer.parseInt(retryCntStr), caTissueParticipantClient, xsltTransformer);
+		return new CaTissueUpdateRegistrationServiceInvocationStrategy(Integer
+				.parseInt(retryCntStr), caTissueParticipantClient,
+				xsltTransformer);
 	}
-	
+
 	@Bean
 	@Scope("prototype")
-	public ServiceInvocationStrategy CaTissueSpecimenServiceInvocationStrategy() throws IntegrationException{
-		xsltTransformerSpecimen.initTransformer(catissueSpecimenXsl, baseXSLPath);
-		return new CaTissueSpecimenServiceInvocationStrategy(
-				Integer.parseInt(retryCntStr), caTissueSpecimenClient, xsltTransformerSpecimen);
+	public ServiceInvocationStrategy CaTissueSpecimenServiceInvocationStrategy()
+			throws IntegrationException {
+		xsltTransformerSpecimen.initTransformer(catissueSpecimenXsl,
+				baseXSLPath);
+		return new CaTissueSpecimenServiceInvocationStrategy(Integer
+				.parseInt(retryCntStr), caTissueSpecimenClient,
+				xsltTransformerSpecimen);
 	}
-	
-	
+
 	@Bean
 	@Scope("prototype")
-	public ServiceInvocationStrategy CaTissueUpdateSpecimenServiceInvocationStrategy() throws IntegrationException{
-		xsltTransformerSpecimen.initTransformer(catissueSpecimenXsl, baseXSLPath);
-		return new CaTissueUpdateSpecimenServiceInvocationStrategy(
-				Integer.parseInt(retryCntStr), caTissueSpecimenClient, xsltTransformerSpecimen);
+	public ServiceInvocationStrategy CaTissueUpdateSpecimenServiceInvocationStrategy()
+			throws IntegrationException {
+		xsltTransformerSpecimen.initTransformer(catissueSpecimenXsl,
+				baseXSLPath);
+		return new CaTissueUpdateSpecimenServiceInvocationStrategy(Integer
+				.parseInt(retryCntStr), caTissueSpecimenClient,
+				xsltTransformerSpecimen);
 	}
-	
+
 	@Bean
 	@Scope("prototype")
-	public ServiceInvocationStrategy CaTissueConsentServiceInvocationStrategy() throws IntegrationException{
+	public ServiceInvocationStrategy CaTissueConsentServiceInvocationStrategy()
+			throws IntegrationException {
 		xsltTransformerConsent.initTransformer(catissueConsentXsl, baseXSLPath);
-		return new CaTissueConsentServiceInvocationStrategy(
-				Integer.parseInt(retryCntStr), caTissueConsentClient, xsltTransformerConsent);
+		return new CaTissueConsentServiceInvocationStrategy(Integer
+				.parseInt(retryCntStr), caTissueConsentClient,
+				xsltTransformerConsent);
 	}
 }

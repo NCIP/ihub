@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  */
 public class CaAERSRegistrationServiceInvocationStrategy implements
 		ServiceInvocationStrategy {
-	
+
 	private static Logger LOG = LoggerFactory
 			.getLogger(CaAERSRegistrationServiceInvocationStrategy.class);
 
@@ -47,7 +47,7 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 	private int retryCount;
 
 	private XSLTTransformer xsltTransformer;
-	
+
 	Map<String, IntegrationError> msgToErrMap;
 
 	public CaAERSRegistrationServiceInvocationStrategy(
@@ -57,16 +57,19 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 		this.xsltTransformer = xsltTransformer;
 		this.client = client;
 		this.retryCount = retryCount;
-		
+
 		HashMap<String, IntegrationError> msgToErrMapBase = new LinkedHashMap<String, IntegrationError>();
-		
-		msgToErrMapBase.put("User is not authorized on this Study", IntegrationError._1009);
-		msgToErrMapBase.put("Invalid Username/Password", IntegrationError._1011);
-		msgToErrMapBase.put("User is not authorized on this Organization", IntegrationError._1012);
-		msgToErrMapBase.put("could not be created in caAERS", IntegrationError._1014);
+
+		msgToErrMapBase.put("User is not authorized on this Study",
+				IntegrationError._1009);
+		msgToErrMapBase
+				.put("Invalid Username/Password", IntegrationError._1011);
+		msgToErrMapBase.put("User is not authorized on this Organization",
+				IntegrationError._1012);
+		msgToErrMapBase.put("could not be created in caAERS",
+				IntegrationError._1014);
 		msgToErrMapBase.put("Could not send Message", IntegrationError._1020);
-		
-		
+
 		msgToErrMap = Collections.synchronizedMap(msgToErrMapBase);
 	}
 
@@ -85,37 +88,40 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 		ServiceInvocationResult result = new ServiceInvocationResult();
 		IntegrationException ie = null;
 		try {
-			String participantXMLStr = transformToParticipantXML(msg.getMessage().getRequest());
-			
-			CaaersServiceResponse caaersresponse = client.createParticipant(participantXMLStr);
+			String participantXMLStr = transformToParticipantXML(msg
+					.getMessage().getRequest());
+
+			CaaersServiceResponse caaersresponse = client
+					.createParticipant(participantXMLStr);
 			ServiceResponse response = caaersresponse.getServiceResponse();
-			if ("0".equals(response.getResponsecode())) { 
-				result.setResult(response.getResponsecode() + " : " + response.getMessage());
+			if ("0".equals(response.getResponsecode())) {
+				result.setResult(response.getResponsecode() + " : "
+						+ response.getMessage());
 				result.setDataChanged(true);
-				//there is no original data
+				// there is no original data
 			} else {
-				handleErrorResponse(response, result);		
+				handleErrorResponse(response, result);
 			}
 		} catch (SOAPFaultException e) {
 			e.printStackTrace();
-			ie = new IntegrationException(
-					IntegrationError._1053, e, e.getMessage());
+			ie = new IntegrationException(IntegrationError._1053, e, e
+					.getMessage());
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-			ie = new IntegrationException(
-					IntegrationError._1053, e, e.getMessage());
+			ie = new IntegrationException(IntegrationError._1053, e, e
+					.getMessage());
 		} catch (JAXBException e) {
 			e.printStackTrace();
-			ie = new IntegrationException(
-					IntegrationError._1053, e, e.getMessage());
+			ie = new IntegrationException(IntegrationError._1053, e, e
+					.getMessage());
 		} catch (WebServiceException e) {
 			e.printStackTrace();
-			ie = new IntegrationException(
-					IntegrationError._1053, e, e.getMessage());
+			ie = new IntegrationException(IntegrationError._1053, e, e
+					.getMessage());
 		} catch (IntegrationException e) {
 			ie = e;
 		}
-		if(!result.isFault()) {
+		if (!result.isFault()) {
 			result.setInvocationException(ie);
 		}
 		handleException(result);
@@ -127,34 +133,37 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 		ServiceInvocationResult result = new ServiceInvocationResult();
 		IntegrationException ie = null;
 		try {
-			String participantXMLStr = transformToParticipantXML(msg.getMessage().getRequest());
-			CaaersServiceResponse caaersresponse = client.deleteParticipant(participantXMLStr);
+			String participantXMLStr = transformToParticipantXML(msg
+					.getMessage().getRequest());
+			CaaersServiceResponse caaersresponse = client
+					.deleteParticipant(participantXMLStr);
 			ServiceResponse response = caaersresponse.getServiceResponse();
-			if ("0".equals(response.getResponsecode())) { 
-				result.setResult(response.getResponsecode() + " : " + response.getMessage());
+			if ("0".equals(response.getResponsecode())) {
+				result.setResult(response.getResponsecode() + " : "
+						+ response.getMessage());
 			} else {
 				handleErrorResponse(response, result);
 			}
 		} catch (SOAPFaultException e) {
 			e.printStackTrace();
-			ie = new IntegrationException(
-					IntegrationError._1053, e, e.getMessage());
+			ie = new IntegrationException(IntegrationError._1053, e, e
+					.getMessage());
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-			ie = new IntegrationException(
-					IntegrationError._1053, e, e.getMessage());
+			ie = new IntegrationException(IntegrationError._1053, e, e
+					.getMessage());
 		} catch (JAXBException e) {
 			e.printStackTrace();
-			ie = new IntegrationException(
-					IntegrationError._1053, e, e.getMessage());
+			ie = new IntegrationException(IntegrationError._1053, e, e
+					.getMessage());
 		} catch (WebServiceException e) {
 			e.printStackTrace();
-			ie = new IntegrationException(
-					IntegrationError._1053, e, e.getMessage());
+			ie = new IntegrationException(IntegrationError._1053, e, e
+					.getMessage());
 		} catch (IntegrationException e) {
 			ie = e;
 		}
-		if(!result.isFault()) {
+		if (!result.isFault()) {
 			result.setInvocationException(ie);
 		}
 		handleException(result);
@@ -189,49 +198,51 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 		}
 		return participantXMLStr;
 	}
-	
-	private void handleErrorResponse(ServiceResponse response, ServiceInvocationResult result) {
+
+	private void handleErrorResponse(ServiceResponse response,
+			ServiceInvocationResult result) {
 		List<WsError> wserrors = response.getWsError();
 		WsError error = null;
 		IntegrationException ie = null;
-		if(wserrors != null && !wserrors.isEmpty()){
+		if (wserrors != null && !wserrors.isEmpty()) {
 			error = wserrors.get(0);
-			ie = new IntegrationException(
-				IntegrationError._1053, new Throwable(error.getException()), error.getErrorDesc() );
+			ie = new IntegrationException(IntegrationError._1053,
+					new Throwable(error.getException()), error.getErrorDesc());
 		} else {
-			ie = new IntegrationException(
-					IntegrationError._1053, new Throwable(response.getMessage()), response.getMessage());
+			ie = new IntegrationException(IntegrationError._1053,
+					new Throwable(response.getMessage()), response.getMessage());
 		}
-		result.setInvocationException(ie);		
+		result.setInvocationException(ie);
 	}
-	
+
 	private void handleException(ServiceInvocationResult result) {
-		if(!result.isFault()) {
+		if (!result.isFault()) {
 			return;
 		}
-		
+
 		Exception exception = result.getInvocationException();
 		Throwable cause = exception;
-		while(cause instanceof IntegrationException) {
+		while (cause instanceof IntegrationException) {
 			cause = cause.getCause();
 		}
-		if(cause == null){
+		if (cause == null) {
 			return;
 		}
-		
+
 		String[] throwableMsgs = getThrowableMsgs(cause);
 		IntegrationException newie = (IntegrationException) exception;
-		
+
 		Set<String> keys = msgToErrMap.keySet();
-		
+
 		for (String lkupStr : keys) {
 			String msg = getMatchingMsg(lkupStr, throwableMsgs);
-			if(msg != null) {
-				newie = new IntegrationException(msgToErrMap.get(lkupStr), cause, msg );				
+			if (msg != null) {
+				newie = new IntegrationException(msgToErrMap.get(lkupStr),
+						cause, msg);
 				break;
 			}
 		}
-		
+
 		result.setInvocationException(newie);
 	}
 
@@ -243,10 +254,10 @@ public class CaAERSRegistrationServiceInvocationStrategy implements
 		}
 		return msgs;
 	}
-	
+
 	private String getMatchingMsg(String lookupStr, String[] msgs) {
 		for (String string : msgs) {
-			if(string.contains(lookupStr)) {
+			if (string.contains(lookupStr)) {
 				return string;
 			}
 		}

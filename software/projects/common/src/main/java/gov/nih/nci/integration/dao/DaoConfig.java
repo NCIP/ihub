@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * 
  * @author chandrasekaravr
- *
+ * 
  */
 @Configuration
 public interface DaoConfig {

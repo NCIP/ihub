@@ -20,41 +20,55 @@ import gov.nih.nci.system.query.cql.CQLQuery;
 /**
  * 
  * @author from catissue client
- *
+ * 
  */
 public class CqlUtility {
 
 	public static CQLQuery getParticipantsForCP(String shortTitle) {
-		CQLAttribute association2Attribute = createAttribute("shortTitle",shortTitle, CQLPredicate.EQUAL_TO);
-		CQLAssociation association2 = createAssociation(CollectionProtocol.class, "collectionProtocol");
+		CQLAttribute association2Attribute = createAttribute("shortTitle",
+				shortTitle, CQLPredicate.EQUAL_TO);
+		CQLAssociation association2 = createAssociation(
+				CollectionProtocol.class, "collectionProtocol");
 		association2.setAttribute(association2Attribute);
 
-		CQLAttribute association1Attribute = createAttribute("id", null,CQLPredicate.IS_NOT_NULL);
-		CQLGroup group2 = createGroup(CQLLogicalOperator.AND,association1Attribute, association2);
+		CQLAttribute association1Attribute = createAttribute("id", null,
+				CQLPredicate.IS_NOT_NULL);
+		CQLGroup group2 = createGroup(CQLLogicalOperator.AND,
+				association1Attribute, association2);
 
-		CQLAssociation association1 = createAssociation(CollectionProtocolRegistration.class,"collectionProtocolRegistrationCollection");
+		CQLAssociation association1 = createAssociation(
+				CollectionProtocolRegistration.class,
+				"collectionProtocolRegistrationCollection");
 		association1.setGroup(group2);
 
-		CQLAttribute targetAttribute = createAttribute("id", null,CQLPredicate.IS_NOT_NULL);
-		CQLGroup group1 = createGroup(CQLLogicalOperator.AND, targetAttribute,association1);
+		CQLAttribute targetAttribute = createAttribute("id", null,
+				CQLPredicate.IS_NOT_NULL);
+		CQLGroup group1 = createGroup(CQLLogicalOperator.AND, targetAttribute,
+				association1);
 
 		return createTargetQuery(Participant.class, group1);
 	}
-	
-	public static CQLQuery getParticipantForPatientId(String mrn) {
-		CQLAttribute targetAttribute2 = createAttribute("lastName",mrn, CQLPredicate.EQUAL_TO);
 
-		CQLAttribute targetAttribute = createAttribute("id", null,CQLPredicate.IS_NOT_NULL);
-		CQLGroup group2 = createGroup(CQLLogicalOperator.AND, targetAttribute,targetAttribute2);
-				
+	public static CQLQuery getParticipantForPatientId(String mrn) {
+		CQLAttribute targetAttribute2 = createAttribute("lastName", mrn,
+				CQLPredicate.EQUAL_TO);
+
+		CQLAttribute targetAttribute = createAttribute("id", null,
+				CQLPredicate.IS_NOT_NULL);
+		CQLGroup group2 = createGroup(CQLLogicalOperator.AND, targetAttribute,
+				targetAttribute2);
+
 		return createTargetQuery(Participant.class, group2);
 	}
-	
-	public static CQLQuery getParticipantForSSN(String ssn) {
-		CQLAttribute targetAttribute2 = createAttribute("socialSecurityNumber",ssn, CQLPredicate.EQUAL_TO);
 
-		CQLAttribute targetAttribute = createAttribute("id", null,CQLPredicate.IS_NOT_NULL);
-		CQLGroup group1 = createGroup(CQLLogicalOperator.AND, targetAttribute,targetAttribute2);
+	public static CQLQuery getParticipantForSSN(String ssn) {
+		CQLAttribute targetAttribute2 = createAttribute("socialSecurityNumber",
+				ssn, CQLPredicate.EQUAL_TO);
+
+		CQLAttribute targetAttribute = createAttribute("id", null,
+				CQLPredicate.IS_NOT_NULL);
+		CQLGroup group1 = createGroup(CQLLogicalOperator.AND, targetAttribute,
+				targetAttribute2);
 
 		return createTargetQuery(Participant.class, group1);
 	}
@@ -63,48 +77,64 @@ public class CqlUtility {
 			String shortTitle) {
 		CQLAssociation association2 = createSCGAssociationWithIDandCPRAssociation(shortTitle);
 
-		CQLAttribute association1Attribute = createAttribute("id", null,CQLPredicate.IS_NOT_NULL);
-		CQLAssociation association1 = createAssociation(ReviewEventParameters.class, "specimenEventCollection");
+		CQLAttribute association1Attribute = createAttribute("id", null,
+				CQLPredicate.IS_NOT_NULL);
+		CQLAssociation association1 = createAssociation(
+				ReviewEventParameters.class, "specimenEventCollection");
 		association1.setAttribute(association1Attribute);
 
-		CQLAttribute targetAttribute = createAttribute("id", null,CQLPredicate.IS_NOT_NULL);
-		CQLGroup group = createGroup(CQLLogicalOperator.AND, targetAttribute,association1, association2);
+		CQLAttribute targetAttribute = createAttribute("id", null,
+				CQLPredicate.IS_NOT_NULL);
+		CQLGroup group = createGroup(CQLLogicalOperator.AND, targetAttribute,
+				association1, association2);
 
 		return createTargetQuery(FluidSpecimen.class, group);
 	}
 
 	public static CQLQuery getTissueSpecimensForCP(String shortTitle) {
 		CQLAssociation association2 = createSCGAssociationWithIDandCPRAssociation(shortTitle);
-		CQLAttribute targetAttribute = createAttribute("id", null,CQLPredicate.IS_NOT_NULL);
-		CQLGroup group = createGroup(CQLLogicalOperator.AND, targetAttribute,association2);
+		CQLAttribute targetAttribute = createAttribute("id", null,
+				CQLPredicate.IS_NOT_NULL);
+		CQLGroup group = createGroup(CQLLogicalOperator.AND, targetAttribute,
+				association2);
 
 		return createTargetQuery(TissueSpecimen.class, group);
 	}
 
-
 	public static CQLQuery getSpecimenMalePPI(String ppi) {
 		CQLAssociation association3 = createAssociationWithIDNotNullandOtherAttribute(
-				Participant.class, "participant", "gender", "Male Gender",CQLPredicate.EQUAL_TO, CQLLogicalOperator.AND);
-		CQLAttribute attribute1Association2 = createAttribute("id", null,CQLPredicate.IS_NOT_NULL);
-		CQLAttribute attribute2Association2 = createAttribute("protocolParticipantIdentifier", ppi, CQLPredicate.EQUAL_TO);
-		CQLGroup group3 = createGroup(CQLLogicalOperator.AND,attribute1Association2, attribute2Association2, association3);
+				Participant.class, "participant", "gender", "Male Gender",
+				CQLPredicate.EQUAL_TO, CQLLogicalOperator.AND);
+		CQLAttribute attribute1Association2 = createAttribute("id", null,
+				CQLPredicate.IS_NOT_NULL);
+		CQLAttribute attribute2Association2 = createAttribute(
+				"protocolParticipantIdentifier", ppi, CQLPredicate.EQUAL_TO);
+		CQLGroup group3 = createGroup(CQLLogicalOperator.AND,
+				attribute1Association2, attribute2Association2, association3);
 
-		CQLAssociation association2 = createAssociation(CollectionProtocolRegistration.class,"collectionProtocolRegistration");
+		CQLAssociation association2 = createAssociation(
+				CollectionProtocolRegistration.class,
+				"collectionProtocolRegistration");
 		association2.setGroup(group3);
-		CQLAttribute attribute1Association1 = createAttribute("id", null,CQLPredicate.IS_NOT_NULL);
-		CQLGroup group2 = createGroup(CQLLogicalOperator.AND,attribute1Association1, association2);
+		CQLAttribute attribute1Association1 = createAttribute("id", null,
+				CQLPredicate.IS_NOT_NULL);
+		CQLGroup group2 = createGroup(CQLLogicalOperator.AND,
+				attribute1Association1, association2);
 
-		CQLAssociation association1 = createAssociation(SpecimenCollectionGroup.class, "specimenCollectionGroup");
+		CQLAssociation association1 = createAssociation(
+				SpecimenCollectionGroup.class, "specimenCollectionGroup");
 		association1.setGroup(group2);
 
-		CQLAttribute targetAttribute = createAttribute("id", null,CQLPredicate.IS_NOT_NULL);
-		CQLGroup group1 = createGroup(CQLLogicalOperator.AND, targetAttribute,association1);
+		CQLAttribute targetAttribute = createAttribute("id", null,
+				CQLPredicate.IS_NOT_NULL);
+		CQLGroup group1 = createGroup(CQLLogicalOperator.AND, targetAttribute,
+				association1);
 
 		return createTargetQuery(Specimen.class, group1);
 	}
 
-
-	private static CQLQuery createTargetQuery(Class<?> klass, Object... cQLObjects) {
+	private static CQLQuery createTargetQuery(Class<?> klass,
+			Object... cQLObjects) {
 		CQLObject target = new CQLObject();
 		target.setName(klass.getName());
 
@@ -166,29 +196,38 @@ public class CqlUtility {
 	private static CQLAssociation createAssociationWithIDNotNullandOtherAttribute(
 			Class<?> klass, String roleName, String name, String value,
 			CQLPredicate predicate, CQLLogicalOperator operator) {
-		
-		CQLAttribute attribute1 = createAttribute("id", null,CQLPredicate.IS_NOT_NULL);
+
+		CQLAttribute attribute1 = createAttribute("id", null,
+				CQLPredicate.IS_NOT_NULL);
 		CQLAttribute attribute2 = createAttribute(name, value, predicate);
 
 		CQLGroup group = createGroup(operator, attribute1, attribute2);
 
-		CQLAssociation association = createAssociation(CollectionProtocol.class, roleName);
+		CQLAssociation association = createAssociation(
+				CollectionProtocol.class, roleName);
 		association.setGroup(group);
 
 		return association;
 	}
 
-	private static CQLAssociation createCPAssociationWithIDandTitle(String shortTitle) {
-		return createAssociationWithIDNotNullandOtherAttribute(CollectionProtocol.class, "collectionProtocol", "shortTitle",
+	private static CQLAssociation createCPAssociationWithIDandTitle(
+			String shortTitle) {
+		return createAssociationWithIDNotNullandOtherAttribute(
+				CollectionProtocol.class, "collectionProtocol", "shortTitle",
 				shortTitle, CQLPredicate.EQUAL_TO, CQLLogicalOperator.AND);
 	}
 
-	private static CQLAssociation createCPRAssociationWithIDandCPAssociation(String shortTitle) {
+	private static CQLAssociation createCPRAssociationWithIDandCPAssociation(
+			String shortTitle) {
 		CQLAssociation association1 = createCPAssociationWithIDandTitle(shortTitle);
-		CQLAttribute attribute = createAttribute("id", null,CQLPredicate.IS_NOT_NULL);
-		CQLGroup group = createGroup(CQLLogicalOperator.AND, attribute,association1);
+		CQLAttribute attribute = createAttribute("id", null,
+				CQLPredicate.IS_NOT_NULL);
+		CQLGroup group = createGroup(CQLLogicalOperator.AND, attribute,
+				association1);
 
-		CQLAssociation association2 = createAssociation(CollectionProtocolRegistration.class,"collectionProtocolRegistration");
+		CQLAssociation association2 = createAssociation(
+				CollectionProtocolRegistration.class,
+				"collectionProtocolRegistration");
 		association2.setGroup(group);
 
 		return association2;
@@ -197,33 +236,42 @@ public class CqlUtility {
 	private static CQLAssociation createSCGAssociationWithIDandCPRAssociation(
 			String shortTitle) {
 		CQLAssociation association1 = createCPRAssociationWithIDandCPAssociation(shortTitle);
-		CQLAttribute attribute = createAttribute("id", null,CQLPredicate.IS_NOT_NULL);
-		CQLGroup group = createGroup(CQLLogicalOperator.AND, attribute,association1);
+		CQLAttribute attribute = createAttribute("id", null,
+				CQLPredicate.IS_NOT_NULL);
+		CQLGroup group = createGroup(CQLLogicalOperator.AND, attribute,
+				association1);
 
-		CQLAssociation association2 = createAssociation(SpecimenCollectionGroup.class, "specimenCollectionGroup");
+		CQLAssociation association2 = createAssociation(
+				SpecimenCollectionGroup.class, "specimenCollectionGroup");
 		association2.setGroup(group);
 
 		return association2;
 	}
-	
-		
-	public static CQLQuery getSpecimenCollectionGroupListQuery(String shortTitle, String label) {
-		CQLAttribute association2Attribute = createAttribute("shortTitle",shortTitle, CQLPredicate.EQUAL_TO);
-		CQLAssociation association2 = createAssociation(CollectionProtocol.class, "collectionProtocol");
+
+	public static CQLQuery getSpecimenCollectionGroupListQuery(
+			String shortTitle, String label) {
+		CQLAttribute association2Attribute = createAttribute("shortTitle",
+				shortTitle, CQLPredicate.EQUAL_TO);
+		CQLAssociation association2 = createAssociation(
+				CollectionProtocol.class, "collectionProtocol");
 		association2.setAttribute(association2Attribute);
 
-		CQLAttribute association11Attribute = createAttribute("id", null,CQLPredicate.IS_NOT_NULL);		
-		CQLAttribute association12Attribute = createAttribute("collectionPointLabel",label, CQLPredicate.EQUAL_TO);
-		CQLGroup group1 = createGroup(CQLLogicalOperator.AND, association11Attribute, association12Attribute, association2);
-		CQLAssociation association1 = createAssociation(CollectionProtocolEvent.class,"collectionProtocolEvent");
+		CQLAttribute association11Attribute = createAttribute("id", null,
+				CQLPredicate.IS_NOT_NULL);
+		CQLAttribute association12Attribute = createAttribute(
+				"collectionPointLabel", label, CQLPredicate.EQUAL_TO);
+		CQLGroup group1 = createGroup(CQLLogicalOperator.AND,
+				association11Attribute, association12Attribute, association2);
+		CQLAssociation association1 = createAssociation(
+				CollectionProtocolEvent.class, "collectionProtocolEvent");
 		association1.setGroup(group1);
 
-		CQLAttribute targetAttribute = createAttribute("id", null,CQLPredicate.IS_NOT_NULL);
-		CQLGroup group0 = createGroup(CQLLogicalOperator.AND, targetAttribute,association1);
+		CQLAttribute targetAttribute = createAttribute("id", null,
+				CQLPredicate.IS_NOT_NULL);
+		CQLGroup group0 = createGroup(CQLLogicalOperator.AND, targetAttribute,
+				association1);
 
 		return createTargetQuery(SpecimenCollectionGroup.class, group0);
 	}
-	
-	
 
 }

@@ -43,6 +43,10 @@
 		<iterate target="all"/>
 	</target>
 	
+	<target name="test.integration">
+		<iterate target="test.integration"/>
+	</target>
+	
 	<target name="prepare.mirth">
 		<iterate target="prepare.mirth"/>
 	</target>

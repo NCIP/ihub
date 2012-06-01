@@ -11,29 +11,35 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class CaTissueConfig {
-	
-	@Value("${catissue.custom.lib.location}")	
+
+	@Value("${catissue.custom.lib.location}")
 	private String caTissueLibLocation;
-	
-	@Value("${catissue.api.login.username}")	
+
+	@Value("${catissue.api.login.username}")
 	private String catissueApiLoginName;
-	
+
 	@Value("${catissue.api.login.password}")
 	private String catissueApiPassword;
-	
+
 	@Bean
-	public CaTissueParticipantClient caTissueParticipantClient() throws IntegrationException {
-		return new CaTissueParticipantClient(caTissueLibLocation, catissueApiLoginName, catissueApiPassword);
+	public CaTissueParticipantClient caTissueParticipantClient()
+			throws IntegrationException {
+		return new CaTissueParticipantClient(caTissueLibLocation,
+				catissueApiLoginName, catissueApiPassword);
 	}
-	
+
 	@Bean
-	public CaTissueSpecimenClient caTissueSpecimenClient() throws IntegrationException {
-		return new CaTissueSpecimenClient(caTissueLibLocation, catissueApiLoginName, catissueApiPassword);
+	public CaTissueSpecimenClient caTissueSpecimenClient()
+			throws IntegrationException {
+		return new CaTissueSpecimenClient(caTissueLibLocation,
+				catissueApiLoginName, catissueApiPassword);
 	}
-	
+
 	@Bean
-	public CaTissueConsentClient caTissueConsentClient() throws IntegrationException {
-		return new CaTissueConsentClient(caTissueLibLocation, catissueApiLoginName, catissueApiPassword);
+	public CaTissueConsentClient caTissueConsentClient()
+			throws IntegrationException {
+		return new CaTissueConsentClient(caTissueLibLocation,
+				catissueApiLoginName, catissueApiPassword);
 	}
-	
+
 }

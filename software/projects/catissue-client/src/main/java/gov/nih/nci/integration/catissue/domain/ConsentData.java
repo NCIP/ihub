@@ -14,7 +14,8 @@ public class ConsentData {
 
 	Set<ConsentTierStatus> consentTierStatusSet;
 
-	public void setConsentTierStatusSet(Set<ConsentTierStatus> consentTierStatusSet) {
+	public void setConsentTierStatusSet(
+			Set<ConsentTierStatus> consentTierStatusSet) {
 		this.consentTierStatusSet = consentTierStatusSet;
 	}
 
@@ -23,7 +24,7 @@ public class ConsentData {
 	public ConsentData() {
 		consentTierStatusSet = new LinkedHashSet<ConsentTierStatus>();
 	}
-	
+
 	public String getSpecimenLabel() {
 		return specimenLabel;
 	}
@@ -31,8 +32,6 @@ public class ConsentData {
 	public void setSpecimenLabel(String specimenLabel) {
 		this.specimenLabel = specimenLabel;
 	}
-
-	
 
 	public void add(ConsentTierStatus consentTierStatus) {
 		consentTierStatusSet.add(consentTierStatus);

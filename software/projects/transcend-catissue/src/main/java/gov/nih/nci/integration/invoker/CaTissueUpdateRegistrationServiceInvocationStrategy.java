@@ -26,8 +26,7 @@ public class CaTissueUpdateRegistrationServiceInvocationStrategy implements
 	private CaTissueParticipantClient caTissueParticipantClient;
 
 	private XSLTTransformer xsltTransformer;
-	
-	
+
 	public CaTissueUpdateRegistrationServiceInvocationStrategy(int retryCount,
 			CaTissueParticipantClient caTissueParticipantClient,
 			XSLTTransformer xsltTransformer) {
@@ -51,8 +50,10 @@ public class CaTissueUpdateRegistrationServiceInvocationStrategy implements
 	public ServiceInvocationResult invoke(ServiceInvocationMessage msg) {
 		ServiceInvocationResult serviceInvocationResult = new ServiceInvocationResult();
 		try {
-			String participantXMLStr = transformToParticipantXML(msg.getMessage().getRequest());
-			serviceInvocationResult = caTissueParticipantClient.updateRegistrationParticipant(participantXMLStr);
+			String participantXMLStr = transformToParticipantXML(msg
+					.getMessage().getRequest());
+			serviceInvocationResult = caTissueParticipantClient
+					.updateRegistrationParticipant(participantXMLStr);
 		} catch (IntegrationException e) {
 			serviceInvocationResult.setInvocationException(e);
 		}
@@ -64,10 +65,11 @@ public class CaTissueUpdateRegistrationServiceInvocationStrategy implements
 		ServiceInvocationResult serviceInvocationResult = new ServiceInvocationResult();
 		try {
 			String participantXMLStr = msg.getOriginalData();
-			serviceInvocationResult = caTissueParticipantClient.updateRegistrationParticipant(participantXMLStr);
+			serviceInvocationResult = caTissueParticipantClient
+					.updateRegistrationParticipant(participantXMLStr);
 		} catch (Exception e) {
 			serviceInvocationResult.setInvocationException(e);
-		} 
+		}
 		return serviceInvocationResult;
 	}
 
@@ -99,26 +101,27 @@ public class CaTissueUpdateRegistrationServiceInvocationStrategy implements
 		}
 		return participantXMLStr;
 	}
-	
+
 	private void handleException(ServiceInvocationResult result) {
-		if(!result.isFault()) {
+		if (!result.isFault()) {
 			return;
 		}
-		
+
 		Exception exception = result.getInvocationException();
 		Throwable cause = exception;
-		while(cause instanceof IntegrationException) {
+		while (cause instanceof IntegrationException) {
 			cause = cause.getCause();
 		}
-		if(cause == null){
+		if (cause == null) {
 			return;
 		}
 		String stackTrace = ExceptionUtils.getFullStackTrace(cause);
 		IntegrationException newie = (IntegrationException) exception;
-		if(stackTrace.contains("Error authenticating user")){
-			newie = new IntegrationException(IntegrationError._1019, (Object)null );
+		if (stackTrace.contains("Error authenticating user")) {
+			newie = new IntegrationException(IntegrationError._1019,
+					(Object) null);
 		}
 		result.setInvocationException(newie);
 	}
-	
+
 }

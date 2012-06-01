@@ -18,58 +18,69 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
 			ServiceInvocationMessageDao serviceInvocationMessageDao) {
 		super();
 		this.serviceInvocationMessageDao = serviceInvocationMessageDao;
-		System.out.println("serviceInvocationMessageDao is " + serviceInvocationMessageDao);
+		System.out.println("serviceInvocationMessageDao is "
+				+ serviceInvocationMessageDao);
 	}
 
 	@Override
 	public ServiceInvocationResult delegateServiceInvocation(
 			Long referenceMessageId, String message,
 			ServiceInvocationStrategy serviceInvocationStrategy) {
-		
+
 		final Date stTime = new Date(new java.util.Date().getTime());
-		
-		ServiceInvocationMessage serviceInvocationMessage =
-			prepareServiceInvocationMessage(referenceMessageId, message, stTime,
-				serviceInvocationStrategy.getStrategyIdentifier());
-		
-		ServiceInvocationResult serviceInvocationResult = delegate(serviceInvocationMessage, serviceInvocationStrategy);
-		
+
+		ServiceInvocationMessage serviceInvocationMessage = prepareServiceInvocationMessage(
+				referenceMessageId, message, stTime, serviceInvocationStrategy
+						.getStrategyIdentifier());
+
+		ServiceInvocationResult serviceInvocationResult = delegate(
+				serviceInvocationMessage, serviceInvocationStrategy);
+
 		if (serviceInvocationResult.isFault()) {
-			//upon receiving the fault can control retry attempts, if it makes sense or not
-			if(serviceInvocationResult.isRetry()) {
+			// upon receiving the fault can control retry attempts, if it makes
+			// sense or not
+			if (serviceInvocationResult.isRetry()) {
 				int retryCnt = serviceInvocationStrategy.getRetryCount();
-				for(int i=0; i<retryCnt; i++) {
-					serviceInvocationResult = delegate(serviceInvocationMessage, serviceInvocationStrategy);
-					if(!serviceInvocationResult.isFault()) {
+				for (int i = 0; i < retryCnt; i++) {
+					serviceInvocationResult = delegate(
+							serviceInvocationMessage, serviceInvocationStrategy);
+					if (!serviceInvocationResult.isFault()) {
 						break;
 					}
 				}
 			}
 		}
-		
-		persistServiceInvocationMessage(serviceInvocationMessage, serviceInvocationResult);
-		
+
+		persistServiceInvocationMessage(serviceInvocationMessage,
+				serviceInvocationResult);
+
 		return serviceInvocationResult;
 	}
-	
-	private ServiceInvocationResult delegate(ServiceInvocationMessage serviceInvocationMessage, ServiceInvocationStrategy serviceInvocationStrategy) {
+
+	private ServiceInvocationResult delegate(
+			ServiceInvocationMessage serviceInvocationMessage,
+			ServiceInvocationStrategy serviceInvocationStrategy) {
 		ServiceInvocationResult serviceInvocationResult;
 		try {
-			serviceInvocationResult = serviceInvocationStrategy.invoke(serviceInvocationMessage);
+			serviceInvocationResult = serviceInvocationStrategy
+					.invoke(serviceInvocationMessage);
 		} catch (Exception e) {
-			//this code must not be reached...ServiceInvocationStrategy must not throw exception
-			//TODO : To handle any exceptions not handled by ServiceInvocationStrategy
-			if ( !(e instanceof IntegrationException) ) {
-				e = new IntegrationException(IntegrationError._1000, e.getCause(), (Object)null);
+			// this code must not be reached...ServiceInvocationStrategy must
+			// not throw exception
+			// TODO : To handle any exceptions not handled by
+			// ServiceInvocationStrategy
+			if (!(e instanceof IntegrationException)) {
+				e = new IntegrationException(IntegrationError._1000, e
+						.getCause(), (Object) null);
 			}
 			serviceInvocationResult = new ServiceInvocationResult();
 			serviceInvocationResult.setInvocationException(e);
 		}
 		return serviceInvocationResult;
 	}
-	
-	private ServiceInvocationMessage prepareServiceInvocationMessage(Long referenceMessageId,
-			String message, Date startTime,
+
+	private ServiceInvocationMessage prepareServiceInvocationMessage(
+			Long referenceMessageId, String message, Date startTime,
 			StrategyIdentifier strategyIdentifier) {
 		final ServiceInvocationMessage serviceInvocationMessage = new ServiceInvocationMessage();
 		serviceInvocationMessage.setStrategyIdentifier(strategyIdentifier);
@@ -78,16 +89,17 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
 		iHubMessage.setStartTime(startTime);
 		iHubMessage.setEndTime(new Date(new java.util.Date().getTime()));
 		iHubMessage.setRequest(message);
-		
+
 		serviceInvocationMessage.setReferenceMessageId(referenceMessageId);
 		serviceInvocationMessage.setMessage(iHubMessage);
-		
+
 		return serviceInvocationMessage;
 	}
 
-	private void persistServiceInvocationMessage(ServiceInvocationMessage serviceInvocationMessage,
+	private void persistServiceInvocationMessage(
+			ServiceInvocationMessage serviceInvocationMessage,
 			ServiceInvocationResult serviceInvocationResult) {
-		
+
 		final Exception invocationException = serviceInvocationResult
 				.getInvocationException();
 		final IHubMessage iHubMessage = serviceInvocationMessage.getMessage();
@@ -99,12 +111,15 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
 			iHubMessage.setStatus(Status.SUCCESS);
 			iHubMessage.setResponse(serviceInvocationResult.getResult());
 		}
-		serviceInvocationMessage.setDataChanged(serviceInvocationResult.isDataChanged());
-		serviceInvocationMessage.setOriginalData((String)serviceInvocationResult.getOriginalData());
-		
+		serviceInvocationMessage.setDataChanged(serviceInvocationResult
+				.isDataChanged());
+		serviceInvocationMessage
+				.setOriginalData((String) serviceInvocationResult
+						.getOriginalData());
+
 		final Long id = serviceInvocationMessageDao
 				.save(serviceInvocationMessage);
-		
+
 		serviceInvocationResult.setMessageId(id);
 	}
 

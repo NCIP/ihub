@@ -17,17 +17,17 @@ import java.util.concurrent.Executors;
  * 
  */
 public class CaTissueParticipantClient {
-	
+
 	private static String CLIENT_CLASSNM = "gov.nih.nci.integration.catissue.client.CaTissueParticipantClient";
 	private Class caTissueClientClass = null;
 
 	private String caTissueLibLocation = "";
 	private String loginName = null;
 	private String password = null;
-	
-	private static Class[] registerMethodParamTypes = {String.class};
-	private static Class[] updateRegistrationMethodParamTypes = {String.class};
-	private static Class[] deleteMethodParamTypes = {String.class};
+
+	private static Class[] registerMethodParamTypes = { String.class };
+	private static Class[] updateRegistrationMethodParamTypes = { String.class };
+	private static Class[] deleteMethodParamTypes = { String.class };
 
 	private Executor ex = Executors.newCachedThreadPool();
 
@@ -44,20 +44,21 @@ public class CaTissueParticipantClient {
 	private void init() throws IntegrationException {
 		try {
 			File libFile = new File(caTissueLibLocation);
-			
+
 			System.out.println(caTissueLibLocation);
-			
+
 			// creating the custom classloader that bypasses the
 			// systemclassloader
 			CustomUrlClassLoader ccl = new CustomUrlClassLoader(ClassLoader
-					.getSystemClassLoader().getParent(), 
-					libFile.getAbsolutePath());			
+					.getSystemClassLoader().getParent(), libFile
+					.getAbsolutePath());
 			caTissueClientClass = ccl.loadClass(CLIENT_CLASSNM);
-			
+
 			// CHECKSTYLE:OFF
 		} catch (Exception e) { // NOPMD
 			e.printStackTrace();
-			throw new IntegrationException(IntegrationError._1052, e.getMessage());
+			throw new IntegrationException(IntegrationError._1052, e
+					.getMessage());
 		}
 		// CHECKSTYLE:ON
 	}
@@ -65,28 +66,30 @@ public class CaTissueParticipantClient {
 	public ServiceInvocationResult registerParticipant(
 			final String participantXMLStr) {
 		ServiceInvocationResult result = null;
-		
+
 		CaTissueTask task = null;
 		try {
 			task = new CaTissueTask(caTissueClientClass, loginName, password,
-					"registerParticipantFromXML", registerMethodParamTypes, participantXMLStr);
-		} catch (Exception e1) {			
+					"registerParticipantFromXML", registerMethodParamTypes,
+					participantXMLStr);
+		} catch (Exception e1) {
 			e1.printStackTrace();
 			result = getServiceInvocationResult(IntegrationError._1051, e1);
 			return result;
 		}
-		
+
 		try {
-			ExecutorCompletionService<ServiceInvocationResult> ecs = 
-				new ExecutorCompletionService<ServiceInvocationResult>(ex);
+			ExecutorCompletionService<ServiceInvocationResult> ecs = new ExecutorCompletionService<ServiceInvocationResult>(
+					ex);
 			ecs.submit(task);
 
 			result = ecs.take().get();
-			
+
 			if (!result.isFault()) {
-				result.setResult("Successfully registered participant in CaTissue!");
+				result
+						.setResult("Successfully registered participant in CaTissue!");
 			} else {
-			
+
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -98,31 +101,32 @@ public class CaTissueParticipantClient {
 
 		return result;
 	}
-	
+
 	public ServiceInvocationResult updateRegistrationParticipant(
 			final String participantXMLStr) {
 		ServiceInvocationResult result = null;
-		
+
 		CaTissueTask task = null;
 		try {
 			task = new CaTissueTask(caTissueClientClass, loginName, password,
-					"updateParticipantRegistrationFromXML", updateRegistrationMethodParamTypes,
-					participantXMLStr);
-		} catch (Exception e1) {			
+					"updateParticipantRegistrationFromXML",
+					updateRegistrationMethodParamTypes, participantXMLStr);
+		} catch (Exception e1) {
 			e1.printStackTrace();
 			result = getServiceInvocationResult(IntegrationError._1051, e1);
 			return result;
 		}
-		
+
 		try {
-			ExecutorCompletionService<ServiceInvocationResult> ecs = 
-				new ExecutorCompletionService<ServiceInvocationResult>(ex);
+			ExecutorCompletionService<ServiceInvocationResult> ecs = new ExecutorCompletionService<ServiceInvocationResult>(
+					ex);
 			ecs.submit(task);
 
 			result = ecs.take().get();
-			
+
 			if (!result.isFault()) {
-				result.setResult("Successfully updated participant registration in CaTissue!");
+				result
+						.setResult("Successfully updated participant registration in CaTissue!");
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -138,26 +142,28 @@ public class CaTissueParticipantClient {
 	public ServiceInvocationResult deleteParticipant(
 			final String participantXMLStr) {
 		ServiceInvocationResult result = null;
-		
+
 		CaTissueTask task = null;
 		try {
 			task = new CaTissueTask(caTissueClientClass, loginName, password,
-					"deleteParticipantFromXML", deleteMethodParamTypes, participantXMLStr);
-		} catch (Exception e1) {			
+					"deleteParticipantFromXML", deleteMethodParamTypes,
+					participantXMLStr);
+		} catch (Exception e1) {
 			e1.printStackTrace();
 			result = getServiceInvocationResult(IntegrationError._1051, e1);
 			return result;
 		}
-		
+
 		try {
-			ExecutorCompletionService<ServiceInvocationResult> ecs = 
-				new ExecutorCompletionService<ServiceInvocationResult>(ex);
+			ExecutorCompletionService<ServiceInvocationResult> ecs = new ExecutorCompletionService<ServiceInvocationResult>(
+					ex);
 			ecs.submit(task);
 
 			result = ecs.take().get();
-			
+
 			if (!result.isFault()) {
-				result.setResult("Successfully rollabck participant from CaTissue!");
+				result
+						.setResult("Successfully rollabck participant from CaTissue!");
 			}
 		} catch (InterruptedException e) {
 			result = getServiceInvocationResult(IntegrationError._1051, e);
@@ -171,10 +177,11 @@ public class CaTissueParticipantClient {
 	private ServiceInvocationResult getServiceInvocationResult(
 			IntegrationError error, Exception e) {
 		ServiceInvocationResult result = new ServiceInvocationResult();
-		if(e instanceof IntegrationException){
+		if (e instanceof IntegrationException) {
 			result.setInvocationException(e);
 		} else {
-			result.setInvocationException(new IntegrationException(error, e, e.getMessage()));
+			result.setInvocationException(new IntegrationException(error, e, e
+					.getMessage()));
 		}
 		return result;
 	}

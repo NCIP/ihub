@@ -1,6 +1,10 @@
 package gov.nih.nci.integration.catissue.client;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import edu.wustl.catissuecore.domain.CollectionProtocol;
 import edu.wustl.catissuecore.domain.CollectionProtocolRegistration;
 import edu.wustl.catissuecore.domain.Participant;
@@ -39,7 +43,7 @@ public class CaTissueParticipantIntegrationTest {
 		caTissueParticipantClient = new CaTissueParticipantClient(
 				"admin@admin.com", "Aa_111111");
 	}
-		
+
 	/**
 	 * Tests creating and registering participant with collection protocol
 	 * 
@@ -48,7 +52,7 @@ public class CaTissueParticipantIntegrationTest {
 	 */
 	@Test
 	public void handleParticipantRegistration() throws Exception {
-		//create sample participant registration
+		// create sample participant registration
 		final String cpTitle = "CP-01";
 
 		final CollectionProtocolFactory cpFact = CollectionProtocolFactory
@@ -59,75 +63,79 @@ public class CaTissueParticipantIntegrationTest {
 		final Participant participant = getParticipant();
 		participant.getCollectionProtocolRegistrationCollection().add(
 				initCollectionProtocolRegistration(participant, cp));
-		
-		String participantXML = caTissueParticipantClient.getxStream().toXML(participant);
+
+		String participantXML = caTissueParticipantClient.getxStream().toXML(
+				participant);
 		System.out.println(participantXML);
-		
-		//register participant
-		caTissueParticipantClient
-				.registerParticipant(participant);
-		
-		//retrieve participant by cp
+
+		// register participant
+		caTissueParticipantClient.registerParticipant(participant);
+
+		// retrieve participant by cp
 		final List<Participant> partcpnts = caTissueParticipantClient
 				.getParticipantsForCollectionProtocol(cpTitle);
 		assertNotNull(partcpnts);
 		assertEquals(false, partcpnts.isEmpty());
-		
-		//retrieve participant by MRN
+
+		// retrieve participant by MRN
 		Participant existParticipant = caTissueParticipantClient
-			.getParticipantForPatientId(participant.getLastName());
+				.getParticipantForPatientId(participant.getLastName());
 		assertNotNull(existParticipant);
-		
-		//update participant
-		existParticipant.setFirstName(existParticipant.getFirstName() + "-updated");
+
+		// update participant
+		existParticipant.setFirstName(existParticipant.getFirstName()
+				+ "-updated");
 		existParticipant = caTissueParticipantClient
 				.updateParticipantRegistration(existParticipant);
 		assertNotNull(existParticipant);
 		assertTrue(!existParticipant.getFirstName().endsWith("updated"));
-		
-		existParticipant.setFirstName(existParticipant.getFirstName() + "-updated2");
+
+		existParticipant.setFirstName(existParticipant.getFirstName()
+				+ "-updated2");
 		existParticipant = caTissueParticipantClient
 				.updateParticipantRegistration(existParticipant);
 		assertNotNull(existParticipant);
 		assertTrue(!existParticipant.getFirstName().endsWith("updated2"));
-		
-		//check serializing orig participant registration before update
-		String existingPrtcpntStr = caTissueParticipantClient.getxStream().toXML(existParticipant);
+
+		// check serializing orig participant registration before update
+		String existingPrtcpntStr = caTissueParticipantClient.getxStream()
+				.toXML(existParticipant);
 		assertNotNull(existingPrtcpntStr);
 		System.out.println("existingPrtcpntStr >>> " + existingPrtcpntStr);
-		
-		//update with original incoming msg - equivalent to update msg
-		ArrayList<CollectionProtocolRegistration> cprList = new ArrayList<CollectionProtocolRegistration>(participant.getCollectionProtocolRegistrationCollection());
+
+		// update with original incoming msg - equivalent to update msg
+		ArrayList<CollectionProtocolRegistration> cprList = new ArrayList<CollectionProtocolRegistration>(
+				participant.getCollectionProtocolRegistrationCollection());
 		cprList.get(0).getCollectionProtocol().setTitle("6482");
 		existParticipant = caTissueParticipantClient
 				.updateParticipantRegistration(participant);
 		assertNotNull(existParticipant);
 		assertTrue(!existParticipant.getFirstName().endsWith("updated"));
-		
-		//simulate rollback update, by deleting the update participant registration
+
+		// simulate rollback update, by deleting the update participant
+		// registration
 		caTissueParticipantClient.deleteParticipant(participant);
-		
-		//assert deletion
+
+		// assert deletion
 		Participant afterDel = caTissueParticipantClient
 				.getParticipantForPatientId(participant.getLastName());
-		
+
 		assertNull(afterDel);
-		
-		//re-register with the original participant retrieved before update
-		caTissueParticipantClient
-			.registerParticipant(existParticipant);
-		
-		//assert presence by retreival
+
+		// re-register with the original participant retrieved before update
+		caTissueParticipantClient.registerParticipant(existParticipant);
+
+		// assert presence by retreival
 		Participant afterReinsert = caTissueParticipantClient
-			.getParticipantForPatientId(participant.getLastName());
-		
+				.getParticipantForPatientId(participant.getLastName());
+
 		assertNotNull(afterReinsert);
-		
-		//cleanup by deletion
+
+		// cleanup by deletion
 		caTissueParticipantClient.deleteParticipant(participant);
 	}
 
-	//@Test
+	// @Test
 	public void parseParticipant() throws JAXBException, ParseException {
 		Participant participant = getParticipant();
 		CollectionProtocol cp = getCollectionProtocol();
@@ -157,13 +165,14 @@ public class CaTissueParticipantIntegrationTest {
 		assertNotNull(parsedParticipant);
 	}
 
-	//@Test
+	// @Test
 	public void submitRegistrationFromXMLPayload() throws ApplicationException {
 
 		String registeredParticipantStr = caTissueParticipantClient
 				.registerParticipant(getParticipantXMLStr());
 		System.out.println(registeredParticipantStr);
-		Participant registeredParticipant = caTissueParticipantClient.getParticipantForPatientId("995683");
+		Participant registeredParticipant = caTissueParticipantClient
+				.getParticipantForPatientId("995683");
 
 		assertNotNull(registeredParticipant);
 		assertNotNull(registeredParticipant.getObjectId());
@@ -186,28 +195,29 @@ public class CaTissueParticipantIntegrationTest {
 		participant.setEthnicity("Unknown");
 		participant.setGender("Unspecified");
 		participant.setFirstName("JOHN5");
-		//participant.setLastName("DOE5");
-		//MRN or Medical Identifier is being set as lastName for identification
+		// participant.setLastName("DOE5");
+		// MRN or Medical Identifier is being set as lastName for identification
 		participant.setLastName("9050608");
 		participant.setVitalStatus("Alive");
 		participant.setSocialSecurityNumber("123-05-0608");
-		
+
 		Race race = RaceFactory.getInstance().createObject();
 		race.setParticipant(participant);
 		race.setRaceName("White");
 		participant.getRaceCollection().add(race);
-		
-		/*Site site = SiteFactory.getInstance().createObject();
-		site.setName("DCP");
-		
-		ParticipantMedicalIdentifier pmi = ParticipantMedicalIdentifierFactory
-				.getInstance().createObject();
-		pmi.setParticipant(participant);
-		pmi.setMedicalRecordNumber("9050608");
-		pmi.setSite(site);
 
-		participant.getParticipantMedicalIdentifierCollection().add(pmi);*/
-		
+		/*
+		 * Site site = SiteFactory.getInstance().createObject();
+		 * site.setName("DCP");
+		 * 
+		 * ParticipantMedicalIdentifier pmi =
+		 * ParticipantMedicalIdentifierFactory .getInstance().createObject();
+		 * pmi.setParticipant(participant);
+		 * pmi.setMedicalRecordNumber("9050608"); pmi.setSite(site);
+		 * 
+		 * participant.getParticipantMedicalIdentifierCollection().add(pmi);
+		 */
+
 		return participant;
 	}
 
@@ -233,7 +243,8 @@ public class CaTissueParticipantIntegrationTest {
 		collectionProtocolRegistration.setActivityStatus("Active");
 		collectionProtocolRegistration.setRegistrationDate(new Date());
 		collectionProtocolRegistration.setConsentSignatureDate(new Date());
-		collectionProtocolRegistration.setProtocolParticipantIdentifier("123050608");
+		collectionProtocolRegistration
+				.setProtocolParticipantIdentifier("123050608");
 		return collectionProtocolRegistration;
 	}
 
@@ -261,7 +272,7 @@ public class CaTissueParticipantIntegrationTest {
 				+ "<participant reference=\"../../..\"></participant>"
 				+ "<isToInsertAnticipatorySCGs>true</isToInsertAnticipatorySCGs></collectionProtocolRegistration>"
 				+ "</collectionProtocolRegistrationCollection><raceCollection class=\"set\"></raceCollection>"
-				+ "<participantMedicalIdentifierCollection class=\"linked-hash-set\"/>"				
+				+ "<participantMedicalIdentifierCollection class=\"linked-hash-set\"/>"
 				+ "<participantRecordEntryCollection class=\"set\"/></participant>";
 	}
 

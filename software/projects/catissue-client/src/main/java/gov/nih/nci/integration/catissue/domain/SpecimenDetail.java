@@ -6,16 +6,15 @@ import edu.wustl.catissuecore.domain.Specimen;
 /**
  * 
  * @author Rohit Gupta
- *
+ * 
  */
 public class SpecimenDetail {
 
 	private Specimen specimen;
-	
+
 	private CollectionProtocol collectionProtocol;
-	
+
 	private String collectionProtocolEvent;
-	
 
 	public String getCollectionProtocolEvent() {
 		return collectionProtocolEvent;
@@ -40,5 +39,5 @@ public class SpecimenDetail {
 	public void setCollectionProtocol(CollectionProtocol collectionProtocol) {
 		this.collectionProtocol = collectionProtocol;
 	}
-	
+
 }

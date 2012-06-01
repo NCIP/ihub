@@ -3,7 +3,6 @@ package gov.nih.nci.integration.domain;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
@@ -14,9 +13,9 @@ public class ServiceInvocationMessage extends AbstractIdentity {
 	Long referenceMessageId;
 	String invocationException;
 	StrategyIdentifier strategyIdentifier;
-	
+
 	boolean dataChanged = false;
-	
+
 	String originalData = null;
 
 	IHubMessage message;
@@ -48,7 +47,7 @@ public class ServiceInvocationMessage extends AbstractIdentity {
 		this.strategyIdentifier = strategyIdentifier;
 	}
 
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL)
 	@NotNull
 	public IHubMessage getMessage() {
 		return message;
@@ -65,7 +64,7 @@ public class ServiceInvocationMessage extends AbstractIdentity {
 	public void setDataChanged(boolean dataChanged) {
 		this.dataChanged = dataChanged;
 	}
-	
+
 	@Column(length = 50000)
 	public String getOriginalData() {
 		return originalData;

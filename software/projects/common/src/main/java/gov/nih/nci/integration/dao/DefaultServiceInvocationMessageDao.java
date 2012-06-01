@@ -20,28 +20,38 @@ public class DefaultServiceInvocationMessageDao extends
 	/**
 	 * Constructor.
 	 * 
-	 * @param em JPA EntityManager
+	 * @param em
+	 *            JPA EntityManager
 	 */
 	public DefaultServiceInvocationMessageDao(EntityManager em) {
 		super(ServiceInvocationMessage.class, em);
-		System.out.println("em in constr is " + em );
+		System.out.println("em in constr is " + em);
 	}
-	
-	/* (non-Javadoc)
-	 * @see gov.nih.nci.integration.dao.ServiceInvocationMessageDaoIntf#getAllByReferenceMessageId(java.lang.Long)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seegov.nih.nci.integration.dao.ServiceInvocationMessageDaoIntf#
+	 * getAllByReferenceMessageId(java.lang.Long)
 	 */
-    @SuppressWarnings("unchecked")
-    public Map<StrategyIdentifier, ServiceInvocationMessage> getAllByReferenceMessageId(Long refMsgId) {
-    	System.out.println("got em from abstract dao " + this.getEm());
-    	final Query msgsQuery = this.getEm().createQuery("from " + getDomainClass().getSimpleName()
-                + " svcInvMsg where svcInvMsg.referenceMessageId = :referenceMessageId ");
-    	msgsQuery.setParameter("referenceMessageId", refMsgId);
-        List<ServiceInvocationMessage> msgs = msgsQuery.getResultList();
-        Map<StrategyIdentifier, ServiceInvocationMessage> map = new HashMap<StrategyIdentifier, ServiceInvocationMessage>();
-        for (ServiceInvocationMessage serviceInvocationMessage : msgs) {			
-        	map.put(serviceInvocationMessage.getStrategyIdentifier(), serviceInvocationMessage);
+	@SuppressWarnings("unchecked")
+	public Map<StrategyIdentifier, ServiceInvocationMessage> getAllByReferenceMessageId(
+			Long refMsgId) {
+		System.out.println("got em from abstract dao " + this.getEm());
+		final Query msgsQuery = this
+				.getEm()
+				.createQuery(
+						"from "
+								+ getDomainClass().getSimpleName()
+								+ " svcInvMsg where svcInvMsg.referenceMessageId = :referenceMessageId ");
+		msgsQuery.setParameter("referenceMessageId", refMsgId);
+		List<ServiceInvocationMessage> msgs = msgsQuery.getResultList();
+		Map<StrategyIdentifier, ServiceInvocationMessage> map = new HashMap<StrategyIdentifier, ServiceInvocationMessage>();
+		for (ServiceInvocationMessage serviceInvocationMessage : msgs) {
+			map.put(serviceInvocationMessage.getStrategyIdentifier(),
+					serviceInvocationMessage);
 		}
-        
-        return map;
-    }
+
+		return map;
+	}
 }

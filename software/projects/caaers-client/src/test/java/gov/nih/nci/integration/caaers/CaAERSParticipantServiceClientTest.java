@@ -3,7 +3,6 @@ package gov.nih.nci.integration.caaers;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ParticipantIdentifierType;
-import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.StudyIdentifierType;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.AssignmentType;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.EthnicityType;
@@ -18,10 +17,8 @@ import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType.A
 import gov.nih.nci.integration.exception.IntegrationError;
 import gov.nih.nci.integration.exception.IntegrationException;
 
-import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.net.MalformedURLException;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -34,14 +31,12 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
-import javax.xml.ws.WebServiceException;
 import javax.xml.ws.soap.SOAPFaultException;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.remoting.soap.SoapFaultException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 

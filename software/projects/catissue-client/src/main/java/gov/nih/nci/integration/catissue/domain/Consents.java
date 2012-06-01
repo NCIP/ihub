@@ -1,18 +1,18 @@
 package gov.nih.nci.integration.catissue.domain;
 
+import edu.wustl.catissuecore.domain.Participant;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import edu.wustl.catissuecore.domain.Participant;
 
 /**
  * 
  * @author Rohit Gupta
- *
+ * 
  */
 public class Consents {
 
-	List<ConsentDetail> consentDetailsList;	
+	List<ConsentDetail> consentDetailsList;
 
 	private Participant participant;
 
@@ -31,7 +31,7 @@ public class Consents {
 	public void setConsentsDetailsList(List<ConsentDetail> consentDetailsList) {
 		this.consentDetailsList = consentDetailsList;
 	}
-	
+
 	public Participant getParticipant() {
 		return participant;
 	}

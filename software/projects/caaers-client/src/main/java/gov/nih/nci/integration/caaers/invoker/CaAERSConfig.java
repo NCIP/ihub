@@ -42,8 +42,8 @@ public class CaAERSConfig {
 	}
 
 	@Bean
-	public CaAERSParticipantServiceWSClient caAERSParticipantServiceWSClient() 
-		throws IntegrationException {
+	public CaAERSParticipantServiceWSClient caAERSParticipantServiceWSClient()
+			throws IntegrationException {
 		return new CaAERSParticipantServiceWSClient(serviceUrl + "?wsdl",
 				userName, clientPasswordCallback());
 	}
@@ -52,31 +52,33 @@ public class CaAERSConfig {
 	@Scope("prototype")
 	public CaAERSRegistrationServiceInvocationStrategy caAersRegistrationServiceInvocationStrategy()
 			throws IntegrationException {
-		
+
 		try {
 			xsltTransformer.initTransformer(caaersParticipantXsl, baseXSLPath);
-			return new CaAERSRegistrationServiceInvocationStrategy(xsltTransformer,
-					caAERSParticipantServiceWSClient(), Integer
-							.parseInt(retryCountStr));
+			return new CaAERSRegistrationServiceInvocationStrategy(
+					xsltTransformer, caAERSParticipantServiceWSClient(),
+					Integer.parseInt(retryCountStr));
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
-			throw new IntegrationException(IntegrationError._1051, e, (Object)null);
-		} 
+			throw new IntegrationException(IntegrationError._1051, e,
+					(Object) null);
+		}
 	}
-	
+
 	@Bean
 	@Scope("prototype")
 	public CaAERSUpdateRegistrationServiceInvocationStrategy caAersUpdateRegistrationServiceInvocationStrategy()
 			throws IntegrationException {
-		
+
 		try {
 			xsltTransformer.initTransformer(caaersParticipantXsl, baseXSLPath);
-			return new CaAERSUpdateRegistrationServiceInvocationStrategy(xsltTransformer,
-					caAERSParticipantServiceWSClient(), Integer
-							.parseInt(retryCountStr));
+			return new CaAERSUpdateRegistrationServiceInvocationStrategy(
+					xsltTransformer, caAERSParticipantServiceWSClient(),
+					Integer.parseInt(retryCountStr));
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
-			throw new IntegrationException(IntegrationError._1051, e, (Object)null);
-		} 
+			throw new IntegrationException(IntegrationError._1051, e,
+					(Object) null);
+		}
 	}
 }
