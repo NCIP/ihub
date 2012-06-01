@@ -28,10 +28,10 @@ public class CaAERSServiceInvocationStrategyFactory {
 			public Boolean call() throws Exception {
 				CustomClasspathXmlApplicationContext ctx = new CustomClasspathXmlApplicationContext(
 						caaersLibLocation, caaersConfig);
-				System.out.println("context classloader = "
-						+ Thread.currentThread().getContextClassLoader());
-				System.out.println(ctx.getBeanDefinitionCount());
-				System.out.println(Arrays.asList(ctx.getBeanDefinitionNames()));
+//				System.out.println("context classloader = "
+//						+ Thread.currentThread().getContextClassLoader());
+//				System.out.println(ctx.getBeanDefinitionCount());
+//				System.out.println(Arrays.asList(ctx.getBeanDefinitionNames()));
 				caaersRegistrationServiceInvocationStrategy = (ServiceInvocationStrategy) ctx
 						.getBean("caAersRegistrationServiceInvocationStrategy");
 				caaersUpdateRegistrationServiceInvocationStrategy = (ServiceInvocationStrategy) ctx
