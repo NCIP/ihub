@@ -50,7 +50,7 @@ public class ServiceConfig {
 
 	@Bean
 	@Scope("prototype")
-	public ServiceInvocationStrategy CaTissueRegistrationServiceInvocationStrategy()
+	public ServiceInvocationStrategy caTissueRegistrationServiceInvocationStrategy()
 			throws IntegrationException {
 		xsltTransformer.initTransformer(catissueParticipantXsl, baseXSLPath);
 		return new CaTissueRegistrationServiceInvocationStrategy(Integer
@@ -60,7 +60,7 @@ public class ServiceConfig {
 
 	@Bean
 	@Scope("prototype")
-	public ServiceInvocationStrategy CaTissueUpdateRegistrationServiceInvocationStrategy()
+	public ServiceInvocationStrategy caTissueUpdateRegistrationServiceInvocationStrategy()
 			throws IntegrationException {
 		xsltTransformer.initTransformer(catissueParticipantXsl, baseXSLPath);
 		return new CaTissueUpdateRegistrationServiceInvocationStrategy(Integer
@@ -70,7 +70,7 @@ public class ServiceConfig {
 
 	@Bean
 	@Scope("prototype")
-	public ServiceInvocationStrategy CaTissueSpecimenServiceInvocationStrategy()
+	public ServiceInvocationStrategy caTissueSpecimenServiceInvocationStrategy()
 			throws IntegrationException {
 		xsltTransformerSpecimen.initTransformer(catissueSpecimenXsl,
 				baseXSLPath);
@@ -81,7 +81,7 @@ public class ServiceConfig {
 
 	@Bean
 	@Scope("prototype")
-	public ServiceInvocationStrategy CaTissueUpdateSpecimenServiceInvocationStrategy()
+	public ServiceInvocationStrategy caTissueUpdateSpecimenServiceInvocationStrategy()
 			throws IntegrationException {
 		xsltTransformerSpecimen.initTransformer(catissueSpecimenXsl,
 				baseXSLPath);
@@ -92,7 +92,7 @@ public class ServiceConfig {
 
 	@Bean
 	@Scope("prototype")
-	public ServiceInvocationStrategy CaTissueConsentServiceInvocationStrategy()
+	public ServiceInvocationStrategy caTissueConsentServiceInvocationStrategy()
 			throws IntegrationException {
 		xsltTransformerConsent.initTransformer(catissueConsentXsl, baseXSLPath);
 		return new CaTissueConsentServiceInvocationStrategy(Integer
