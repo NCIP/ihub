@@ -905,7 +905,7 @@ if(transcendCatissueAppCtx == null) {
 var caTissueRegistrationServiceInvocationStrategy = globalMap.get(&quot;caTissueRegistrationServiceInvocationStrategy&quot;);
 
 if(caTissueRegistrationServiceInvocationStrategy == null) {
-	caTissueRegistrationServiceInvocationStrategy = transcendCatissueAppCtx.getBean(&quot;CaTissueRegistrationServiceInvocationStrategy&quot;);
+	caTissueRegistrationServiceInvocationStrategy = transcendCatissueAppCtx.getBean(&quot;caTissueRegistrationServiceInvocationStrategy&quot;);
 }
 
 globalMap.put(&quot;caTissueRegistrationServiceInvocationStrategy&quot;, caTissueRegistrationServiceInvocationStrategy);
@@ -914,7 +914,7 @@ globalMap.put(&quot;caTissueRegistrationServiceInvocationStrategy&quot;, caTissu
 var caTissueUpdateRegistrationServiceInvocationStrategy = globalMap.get(&quot;caTissueUpdateRegistrationServiceInvocationStrategy&quot;);
 
 if(caTissueUpdateRegistrationServiceInvocationStrategy == null) {
-	caTissueUpdateRegistrationServiceInvocationStrategy = transcendCatissueAppCtx.getBean(&quot;CaTissueUpdateRegistrationServiceInvocationStrategy&quot;);
+	caTissueUpdateRegistrationServiceInvocationStrategy = transcendCatissueAppCtx.getBean(&quot;caTissueUpdateRegistrationServiceInvocationStrategy&quot;);
 }
 
 globalMap.put(&quot;caTissueUpdateRegistrationServiceInvocationStrategy&quot;, caTissueUpdateRegistrationServiceInvocationStrategy);
@@ -924,7 +924,7 @@ globalMap.put(&quot;caTissueUpdateRegistrationServiceInvocationStrategy&quot;, c
 var caTissueSpecimenServiceInvocationStrategy = globalMap.get(&quot;caTissueSpecimenServiceInvocationStrategy&quot;);
 
 if(caTissueSpecimenServiceInvocationStrategy == null) {
-	caTissueSpecimenServiceInvocationStrategy = transcendCatissueAppCtx.getBean(&quot;CaTissueSpecimenServiceInvocationStrategy&quot;);
+	caTissueSpecimenServiceInvocationStrategy = transcendCatissueAppCtx.getBean(&quot;caTissueSpecimenServiceInvocationStrategy&quot;);
 }
 
 globalMap.put(&quot;caTissueSpecimenServiceInvocationStrategy&quot;, caTissueSpecimenServiceInvocationStrategy);
@@ -933,7 +933,7 @@ globalMap.put(&quot;caTissueSpecimenServiceInvocationStrategy&quot;, caTissueSpe
 var caTissueUpdateSpecimenServiceInvocationStrategy = globalMap.get(&quot;caTissueUpdateSpecimenServiceInvocationStrategy&quot;);
 
 if(caTissueUpdateSpecimenServiceInvocationStrategy == null) {
-	caTissueUpdateSpecimenServiceInvocationStrategy = transcendCatissueAppCtx.getBean(&quot;CaTissueUpdateSpecimenServiceInvocationStrategy&quot;);
+	caTissueUpdateSpecimenServiceInvocationStrategy = transcendCatissueAppCtx.getBean(&quot;caTissueUpdateSpecimenServiceInvocationStrategy&quot;);
 }
 
 globalMap.put(&quot;caTissueUpdateSpecimenServiceInvocationStrategy&quot;, caTissueUpdateSpecimenServiceInvocationStrategy);
@@ -943,7 +943,7 @@ globalMap.put(&quot;caTissueUpdateSpecimenServiceInvocationStrategy&quot;, caTis
 var caTissueConsentServiceInvocationStrategy = globalMap.get(&quot;caTissueConsentServiceInvocationStrategy&quot;);
 
 if(caTissueConsentServiceInvocationStrategy == null) {
-	caTissueConsentServiceInvocationStrategy = transcendCatissueAppCtx.getBean(&quot;CaTissueConsentServiceInvocationStrategy&quot;);
+	caTissueConsentServiceInvocationStrategy = transcendCatissueAppCtx.getBean(&quot;caTissueConsentServiceInvocationStrategy&quot;);
 }
 
 globalMap.put(&quot;caTissueConsentServiceInvocationStrategy&quot;, caTissueConsentServiceInvocationStrategy);
