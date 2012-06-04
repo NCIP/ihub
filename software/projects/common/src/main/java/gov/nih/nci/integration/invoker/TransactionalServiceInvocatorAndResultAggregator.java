@@ -16,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * This implementation of ServiceInvocatorAndResultAggregator is responsible for implementing a distributed transaction
+ * roll back, if any of the results are errors
  * 
  * @author chandrasekaravr
  * 
@@ -37,9 +39,6 @@ public class TransactionalServiceInvocatorAndResultAggregator implements Service
         this.serviceInvocationMessageDao = serviceInvocationMessageDao;
         this.executorCompletionService = new ExecutorCompletionService<ServiceInvocationResult>(executor);
         this.serviceInvocationStrategies = new ArrayList<ServiceInvocationStrategy>();
-
-        // System.out.println("serviceInvocationMessageDao 2 is "
-        // + serviceInvocationMessageDao);
     }
 
     @Override
@@ -74,7 +73,7 @@ public class TransactionalServiceInvocatorAndResultAggregator implements Service
                 isRollback = true;
             }
             serviceInvocationResultLst.add(serviceInvocationResult);
-        }// end of for
+        } // end of for
 
         if (isRollback) {
             LOG.debug("Exception while service invocation", serviceInvocationResult.getInvocationException());
