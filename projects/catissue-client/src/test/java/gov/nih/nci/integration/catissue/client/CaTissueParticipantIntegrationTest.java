@@ -62,7 +62,6 @@ public class CaTissueParticipantIntegrationTest {
                 initCollectionProtocolRegistration(participant, cp));
 
         String participantXML = caTissueParticipantClient.getxStream().toXML(participant);
-        // System.out.println(participantXML);
 
         // register participant
         caTissueParticipantClient.registerParticipant(participant);
@@ -90,7 +89,6 @@ public class CaTissueParticipantIntegrationTest {
         // check serializing orig participant registration before update
         String existingPrtcpntStr = caTissueParticipantClient.getxStream().toXML(existParticipant);
         assertNotNull(existingPrtcpntStr);
-        // System.out.println("existingPrtcpntStr >>> " + existingPrtcpntStr);
 
         // update with original incoming msg - equivalent to update msg
         ArrayList<CollectionProtocolRegistration> cprList = new ArrayList<CollectionProtocolRegistration>(participant
@@ -132,7 +130,7 @@ public class CaTissueParticipantIntegrationTest {
 
         XStream xStream = caTissueParticipantClient.getxStream();
         String participantXML = xStream.toXML(participant);
-        // System.out.println(participantXML);
+    
         Participant parsedParticipant = (Participant) xStream.fromXML(new StringReader(participantXML));
 
         assertNotNull(parsedParticipant);
@@ -151,7 +149,7 @@ public class CaTissueParticipantIntegrationTest {
     public void submitRegistrationFromXMLPayload() throws ApplicationException {
 
         String registeredParticipantStr = caTissueParticipantClient.registerParticipant(getParticipantXMLStr());
-        // System.out.println(registeredParticipantStr);
+  
         Participant registeredParticipant = caTissueParticipantClient.getParticipantForPatientId("995683");
 
         assertNotNull(registeredParticipant);
