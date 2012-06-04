@@ -14,6 +14,7 @@ import gov.nih.nci.integration.exception.IntegrationError;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Calendar;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -43,8 +44,6 @@ public class CaXchangeRequestService extends AcceptMessage {
 
     private static final Logger LOG = LoggerFactory.getLogger(CaXchangeRequestService.class.getName());
 
-    private String customLibDir = "custom-lib/";
-
     private JAXBContext jc = null;
 
     public CaXchangeRequestService(WebServiceMessageReceiver webServiceMessageReceiver) {
@@ -55,13 +54,15 @@ public class CaXchangeRequestService extends AcceptMessage {
     @WebMethod
     public gov.nih.nci.caxchange.messaging.ResponseMessage processRequest(
             @WebParam(partName = "parameters", name = "message", targetNamespace = "http://caXchange.nci.nih.gov/caxchangerequest") Message parameters) {
-        LOG.info("Executing operation processRequest");
-       
+        LOG.debug("Executing operation processRequest");
+        
+        Long caXchangeId = Calendar.getInstance().getTimeInMillis();
+        //setting this value as String, but inside the app is expecting a long value
+        parameters.getMetadata().setCaXchangeIdentifier(String.valueOf(caXchangeId));
+        
         gov.nih.nci.caxchange.messaging.ResponseMessage respMessage = new ResponseMessage();
         ResponseMetadata rm = new ResponseMetadata();
-        rm.setExternalIdentifier(parameters.getMetadata().getExternalIdentifier());
-        // TODO : need to find a way to get this identifier from MC or set this
-        // id from here
+        rm.setExternalIdentifier(parameters.getMetadata().getExternalIdentifier());        
         rm.setCaXchangeIdentifier(parameters.getMetadata().getCaXchangeIdentifier());
         respMessage.setResponseMetadata(rm);
 
@@ -71,8 +72,8 @@ public class CaXchangeRequestService extends AcceptMessage {
 
             if (StringUtils.isEmpty(reqstr)) {
                 ErrorDetails errorDetails = new ErrorDetails();
-                errorDetails.setErrorCode("Empty_Value");
-                errorDetails.setErrorDescription("RequestXML is empty...");
+                errorDetails.setErrorCode(String.valueOf(IntegrationError._1050));
+                errorDetails.setErrorDescription(IntegrationError._1050.getMessage((Object)null));
 
                 Response response = new Response();
                 response.setCaXchangeError(errorDetails);
@@ -125,19 +126,17 @@ public class CaXchangeRequestService extends AcceptMessage {
     }
 
     private String getCaXchangeRequestxml(final Message parameter) {
-        try {
-            String requestXML = "";
+        String requestXML = null;
+        try {            
             QName qname = new QName("http://caXchange.nci.nih.gov/caxchangerequest", "caxchangerequest");
             JAXBElement<Message> message = new JAXBElement<Message>(qname, Message.class, parameter);
             StringWriter sw = new StringWriter();
             getMarshaller().marshal(message, sw);
             requestXML = sw.toString();
-
-            return requestXML;
         } catch (Exception ex) {
             LOG.error("Error marshalling CaXchangeRequest!", ex);
-            return null;
         }
+        return requestXML;
     }
 
     private ErrorDetails getErrorDetailsFromCaXchangeError(String errorXml) throws JAXBException {
