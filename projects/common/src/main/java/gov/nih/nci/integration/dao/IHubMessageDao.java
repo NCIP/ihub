@@ -13,9 +13,10 @@ public interface IHubMessageDao extends Dao<IHubMessage> {
     /**
      * Persists the request message as IHubMessage
      * 
+     * @param referenceMessageId reference message id as long value
      * @param request request string
      * @return entity id
      */
-    Long saveMessage(String request);
+    Long saveMessage(Long referenceMessageId, String request);
 
 }

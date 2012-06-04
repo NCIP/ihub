@@ -258,10 +258,10 @@ function schematronValidateCanonicalCR(cacisReq) {
     <id>7607950a-c0f2-4454-8cf2-a85f8be6e191</id>
     <name>persistIHubMessageInDB</name>
     <tooltip>persists IHubMessageInDB</tooltip>
-    <code>function persistIHubMessageInDB(requestMsg) {
+    <code>function persistIHubMessageInDB(refMsgId, requestMsg) {
 	var iHubMessageDao = globalMap.get(&quot;iHubMessageDao&quot;);
 
-	return iHubMessageDao.saveMessage(requestMsg);
+	return iHubMessageDao.saveMessage(refMsgId, requestMsg);
 	
 }</code>
     <type>FUNCTION</type>

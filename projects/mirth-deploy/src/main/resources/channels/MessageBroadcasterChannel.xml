@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>2.1.1.5490</version>
   <lastModified>
-    <time>1337611743019</time>
+    <time>1338812197278</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>21</revision>
+  <revision>2</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -32,7 +32,7 @@
         <step>
           <sequenceNumber>1</sequenceNumber>
           <name>referenceMsgId</name>
-          <script>var mapping;try { mapping = msg[&apos;metadata&apos;][&apos;externalIdentifier&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;referenceMsgId&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
+          <script>var mapping;try { mapping = msg[&apos;metadata&apos;][&apos;caXchangeIdentifier&apos;].toString(); }catch (e) { logger.error(e);  mapping = &apos;&apos;;}channelMap.put(&apos;referenceMsgId&apos;, validate( mapping , &apos;&apos;, new Array()));</script>
           <type>Mapper</type>
           <data class="map">
             <entry>
@@ -45,7 +45,7 @@
             </entry>
             <entry>
               <string>Mapping</string>
-              <string>msg[&apos;metadata&apos;][&apos;externalIdentifier&apos;].toString()</string>
+              <string>msg[&apos;metadata&apos;][&apos;caXchangeIdentifier&apos;].toString()</string>
             </entry>
             <entry>
               <string>RegularExpressions</string>

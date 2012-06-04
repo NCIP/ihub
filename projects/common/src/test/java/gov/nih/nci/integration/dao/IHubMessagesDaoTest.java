@@ -48,8 +48,23 @@ public class IHubMessagesDaoTest {
         assertEquals(id, iHubMessage.getId());
         assertEquals(sizeBefore + 1, iHubMessageDao.getAll().size());
 
-        final IHubMessage saveIHubMessage = iHubMessageDao.getById(iHubMessage.getId());
-        assertEquals(iHubMessage.getRequest(), saveIHubMessage.getRequest());
+        final IHubMessage savedIHubMessage = iHubMessageDao.getById(iHubMessage.getId());
+        assertEquals(iHubMessage.getRequest(), savedIHubMessage.getRequest());
+    }
+    
+    /**
+     * Tests saving request to iHubMessage
+     */
+    @Test
+    public void saveRequest() {
+        final int sizeBefore = iHubMessageDao.getAll().size();
+
+        final Long id = iHubMessageDao.saveMessage(12345L, "request string");
+        assertNotNull(id);
+        assertEquals(sizeBefore + 1, iHubMessageDao.getAll().size());
+
+        final IHubMessage savedIHubMessage = iHubMessageDao.getById(id);
+        assertNotNull(savedIHubMessage);
     }
 
     private IHubMessage createIHubMessage() {
@@ -57,6 +72,7 @@ public class IHubMessagesDaoTest {
         iHubMessage.setRequest("request string");
         iHubMessage.setStartTime(new Date(new java.util.Date().getTime()));
         iHubMessage.setStatus(Status.PROCESS);
+        iHubMessage.setReferenceMessageId(12345L);
 
         return iHubMessage;
     }

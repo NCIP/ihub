@@ -33,11 +33,12 @@ public class DefaultIHubMessageDao extends AbstractDao<IHubMessage> implements D
      * @param request
      * @return Id
      */
-    public Long saveMessage(String request) {
+    public Long saveMessage(Long referenceMessageId, String request) {
         IHubMessage iHubMessage = new IHubMessage();
         java.util.Date currDt = new java.util.Date();
         iHubMessage.setStartTime(new Date(currDt.getTime()));
         iHubMessage.setRequest(request);
+        iHubMessage.setReferenceMessageId(referenceMessageId);
         iHubMessage.setStatus(Status.PROCESS);
 
         return save(iHubMessage);

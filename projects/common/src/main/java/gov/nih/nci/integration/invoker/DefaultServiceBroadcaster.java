@@ -28,7 +28,7 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
      */
     public DefaultServiceBroadcaster(ServiceInvocationMessageDao serviceInvocationMessageDao) {
         super();
-        this.serviceInvocationMessageDao = serviceInvocationMessageDao;
+        this.serviceInvocationMessageDao = serviceInvocationMessageDao;        
     }
 
     @Override
@@ -89,6 +89,7 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
         iHubMessage.setStartTime(startTime);
         iHubMessage.setEndTime(new Date(new java.util.Date().getTime()));
         iHubMessage.setRequest(message);
+        iHubMessage.setReferenceMessageId(referenceMessageId);
 
         serviceInvocationMessage.setReferenceMessageId(referenceMessageId);
         serviceInvocationMessage.setMessage(iHubMessage);

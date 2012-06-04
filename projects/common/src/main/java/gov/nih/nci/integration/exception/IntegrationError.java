@@ -1,5 +1,7 @@
 package gov.nih.nci.integration.exception;
 
+import gov.nih.nci.integration.util.ErrorMessagesUtil;
+
 public enum IntegrationError {
     // CHECKSTYLE:OFF
     _1000(1000, ErrorType.UNKNOWN, "Unexpected error."), // USED
@@ -87,7 +89,7 @@ public enum IntegrationError {
     private IntegrationError(int errorCode, ErrorType errorType, String msgTemplate) {
         this.errorCode = errorCode;
         this.errorType = errorType;
-        this.msgTemplate = msgTemplate;
+        this.msgTemplate = ErrorMessagesUtil.getMessage(String.valueOf(errorCode));
     }
 
     public int getErrorCode() {
