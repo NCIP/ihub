@@ -45,8 +45,6 @@ public class CaTissueParticipantClient {
         try {
             File libFile = new File(caTissueLibLocation);
 
-            // System.out.println(caTissueLibLocation);
-
             // creating the custom classloader that bypasses the
             // systemclassloader
             CustomUrlClassLoader ccl = new CustomUrlClassLoader(ClassLoader.getSystemClassLoader().getParent(), libFile
