@@ -2,11 +2,14 @@
 
 	<property name="project.software.dir" value="${basedir}/../.." />
 	
-	<import file="${project.software.dir}/build/common.xml"/>
-	
-	<!-- sub-project level build properties, if not present globally in project.software.dir properties, these will be used -->
-	<property file="${basedir}/local-build.properties" />
-	<property file="${basedir}/build.properties" />
+	<!-- sub-project level build properties takes precedence,
+		 if not present in these property files properties that are present 
+		 globally in project.software.dir properties will be used -->
+		
+		<property file="${basedir}/local-build.properties" />
+		<property file="${basedir}/build.properties" />
+		
+		<import file="${project.software.dir}/build/common.xml"/>
     
     <target name="help" description="Prints usage information.">
         <echo message="================================================================================" />

@@ -8,10 +8,10 @@
   <enabled>true</enabled>
   <version>2.1.1.5490</version>
   <lastModified>
-    <time>1338306285266</time>
+    <time>1338818473622</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>12</revision>
+  <revision>8</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -35,7 +35,7 @@ var nonencodedMsgContent = Packages.java.net.URLDecoder.decode(msg[&apos;Content
 
 msg[&apos;Content&apos;] = new XML(&apos;&lt;Content&gt;&apos; + nonencodedMsgContent + &apos;&lt;/Content&gt;&apos;);
 */
-
+channelMap.put(&apos;requestMessage&apos;, msg);
 //may have to drop this step</script>
           <type>JavaScript</type>
           <data class="map">
@@ -47,7 +47,7 @@ var nonencodedMsgContent = Packages.java.net.URLDecoder.decode(msg[&apos;Content
 
 msg[&apos;Content&apos;] = new XML(&apos;&lt;Content&gt;&apos; + nonencodedMsgContent + &apos;&lt;/Content&gt;&apos;);
 */
-
+channelMap.put(&apos;requestMessage&apos;, msg);
 //may have to drop this step</string>
             </entry>
           </data>
@@ -104,10 +104,12 @@ var xChngReq = srcDt[&apos;caxchangerequest&apos;];
 default xml namespace = &apos;http://caXchange.nci.nih.gov/messaging&apos;;
 
 var msgTyp = xChngReq[&apos;metadata&apos;][&apos;operationName&apos;].toString();
-
 channelMap.put(&apos;msgTyp&apos;,msgTyp);
+logger.info(&quot;Message Type = &quot; + channelMap.get(&apos;msgTyp&apos;) );
 
-logger.info(&quot;Message Type = &quot; + channelMap.get(&apos;msgTyp&apos;) );</script>
+var referenceMessageId = xChngReq[&apos;metadata&apos;][&apos;caXchangeIdentifier&apos;].toString()
+channelMap.put(&apos;referenceMessageId&apos;,referenceMessageId);
+logger.info(&quot;referenceMessage Id = &quot; + channelMap.get(&apos;referenceMessageId&apos;) );</script>
           <type>JavaScript</type>
           <data class="map">
             <entry>
@@ -127,10 +129,12 @@ var xChngReq = srcDt[&apos;caxchangerequest&apos;];
 default xml namespace = &apos;http://caXchange.nci.nih.gov/messaging&apos;;
 
 var msgTyp = xChngReq[&apos;metadata&apos;][&apos;operationName&apos;].toString();
-
 channelMap.put(&apos;msgTyp&apos;,msgTyp);
+logger.info(&quot;Message Type = &quot; + channelMap.get(&apos;msgTyp&apos;) );
 
-logger.info(&quot;Message Type = &quot; + channelMap.get(&apos;msgTyp&apos;) );</string>
+var referenceMessageId = xChngReq[&apos;metadata&apos;][&apos;caXchangeIdentifier&apos;].toString()
+channelMap.put(&apos;referenceMessageId&apos;,referenceMessageId);
+logger.info(&quot;referenceMessage Id = &quot; + channelMap.get(&apos;referenceMessageId&apos;) );</string>
             </entry>
           </data>
         </step>
@@ -936,10 +940,10 @@ return true;</script>
       <properties>
         <property name="DataType">JavaScript Writer</property>
         <property name="host">sink</property>
-        <property name="script">var referenceMessageId = null;
+        <property name="script">var referenceMessageId = $(&apos;referenceMessageId&apos;);
 try {
-	referenceMessageId = persistIHubMessageInDB(messageObject.getEncodedData());
-	channelMap.put(&quot;referenceMessageId&quot;, referenceMessageId);
+	var iHubMsgId = persistIHubMessageInDB(Packages.java.lang.Long.parseLong(referenceMessageId), $(&apos;requestMessage&apos;));
+	channelMap.put(&apos;iHubMsgId&apos;, iHubMsgId);
 } catch(err) {
 	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1042, err, null);
 	channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, intgExcp);
@@ -1335,12 +1339,8 @@ return false;</script>
 
 	default xml namespace = &apos;http://caXchange.nci.nih.gov/messaging&apos;;
 
-	xChngReq[&apos;metadata&apos;][&apos;caXchangeIdentifier&apos;]=channelMap.get(&apos;referenceMessageId&apos;);
+	//xChngReq[&apos;metadata&apos;][&apos;caXchangeIdentifier&apos;]=channelMap.get(&apos;referenceMessageId&apos;);
 	
-	//logger.info(&apos;srcDt after setting refmsgid = &apos;+ srcDt );
-	//logger.info(&apos;msg after setting refmsgid = &apos;+ cr );
-
-	//var cacisResponse = client.acceptMessage(wsdlUrl, cr.toString());
 	var cacisResponse = client.acceptSource(wsdlUrl, cr.toString());
 
 	logger.info(&quot;cacisResponse=&quot; + cacisResponse);
@@ -1741,9 +1741,7 @@ if(	msgTyp != globalMap.get(&apos;AE&apos;)
 	) {
 	var msgParams = [&quot;value1&quot;, &quot;value2&quot;];
 	var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1050, msgParams);
-	//var retVal = convertIntegrationExceptionToCaCISError(intgExcp);
-	//responseMap.put(&quot;ResponseWriterConnector&quot;, ResponseFactory.getFailureResponse(retVal));	
-	//return;
+	
 	channelMap.put(&apos;IS_IHUB_PROCESSING_ERROR&apos;, intgExcp);
 }
 
@@ -1751,9 +1749,7 @@ var iHubError = $(&apos;IS_IHUB_PROCESSING_ERROR&apos;);
 if(iHubError) {
 	logger.debug(&quot;iHubError=&quot;+iHubError);
 	var iHubResponse =  convertIntgExceptionToIHubResponse(iHubError);
-
 	responseMap.put(&quot;ResponseWriterConnector&quot;, ResponseFactory.getFailureResponse(iHubResponse));
-
 	return;
 }
 
@@ -1838,6 +1834,8 @@ globalMap.put(&quot;SPMN&quot;,&quot;Create Biospecimen&quot;);
 globalMap.put(&quot;UPDTSPMN&quot;,&quot;Update Biospecimen&quot;);
 globalMap.put(&quot;REGTCNST&quot;,&quot;Register Consent&quot;);
 
+//Load error messages bundle
+Packages.gov.nih.nci.integration.util.ErrorMessagesUtil.init(&quot;@{error.messages.location}&quot;);
 				      
 var commonAppCtx = globalMap.get(&quot;commonAppCtx&quot;);
 
@@ -1858,11 +1856,9 @@ globalMap.put(&quot;inboundMsgToCRTransformer&quot;, inboundMsgToCRTransformer);
 var iHubMessageDao = commonAppCtx.getBean(&quot;iHubMessageDao&quot;);
 globalMap.put(&quot;iHubMessageDao&quot;, iHubMessageDao);
 
-//var cacisWsdlUrl = &quot;http://localhost:12085/services/Mirth?wsdl&quot;;
 var cacisWsdlUrl = &quot;@{transcend.sa.url}?wsdl&quot;;
 globalMap.put(&quot;CaCISWsdlUrl&quot;, cacisWsdlUrl);
 
-//var client = new Packages.gov.nih.nci.integration.cacis.inbound.DefaultAcceptMessageClient();
 var client = new Packages.gov.nih.nci.cacis.sa.transcend.client.TranscendSemanticAdapterClient();
 globalMap.put(&quot;CaCISClient&quot;, client);
 

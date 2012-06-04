@@ -74,7 +74,7 @@ public final class CommonsPropertyLoaderUtil {
         fillPropertiesFromFileSystem(properties, USER_HOME, userHomePathToScan);
 
         for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-            LOG.info(String.format("loaded property - %s:%s", entry.getKey(), entry.getValue()));
+            LOG.debug(String.format("loaded property - %s:%s", entry.getKey(), entry.getValue()));
         }
         return properties;
 

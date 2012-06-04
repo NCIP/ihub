@@ -4,6 +4,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.NotNull;
 
 /**
  * 
@@ -14,6 +15,8 @@ import javax.persistence.MappedSuperclass;
 public class AbstractIdentity {
 
     private Long id;
+    
+    private Long referenceMessageId;
 
     /**
      * getId
@@ -33,6 +36,25 @@ public class AbstractIdentity {
      */
     public void setId(Long id) {
         this.id = id;
+    }
+    
+    /**
+     * Return referenceMessageId
+     * 
+     * @return referenceMessageId
+     */
+    @NotNull
+    public Long getReferenceMessageId() {
+        return referenceMessageId;
+    }
+
+    /**
+     * Set referenceMessageId
+     * 
+     * @param referenceMessageId - referenceMessageId
+     */
+    public void setReferenceMessageId(Long referenceMessageId) {
+        this.referenceMessageId = referenceMessageId;
     }
 
 }

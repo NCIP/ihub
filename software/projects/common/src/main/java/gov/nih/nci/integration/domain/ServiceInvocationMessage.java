@@ -16,31 +16,13 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class ServiceInvocationMessage extends AbstractIdentity {
 
-    private Long referenceMessageId;
+    
     private String invocationException;
     private StrategyIdentifier strategyIdentifier;
     private boolean dataChanged = false;
     private String originalData = null;
     private IHubMessage message;
-
-    /**
-     * Return referenceMessageId
-     * 
-     * @return referenceMessageId
-     */
-    @NotNull
-    public Long getReferenceMessageId() {
-        return referenceMessageId;
-    }
-
-    /**
-     * Set referenceMessageId
-     * 
-     * @param referenceMessageId - referenceMessageId
-     */
-    public void setReferenceMessageId(Long referenceMessageId) {
-        this.referenceMessageId = referenceMessageId;
-    }
+    
 
     /**
      * Return invocationException

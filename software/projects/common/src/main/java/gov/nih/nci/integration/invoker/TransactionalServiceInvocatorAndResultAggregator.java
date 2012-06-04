@@ -3,6 +3,7 @@ package gov.nih.nci.integration.invoker;
 import gov.nih.nci.integration.dao.ServiceInvocationMessageDao;
 import gov.nih.nci.integration.domain.ServiceInvocationMessage;
 import gov.nih.nci.integration.domain.StrategyIdentifier;
+import gov.nih.nci.integration.exception.IntegrationException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -77,31 +78,57 @@ public class TransactionalServiceInvocatorAndResultAggregator implements Service
 
         if (isRollback) {
             LOG.debug("Exception while service invocation", serviceInvocationResult.getInvocationException());
-            executeRollback(refMsgId);
+            ServiceInvocationResult rollbackResult = executeRollback(refMsgId);
+            if(rollbackResult != null){
+                return rollbackResult;
+            }
             return serviceInvocationResult;
         }
 
         serviceInvocationResult = checkRollback(serviceInvocationResultLst);
 
         if (serviceInvocationResult.isFault()) {
-            LOG.debug("Exception from service", serviceInvocationResult.getInvocationException());
-            executeRollback(refMsgId);
+            LOG.debug("Exception from service that triggered rollback", serviceInvocationResult.getInvocationException());
+            ServiceInvocationResult rollbackResult = executeRollback(refMsgId);
+            if(rollbackResult != null){
+                return rollbackResult;
+            }
         }
         return serviceInvocationResult;
     }
 
-    private void executeRollback(Long referenceMessageId) {
+    private ServiceInvocationResult executeRollback(Long referenceMessageId) {
         LOG.debug("Executing rollback");
         Map<StrategyIdentifier, ServiceInvocationMessage> msgsMap = serviceInvocationMessageDao
                 .getAllByReferenceMessageId(referenceMessageId);
 
+        int noOfRollbacks = 0;
         for (ServiceInvocationStrategy serviceInvocationStrategy : serviceInvocationStrategies) {
             ServiceInvocationMessage msg = msgsMap.get(serviceInvocationStrategy.getStrategyIdentifier());
             if (!msg.isDataChanged()) {
                 continue;
             }
             executorCompletionService.submit(new ServiceRollbackTask(msg, serviceInvocationStrategy));
+            noOfRollbacks++;
         }
+        ServiceInvocationResult serviceInvocationResult = null;
+        for (int i = 0; i < noOfRollbacks; i++) {
+            try {
+                serviceInvocationResult = executorCompletionService.take().get();
+            } catch (InterruptedException e) {
+                serviceInvocationResult = new ServiceInvocationResult();
+                serviceInvocationResult.setInvocationException(e);
+            } catch (ExecutionException e) {
+                serviceInvocationResult = new ServiceInvocationResult();
+                serviceInvocationResult.setInvocationException(e);
+            }
+
+            if (serviceInvocationResult.isFault()) {
+                return serviceInvocationResult;
+            }
+        } //end of for
+        
+        return null;
     }
 
     private ServiceInvocationResult checkRollback(List<ServiceInvocationResult> serviceInvocationResultLst) {

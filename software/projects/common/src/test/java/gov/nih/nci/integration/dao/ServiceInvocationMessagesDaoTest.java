@@ -42,13 +42,13 @@ public class ServiceInvocationMessagesDaoTest {
     @PersistenceContext
     private EntityManager em;
 
-    private Long refMsgId;
+    private final Long refMsgId = 12345L;
 
     @Before
     public void createReferenceMessage() {
         // create and persist reference message
         final IHubMessage refIHubMessage = createIHubMessage();
-        refMsgId = iHubMessageDao.save(refIHubMessage);
+        iHubMessageDao.save(refIHubMessage);
     }
 
     /**
@@ -58,8 +58,7 @@ public class ServiceInvocationMessagesDaoTest {
     public void save() {
         final int sizeBefore = serviceInvocationMessageDao.getAll().size();
         final ServiceInvocationMessage serviceInvocationMessage = createServiceInvocationMessage();
-        serviceInvocationMessage.setReferenceMessageId(refMsgId);
-
+        
         final Long id = serviceInvocationMessageDao.save(serviceInvocationMessage);
         assertNotNull(id);
         assertEquals(id, serviceInvocationMessage.getId());
@@ -81,8 +80,7 @@ public class ServiceInvocationMessagesDaoTest {
     @Test
     public void getAllByReferenceMessageId() {
         final ServiceInvocationMessage serviceInvocationMessage = createServiceInvocationMessage();
-        serviceInvocationMessage.setReferenceMessageId(refMsgId);
-
+        
         final Long id = serviceInvocationMessageDao.save(serviceInvocationMessage);
         assertNotNull(id);
 
@@ -105,6 +103,7 @@ public class ServiceInvocationMessagesDaoTest {
         iHubMessage.setRequest("request string");
         iHubMessage.setStartTime(new Date(new java.util.Date().getTime()));
         iHubMessage.setStatus(Status.PROCESS);
+        iHubMessage.setReferenceMessageId(refMsgId);
 
         return iHubMessage;
     }
@@ -117,6 +116,7 @@ public class ServiceInvocationMessagesDaoTest {
         iHubMessage.setResponse("response string");
         iHubMessage.setStatus(Status.SUCCESS);
         serviceInvocationMessage.setMessage(iHubMessage);
+        serviceInvocationMessage.setReferenceMessageId(refMsgId);
 
         return serviceInvocationMessage;
     }
