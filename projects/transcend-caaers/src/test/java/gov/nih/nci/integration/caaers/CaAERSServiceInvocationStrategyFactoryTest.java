@@ -26,7 +26,6 @@ public class CaAERSServiceInvocationStrategyFactoryTest {
         ServiceInvocationStrategy suris = CaAERSServiceInvocationStrategyFactory
                 .createCaAERSUpdateRegistrationServiceInvocationStrategy(new String[] { customLibLoc.getAbsolutePath(),
                         distLoc.getAbsolutePath() }, "classpath*:applicationContext-caaers-client-test.xml");
-        // System.out.println(sris.getClass().getClassLoader());
         assertNotNull(sris);
         assertNotNull(suris);
 
