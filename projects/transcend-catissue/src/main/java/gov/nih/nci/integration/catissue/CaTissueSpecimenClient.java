@@ -103,9 +103,8 @@ public class CaTissueSpecimenClient {
         if (result1.getInvocationException() != null) {
             // We don't want to call the Rollback if a Specimen is already
             // existing. 'isDataChanged' should also be false
-            // Also no need to call createSpecimen flow. We are throwing
-            // ApplicationException from client code if Specimen is already
-            // existing
+            // Also "NO" need to call createSpecimen flow. We are throwing
+            // ApplicationException from client code if Specimen is already existing
             return result1;
         }
 
@@ -141,8 +140,7 @@ public class CaTissueSpecimenClient {
             // we checked before calling createSpecimen,
             // but then Specimen might be created as we have the list of
             // specimen and exception is for one of them.
-            // So we have to call Rollback to make sure that the create specimen
-            // are rollback
+            // So we have to call Rollback to make sure that the create specimen are rollbacked
             result2.setDataChanged(true);
         }
         return result2;
@@ -223,8 +221,7 @@ public class CaTissueSpecimenClient {
         }
 
         if (result1.getInvocationException() != null) {
-            // If some exception while fetching the data, don't try for
-            // updation.
+            // If some exception while fetching the data, don't try for updation.
             return result1;
         }
 
