@@ -112,7 +112,7 @@ public class CaTissueSpecimenClient {
         // from the incoming specimens XML
         Specimens specimens = parseSpecimenListXML(specimenListXMLStr);
 
-        // perform the actual logic to create the Specimens.. 
+        // perform the actual logic to create the Specimens..
         performCreateSpecimens(specimens);
 
         // Returning NULL at the moment.
@@ -469,10 +469,17 @@ public class CaTissueSpecimenClient {
         while (specimenDetailItr.hasNext()) {
             SpecimenDetail specimenDetail = specimenDetailItr.next();
             String specimenLabel = specimenDetail.getSpecimen().getLabel();
-            Specimen existingSpecimen;
+            Specimen existingSpecimen = null;
             try {
                 existingSpecimen = getExistingSpecimen(specimenLabel);
-                softDeleteSpecimen(existingSpecimen);
+            } catch (ApplicationException e) {
+                LOG.info("Specimen with label as " + specimenLabel + " not present in caTissue for Rollback ");
+            }
+
+            try {
+                if (existingSpecimen != null) {
+                    softDeleteSpecimen(existingSpecimen);
+                }
             } catch (ApplicationException e) {
                 LOG.error("Exception occured during Rollback of CreateSpecimen " + specimenLabel, e);
                 throw new ApplicationException("Exception occured during Rollback of CreateSpecimen " + specimenLabel
