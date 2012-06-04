@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
  * @author chandrasekaravr
  * 
  */
-public class ErrorMessagesUtil {
+public final class ErrorMessagesUtil {
 
     private static ResourceBundle rb = null;
 
