@@ -83,11 +83,7 @@ public class CaTissueConsentClient {
      * @throws ApplicationException - if any exception occurred during data insertion
      */
     public String registerConsents(String consentsListXMLStr) throws ApplicationException {
-        LOG
-                .debug("Inside CaTissueConsentClient...The Incoming XML for registerConsents() is --> "
-                        + consentsListXMLStr);
-        // System.out.println("Inside CaTissueConsentClient...The Incoming XML for registerConsents() is --> "
-        // + consentsListXMLStr);
+        LOG.debug("Inside CaTissueConsentClient...The Incoming XML for registerConsents() is --> " + consentsListXMLStr);
 
         // Parse the incoming XML String. The returned object will contain data
         // from the incoming specimens XML
@@ -97,9 +93,7 @@ public class CaTissueConsentClient {
         // rollback, if required
         performRegisterConsents(incomingConsents);
 
-        // Returning NULL here as we don't need the returned values at the
-        // moment.
-        // We can return the list of Consents, if required.
+        // Returning NULL at the moment.
         return null;
     }
 
@@ -112,8 +106,6 @@ public class CaTissueConsentClient {
     public void rollbackConsentRegistration(String consentsListXMLStr) throws ApplicationException {
         LOG.debug("Inside rollbackConsentRegistration...The Incoming XML for rollbackConsentRegistration() is --> "
                 + consentsListXMLStr);
-        // System.out.println("Inside rollbackConsentRegistration...The Incoming XML for rollbackConsentRegistration() is --> "
-        // + consentsListXMLStr);
 
         // Parse the incoming XML String. The returned object will contain data
         // from the incoming specimens XML
@@ -164,18 +156,13 @@ public class CaTissueConsentClient {
             for (consentDetailItr = consentDetailList.iterator(); consentDetailItr.hasNext();) {
                 ConsentDetail consentDetail = consentDetailItr.next();
                 existingSpecimen = getExistingSpecimen(consentDetail.getConsentData().getSpecimenLabel().trim());
-                consentDetail = populateConsentTierId(consentDetail); // populate
-                // the
-                // tierId
-                // for
-                // given
-                // 'statement'
-                // inside
-                // consentDetail
+                // populate the tierId for given 'statement' inside consentDetail
+                consentDetail = populateConsentTierId(consentDetail);
+                // set the collection
                 existingSpecimen.setConsentTierStatusCollection(consentDetail.getConsentData()
                         .getConsentTierStatusSet());
-                updateSpecimen(existingSpecimen); // set the collection and then
-                // update the specimen
+                // and then update the specimen
+                updateSpecimen(existingSpecimen);
 
                 // update the child specimen(s) now
                 performRegisterConsentsForChildSpecimens(existingSpecimen, consentDetail);
@@ -239,18 +226,16 @@ public class CaTissueConsentClient {
                 }
             } else {
                 // i.e collection protocol not found is caTissue
-                LOG
-                        .error("populateConsentTierId failed as Collection Protocol was not found in caTissue for the identifier "
-                                + consentDetail.getCollectionProtocol().getTitle());
+                LOG.error("populateConsentTierId failed as Collection Protocol was not found in caTissue for the identifier "
+                        + consentDetail.getCollectionProtocol().getTitle());
                 throw new ApplicationException("Collection Protocol was not found in caTissue");
             }
 
             if (!isTierIdFound) {
                 // i.e tierId not found for given CollectionProtocol & Statement
                 // combination
-                LOG
-                        .error("populateConsentTierId failed as ConsentTier Statement was not found for given CollectionProtocol "
-                                + consentDetail.getCollectionProtocol().getTitle() + "in caTissue.");
+                LOG.error("populateConsentTierId failed as ConsentTier Statement was not found for given CollectionProtocol "
+                        + consentDetail.getCollectionProtocol().getTitle() + "in caTissue.");
                 throw new ApplicationException(
                         "ConsentTier Statement was not found for given CollectionProtocol in caTissue");
             }
@@ -284,8 +269,6 @@ public class CaTissueConsentClient {
                 existingSpecimen.setConsentTierStatusCollection(consentDetail.getConsentData()
                         .getConsentTierStatusSet());
                 updateSpecimen(existingSpecimen);
-                // throw new
-                // ApplicationException("Rollback Consent Failed for Specimen....");
                 performRollbackConsentForChildSpecimens(existingSpecimen, consentDetail);
             }
         } catch (ApplicationException ae) {

@@ -28,8 +28,8 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 /**
- * This is the client class for Specimen Flow. It provide operation like CreateSpecimen, UpdateSpecimen,
- * RollbackSpecimen
+ * This is the client class for Specimen Flow. 
+ * It provide operation like CreateSpecimen, UpdateSpecimen,RollbackSpecimen
  * 
  * @author Rohit Gupta
  */
@@ -68,10 +68,7 @@ public class CaTissueSpecimenClient {
      * @throws ApplicationException - Throws exception if Specimen already exist
      */
     public String isSpecimensExist(String specimenListXMLStr) throws ApplicationException {
-
         LOG.debug("Inside isSpecimensExist...The Incoming XML for isSpecimensExist() is --> " + specimenListXMLStr);
-        // System.out.println("Inside isSpecimensExist...The Incoming XML for isSpecimensExist() is --> "
-        // + specimenListXMLStr);
 
         // Parse the incoming XML String. The returned object will contain data
         // from the incoming specimens XML
@@ -88,11 +85,8 @@ public class CaTissueSpecimenClient {
      * @throws ApplicationException - if any exception occurred during data retrieval
      */
     public String getExistingSpecimens(String specimenListXMLStr) throws ApplicationException {
-
         LOG.debug("Inside getExistingSpecimens...The Incoming XML for getExistingSpecimens() is --> "
                 + specimenListXMLStr);
-        // System.out.println("Inside getExistingSpecimens...The Incoming XML for getExistingSpecimens() is --> "
-        // + specimenListXMLStr);
 
         // Parse the incoming XML String. The returned object will contain data
         // from the incoming consents XML
@@ -112,24 +106,16 @@ public class CaTissueSpecimenClient {
      * @throws ApplicationException - if any exception occurred during data insertion
      */
     public String createSpecimens(String specimenListXMLStr) throws ApplicationException {
-
-        LOG
-                .debug("Inside CaTissueSpecimenClient...The Incoming XML for createSpecimens() is --> "
-                        + specimenListXMLStr);
-        // System.out.println("Inside CaTissueSpecimenClient...The Incoming XML for createSpecimens() is --> "
-        // + specimenListXMLStr);
+        LOG.debug("Inside CaTissueSpecimenClient...The Incoming XML for createSpecimens() is --> " + specimenListXMLStr);
 
         // Parse the incoming XML String. The returned object will contain data
         // from the incoming specimens XML
         Specimens specimens = parseSpecimenListXML(specimenListXMLStr);
 
-        // perform the actual logic to create the Specimens.. Also do the
-        // rollback, if required
+        // perform the actual logic to create the Specimens.. 
         performCreateSpecimens(specimens);
 
-        // Returning NULL here as we don't need the returned values at the
-        // moment.
-        // We can return the list of Created Specimen, if required.
+        // Returning NULL at the moment.
         return null;
     }
 
@@ -141,10 +127,7 @@ public class CaTissueSpecimenClient {
      * @throws ApplicationException - if any exception occurred during data updation
      */
     public String updateSpecimens(String specimenListXMLStr) throws ApplicationException {
-
         LOG.debug("Inside CaTissueSpecimenClient... updateSpecimens()..The Incoming XML is --> " + specimenListXMLStr);
-        // System.out.println("Inside CaTissueSpecimenClient... updateSpecimens()..The Incoming XML is --> "
-        // + specimenListXMLStr);
 
         // This object contain data from the incoming specimens xml
         Specimens specimens = parseSpecimenListXML(specimenListXMLStr);
@@ -165,11 +148,8 @@ public class CaTissueSpecimenClient {
      * @throws ApplicationException - if any exception occurred during rollback itself
      */
     public String rollbackCreatedSpecimens(String specimenListXMLStr) throws ApplicationException {
-
         LOG.debug("Inside CaTissueSpecimenClient... rollbackCreatedSpecimens()..The Incoming XML is --> "
                 + specimenListXMLStr);
-        // System.out.println("Inside CaTissueSpecimenClient Impl Class... rollbackSpecimens()..The Incoming XML is --> "
-        // + specimenListXMLStr);
 
         // This object contain data from the incoming specimens xml
         Specimens specimens = parseSpecimenListXML(specimenListXMLStr);
@@ -188,11 +168,8 @@ public class CaTissueSpecimenClient {
      * @throws ApplicationException - if any exception occurred during rollback itself
      */
     public String rollbackUpdatedSpecimens(String specimenListXMLStr) throws ApplicationException {
-
         LOG.debug("Inside CaTissueSpecimenClient... rollbackUpdatedSpecimens()..The Incoming XML is --> "
                 + specimenListXMLStr);
-        // System.out.println("Inside CaTissueSpecimenClient Impl Class... rollbackUpdatedSpecimens()..The Incoming XML is --> "
-        // + specimenListXMLStr);
 
         // This object contain data from the incoming specimens xml
         Specimens specimens = parseSpecimenListXML(specimenListXMLStr);
@@ -339,28 +316,12 @@ public class CaTissueSpecimenClient {
                 // Get the corresponding existing Specimen using the Label
                 Specimen existingSpecimen = getExistingSpecimen(incomingSpecimen.getLabel());
                 incomingSpecimen.setId(existingSpecimen.getId());
-                incomingSpecimen.setSpecimenCollectionGroup(existingSpecimen.getSpecimenCollectionGroup());// Specimen
-                                                                                                           // Collection
-                // Group is required.
-                incomingSpecimen.setLineage(existingSpecimen.getLineage());// Lineage
-                // should
-                // not
-                // be
-                // changed
-                // while
-                // updating
-                // the
-                // specimen
+                // Specimen Collection Group is required.
+                incomingSpecimen.setSpecimenCollectionGroup(existingSpecimen.getSpecimenCollectionGroup());
+                // Lineage should not be changed while updating the specimen
+                incomingSpecimen.setLineage(existingSpecimen.getLineage());
                 incomingSpecimen.getSpecimenCharacteristics().setId(
-                        existingSpecimen.getSpecimenCharacteristics().getId()); // The
-                // given
-                // object
-                // has
-                // a
-                // null
-                // identifier:
-                // SpecimenCharacteristics
-
+                        existingSpecimen.getSpecimenCharacteristics().getId());
                 updateSpecimen(incomingSpecimen);
 
                 updatedSpecimenList.add(incomingSpecimen);
@@ -527,8 +488,8 @@ public class CaTissueSpecimenClient {
      * @throws ApplicationException
      */
     private void softDeleteSpecimen(Specimen existingSpecimen) throws ApplicationException {
-        // First change the Label of the Specimen to some dummy value.. like
-        // "DELETED_+ label/barcode +Timestamp"
+        // First change the Label of the Specimen to some dummy value..
+        // like "DELETED_+ label/barcode +Timestamp"
         Specimen updatedSpecimen = updateSpecimenLabel(existingSpecimen);
 
         // Then set the Specimen to Disabled
