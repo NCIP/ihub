@@ -20,16 +20,13 @@ public class RequestMarshallingTest {
     // @Test
     public void marshallMessage() throws JAXBException {
         Object obj = unmarshall(getMessage(), Message.class);
-        // System.out.println(obj);
 
         Message msg = ((JAXBElement<Message>) obj).getValue();
-        // System.out.println(msg);
         JAXBMarshaller jm = new JAXBMarshaller();
 
         QName qname = new QName("http://caXchange.nci.nih.gov/caxchangerequest", "caxchangerequest");
         JAXBElement<Message> message = new JAXBElement<Message>(qname, Message.class, msg);
         String s = marshal(message, Message.class);
-        // System.out.println(s);
     }
 
     @Test
@@ -46,12 +43,10 @@ public class RequestMarshallingTest {
         JAXBElement<Response> respJ = new JAXBElement<Response>(qname, Response.class, response);
 
         String xml = marshal(respJ, Response.class);
-        // System.out.println(xml);
 
         QName ceQname = new QName("http://caXchange.nci.nih.gov/messaging", "caXchangeError");
         JAXBElement<ErrorDetails> edJ = new JAXBElement<ErrorDetails>(ceQname, ErrorDetails.class, errorDetails);
         xml = marshal(edJ, ErrorDetails.class);
-        // System.out.println(xml);
     }
 
     /**
