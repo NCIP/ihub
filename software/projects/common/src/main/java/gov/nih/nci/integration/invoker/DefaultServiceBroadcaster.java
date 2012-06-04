@@ -11,7 +11,8 @@ import gov.nih.nci.integration.exception.IntegrationException;
 import java.sql.Date;
 
 /**
- * DefaultServiceBroadcaster
+ * An implementation of ServiceBroadcaster that uses the DAOs to persist ServiceInvocationMessage objects and invoke
+ * ServiceInvocationStrategy implementations
  * 
  * @author Vinodh
  * 
@@ -28,8 +29,6 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
     public DefaultServiceBroadcaster(ServiceInvocationMessageDao serviceInvocationMessageDao) {
         super();
         this.serviceInvocationMessageDao = serviceInvocationMessageDao;
-        // System.out.println("serviceInvocationMessageDao is "
-        // + serviceInvocationMessageDao);
     }
 
     @Override
