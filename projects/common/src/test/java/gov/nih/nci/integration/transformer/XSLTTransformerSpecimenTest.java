@@ -37,7 +37,6 @@ public class XSLTTransformerSpecimenTest {
 
         Assert.assertNotNull(trnsfrmdMsg);
 
-        // System.out.println(trnsfrmdMsg);
     }
 
     private String transformXML(String message) throws IntegrationException {
