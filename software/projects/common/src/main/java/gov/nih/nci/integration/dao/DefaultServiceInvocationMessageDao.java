@@ -43,8 +43,8 @@ public class DefaultServiceInvocationMessageDao extends AbstractDao<ServiceInvoc
                 "from " + getDomainClass().getSimpleName()
                         + " svcInvMsg where svcInvMsg.referenceMessageId = :referenceMessageId ");
         msgsQuery.setParameter("referenceMessageId", refMsgId);
-        List<ServiceInvocationMessage> msgs = msgsQuery.getResultList();
-        Map<StrategyIdentifier, ServiceInvocationMessage> map = new HashMap<StrategyIdentifier, ServiceInvocationMessage>();
+        final List<ServiceInvocationMessage> msgs = msgsQuery.getResultList();
+        final Map<StrategyIdentifier, ServiceInvocationMessage> map = new HashMap<StrategyIdentifier, ServiceInvocationMessage>(); 
         for (ServiceInvocationMessage serviceInvocationMessage : msgs) {
             map.put(serviceInvocationMessage.getStrategyIdentifier(), serviceInvocationMessage);
         }
