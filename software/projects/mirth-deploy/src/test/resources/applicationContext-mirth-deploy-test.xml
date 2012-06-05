@@ -10,21 +10,15 @@
            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-
-    <!-- enable processing of annotations such as @Autowired and @Configuration -->
-    <context:annotation-config/>
-    
-    <!--
+	<!--
+		enable processing of annotations such as @Autowired and @Configuration
+	-->
+	<context:annotation-config />
+	<!--
 		This is required for the @Transactional annotations to be processed
 		context:annotation-config doesnt process them
 	-->
 	<tx:annotation-driven />
-	
+
 	<bean class="gov.nih.nci.integration.dao.CommonPropsTestConfig" />
-	<bean class="gov.nih.nci.integration.dao.DefaultDaoConfig" />
-	<bean class="gov.nih.nci.integration.transformer.TransformerConfig" />
-	<bean class="gov.nih.nci.integration.invoker.ServiceInvokerConfig" />
-	
-	<bean class="gov.nih.nci.integration.caaers.invoker.CaAERSConfig"/>
-    
 </beans>

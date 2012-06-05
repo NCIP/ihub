@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
@@ -122,12 +123,39 @@ public class CaTissueRegistrationServiceInvocationStrategy implements ServiceInv
         if (cause == null) {
             return;
         }
-        String stackTrace = ExceptionUtils.getFullStackTrace(cause);
+
+        String[] throwableMsgs = getThrowableMsgs(cause);
         IntegrationException newie = (IntegrationException) exception;
-        if (stackTrace.contains("Error authenticating user")) {
-            newie = new IntegrationException(IntegrationError._1019, (Object) null);
+
+        Set<String> keys = msgToErrMap.keySet();
+
+        for (String lkupStr : keys) {
+            String msg = getMatchingMsg(lkupStr, throwableMsgs);
+            if (msg != null) {
+                newie = new IntegrationException(msgToErrMap.get(lkupStr), cause, msg);
+                break;
+            }
         }
+
         result.setInvocationException(newie);
+    }
+
+    private String[] getThrowableMsgs(Throwable cause) {
+        Throwable[] throwables = ExceptionUtils.getThrowables(cause);
+        String[] msgs = new String[throwables.length];
+        for (int i = 0; i < throwables.length; i++) {
+            msgs[i] = throwables[i].getMessage();
+        }
+        return msgs;
+    }
+
+    private String getMatchingMsg(String lookupStr, String[] msgs) {
+        for (String string : msgs) {
+            if (string.contains(lookupStr)) {
+                return string;
+            }
+        }
+        return null;
     }
 
 }

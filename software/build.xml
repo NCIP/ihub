@@ -43,8 +43,12 @@
 		<iterate target="all"/>
 	</target>
 	
-	<target name="test.integration">
-		<iterate target="test.integration"/>
+	<target name="test-integration">
+		<iterate target="test-integration-report"/>
+	</target>
+	
+	<target name="smoke-test">
+		<subant target="test-integration-report" buildpath="./projects/mirth-deploy/" antfile="build.xml"/>
 	</target>
 	
 	<target name="prepare.mirth">
