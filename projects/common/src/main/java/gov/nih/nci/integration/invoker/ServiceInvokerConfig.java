@@ -1,6 +1,5 @@
 package gov.nih.nci.integration.invoker;
 
-import gov.nih.nci.integration.dao.IHubMessageDao;
 import gov.nih.nci.integration.dao.ServiceInvocationMessageDao;
 
 import java.util.concurrent.Executor;
@@ -21,12 +20,7 @@ import org.springframework.context.annotation.Scope;
 public class ServiceInvokerConfig {
 
     @Autowired
-    private IHubMessageDao iHubMessageDao;
-
-    @Autowired
     private ServiceInvocationMessageDao serviceInvocationMessageDao;
-
-    private int corePoolSize = 10;
 
     /**
      * The method is used to get the instance of DefaultServiceBroadcaster

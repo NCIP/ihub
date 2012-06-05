@@ -13,9 +13,9 @@ import java.util.concurrent.Callable;
  */
 public class ServiceRollbackTask implements Callable<ServiceInvocationResult> {
 
-    private ServiceInvocationMessage message;
+    private final ServiceInvocationMessage message;
 
-    private ServiceInvocationStrategy serviceInvocationStrategy;
+    private final ServiceInvocationStrategy serviceInvocationStrategy;
 
     /**
      * Constructor
@@ -34,11 +34,11 @@ public class ServiceRollbackTask implements Callable<ServiceInvocationResult> {
     @Override
     public ServiceInvocationResult call() throws IntegrationException {
 
-        if (message == null) {
+        if (message == null) { //NOPMD
             throw new IntegrationException(IntegrationError._1064);
         }
 
-        if (serviceInvocationStrategy == null) {
+        if (serviceInvocationStrategy == null) { //NOPMD
             throw new IntegrationException(IntegrationError._1065);
         }
         return serviceInvocationStrategy.rollback(message);

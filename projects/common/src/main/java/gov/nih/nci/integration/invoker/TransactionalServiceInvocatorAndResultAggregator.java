@@ -25,11 +25,11 @@ import org.slf4j.LoggerFactory;
  */
 public class TransactionalServiceInvocatorAndResultAggregator implements ServiceInvocatorAndResultAggregator {
 
-    private ServiceBroadcaster serviceBroadcaster;
-    private ServiceInvocationMessageDao serviceInvocationMessageDao;
-    private ExecutorCompletionService<ServiceInvocationResult> executorCompletionService;
+    private final ServiceBroadcaster serviceBroadcaster;
+    private final ServiceInvocationMessageDao serviceInvocationMessageDao;
+    private final ExecutorCompletionService<ServiceInvocationResult> executorCompletionService;
 
-    private Collection<ServiceInvocationStrategy> serviceInvocationStrategies;
+    private final Collection<ServiceInvocationStrategy> serviceInvocationStrategies;
 
     private static final Logger LOG = LoggerFactory.getLogger(TransactionalServiceInvocatorAndResultAggregator.class);
 
@@ -64,7 +64,7 @@ public class TransactionalServiceInvocatorAndResultAggregator implements Service
 
         // TODO is check required to match refMsgId
 
-        List<ServiceInvocationResult> serviceInvocationResultLst = new ArrayList<ServiceInvocationResult>();
+        final List<ServiceInvocationResult> serviceInvocationResultLst = new ArrayList<ServiceInvocationResult>();
         final int noOfTasks = serviceInvocationStrategies.size();
 
         boolean isRollback = false;
@@ -85,8 +85,8 @@ public class TransactionalServiceInvocatorAndResultAggregator implements Service
 
         if (isRollback) {
             LOG.debug("Exception while service invocation", serviceInvocationResult.getInvocationException());
-            ServiceInvocationResult rollbackResult = executeRollback(refMsgId);
-            if (rollbackResult != null) {
+            final ServiceInvocationResult rollbackResult = executeRollback(refMsgId);
+            if (rollbackResult != null) { //NOPMD
                 return rollbackResult;
             }
             return serviceInvocationResult;
@@ -97,8 +97,8 @@ public class TransactionalServiceInvocatorAndResultAggregator implements Service
         if (serviceInvocationResult.isFault()) {
             LOG.debug("Exception from service that triggered rollback",
                     serviceInvocationResult.getInvocationException());
-            ServiceInvocationResult rollbackResult = executeRollback(refMsgId);
-            if (rollbackResult != null) {
+            final ServiceInvocationResult rollbackResult = executeRollback(refMsgId);
+            if (rollbackResult != null) {  //NOPMD
                 return rollbackResult;
             }
         }
@@ -107,12 +107,12 @@ public class TransactionalServiceInvocatorAndResultAggregator implements Service
 
     private ServiceInvocationResult executeRollback(Long referenceMessageId) {
         LOG.debug("Executing rollback");
-        Map<StrategyIdentifier, ServiceInvocationMessage> msgsMap = serviceInvocationMessageDao
+        final Map<StrategyIdentifier, ServiceInvocationMessage> msgsMap = serviceInvocationMessageDao
                 .getAllByReferenceMessageId(referenceMessageId);
 
         int noOfRollbacks = 0;
         for (ServiceInvocationStrategy serviceInvocationStrategy : serviceInvocationStrategies) {
-            ServiceInvocationMessage msg = msgsMap.get(serviceInvocationStrategy.getStrategyIdentifier());
+            final ServiceInvocationMessage msg = msgsMap.get(serviceInvocationStrategy.getStrategyIdentifier());
             if (!msg.isDataChanged()) {
                 continue;
             }
@@ -145,7 +145,7 @@ public class TransactionalServiceInvocatorAndResultAggregator implements Service
                 return serviceInvocationResult;
             }
         }
-        ServiceInvocationResult serviceInvocationResult = new ServiceInvocationResult();
+        final ServiceInvocationResult serviceInvocationResult = new ServiceInvocationResult();
         serviceInvocationResult.setResult("Success");
         return serviceInvocationResult;
     }
