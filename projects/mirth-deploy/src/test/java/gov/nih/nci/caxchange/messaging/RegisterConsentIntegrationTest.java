@@ -41,8 +41,7 @@ public class RegisterConsentIntegrationTest {
             String createdXML = null;
             
             if (entity != null) {
-                createdXML = EntityUtils.toString(entity);               
-                System.out.println("createdXML --> " +createdXML); //NOPMD
+                createdXML = EntityUtils.toString(entity);     
                 Assert.assertEquals(true, createdXML.contains("<responseStatus>SUCCESS</responseStatus>"));
             }
         } catch (ClientProtocolException e) {
@@ -69,8 +68,7 @@ public class RegisterConsentIntegrationTest {
             String createdXML = null;
             
             if (entity != null) {
-                createdXML = EntityUtils.toString(entity);               
-                System.out.println("createdXML --> " +createdXML); //NOPMD
+                createdXML = EntityUtils.toString(entity);     
                 Assert.assertEquals(true, createdXML.contains("<errorCode>1090</errorCode>"));
             }
         } catch (ClientProtocolException e) {
@@ -97,8 +95,7 @@ public class RegisterConsentIntegrationTest {
             String createdXML = null;
             
             if (entity != null) {
-                createdXML = EntityUtils.toString(entity);               
-                System.out.println("createdXML --> " +createdXML); //NOPMD
+                createdXML = EntityUtils.toString(entity);         
                 Assert.assertEquals(true, createdXML.contains("<errorCode>1091</errorCode>"));
             }
         } catch (ClientProtocolException e) {
@@ -126,8 +123,7 @@ public class RegisterConsentIntegrationTest {
             String createdXML = null;
             
             if (entity != null) {
-                createdXML = EntityUtils.toString(entity);               
-                System.out.println("createdXML --> " +createdXML); //NOPMD
+                createdXML = EntityUtils.toString(entity);          
                 Assert.assertEquals(true, createdXML.contains("<errorCode>1092</errorCode>"));
             }
         } catch (ClientProtocolException e) {
