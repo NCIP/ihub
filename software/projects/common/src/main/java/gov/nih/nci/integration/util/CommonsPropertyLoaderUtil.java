@@ -45,7 +45,7 @@ public final class CommonsPropertyLoaderUtil {
      * Load properties from following locations in mentioned order
      * 
      * <pre>
-     * #a)${user.home}/.integration/${ant.project.name}/${ant.project.name}.properties  (where ${user.home) is a system property)
+     * #a)${user.home}/.integration/${ant.project.name}/${ant.project.name}.properties where ${user.home) is system property
      * #b)${app.home}/.integration/${ant.project.name} (where ${catalina.home) is a system property)
      * #c)classpath:${ant.project.name}.properties
      * </pre>
@@ -93,8 +93,8 @@ public final class CommonsPropertyLoaderUtil {
             LOG.info(String.format("%s is not set. So skipping property lookup from %s", environmentVariable,
                     environmentVariable));
         } else {
-            final String detailedEnvironmentPath = StringUtils.replace(pathToScan, environmentVariable, System
-                    .getProperty(environmentVariable));
+            final String detailedEnvironmentPath = StringUtils.replace(pathToScan, environmentVariable,
+                    System.getProperty(environmentVariable));
             fillProperties(new FileSystemResource(detailedEnvironmentPath), properties);
         }
     }
@@ -111,8 +111,8 @@ public final class CommonsPropertyLoaderUtil {
                 LOG.info("merging properties form : " + resource.getDescription());
                 PropertiesLoaderUtils.fillProperties(properties, resource);
             } else {
-                LOG.info(String.format("can not merge property from %s as resource does not exists.", resource
-                        .getDescription()));
+                LOG.info(String.format("can not merge property from %s as resource does not exists.",
+                        resource.getDescription()));
             }
         } catch (IOException e) {
             final String message = "error while loading properties from resource" + resource;
