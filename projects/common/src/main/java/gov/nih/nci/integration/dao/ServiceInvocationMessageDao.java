@@ -6,10 +6,8 @@ import gov.nih.nci.integration.domain.StrategyIdentifier;
 import java.util.Map;
 
 /**
- * ServiceInvocationMessageDao
- * 
+ *  
  * @author Vinodh
- * 
  */
 public interface ServiceInvocationMessageDao extends Dao<ServiceInvocationMessage> {
 
@@ -20,6 +18,6 @@ public interface ServiceInvocationMessageDao extends Dao<ServiceInvocationMessag
      * @return Map
      */
     @SuppressWarnings("unchecked")
-    public abstract Map<StrategyIdentifier, ServiceInvocationMessage> getAllByReferenceMessageId(Long refMsgId);
+    Map<StrategyIdentifier, ServiceInvocationMessage> getAllByReferenceMessageId(Long refMsgId);
 
 }
