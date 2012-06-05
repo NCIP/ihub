@@ -18,7 +18,7 @@ import java.sql.Date;
  */
 public class DefaultServiceBroadcaster implements ServiceBroadcaster {
 
-    private ServiceInvocationMessageDao serviceInvocationMessageDao;
+    private final ServiceInvocationMessageDao serviceInvocationMessageDao;
 
     /**
      * Constructor
@@ -36,7 +36,7 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
 
         final Date stTime = new Date(new java.util.Date().getTime());
 
-        ServiceInvocationMessage serviceInvocationMessage = prepareServiceInvocationMessage(referenceMessageId,
+        final ServiceInvocationMessage serviceInvocationMessage = prepareServiceInvocationMessage(referenceMessageId,
                 message, stTime, serviceInvocationStrategy.getStrategyIdentifier());
 
         ServiceInvocationResult serviceInvocationResult = delegate(serviceInvocationMessage, serviceInvocationStrategy);
@@ -44,11 +44,11 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
         if (serviceInvocationResult.isFault()) {
             // upon receiving the fault can control retry attempts, if it makes
             // sense or not
-            if (serviceInvocationResult.isRetry()) {
-                int retryCnt = serviceInvocationStrategy.getRetryCount();
+            if (serviceInvocationResult.isRetry()) { //NOPMD
+                final int retryCnt = serviceInvocationStrategy.getRetryCount();
                 for (int i = 0; i < retryCnt; i++) {
                     serviceInvocationResult = delegate(serviceInvocationMessage, serviceInvocationStrategy);
-                    if (!serviceInvocationResult.isFault()) {
+                    if (!serviceInvocationResult.isFault()) { //NOPMD
                         break;
                     }
                 }
@@ -66,7 +66,7 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
      // CHECKSTYLE:OFF
         try {
             serviceInvocationResult = serviceInvocationStrategy.invoke(serviceInvocationMessage);
-        } catch (Exception e) {
+        } catch (Exception e) { //NOPMD
             // this code must not be reached...ServiceInvocationStrategy must
             // not throw exception
             // TODO : To handle any exceptions not handled by
@@ -104,7 +104,7 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
 
         final Exception invocationException = serviceInvocationResult.getInvocationException();
         final IHubMessage iHubMessage = serviceInvocationMessage.getMessage();
-        if (invocationException != null) {
+        if (invocationException != null) { //NOPMD
             iHubMessage.setStatus(Status.FAILED);
             serviceInvocationMessage.setInvocationException(invocationException.getMessage());
         } else {

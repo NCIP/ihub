@@ -136,7 +136,7 @@ public class IntegrationException extends Exception {
      */
     public String stackTraceAsString() {
         String stackTraceStr = getMessage();
-        if (getCause() != null) {
+        if (getCause() != null) { //NOPMD
             try {
                 stackTraceStr = URLEncoder.encode(ExceptionUtils.getFullStackTrace(getCause()), "UTF-8");
             } catch (UnsupportedEncodingException e1) {
