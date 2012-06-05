@@ -1,5 +1,4 @@
 package gov.nih.nci.integration.transformer;
-
 import gov.nih.nci.integration.exception.IntegrationError;
 import gov.nih.nci.integration.exception.IntegrationException;
 
@@ -27,7 +26,7 @@ public class XSLTTransformer {
      */
     private Transformer transformer = null;
 
-    private TransformerFactory factory = null;
+    private TransformerFactory factory = null; //NOPMD
 
     /**
      * Constructor
@@ -36,7 +35,7 @@ public class XSLTTransformer {
      */
     public XSLTTransformer(Transformer transformer) {
         this.transformer = transformer;
-        this.factory = null;
+        this.factory = null;//NOPMD
     }
 
     /**
@@ -57,7 +56,7 @@ public class XSLTTransformer {
      */
     public void initTransformer(String xslFileName, String xslBasePath)// NOPMD
             throws IntegrationException {
-        if (factory == null) {
+        if (factory == null) { //NOPMD
             throw new IntegrationException(IntegrationError._1060);
         }
         if (StringUtils.isEmpty(xslFileName)) {
@@ -85,7 +84,7 @@ public class XSLTTransformer {
      * @throws IntegrationException exception
      */
     public void transform(Map<String, String> params, InputStream in, OutputStream out) throws IntegrationException {
-        if (params != null) {
+        if (params != null) { //NOPMD
             for (Entry<String, String> entry : params.entrySet()) {
                 transformer.setParameter(entry.getKey(), entry.getValue());
             }
@@ -97,4 +96,6 @@ public class XSLTTransformer {
             throw new IntegrationException(IntegrationError._1027, e);
         }
     }
+    
 }
+
