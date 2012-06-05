@@ -3,7 +3,6 @@ package gov.nih.nci.integration.invoker;
 import gov.nih.nci.integration.dao.ServiceInvocationMessageDao;
 import gov.nih.nci.integration.domain.ServiceInvocationMessage;
 import gov.nih.nci.integration.domain.StrategyIdentifier;
-import gov.nih.nci.integration.exception.IntegrationException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,8 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This implementation of ServiceInvocatorAndResultAggregator is responsible for implementing a distributed transaction
- * roll back, if any of the results are errors
+ * This implementation of ServiceInvocatorAndResultAggregator will aggregate responses by periodically querying the
+ * database until it finds either all service invocation responses or some (configurable) timeout period has elapsed. If
+ * any service invocation response is an error or timeout, it will initiate a rollback
  * 
  * @author chandrasekaravr
  * 
@@ -33,6 +33,13 @@ public class TransactionalServiceInvocatorAndResultAggregator implements Service
 
     private static final Logger LOG = LoggerFactory.getLogger(TransactionalServiceInvocatorAndResultAggregator.class);
 
+    /**
+     * Constructor
+     * 
+     * @param serviceBroadcaster - ServiceBroadcaster impl object eg. DefaultServiceBroadcaster
+     * @param serviceInvocationMessageDao - ServiceInvocationMessageDao impl object
+     * @param executor - object that executes submitted Runnable tasks
+     */
     public TransactionalServiceInvocatorAndResultAggregator(ServiceBroadcaster serviceBroadcaster,
             ServiceInvocationMessageDao serviceInvocationMessageDao, Executor executor) {
         super();
@@ -79,7 +86,7 @@ public class TransactionalServiceInvocatorAndResultAggregator implements Service
         if (isRollback) {
             LOG.debug("Exception while service invocation", serviceInvocationResult.getInvocationException());
             ServiceInvocationResult rollbackResult = executeRollback(refMsgId);
-            if(rollbackResult != null){
+            if (rollbackResult != null) {
                 return rollbackResult;
             }
             return serviceInvocationResult;
@@ -88,9 +95,10 @@ public class TransactionalServiceInvocatorAndResultAggregator implements Service
         serviceInvocationResult = checkRollback(serviceInvocationResultLst);
 
         if (serviceInvocationResult.isFault()) {
-            LOG.debug("Exception from service that triggered rollback", serviceInvocationResult.getInvocationException());
+            LOG.debug("Exception from service that triggered rollback",
+                    serviceInvocationResult.getInvocationException());
             ServiceInvocationResult rollbackResult = executeRollback(refMsgId);
-            if(rollbackResult != null){
+            if (rollbackResult != null) {
                 return rollbackResult;
             }
         }
@@ -126,8 +134,8 @@ public class TransactionalServiceInvocatorAndResultAggregator implements Service
             if (serviceInvocationResult.isFault()) {
                 return serviceInvocationResult;
             }
-        } //end of for
-        
+        } // end of for
+
         return null;
     }
 

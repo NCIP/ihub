@@ -28,11 +28,19 @@ public class ServiceInvokerConfig {
 
     private int corePoolSize = 10;
 
+    /**
+     * The method is used to get the instance of DefaultServiceBroadcaster
+     * @return instance of DefaultServiceBroadcaster
+     */
     @Bean
     public ServiceBroadcaster serviceBroadcaster() {
         return new DefaultServiceBroadcaster(serviceInvocationMessageDao);
     }
 
+    /**
+     * Creates a thread pool that can schedule commands to run after a given delay
+     * @return Executor that executes submitted Runnable tasks
+     */
     @Bean
     public Executor executor() {
         return Executors.newScheduledThreadPool(10);
