@@ -11,6 +11,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
+/**
+ * This class provide method to configure/ create instance of a TransformerFactory
+ * 
+ * @author Vinodh 
+ */
 @Configuration
 public class TransformerConfig {
 
@@ -50,5 +55,6 @@ public class TransformerConfig {
     public XSLTTransformer xsltTransformer() throws IntegrationException {
         return new XSLTTransformer(xslTransformerFactory());
     }
+
 
 }
