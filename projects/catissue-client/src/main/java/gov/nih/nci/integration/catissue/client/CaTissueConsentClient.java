@@ -275,8 +275,7 @@ public class CaTissueConsentClient {
             // code for handling the exception
             LOG.error("Exception During Rollback of Consent with SpecimenLabel as "
                     + consentDetail.getConsentData().getSpecimenLabel(), ae);
-            throw new ApplicationException("Rollback Consent Failed for Specimen"
-                    + consentDetail.getConsentData().getSpecimenLabel() + " and exception is " + ae.getCause());
+            throw new ApplicationException("Error occurred : Unable to rollback. Please check the logs.");
         }
     }
 
