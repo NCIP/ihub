@@ -4,8 +4,8 @@ import gov.nih.nci.integration.domain.ServiceInvocationMessage;
 import gov.nih.nci.integration.domain.StrategyIdentifier;
 
 /**
- * Interface for Service Strategy classes
- * 
+ * Represents the logic necessary to invoke a single operation of a service AND also rollback the effects of that
+ * operation. Implementations of this interface may contain logic to invoke more than one operation. 
  * @author Vinodh
  * 
  */
