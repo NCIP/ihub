@@ -39,6 +39,9 @@ ihub.messages.db.hibernate.showsql=true
 ## XSL Transformer properties
 integration.transformer.xsl.baseClassPath=@{user.home.java.path}/.integration/ihub/xsl/
 
+#static-analysis
+run.static.analysis=false
+
 # to skip tests or not
 skip.test=false
 # to run cobertura review reports
@@ -48,3 +51,7 @@ run.cobertura.check=false
 cobertura.branchrate=80
 cobertura.totalbranchrate=80
 cobertura.totallinerate=80
+
+##Transcend CaXchange service url
+transcend.caxchange.service.url=http://localhost:12090/services/CaXchangeRequestService
+transcend.sa.service.url=http://localhost:12085/services/TranscendSemanticAdapter

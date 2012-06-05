@@ -10,6 +10,11 @@ import gov.nih.nci.integration.transformer.XSLTTransformer;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
@@ -17,13 +22,15 @@ import org.slf4j.LoggerFactory;
 
 public class CaTissueUpdateRegistrationServiceInvocationStrategy implements ServiceInvocationStrategy {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CaTissueRegistrationServiceInvocationStrategy.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CaTissueUpdateRegistrationServiceInvocationStrategy.class);
 
     private int retryCount = 0;
 
     private CaTissueParticipantClient caTissueParticipantClient;
 
     private XSLTTransformer xsltTransformer;
+    
+    Map<String, IntegrationError> msgToErrMap;
 
     public CaTissueUpdateRegistrationServiceInvocationStrategy(int retryCount,
             CaTissueParticipantClient caTissueParticipantClient, XSLTTransformer xsltTransformer) {
@@ -31,6 +38,12 @@ public class CaTissueUpdateRegistrationServiceInvocationStrategy implements Serv
         this.retryCount = retryCount;
         this.caTissueParticipantClient = caTissueParticipantClient;
         this.xsltTransformer = xsltTransformer;
+        
+        HashMap<String, IntegrationError> msgToErrMapBase = new LinkedHashMap<String, IntegrationError>();
+
+        msgToErrMapBase.put("Error authenticating user", IntegrationError._1019);
+
+        msgToErrMap = Collections.synchronizedMap(msgToErrMapBase);
     }
 
     @Override
@@ -52,6 +65,7 @@ public class CaTissueUpdateRegistrationServiceInvocationStrategy implements Serv
         } catch (IntegrationException e) {
             serviceInvocationResult.setInvocationException(e);
         }
+        handleException(serviceInvocationResult);
         return serviceInvocationResult;
     }
 
@@ -64,6 +78,7 @@ public class CaTissueUpdateRegistrationServiceInvocationStrategy implements Serv
         } catch (Exception e) {
             serviceInvocationResult.setInvocationException(e);
         }
+        handleException(serviceInvocationResult);
         return serviceInvocationResult;
     }
 
@@ -108,12 +123,39 @@ public class CaTissueUpdateRegistrationServiceInvocationStrategy implements Serv
         if (cause == null) {
             return;
         }
-        String stackTrace = ExceptionUtils.getFullStackTrace(cause);
+
+        String[] throwableMsgs = getThrowableMsgs(cause);
         IntegrationException newie = (IntegrationException) exception;
-        if (stackTrace.contains("Error authenticating user")) {
-            newie = new IntegrationException(IntegrationError._1019, (Object) null);
+
+        Set<String> keys = msgToErrMap.keySet();
+
+        for (String lkupStr : keys) {
+            String msg = getMatchingMsg(lkupStr, throwableMsgs);
+            if (msg != null) {
+                newie = new IntegrationException(msgToErrMap.get(lkupStr), cause, msg);
+                break;
+            }
         }
+
         result.setInvocationException(newie);
+    }
+
+    private String[] getThrowableMsgs(Throwable cause) {
+        Throwable[] throwables = ExceptionUtils.getThrowables(cause);
+        String[] msgs = new String[throwables.length];
+        for (int i = 0; i < throwables.length; i++) {
+            msgs[i] = throwables[i].getMessage();
+        }
+        return msgs;
+    }
+
+    private String getMatchingMsg(String lookupStr, String[] msgs) {
+        for (String string : msgs) {
+            if (string.contains(lookupStr)) {
+                return string;
+            }
+        }
+        return null;
     }
 
 }

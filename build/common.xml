@@ -693,7 +693,7 @@
 	</condition>
 	<target name="test" if="run.test" depends="corbetura-init , clean-test-results" description="Runs the testcases">
 		<echo message="Executing in ${ant.project.name}" />
-		<echo message="Test results dir: ${test.results.dir}, with pattern ${testPattern} and classes from ${test.classes.dir}" />
+		<echo message="Test results dir: ${test.results.dir}, with pattern ${testPattern} excluding **/*IntegrationTest.class, **/*LoadTest.class and classes from ${test.classes.dir}" />
 		<echo message="Questionable props: ${test.run.classpath}" />
 		<mkdir dir="${test.results.dir}" />
 				
@@ -712,8 +712,31 @@
 				<fileset dir="${test.classes.dir}">
 					<include name="${testPattern}" />
 					<exclude name="**/*IntegrationTest.class" />
+					<exclude name="**/*LoadTest.class" />
 				</fileset>
 			</batchtest>
+		</junit>
+		
+	</target>
+	
+	<!-- ============================================================== 
+			target: test-single                                             
+		============================================================== -->	
+	<target name="test-single" if="run.test" description="Run a single test case by specifying the test name like -Dtest=xx.xx.xxx">		
+		<mkdir dir="${test.results.dir}" />
+				
+		<junit printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" 
+			showoutput="false" outputtoformatters="false" fork="true" forkmode="once" timeout="600000" 
+			dir="${basedir}">
+						
+			<classpath location="${instrumented.classes.dir}" />
+			<classpath refid="test.run.classpath" />
+			<classpath location="${test.classes.dir}" />			
+			
+			<test fork="yes" name="${test}" haltonfailure="yes" todir="${test.results.dir}">
+				<formatter type="plain"/>
+				<formatter type="xml" />
+			</test>
 		</junit>
 		
 	</target>
@@ -722,7 +745,7 @@
 			target: integration-test                                                
 		============================================================== -->
 		
-	<target name="test.integration" if="run.test" description="Runs the integration testcases">
+	<target name="test-integration" if="run.test" description="Runs the integration testcases">
 		<echo message="Executing in ${ant.project.name}" />
 		<echo message="Test results dir: ${test.results.dir}, with pattern **/*IntegrationTest.class and classes from ${test.classes.dir}" />
 		<echo message="Questionable props: ${test.run.classpath}" />
@@ -756,6 +779,7 @@
 		
 		<cobertura-report format="html" destdir="${cobertura.report.dir}" srcdir="${main.src}" datafile="${cobertura.report.dir}/cobertura.ser"/>
 		<cobertura-report format="xml" destdir="${cobertura.report.dir}/xmlreport" srcdir="${main.src}" datafile="${cobertura.report.dir}/cobertura.ser"/>
+	
 	</target>
 	
 	<!-- ============================================================== 
@@ -774,7 +798,8 @@
 	<!-- ============================================================== 
 		target: test-report                                                
 	============================================================== -->
-	<target name="test-report" if="run.test" depends="test,cobertura-report, cobertura-check">
+	<target name="test-report" if="run.test" depends="test,cobertura-report"
+		description="Runs all junit tests, generates cobertura-report">
 		<echo message="Executing in ${ant.project.name}" />
 		<mkdir dir="${test.reports.dir}"/>
         <junitreport todir="${test.reports.dir}">
@@ -785,11 +810,26 @@
         </junitreport>
 		<fail message="Tests failed! ${ant.project.name} , Check test reports in ${test.reports.dir} for more details." 
 					if="test.failed" />
-		<fail message="Cobertura check failed! ${ant.project.name} , Check cobertura reports in ${cobertura.report.dir} for more details." 
-					if="cobertura.check.failure" />
 	</target>
 	
-	
+	<!-- ============================================================== 
+			target: test-integration-report                                                
+		============================================================== -->
+		<target name="test-integration-report" if="run.test" depends="test-integration,cobertura-report, cobertura-check"
+			description="Runs all junit tests, generates cobertura-report and performs cobertura-check">
+			<echo message="Executing in ${ant.project.name}" />
+			<mkdir dir="${test.reports.dir}"/>
+	        <junitreport todir="${test.reports.dir}">
+	            <fileset dir="${test.results.dir}">
+	                <include name="TEST-*.xml"/>
+	            </fileset>
+	            <report format="frames" todir="${test.reports.dir}"/>
+	        </junitreport>
+			<fail message="Tests failed! ${ant.project.name} , Check test reports in ${test.reports.dir} for more details." 
+						if="test.failed" />
+			<fail message="Cobertura check failed! ${ant.project.name} , Check cobertura reports in ${cobertura.report.dir} for more details." 
+						if="cobertura.check.failure" />
+		</target>
 	
 	<!-- ==========================================================
 		target: debug-info
