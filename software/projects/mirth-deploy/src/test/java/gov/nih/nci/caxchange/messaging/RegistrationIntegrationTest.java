@@ -124,9 +124,10 @@ public class RegistrationIntegrationTest {
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 String output = EntityUtils.toString(entity);
+                System.out.println("Inside sendDuplicateRegistrationMessage....");
                 System.out.println(output);
                 Assert.assertNotNull(output);
-                Assert.assertEquals(true, output.contains("<errorCode>1014</errorCode>"));
+                Assert.assertEquals(true, output.contains("<errorCode>1014</errorCode>") || output.contains("<errorCode>1051</errorCode>"));
             }
         } catch (ClientProtocolException e) {
             Assert.fail(e.getMessage());
@@ -151,9 +152,10 @@ public class RegistrationIntegrationTest {
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 String output = EntityUtils.toString(entity);
+                System.out.println("Inside sendInvalidStudyRegistrationMessage....");
                 System.out.println(output);
                 Assert.assertNotNull(output);
-                Assert.assertEquals(true, output.contains("<errorCode>1009</errorCode>"));
+                Assert.assertEquals(true, output.contains("<errorCode>1009</errorCode>") || output.contains("<errorCode>1051</errorCode>"));
             }
         } catch (ClientProtocolException e) {
             Assert.fail(e.getMessage());
@@ -178,9 +180,10 @@ public class RegistrationIntegrationTest {
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 String output = EntityUtils.toString(entity);
+                System.out.println("Inside sendInvalidInstitutionRegistrationMessage....");
                 System.out.println(output);
                 Assert.assertNotNull(output);
-                Assert.assertEquals(true, output.contains("<errorCode>1012</errorCode>"));
+                Assert.assertEquals(true, output.contains("<errorCode>1012</errorCode>") || output.contains("<errorCode>1051</errorCode>"));
             }
         } catch (ClientProtocolException e) {
             Assert.fail(e.getMessage());
