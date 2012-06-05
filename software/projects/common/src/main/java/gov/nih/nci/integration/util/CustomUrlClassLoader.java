@@ -29,7 +29,7 @@ public class CustomUrlClassLoader extends URLClassLoader {
     /**
      * constructor that takes the custom lib locations and parent classloader
      * 
-     * @param customLocation String varargs representing the location of the jars
+     * @param customLocations String varargs representing the location of the jars
      * @param parent parent classloader
      * @throws MalformedURLException - exception thrown, if any
      */
