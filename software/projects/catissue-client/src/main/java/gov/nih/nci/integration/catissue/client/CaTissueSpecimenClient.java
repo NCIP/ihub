@@ -494,7 +494,7 @@ public class CaTissueSpecimenClient {
      */
     private void softDeleteSpecimen(Specimen existingSpecimen) throws ApplicationException {
         // First change the Label of the Specimen to some dummy value..
-        // like "DELETED_+ label/barcode +Timestamp"
+        // like "Soft_Del_+ label/barcode +Timestamp"
         Specimen updatedSpecimen = updateSpecimenLabel(existingSpecimen);
 
         // Then set the Specimen to Disabled
@@ -515,15 +515,15 @@ public class CaTissueSpecimenClient {
      * 
      */
     private Specimen updateSpecimenLabel(Specimen specimen) throws ApplicationException {
-        specimen.setLabel("DELETED_" + specimen.getLabel() + "_" + getCurrentDateTime());
-        specimen.setBarcode("DELETED_" + specimen.getBarcode() + "_" + getCurrentDateTime());
+        specimen.setLabel("Soft-Del__" + specimen.getLabel() + "__" + getCurrentDateTime());
+        specimen.setBarcode("Soft-Del__" + specimen.getBarcode() + "__" + getCurrentDateTime());
         Specimen updatedSpecimen = updateSpecimen(specimen);
         return updatedSpecimen;
     }
 
     private String getCurrentDateTime() {
         Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss.SSS");
         return sdf.format(cal.getTime());
 
     }
