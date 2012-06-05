@@ -3,7 +3,7 @@ package gov.nih.nci.integration.dao;
 import gov.nih.nci.integration.domain.IHubMessage;
 
 /**
- * IHubMessageDao
+ * Interface which has method for persistence of IHubMessage objects.
  * 
  * @author Vinodh
  * 

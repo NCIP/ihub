@@ -7,6 +7,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+/**
+ * This class is used to load the properties from transcend-ihub.properties
+ * @author Vinodh
+ *
+ */
 @Import( { JpaConfig.class })
 @Configuration
 public class CommonPropsConfig {

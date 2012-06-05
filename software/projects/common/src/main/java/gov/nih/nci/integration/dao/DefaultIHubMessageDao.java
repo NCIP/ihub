@@ -29,9 +29,9 @@ public class DefaultIHubMessageDao extends AbstractDao<IHubMessage> implements D
 
     /**
      * saveMessage
-     * 
-     * @param request
-     * @return Id
+     * @param referenceMessageId - MessageId
+     * @param request - Message in the form of XMLString
+     * @return Id - returned Id
      */
     public Long saveMessage(Long referenceMessageId, String request) {
         IHubMessage iHubMessage = new IHubMessage();
