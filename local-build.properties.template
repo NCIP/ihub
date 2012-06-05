@@ -43,15 +43,17 @@ integration.transformer.xsl.baseClassPath=@{user.home.java.path}/.integration/ih
 run.static.analysis=false
 
 # to skip tests or not
-skip.test=false
+skip.test=true
 # to run cobertura review reports
-run.review.reports=true
+run.review.reports=false
 # to run cobertura coverage rate check
 run.cobertura.check=false
 cobertura.branchrate=80
 cobertura.totalbranchrate=80
 cobertura.totallinerate=80
 
-##Transcend CaXchange service url
+## Mostly required by the Integration and Load tests
+
+##Transcend service urls
 transcend.caxchange.service.url=http://localhost:12090/services/CaXchangeRequestService
 transcend.sa.service.url=http://localhost:12085/services/TranscendSemanticAdapter
