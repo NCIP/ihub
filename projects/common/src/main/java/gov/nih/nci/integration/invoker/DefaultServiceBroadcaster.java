@@ -12,8 +12,7 @@ import java.sql.Date;
 
 /**
  * An implementation of ServiceBroadcaster that uses the DAOs to persist ServiceInvocationMessage objects and invoke
- * ServiceInvocationStrategy implementations
- * 
+ * ServiceInvocationStrategy implementations. 
  * @author Vinodh
  * 
  */
@@ -64,6 +63,7 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
     private ServiceInvocationResult delegate(ServiceInvocationMessage serviceInvocationMessage,
             ServiceInvocationStrategy serviceInvocationStrategy) {
         ServiceInvocationResult serviceInvocationResult;
+     // CHECKSTYLE:OFF
         try {
             serviceInvocationResult = serviceInvocationStrategy.invoke(serviceInvocationMessage);
         } catch (Exception e) {
@@ -77,6 +77,8 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
             serviceInvocationResult = new ServiceInvocationResult();
             serviceInvocationResult.setInvocationException(e);
         }
+        
+        // CHECKSTYLE:ON
         return serviceInvocationResult;
     }
 

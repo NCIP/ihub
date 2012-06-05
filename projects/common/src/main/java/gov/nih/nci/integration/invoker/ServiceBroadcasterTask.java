@@ -7,6 +7,11 @@ import java.util.concurrent.Callable;
 
 import org.apache.commons.lang.StringUtils;
 
+/**
+ * This class provide method to call the invoke method of a strategy class.
+ * @author Vinodh
+ *
+ */
 public class ServiceBroadcasterTask implements Callable<ServiceInvocationResult> {
 
     private ServiceBroadcaster serviceBroadcaster;
@@ -17,6 +22,13 @@ public class ServiceBroadcasterTask implements Callable<ServiceInvocationResult>
 
     private ServiceInvocationStrategy serviceInvocationStrategy;
 
+    /**
+     * Constructor
+     * @param serviceBroadcaster - DefaultServiceBroadcaster object
+     * @param referenceMessageId - messageId
+     * @param message - XMLString message to be passed
+     * @param serviceInvocationStrategy - Strategy class object whose invoke has to be called
+     */
     public ServiceBroadcasterTask(ServiceBroadcaster serviceBroadcaster, Long referenceMessageId, String message,
             ServiceInvocationStrategy serviceInvocationStrategy) {
         super();
@@ -26,6 +38,7 @@ public class ServiceBroadcasterTask implements Callable<ServiceInvocationResult>
         this.serviceInvocationStrategy = serviceInvocationStrategy;
     }
 
+    
     @Override
     public ServiceInvocationResult call() throws IntegrationException {
         if (serviceBroadcaster == null) {
