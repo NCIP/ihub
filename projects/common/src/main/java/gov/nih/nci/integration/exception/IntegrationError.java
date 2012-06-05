@@ -106,7 +106,7 @@ public enum IntegrationError {
     }
 
     public String getMessage(Object... objects) {
-        if (objects == null) {
+        if (objects == null) { //NOPMD
             return msgTemplate;
         }
         return String.format(msgTemplate, objects);
