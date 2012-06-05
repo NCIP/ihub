@@ -390,11 +390,10 @@ public class CaTissueSpecimenClient {
             SpecimenDetail specimenDetail = specimenDetailItr.next();
             Specimen existingSpecimen = specimenDetail.getSpecimen();
             try {
-                updateSpecimen(existingSpecimen);
+                updateSpecimen(existingSpecimen);               
             } catch (ApplicationException e) {
                 LOG.error("Exception occured during Rollback of UpdateSpecimen " + existingSpecimen.getLabel(), e);
-                throw new ApplicationException("Exception occured during Rollback of UpdateSpecimen "
-                        + existingSpecimen.getLabel() + " and exception is " + e.getCause());
+                throw new ApplicationException("Error occurred : Unable to rollback. Please check the logs.");
             }
         }
 
@@ -477,13 +476,12 @@ public class CaTissueSpecimenClient {
             }
 
             try {
-                if (existingSpecimen != null) {
-                    softDeleteSpecimen(existingSpecimen);
+                if (existingSpecimen != null) {                    
+                    softDeleteSpecimen(existingSpecimen);                   
                 }
             } catch (ApplicationException e) {
                 LOG.error("Exception occured during Rollback of CreateSpecimen " + specimenLabel, e);
-                throw new ApplicationException("Exception occured during Rollback of CreateSpecimen " + specimenLabel
-                        + " and exception is " + e.getCause());
+                throw new ApplicationException("Error occurred : Unable to rollback. Please check the logs.");
             }
         }
     }
