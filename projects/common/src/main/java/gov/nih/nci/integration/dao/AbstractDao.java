@@ -7,8 +7,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -22,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public abstract class AbstractDao<T extends AbstractIdentity> implements Dao<T> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractDao.class);
     private final Class<T> domainClass;
 
     @PersistenceContext(unitName = "ihub-messages")
