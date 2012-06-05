@@ -1,43 +1,20 @@
 package gov.nih.nci.integration.exception;
 
+/**
+ * This enum class contains different ErrorTypes used within Transcend-iHub integration module
+ * 
+ * @author Vinodh
+ * 
+ */
 public enum ErrorType {
-    /**
-     * Unknown
-     */
+    // CHECKSTYLE:OFF
     UNKNOWN,
-
-    /**
-     * Validation
-     */
     VALIDATION,
-
-    /**
-     * Security
-     */
     SECURITY,
-
-    /**
-     * Transformation
-     */
     TRANSFORMATION,
-
-    /**
-     * Transmission
-     */
     TRANSMISSION,
-
-    /**
-     * Malform
-     */
     MALFORM,
-
-    /**
-     * Storage
-     */
     STORAGE,
-
-    /**
-     * Identity Resolution
-     */
     IDENTITY_RESOLUTION;
+    // CHECKSTYLE:ON
 }

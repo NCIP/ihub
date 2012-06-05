@@ -2,9 +2,17 @@ package gov.nih.nci.integration.exception;
 
 import gov.nih.nci.integration.util.ErrorMessagesUtil;
 
+/**
+ * This class contains different errorcodes which will be used within Transcend-iHub integration module.
+ * It loads corresponding error messages from the properties file.
+ * 
+ * @author Vinodh
+ * 
+ */
+
 public enum IntegrationError {
     // CHECKSTYLE:OFF
-    _1000(1000, ErrorType.UNKNOWN), 
+    _1000(1000, ErrorType.UNKNOWN),
     _1001(1001, ErrorType.VALIDATION),
     _1002(1002, ErrorType.VALIDATION),
     _1003(1003, ErrorType.VALIDATION),
@@ -15,7 +23,7 @@ public enum IntegrationError {
 
     _1008(1008, ErrorType.VALIDATION),
     _1009(1009, ErrorType.VALIDATION),
-    _1010(1010, ErrorType.VALIDATION), 
+    _1010(1010, ErrorType.VALIDATION),
     _1011(1011, ErrorType.SECURITY),
     _1012(1012, ErrorType.VALIDATION),
     _1013(1013, ErrorType.SECURITY),
@@ -23,7 +31,7 @@ public enum IntegrationError {
     _1015(1015, ErrorType.SECURITY),
     _1016(1016, ErrorType.VALIDATION),
     _1017(1017, ErrorType.TRANSFORMATION),
-    _1018(1018, ErrorType.TRANSFORMATION), 
+    _1018(1018, ErrorType.TRANSFORMATION),
     _1019(1019, ErrorType.TRANSMISSION),
     _1020(1020, ErrorType.TRANSMISSION),
 
@@ -31,28 +39,28 @@ public enum IntegrationError {
     _1022(1022, ErrorType.SECURITY),
 
     _1023(1017, ErrorType.TRANSFORMATION),
-    _1024(1018, ErrorType.TRANSFORMATION), 
-    _1025(1025, ErrorType.TRANSFORMATION), 
-    _1026(1026, ErrorType.TRANSFORMATION), 
-    _1027(1027, ErrorType.TRANSFORMATION), 
+    _1024(1018, ErrorType.TRANSFORMATION),
+    _1025(1025, ErrorType.TRANSFORMATION),
+    _1026(1026, ErrorType.TRANSFORMATION),
+    _1027(1027, ErrorType.TRANSFORMATION),
 
-    _1041(1041, ErrorType.TRANSFORMATION), 
-    _1042(1042, ErrorType.TRANSMISSION), 
-    _1043(1043, ErrorType.TRANSMISSION), 
-    _1050(1050, ErrorType.VALIDATION), 
+    _1041(1041, ErrorType.TRANSFORMATION),
+    _1042(1042, ErrorType.TRANSMISSION),
+    _1043(1043, ErrorType.TRANSMISSION),
+    _1050(1050, ErrorType.VALIDATION),
 
-    _1051(1051, ErrorType.TRANSMISSION), 
-    _1052(1052, ErrorType.TRANSMISSION), 
-    _1053(1053, ErrorType.TRANSMISSION), 
-    _1054(1054, ErrorType.TRANSMISSION), 
-    _1055(1055, ErrorType.TRANSMISSION), 
+    _1051(1051, ErrorType.TRANSMISSION),
+    _1052(1052, ErrorType.TRANSMISSION),
+    _1053(1053, ErrorType.TRANSMISSION),
+    _1054(1054, ErrorType.TRANSMISSION),
+    _1055(1055, ErrorType.TRANSMISSION),
 
-    _1060(1060, ErrorType.VALIDATION), 
-    _1061(1061, ErrorType.VALIDATION), 
-    _1062(1062, ErrorType.VALIDATION), 
-    _1063(1063, ErrorType.VALIDATION), 
-    _1064(1064, ErrorType.VALIDATION), 
-    _1065(1065, ErrorType.VALIDATION), 
+    _1060(1060, ErrorType.VALIDATION),
+    _1061(1061, ErrorType.VALIDATION),
+    _1062(1062, ErrorType.VALIDATION),
+    _1063(1063, ErrorType.VALIDATION),
+    _1064(1064, ErrorType.VALIDATION),
+    _1065(1065, ErrorType.VALIDATION),
     _1066(1066, ErrorType.VALIDATION),
     _1068(1068, ErrorType.VALIDATION),
     _1069(1069, ErrorType.VALIDATION),
@@ -63,19 +71,19 @@ public enum IntegrationError {
     _1074(1074, ErrorType.VALIDATION),
     _1075(1075, ErrorType.VALIDATION),
 
-    _1080(1080, ErrorType.VALIDATION), 
-    _1081(1081, ErrorType.VALIDATION), 
-    _1082(1082, ErrorType.VALIDATION), 
-    _1083(1083, ErrorType.VALIDATION), 
-    _1084(1084, ErrorType.VALIDATION), 
-    _1085(1085, ErrorType.VALIDATION), 
-    _1086(1086, ErrorType.VALIDATION), 
-    _1087(1087, ErrorType.VALIDATION), 
-    _1088(1088, ErrorType.VALIDATION), 
-    _1089(1089, ErrorType.VALIDATION), 
-    _1090(1090, ErrorType.VALIDATION), 
-    _1091(1091, ErrorType.VALIDATION), 
-    _1092(1092, ErrorType.VALIDATION); 
+    _1080(1080, ErrorType.VALIDATION),
+    _1081(1081, ErrorType.VALIDATION),
+    _1082(1082, ErrorType.VALIDATION),
+    _1083(1083, ErrorType.VALIDATION),
+    _1084(1084, ErrorType.VALIDATION),
+    _1085(1085, ErrorType.VALIDATION),
+    _1086(1086, ErrorType.VALIDATION),
+    _1087(1087, ErrorType.VALIDATION),
+    _1088(1088, ErrorType.VALIDATION),
+    _1089(1089, ErrorType.VALIDATION),
+    _1090(1090, ErrorType.VALIDATION),
+    _1091(1091, ErrorType.VALIDATION),
+    _1092(1092, ErrorType.VALIDATION);
 
     private int errorCode;
 
