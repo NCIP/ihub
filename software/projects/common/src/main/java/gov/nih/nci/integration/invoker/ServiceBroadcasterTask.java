@@ -14,13 +14,13 @@ import org.apache.commons.lang.StringUtils;
  */
 public class ServiceBroadcasterTask implements Callable<ServiceInvocationResult> {
 
-    private ServiceBroadcaster serviceBroadcaster;
+    private final ServiceBroadcaster serviceBroadcaster;
 
-    private Long referenceMessageId;
+    private final Long referenceMessageId;
 
-    private String message;
+    private final String message;
 
-    private ServiceInvocationStrategy serviceInvocationStrategy;
+    private final ServiceInvocationStrategy serviceInvocationStrategy;
 
     /**
      * Constructor
@@ -41,11 +41,11 @@ public class ServiceBroadcasterTask implements Callable<ServiceInvocationResult>
     
     @Override
     public ServiceInvocationResult call() throws IntegrationException {
-        if (serviceBroadcaster == null) {
+        if (serviceBroadcaster == null) { //NOPMD
             throw new IntegrationException(IntegrationError._1062);
         }
 
-        if (referenceMessageId < 1) {
+        if (referenceMessageId < 1) { //NOPMD
             throw new IntegrationException(IntegrationError._1063);
         }
 
@@ -53,7 +53,7 @@ public class ServiceBroadcasterTask implements Callable<ServiceInvocationResult>
             throw new IntegrationException(IntegrationError._1064);
         }
 
-        if (serviceInvocationStrategy == null) {
+        if (serviceInvocationStrategy == null) { //NOPMD
             throw new IntegrationException(IntegrationError._1065);
         }
         return serviceBroadcaster.delegateServiceInvocation(referenceMessageId, message, serviceInvocationStrategy);
