@@ -38,7 +38,7 @@ public final class CommonsPropertyPlaceholderConfigurer extends PropertyPlacehol
      * @return String value of the property
      */
     public String getProperty(String key) {
-        if (props == null) {
+        if (props == null) { //NOPMD
             return null;
         }
         return props.getProperty(key);
