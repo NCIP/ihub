@@ -2,8 +2,7 @@ package gov.nih.nci.integration.invoker;
 
 /**
  * ServiceBroadcaster interface - Implementations of this interface are responsible for doing the work that must be done
- * prior to invoking a target service – e.g. persisting a message
- * 
+ * prior to and post invoking a target service  
  * @author Vinodh
  * 
  */
