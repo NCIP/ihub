@@ -8,7 +8,8 @@ import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 
 /**
- * This entity class is used to persist the iHub message
+ * Represents the message that is sent to iHub. 
+ * This will be persisted and used to pass back the ultimate response to the caller
  * 
  * @author Vinodh
  * 

@@ -8,7 +8,8 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 /**
- * ServiceInvocationMessage Entity Class
+ * Represents the message that is sent to a target service. 
+ * This will be persisted and used in the response aggregation component
  * 
  * @author Vinodh
  * 
