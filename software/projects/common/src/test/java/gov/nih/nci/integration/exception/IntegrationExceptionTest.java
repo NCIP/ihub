@@ -9,9 +9,7 @@ public class IntegrationExceptionTest {
     @Test
     public void msgFormat() {
         Throwable t = new Throwable("test throwable");// NOPMD
-        System.out.println("1000 = " + IntegrationError._1000.getMessage(null));
         IntegrationException ie = new IntegrationException(IntegrationError._1013, t, "P-id", "CP-id");
-
         assertEquals("Insufficient privileges to deregister participant P-id to study CP-id.", ie.getMessage());
     }
 }

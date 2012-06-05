@@ -30,8 +30,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = "classpath:applicationContext-mirth-deploy-test.xml")
 public class RegistrationLoadTest {
 
-    private final static SimpleDateFormat sdf = new SimpleDateFormat("MMddmm");
-    private final static SimpleDateFormat ssnsdf = new SimpleDateFormat("MM-ddmm");
+    private final static SimpleDateFormat sdf = new SimpleDateFormat("MMddmm");// NOPMD
+    private final static SimpleDateFormat ssnsdf = new SimpleDateFormat("MM-ddmm");// NOPMD
 
     @Value("${transcend.caxchange.service.url}")
     private String transcendCaxchangeServiceUrl;
@@ -84,7 +84,6 @@ public class RegistrationLoadTest {
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 String output = EntityUtils.toString(entity);
-                System.out.println(sfx + " = " + output);
                 Assert.assertNotNull(output);
                 Assert.assertEquals(true, output.contains("SUCCESS"));
             }

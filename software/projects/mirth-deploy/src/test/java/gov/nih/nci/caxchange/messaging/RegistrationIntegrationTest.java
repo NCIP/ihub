@@ -24,9 +24,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = "classpath:applicationContext-mirth-deploy-test.xml")
 public class RegistrationIntegrationTest {
 
-    private final static SimpleDateFormat sdf = new SimpleDateFormat("MMddmm");
-    private final static SimpleDateFormat ssnsdf = new SimpleDateFormat("MM-ddmm");
-    
+    private final static SimpleDateFormat sdf = new SimpleDateFormat("MMddmm");// NOPMD
+    private final static SimpleDateFormat ssnsdf = new SimpleDateFormat("MM-ddmm");// NOPMD
+
     @Value("${transcend.caxchange.service.url}")
     private String transcendCaxchangeServiceUrl;
 
@@ -49,7 +49,6 @@ public class RegistrationIntegrationTest {
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 String output = EntityUtils.toString(entity);
-                System.out.println(output);
                 Assert.assertNotNull(output);
                 Assert.assertEquals(getInvalidCredentialsCreateMsg(), removeCaXchangeIdentifier(output));
             }
@@ -74,7 +73,6 @@ public class RegistrationIntegrationTest {
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 String output = EntityUtils.toString(entity);
-                System.out.println(output);
                 Assert.assertNotNull(output);
                 Assert.assertEquals(getSuccessCreateMsg(), removeCaXchangeIdentifier(output));
             }
@@ -99,7 +97,6 @@ public class RegistrationIntegrationTest {
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 String output = EntityUtils.toString(entity);
-                System.out.println(output);
                 Assert.assertNotNull(output);
                 Assert.assertEquals(getSuccessUpdateMsg(), removeCaXchangeIdentifier(output));
             }
@@ -124,10 +121,8 @@ public class RegistrationIntegrationTest {
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 String output = EntityUtils.toString(entity);
-                System.out.println("Inside sendDuplicateRegistrationMessage....");
-                System.out.println(output);
                 Assert.assertNotNull(output);
-                Assert.assertEquals(true, output.contains("<errorCode>1014</errorCode>") || output.contains("<errorCode>1051</errorCode>"));
+                Assert.assertEquals(true,output.contains("<errorCode>1014</errorCode>")|| output.contains("<errorCode>1051</errorCode>"));
             }
         } catch (ClientProtocolException e) {
             Assert.fail(e.getMessage());
@@ -152,10 +147,8 @@ public class RegistrationIntegrationTest {
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 String output = EntityUtils.toString(entity);
-                System.out.println("Inside sendInvalidStudyRegistrationMessage....");
-                System.out.println(output);
                 Assert.assertNotNull(output);
-                Assert.assertEquals(true, output.contains("<errorCode>1009</errorCode>") || output.contains("<errorCode>1051</errorCode>"));
+                Assert.assertEquals(true,output.contains("<errorCode>1009</errorCode>")|| output.contains("<errorCode>1051</errorCode>"));
             }
         } catch (ClientProtocolException e) {
             Assert.fail(e.getMessage());
@@ -180,10 +173,8 @@ public class RegistrationIntegrationTest {
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 String output = EntityUtils.toString(entity);
-                System.out.println("Inside sendInvalidInstitutionRegistrationMessage....");
-                System.out.println(output);
                 Assert.assertNotNull(output);
-                Assert.assertEquals(true, output.contains("<errorCode>1012</errorCode>") || output.contains("<errorCode>1051</errorCode>"));
+                Assert.assertEquals(true,output.contains("<errorCode>1012</errorCode>")|| output.contains("<errorCode>1051</errorCode>"));
             }
         } catch (ClientProtocolException e) {
             Assert.fail(e.getMessage());
@@ -230,7 +221,7 @@ public class RegistrationIntegrationTest {
         message = message.replaceAll("XX-XXXX", ssnsdf.format(currDt));
         return message;
     }
-    
+
     private String removeCaXchangeIdentifier(String output) {
         int startTagEnd = output.indexOf("<caXchangeIdentifier>");
         if (startTagEnd < 0) {
