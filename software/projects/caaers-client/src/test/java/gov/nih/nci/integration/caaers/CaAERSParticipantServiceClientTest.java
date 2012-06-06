@@ -9,11 +9,11 @@ import gov.nih.nci.cabig.caaers.integration.schema.participant.EthnicityType;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.GenderType;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.OrganizationAssignedIdentifierType;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType.Assignments;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.RaceType;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.ReducedIdentifierType;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.StudySiteType;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.StudyType;
-import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType.Assignments;
 import gov.nih.nci.integration.exception.IntegrationError;
 import gov.nih.nci.integration.exception.IntegrationException;
 
@@ -56,6 +56,12 @@ public class CaAERSParticipantServiceClientTest {
     @Autowired
     private CaAERSParticipantServiceWSClient caAERSParticipantServiceClient;
 
+    /**
+     * Testcase for marshlling participant type
+     * 
+     * @throws JAXBException - JAXBException
+     * @throws DatatypeConfigurationException - DatatypeConfigurationException
+     */
     @Test
     public void marshalParticipantType() throws JAXBException, DatatypeConfigurationException {
         ParticipantType pt = new ParticipantType();
@@ -120,6 +126,9 @@ public class CaAERSParticipantServiceClientTest {
         Assert.assertNotNull(ptn);
     }
 
+    /**
+     * Testcase for createParticipant
+     */
     @Test
     public void createParticipant() {
 
@@ -128,18 +137,22 @@ public class CaAERSParticipantServiceClientTest {
         try {
             CaaersServiceResponse caaersresponse = caAERSParticipantServiceClient.createParticipant(participantXMLStr);
         } catch (SOAPFaultException e) {
-            Assert
-                    .assertEquals(
-                            "Unmarshalling Error: cvc-complex-type.2.4.b: The content of element 'identifiers' is not complete. One of '{\"http://schema.integration.caaers.cabig.nci.nih.gov/participant\":organizationAssignedIdentifier}' is expected. ",
-                            e.getMessage());
+            // CHECKSTYLE:OFF
+            Assert.assertEquals(
+                    "Unmarshalling Error: cvc-complex-type.2.4.b: The content of element 'identifiers' is not complete. One of '{\"http://schema.integration.caaers.cabig.nci.nih.gov/participant\":organizationAssignedIdentifier}' is expected. ",
+                    e.getMessage());
         } catch (IntegrationException e) {
             Assert.assertEquals(IntegrationError._1053.getErrorCode(), e.getErrorCode());
         } catch (Exception e) {
             Assert.fail("Expected either SOAPFaultException or IntegrationException only!");
+            // CHECKSTYLE:ON
         }
 
     }
 
+    /**
+     * Testcase for getParticipant
+     */
     @Test
     public void getParticipant() {
 
@@ -148,18 +161,22 @@ public class CaAERSParticipantServiceClientTest {
         try {
             CaaersServiceResponse caaersresponse = caAERSParticipantServiceClient.getParticipant(participantXMLStr);
         } catch (SOAPFaultException e) {
-            Assert
-                    .assertEquals(
-                            "Unmarshalling Error: cvc-complex-type.2.4.b: The content of element 'identifiers' is not complete. One of '{\"http://schema.integration.caaers.cabig.nci.nih.gov/participant\":organizationAssignedIdentifier}' is expected. ",
-                            e.getMessage());
+            // CHECKSTYLE:OFF
+            Assert.assertEquals(
+                    "Unmarshalling Error: cvc-complex-type.2.4.b: The content of element 'identifiers' is not complete. One of '{\"http://schema.integration.caaers.cabig.nci.nih.gov/participant\":organizationAssignedIdentifier}' is expected. ",
+                    e.getMessage());
         } catch (IntegrationException e) {
             Assert.assertEquals(IntegrationError._1053.getErrorCode(), e.getErrorCode());
         } catch (Exception e) {
             Assert.fail("Expected either SOAPFaultException or IntegrationException only!");
+            // CHECKSTYLE:ON
         }
 
     }
 
+    /**
+     * Testcase for updateParticipant
+     */
     @Test
     public void updateParticipant() {
 
@@ -168,18 +185,22 @@ public class CaAERSParticipantServiceClientTest {
         try {
             CaaersServiceResponse caaersresponse = caAERSParticipantServiceClient.updateParticipant(participantXMLStr);
         } catch (SOAPFaultException e) {
-            Assert
-                    .assertEquals(
-                            "Unmarshalling Error: cvc-complex-type.2.4.b: The content of element 'identifiers' is not complete. One of '{\"http://schema.integration.caaers.cabig.nci.nih.gov/participant\":organizationAssignedIdentifier}' is expected. ",
-                            e.getMessage());
+            // CHECKSTYLE:OFF
+            Assert.assertEquals(
+                    "Unmarshalling Error: cvc-complex-type.2.4.b: The content of element 'identifiers' is not complete. One of '{\"http://schema.integration.caaers.cabig.nci.nih.gov/participant\":organizationAssignedIdentifier}' is expected. ",
+                    e.getMessage());
         } catch (IntegrationException e) {
             Assert.assertEquals(IntegrationError._1053.getErrorCode(), e.getErrorCode());
         } catch (Exception e) {
             Assert.fail("Expected either SOAPFaultException or IntegrationException only!");
+            // CHECKSTYLE:ON
         }
 
     }
 
+    /**
+     * Testcase for deleteParticipant
+     */
     @Test
     public void deleteParticipant() {
 
@@ -188,14 +209,15 @@ public class CaAERSParticipantServiceClientTest {
         try {
             CaaersServiceResponse caaersresponse = caAERSParticipantServiceClient.deleteParticipant(participantXMLStr);
         } catch (SOAPFaultException e) {
-            Assert
-                    .assertEquals(
-                            "Unmarshalling Error: cvc-complex-type.2.4.b: The content of element 'identifiers' is not complete. One of '{\"http://schema.integration.caaers.cabig.nci.nih.gov/participant\":organizationAssignedIdentifier}' is expected. ",
-                            e.getMessage());
+            // CHECKSTYLE:OFF
+            Assert.assertEquals(
+                    "Unmarshalling Error: cvc-complex-type.2.4.b: The content of element 'identifiers' is not complete. One of '{\"http://schema.integration.caaers.cabig.nci.nih.gov/participant\":organizationAssignedIdentifier}' is expected. ",
+                    e.getMessage());
         } catch (IntegrationException e) {
             Assert.assertEquals(IntegrationError._1053.getErrorCode(), e.getErrorCode());
         } catch (Exception e) {
             Assert.fail("Expected either SOAPFaultException or IntegrationException only!");
+            // CHECKSTYLE:ON
         }
 
     }
@@ -210,7 +232,9 @@ public class CaAERSParticipantServiceClientTest {
         return jc.createUnmarshaller();
     }
 
+ // CHECKSTYLE:OFF
     private String getPStr() {
         return "<?xml version=\"1.0\"?><caaers:participant xmlns:caaers=\"http://webservice.caaers.cabig.nci.nih.gov/participant\" xmlns:p=\"http://integration.nci.nih.gov/participant\" id=\"1\" version=\"1\"><firstName>Cherry0415</firstName><lastName>Blossom0415</lastName><maidenName/><middleName/><birthDate>1965-11-24</birthDate><gender>Male</gender><race>White</race><ethnicity>Not Hispanic or Latino</ethnicity><identifiers><caaers:organizationAssignedIdentifier id=\"1\" version=\"1\"><type>MRN</type><value>997025</value><primaryIndicator>true</primaryIndicator><caaers:organization id=\"1\" version=\"1\"><name>QU</name><nciInstituteCode>DCP</nciInstituteCode></caaers:organization></caaers:organizationAssignedIdentifier><caaers:systemAssignedIdentifier id=\"1\" version=\"1\"><type>MRN</type><value>997025</value><primaryIndicator>true</primaryIndicator><systemName>MRN</systemName></caaers:systemAssignedIdentifier></identifiers><assignments><caaers:assignment id=\"1\" version=\"1\"><studySubjectIdentifier>48824</studySubjectIdentifier><caaers:studySite id=\"1\" version=\"1\"><caaers:study id=\"1\" version=\"1\"><identifiers><identifier id=\"1\" version=\"1\"><type>Protocol Authority Identifier</type><value>6482</value></identifier></identifiers></caaers:study><caaers:organization id=\"1\" version=\"1\"><name>QU</name><nciInstituteCode>DCP</nciInstituteCode></caaers:organization></caaers:studySite></caaers:assignment></assignments></caaers:participant>";
-    }
+    }    
+ // CHECKSTYLE:ON
 }
