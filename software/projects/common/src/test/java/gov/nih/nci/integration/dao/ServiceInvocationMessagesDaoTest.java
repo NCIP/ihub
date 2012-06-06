@@ -44,6 +44,9 @@ public class ServiceInvocationMessagesDaoTest {
 
     private final Long refMsgId = 12345L;
 
+    /**
+     * createReferenceMessage
+     */
     @Before
     public void createReferenceMessage() {
         // create and persist reference message
