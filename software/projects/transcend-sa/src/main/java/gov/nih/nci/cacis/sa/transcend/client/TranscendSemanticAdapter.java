@@ -37,7 +37,8 @@ import com.mirth.connect.connectors.ws.WebServiceMessageReceiver;
  * 
  */
 
-@javax.jws.WebService(serviceName = "TranscendSemanticAdapter", portName = "AcceptSource_Port_Soap11", targetNamespace = "http://cacis.nci.nih.gov", endpointInterface = "gov.nih.nci.cacis.sa.transcend.AcceptSourcePortType")
+@javax.jws.WebService(serviceName = "TranscendSemanticAdapter", portName = "AcceptSource_Port_Soap11", 
+    targetNamespace = "http://cacis.nci.nih.gov", endpointInterface = "gov.nih.nci.cacis.sa.transcend.AcceptSourcePortType")
 public class TranscendSemanticAdapter extends AcceptMessage {
 
     private static final Logger LOG = LoggerFactory.getLogger(TranscendSemanticAdapter.class.getName());
@@ -46,6 +47,10 @@ public class TranscendSemanticAdapter extends AcceptMessage {
 
     private JAXBContext jc = null;
 
+    /**
+     * Constructor
+     * @param webServiceMessageReceiver - WebServiceMessageReceiver
+     */
     public TranscendSemanticAdapter(WebServiceMessageReceiver webServiceMessageReceiver) {
         super(webServiceMessageReceiver);
     }
@@ -60,7 +65,8 @@ public class TranscendSemanticAdapter extends AcceptMessage {
     @WebResult(name = "caCISResponse", targetNamespace = "http://cacis.nci.nih.gov", partName = "parameter")
     @WebMethod
     public CaCISResponse acceptSource(
-            @WebParam(partName = "parameter", name = "caCISRequest", targetNamespace = "http://cacis.nci.nih.gov") CaCISRequest parameter)
+            @WebParam(partName = "parameter", name = "caCISRequest", 
+                targetNamespace = "http://cacis.nci.nih.gov") CaCISRequest parameter)
             throws AcceptSourceFault {
 
         LOG.info("Executing operation acceptSource");
@@ -90,7 +96,9 @@ public class TranscendSemanticAdapter extends AcceptMessage {
             response.setStatus(ResponseStatusType.SUCCESS);
 
             return response;
+            // CHECKSTYLE:OFF
         } catch (java.lang.Exception ex) {
+            // CHECKSTYLE:OFF
             if (ex instanceof AcceptSourceFault) {
                 throw (AcceptSourceFault) ex;
             }
