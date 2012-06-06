@@ -19,7 +19,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * Test Class for XML Transformation Tests for Consent Flow
  * 
  * @author Rohit Gupta
- * 
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -35,6 +34,10 @@ public class XSLTTransformerConsentTest {
     @Value("${catissue.api.consent.xsl}")
     private String catissueConsentXsl;
 
+    /**
+     * Testcase for transforming incoming XML to Wrapper XML 
+     * @throws IntegrationException - IntegrationException
+     */
     @Test
     public void transformIncomingToWrapperXMLTest() throws IntegrationException {
         xsltTransformer.initTransformer("TranscendInboundMsg-to-caCISRequest.xsl", baseXSLPath);
@@ -42,6 +45,10 @@ public class XSLTTransformerConsentTest {
         Assert.assertNotNull(trnsfrmdMsg);
     }
 
+    /**
+     * Testcase for transforming Wrapper XML to Interim XML 
+     * @throws IntegrationException - IntegrationException
+     */
     @Test
     public void transformWrapperToInterimXMLTest() throws IntegrationException {
         xsltTransformer.initTransformer("caCISRequest-to-MsgBroadcasterConsentInboundMsg.xsl", baseXSLPath);
@@ -49,6 +56,10 @@ public class XSLTTransformerConsentTest {
         Assert.assertNotNull(trnsfrmdMsg);
     }
 
+    /**
+     * Testcase for transforming Interim XML to XMLString
+     * @throws IntegrationException - IntegrationException
+     */
     @Test
     public void transformInterimToXMLStringTest() throws IntegrationException {
         xsltTransformer.initTransformer(catissueConsentXsl, baseXSLPath);
@@ -56,6 +67,7 @@ public class XSLTTransformerConsentTest {
         Assert.assertNotNull(trnsfrmdMsg);
     }
 
+    // CHECKSTYLE:OFF
     private String getConsentIncomingRequestMessage() {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?><caXchangeRequestMessage xmlns=\"http://caXchange.nci.nih.gov/messaging\" xmlns:ns1=\"http://caXchange.nci.nih.gov/messaging\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:ns2=\"http://schemas.xmlsoap.org/ws/2004/03/addressing\" xmlns:ns4=\"http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential\" xmlns:ns3=\"http://gaards.cagrid.org/cds\"><metadata><serviceType>iHub</serviceType><externalIdentifier>32225879</externalIdentifier><caXchangeIdentifier>89041</caXchangeIdentifier><operationName>REGISTERCONSENT</operationName></metadata><request><businessMessagePayload><trim xmlns=\"urn:tolven-org:trim:4.0\"><consents xmlns=\"http://cacis.nci.nih.gov\"><participant><cdmsSubjectId>66604232</cdmsSubjectId></participant><consentsDetailsList><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen><cdmsSpecimenId>TolvenTestUser252TissueSpecimen11</cdmsSpecimenId></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol><consentTierResponses><tier><tierId>1</tierId><response>Yes</response></tier><tier><tierId>2</tierId><response>No</response></tier></consentTierResponses></consentDetails><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen><cdmsSpecimenId>TolvenTestUser252TissueSpecimen12</cdmsSpecimenId></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol><consentTierResponses><tier><tierId>1</tierId><response>Not Specified</response></tier><tier><tierId>2</tierId><response>Withdrawn</response></tier></consentTierResponses></consentDetails></consentsDetailsList></consents></trim></businessMessagePayload></request></caXchangeRequestMessage>";
     }
@@ -67,6 +79,8 @@ public class XSLTTransformerConsentTest {
     private String getConsentInterimMessage() {
         return "<ns2:caxchangerequest xmlns:ns2=\"http://caXchange.nci.nih.gov/caxchangerequest\"><ns0:request xmlns:ns0=\"http://caXchange.nci.nih.gov/messaging\"><ns0:businessMessagePayload><consents xmlns=\"http://cacis.nci.nih.gov\"><participant><cdmsSubjectId>66604232</cdmsSubjectId></participant><consentsDetailsList><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen><cdmsSpecimenId>TolvenTestUser252TissueSpecimen101</cdmsSpecimenId></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol><consentTierResponses><tier><tierId>1</tierId><response>Yes</response></tier><tier><tierId>2</tierId><response>No</response></tier></consentTierResponses></consentDetails><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen><cdmsSpecimenId>TolvenTestUser252TissueSpecimen102</cdmsSpecimenId></specimen><collectionProtocol><title>6483</title><shortTitle>6483</shortTitle></collectionProtocol><consentTierResponses><tier><tierId>1</tierId><response>Not Specified</response></tier><tier><tierId>2</tierId><response>Withdrawn</response></tier></consentTierResponses></consentDetails></consentsDetailsList></consents></ns0:businessMessagePayload></ns0:request></ns2:caxchangerequest>";
     }
+
+    // CHECKSTYLE:ON
 
     private String transformXML(String message) throws IntegrationException {
         String xmlStr = null;
@@ -84,14 +98,18 @@ public class XSLTTransformerConsentTest {
             e.printStackTrace();
             throw e;
         } finally {
+            // CHECKSTYLE:OFF
             try {
                 is.close();
             } catch (Exception e) {
+                e.printStackTrace();
             }
             try {
                 os.close();
             } catch (Exception e) {
+                e.printStackTrace();
             }
+            // CHECKSTYLE:ON
         }
         return xmlStr;
     }
