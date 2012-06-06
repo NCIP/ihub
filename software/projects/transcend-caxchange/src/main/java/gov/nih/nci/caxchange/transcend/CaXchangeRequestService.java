@@ -39,30 +39,43 @@ import com.mirth.connect.connectors.ws.WebServiceMessageReceiver;
  * 
  */
 
-@javax.jws.WebService(serviceName = "CaXchangeRequestService", portName = "soap", targetNamespace = "http://caXchange.nci.nih.gov/caxchangerequest", endpointInterface = "gov.nih.nci.caxchange.messaging.CaXchangeRequestPortType")
+@javax.jws.WebService(serviceName = "CaXchangeRequestService", portName = "soap", 
+    targetNamespace = "http://caXchange.nci.nih.gov/caxchangerequest", 
+    endpointInterface = "gov.nih.nci.caxchange.messaging.CaXchangeRequestPortType")
 public class CaXchangeRequestService extends AcceptMessage {
 
     private static final Logger LOG = LoggerFactory.getLogger(CaXchangeRequestService.class.getName());
 
     private JAXBContext jc = null;
 
+    /**
+     * Constructor
+     * @param webServiceMessageReceiver - webServiceMessageReceiver
+     */
     public CaXchangeRequestService(WebServiceMessageReceiver webServiceMessageReceiver) {
         super(webServiceMessageReceiver);
     }
 
-    @WebResult(name = "responseMessage", targetNamespace = "http://caXchange.nci.nih.gov/caxchangerequest", partName = "parameters")
+    /**
+     * This method is used process the message
+     * @param parameters - parameters
+     * @return ResponseMessage
+     */
+    @WebResult(name = "responseMessage", targetNamespace = "http://caXchange.nci.nih.gov/caxchangerequest", 
+                partName = "parameters")
     @WebMethod
     public gov.nih.nci.caxchange.messaging.ResponseMessage processRequest(
-            @WebParam(partName = "parameters", name = "message", targetNamespace = "http://caXchange.nci.nih.gov/caxchangerequest") Message parameters) {
+            @WebParam(partName = "parameters", name = "message", 
+                targetNamespace = "http://caXchange.nci.nih.gov/caxchangerequest") Message parameters) {
         LOG.debug("Executing operation processRequest");
-        
+
         Long caXchangeId = Calendar.getInstance().getTimeInMillis();
-        //setting this value as String, but inside the app is expecting a long value
+        // setting this value as String, but inside the app is expecting a long value
         parameters.getMetadata().setCaXchangeIdentifier(String.valueOf(caXchangeId));
-        
+
         gov.nih.nci.caxchange.messaging.ResponseMessage respMessage = new ResponseMessage();
         ResponseMetadata rm = new ResponseMetadata();
-        rm.setExternalIdentifier(parameters.getMetadata().getExternalIdentifier());        
+        rm.setExternalIdentifier(parameters.getMetadata().getExternalIdentifier());
         rm.setCaXchangeIdentifier(parameters.getMetadata().getCaXchangeIdentifier());
         respMessage.setResponseMetadata(rm);
 
@@ -73,7 +86,7 @@ public class CaXchangeRequestService extends AcceptMessage {
             if (StringUtils.isEmpty(reqstr)) {
                 ErrorDetails errorDetails = new ErrorDetails();
                 errorDetails.setErrorCode(String.valueOf(IntegrationError._1050));
-                errorDetails.setErrorDescription(IntegrationError._1050.getMessage((Object)null));
+                errorDetails.setErrorDescription(IntegrationError._1050.getMessage((Object) null));
 
                 Response response = new Response();
                 response.setCaXchangeError(errorDetails);
@@ -111,7 +124,9 @@ public class CaXchangeRequestService extends AcceptMessage {
             respMessage.setResponse(response);
 
             return respMessage;
+            // CHECKSTYLE:OFF
         } catch (java.lang.Exception ex) {
+            // CHECKSTYLE:OFF
             ErrorDetails errorDetails = new ErrorDetails();
             errorDetails.setErrorCode(String.valueOf(IntegrationError._1000.getErrorCode()));
             errorDetails.setErrorDescription(IntegrationError._1000.getMessage(null) + ex.getMessage());
@@ -127,13 +142,15 @@ public class CaXchangeRequestService extends AcceptMessage {
 
     private String getCaXchangeRequestxml(final Message parameter) {
         String requestXML = null;
-        try {            
+        try {
             QName qname = new QName("http://caXchange.nci.nih.gov/caxchangerequest", "caxchangerequest");
             JAXBElement<Message> message = new JAXBElement<Message>(qname, Message.class, parameter);
             StringWriter sw = new StringWriter();
             getMarshaller().marshal(message, sw);
             requestXML = sw.toString();
+            // CHECKSTYLE:OFF
         } catch (Exception ex) {
+            // CHECKSTYLE:OFF
             LOG.error("Error marshalling CaXchangeRequest!", ex);
         }
         return requestXML;
