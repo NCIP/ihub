@@ -34,7 +34,7 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
     public ServiceInvocationResult delegateServiceInvocation(Long referenceMessageId, String message,
             ServiceInvocationStrategy serviceInvocationStrategy) {
 
-        final Date stTime = new Date(new java.util.Date().getTime());
+        final Date stTime = new Date(new java.util.Date().getTime()); //NOPMD
 
         final ServiceInvocationMessage serviceInvocationMessage = prepareServiceInvocationMessage(referenceMessageId,
                 message, stTime, serviceInvocationStrategy.getStrategyIdentifier());
@@ -71,7 +71,7 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
             // not throw exception
             // TODO : To handle any exceptions not handled by
             // ServiceInvocationStrategy
-            if (!(e instanceof IntegrationException)) {
+            if (!(e instanceof IntegrationException)) { //NOPMD
                 e = new IntegrationException(IntegrationError._1000, e.getCause(), (Object) null);
             }
             serviceInvocationResult = new ServiceInvocationResult();
@@ -89,7 +89,7 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
 
         final IHubMessage iHubMessage = new IHubMessage();
         iHubMessage.setStartTime(startTime);
-        iHubMessage.setEndTime(new Date(new java.util.Date().getTime()));
+        iHubMessage.setEndTime(new Date(new java.util.Date().getTime())); //NOPMD
         iHubMessage.setRequest(message);
         iHubMessage.setReferenceMessageId(referenceMessageId);
 
