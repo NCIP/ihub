@@ -50,6 +50,9 @@ public class DefaultBroadcasterTest {
 
     private ServiceInvocationResult serviceInvocationResult;
 
+    /**
+     * Before setup
+     */
     @Before
     public void prepareMockServiceInvocationStrategy() {
         serviceInvocationStrategy = EasyMock.createNiceMock(ServiceInvocationStrategy.class);

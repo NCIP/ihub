@@ -3,9 +3,16 @@ package gov.nih.nci.integration.exception;
 import static junit.framework.Assert.assertEquals;
 
 import org.junit.Test;
-
+/**
+ * 
+ * @author Vinodh
+ *
+ */
 public class IntegrationExceptionTest {
 
+    /**
+     * msgFormat
+     */
     @Test
     public void msgFormat() {
         Throwable t = new Throwable("test throwable");// NOPMD
