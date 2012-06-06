@@ -3,9 +3,9 @@ package gov.nih.nci.integration.dao;
 import gov.nih.nci.integration.domain.ServiceInvocationMessage;
 import gov.nih.nci.integration.domain.StrategyIdentifier;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -44,7 +44,8 @@ public class DefaultServiceInvocationMessageDao extends AbstractDao<ServiceInvoc
                         + " svcInvMsg where svcInvMsg.referenceMessageId = :referenceMessageId ");
         msgsQuery.setParameter("referenceMessageId", refMsgId);
         final List<ServiceInvocationMessage> msgs = msgsQuery.getResultList();
-        final Map<StrategyIdentifier, ServiceInvocationMessage> map = new HashMap<StrategyIdentifier, ServiceInvocationMessage>(); 
+        final ConcurrentHashMap<StrategyIdentifier, ServiceInvocationMessage> map = 
+                new ConcurrentHashMap<StrategyIdentifier, ServiceInvocationMessage>(); 
         for (ServiceInvocationMessage serviceInvocationMessage : msgs) {
             map.put(serviceInvocationMessage.getStrategyIdentifier(), serviceInvocationMessage);
         }
