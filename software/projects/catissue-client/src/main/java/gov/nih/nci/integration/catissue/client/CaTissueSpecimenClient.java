@@ -45,6 +45,12 @@ public class CaTissueSpecimenClient {
     private static final String FLUID = "Fluid";
     private static final String SPECIMEN_NOT_EXISTING = "SPECIMEN_NOT_EXISTING";
 
+    /**
+     * Constructor
+     * @param loginName - loginName for the API authentication 
+     * @param password - password for the API authentication 
+     * @throws Exception - Exception
+     */
     public CaTissueSpecimenClient(String loginName, String password) throws Exception {
         super();
         Thread.currentThread().setContextClassLoader(CaTissueSpecimenClient.class.getClassLoader());
@@ -274,7 +280,7 @@ public class CaTissueSpecimenClient {
                 }
             }
 
-            if (scgFound == false) {
+            if (!scgFound) {
                 // throw exception
                 LOG.error("Specimen Collection Group was not found in caTissue for Label " + specimen.getLabel());
                 throw new ApplicationException("Specimen Collection Group not found in caTissue");
@@ -283,7 +289,9 @@ public class CaTissueSpecimenClient {
             try {
                 // method call to createSpecimen
                 createSpecimen(specimen);
+                // CHECKSTYLE:OFF
             } catch (Exception e) {
+                // CHECKSTYLE:ON
                 LOG.error("CreateSpecimen Failed for Label" + specimen.getLabel(), e);
                 throw new ApplicationException("CreateSpecimen Failed for Label"
                         + specimenDetail.getSpecimen().getLabel() + " and exception is " + e.getCause());
@@ -326,7 +334,9 @@ public class CaTissueSpecimenClient {
 
                 updatedSpecimenList.add(incomingSpecimen);
             }
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             LOG.error("UpdateSpecimen Failed for Label" + specimenDetail.getSpecimen().getLabel(), e);
             throw new ApplicationException("UpdateSpecimen Failed for Label" + specimenDetail.getSpecimen().getLabel()
                     + " and exception is " + e.getCause());
@@ -543,10 +553,10 @@ public class CaTissueSpecimenClient {
 
     private List<SpecimenCollectionGroup> getSpecimenCollectionGroupList(SpecimenDetail specimenDetail)
             throws ApplicationException {
-        String title = specimenDetail.getCollectionProtocol().getTitle();
+        String shortTitle = specimenDetail.getCollectionProtocol().getShortTitle();
         String label = specimenDetail.getCollectionProtocolEvent();
         return caTissueAPIClient.getApplicationService().query(
-                CqlUtility.getSpecimenCollectionGroupListQuery(title, label));
+                CqlUtility.getSpecimenCollectionGroupListQuery(shortTitle, label));
     }
 
 }

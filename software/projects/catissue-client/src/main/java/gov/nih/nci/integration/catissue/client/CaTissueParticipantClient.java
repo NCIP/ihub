@@ -1,16 +1,5 @@
 package gov.nih.nci.integration.catissue.client;
 
-import edu.wustl.catissuecore.domain.CollectionProtocol;
-import edu.wustl.catissuecore.domain.CollectionProtocolRegistration;
-import edu.wustl.catissuecore.domain.Participant;
-import edu.wustl.catissuecore.domain.ParticipantMedicalIdentifier;
-import edu.wustl.catissuecore.domain.Race;
-import edu.wustl.catissuecore.factory.CollectionProtocolFactory;
-import edu.wustl.catissuecore.factory.CollectionProtocolRegistrationFactory;
-import edu.wustl.catissuecore.factory.ParticipantFactory;
-import edu.wustl.catissuecore.factory.RaceFactory;
-import gov.nih.nci.system.applicationservice.ApplicationException;
-
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,6 +14,22 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.basic.DateConverter;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
+import edu.wustl.catissuecore.domain.CollectionProtocol;
+import edu.wustl.catissuecore.domain.CollectionProtocolRegistration;
+import edu.wustl.catissuecore.domain.Participant;
+import edu.wustl.catissuecore.domain.ParticipantMedicalIdentifier;
+import edu.wustl.catissuecore.domain.Race;
+import edu.wustl.catissuecore.factory.CollectionProtocolFactory;
+import edu.wustl.catissuecore.factory.CollectionProtocolRegistrationFactory;
+import edu.wustl.catissuecore.factory.ParticipantFactory;
+import edu.wustl.catissuecore.factory.RaceFactory;
+import gov.nih.nci.system.applicationservice.ApplicationException;
+
+/**
+ * This is the Client class for create Registration and update Registration
+ * 
+ * @author Vinodh
+ */
 public class CaTissueParticipantClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueParticipantClient.class);
@@ -33,6 +38,13 @@ public class CaTissueParticipantClient {
 
     private XStream xStream = new XStream(new StaxDriver());
 
+    /**
+     * Constructor
+     * 
+     * @param loginName - loginName for the API authentication
+     * @param password - password for the API authentication
+     * @throws Exception - Exception
+     */
     public CaTissueParticipantClient(String loginName, String password) throws Exception {
         super();
 
@@ -97,10 +109,25 @@ public class CaTissueParticipantClient {
         return (Participant) xStream.fromXML(new StringReader(participantXMLStr));
     }
 
+    /**
+     * This method is used to register a Participant in caTissue
+     * 
+     * @param participantXMLStr - Participant information in the form of XMLString
+     * @return XMLString - currently null
+     * @throws Exception Exception
+     */
     public String registerParticipantFromXML(String participantXMLStr) throws Exception {
         return registerParticipant(participantXMLStr);
     }
 
+    /**
+     * This method is used to register a Participant. It will parse the incoming XMLString and then call the private
+     * method to register the participant
+     * 
+     * @param participantXMLStr - Participant information in the form of XMLString
+     * @return null
+     * @throws ApplicationException - ApplicationException
+     */
     public String registerParticipant(String participantXMLStr) throws ApplicationException {
         Participant participant = parseParticipant(participantXMLStr);
         registerParticipant(participant);
@@ -113,6 +140,7 @@ public class CaTissueParticipantClient {
      * 
      * @param participant - Participant to be registered
      * @return instance of Participant
+     * @throws ApplicationException - ApplicationException
      */
     public Participant registerParticipant(Participant participant) throws ApplicationException {
         if (participant == null || StringUtils.isEmpty(participant.getSocialSecurityNumber())) {
@@ -126,10 +154,25 @@ public class CaTissueParticipantClient {
         return null;
     }
 
+    /**
+     * This method is used to update a Participant in caTissue.
+     * 
+     * @param participantXMLStr - Participant update information in the form of XMLString
+     * @return exisitingParticipant detail in form of XMLString which might be required for Rollback
+     * @throws Exception - Exception
+     */
     public String updateParticipantRegistrationFromXML(String participantXMLStr) throws Exception {
         return updateParticipantRegistration(participantXMLStr);
     }
 
+    /**
+     * This method is used to update a Participant in caTissue. It will parse the incoming XMLString and then call the
+     * private method to update the participant
+     * 
+     * @param participantXMLStr - Participant update information in the form of XMLString
+     * @return exisitingParticipant detail in form of XMLString which might be required for Rollback
+     * @throws ApplicationException - ApplicationException
+     */
     public String updateParticipantRegistration(String participantXMLStr) throws ApplicationException {
         Participant participant = parseParticipant(participantXMLStr);
         participant = updateParticipantRegistration(participant);
@@ -141,6 +184,7 @@ public class CaTissueParticipantClient {
      * 
      * @param participant - Participant to be registered
      * @return instance of Participant
+     * @throws ApplicationException - ApplicationException
      */
     public Participant updateParticipantRegistration(Participant participant) throws ApplicationException {
         if (participant == null || StringUtils.isEmpty(participant.getSocialSecurityNumber())) {
@@ -173,14 +217,31 @@ public class CaTissueParticipantClient {
         return copyFrom(existingParticipant);
     }
 
+    /**
+     * This method is used to delete a Participant in caTissue.
+     * 
+     * @param participantXMLStr participant to be delete in the form of XMLString
+     * @return true if participant is deleted
+     * @throws Exception - Exception
+     */
     public boolean deleteParticipantFromXML(String participantXMLStr) throws Exception {
+        // CHECKSTYLE:OFF
         if (deleteParticipant(participantXMLStr) != null) {
             return true;
         } else {
             return false;
         }
+        // CHECKSTYLE:ON
     }
 
+    /**
+     * This method is used to delete a Participant in caTissue. It will parse the incoming XMLString and then call the
+     * private method to delete the participant
+     * 
+     * @param participantXMLStr participant to be delete in the form of XMLString
+     * @return Participant - deleted Participant
+     * @throws ApplicationException - ApplicationException
+     */
     public Participant deleteParticipant(String participantXMLStr) throws ApplicationException {
         Participant participant = parseParticipant(participantXMLStr);
         return deleteParticipant(participant);
@@ -191,6 +252,7 @@ public class CaTissueParticipantClient {
      * 
      * @param participant - Participant to be deleted
      * @return instance of Participant
+     * @throws ApplicationException - ApplicationException
      */
     public Participant deleteParticipant(Participant participant) throws ApplicationException {
         if (participant == null || StringUtils.isEmpty(participant.getSocialSecurityNumber())) {
@@ -230,11 +292,21 @@ public class CaTissueParticipantClient {
 
     /**
      * retrieve participants registered to a collection protocol
+     * @param cpTitle - collection protocol title
+     * @return list of participant for that collection protocol 
+     * @throws ApplicationException - ApplicationException
      */
     public List<Participant> getParticipantsForCollectionProtocol(String cpTitle) throws ApplicationException {
         return caTissueAPIClient.getApplicationService().query(CqlUtility.getParticipantsForCP(cpTitle));
     }
 
+    
+    /**
+     * Retrieve the participant for given SSN
+     * @param ssn - SSN for which participant has to be fetched
+     * @return Participant
+     * @throws ApplicationException - ApplicationException
+     */
     public Participant getParticipantForSSN(String ssn) throws ApplicationException {
         List<Participant> prtcpntLst = caTissueAPIClient.getApplicationService().query(
                 CqlUtility.getParticipantForSSN(ssn));
@@ -247,6 +319,13 @@ public class CaTissueParticipantClient {
         return prtcpntLst.get(0);
     }
 
+    
+    /**
+     * Retrieve the participant for given PatientId
+     * @param mrn - PatientId for which participant has to be fetched
+     * @return Participant
+     * @throws ApplicationException - ApplicationException
+     */
     public Participant getParticipantForPatientId(String mrn) throws ApplicationException {
         List<Participant> prtcpntLst = caTissueAPIClient.getApplicationService().query(
                 CqlUtility.getParticipantForPatientId(mrn));
