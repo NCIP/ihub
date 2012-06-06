@@ -39,6 +39,10 @@ public class CaTissueParticipantIntegrationTest {
 
     private final CaTissueParticipantClient caTissueParticipantClient;
 
+    /**
+     * Constructor
+     * @throws Exception - Exception
+     */
     public CaTissueParticipantIntegrationTest() throws Exception {
         caTissueParticipantClient = new CaTissueParticipantClient("admin@admin.com", "Aa_111111");
     }
@@ -119,6 +123,11 @@ public class CaTissueParticipantIntegrationTest {
         caTissueParticipantClient.deleteParticipant(participant);
     }
 
+    /**
+     * Testcase for parseParticipant
+     * @throws JAXBException - JAXBException
+     * @throws ParseException - ParseException
+     */
     // @Test
     public void parseParticipant() throws JAXBException, ParseException {
         Participant participant = getParticipant();
@@ -145,6 +154,10 @@ public class CaTissueParticipantIntegrationTest {
         assertNotNull(parsedParticipant);
     }
 
+    /**
+     * Testcase for submitRegistrationFromXMLPayload
+     * @throws ApplicationException - ApplicationException
+     */
     // @Test
     public void submitRegistrationFromXMLPayload() throws ApplicationException {
 
