@@ -12,9 +12,9 @@ import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.Executors;
 
 /**
- * 
+ * This is the Wrapper client class for RegisterParticipant client class.
+ *  
  * @author chandrasekaravr
- * 
  */
 public class CaTissueParticipantClient {
 
@@ -31,6 +31,13 @@ public class CaTissueParticipantClient {
 
     private Executor ex = Executors.newCachedThreadPool();
 
+    /**
+     * Constructor
+     * @param caTissueLibLocation - caTissueLibLocation
+     * @param loginName - loginName
+     * @param password - password
+     * @throws IntegrationException - IntegrationException
+     */
     public CaTissueParticipantClient(String caTissueLibLocation, String loginName, String password)
             throws IntegrationException {
         super();
@@ -59,6 +66,11 @@ public class CaTissueParticipantClient {
         // CHECKSTYLE:ON
     }
 
+    /**
+     * This method is used to call the 'registerParticipantFromXML' of the client
+     * @param participantXMLStr - Participant information in the form of XMLString
+     * @return ServiceInvocationResult
+     */
     public ServiceInvocationResult registerParticipant(final String participantXMLStr) {
         ServiceInvocationResult result = null;
 
@@ -66,7 +78,9 @@ public class CaTissueParticipantClient {
         try {
             task = new CaTissueTask(caTissueClientClass, loginName, password, "registerParticipantFromXML",
                     registerMethodParamTypes, participantXMLStr);
+            // CHECKSTYLE:OFF
         } catch (Exception e1) {
+            // CHECKSTYLE:ON
             e1.printStackTrace();
             result = getServiceInvocationResult(IntegrationError._1051, e1);
             return result;
@@ -95,6 +109,11 @@ public class CaTissueParticipantClient {
         return result;
     }
 
+    /**
+     * This method is used to call the 'updateParticipantRegistrationFromXML' of the client
+     * @param participantXMLStr - Participant information in the form of XMLString
+     * @return ServiceInvocationResult
+     */
     public ServiceInvocationResult updateRegistrationParticipant(final String participantXMLStr) {
         ServiceInvocationResult result = null;
 
@@ -102,7 +121,9 @@ public class CaTissueParticipantClient {
         try {
             task = new CaTissueTask(caTissueClientClass, loginName, password, "updateParticipantRegistrationFromXML",
                     updateRegistrationMethodParamTypes, participantXMLStr);
+            // CHECKSTYLE:OFF
         } catch (Exception e1) {
+            // CHECKSTYLE:ON
             e1.printStackTrace();
             result = getServiceInvocationResult(IntegrationError._1051, e1);
             return result;
@@ -129,6 +150,11 @@ public class CaTissueParticipantClient {
         return result;
     }
 
+    /**
+     * This method is used to call the 'deleteParticipantFromXML' of the client
+     * @param participantXMLStr - Participant information in the form of XMLString
+     * @return ServiceInvocationResult
+     */
     public ServiceInvocationResult deleteParticipant(final String participantXMLStr) {
         ServiceInvocationResult result = null;
 
@@ -136,7 +162,9 @@ public class CaTissueParticipantClient {
         try {
             task = new CaTissueTask(caTissueClientClass, loginName, password, "deleteParticipantFromXML",
                     deleteMethodParamTypes, participantXMLStr);
+            // CHECKSTYLE:OFF
         } catch (Exception e1) {
+            // CHECKSTYLE:ON
             e1.printStackTrace();
             result = getServiceInvocationResult(IntegrationError._1051, e1);
             return result;
