@@ -19,12 +19,23 @@ import org.slf4j.LoggerFactory;
  */
 public class CaTissueTask implements Callable<ServiceInvocationResult> {
 
-    public Object caTissueClientInstance;
-    public Method methodToInvoke;
-    public String message;
+    private Object caTissueClientInstance;
+    private Method methodToInvoke;
+    private String message;
 
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueTask.class);
 
+    /**
+     * Constructor
+     * @param caTissueParticipantClientClass - caTissueParticipantClientClass
+     * @param loginName - loginName
+     * @param password - password
+     * @param methodName - methodName
+     * @param paramClasses - paramClasses
+     * @param message
+     * @throws IntegrationException - IntegrationException
+     */
+    // CHECKSTYLE:OFF
     public CaTissueTask(Class caTissueParticipantClientClass, String loginName, String password, String methodName,
             Class[] paramClasses, String message) throws IntegrationException {
         super();
@@ -32,7 +43,9 @@ public class CaTissueTask implements Callable<ServiceInvocationResult> {
             Constructor constructor = caTissueParticipantClientClass.getDeclaredConstructor(String.class, String.class);
             this.caTissueClientInstance = constructor.newInstance(loginName, password);
             methodToInvoke = caTissueParticipantClientClass.getDeclaredMethod(methodName, String.class);
+           
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             e.printStackTrace();
             throw new IntegrationException(IntegrationError._1052, e.getMessage());
         }
@@ -53,7 +66,9 @@ public class CaTissueTask implements Callable<ServiceInvocationResult> {
             IntegrationException ie = new IntegrationException(IntegrationError._1051, e.getTargetException(),
                     exceptionMessage);
             result.setInvocationException(ie);
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             String exceptionMessage = e.getMessage();
             LOG.error("Inside CaTissueTask..call()..Exception Message is :: " + exceptionMessage);
             IntegrationException ie = new IntegrationException(IntegrationError._1051, e, exceptionMessage);

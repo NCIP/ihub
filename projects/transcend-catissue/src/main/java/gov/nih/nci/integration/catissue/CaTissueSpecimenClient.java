@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
  * This is the Wrapper client class for Specimen client class.
  * 
  * @author Rohit Gupta
- * 
  */
 public class CaTissueSpecimenClient {
 
@@ -37,13 +36,19 @@ public class CaTissueSpecimenClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueSpecimenClient.class);
 
+    /**
+     * Constructor
+     * @param caTissueLibLocation - caTissueLibLocation
+     * @param loginName - loginName
+     * @param password - password
+     * @throws IntegrationException - IntegrationException
+     */
     public CaTissueSpecimenClient(String caTissueLibLocation, String loginName, String password)
             throws IntegrationException {
         super();
         this.caTissueLibLocation = caTissueLibLocation;
         this.loginName = loginName;
         this.password = password;
-
         init();
     }
 
@@ -51,14 +56,14 @@ public class CaTissueSpecimenClient {
         try {
             File libFile = new File(caTissueLibLocation);
 
-            // creating the custom classloader that bypasses the
-            // systemclassloader
+            // creating the custom classloader that bypasses the systemclassloader
             CustomUrlClassLoader ccl = new CustomUrlClassLoader(ClassLoader.getSystemClassLoader().getParent(), libFile
                     .getAbsolutePath());
 
             caTissueSpecimenClientClass = ccl.loadClass(CLIENT_CLASSNAME);
-
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             LOG.error("Exception occured while initializing CaTissueSpecimenClient.", e);
             throw new IntegrationException(IntegrationError._1000, e);
         }
@@ -77,7 +82,9 @@ public class CaTissueSpecimenClient {
         try {
             task1 = new CaTissueTask(caTissueSpecimenClientClass, loginName, password, "isSpecimensExist",
                     createSpecimensParamTypes, specimenListXMLStr);
+            // CHECKSTYLE:OFF
         } catch (Exception e1) {
+            // CHECKSTYLE:ON
             LOG.error("Exception occured while instantiating CaTissueTask for isSpecimenExist.", e1);
             result1 = getServiceInvocationResult(IntegrationError._1051, e1);
             return result1;
@@ -112,7 +119,9 @@ public class CaTissueSpecimenClient {
         try {
             task2 = new CaTissueTask(caTissueSpecimenClientClass, loginName, password, "createSpecimens",
                     createSpecimensParamTypes, specimenListXMLStr);
+            // CHECKSTYLE:OFF
         } catch (Exception e1) {
+            // CHECKSTYLE:ON
             result2 = getServiceInvocationResult(IntegrationError._1051, e1);
             return result2;
         }
@@ -158,7 +167,9 @@ public class CaTissueSpecimenClient {
         try {
             task = new CaTissueTask(caTissueSpecimenClientClass, loginName, password, "rollbackCreatedSpecimens",
                     rollbackSpecimensParamTypes, specimenListXMLStr);
+            // CHECKSTYLE:OFF
         } catch (Exception e1) {
+            // CHECKSTYLE:ON
             LOG.error("Exception occured while Rollbacking createSpecimen.", e1);
             result = getServiceInvocationResult(IntegrationError._1051, e1);
             return result;
@@ -196,7 +207,9 @@ public class CaTissueSpecimenClient {
         try {
             task1 = new CaTissueTask(caTissueSpecimenClientClass, loginName, password, "getExistingSpecimens",
                     updateSpecimensParamTypes, specimenListXMLStr);
+            // CHECKSTYLE:OFF
         } catch (Exception e1) {
+            // CHECKSTYLE:ON
             LOG.error("Exception occured while instantiating CaTissueTask for getExistingSpecimens.", e1);
             result1 = getServiceInvocationResult(IntegrationError._1051, e1);
             return result1;
@@ -228,7 +241,9 @@ public class CaTissueSpecimenClient {
         try {
             task2 = new CaTissueTask(caTissueSpecimenClientClass, loginName, password, "updateSpecimens",
                     updateSpecimensParamTypes, specimenListXMLStr);
+            // CHECKSTYLE:OFF
         } catch (Exception e1) {
+            // CHECKSTYLE:ON
             e1.printStackTrace();
             result2 = getServiceInvocationResult(IntegrationError._1051, e1);
             return result2;
@@ -277,7 +292,9 @@ public class CaTissueSpecimenClient {
         try {
             task = new CaTissueTask(caTissueSpecimenClientClass, loginName, password, "rollbackUpdatedSpecimens",
                     rollbackSpecimensParamTypes, specimenListXMLStr);
+            // CHECKSTYLE:OFF
         } catch (Exception e1) {
+            // CHECKSTYLE:ON
             LOG.error("Exception occured while instantiating CaTissueTask for rollbackUpdatedSpecimens.", e1);
             result = getServiceInvocationResult(IntegrationError._1051, e1);
             return result;

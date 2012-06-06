@@ -34,6 +34,13 @@ public class CaTissueConsentClient {
     private Executor ex = Executors.newCachedThreadPool();
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueConsentClient.class);
 
+    /**
+     * Constructor
+     * @param caTissueLibLocation - caTissueLibLocation
+     * @param loginName - loginName
+     * @param password - password
+     * @throws IntegrationException - IntegrationException
+     */
     public CaTissueConsentClient(String caTissueLibLocation, String loginName, String password)
             throws IntegrationException {
         super();
@@ -54,8 +61,9 @@ public class CaTissueConsentClient {
                     .getAbsolutePath());
 
             caTissueConsentClientClass = ccl.loadClass(CLIENT_CLASSNAME);
-
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             LOG.error("Exception occured while initializing CaTissueConsentClient.", e);
             throw new IntegrationException(IntegrationError._1000, e);
         }
@@ -77,7 +85,9 @@ public class CaTissueConsentClient {
         try {
             task1 = new CaTissueTask(caTissueConsentClientClass, loginName, password, "getExistingConsents",
                     registerConsentsParamTypes, consentListXMLStr);
+            // CHECKSTYLE:OFF
         } catch (Exception e1) {
+            // CHECKSTYLE:ON
             result1 = getServiceInvocationResult(IntegrationError._1051, e1);
             return result1;
         }
@@ -109,7 +119,9 @@ public class CaTissueConsentClient {
         try {
             task2 = new CaTissueTask(caTissueConsentClientClass, loginName, password, "registerConsents",
                     registerConsentsParamTypes, consentListXMLStr);
+            // CHECKSTYLE:OFF
         } catch (Exception e1) {
+            // CHECKSTYLE:ON
             result2 = getServiceInvocationResult(IntegrationError._1051, e1);
             return result2;
         }
@@ -155,7 +167,9 @@ public class CaTissueConsentClient {
         try {
             task = new CaTissueTask(caTissueConsentClientClass, loginName, password, "rollbackConsentRegistration",
                     rollbackConsentParamTypes, consentListXMLStr);
+            // CHECKSTYLE:OFF
         } catch (Exception e1) {
+            // CHECKSTYLE:ON
             LOG.error("Exception occured while instantiating CaTissueTask for rollbackConsentRegistration.", e1);
             result = getServiceInvocationResult(IntegrationError._1051, e1);
             return result;
