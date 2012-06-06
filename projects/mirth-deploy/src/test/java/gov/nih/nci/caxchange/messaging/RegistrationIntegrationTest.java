@@ -20,12 +20,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+/**
+ * This is the TestClass for Participant Registration flow.
+ * 
+ * @author Vinodh
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContext-mirth-deploy-test.xml")
 public class RegistrationIntegrationTest {
 
+    // CHECKSTYLE:OFF
     private final static SimpleDateFormat sdf = new SimpleDateFormat("MMddmm");// NOPMD
     private final static SimpleDateFormat ssnsdf = new SimpleDateFormat("MM-ddmm");// NOPMD
+    // CHECKSTYLE:ON
 
     @Value("${transcend.caxchange.service.url}")
     private String transcendCaxchangeServiceUrl;
@@ -34,6 +41,9 @@ public class RegistrationIntegrationTest {
 
     private HttpClient httpclient = new DefaultHttpClient();
 
+    /**
+     * Testcase for sending invalid credential message
+     */
     @Test
     public void sendInvalidIHubCredentialsMessage() {
         try {
@@ -61,6 +71,9 @@ public class RegistrationIntegrationTest {
         }
     }
 
+    /**
+     * Testcase for Participant Registration
+     */
     @Test
     public void sendRegistrationMessage() {
         try {
@@ -85,6 +98,9 @@ public class RegistrationIntegrationTest {
         }
     }
 
+    /**
+     * Testcase for Update Participant
+     */
     @Test
     public void sendUpdateRegistrationMessage() {
         try {
@@ -109,6 +125,9 @@ public class RegistrationIntegrationTest {
         }
     }
 
+    /**
+     * Testcase for sending duplicate message for participant registration
+     */
     @Test
     public void sendDuplicateRegistrationMessage() {
         try {
@@ -122,7 +141,10 @@ public class RegistrationIntegrationTest {
             if (entity != null) {
                 String output = EntityUtils.toString(entity);
                 Assert.assertNotNull(output);
-                Assert.assertEquals(true,output.contains("<errorCode>1014</errorCode>")|| output.contains("<errorCode>1051</errorCode>"));
+                Assert.assertEquals(
+                        true,
+                        output.contains("<errorCode>1014</errorCode>")
+                                || output.contains("<errorCode>1051</errorCode>"));
             }
         } catch (ClientProtocolException e) {
             Assert.fail(e.getMessage());
@@ -133,6 +155,9 @@ public class RegistrationIntegrationTest {
         }
     }
 
+    /**
+     * Testcase for sending invalid Study during Participant registration
+     */
     @Test
     public void sendInvalidStudyRegistrationMessage() {
         try {
@@ -148,7 +173,10 @@ public class RegistrationIntegrationTest {
             if (entity != null) {
                 String output = EntityUtils.toString(entity);
                 Assert.assertNotNull(output);
-                Assert.assertEquals(true,output.contains("<errorCode>1009</errorCode>")|| output.contains("<errorCode>1051</errorCode>"));
+                Assert.assertEquals(
+                        true,
+                        output.contains("<errorCode>1009</errorCode>")
+                                || output.contains("<errorCode>1051</errorCode>"));
             }
         } catch (ClientProtocolException e) {
             Assert.fail(e.getMessage());
@@ -159,6 +187,9 @@ public class RegistrationIntegrationTest {
         }
     }
 
+    /**
+     * Testcase for sending invalid Institution during Participant Registration
+     */
     @Test
     public void sendInvalidInstitutionRegistrationMessage() {
         try {
@@ -174,7 +205,10 @@ public class RegistrationIntegrationTest {
             if (entity != null) {
                 String output = EntityUtils.toString(entity);
                 Assert.assertNotNull(output);
-                Assert.assertEquals(true,output.contains("<errorCode>1012</errorCode>")|| output.contains("<errorCode>1051</errorCode>"));
+                Assert.assertEquals(
+                        true,
+                        output.contains("<errorCode>1012</errorCode>")
+                                || output.contains("<errorCode>1051</errorCode>"));
             }
         } catch (ClientProtocolException e) {
             Assert.fail(e.getMessage());
@@ -196,6 +230,7 @@ public class RegistrationIntegrationTest {
         return msg;
     }
 
+    // CHECKSTYLE:OFF
     private String getInvalidCredentialsCreateMsg() {
         String msg = "<?xml version='1.0' encoding='UTF-8'?><S:Envelope xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\"><S:Body><caXchangeResponseMessage xmlns=\"http://caXchange.nci.nih.gov/messaging\"><responseMetadata><externalIdentifier>322XXXXXX</externalIdentifier><caXchangeIdentifier></caXchangeIdentifier></responseMetadata><response><responseStatus>FAILURE</responseStatus><caXchangeError><errorCode>1015</errorCode><errorDescription>Authentication to iHub failed.</errorDescription></caXchangeError></response></caXchangeResponseMessage></S:Body></S:Envelope>";
         msg = msg.replaceAll("XXXXXX", sdf.format(currDt));
@@ -221,7 +256,7 @@ public class RegistrationIntegrationTest {
         message = message.replaceAll("XX-XXXX", ssnsdf.format(currDt));
         return message;
     }
-
+    // CHECKSTYLE:ON
     private String removeCaXchangeIdentifier(String output) {
         int startTagEnd = output.indexOf("<caXchangeIdentifier>");
         if (startTagEnd < 0) {
