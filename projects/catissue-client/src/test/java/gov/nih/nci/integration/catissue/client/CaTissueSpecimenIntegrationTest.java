@@ -5,9 +5,17 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
+/**
+ * This is an integration test class for Specimen client flows.
+ * 
+ * @author Rohit Gupta
+ */
 public class CaTissueSpecimenIntegrationTest {
 
-    // @Test
+    /**
+     * Testcase for Create Specimen when CollectionProtocol is invalid
+     */
+    @Test
     public void createInvalidCollectionProtocolSpecimens() {
         CaTissueSpecimenClient caTissueSpecimenClient;
         String existXML = null;
@@ -16,7 +24,9 @@ public class CaTissueSpecimenIntegrationTest {
             caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
             existXML = caTissueSpecimenClient.isSpecimensExist(getInsertInvalidCollectionProtocolXMLStr());
             caTissueSpecimenClient.createSpecimens(getInsertInvalidCollectionProtocolXMLStr());
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             existXML = null;
             createdXML = null;
         }
@@ -24,7 +34,10 @@ public class CaTissueSpecimenIntegrationTest {
         assertNull(createdXML);
     }
 
-    // @Test
+    /**
+     * Testcase for Create Specimen when SpecimenClass is invalid
+     */
+    @Test
     public void createInvalidSpecimenClass() {
         CaTissueSpecimenClient caTissueSpecimenClient;
         String existXML = null;
@@ -33,7 +46,9 @@ public class CaTissueSpecimenIntegrationTest {
             caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
             existXML = caTissueSpecimenClient.isSpecimensExist(getInsertInvalidSpecimenClassXMLStr());
             caTissueSpecimenClient.createSpecimens(getInsertInvalidSpecimenClassXMLStr());
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             existXML = null;
             createdXML = null;
         }
@@ -41,7 +56,10 @@ public class CaTissueSpecimenIntegrationTest {
         assertNull(createdXML);
     }
 
-    // @Test
+    /**
+     * Testcase for Create Specimen when Available Quantity is greater than Initial Quantity
+     */
+    @Test
     public void createInvalidAvailableQuantity() {
         CaTissueSpecimenClient caTissueSpecimenClient;
         String existXML = null;
@@ -50,7 +68,9 @@ public class CaTissueSpecimenIntegrationTest {
             caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
             existXML = caTissueSpecimenClient.isSpecimensExist(getInsertInvalidAvailableQuantityXMLStr());
             caTissueSpecimenClient.createSpecimens(getInsertInvalidAvailableQuantityXMLStr());
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             existXML = null;
             createdXML = null;
         }
@@ -58,7 +78,10 @@ public class CaTissueSpecimenIntegrationTest {
         assertNull(createdXML);
     }
 
-    // @Test
+    /**
+     * Testcase for Create Specimen when SpecimenType is invalid
+     */
+    @Test
     public void createInvalidSpecimenType() {
         CaTissueSpecimenClient caTissueSpecimenClient;
         String existXML = null;
@@ -67,7 +90,9 @@ public class CaTissueSpecimenIntegrationTest {
             caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
             existXML = caTissueSpecimenClient.isSpecimensExist(getInsertInvalidSpecimenTypeXMLStr());
             caTissueSpecimenClient.createSpecimens(getInsertInvalidSpecimenTypeXMLStr());
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             existXML = null;
             createdXML = null;
         }
@@ -75,7 +100,10 @@ public class CaTissueSpecimenIntegrationTest {
         assertNull(createdXML);
     }
 
-    // @Test
+    /**
+     * Testcase for Create Specimen when TissueSide is invalid
+     */
+    @Test
     public void createInvalidTissueSide() {
         CaTissueSpecimenClient caTissueSpecimenClient;
         String existXML = null;
@@ -84,7 +112,9 @@ public class CaTissueSpecimenIntegrationTest {
             caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
             existXML = caTissueSpecimenClient.isSpecimensExist(getInsertInvalidTissueSideXMLStr());
             caTissueSpecimenClient.createSpecimens(getInsertInvalidTissueSideXMLStr());
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             existXML = null;
             createdXML = null;
         }
@@ -92,7 +122,10 @@ public class CaTissueSpecimenIntegrationTest {
         assertNull(createdXML);
     }
 
-    // @Test
+    /**
+     * Testcase for Create Specimen when TissueSite is invalid
+     */
+    @Test
     public void createInvalidTissueSite() {
         CaTissueSpecimenClient caTissueSpecimenClient;
         String existXML = null;
@@ -101,7 +134,9 @@ public class CaTissueSpecimenIntegrationTest {
             caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
             existXML = caTissueSpecimenClient.isSpecimensExist(getInsertInvalidTissueSiteXMLStr());
             caTissueSpecimenClient.createSpecimens(getInsertInvalidTissueSiteXMLStr());
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             existXML = null;
             createdXML = null;
         }
@@ -109,7 +144,10 @@ public class CaTissueSpecimenIntegrationTest {
         assertNull(createdXML);
     }
 
-    // @Test
+    /**
+     * Testcase for Create Specimen when Pathological Status is invalid
+     */
+    @Test
     public void createInvalidPathologicalStatus() {
         CaTissueSpecimenClient caTissueSpecimenClient;
         String existXML = null;
@@ -118,7 +156,9 @@ public class CaTissueSpecimenIntegrationTest {
             caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
             existXML = caTissueSpecimenClient.isSpecimensExist(getInsertInvalidPathologicalStatusXMLStr());
             caTissueSpecimenClient.createSpecimens(getInsertInvalidPathologicalStatusXMLStr());
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             existXML = null;
             createdXML = null;
         }
@@ -126,7 +166,10 @@ public class CaTissueSpecimenIntegrationTest {
         assertNull(createdXML);
     }
 
-    // @Test
+    /**
+     * Testcase for Create Specimen
+     */
+    @Test
     public void createSpecimens() {
         CaTissueSpecimenClient caTissueSpecimenClient;
         String existXML = null;
@@ -135,7 +178,9 @@ public class CaTissueSpecimenIntegrationTest {
             caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
             existXML = caTissueSpecimenClient.isSpecimensExist(getInsertExistingSpecimenXMLStr());
             caTissueSpecimenClient.createSpecimens(getInsertSpecimenXMLStr());
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             existXML = null;
             createdXML = null;
         }
@@ -144,6 +189,9 @@ public class CaTissueSpecimenIntegrationTest {
         assertNotNull(createdXML);
     }
 
+    /**
+     * Testcase for Create Specimen when specimen already exists in caTissue
+     */
     @Test
     public void createExistingSpecimens() {
         CaTissueSpecimenClient caTissueSpecimenClient;
@@ -154,7 +202,9 @@ public class CaTissueSpecimenIntegrationTest {
             // existXML=
             // caTissueSpecimenClient.isSpecimensExist(getInsertExistingSpecimenXMLStr());
             caTissueSpecimenClient.createSpecimens(getInsertExistingSpecimenXMLStr());
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             existXML = null;
             createdXML = null;
         }
@@ -162,46 +212,64 @@ public class CaTissueSpecimenIntegrationTest {
         assertNull(createdXML);
     }
 
-    // @Test
+    /**
+     * Testcase for Update Specimen
+     */
+    @Test
     public void updateSpecimens() {
         String retXML = null;
         CaTissueSpecimenClient caTissueSpecimenClient;
         try {
             caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
             retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenXMLStr());
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
 
         }
         assertNotNull(retXML);
     }
 
-    // @Test
+    /**
+     * Testcase for Update Specimen when Specimen doesn't exist
+     */
+    @Test
     public void updateSpecimensSpecimenNotExist() {
         CaTissueSpecimenClient caTissueSpecimenClient;
         String retXML = null;
         try {
             caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
             retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenNotExistXMLStr());
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
 
         }
         assertNull(retXML);
     }
 
-    // @Test
+    /**
+     * Testcase for Update Specimen when Available quantity is greater than Initial Quantity
+     */
+    @Test
     public void updateSpecimensInvalidAvailableQtyXMLStr() {
         CaTissueSpecimenClient caTissueSpecimenClient;
         String retXML = null;
         try {
             caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
             retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenInvalidAvailableQtyXMLStr());
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
             retXML = null;
+            // CHECKSTYLE:ON
         }
         assertNull(retXML);
     }
 
-    // @Test
+    /**
+     * Testcase for Update Specimen when CollectionProtocol is changed during updateSpecimen
+     */
+    @Test
     public void updateSpecimensCollectionProtocolChangeXMLStr() {
         CaTissueSpecimenClient caTissueSpecimenClient;
         String retXML = null;
@@ -210,7 +278,9 @@ public class CaTissueSpecimenIntegrationTest {
             caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
             existXML = caTissueSpecimenClient.getExistingSpecimens(getUpdateSpecimenCollectionProtocolChangeXMLStr());
             retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenCollectionProtocolChangeXMLStr());
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             existXML = null;
             retXML = null;
         }
@@ -218,7 +288,10 @@ public class CaTissueSpecimenIntegrationTest {
         assertNull(retXML);
     }
 
-    // @Test
+    /**
+     * Testcase for Update Specimen when CollectionProtocolEvent is changed during updateSpecimen
+     */
+    @Test
     public void updateSpecimensCollectionEventProtocolChangeXMLStr() {
         CaTissueSpecimenClient caTissueSpecimenClient;
         String retXML = null;
@@ -228,7 +301,9 @@ public class CaTissueSpecimenIntegrationTest {
             existXML = caTissueSpecimenClient
                     .getExistingSpecimens(getUpdateSpecimenCollectionProtocolEventChangeXMLStr());
             retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenCollectionProtocolEventChangeXMLStr());
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             existXML = null;
             retXML = null;
         }
@@ -236,7 +311,10 @@ public class CaTissueSpecimenIntegrationTest {
         assertNull(retXML);
     }
 
-    // @Test
+    /**
+     * Testcase for Update Specimen when SpecimenClass is changed during updateSpecimen
+     */
+    @Test
     public void updateSpecimensSpecimenClassChange() {
         CaTissueSpecimenClient caTissueSpecimenClient;
         String retXML = null;
@@ -245,7 +323,9 @@ public class CaTissueSpecimenIntegrationTest {
             caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
             existXML = caTissueSpecimenClient.getExistingSpecimens(getUpdateSpecimenClassChangeXMLStr());
             retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenClassChangeXMLStr());
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             existXML = null;
             retXML = null;
         }
@@ -253,7 +333,10 @@ public class CaTissueSpecimenIntegrationTest {
         assertNull(retXML);
     }
 
-    // @Test
+    /**
+     * Testcase for Update Specimen when specimenType is invalid
+     */
+    @Test
     public void updateSpecimensInvalidSpecimenType() {
         CaTissueSpecimenClient caTissueSpecimenClient;
         String retXML = null;
@@ -262,7 +345,9 @@ public class CaTissueSpecimenIntegrationTest {
             caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
             existXML = caTissueSpecimenClient.getExistingSpecimens(getUpdateSpecimenInvalidSpecimenTypeXMLStr());
             retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenInvalidSpecimenTypeXMLStr());
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             existXML = null;
             retXML = null;
         }
@@ -270,7 +355,10 @@ public class CaTissueSpecimenIntegrationTest {
         assertNull(retXML);
     }
 
-    // @Test
+    /**
+     * Testcase for Update Specimen when TissueSide is invalid
+     */
+    @Test
     public void updateSpecimensInvalidTissueSide() {
         CaTissueSpecimenClient caTissueSpecimenClient;
         String retXML = null;
@@ -279,7 +367,9 @@ public class CaTissueSpecimenIntegrationTest {
             caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
             existXML = caTissueSpecimenClient.getExistingSpecimens(getUpdateSpecimenInvalidTissueSideXMLStr());
             retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenInvalidTissueSideXMLStr());
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             existXML = null;
             retXML = null;
         }
@@ -287,7 +377,10 @@ public class CaTissueSpecimenIntegrationTest {
         assertNull(retXML);
     }
 
-    // @Test
+    /**
+     * Testcase for Update Specimen when TissueSite is invalid
+     */
+    @Test
     public void updateSpecimensInvalidTissueSite() {
         CaTissueSpecimenClient caTissueSpecimenClient;
         String retXML = null;
@@ -296,7 +389,9 @@ public class CaTissueSpecimenIntegrationTest {
             caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
             existXML = caTissueSpecimenClient.getExistingSpecimens(getUpdateSpecimenInvalidTissueSiteXMLStr());
             retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenInvalidTissueSiteXMLStr());
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             existXML = null;
             retXML = null;
         }
@@ -304,21 +399,26 @@ public class CaTissueSpecimenIntegrationTest {
         assertNull(retXML);
     }
 
-    // @Test
+    /**
+     * Testcase for rollback created specimen
+     */
+    @Test
     public void rollbackSpecimens() {
         String retXML = "DELETE_SPECIMEN";
         CaTissueSpecimenClient caTissueSpecimenClient;
         try {
             caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
             caTissueSpecimenClient.rollbackCreatedSpecimens(getRollbackSpecimenXMLStr());
-
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             e.printStackTrace();
             retXML = null;
         }
         assertNotNull(retXML);
     }
 
+    // CHECKSTYLE:OFF
     private String getInsertSpecimenXMLStr() {
         return "<?xml version=\"1.0\" ?><specimens><participant><lastName>66604232</lastName><activityStatus>Active</activityStatus></participant><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"TissueSpecimen\"><initialQuantity>9.0</initialQuantity><pathologicalStatus>Malignant</pathologicalStatus><specimenClass>Tissue</specimenClass><specimenType>Fixed Tissue</specimenType><specimenCharacteristics><tissueSide>Right</tissueSide><tissueSite>Placenta</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>4.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen171</barcode><label>TolvenTestUser252TissueSpecimen171</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"FluidSpecimen\"><initialQuantity>8.0</initialQuantity><pathologicalStatus>Not Specified</pathologicalStatus><specimenClass>Fluid</specimenClass><specimenType>Not Specified</specimenType><specimenCharacteristics><tissueSide>Not Specified</tissueSide><tissueSite>Not Specified</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>2.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen172</barcode><label>TolvenTestUser252TissueSpecimen172</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail></specimens>";
     }
@@ -394,5 +494,6 @@ public class CaTissueSpecimenIntegrationTest {
     private String getRollbackSpecimenXMLStr() {
         return "<?xml version=\"1.0\" ?><specimens><participant><lastName>66604232</lastName><activityStatus>Active</activityStatus></participant><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"TissueSpecimen\"><initialQuantity>9.0</initialQuantity><pathologicalStatus>Malignant</pathologicalStatus><specimenClass>Tissue</specimenClass><specimenType>Fixed Tissue</specimenType><specimenCharacteristics><tissueSide>Right</tissueSide><tissueSite>Placenta</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>5.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen171</barcode><label>TolvenTestUser252TissueSpecimen171</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"FluidSpecimen\"><initialQuantity>8.0</initialQuantity><pathologicalStatus>Not Specified</pathologicalStatus><specimenClass>Fluid</specimenClass><specimenType>Not Specified</specimenType><specimenCharacteristics><tissueSide>Not Specified</tissueSide><tissueSite>Not Specified</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>2.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen172</barcode><label>TolvenTestUser252TissueSpecimen172</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail></specimens>";
     }
+    // CHECKSTYLE:ON
 
 }
