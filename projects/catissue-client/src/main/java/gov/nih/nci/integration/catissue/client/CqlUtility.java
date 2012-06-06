@@ -22,8 +22,17 @@ import gov.nih.nci.system.query.cql.CQLQuery;
  * @author from catissue client
  * 
  */
-public class CqlUtility {
+public final class CqlUtility {
+    
+    private CqlUtility() {
+        
+    }
 
+    /**
+     * Get the CQLQuery for the participant for given collection protocol title
+     * @param shortTitle - short title of the CP
+     * @return CQLQuery object
+     */
     public static CQLQuery getParticipantsForCP(String shortTitle) {
         CQLAttribute association2Attribute = createAttribute("shortTitle", shortTitle, CQLPredicate.EQUAL_TO);
         CQLAssociation association2 = createAssociation(CollectionProtocol.class, "collectionProtocol");
@@ -42,6 +51,12 @@ public class CqlUtility {
         return createTargetQuery(Participant.class, group1);
     }
 
+    
+    /**
+     * Get the CQLQuery for the participant for given patientId
+     * @param mrn  patientId
+     * @return CQLQuery object
+     */
     public static CQLQuery getParticipantForPatientId(String mrn) {
         CQLAttribute targetAttribute2 = createAttribute("lastName", mrn, CQLPredicate.EQUAL_TO);
 
@@ -51,6 +66,12 @@ public class CqlUtility {
         return createTargetQuery(Participant.class, group2);
     }
 
+    
+    /**
+     * Get the CQLQuery for the participant for given SSN
+     * @param ssn - SSN
+     * @return CQLQuery object
+     */
     public static CQLQuery getParticipantForSSN(String ssn) {
         CQLAttribute targetAttribute2 = createAttribute("socialSecurityNumber", ssn, CQLPredicate.EQUAL_TO);
 
@@ -60,6 +81,12 @@ public class CqlUtility {
         return createTargetQuery(Participant.class, group1);
     }
 
+    
+    /**
+     * Get the FluidSpecimen with Review Event Record for given shortTitle CollectionProtocol
+     * @param shortTitle - shortTitle of CP
+     * @return CQLQuery object
+     */
     public static CQLQuery getFluidSpecimensWithReviewEventRecordForCP(String shortTitle) {
         CQLAssociation association2 = createSCGAssociationWithIDandCPRAssociation(shortTitle);
 
@@ -73,6 +100,12 @@ public class CqlUtility {
         return createTargetQuery(FluidSpecimen.class, group);
     }
 
+    
+    /**
+     * Get the TissueSpecimen for given collection protocol 
+     * @param shortTitle - shortTitle of CP
+     * @return CQLQuery object
+     */
     public static CQLQuery getTissueSpecimensForCP(String shortTitle) {
         CQLAssociation association2 = createSCGAssociationWithIDandCPRAssociation(shortTitle);
         CQLAttribute targetAttribute = createAttribute("id", null, CQLPredicate.IS_NOT_NULL);
@@ -81,6 +114,11 @@ public class CqlUtility {
         return createTargetQuery(TissueSpecimen.class, group);
     }
 
+    /**
+     * 
+     * @param ppi - ppi
+     * @return CQLQuery object
+     */
     public static CQLQuery getSpecimenMalePPI(String ppi) {
         CQLAssociation association3 = createAssociationWithIDNotNullandOtherAttribute(Participant.class, "participant",
                 "gender", "Male Gender", CQLPredicate.EQUAL_TO, CQLLogicalOperator.AND);
@@ -105,6 +143,7 @@ public class CqlUtility {
         return createTargetQuery(Specimen.class, group1);
     }
 
+    
     private static CQLQuery createTargetQuery(Class<?> klass, Object... cQLObjects) {
         CQLObject target = new CQLObject();
         target.setName(klass.getName());
@@ -202,6 +241,13 @@ public class CqlUtility {
         return association2;
     }
 
+    
+    /**
+     * Get the CQLQuery for the SpecimenCollectionGroup for given shortTitle & label
+     * @param shortTitle - shortTitle of CP
+     * @param label - label of the specimen
+     * @return CQLQuery object
+     */
     public static CQLQuery getSpecimenCollectionGroupListQuery(String shortTitle, String label) {
         CQLAttribute association2Attribute = createAttribute("shortTitle", shortTitle, CQLPredicate.EQUAL_TO);
         CQLAssociation association2 = createAssociation(CollectionProtocol.class, "collectionProtocol");

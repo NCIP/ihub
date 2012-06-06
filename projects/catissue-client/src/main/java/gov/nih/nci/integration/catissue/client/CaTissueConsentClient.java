@@ -37,6 +37,12 @@ public class CaTissueConsentClient {
     private final CaTissueAPIClientWithRegularAuthentication caTissueAPIClient;
     private XStream xStream = new XStream(new StaxDriver());
 
+    /**
+     * Constructor
+     * @param loginName - loginName for the API authentication 
+     * @param password - password for the API authentication 
+     * @throws Exception - Exception
+     */
     public CaTissueConsentClient(String loginName, String password) throws Exception {
         super();
         Thread.currentThread().setContextClassLoader(CaTissueConsentClient.class.getClassLoader());
@@ -292,7 +298,9 @@ public class CaTissueConsentClient {
                 // do it recursively
                 performRollbackConsentForChildSpecimens(childSpecimen, consentDetail);
             }
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             LOG.error("Exception During Rollback of Consent for ChildSpecimen with SpecimenLabel as "
                     + consentDetail.getConsentData().getSpecimenLabel(), e);
             throw new ApplicationException("Rollback Consent Failed for ChildSpecimen "

@@ -3,6 +3,7 @@ package gov.nih.nci.integration.catissue.client;
 import com.thoughtworks.xstream.converters.collections.CollectionConverter;
 import com.thoughtworks.xstream.mapper.Mapper;
 
+// CHECKSTYLE:OFF
 public class HibernateCollectionConverter extends CollectionConverter {
 
     HibernateCollectionConverter(Mapper mapper) {
@@ -14,3 +15,4 @@ public class HibernateCollectionConverter extends CollectionConverter {
                 || org.hibernate.collection.PersistentSet.class.equals(type);
     }
 }
+// CHECKSTYLE:ON
