@@ -32,7 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
+ * This is Strategy class for Participant Registration for caAERS
  * @author chandrasekaravr
  * 
  */
@@ -46,8 +46,14 @@ public class CaAERSRegistrationServiceInvocationStrategy implements ServiceInvoc
 
     private XSLTTransformer xsltTransformer;
 
-    Map<String, IntegrationError> msgToErrMap;
+    private Map<String, IntegrationError> msgToErrMap;
 
+    /**
+     * Constructor
+     * @param xsltTransformer - XSLTTransformer
+     * @param client - CaAERSParticipantServiceWSClient
+     * @param retryCount - retryCount
+     */
     public CaAERSRegistrationServiceInvocationStrategy(XSLTTransformer xsltTransformer,
             CaAERSParticipantServiceWSClient client, int retryCount) {
         super();
@@ -167,12 +173,18 @@ public class CaAERSRegistrationServiceInvocationStrategy implements ServiceInvoc
         } finally {
             try {
                 is.close();
+                // CHECKSTYLE:OFF
             } catch (Exception e) {
+                LOG.error("Inside CaAERSRegistrationServiceInvocationStrategy...Exception occurred while closing InputStream. ", e);
             }
+            // CHECKSTYLE:ON
             try {
                 os.close();
+                // CHECKSTYLE:OFF
             } catch (Exception e) {
+                LOG.error("Inside CaAERSRegistrationServiceInvocationStrategy...Exception occurred while closing ByteArrayOutputStream. ", e);
             }
+            // CHECKSTYLE:ON
         }
         return participantXMLStr;
     }

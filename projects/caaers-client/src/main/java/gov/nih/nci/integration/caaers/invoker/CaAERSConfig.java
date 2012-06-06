@@ -12,6 +12,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
+/**
+ * This class is used to read the caAERS configurations
+ * @author Vinodh
+ *
+ */
 @Configuration
 public class CaAERSConfig {
 
@@ -36,16 +41,31 @@ public class CaAERSConfig {
     @Autowired
     private XSLTTransformer xsltTransformer;
 
+    /**
+     * To get clientPasswordCallback
+     * @return ClientPasswordCallback object
+     */
     @Bean
     public ClientPasswordCallback clientPasswordCallback() {
         return new ClientPasswordCallback(userName, password);
     }
 
+    /**
+     * To get caAERSParticipantServiceWSClient
+     * @return CaAERSParticipantServiceWSClient object
+     * @throws IntegrationException - IntegrationException
+     */
     @Bean
     public CaAERSParticipantServiceWSClient caAERSParticipantServiceWSClient() throws IntegrationException {
         return new CaAERSParticipantServiceWSClient(serviceUrl + "?wsdl", userName, clientPasswordCallback());
     }
 
+    
+    /**
+     * To get caAersRegistrationServiceInvocationStrategy
+     * @return CaAERSRegistrationServiceInvocationStrategy object
+     * @throws IntegrationException - IntegrationException
+     */
     @Bean
     @Scope("prototype")
     public CaAERSRegistrationServiceInvocationStrategy caAersRegistrationServiceInvocationStrategy()
@@ -61,6 +81,12 @@ public class CaAERSConfig {
         }
     }
 
+    
+    /**
+     * To get caAersUpdateRegistrationServiceInvocationStrategy
+     * @return CaAERSUpdateRegistrationServiceInvocationStrategy obejct
+     * @throws IntegrationException - IntegrationException
+     */
     @Bean
     @Scope("prototype")
     public CaAERSUpdateRegistrationServiceInvocationStrategy caAersUpdateRegistrationServiceInvocationStrategy()

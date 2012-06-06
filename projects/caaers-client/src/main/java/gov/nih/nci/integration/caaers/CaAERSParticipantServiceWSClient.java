@@ -25,9 +25,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
-import javax.xml.ws.BindingProvider;
 import javax.xml.ws.soap.SOAPFaultException;
 
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
@@ -38,8 +36,11 @@ import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 import org.apache.ws.security.WSConstants;
 import org.apache.ws.security.handler.WSHandlerConstants;
-import org.springframework.remoting.soap.SoapFaultException;
 
+/**
+ * WebService client for CaAERS-Participant flow
+ * @author Vinodh
+ */
 public class CaAERSParticipantServiceWSClient {
 
     private Unmarshaller unmarshaller = null;
@@ -50,6 +51,13 @@ public class CaAERSParticipantServiceWSClient {
 
     private ClientPasswordCallback clientPasswordCallback;
 
+    /**
+     * Constructor
+     * @param serviceUrl - URL
+     * @param userName - user name
+     * @param clientPasswordCallback 
+     * @throws IntegrationException - IntegrationException
+     */
     public CaAERSParticipantServiceWSClient(String serviceUrl, String userName,
             ClientPasswordCallback clientPasswordCallback) throws IntegrationException {
         super();
@@ -60,10 +68,13 @@ public class CaAERSParticipantServiceWSClient {
             getUnmarshaller();
 
             initClient(serviceUrl);
+         // CHECKSTYLE:OFF
         } catch (Exception e) {
             e.printStackTrace();
             throw new IntegrationException(IntegrationError._1054, e.getMessage());
         }
+        
+     // CHECKSTYLE:ON
     }
 
     private void initClient(String serviceUrl) {
@@ -105,7 +116,7 @@ public class CaAERSParticipantServiceWSClient {
      * 
      * @param participantXMLStr - the Participant xml string
      * @return ParticipantType object
-     * @throws JAXBException
+     * @throws JAXBException - JAXBException
      */
     public ParticipantType parseParticipant(String participantXMLStr) throws JAXBException {
         JAXBElement<ParticipantType> jaxbEle = (JAXBElement<ParticipantType>) getUnmarshaller().unmarshal(
@@ -113,6 +124,16 @@ public class CaAERSParticipantServiceWSClient {
         return jaxbEle.getValue();
     }
 
+    
+    /**
+     * This method has code to call createParticipant() of the webservice
+     * @param participantXMLStr - XMLString containing the register-participant details
+     * @return response from the webservice
+     * @throws JAXBException - JAXBException
+     * @throws MalformedURLException - MalformedURLException
+     * @throws SOAPFaultException - SOAPFaultException
+     * @throws IntegrationException - IntegrationException
+     */
     public CaaersServiceResponse createParticipant(String participantXMLStr) throws JAXBException,
             MalformedURLException, SOAPFaultException, IntegrationException {
         ParticipantType participant = parseParticipant(participantXMLStr);
@@ -128,13 +149,24 @@ public class CaAERSParticipantServiceWSClient {
         } catch (SOAPFaultException e) {
             e.printStackTrace();
             throw e;
+         // CHECKSTYLE:OFF
         } catch (Exception e) {
             e.printStackTrace();
             throw new IntegrationException(IntegrationError._1053, e, (Object) null);
         }
+     // CHECKSTYLE:ON
         return retValue.getCaaersServiceResponse();
     }
 
+    /**
+     * This method has code to call deleteParticipant() of the webservice
+     * @param participantXMLStr - XMLString containing the delete-participant details
+     * @return response from the webservice
+     * @throws JAXBException - JAXBException
+     * @throws MalformedURLException - MalformedURLException
+     * @throws SOAPFaultException - SOAPFaultException
+     * @throws IntegrationException - IntegrationException
+     */
     public CaaersServiceResponse deleteParticipant(String participantXMLStr) throws JAXBException,
             MalformedURLException, SOAPFaultException, IntegrationException {
         ParticipantType participant = parseParticipant(participantXMLStr);
@@ -150,13 +182,24 @@ public class CaAERSParticipantServiceWSClient {
         } catch (SOAPFaultException e) {
             // e.printStackTrace();
             throw e;
+         // CHECKSTYLE:OFF
         } catch (Exception e) {
             // e.printStackTrace();
             throw new IntegrationException(IntegrationError._1053, e, (Object) null);
         }
+     // CHECKSTYLE:ON
         return retValue.getCaaersServiceResponse();
     }
 
+    /**
+     *  This method has code to call updateParticipant() of the webservice
+     * @param participantXMLStr - XMLString containing the update-participant details
+     * @return response from the webservice
+     * @throws JAXBException - JAXBException
+     * @throws MalformedURLException - MalformedURLException
+     * @throws SOAPFaultException - SOAPFaultException
+     * @throws IntegrationException - IntegrationException
+     */
     public CaaersServiceResponse updateParticipant(String participantXMLStr) throws JAXBException,
             MalformedURLException, SOAPFaultException, IntegrationException {
         ParticipantType participant = parseParticipant(participantXMLStr);
@@ -172,13 +215,25 @@ public class CaAERSParticipantServiceWSClient {
         } catch (SOAPFaultException e) {
             // e.printStackTrace();
             throw e;
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
             // e.printStackTrace();
             throw new IntegrationException(IntegrationError._1053, e, (Object) null);
         }
+        // CHECKSTYLE:ON
         return retValue.getCaaersServiceResponse();
     }
 
+    
+    /**This method has code to call getParticipant() of the webservice
+     * 
+     * @param participantXMLStr - - XMLString containing the get-participant details
+     * @return response from the webservice
+     * @throws JAXBException - JAXBException
+     * @throws MalformedURLException - MalformedURLException
+     * @throws SOAPFaultException - SOAPFaultException
+     * @throws IntegrationException - IntegrationException
+     */
     public CaaersServiceResponse getParticipant(String participantXMLStr) throws JAXBException, MalformedURLException,
             SOAPFaultException, IntegrationException {
         ParticipantType participant = parseParticipant(participantXMLStr);
@@ -200,10 +255,12 @@ public class CaAERSParticipantServiceWSClient {
         } catch (SOAPFaultException e) {
             // e.printStackTrace();
             throw e;
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
             // e.printStackTrace();
             throw new IntegrationException(IntegrationError._1053, e, (Object) null);
         }
+        // CHECKSTYLE:ON
         return retValue.getCaaersServiceResponse();
     }
 }

@@ -40,7 +40,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
+ * This is Strategy class for Participant Update Registration for caAERS
  * @author chandrasekaravr
  * 
  */
@@ -48,8 +48,10 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements Servic
 
     private static final Logger LOG = LoggerFactory.getLogger(CaAERSUpdateRegistrationServiceInvocationStrategy.class);
 
+    // CHECKSTYLE:OFF
     private static QName QNAME = new QName(// NOPMD
             "http://schema.integration.caaers.cabig.nci.nih.gov/participant", "participant");;
+    // CHECKSTYLE:ON
 
     private CaAERSParticipantServiceWSClient client;
 
@@ -59,8 +61,14 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements Servic
 
     private Marshaller marshaller = null;
 
-    Map<String, IntegrationError> msgToErrMap;
+    private Map<String, IntegrationError> msgToErrMap;
 
+    /**
+     * Constructor
+     * @param xsltTransformer - XSLTTransformer
+     * @param client - CaAERSParticipantServiceWSClient object
+     * @param retryCount - retry Count
+     */
     public CaAERSUpdateRegistrationServiceInvocationStrategy(XSLTTransformer xsltTransformer,
             CaAERSParticipantServiceWSClient client, int retryCount) {
         super();
@@ -196,12 +204,16 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements Servic
         } finally {
             try {
                 is.close();
+                // CHECKSTYLE:OFF
             } catch (Exception e) {
+                LOG.error("Inside CaAERSUpdateRegistrationServiceInvocationStrategy..Exception occurred while closing InputStream. ", e);
             }
             try {
                 os.close();
             } catch (Exception e) {
+                LOG.error("Inside CaAERSUpdateRegistrationServiceInvocationStrategy..Exception occurred while closing ByteArrayOutputStream. ", e);
             }
+            // CHECKSTYLE:ON
         }
         return participantXMLStr;
     }
