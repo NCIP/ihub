@@ -63,7 +63,9 @@ public class XSLTTransformer {
             throw new IntegrationException(IntegrationError._1061);
         }
         if (StringUtils.isEmpty(xslBasePath)) {
+            // CHECKSTYLE:OFF
             xslBasePath = ".";
+            // CHECKSTYLE:ON
         }
 
         try {
