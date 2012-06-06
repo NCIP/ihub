@@ -55,7 +55,7 @@ public class CaAERSParticipantServiceWSClient {
      * Constructor
      * @param serviceUrl - URL
      * @param userName - user name
-     * @param clientPasswordCallback 
+     * @param clientPasswordCallback - clientPasswordCallback
      * @throws IntegrationException - IntegrationException
      */
     public CaAERSParticipantServiceWSClient(String serviceUrl, String userName,
