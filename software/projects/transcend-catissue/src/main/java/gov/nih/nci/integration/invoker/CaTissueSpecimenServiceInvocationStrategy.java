@@ -21,9 +21,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
+ * This is Strategy class for Specimen
  * @author Rohit Gupta
- * 
  */
 public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocationStrategy {
 
@@ -35,8 +34,15 @@ public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocat
 
     private XSLTTransformer xsltTransformer;
 
-    Map<String, IntegrationError> msgToErrMap;
+    private Map<String, IntegrationError> msgToErrMap;
 
+    /**
+     * Constructor
+     * 
+     * @param retryCount - retryCount
+     * @param caTissueSpecimenClient - caTissueSpecimenClient
+     * @param xsltTransformer - xsltTransformer
+     */
     public CaTissueSpecimenServiceInvocationStrategy(int retryCount, CaTissueSpecimenClient caTissueSpecimenClient,
             XSLTTransformer xsltTransformer) {
         super();
@@ -98,7 +104,9 @@ public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocat
 
         } catch (IntegrationException e) {
             serviceInvocationResult.setInvocationException(e);
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             serviceInvocationResult.setInvocationException(e);
         }
         return serviceInvocationResult;
@@ -130,7 +138,10 @@ public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocat
             try {
                 is.close();
                 os.close();
+                // CHECKSTYLE:OFF
             } catch (Exception e) {
+                // CHECKSTYLE:ON
+                LOG.error("CaTissueSpecimenServiceInvocationStrategy.. Exception while closing the stream : " + e);
             }
         }
         return specimenXMLStr;

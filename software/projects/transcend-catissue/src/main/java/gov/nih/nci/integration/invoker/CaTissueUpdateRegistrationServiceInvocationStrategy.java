@@ -20,25 +20,38 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This is Strategy class for Update Participant Registration
+ * 
+ * @author Vinodh
+ */
 public class CaTissueUpdateRegistrationServiceInvocationStrategy implements ServiceInvocationStrategy {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CaTissueUpdateRegistrationServiceInvocationStrategy.class);
+    private static final Logger LOG = LoggerFactory
+            .getLogger(CaTissueUpdateRegistrationServiceInvocationStrategy.class);
 
     private int retryCount = 0;
 
     private CaTissueParticipantClient caTissueParticipantClient;
 
     private XSLTTransformer xsltTransformer;
-    
-    Map<String, IntegrationError> msgToErrMap;
 
+    private Map<String, IntegrationError> msgToErrMap;
+
+    /**
+     * Constructor
+     * 
+     * @param retryCount - retryCount
+     * @param caTissueParticipantClient - caTissueParticipantClient
+     * @param xsltTransformer - xsltTransformer
+     */
     public CaTissueUpdateRegistrationServiceInvocationStrategy(int retryCount,
             CaTissueParticipantClient caTissueParticipantClient, XSLTTransformer xsltTransformer) {
         super();
         this.retryCount = retryCount;
         this.caTissueParticipantClient = caTissueParticipantClient;
         this.xsltTransformer = xsltTransformer;
-        
+
         HashMap<String, IntegrationError> msgToErrMapBase = new LinkedHashMap<String, IntegrationError>();
 
         msgToErrMapBase.put("Error authenticating user", IntegrationError._1019);
@@ -75,7 +88,9 @@ public class CaTissueUpdateRegistrationServiceInvocationStrategy implements Serv
         try {
             String participantXMLStr = msg.getOriginalData();
             serviceInvocationResult = caTissueParticipantClient.updateRegistrationParticipant(participantXMLStr);
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             serviceInvocationResult.setInvocationException(e);
         }
         handleException(serviceInvocationResult);
@@ -100,11 +115,17 @@ public class CaTissueUpdateRegistrationServiceInvocationStrategy implements Serv
         } finally {
             try {
                 is.close();
+                // CHECKSTYLE:OFF
             } catch (Exception e) {
+                LOG.error("CaTissueUpdateRegistrationServiceInvocationStrategy.. Exception while closing InputStream : "
+                        + e);
             }
             try {
                 os.close();
             } catch (Exception e) {
+                // CHECKSTYLE:ON
+                LOG.error("CaTissueUpdateRegistrationServiceInvocationStrategy.. Exception while closing OutputStream : "
+                        + e);
             }
         }
         return participantXMLStr;

@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * This is Strategy class for Update Specimen
  * 
  * @author Rohit Gupta
  * 
@@ -35,8 +36,15 @@ public class CaTissueUpdateSpecimenServiceInvocationStrategy implements ServiceI
 
     private XSLTTransformer xsltTransformer;
 
-    Map<String, IntegrationError> msgToErrMap;
+    private Map<String, IntegrationError> msgToErrMap;
 
+    /**
+     * Constructor
+     * 
+     * @param retryCount - retryCount
+     * @param caTissueSpecimenClient - caTissueSpecimenClient
+     * @param xsltTransformer - xsltTransformer
+     */
     public CaTissueUpdateSpecimenServiceInvocationStrategy(int retryCount,
             CaTissueSpecimenClient caTissueSpecimenClient, XSLTTransformer xsltTransformer) {
         super();
@@ -85,7 +93,9 @@ public class CaTissueUpdateSpecimenServiceInvocationStrategy implements ServiceI
 
         } catch (IntegrationException e) {
             serviceInvocationResult.setInvocationException(e);
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             serviceInvocationResult.setInvocationException(e);
         }
 
@@ -101,7 +111,9 @@ public class CaTissueUpdateSpecimenServiceInvocationStrategy implements ServiceI
 
             // call the method to rollback Specimens
             serviceInvocationResult = caTissueSpecimenClient.rollbackUpdatedSpecimens(specimenListXMLStr);
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             serviceInvocationResult.setInvocationException(e);
         }
         return serviceInvocationResult;
@@ -133,7 +145,10 @@ public class CaTissueUpdateSpecimenServiceInvocationStrategy implements ServiceI
             try {
                 is.close();
                 os.close();
+                // CHECKSTYLE:OFF
             } catch (Exception e) {
+                // CHECKSTYLE:ON
+                LOG.error("CaTissueUpdateSpecimenServiceInvocationStrategy.. Exception while closing the stream : " + e);
             }
         }
         return specimenXMLStr;

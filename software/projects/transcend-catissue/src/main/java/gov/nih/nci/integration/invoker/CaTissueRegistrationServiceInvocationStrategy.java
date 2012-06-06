@@ -20,6 +20,11 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This is Strategy class for RegisterParticipant
+ * 
+ * @author Vinodh
+ */
 public class CaTissueRegistrationServiceInvocationStrategy implements ServiceInvocationStrategy {
 
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueRegistrationServiceInvocationStrategy.class);
@@ -30,8 +35,15 @@ public class CaTissueRegistrationServiceInvocationStrategy implements ServiceInv
 
     private XSLTTransformer xsltTransformer;
 
-    Map<String, IntegrationError> msgToErrMap;
+    private Map<String, IntegrationError> msgToErrMap;
 
+    /**
+     * Constructor
+     * 
+     * @param retryCount - retryCount
+     * @param caTissueParticipantClient - caTissueParticipantClient
+     * @param xsltTransformer - xsltTransformer
+     */
     public CaTissueRegistrationServiceInvocationStrategy(int retryCount,
             CaTissueParticipantClient caTissueParticipantClient, XSLTTransformer xsltTransformer) {
         super();
@@ -100,11 +112,17 @@ public class CaTissueRegistrationServiceInvocationStrategy implements ServiceInv
         } finally {
             try {
                 is.close();
+                // CHECKSTYLE:OFF
             } catch (Exception e) {
+                LOG.error("Inside CaTissueRegistrationServiceInvocationStrategy.. Exception while closing InputStream : "
+                        + e);
             }
             try {
                 os.close();
             } catch (Exception e) {
+                // CHECKSTYLE:ON
+                LOG.error("CaTissueRegistrationServiceInvocationStrategy.. Exception while closing ByteArrayOutputStream : "
+                        + e);
             }
         }
         return participantXMLStr;
