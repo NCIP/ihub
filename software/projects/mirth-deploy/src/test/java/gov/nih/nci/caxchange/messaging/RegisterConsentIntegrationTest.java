@@ -18,6 +18,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+/**
+ * This is the TestClass for registerConsent flow.
+ * 
+ * @author Rohit Gupta
+ */
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContext-mirth-deploy-test.xml")
 public class RegisterConsentIntegrationTest {
@@ -26,7 +32,10 @@ public class RegisterConsentIntegrationTest {
     private String transcendCaxchangeServiceUrl;
 
     private HttpClient httpclient = new DefaultHttpClient();
-       
+    
+    /**
+     * Testcase for registerConsents flow
+     */
     @Test
     public void registerConsents() {
         try {
@@ -53,7 +62,9 @@ public class RegisterConsentIntegrationTest {
         }
     }
     
-    
+    /**
+     * Testcase for registerConsents when Specimen doesn't exist
+     */
     @Test
     public void registerConsentsSpecimenNotExist() {
         try {
@@ -80,7 +91,9 @@ public class RegisterConsentIntegrationTest {
         }
     }
     
-    
+    /**
+     * Testcase for registerConsents when collectionProtocol doesn't exist
+     */
     @Test
     public void registerConsentsCollectionProtocolNotExist() {
         try {
@@ -108,7 +121,9 @@ public class RegisterConsentIntegrationTest {
     }
     
   
-    
+    /**
+     * Testcase for registerConsents when Tier statement doesn't exist
+     */  
     @Test
     public void registerConsentsStatementNotExist() {
         try {
@@ -135,6 +150,7 @@ public class RegisterConsentIntegrationTest {
         }
     }
   
+ // CHECKSTYLE:OFF
     private String getRegisterConsentXMLStr() {
         return "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:mes=\"http://caXchange.nci.nih.gov/messaging\"><soapenv:Header/><soapenv:Body><mes:caXchangeRequestMessage><mes:metadata><mes:transactionControl>?</mes:transactionControl><mes:serviceType>iHub</mes:serviceType><mes:operationName>Register Consent</mes:operationName><mes:externalIdentifier>32225879</mes:externalIdentifier><mes:caXchangeIdentifier/><mes:credentials><mes:userName>tolvenuser</mes:userName><mes:groupName>nogrid</mes:groupName><mes:gridIdentifier>nogrid</mes:gridIdentifier><mes:password>changeme</mes:password><mes:delegatedCredentialReference>nocredentials</mes:delegatedCredentialReference></mes:credentials></mes:metadata><mes:request><mes:businessMessagePayload><mes:xmlSchemaDefinition>urn:tolven-org:trim:4.0</mes:xmlSchemaDefinition><trim xmlns=\"urn:tolven-org:trim:4.0\"><consents xmlns=\"http://cacis.nci.nih.gov\"><participant><cdmsSubjectId>66604232</cdmsSubjectId></participant><consentsDetailsList><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen><cdmsSpecimenId>TolvenTestUser252TissueSpecimen12</cdmsSpecimenId></specimen><collectionProtocol><title>Tolven Tissue Protocol</title><shortTitle>ttp</shortTitle></collectionProtocol><consentTierResponses><tier><statement>This is a statement</statement><response>Yes</response></tier><tier><statement>This is a second statement.</statement><response>No</response></tier></consentTierResponses></consentDetails><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen><cdmsSpecimenId>TolvenTestUser252TissueSpecimen155</cdmsSpecimenId></specimen><collectionProtocol><title>Tolven Tissue Protocol</title><shortTitle>ttp</shortTitle></collectionProtocol><consentTierResponses><tier><statement>This is a statement</statement><response>Not Specified</response></tier><tier><statement>This is a second statement.</statement><response>Withdrawn</response></tier></consentTierResponses></consentDetails></consentsDetailsList></consents></trim></mes:businessMessagePayload></mes:request></mes:caXchangeRequestMessage></soapenv:Body></soapenv:Envelope>";
     }
@@ -153,4 +169,5 @@ public class RegisterConsentIntegrationTest {
         return "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:mes=\"http://caXchange.nci.nih.gov/messaging\"><soapenv:Header/><soapenv:Body><mes:caXchangeRequestMessage><mes:metadata><mes:transactionControl>?</mes:transactionControl><mes:serviceType>iHub</mes:serviceType><mes:operationName>Register Consent</mes:operationName><mes:externalIdentifier>32225879</mes:externalIdentifier><mes:caXchangeIdentifier/><mes:credentials><mes:userName>tolvenuser</mes:userName><mes:groupName>nogrid</mes:groupName><mes:gridIdentifier>nogrid</mes:gridIdentifier><mes:password>changeme</mes:password><mes:delegatedCredentialReference>nocredentials</mes:delegatedCredentialReference></mes:credentials></mes:metadata><mes:request><mes:businessMessagePayload><mes:xmlSchemaDefinition>urn:tolven-org:trim:4.0</mes:xmlSchemaDefinition><trim xmlns=\"urn:tolven-org:trim:4.0\"><consents xmlns=\"http://cacis.nci.nih.gov\"><participant><cdmsSubjectId>66604232</cdmsSubjectId></participant><consentsDetailsList><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen><cdmsSpecimenId>TolvenTestUser252TissueSpecimen12</cdmsSpecimenId></specimen><collectionProtocol><title>Tolven Tissue Protocol</title><shortTitle>ttp</shortTitle></collectionProtocol><consentTierResponses><tier><statement>This is 123 a statement</statement><response>Yes</response></tier><tier><statement>This is a second statement.</statement><response>No</response></tier></consentTierResponses></consentDetails><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen><cdmsSpecimenId>TolvenTestUser252TissueSpecimen155</cdmsSpecimenId></specimen><collectionProtocol><title>Tolven Tissue Protocol</title><shortTitle>ttp</shortTitle></collectionProtocol><consentTierResponses><tier><statement>This is a statement</statement><response>Not Specified</response></tier><tier><statement>This is a second statement.</statement><response>Withdrawn</response></tier></consentTierResponses></consentDetails></consentsDetailsList></consents></trim></mes:businessMessagePayload></mes:request></mes:caXchangeRequestMessage></soapenv:Body></soapenv:Envelope>";
     }
     
+ // CHECKSTYLE:ON
 }
