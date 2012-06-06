@@ -107,7 +107,7 @@ public class TransactionalServiceInvocatorAndResultAggregator implements Service
 
     private ServiceInvocationResult executeRollback(Long referenceMessageId) {
         LOG.debug("Executing rollback");
-        final Map<StrategyIdentifier, ServiceInvocationMessage> msgsMap = serviceInvocationMessageDao
+        final Map<StrategyIdentifier, ServiceInvocationMessage> msgsMap = serviceInvocationMessageDao  //NOPMD
                 .getAllByReferenceMessageId(referenceMessageId);
 
         int noOfRollbacks = 0;
