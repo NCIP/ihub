@@ -25,8 +25,11 @@ public class TransactionalServiceInvocatorAndResultAggregatorTest {
     private EntityManager em;
 
     @Autowired
-    ServiceInvocatorAndResultAggregator serviceInvocatorAndResultAggregator;
+    private ServiceInvocatorAndResultAggregator serviceInvocatorAndResultAggregator;
 
+    /**
+     * Testcase for aggregateResults
+     */
     @Test
     public void aggregateResults() {
         long refMsgId = 12345L;
@@ -52,6 +55,9 @@ public class TransactionalServiceInvocatorAndResultAggregatorTest {
         assertEquals(false, svcStrtgy3.getResult().isFault());
     }
 
+    /**
+     * Testcase for aggregateResultsWithError
+     */
     @Test
     public void aggregateResultsWithError() {
         long refMsgId = 12346L;
@@ -77,6 +83,9 @@ public class TransactionalServiceInvocatorAndResultAggregatorTest {
         assertEquals(false, svcStrtgy3.getResult().isFault());
     }
 
+    /**
+     * Testcase for aggregateResultsWithoutAnyServiceInvocation
+     */
     @Test
     public void aggregateResultsWithoutAnyServiceInvocation() {
         long refMsgId = 12347L;

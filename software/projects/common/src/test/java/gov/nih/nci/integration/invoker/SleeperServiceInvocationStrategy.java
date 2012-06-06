@@ -2,7 +2,11 @@ package gov.nih.nci.integration.invoker;
 
 import gov.nih.nci.integration.domain.ServiceInvocationMessage;
 import gov.nih.nci.integration.domain.StrategyIdentifier;
-
+/**
+ * 
+ * @author Vinodh
+ *
+ */
 public class SleeperServiceInvocationStrategy implements ServiceInvocationStrategy {
 
     private long sleeptime;
@@ -11,6 +15,11 @@ public class SleeperServiceInvocationStrategy implements ServiceInvocationStrate
 
     private ServiceInvocationResult result;
 
+    /**
+     * Constructor
+     * @param sleeptime - sleeptime
+     * @param makefault - makefault
+     */
     public SleeperServiceInvocationStrategy(long sleeptime, boolean makefault) {
         super();
         this.sleeptime = sleeptime;
@@ -53,6 +62,10 @@ public class SleeperServiceInvocationStrategy implements ServiceInvocationStrate
         return rlbkRes;
     }
 
+    /**
+     * 
+     * @return ServiceInvocationResult
+     */
     public ServiceInvocationResult getResult() {
         return result;
     }
