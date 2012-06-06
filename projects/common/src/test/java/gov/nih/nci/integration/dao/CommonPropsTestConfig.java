@@ -6,7 +6,11 @@ import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-
+/**
+ * 
+ * @author Vinodh
+ *
+ */
 @Import( { JpaConfig.class })
 @Configuration
 public class CommonPropsTestConfig {
