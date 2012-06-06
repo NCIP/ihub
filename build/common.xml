@@ -506,7 +506,7 @@
     <!-- ================================= 
           target: jar              
          ================================= -->
-    <target name="jar" depends="module-specific-flow, compile, version" 
+    <target name="jar" depends="module-specific-flow, compile, version, static-analysis" 
     	description="--> make a jar file for this project">
     	<echo message="Executing in ${ant.project.name}" />
     	<makeJar dir="${dist.dir}" dir.classes="${classes.dir}" file.name="${jar.file}"/>
@@ -900,6 +900,12 @@
 		<mkdir dir="${cs.report.dir}"/>
 	    <checkstyle config="${static.analysis.config.dir}/CheckstyleConfig.xml" 
 	    	failOnViolation="false" failureProperty="static.analysis.failures.present">
+	    	<classpath>
+	    		<path refid="sa.classpath" />
+	    		<path refid="main.classpath" />
+	    		<pathelement path="${classes.dir}"/>
+	    	</classpath>
+
 	        <fileset dir="${main.src}/">
 	            <include name="**/*.java"/>
 	        </fileset>
@@ -942,11 +948,10 @@
 		 	    <param name="basedir" expression="file://"/>
 		 </xslt>
 		<echo message="No. of PMD failures = ${pmd.failures.count}"/>
-		<condition property="static.analysis.failures.present">
-			<not>
-				<equals arg1="${pmd.failures.count}" arg2="0"/>
-			</not>
+		<condition property="static.analysis.failures.present" >
+			<isset property="${pmd.failures.count}"/>
 		</condition>
+		<echo message="static-analysis failures = ${static.analysis.failures.present}"/>
 	</target>
 	
 	<!-- =======================================================
@@ -968,7 +973,7 @@
 		
 	</target>
 	
-	<target name="all" depends="clean, generate-wsdl, static-analysis, publish-local" description="Will build the whole module.">
+	<target name="all" depends="clean, generate-wsdl, publish-local" description="Will build the whole module.">
     </target>
 	
 	<target name="generate-wsdl" depends="clean-generated-src, init, resolve" description="Overwrite in sub-projects. This target will generate java code from WSDL available in ${main.src.resources}/wsdl or url.">
