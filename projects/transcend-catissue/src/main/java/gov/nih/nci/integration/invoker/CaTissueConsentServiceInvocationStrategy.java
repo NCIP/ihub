@@ -21,9 +21,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * This is Strategy class for RegisterConsent
  * 
  * @author Rohit Gupta
- * 
  */
 public class CaTissueConsentServiceInvocationStrategy implements ServiceInvocationStrategy {
 
@@ -35,8 +35,15 @@ public class CaTissueConsentServiceInvocationStrategy implements ServiceInvocati
 
     private XSLTTransformer xsltTransformer;
 
-    Map<String, IntegrationError> msgToErrMap;
+    private Map<String, IntegrationError> msgToErrMap;
 
+    /**
+     * Constructor
+     * 
+     * @param retryCount - retryCount
+     * @param caTissueSpecimenClient -caTissueSpecimenClient
+     * @param xsltTransformer - xsltTransformer
+     */
     public CaTissueConsentServiceInvocationStrategy(int retryCount, CaTissueConsentClient caTissueSpecimenClient,
             XSLTTransformer xsltTransformer) {
         super();
@@ -89,7 +96,9 @@ public class CaTissueConsentServiceInvocationStrategy implements ServiceInvocati
 
             // call the method to rollback Specimens
             serviceInvocationResult = caTissueConsentClient.rollbackConsents(consentListXMLStr);
+            // CHECKSTYLE:OFF
         } catch (Exception e) {
+            // CHECKSTYLE:ON
             serviceInvocationResult.setInvocationException(e);
         }
         return serviceInvocationResult;
@@ -121,7 +130,10 @@ public class CaTissueConsentServiceInvocationStrategy implements ServiceInvocati
             try {
                 is.close();
                 os.close();
+                // CHECKSTYLE:OFF
             } catch (Exception e) {
+                // CHECKSTYLE:ON
+                LOG.error("Inside CaTissueConsentServiceInvocationStrategy.. Error while closing the stream : " + e);
             }
         }
         return specimenXMLStr;

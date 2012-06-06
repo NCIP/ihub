@@ -12,6 +12,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
+/**
+ * This class is used to read the configuration parameters
+ * 
+ * @author Vinodh
+ * 
+ */
 @Configuration
 public class ServiceConfig {
 
@@ -48,6 +54,12 @@ public class ServiceConfig {
     @Autowired
     private XSLTTransformer xsltTransformerConsent;
 
+    /**
+     * To get CaTissueRegistrationServiceInvocationStrategy
+     * 
+     * @return CaTissueRegistrationServiceInvocationStrategy
+     * @throws IntegrationException - IntegrationException
+     */
     @Bean
     @Scope("prototype")
     public ServiceInvocationStrategy caTissueRegistrationServiceInvocationStrategy() throws IntegrationException {
@@ -56,6 +68,12 @@ public class ServiceConfig {
                 caTissueParticipantClient, xsltTransformer);
     }
 
+    /**
+     * To get CaTissueUpdateRegistrationServiceInvocationStrategy
+     * 
+     * @return CaTissueUpdateRegistrationServiceInvocationStrategy
+     * @throws IntegrationException - IntegrationException
+     */
     @Bean
     @Scope("prototype")
     public ServiceInvocationStrategy caTissueUpdateRegistrationServiceInvocationStrategy() throws IntegrationException {
@@ -64,6 +82,12 @@ public class ServiceConfig {
                 caTissueParticipantClient, xsltTransformer);
     }
 
+    /**
+     * To get CaTissueSpecimenServiceInvocationStrategy
+     * 
+     * @return CaTissueSpecimenServiceInvocationStrategy
+     * @throws IntegrationException - IntegrationException
+     */
     @Bean
     @Scope("prototype")
     public ServiceInvocationStrategy caTissueSpecimenServiceInvocationStrategy() throws IntegrationException {
@@ -72,6 +96,12 @@ public class ServiceConfig {
                 xsltTransformerSpecimen);
     }
 
+    /**
+     * To get CaTissueUpdateSpecimenServiceInvocationStrategy
+     * 
+     * @return CaTissueUpdateSpecimenServiceInvocationStrategy
+     * @throws IntegrationException - IntegrationException
+     */
     @Bean
     @Scope("prototype")
     public ServiceInvocationStrategy caTissueUpdateSpecimenServiceInvocationStrategy() throws IntegrationException {
@@ -80,6 +110,12 @@ public class ServiceConfig {
                 caTissueSpecimenClient, xsltTransformerSpecimen);
     }
 
+    /**
+     * To get CaTissueConsentServiceInvocationStrategy
+     * 
+     * @return CaTissueConsentServiceInvocationStrategy
+     * @throws IntegrationException - IntegrationException
+     */
     @Bean
     @Scope("prototype")
     public ServiceInvocationStrategy caTissueConsentServiceInvocationStrategy() throws IntegrationException {
