@@ -16,6 +16,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+/**
+ * IntegrationTest for XSLTTransformer
+ * 
+ * @author Vinodh
+ * 
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContext-transcend-catissue-test.xml")
 public class XSLTTransformerTest {
@@ -29,12 +35,20 @@ public class XSLTTransformerTest {
     @Value("${catissue.api.participant.xsl}")
     private String catissueParticipantXsl;
 
+    /**
+     * Testcase for Init    
+     * @throws IntegrationException - IntegrationException
+     */
     @Test
     public void intialize() throws IntegrationException {
         xsltTransformer.initTransformer(catissueParticipantXsl, baseXSLPath);
         Assert.assertNotNull(xsltTransformer);
     }
 
+    /**
+     * Testcase for transformMsgBCMsg   
+     * @throws IntegrationException - IntegrationException
+     */
     @Test
     public void transformMsgBCMsg() throws IntegrationException {
         xsltTransformer.initTransformer(catissueParticipantXsl, baseXSLPath);
@@ -61,11 +75,14 @@ public class XSLTTransformerTest {
         } finally {
             try {
                 is.close();
+                // CHECKSTYLE:OFF
             } catch (Exception e) {
+                e.printStackTrace();
             }
             try {
                 os.close();
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         return participantXMLStr;

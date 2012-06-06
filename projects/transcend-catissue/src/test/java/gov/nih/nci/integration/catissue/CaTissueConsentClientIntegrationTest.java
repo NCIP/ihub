@@ -21,6 +21,9 @@ public class CaTissueConsentClientIntegrationTest {
     @Autowired
     private CaTissueConsentClient caTissueConsentClient;
 
+    /**
+     * Test for RegisterConsent
+     */
     @Test
     public void registerConsents() {
         ServiceInvocationResult svc = caTissueConsentClient.registerConsents(getRegisterConsentXMLStr());
@@ -31,6 +34,7 @@ public class CaTissueConsentClientIntegrationTest {
 
     }
 
+    // CHECKSTYLE:OFF
     private String getRegisterConsentXMLStr() {
         return "<?xml version=\"1.0\" ?><consents><participant><lastName>66604232</lastName></participant><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><consentData><specimenLabel>TolvenTestUser252TissueSpecimen111</specimenLabel><consentTierStatus><consentTier><id>1</id></consentTier><status>Yes</status></consentTierStatus><consentTierStatus><consentTier><id>2</id></consentTier><status>No</status></consentTierStatus></consentData><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></consentDetails><consentDetails><collectionProtocolEvent>CPL2</collectionProtocolEvent><consentData><specimenLabel>TolvenTestUser252TissueSpecimen102</specimenLabel><consentTierStatus><consentTier><id>1</id></consentTier><status>Not Specified</status></consentTierStatus><consentTierStatus><consentTier><id>2</id></consentTier><status>Withdrawn</status></consentTierStatus></consentData><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></consentDetails></consents>";
     }
