@@ -216,7 +216,7 @@ public class CaTissueConsentClient {
             ConsentTierStatus tierStatus = itrTierStatus.next();
             String stmt = tierStatus.getConsentTier().getStatement();
             // get the CollectionProtocol and then its consentTierCollection
-            CollectionProtocol cp = getExistingCollectionProtocol(consentDetail.getCollectionProtocol().getTitle());
+            CollectionProtocol cp = getExistingCollectionProtocol(consentDetail.getCollectionProtocol().getShortTitle());
             if (cp != null) {
                 Collection<ConsentTier> consentTierCollection = cp.getConsentTierCollection();
                 Iterator<ConsentTier> itrConsentTier = consentTierCollection.iterator();
@@ -250,9 +250,9 @@ public class CaTissueConsentClient {
         return consentDetail;
     }
 
-    private CollectionProtocol getExistingCollectionProtocol(String title) throws ApplicationException {
+    private CollectionProtocol getExistingCollectionProtocol(String shortTitle) throws ApplicationException {
         CollectionProtocol cp = new CollectionProtocol();
-        cp.setTitle(title);
+        cp.setShortTitle(shortTitle);
         cp = caTissueAPIClient.searchById(CollectionProtocol.class, cp);
         return cp;
     }
