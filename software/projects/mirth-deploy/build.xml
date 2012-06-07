@@ -36,5 +36,47 @@
 			</fileset>
 		</delete>
 	</target>
+	
+	<target name="test-integration" if="run.test" description="Runs the integration testcases">			
+		<!-- overriding test-integration-report to do nothing, as they are all for smoke tests -->
+	</target>	
+	
+	<target name="run-smoke-tests" if="run.test" description="Runs the integration testcases as smoke tests">
+		<runJunit coberturaDataFile="${cobertura.report.dir}/cobertura.ser" 
+					includeTestPattern="**/*IntegrationTest.class" 
+					excludeTestPattern=""/>
+	</target>
+	
+	<target name="smoke-test" description="Runs smoke tests">
+		<propertyfile file="${user.home.java.path}/.integration/ihub/transcend-ihub.properties">
+			<entry key="caaers.client.user" value="${test.caaers.client.user}"/>
+			<entry key="caaers.client.psswd" value="${test.caaers.client.psswd}"/>
+			<entry key="catissue.api.login.username" value="${test.catissue.api.login.username}"/>
+			<entry key="catissue.api.login.password" value="${test.catissue.api.login.password}"/>
+		</propertyfile>
+		
+		<antcall target="stop.mirth.connect"/>
+		<antcall target="start.mirth.connect"/>
+			
+		<antcall target="run-smoke-tests"/>
+			
+		<propertyfile file="${user.home.java.path}/.integration/ihub/transcend-ihub.properties">
+			<entry key="caaers.client.user" value="${caaers.client.user}"/>
+			<entry key="caaers.client.psswd" value="${caaers.client.psswd}"/>
+			<entry key="catissue.api.login.username" value="${catissue.api.login.username}"/>
+			<entry key="catissue.api.login.password" value="${catissue.api.login.password}"/>
+		</propertyfile>
+		
+		<mkdir dir="${test.reports.dir}"/>
+        <junitreport todir="${test.reports.dir}">
+            <fileset dir="${test.results.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${test.reports.dir}"/>
+        </junitreport>
+			
+		<antcall target="stop.mirth.connect"/>
+		<antcall target="start.mirth.connect"/>
+	</target>
 
 </project>

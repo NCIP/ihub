@@ -147,6 +147,42 @@
 		</sequential>
 	</macrodef>
 	
+	<!-- ==================================================================================
+		runJunit: Will generate the ivy dependency report
+	======================================================================================= -->
+	<macrodef name="runJunit">
+		<attribute name="coberturaDataFile"/>
+		<attribute name="includeTestPattern"/>
+		<attribute name="excludeTestPattern"/>
+		
+		<sequential>
+			<echo message="Executing in ${ant.project.name}" />
+			<echo message="Test results dir: ${test.results.dir}"/>
+			<echo message="Test classes dir: ${test.classes.dir}"/>
+			<echo message="Running tests with pattern @{includeTestPattern} excluding @{excludeTestPattern}" />
+			<echo message="Questionable props: ${test.run.classpath}" />
+			<mkdir dir="${test.results.dir}" />
+			
+			<junit printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" 
+				showoutput="false" outputtoformatters="false" fork="true" forkmode="once" timeout="600000" 
+				dir="${basedir}">
+							
+				<classpath location="${instrumented.classes.dir}" />
+				<classpath refid="test.run.classpath" />
+				
+				<sysproperty key="net.sourceforge.cobertura.datafile" file="@{coberturaDataFile}" />
+				
+				<formatter type="plain"/>
+				<formatter type="xml" />
+				<batchtest fork="yes" todir="${test.results.dir}">
+					<fileset dir="${test.classes.dir}" excludes="@{excludeTestPattern}">
+						<include name="@{includeTestPattern}" />
+					</fileset>
+				</batchtest>
+			</junit>
+		</sequential>
+	</macrodef>
+	
 	<!-- If present, will skip the execution of testcases -->
 	<property name="skip.test" value="${env.skip.test}" />
 	<condition property="run.test">
@@ -627,18 +663,18 @@
 	</target>
 	
 	<!-- ================================= 
-	          target: clean-cobertura-dir             
-	         ================================= -->	
-		<target name="clean-cobertura-dir" description="--> clean the cobertura report dir">
-			<echo message="Executing in ${ant.project.name}" />
-			<delete includeemptydirs="true" dir="${cobertura.report.dir}" />
-		</target>
+          target: clean-cobertura-dir             
+         ================================= -->	
+	<target name="clean-cobertura-dir" description="--> clean the cobertura report dir">
+		<echo message="Executing in ${ant.project.name}" />
+		<delete includeemptydirs="true" dir="${cobertura.report.dir}" />
+	</target>
 	<!-- ================================================================
 	    target : clean-cobertura-instruments
 	===================================================================-->
 	<target name="clean-cobertura-instruments" unless="skip.review.reports" description="--> clean the cobertura instruments classes dir">
-				<echo message="Executing in ${ant.project.name}" />
-				<delete includeemptydirs="true" dir="${instrumented.classes.dir}" />
+			<echo message="Executing in ${ant.project.name}" />
+			<delete includeemptydirs="true" dir="${instrumented.classes.dir}" />
 	</target>
     <!-- ================================= 
           target: clean              
@@ -692,31 +728,9 @@
 		<isset property="test"/>
 	</condition>
 	<target name="test" if="run.test" depends="corbetura-init , clean-test-results" description="Runs the testcases">
-		<echo message="Executing in ${ant.project.name}" />
-		<echo message="Test results dir: ${test.results.dir}, with pattern ${testPattern} excluding **/*IntegrationTest.class, **/*LoadTest.class and classes from ${test.classes.dir}" />
-		<echo message="Questionable props: ${test.run.classpath}" />
-		<mkdir dir="${test.results.dir}" />
-				
-		<junit printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" 
-			showoutput="false" outputtoformatters="false" fork="true" forkmode="once" timeout="600000" 
-			dir="${basedir}">
-						
-			<classpath location="${instrumented.classes.dir}" />
-			<classpath refid="test.run.classpath" />
-			
-			<sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.report.dir}/cobertura.ser" />
-			
-			<formatter type="plain"/>
-			<formatter type="xml" />
-			<batchtest fork="yes" todir="${test.results.dir}">
-				<fileset dir="${test.classes.dir}">
-					<include name="${testPattern}" />
-					<exclude name="**/*IntegrationTest.class" />
-					<exclude name="**/*LoadTest.class" />
-				</fileset>
-			</batchtest>
-		</junit>
-		
+		<runJunit coberturaDataFile="${cobertura.report.dir}/cobertura.ser" 
+			includeTestPattern="${testPattern}" 
+			excludeTestPattern="**/*IntegrationTest.class,**/*LoadTest.class"/>
 	</target>
 	
 	<!-- ============================================================== 
@@ -746,29 +760,9 @@
 		============================================================== -->
 		
 	<target name="test-integration" if="run.test" description="Runs the integration testcases">
-		<echo message="Executing in ${ant.project.name}" />
-		<echo message="Test results dir: ${test.results.dir}, with pattern **/*IntegrationTest.class and classes from ${test.classes.dir}" />
-		<echo message="Questionable props: ${test.run.classpath}" />
-		<mkdir dir="${test.results.dir}" />
-				
-		<junit printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" 
-			showoutput="false" outputtoformatters="false" fork="true" forkmode="once" timeout="600000" 
-			dir="${basedir}">
-						
-			<classpath location="${instrumented.classes.dir}" />
-			<classpath refid="test.run.classpath" />
-			
-			<sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.report.dir}/cobertura.ser" />
-			
-			<formatter type="plain"/>
-			<formatter type="xml" />
-			<batchtest fork="yes" todir="${test.results.dir}">
-				<fileset dir="${test.classes.dir}">
-					<include name="**/*IntegrationTest.class" />
-				</fileset>
-			</batchtest>
-		</junit>
-		
+		<runJunit coberturaDataFile="${cobertura.report.dir}/cobertura.ser" 
+					includeTestPattern="**/*IntegrationTest.class" 
+					excludeTestPattern=""/>
 	</target>
 	
  	<!-- ============================================================== 
@@ -799,7 +793,7 @@
 		target: test-report                                                
 	============================================================== -->
 	<target name="test-report" if="run.test" depends="test,cobertura-report"
-		description="Runs all junit tests, generates cobertura-report">
+		description="Runs all junit tests, generates test report and cobertura report">
 		<echo message="Executing in ${ant.project.name}" />
 		<mkdir dir="${test.reports.dir}"/>
         <junitreport todir="${test.reports.dir}">

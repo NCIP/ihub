@@ -48,7 +48,7 @@
 	</target>
 	
 	<target name="smoke-test">
-		<subant target="test-integration-report" buildpath="./projects/mirth-deploy/" antfile="build.xml"/>
+		<subant target="smoke-test" buildpath="./projects/mirth-deploy/" antfile="build.xml"/>
 	</target>
 	
 	<target name="prepare.mirth">
