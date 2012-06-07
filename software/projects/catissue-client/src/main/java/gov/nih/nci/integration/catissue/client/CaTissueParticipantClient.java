@@ -149,6 +149,10 @@ public class CaTissueParticipantClient {
         if (participant == null || StringUtils.isEmpty(participant.getLastName())) {
             throw new ApplicationException("Participant does not contain the unique medical identifier!");
         }
+
+        // populate the CP-Title inside Participant-CPR-CP-Title. We are getting 'shortTitle' in the request
+        populateCPTitle(participant);
+
         caTissueAPIClient.insert(participant);
 
         return null;
@@ -211,6 +215,9 @@ public class CaTissueParticipantClient {
             collectionProtocolRegistration.setId(existingCprLst.get(cnt).getId());
             cnt++;
         }
+
+        // populate the CP-Title inside Participant-CPR-CP-Title. We are getting 'shortTitle' in the request
+        populateCPTitle(participant);
 
         caTissueAPIClient.update(participant);
 
@@ -292,17 +299,18 @@ public class CaTissueParticipantClient {
 
     /**
      * retrieve participants registered to a collection protocol
+     * 
      * @param cpTitle - collection protocol title
-     * @return list of participant for that collection protocol 
+     * @return list of participant for that collection protocol
      * @throws ApplicationException - ApplicationException
      */
     public List<Participant> getParticipantsForCollectionProtocol(String cpTitle) throws ApplicationException {
         return caTissueAPIClient.getApplicationService().query(CqlUtility.getParticipantsForCP(cpTitle));
     }
 
-    
     /**
      * Retrieve the participant for given SSN
+     * 
      * @param ssn - SSN for which participant has to be fetched
      * @return Participant
      * @throws ApplicationException - ApplicationException
@@ -319,9 +327,9 @@ public class CaTissueParticipantClient {
         return prtcpntLst.get(0);
     }
 
-    
     /**
      * Retrieve the participant for given PatientId
+     * 
      * @param mrn - PatientId for which participant has to be fetched
      * @return Participant
      * @throws ApplicationException - ApplicationException
@@ -336,7 +344,37 @@ public class CaTissueParticipantClient {
         return prtcpntLst.get(0);
     }
 
-    
+    /**
+     * This method is used to populate the CP-title inside Participant object for given CP-shortTitle
+     * 
+     * @param participant
+     * @return Participant with Title populated
+     * @throws ApplicationException - ApplicationException
+     */
+    private Participant populateCPTitle(Participant participant) throws ApplicationException {
+        ArrayList<CollectionProtocolRegistration> cprColl = new ArrayList<CollectionProtocolRegistration>(
+                participant.getCollectionProtocolRegistrationCollection());
+        if (cprColl != null) {
+            // We are expecting only ONE CPR here
+            String shortTitle = cprColl.get(0).getCollectionProtocol().getShortTitle();
+
+            // get the existing CollectionProtocol for given shortTitle
+            CollectionProtocol fetchedCP = getExistingCollectionProtocol(shortTitle);
+            if (fetchedCP != null) {
+                // set the fetched CP_Title into the Participant-CPR-CP-title
+                cprColl.get(0).getCollectionProtocol().setTitle(fetchedCP.getTitle());
+            }
+        }
+        return participant;
+    }
+
+    private CollectionProtocol getExistingCollectionProtocol(String shortTitle) throws ApplicationException {
+        CollectionProtocol cp = new CollectionProtocol();
+        cp.setShortTitle(shortTitle);
+        cp = caTissueAPIClient.searchById(CollectionProtocol.class, cp);
+        return cp;
+    }
+
     private Participant copyFrom(Participant participant) {
         Participant p = ParticipantFactory.getInstance().createObject();
 
@@ -370,6 +408,7 @@ public class CaTissueParticipantClient {
             CollectionProtocol cp = CollectionProtocolFactory.getInstance().createObject();
             cp.setActivityStatus(collectionProtocol.getActivityStatus());
             cp.setTitle(collectionProtocol.getTitle());
+            cp.setShortTitle(collectionProtocol.getShortTitle());
 
             CollectionProtocolRegistration cpr = CollectionProtocolRegistrationFactory.getInstance().createObject();
             cpr.setParticipant(p);
