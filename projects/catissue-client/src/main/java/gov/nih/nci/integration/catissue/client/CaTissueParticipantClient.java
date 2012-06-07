@@ -237,13 +237,14 @@ public class CaTissueParticipantClient {
      * @throws Exception - Exception
      */
     public boolean deleteParticipantFromXML(String participantXMLStr) throws Exception {
-        // CHECKSTYLE:OFF
-        if (deleteParticipant(participantXMLStr) != null) {
-            return true;
-        } else {
-            return false;
-        }
-        // CHECKSTYLE:ON
+        Participant participant = deleteParticipant(participantXMLStr) ;
+        boolean flag = false; 
+        
+        if (participant != null) {
+            flag = true;
+        } 
+        
+        return flag;      
     }
 
     /**

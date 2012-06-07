@@ -298,9 +298,7 @@ public class CaTissueConsentClient {
                 // do it recursively
                 performRollbackConsentForChildSpecimens(childSpecimen, consentDetail);
             }
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
+        } catch (ApplicationException e) {            
             LOG.error("Exception During Rollback of Consent for ChildSpecimen with SpecimenLabel as "
                     + consentDetail.getConsentData().getSpecimenLabel(), e);
             throw new ApplicationException("Rollback Consent Failed for ChildSpecimen "
