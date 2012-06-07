@@ -9,6 +9,7 @@ import gov.nih.nci.integration.transformer.XSLTTransformer;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
@@ -85,14 +86,10 @@ public class CaTissueUpdateRegistrationServiceInvocationStrategy implements Serv
     @Override
     public ServiceInvocationResult rollback(ServiceInvocationMessage msg) {
         ServiceInvocationResult serviceInvocationResult = new ServiceInvocationResult();
-        try {
-            String participantXMLStr = msg.getOriginalData();
-            serviceInvocationResult = caTissueParticipantClient.updateRegistrationParticipant(participantXMLStr);
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
-            serviceInvocationResult.setInvocationException(e);
-        }
+
+        String participantXMLStr = msg.getOriginalData();
+        serviceInvocationResult = caTissueParticipantClient.updateRegistrationParticipant(participantXMLStr);
+
         handleException(serviceInvocationResult);
         return serviceInvocationResult;
     }
@@ -115,15 +112,13 @@ public class CaTissueUpdateRegistrationServiceInvocationStrategy implements Serv
         } finally {
             try {
                 is.close();
-                // CHECKSTYLE:OFF
-            } catch (Exception e) {
+            } catch (IOException e) {
                 LOG.error("CaTissueUpdateRegistrationServiceInvocationStrategy.. Exception while closing InputStream : "
                         + e);
             }
             try {
                 os.close();
-            } catch (Exception e) {
-                // CHECKSTYLE:ON
+            } catch (IOException e) {
                 LOG.error("CaTissueUpdateRegistrationServiceInvocationStrategy.. Exception while closing OutputStream : "
                         + e);
             }

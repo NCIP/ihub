@@ -9,6 +9,7 @@ import gov.nih.nci.integration.transformer.XSLTTransformer;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
@@ -101,14 +102,9 @@ public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocat
 
             // call the method to rollback Specimens
             serviceInvocationResult = caTissueSpecimenClient.rollbackCreatedSpecimens(specimenListXMLStr);
-
         } catch (IntegrationException e) {
-            serviceInvocationResult.setInvocationException(e);
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
-            serviceInvocationResult.setInvocationException(e);
-        }
+            serviceInvocationResult.setInvocationException(e);           
+        } 
         return serviceInvocationResult;
     }
 
@@ -137,10 +133,8 @@ public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocat
         } finally {
             try {
                 is.close();
-                os.close();
-                // CHECKSTYLE:OFF
-            } catch (Exception e) {
-                // CHECKSTYLE:ON
+                os.close();               
+            } catch (IOException e) {
                 LOG.error("CaTissueSpecimenServiceInvocationStrategy.. Exception while closing the stream : " + e);
             }
         }

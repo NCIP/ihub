@@ -9,6 +9,7 @@ import gov.nih.nci.integration.transformer.XSLTTransformer;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
@@ -91,16 +92,9 @@ public class CaTissueConsentServiceInvocationStrategy implements ServiceInvocati
     @Override
     public ServiceInvocationResult rollback(ServiceInvocationMessage msg) {
         ServiceInvocationResult serviceInvocationResult = new ServiceInvocationResult();
-        try {
-            String consentListXMLStr = msg.getOriginalData();
-
-            // call the method to rollback Specimens
-            serviceInvocationResult = caTissueConsentClient.rollbackConsents(consentListXMLStr);
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
-            serviceInvocationResult.setInvocationException(e);
-        }
+        String consentListXMLStr = msg.getOriginalData();
+        // call the method to rollback Specimens
+        serviceInvocationResult = caTissueConsentClient.rollbackConsents(consentListXMLStr);
         return serviceInvocationResult;
     }
 
@@ -119,9 +113,7 @@ public class CaTissueConsentServiceInvocationStrategy implements ServiceInvocati
         try {
             os = new ByteArrayOutputStream();
             is = new ByteArrayInputStream(message.getBytes());
-
             xsltTransformer.transform(null, is, os);
-
             specimenXMLStr = new String(os.toByteArray());
         } catch (IntegrationException e) {
             LOG.error("Error transforming to catissue consent XML!", e);
@@ -130,9 +122,7 @@ public class CaTissueConsentServiceInvocationStrategy implements ServiceInvocati
             try {
                 is.close();
                 os.close();
-                // CHECKSTYLE:OFF
-            } catch (Exception e) {
-                // CHECKSTYLE:ON
+            } catch (IOException e) {
                 LOG.error("Inside CaTissueConsentServiceInvocationStrategy.. Error while closing the stream : " + e);
             }
         }
