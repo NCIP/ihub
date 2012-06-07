@@ -13,20 +13,20 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.junit.Assert;
 import org.junit.Test;
+
 /**
  * Test class for CaCISFault
+ * 
  * @author Vinodh
- *
+ * 
  */
 public class AcceptSourceFaultTest {
 
-    // CHECKSTYLE:OFF
-    private final static QName _CaCISFault_QNAME = new QName(// NOPMD
-            "http://cacis.nci.nih.gov", "caCISFault");
-    // CHECKSTYLE:ON
+    private final QName faultQame = new QName("http://cacis.nci.nih.gov", "caCISFault");
 
     /**
      * Testcase for createFault
+     * 
      * @throws JAXBException - JAXBException
      */
     @Test
@@ -48,17 +48,16 @@ public class AcceptSourceFaultTest {
     }
 
     private String getCaCISFaultxml(final CaCISFault parameter) {
+
+        StringWriter sw = new StringWriter();
+        JAXBElement<CaCISFault> cfj = new JAXBElement<CaCISFault>(faultQame, CaCISFault.class, parameter);
         try {
-            StringWriter sw = new StringWriter();
-            JAXBElement<CaCISFault> cfj = new JAXBElement<CaCISFault>(_CaCISFault_QNAME, CaCISFault.class, parameter);
             getMarshaller().marshal(cfj, sw);
-            return sw.toString();
-            // CHECKSTYLE:OFF
-        } catch (Exception ex) {
-            // CHECKSTYLE:ON
-            ex.printStackTrace();
-            return null;
+        } catch (JAXBException e) {           
+            e.printStackTrace();
         }
+        return sw.toString();
+
     }
 
     private CaCISFault getCaCISFaultFromXml(String faultXML) throws JAXBException {
