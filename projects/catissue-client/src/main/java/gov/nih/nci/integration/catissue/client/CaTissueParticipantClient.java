@@ -153,8 +153,13 @@ public class CaTissueParticipantClient {
         // populate the CP-Title inside Participant-CPR-CP-Title. We are getting 'shortTitle' in the request
         populateCPTitle(participant);
 
-        caTissueAPIClient.insert(participant);
-
+        try {
+            caTissueAPIClient.insert(participant);
+        } catch (ApplicationException ae) {
+            LOG.error("Create Registration Failed for Participant with SSN " + participant.getSocialSecurityNumber(),
+                    ae);
+            throw new ApplicationException(ae.getCause());
+        }
         return null;
     }
 
