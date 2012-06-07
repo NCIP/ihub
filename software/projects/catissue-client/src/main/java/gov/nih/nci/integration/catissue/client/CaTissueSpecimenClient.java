@@ -28,8 +28,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 /**
- * This is the client class for Specimen Flow. 
- * It provide operation like CreateSpecimen, UpdateSpecimen,RollbackSpecimen
+ * This is the client class for Specimen Flow. It provide operation like CreateSpecimen, UpdateSpecimen,RollbackSpecimen
  * 
  * @author Rohit Gupta
  */
@@ -47,8 +46,9 @@ public class CaTissueSpecimenClient {
 
     /**
      * Constructor
-     * @param loginName - loginName for the API authentication 
-     * @param password - password for the API authentication 
+     * 
+     * @param loginName - loginName for the API authentication
+     * @param password - password for the API authentication
      * @throws Exception - Exception
      */
     public CaTissueSpecimenClient(String loginName, String password) throws Exception {
@@ -271,9 +271,8 @@ public class CaTissueSpecimenClient {
                 for (SpecimenCollectionGroup scg : scgList) {
                     CollectionProtocol cpObj = scg.getCollectionProtocolRegistration().getCollectionProtocol();
                     if (cpObj.getTitle().equals(cp.getTitle())) {
-                        scgFound = true; // Participant has a
-                        // SpecimenCollectionGroup under the
-                        // given protocol
+                        scgFound = true;
+                        // Participant has a SpecimenCollectionGroup under the given protocol
                         specimen.setSpecimenCollectionGroup(scg);
                         break;
                     }
@@ -289,9 +288,7 @@ public class CaTissueSpecimenClient {
             try {
                 // method call to createSpecimen
                 createSpecimen(specimen);
-                // CHECKSTYLE:OFF
-            } catch (Exception e) {
-                // CHECKSTYLE:ON
+            } catch (ApplicationException e) {
                 LOG.error("CreateSpecimen Failed for Label" + specimen.getLabel(), e);
                 throw new ApplicationException("CreateSpecimen Failed for Label"
                         + specimenDetail.getSpecimen().getLabel() + " and exception is " + e.getCause());
@@ -334,9 +331,7 @@ public class CaTissueSpecimenClient {
 
                 updatedSpecimenList.add(incomingSpecimen);
             }
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
+        } catch (ApplicationException e) {
             LOG.error("UpdateSpecimen Failed for Label" + specimenDetail.getSpecimen().getLabel(), e);
             throw new ApplicationException("UpdateSpecimen Failed for Label" + specimenDetail.getSpecimen().getLabel()
                     + " and exception is " + e.getCause());
@@ -400,7 +395,7 @@ public class CaTissueSpecimenClient {
             SpecimenDetail specimenDetail = specimenDetailItr.next();
             Specimen existingSpecimen = specimenDetail.getSpecimen();
             try {
-                updateSpecimen(existingSpecimen);               
+                updateSpecimen(existingSpecimen);
             } catch (ApplicationException e) {
                 LOG.error("Exception occured during Rollback of UpdateSpecimen " + existingSpecimen.getLabel(), e);
                 throw new ApplicationException("Error occurred : Unable to rollback. Please check the logs.");
@@ -486,8 +481,8 @@ public class CaTissueSpecimenClient {
             }
 
             try {
-                if (existingSpecimen != null) {                    
-                    softDeleteSpecimen(existingSpecimen);                   
+                if (existingSpecimen != null) {
+                    softDeleteSpecimen(existingSpecimen);
                 }
             } catch (ApplicationException e) {
                 LOG.error("Exception occured during Rollback of CreateSpecimen " + specimenLabel, e);
