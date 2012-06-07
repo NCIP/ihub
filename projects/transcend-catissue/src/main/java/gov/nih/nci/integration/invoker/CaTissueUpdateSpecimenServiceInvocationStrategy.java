@@ -9,6 +9,7 @@ import gov.nih.nci.integration.transformer.XSLTTransformer;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
@@ -93,10 +94,6 @@ public class CaTissueUpdateSpecimenServiceInvocationStrategy implements ServiceI
 
         } catch (IntegrationException e) {
             serviceInvocationResult.setInvocationException(e);
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
-            serviceInvocationResult.setInvocationException(e);
         }
 
         handleException(serviceInvocationResult);
@@ -106,16 +103,9 @@ public class CaTissueUpdateSpecimenServiceInvocationStrategy implements ServiceI
     @Override
     public ServiceInvocationResult rollback(ServiceInvocationMessage msg) {
         ServiceInvocationResult serviceInvocationResult = new ServiceInvocationResult();
-        try {
-            String specimenListXMLStr = msg.getOriginalData();
-
-            // call the method to rollback Specimens
-            serviceInvocationResult = caTissueSpecimenClient.rollbackUpdatedSpecimens(specimenListXMLStr);
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
-            serviceInvocationResult.setInvocationException(e);
-        }
+        String specimenListXMLStr = msg.getOriginalData();
+        // call the method to rollback Specimens
+        serviceInvocationResult = caTissueSpecimenClient.rollbackUpdatedSpecimens(specimenListXMLStr);
         return serviceInvocationResult;
     }
 
@@ -130,13 +120,10 @@ public class CaTissueUpdateSpecimenServiceInvocationStrategy implements ServiceI
         String specimenXMLStr = null;
         InputStream is = null;
         ByteArrayOutputStream os = null;
-
         try {
             os = new ByteArrayOutputStream();
             is = new ByteArrayInputStream(message.getBytes());
-
             xsltTransformer.transform(null, is, os);
-
             specimenXMLStr = new String(os.toByteArray());
         } catch (IntegrationException e) {
             LOG.error("Error transforming to catissue specimen XML!", e);
@@ -145,9 +132,7 @@ public class CaTissueUpdateSpecimenServiceInvocationStrategy implements ServiceI
             try {
                 is.close();
                 os.close();
-                // CHECKSTYLE:OFF
-            } catch (Exception e) {
-                // CHECKSTYLE:ON
+            } catch (IOException e) {
                 LOG.error("CaTissueUpdateSpecimenServiceInvocationStrategy.. Exception while closing the stream : " + e);
             }
         }

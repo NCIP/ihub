@@ -9,6 +9,7 @@ import gov.nih.nci.integration.transformer.XSLTTransformer;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
@@ -120,15 +121,13 @@ public class CaTissueRegistrationServiceInvocationStrategy implements ServiceInv
         } finally {
             try {
                 is.close();
-                // CHECKSTYLE:OFF
-            } catch (Exception e) {
+            } catch (IOException e) {
                 LOG.error("Inside CaTissueRegistrationServiceInvocationStrategy.. Exception while closing InputStream : "
                         + e);
             }
             try {
                 os.close();
-            } catch (Exception e) {
-                // CHECKSTYLE:ON
+            } catch (IOException e) {
                 LOG.error("CaTissueRegistrationServiceInvocationStrategy.. Exception while closing ByteArrayOutputStream : "
                         + e);
             }
