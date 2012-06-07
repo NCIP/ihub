@@ -4,6 +4,7 @@ import gov.nih.nci.integration.exception.IntegrationException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 import junit.framework.Assert;
@@ -72,16 +73,14 @@ public class XSLTTransformerTest {
             throw e;
         } finally {
             try {
-                is.close();
-                // CHECKSTYLE:OFF
-            } catch (Exception e) {
+                is.close();              
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             try {
                 os.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-                // CHECKSTYLE:ON
+            } catch (IOException e) {
+                e.printStackTrace();             
             }
         }
         return participantXMLStr;
