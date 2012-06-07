@@ -14,15 +14,18 @@ import java.net.URL;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+
 /**
  * This is the client class for TranscendSemanticAdapter Service.
+ * 
  * @author Rohit Gupta
- *
+ * 
  */
 public class TranscendSemanticAdapterClient {
 
     /**
      * acceptSource
+     * 
      * @param wsdl - wsdl
      * @param requestStr - request in the form of string
      * @return response status
@@ -47,11 +50,6 @@ public class TranscendSemanticAdapterClient {
             return populateCaCISError(ce.getErrorType().name(), ce.getErrorCode(), ce.getErrorMessage(), ce.getDetail());
         } catch (JAXBException e) {
             IntegrationException ie = new IntegrationException(IntegrationError._1041, e, e.getMessage());
-            return populateCaCISError(ie.getErrorType().name(), String.valueOf(ie.getErrorCode()), ie.getMessage(), "");
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
-            IntegrationException ie = new IntegrationException(IntegrationError._1043, e, e.getMessage());
             return populateCaCISError(ie.getErrorType().name(), String.valueOf(ie.getErrorCode()), ie.getMessage(), "");
         }
     }
