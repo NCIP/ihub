@@ -336,38 +336,7 @@ public class CaTissueParticipantClient {
         return prtcpntLst.get(0);
     }
 
-    private CollectionProtocolRegistration getCollectionProtocolRegistrationFromParticipant(Participant participant)
-            throws ApplicationException {
-        Collection<CollectionProtocolRegistration> cprCollection = participant
-                .getCollectionProtocolRegistrationCollection();
-
-        if (cprCollection == null || cprCollection.isEmpty()) {
-            throw new ApplicationException("Participant does not contain the collection protocol info to register to!");
-        }
-
-        List<CollectionProtocolRegistration> cprList = new ArrayList<CollectionProtocolRegistration>(cprCollection);
-        return cprList.get(0);
-    }
-
-    private CollectionProtocol getCollectionProtocolFromParticipant(Participant participant)
-            throws ApplicationException {
-        Collection<CollectionProtocolRegistration> cprCollection = participant
-                .getCollectionProtocolRegistrationCollection();
-
-        if (cprCollection == null || cprCollection.isEmpty()) {
-            throw new ApplicationException("Participant does not contain the collection protocol info to register to!");
-        }
-
-        List<CollectionProtocolRegistration> cprList = new ArrayList<CollectionProtocolRegistration>(cprCollection);
-        CollectionProtocol cp = cprList.get(0).getCollectionProtocol();
-
-        if (cp == null || StringUtils.isEmpty(cp.getTitle())) {
-            throw new ApplicationException("Participant does not contain the collection protocol info to register to!");
-        }
-
-        return cp;
-    }
-
+    
     private Participant copyFrom(Participant participant) {
         Participant p = ParticipantFactory.getInstance().createObject();
 
