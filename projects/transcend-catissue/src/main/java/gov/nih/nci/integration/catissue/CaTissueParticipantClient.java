@@ -6,20 +6,25 @@ import gov.nih.nci.integration.invoker.ServiceInvocationResult;
 import gov.nih.nci.integration.util.CustomUrlClassLoader;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.Executors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * This is the Wrapper client class for RegisterParticipant client class.
- *  
+ * 
  * @author chandrasekaravr
  */
 public class CaTissueParticipantClient {
 
     private static final String CLIENT_CLASSNM = "gov.nih.nci.integration.catissue.client.CaTissueParticipantClient";
     private Class caTissueClientClass = null;
+    private static final Logger LOG = LoggerFactory.getLogger(CaTissueParticipantClient.class);
 
     private String caTissueLibLocation = "";
     private String loginName = null;
@@ -33,6 +38,7 @@ public class CaTissueParticipantClient {
 
     /**
      * Constructor
+     * 
      * @param caTissueLibLocation - caTissueLibLocation
      * @param loginName - loginName
      * @param password - password
@@ -51,23 +57,22 @@ public class CaTissueParticipantClient {
     private void init() throws IntegrationException {
         try {
             File libFile = new File(caTissueLibLocation);
-
-            // creating the custom classloader that bypasses the
-            // systemclassloader
-            CustomUrlClassLoader ccl = new CustomUrlClassLoader(ClassLoader.getSystemClassLoader().getParent(), libFile
-                    .getAbsolutePath());
+            // creating the custom classloader that bypasses the systemclassloader
+            CustomUrlClassLoader ccl = new CustomUrlClassLoader(ClassLoader.getSystemClassLoader().getParent(),
+                    libFile.getAbsolutePath());
             caTissueClientClass = ccl.loadClass(CLIENT_CLASSNM);
-
-            // CHECKSTYLE:OFF
-        } catch (Exception e) { // NOPMD
-            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            LOG.error("MalformedURLException occured while initializing CaTissueParticipantClient.", e);
+            throw new IntegrationException(IntegrationError._1052, e.getMessage());
+        } catch (ClassNotFoundException e) {
+            LOG.error("ClassNotFoundException occured while initializing CaTissueParticipantClient.", e);
             throw new IntegrationException(IntegrationError._1052, e.getMessage());
         }
-        // CHECKSTYLE:ON
     }
 
     /**
      * This method is used to call the 'registerParticipantFromXML' of the client
+     * 
      * @param participantXMLStr - Participant information in the form of XMLString
      * @return ServiceInvocationResult
      */
@@ -78,10 +83,8 @@ public class CaTissueParticipantClient {
         try {
             task = new CaTissueTask(caTissueClientClass, loginName, password, "registerParticipantFromXML",
                     registerMethodParamTypes, participantXMLStr);
-            // CHECKSTYLE:OFF
-        } catch (Exception e1) {
-            // CHECKSTYLE:ON
-            e1.printStackTrace();
+        } catch (IntegrationException e1) {
+            LOG.error("IntegrationException occured while calling registerParticipantFromXML.", e1);
             result = getServiceInvocationResult(IntegrationError._1051, e1);
             return result;
         }
@@ -90,19 +93,17 @@ public class CaTissueParticipantClient {
             ExecutorCompletionService<ServiceInvocationResult> ecs = new ExecutorCompletionService<ServiceInvocationResult>(
                     ex);
             ecs.submit(task);
-
             result = ecs.take().get();
-
             if (!result.isFault()) {
                 result.setResult("Successfully registered participant in CaTissue!");
             } else {
 
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LOG.error("InterruptedException occured while calling registerParticipantFromXML.", e);
             result = getServiceInvocationResult(IntegrationError._1051, e);
         } catch (ExecutionException e) {
-            e.printStackTrace();
+            LOG.error("ExecutionException occured while calling registerParticipantFromXML.", e);
             result = getServiceInvocationResult(IntegrationError._1051, e);
         }
 
@@ -111,6 +112,7 @@ public class CaTissueParticipantClient {
 
     /**
      * This method is used to call the 'updateParticipantRegistrationFromXML' of the client
+     * 
      * @param participantXMLStr - Participant information in the form of XMLString
      * @return ServiceInvocationResult
      */
@@ -121,10 +123,8 @@ public class CaTissueParticipantClient {
         try {
             task = new CaTissueTask(caTissueClientClass, loginName, password, "updateParticipantRegistrationFromXML",
                     updateRegistrationMethodParamTypes, participantXMLStr);
-            // CHECKSTYLE:OFF
-        } catch (Exception e1) {
-            // CHECKSTYLE:ON
-            e1.printStackTrace();
+        } catch (IntegrationException e1) {
+            LOG.error("IntegrationException occured while calling updateParticipantRegistrationFromXML.", e1);
             result = getServiceInvocationResult(IntegrationError._1051, e1);
             return result;
         }
@@ -133,17 +133,15 @@ public class CaTissueParticipantClient {
             ExecutorCompletionService<ServiceInvocationResult> ecs = new ExecutorCompletionService<ServiceInvocationResult>(
                     ex);
             ecs.submit(task);
-
             result = ecs.take().get();
-
             if (!result.isFault()) {
                 result.setResult("Successfully updated participant registration in CaTissue!");
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LOG.error("InterruptedException occured while calling updateParticipantRegistrationFromXML.", e);
             result = getServiceInvocationResult(IntegrationError._1051, e);
         } catch (ExecutionException e) {
-            e.printStackTrace();
+            LOG.error("ExecutionException occured while calling updateParticipantRegistrationFromXML.", e);
             result = getServiceInvocationResult(IntegrationError._1051, e);
         }
 
@@ -152,6 +150,7 @@ public class CaTissueParticipantClient {
 
     /**
      * This method is used to call the 'deleteParticipantFromXML' of the client
+     * 
      * @param participantXMLStr - Participant information in the form of XMLString
      * @return ServiceInvocationResult
      */
@@ -162,10 +161,8 @@ public class CaTissueParticipantClient {
         try {
             task = new CaTissueTask(caTissueClientClass, loginName, password, "deleteParticipantFromXML",
                     deleteMethodParamTypes, participantXMLStr);
-            // CHECKSTYLE:OFF
-        } catch (Exception e1) {
-            // CHECKSTYLE:ON
-            e1.printStackTrace();
+        } catch (IntegrationException e1) {
+            LOG.error("IntegrationException occured while calling deleteParticipantFromXML.", e1);
             result = getServiceInvocationResult(IntegrationError._1051, e1);
             return result;
         }
@@ -174,15 +171,15 @@ public class CaTissueParticipantClient {
             ExecutorCompletionService<ServiceInvocationResult> ecs = new ExecutorCompletionService<ServiceInvocationResult>(
                     ex);
             ecs.submit(task);
-
             result = ecs.take().get();
-
             if (!result.isFault()) {
                 result.setResult("Successfully rollabck participant from CaTissue!");
             }
         } catch (InterruptedException e) {
+            LOG.error("IntegrationException occured while calling deleteParticipantFromXML.", e);
             result = getServiceInvocationResult(IntegrationError._1051, e);
         } catch (ExecutionException e) {
+            LOG.error("IntegrationException occured while calling deleteParticipantFromXML.", e);
             result = getServiceInvocationResult(IntegrationError._1051, e);
         }
 
