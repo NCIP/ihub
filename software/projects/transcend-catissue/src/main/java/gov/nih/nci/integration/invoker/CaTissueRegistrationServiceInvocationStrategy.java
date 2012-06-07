@@ -54,6 +54,14 @@ public class CaTissueRegistrationServiceInvocationStrategy implements ServiceInv
         HashMap<String, IntegrationError> msgToErrMapBase = new LinkedHashMap<String, IntegrationError>();
 
         msgToErrMapBase.put("Error authenticating user", IntegrationError._1019);
+        // CHECKSTYLE:OFF
+        msgToErrMapBase
+                .put("Submission failed since a Participant with the same Participant Protocol ID within this Collection Protocol already exists.",
+                        IntegrationError._1031);
+        // CHECKSTYLE:ON
+        msgToErrMapBase.put(
+                "Submission failed since a Participant with the same SOCIAL_SECURITY_NUMBER already exists.",
+                IntegrationError._1032);
 
         msgToErrMap = Collections.synchronizedMap(msgToErrMapBase);
     }
