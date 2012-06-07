@@ -4,6 +4,7 @@ import gov.nih.nci.integration.exception.IntegrationException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 import junit.framework.Assert;
@@ -79,7 +80,6 @@ public class XSLTTransformerConsentTest {
     private String getConsentInterimMessage() {
         return "<ns2:caxchangerequest xmlns:ns2=\"http://caXchange.nci.nih.gov/caxchangerequest\"><ns0:request xmlns:ns0=\"http://caXchange.nci.nih.gov/messaging\"><ns0:businessMessagePayload><consents xmlns=\"http://cacis.nci.nih.gov\"><participant><cdmsSubjectId>66604232</cdmsSubjectId></participant><consentsDetailsList><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen><cdmsSpecimenId>TolvenTestUser252TissueSpecimen101</cdmsSpecimenId></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol><consentTierResponses><tier><tierId>1</tierId><response>Yes</response></tier><tier><tierId>2</tierId><response>No</response></tier></consentTierResponses></consentDetails><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen><cdmsSpecimenId>TolvenTestUser252TissueSpecimen102</cdmsSpecimenId></specimen><collectionProtocol><title>6483</title><shortTitle>6483</shortTitle></collectionProtocol><consentTierResponses><tier><tierId>1</tierId><response>Not Specified</response></tier><tier><tierId>2</tierId><response>Withdrawn</response></tier></consentTierResponses></consentDetails></consentsDetailsList></consents></ns0:businessMessagePayload></ns0:request></ns2:caxchangerequest>";
     }
-
     // CHECKSTYLE:ON
 
     private String transformXML(String message) throws IntegrationException {
@@ -97,19 +97,17 @@ public class XSLTTransformerConsentTest {
         } catch (IntegrationException e) {
             e.printStackTrace();
             throw e;
-        } finally {
-            // CHECKSTYLE:OFF
+        } finally {          
             try {
                 is.close();
-            } catch (Exception e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             try {
                 os.close();
-            } catch (Exception e) {
+            } catch (IOException e) {
                 e.printStackTrace();
-            }
-            // CHECKSTYLE:ON
+            }           
         }
         return xmlStr;
     }
