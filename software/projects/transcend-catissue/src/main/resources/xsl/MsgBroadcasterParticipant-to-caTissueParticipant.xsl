@@ -75,9 +75,9 @@
 					</catissue:registrationDate>
 					<catissue:specimenCollectionGroupCollection	class="set" />
 					<catissue:collectionProtocol>
-						<catissue:title>
+						<catissue:shortTitle>
 							<xsl:value-of select="//p:participant/p:assignments/p:assignment/p:studySite/p:study/p:identifiers/p:identifier[p:type/text()='Protocol Authority Identifier']/p:value"/>
-						</catissue:title>
+						</catissue:shortTitle>
 						<catissue:collectionProtocolEventCollection	class="linked-hash-set" />
 						<catissue:childCollectionProtocolCollection	class="linked-hash-set" />
 						<catissue:studyFormContextCollection	class="set" />
