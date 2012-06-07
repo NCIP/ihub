@@ -6,6 +6,7 @@ import gov.nih.nci.integration.invoker.ServiceInvocationResult;
 import gov.nih.nci.integration.util.CustomUrlClassLoader;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorCompletionService;
@@ -36,6 +37,7 @@ public class CaTissueConsentClient {
 
     /**
      * Constructor
+     * 
      * @param caTissueLibLocation - caTissueLibLocation
      * @param loginName - loginName
      * @param password - password
@@ -55,16 +57,16 @@ public class CaTissueConsentClient {
         try {
             File libFile = new File(caTissueLibLocation);
 
-            // creating the custom classloader that bypasses the
-            // systemclassloader
-            CustomUrlClassLoader ccl = new CustomUrlClassLoader(ClassLoader.getSystemClassLoader().getParent(), libFile
-                    .getAbsolutePath());
+            // creating the custom classloader that bypasses the systemclassloader
+            CustomUrlClassLoader ccl = new CustomUrlClassLoader(ClassLoader.getSystemClassLoader().getParent(),
+                    libFile.getAbsolutePath());
 
             caTissueConsentClientClass = ccl.loadClass(CLIENT_CLASSNAME);
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
-            LOG.error("Exception occured while initializing CaTissueConsentClient.", e);
+        } catch (MalformedURLException e) {
+            LOG.error("MalformedURLException occured while initializing CaTissueConsentClient.", e);
+            throw new IntegrationException(IntegrationError._1000, e);
+        } catch (ClassNotFoundException e) {
+            LOG.error("ClassNotFoundException occured while initializing CaTissueConsentClient.", e);
             throw new IntegrationException(IntegrationError._1000, e);
         }
 
@@ -85,9 +87,8 @@ public class CaTissueConsentClient {
         try {
             task1 = new CaTissueTask(caTissueConsentClientClass, loginName, password, "getExistingConsents",
                     registerConsentsParamTypes, consentListXMLStr);
-            // CHECKSTYLE:OFF
-        } catch (Exception e1) {
-            // CHECKSTYLE:ON
+           
+        } catch (IntegrationException e1) {            
             result1 = getServiceInvocationResult(IntegrationError._1051, e1);
             return result1;
         }
@@ -119,9 +120,8 @@ public class CaTissueConsentClient {
         try {
             task2 = new CaTissueTask(caTissueConsentClientClass, loginName, password, "registerConsents",
                     registerConsentsParamTypes, consentListXMLStr);
-            // CHECKSTYLE:OFF
-        } catch (Exception e1) {
-            // CHECKSTYLE:ON
+          
+        } catch (IntegrationException e1) {          
             result2 = getServiceInvocationResult(IntegrationError._1051, e1);
             return result2;
         }
@@ -167,10 +167,9 @@ public class CaTissueConsentClient {
         try {
             task = new CaTissueTask(caTissueConsentClientClass, loginName, password, "rollbackConsentRegistration",
                     rollbackConsentParamTypes, consentListXMLStr);
-            // CHECKSTYLE:OFF
-        } catch (Exception e1) {
-            // CHECKSTYLE:ON
-            LOG.error("Exception occured while instantiating CaTissueTask for rollbackConsentRegistration.", e1);
+           
+        } catch (IntegrationException e1) {           
+            LOG.error("IntegrationException occured while instantiating CaTissueTask for rollbackConsentRegistration.", e1);
             result = getServiceInvocationResult(IntegrationError._1051, e1);
             return result;
         }
