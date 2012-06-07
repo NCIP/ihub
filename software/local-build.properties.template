@@ -11,7 +11,6 @@ catissue.client.service.url=http://localhost:8080/catissuecore/http/applicationS
 catissue.client.auth.url=http://localhost:8080/catissuecore/http/remoteAuthenticationManager
 
 ## transcend-catissue properties
-catissue.custom.lib.location=catissue-client-lib/
 catissue.api.login.username=admin@admin.com
 catissue.api.login.password=Aa_111111
 catissue.api.service.retry=2
