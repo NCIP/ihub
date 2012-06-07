@@ -36,9 +36,12 @@ import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 import org.apache.ws.security.WSConstants;
 import org.apache.ws.security.handler.WSHandlerConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * WebService client for CaAERS-Participant flow
+ * 
  * @author Vinodh
  */
 public class CaAERSParticipantServiceWSClient {
@@ -51,8 +54,11 @@ public class CaAERSParticipantServiceWSClient {
 
     private ClientPasswordCallback clientPasswordCallback;
 
+    private static final Logger LOG = LoggerFactory.getLogger(CaAERSParticipantServiceWSClient.class);
+
     /**
      * Constructor
+     * 
      * @param serviceUrl - URL
      * @param userName - user name
      * @param clientPasswordCallback - clientPasswordCallback
@@ -66,15 +72,11 @@ public class CaAERSParticipantServiceWSClient {
 
         try {
             getUnmarshaller();
-
             initClient(serviceUrl);
-         // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (JAXBException e) {
+            LOG.error("CaAERSParticipantServiceWSClient..JAXBException while unmarshlling", e);
             throw new IntegrationException(IntegrationError._1054, e.getMessage());
         }
-        
-     // CHECKSTYLE:ON
     }
 
     private void initClient(String serviceUrl) {
@@ -124,9 +126,9 @@ public class CaAERSParticipantServiceWSClient {
         return jaxbEle.getValue();
     }
 
-    
     /**
      * This method has code to call createParticipant() of the webservice
+     * 
      * @param participantXMLStr - XMLString containing the register-participant details
      * @return response from the webservice
      * @throws JAXBException - JAXBException
@@ -147,19 +149,15 @@ public class CaAERSParticipantServiceWSClient {
         try {
             retValue = client.createParticipant(createParticipant);
         } catch (SOAPFaultException e) {
-            e.printStackTrace();
-            throw e;
-         // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new IntegrationException(IntegrationError._1053, e, (Object) null);
-        }
-     // CHECKSTYLE:ON
+            LOG.error("CaAERSParticipantServiceWSClient..SOAPFaultException while calling createParticipant. ", e);
+            throw e;            
+        } 
         return retValue.getCaaersServiceResponse();
     }
 
     /**
      * This method has code to call deleteParticipant() of the webservice
+     * 
      * @param participantXMLStr - XMLString containing the delete-participant details
      * @return response from the webservice
      * @throws JAXBException - JAXBException
@@ -180,19 +178,15 @@ public class CaAERSParticipantServiceWSClient {
         try {
             retValue = client.deleteParticipant(deleteParticipant);
         } catch (SOAPFaultException e) {
-            // e.printStackTrace();
-            throw e;
-         // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // e.printStackTrace();
-            throw new IntegrationException(IntegrationError._1053, e, (Object) null);
-        }
-     // CHECKSTYLE:ON
+            LOG.error("CaAERSParticipantServiceWSClient..SOAPFaultException while calling deleteParticipant. ", e);
+            throw e;            
+        } 
         return retValue.getCaaersServiceResponse();
     }
 
     /**
-     *  This method has code to call updateParticipant() of the webservice
+     * This method has code to call updateParticipant() of the webservice
+     * 
      * @param participantXMLStr - XMLString containing the update-participant details
      * @return response from the webservice
      * @throws JAXBException - JAXBException
@@ -213,19 +207,14 @@ public class CaAERSParticipantServiceWSClient {
         try {
             retValue = client.updateParticipant(updateParticipant);
         } catch (SOAPFaultException e) {
-            // e.printStackTrace();
-            throw e;
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // e.printStackTrace();
-            throw new IntegrationException(IntegrationError._1053, e, (Object) null);
-        }
-        // CHECKSTYLE:ON
+            LOG.error("CaAERSParticipantServiceWSClient..SOAPFaultException while calling updateParticipant. ", e);
+            throw e;           
+        } 
         return retValue.getCaaersServiceResponse();
     }
 
-    
-    /**This method has code to call getParticipant() of the webservice
+    /**
+     * This method has code to call getParticipant() of the webservice
      * 
      * @param participantXMLStr - - XMLString containing the get-participant details
      * @return response from the webservice
@@ -253,14 +242,9 @@ public class CaAERSParticipantServiceWSClient {
         try {
             retValue = client.getParticipant(getParticipant);
         } catch (SOAPFaultException e) {
-            // e.printStackTrace();
-            throw e;
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // e.printStackTrace();
-            throw new IntegrationException(IntegrationError._1053, e, (Object) null);
-        }
-        // CHECKSTYLE:ON
+            LOG.error("CaAERSParticipantServiceWSClient..SOAPFaultException while calling getParticipant. ", e);
+            throw e;            
+        } 
         return retValue.getCaaersServiceResponse();
     }
 }
