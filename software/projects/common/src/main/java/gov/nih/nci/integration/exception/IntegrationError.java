@@ -44,6 +44,9 @@ public enum IntegrationError {
     _1026(1026, ErrorType.TRANSFORMATION),
     _1027(1027, ErrorType.TRANSFORMATION),
 
+    _1031(1031, ErrorType.VALIDATION),
+    _1032(1032, ErrorType.VALIDATION),
+    
     _1041(1041, ErrorType.TRANSFORMATION),
     _1042(1042, ErrorType.TRANSMISSION),
     _1043(1043, ErrorType.TRANSMISSION),
