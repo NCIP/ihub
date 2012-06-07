@@ -5,14 +5,13 @@ import gov.nih.nci.integration.domain.IHubMessage;
 import gov.nih.nci.integration.domain.ServiceInvocationMessage;
 import gov.nih.nci.integration.domain.Status;
 import gov.nih.nci.integration.domain.StrategyIdentifier;
-import gov.nih.nci.integration.exception.IntegrationError;
-import gov.nih.nci.integration.exception.IntegrationException;
 
 import java.sql.Date;
 
 /**
  * An implementation of ServiceBroadcaster that uses the DAOs to persist ServiceInvocationMessage objects and invoke
- * ServiceInvocationStrategy implementations. 
+ * ServiceInvocationStrategy implementations.
+ * 
  * @author Vinodh
  * 
  */
@@ -27,14 +26,14 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
      */
     public DefaultServiceBroadcaster(ServiceInvocationMessageDao serviceInvocationMessageDao) {
         super();
-        this.serviceInvocationMessageDao = serviceInvocationMessageDao;        
+        this.serviceInvocationMessageDao = serviceInvocationMessageDao;
     }
 
     @Override
     public ServiceInvocationResult delegateServiceInvocation(Long referenceMessageId, String message,
             ServiceInvocationStrategy serviceInvocationStrategy) {
 
-        final Date stTime = new Date(new java.util.Date().getTime()); //NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
 
         final ServiceInvocationMessage serviceInvocationMessage = prepareServiceInvocationMessage(referenceMessageId,
                 message, stTime, serviceInvocationStrategy.getStrategyIdentifier());
@@ -44,11 +43,11 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
         if (serviceInvocationResult.isFault()) {
             // upon receiving the fault can control retry attempts, if it makes
             // sense or not
-            if (serviceInvocationResult.isRetry()) { //NOPMD
+            if (serviceInvocationResult.isRetry()) { // NOPMD
                 final int retryCnt = serviceInvocationStrategy.getRetryCount();
                 for (int i = 0; i < retryCnt; i++) {
                     serviceInvocationResult = delegate(serviceInvocationMessage, serviceInvocationStrategy);
-                    if (!serviceInvocationResult.isFault()) { //NOPMD
+                    if (!serviceInvocationResult.isFault()) { // NOPMD
                         break;
                     }
                 }
@@ -63,22 +62,8 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
     private ServiceInvocationResult delegate(ServiceInvocationMessage serviceInvocationMessage,
             ServiceInvocationStrategy serviceInvocationStrategy) {
         ServiceInvocationResult serviceInvocationResult;
-     // CHECKSTYLE:OFF
-        try {
-            serviceInvocationResult = serviceInvocationStrategy.invoke(serviceInvocationMessage);
-        } catch (Exception e) { //NOPMD
-            // this code must not be reached...ServiceInvocationStrategy must
-            // not throw exception
-            // TODO : To handle any exceptions not handled by
-            // ServiceInvocationStrategy
-            if (!(e instanceof IntegrationException)) { //NOPMD
-                e = new IntegrationException(IntegrationError._1000, e.getCause(), (Object) null);
-            }
-            serviceInvocationResult = new ServiceInvocationResult();
-            serviceInvocationResult.setInvocationException(e);
-        }
-        
-        // CHECKSTYLE:ON
+        serviceInvocationResult = serviceInvocationStrategy.invoke(serviceInvocationMessage);
+
         return serviceInvocationResult;
     }
 
@@ -89,7 +74,7 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
 
         final IHubMessage iHubMessage = new IHubMessage();
         iHubMessage.setStartTime(startTime);
-        iHubMessage.setEndTime(new Date(new java.util.Date().getTime())); //NOPMD
+        iHubMessage.setEndTime(new Date(new java.util.Date().getTime())); // NOPMD
         iHubMessage.setRequest(message);
         iHubMessage.setReferenceMessageId(referenceMessageId);
 
@@ -104,7 +89,7 @@ public class DefaultServiceBroadcaster implements ServiceBroadcaster {
 
         final Exception invocationException = serviceInvocationResult.getInvocationException();
         final IHubMessage iHubMessage = serviceInvocationMessage.getMessage();
-        if (invocationException != null) { //NOPMD
+        if (invocationException != null) { // NOPMD
             iHubMessage.setStatus(Status.FAILED);
             serviceInvocationMessage.setInvocationException(invocationException.getMessage());
         } else {
