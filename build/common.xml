@@ -943,7 +943,7 @@
 		 </xslt>
 		<echo message="No. of PMD failures = ${pmd.failures.count}"/>
 		<condition property="static.analysis.failures.present" >
-			<isset property="${pmd.failures.count}"/>
+			<isset property="pmd.failures.count"/>
 		</condition>
 		<echo message="static-analysis failures = ${static.analysis.failures.present}"/>
 	</target>
