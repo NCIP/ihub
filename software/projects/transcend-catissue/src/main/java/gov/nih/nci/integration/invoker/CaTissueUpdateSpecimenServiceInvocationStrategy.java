@@ -31,13 +31,13 @@ public class CaTissueUpdateSpecimenServiceInvocationStrategy implements ServiceI
 
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueUpdateSpecimenServiceInvocationStrategy.class);
 
-    private int retryCount = 0;
+    private final int retryCount;
 
-    private CaTissueSpecimenClient caTissueSpecimenClient;
+    private final CaTissueSpecimenClient caTissueSpecimenClient;
 
-    private XSLTTransformer xsltTransformer;
+    private final XSLTTransformer xsltTransformer;
 
-    private Map<String, IntegrationError> msgToErrMap;
+    private final Map<String, IntegrationError> msgToErrMap;
 
     /**
      * Constructor

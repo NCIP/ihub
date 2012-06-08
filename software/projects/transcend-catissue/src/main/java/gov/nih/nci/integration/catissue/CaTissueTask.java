@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
  * @author chandrasekaravr
  * 
  */
+@SuppressWarnings( { "PMD.AvoidCatchingGenericException" } )
 public class CaTissueTask implements Callable<ServiceInvocationResult> {
 
     private Object caTissueClientInstance;
@@ -45,25 +46,12 @@ public class CaTissueTask implements Callable<ServiceInvocationResult> {
             constructor = caTissueParticipantClientClass.getDeclaredConstructor(String.class, String.class);
             this.caTissueClientInstance = constructor.newInstance(loginName, password);
             methodToInvoke = caTissueParticipantClientClass.getDeclaredMethod(methodName, String.class);
-        } catch (SecurityException e) {
-            LOG.error("CaTissueTask-SecurityException inside the Constructor. ", e);
+         // CHECKSTYLE:OFF
+        } catch (Exception e) {
+            LOG.error("CaTissueTask-Exception inside the Constructor. ", e);
+         // CHECKSTYLE:ON
             throw new IntegrationException(IntegrationError._1052, e.getMessage());
-        } catch (NoSuchMethodException e) {
-            LOG.error("CaTissueTask-NoSuchMethodException inside the Constructor. ", e);
-            throw new IntegrationException(IntegrationError._1052, e.getMessage());
-        } catch (IllegalArgumentException e) {
-            LOG.error("CaTissueTask-IllegalArgumentException inside the Constructor. ", e);
-            throw new IntegrationException(IntegrationError._1052, e.getMessage());
-        } catch (InstantiationException e) {
-            LOG.error("CaTissueTask-InstantiationException inside the Constructor. ", e);
-            throw new IntegrationException(IntegrationError._1052, e.getMessage());
-        } catch (IllegalAccessException e) {
-            LOG.error("CaTissueTask-IllegalAccessException inside the Constructor. ", e);
-            throw new IntegrationException(IntegrationError._1052, e.getMessage());
-        } catch (InvocationTargetException e) {
-            LOG.error("CaTissueTask-InvocationTargetException inside the Constructor. ", e);
-            throw new IntegrationException(IntegrationError._1052, e.getMessage());
-        }
+        } 
 
         this.message = message;
     }
