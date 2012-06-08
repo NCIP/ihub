@@ -35,7 +35,6 @@ import com.thoughtworks.xstream.io.xml.StaxDriver;
  * 
  * @author Rohit Gupta
  */
-
 public class CaTissueSpecimenClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueSpecimenClient.class);

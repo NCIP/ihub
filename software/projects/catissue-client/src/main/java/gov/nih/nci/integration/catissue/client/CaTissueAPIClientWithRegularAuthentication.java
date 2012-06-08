@@ -21,6 +21,7 @@ import org.springframework.beans.BeansException;
  * @author chandrasekaravr
  * 
  */
+@SuppressWarnings( { "PMD.AvoidCatchingGenericException","PMD.SignatureDeclareThrowsException" } )
 public class CaTissueAPIClientWithRegularAuthentication {
 
     private final String loginName;
