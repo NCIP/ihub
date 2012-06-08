@@ -3,15 +3,21 @@ package gov.nih.nci.integration.caaers.invoker;
 import gov.nih.nci.integration.invoker.ServiceInvocationStrategy;
 import gov.nih.nci.integration.util.CustomClasspathXmlApplicationContext;
 
+import java.net.MalformedURLException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.Executors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+
 /**
  * Factory class for Strategy for caAERS
+ * 
  * @author Vinodh
- *
+ * 
  */
 public final class CaAERSServiceInvocationStrategyFactory {
 
@@ -20,50 +26,49 @@ public final class CaAERSServiceInvocationStrategyFactory {
     private static ServiceInvocationStrategy caaersUpdateRegistrationServiceInvocationStrategy = null;
 
     private static Boolean initStatus = null;
-    
-    private CaAERSServiceInvocationStrategyFactory() {        
+
+    private static final Logger LOG = LoggerFactory.getLogger(CaAERSServiceInvocationStrategyFactory.class);
+
+    private CaAERSServiceInvocationStrategyFactory() {
     }
 
     private static synchronized void init(final String[] caaersLibLocation, final String... caaersConfig) {
-        ExecutorCompletionService<Boolean> ecs = new ExecutorCompletionService<Boolean>(Executors
-                .newSingleThreadExecutor());
+        final ExecutorCompletionService<Boolean> ecs = new ExecutorCompletionService<Boolean>(
+                Executors.newSingleThreadExecutor());
 
         ecs.submit(new Callable<Boolean>() {
-
             @Override
-            public Boolean call() throws Exception {
-                CustomClasspathXmlApplicationContext ctx = new CustomClasspathXmlApplicationContext(caaersLibLocation,
-                        caaersConfig);
+            public Boolean call() throws MalformedURLException, BeansException {
+                final CustomClasspathXmlApplicationContext ctx = new CustomClasspathXmlApplicationContext(
+                        caaersLibLocation, caaersConfig);
                 caaersRegistrationServiceInvocationStrategy = (ServiceInvocationStrategy) ctx
                         .getBean("caAersRegistrationServiceInvocationStrategy");
                 caaersUpdateRegistrationServiceInvocationStrategy = (ServiceInvocationStrategy) ctx
                         .getBean("caAersUpdateRegistrationServiceInvocationStrategy");
-
                 return Boolean.TRUE;
             }
-
         });
 
         try {
             initStatus = ecs.take().get();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LOG.error("CaAERSServiceInvocationStrategyFactory.InterruptedException inside init(). ", e);
             initStatus = Boolean.FALSE;
         } catch (ExecutionException e) {
-            e.printStackTrace();
+            LOG.error("CaAERSServiceInvocationStrategyFactory.ExecutionException inside init(). ", e);
             initStatus = Boolean.FALSE;
         }
     }
 
     /**
      * Method to get caaersRegistrationServiceInvocationStrategy
+     * 
      * @param caaersLibLocation - caaersLibLocation
      * @param caaersConfig - caaersConfig
      * @return caaersRegistrationServiceInvocationStrategy
      */
-    // CHECKSTYLE:OFF
     public static ServiceInvocationStrategy createCaAERSRegistrationServiceInvocationStrategy(
-            final String caaersLibLocation[] , final String... caaersConfig) {
+            final String[] caaersLibLocation, final String... caaersConfig) {
 
         if (initStatus == null && caaersRegistrationServiceInvocationStrategy == null) {
             init(caaersLibLocation, caaersConfig);
@@ -77,12 +82,13 @@ public final class CaAERSServiceInvocationStrategyFactory {
 
     /**
      * Method to get caaersUpdateRegistrationServiceInvocationStrategy
+     * 
      * @param caaersLibLocation - caaersLibLocation
      * @param caaersConfig - caaersConfig
      * @return caaersUpdateRegistrationServiceInvocationStrategy
      */
     public static ServiceInvocationStrategy createCaAERSUpdateRegistrationServiceInvocationStrategy(
-            final String caaersLibLocation[], final String... caaersConfig) {
+            final String[] caaersLibLocation, final String... caaersConfig) {
 
         if (initStatus == null && caaersUpdateRegistrationServiceInvocationStrategy == null) {
             init(caaersLibLocation, caaersConfig);
