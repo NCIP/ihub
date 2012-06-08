@@ -39,13 +39,13 @@ public class RegisterConsentIntegrationTest {
     @Test
     public void registerConsents() {
         try {
-            HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            StringEntity reqentity = new StringEntity(getRegisterConsentXMLStr());
+            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
+            final StringEntity reqentity = new StringEntity(getRegisterConsentXMLStr());
             httppost.setEntity(reqentity);
             httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
 
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity entity = response.getEntity();
+            final HttpResponse response = httpclient.execute(httppost);
+            final HttpEntity entity = response.getEntity();
             
             String createdXML = null;
             
@@ -68,13 +68,13 @@ public class RegisterConsentIntegrationTest {
     @Test
     public void registerConsentsSpecimenNotExist() {
         try {
-            HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            StringEntity reqentity = new StringEntity(getRegisterConsentSpecimenNotExistXMLStr());
+            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
+            final StringEntity reqentity = new StringEntity(getRegisterConsentSpecimenNotExistXMLStr());
             httppost.setEntity(reqentity);
             httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
 
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity entity = response.getEntity();
+            final HttpResponse response = httpclient.execute(httppost);
+            final HttpEntity entity = response.getEntity();
             
             String createdXML = null;
             
@@ -97,13 +97,13 @@ public class RegisterConsentIntegrationTest {
     @Test
     public void registerConsentsCollectionProtocolNotExist() {
         try {
-            HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            StringEntity reqentity = new StringEntity(getRegisterConsentCollectionProtocolNotExistXMLStr());
+            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
+            final StringEntity reqentity = new StringEntity(getRegisterConsentCollectionProtocolNotExistXMLStr());
             httppost.setEntity(reqentity);
             httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
 
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity entity = response.getEntity();
+            final HttpResponse response = httpclient.execute(httppost);
+            final HttpEntity entity = response.getEntity();
             
             String createdXML = null;
             
@@ -127,13 +127,13 @@ public class RegisterConsentIntegrationTest {
     @Test
     public void registerConsentsStatementNotExist() {
         try {
-            HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            StringEntity reqentity = new StringEntity(getRegisterConsentStatementNotExistXMLStr());
+            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
+            final StringEntity reqentity = new StringEntity(getRegisterConsentStatementNotExistXMLStr());
             httppost.setEntity(reqentity);
             httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
 
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity entity = response.getEntity();
+            final HttpResponse response = httpclient.execute(httppost);
+            final HttpEntity entity = response.getEntity();
             
             String createdXML = null;
             
