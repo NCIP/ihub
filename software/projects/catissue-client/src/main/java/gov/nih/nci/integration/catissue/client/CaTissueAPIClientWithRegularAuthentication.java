@@ -23,8 +23,8 @@ import org.springframework.beans.BeansException;
  */
 public class CaTissueAPIClientWithRegularAuthentication {
 
-    private String loginName;
-    private String password;
+    private final String loginName;
+    private final String password;
 
     /**
      * Constructor
@@ -67,8 +67,8 @@ public class CaTissueAPIClientWithRegularAuthentication {
      * @throws ApplicationException - ApplicationException
      */
     public <T> T insert(T object) throws ApplicationException {
-        SDKQuery query = new InsertExampleQuery(object);
-        SDKQueryResult result = getApplicationService().executeQuery(query);
+        final SDKQuery query = new InsertExampleQuery(object);
+        final SDKQueryResult result = getApplicationService().executeQuery(query);
         return (T) result.getObjectResult();
     }
 
@@ -81,8 +81,8 @@ public class CaTissueAPIClientWithRegularAuthentication {
      * @throws ApplicationException - ApplicationException
      */
     public <T> T update(T object) throws ApplicationException {
-        SDKQuery query = new UpdateExampleQuery(object);
-        SDKQueryResult result = getApplicationService().executeQuery(query);
+        final SDKQuery query = new UpdateExampleQuery(object);
+        final SDKQueryResult result = getApplicationService().executeQuery(query);
         return (T) result.getObjectResult();
     }
 
@@ -95,8 +95,8 @@ public class CaTissueAPIClientWithRegularAuthentication {
      * @throws ApplicationException - ApplicationException
      */
     public <T> T delete(T object) throws ApplicationException {
-        SDKQuery query = new DeleteExampleQuery(object);
-        SDKQueryResult result = getApplicationService().executeQuery(query);
+        final SDKQuery query = new DeleteExampleQuery(object);
+        final SDKQueryResult result = getApplicationService().executeQuery(query);
         return (T) result.getObjectResult();
     }
 
@@ -107,8 +107,8 @@ public class CaTissueAPIClientWithRegularAuthentication {
      * @throws ApplicationException - ApplicationException
      */
     public void delete(String hql) throws ApplicationException {
-        SDKQuery query = new DeleteHQLQuery(hql);
-        SDKQueryResult result = getApplicationService().executeQuery(query);
+        final SDKQuery query = new DeleteHQLQuery(hql);
+        getApplicationService().executeQuery(query);
     }
 
     /**
@@ -134,7 +134,7 @@ public class CaTissueAPIClientWithRegularAuthentication {
      * @throws ApplicationException - ApplicationException
      */
     public <T> T searchById(Class<T> klass, T example) throws ApplicationException {
-        List<T> result = getApplicationService().search(klass, example);
+        final List<T> result = getApplicationService().search(klass, example);
         if (result != null && result.size() > 0) {
             return result.get(0);
         } else {
@@ -143,7 +143,6 @@ public class CaTissueAPIClientWithRegularAuthentication {
 
     }
 
-    
     // CHECKSTYLE:OFF
     final protected CaTissueWritableAppService getAppService(String username, String password) throws Exception {
         return (CaTissueWritableAppService) ApplicationServiceProvider.getApplicationService(username, password);

@@ -14,15 +14,18 @@ import gov.nih.nci.integration.catissue.domain.Specimens;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 
 import java.io.StringReader;
+import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
@@ -37,7 +40,7 @@ public class CaTissueSpecimenClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueSpecimenClient.class);
     private final CaTissueAPIClientWithRegularAuthentication caTissueAPIClient;
-    private XStream xStream = new XStream(new StaxDriver());
+    private final XStream xStream = new XStream(new StaxDriver());
 
     private static final String ACTIVITY_STATUS_DISABLED = "Disabled";
     private static final String TISSUE = "Tissue";
@@ -49,9 +52,10 @@ public class CaTissueSpecimenClient {
      * 
      * @param loginName - loginName for the API authentication
      * @param password - password for the API authentication
-     * @throws Exception - Exception
+     * @throws MalformedURLException - MalformedURLException
+     * @throws BeansException - BeansException
      */
-    public CaTissueSpecimenClient(String loginName, String password) throws Exception {
+    public CaTissueSpecimenClient(String loginName, String password) throws BeansException, MalformedURLException {
         super();
         Thread.currentThread().setContextClassLoader(CaTissueSpecimenClient.class.getClassLoader());
         this.caTissueAPIClient = new CaTissueAPIClientWithRegularAuthentication(loginName, password);
@@ -74,11 +78,13 @@ public class CaTissueSpecimenClient {
      * @throws ApplicationException - Throws exception if Specimen already exist
      */
     public String isSpecimensExist(String specimenListXMLStr) throws ApplicationException {
-        LOG.debug("Inside isSpecimensExist...The Incoming XML for isSpecimensExist() is --> " + specimenListXMLStr);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Inside isSpecimensExist...The Incoming XML for isSpecimensExist() is --> " + specimenListXMLStr);
+        }
 
         // Parse the incoming XML String. The returned object will contain data
         // from the incoming specimens XML
-        Specimens specimens = parseSpecimenListXML(specimenListXMLStr);
+        final Specimens specimens = parseSpecimenListXML(specimenListXMLStr);
 
         return isSpecimensAlreadyExist(specimens);
     }
@@ -91,15 +97,17 @@ public class CaTissueSpecimenClient {
      * @throws ApplicationException - if any exception occurred during data retrieval
      */
     public String getExistingSpecimens(String specimenListXMLStr) throws ApplicationException {
-        LOG.debug("Inside getExistingSpecimens...The Incoming XML for getExistingSpecimens() is --> "
-                + specimenListXMLStr);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Inside getExistingSpecimens...The Incoming XML for getExistingSpecimens() is --> "
+                    + specimenListXMLStr);
+        }
 
         // Parse the incoming XML String. The returned object will contain data
         // from the incoming consents XML
-        Specimens incomingSpecimens = parseSpecimenListXML(specimenListXMLStr);
+        final Specimens incomingSpecimens = parseSpecimenListXML(specimenListXMLStr);
 
         // Fetch the existing Consents
-        Specimens exitingSpecimens = fetchExistingSpecimens(incomingSpecimens);
+        final Specimens exitingSpecimens = fetchExistingSpecimens(incomingSpecimens);
 
         return xStream.toXML(exitingSpecimens);
     }
@@ -112,11 +120,14 @@ public class CaTissueSpecimenClient {
      * @throws ApplicationException - if any exception occurred during data insertion
      */
     public String createSpecimens(String specimenListXMLStr) throws ApplicationException {
-        LOG.debug("Inside CaTissueSpecimenClient...The Incoming XML for createSpecimens() is --> " + specimenListXMLStr);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Inside CaTissueSpecimenClient...The Incoming XML for createSpecimens() is --> "
+                    + specimenListXMLStr);
+        }
 
         // Parse the incoming XML String. The returned object will contain data
         // from the incoming specimens XML
-        Specimens specimens = parseSpecimenListXML(specimenListXMLStr);
+        final Specimens specimens = parseSpecimenListXML(specimenListXMLStr);
 
         // perform the actual logic to create the Specimens..
         performCreateSpecimens(specimens);
@@ -133,13 +144,15 @@ public class CaTissueSpecimenClient {
      * @throws ApplicationException - if any exception occurred during data updation
      */
     public String updateSpecimens(String specimenListXMLStr) throws ApplicationException {
-        LOG.debug("Inside CaTissueSpecimenClient... updateSpecimens()..The Incoming XML is --> " + specimenListXMLStr);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Inside CaTissueSpecimenClient... updateSpecimens()..The Incoming XML is --> " + specimenListXMLStr);
+        }        
 
         // This object contain data from the incoming specimens xml
-        Specimens specimens = parseSpecimenListXML(specimenListXMLStr);
+        final Specimens specimens = parseSpecimenListXML(specimenListXMLStr);
 
         // perform the actual logic to Updating the Specimens..
-        List<Specimen> updatedSpecimenList = performUpdateSpecimens(specimens);
+        final List<Specimen> updatedSpecimenList = performUpdateSpecimens(specimens);
 
         // Copy the exiting Specimen and return in the form of XML
         return xStream.toXML(copyFromExistingSpecimen(updatedSpecimenList));
@@ -154,11 +167,13 @@ public class CaTissueSpecimenClient {
      * @throws ApplicationException - if any exception occurred during rollback itself
      */
     public String rollbackCreatedSpecimens(String specimenListXMLStr) throws ApplicationException {
-        LOG.debug("Inside CaTissueSpecimenClient... rollbackCreatedSpecimens()..The Incoming XML is --> "
-                + specimenListXMLStr);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Inside CaTissueSpecimenClient... rollbackCreatedSpecimens()..The Incoming XML is --> "
+                    + specimenListXMLStr);
+        }        
 
         // This object contain data from the incoming specimens xml
-        Specimens specimens = parseSpecimenListXML(specimenListXMLStr);
+        final Specimens specimens = parseSpecimenListXML(specimenListXMLStr);
 
         // write a method which will rollback the things...
         performRollbackCreatedSpecimens(specimens);
@@ -174,11 +189,13 @@ public class CaTissueSpecimenClient {
      * @throws ApplicationException - if any exception occurred during rollback itself
      */
     public String rollbackUpdatedSpecimens(String specimenListXMLStr) throws ApplicationException {
-        LOG.debug("Inside CaTissueSpecimenClient... rollbackUpdatedSpecimens()..The Incoming XML is --> "
-                + specimenListXMLStr);
-
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Inside CaTissueSpecimenClient... rollbackUpdatedSpecimens()..The Incoming XML is --> "
+                    + specimenListXMLStr);
+        }
+        
         // This object contain data from the incoming specimens xml
-        Specimens specimens = parseSpecimenListXML(specimenListXMLStr);
+        final Specimens specimens = parseSpecimenListXML(specimenListXMLStr);
 
         // write a method which will rollback the things...
         performRollbackUpdatedSpecimens(specimens);
@@ -193,8 +210,7 @@ public class CaTissueSpecimenClient {
      * @return
      */
     private Specimens parseSpecimenListXML(String specimenListXMLStr) {
-        Specimens specimens = (Specimens) xStream.fromXML(new StringReader(specimenListXMLStr));
-        return specimens;
+        return (Specimens) xStream.fromXML(new StringReader(specimenListXMLStr));
     }
 
     /**
@@ -204,12 +220,12 @@ public class CaTissueSpecimenClient {
      * @throws ApplicationException if specimen already exist
      */
     private String isSpecimensAlreadyExist(Specimens specimens) throws ApplicationException {
-        List<SpecimenDetail> specimenDetailList = specimens.getSpecimenDetailList();
-        Iterator<SpecimenDetail> specimenDetailItr = specimenDetailList.iterator();
+        final List<SpecimenDetail> specimenDetailList = specimens.getSpecimenDetailList();
+        final Iterator<SpecimenDetail> specimenDetailItr = specimenDetailList.iterator();
         while (specimenDetailItr.hasNext()) {
-            SpecimenDetail specimenDetail = specimenDetailItr.next();
-            String specimenLabel = specimenDetail.getSpecimen().getLabel();
-            Specimen existingSpecimen = getExistingSpecimen(specimenLabel);
+            final SpecimenDetail specimenDetail = specimenDetailItr.next();
+            final String specimenLabel = specimenDetail.getSpecimen().getLabel();
+            final Specimen existingSpecimen = getExistingSpecimen(specimenLabel);
             if (existingSpecimen != null) {
                 LOG.error("Specimen with the same LABEL already exists for Specimen " + specimenLabel);
                 throw new ApplicationException("Specimen with the same LABEL already exists.");
@@ -226,12 +242,12 @@ public class CaTissueSpecimenClient {
      * @param incomingSpecimens
      */
     private Specimens fetchExistingSpecimens(Specimens incomingSpecimens) throws ApplicationException {
-        List<Specimen> existingSpecimenList = new ArrayList<Specimen>();
-        List<SpecimenDetail> specimenDetailList = incomingSpecimens.getSpecimenDetailList();
-        Iterator<SpecimenDetail> specimenDetailItr = specimenDetailList.iterator();
+        final List<Specimen> existingSpecimenList = new ArrayList<Specimen>();
+        final List<SpecimenDetail> specimenDetailList = incomingSpecimens.getSpecimenDetailList();
+        final Iterator<SpecimenDetail> specimenDetailItr = specimenDetailList.iterator();
         while (specimenDetailItr.hasNext()) {
-            SpecimenDetail specimenDetail = specimenDetailItr.next();
-            Specimen existingSpecimen = getExistingSpecimen(specimenDetail.getSpecimen().getLabel());
+            final SpecimenDetail specimenDetail = specimenDetailItr.next();
+            final Specimen existingSpecimen = getExistingSpecimen(specimenDetail.getSpecimen().getLabel());
             if (existingSpecimen == null) {
                 LOG.error("Specimen for given LABEL " + specimenDetail.getSpecimen().getLabel() + " doesn't exist.");
                 throw new ApplicationException("Specimen for given LABEL doesn't exist.");
@@ -248,6 +264,7 @@ public class CaTissueSpecimenClient {
         return copyFromExistingSpecimen(existingSpecimenList);
     }
 
+       
     /**
      * This method has the code/logic to call the createSpecimen.
      * 
@@ -255,21 +272,21 @@ public class CaTissueSpecimenClient {
      */
     private void performCreateSpecimens(Specimens specimens) throws ApplicationException {
 
-        List<SpecimenDetail> specimenDetailList = specimens.getSpecimenDetailList();
+        final List<SpecimenDetail> specimenDetailList = specimens.getSpecimenDetailList();
         Iterator<SpecimenDetail> specimenDetailItr = null;
         Specimen specimen = null;
 
         for (specimenDetailItr = specimenDetailList.iterator(); specimenDetailItr.hasNext();) {
             SpecimenDetail specimenDetail = null;
             specimenDetail = (SpecimenDetail) specimenDetailItr.next();
-            CollectionProtocol cp = specimenDetail.getCollectionProtocol();
+            final CollectionProtocol cp = specimenDetail.getCollectionProtocol();
             specimen = specimenDetail.getSpecimen();
             boolean scgFound = false;
-            List<SpecimenCollectionGroup> scgList = getSpecimenCollectionGroupList(specimenDetail);
+            final List<SpecimenCollectionGroup> scgList = getSpecimenCollectionGroupList(specimenDetail);
 
             if ((scgList != null) && (scgList.size() > 0)) {
                 for (SpecimenCollectionGroup scg : scgList) {
-                    CollectionProtocol cpObj = scg.getCollectionProtocolRegistration().getCollectionProtocol();
+                    final CollectionProtocol cpObj = scg.getCollectionProtocolRegistration().getCollectionProtocol();
                     if (cpObj.getTitle().equals(cp.getTitle())) {
                         scgFound = true;
                         // Participant has a SpecimenCollectionGroup under the given protocol
@@ -307,19 +324,19 @@ public class CaTissueSpecimenClient {
      */
     private List<Specimen> performUpdateSpecimens(Specimens specimens) throws ApplicationException {
 
-        List<Specimen> updatedSpecimenList = new ArrayList<Specimen>();
+        final List<Specimen> updatedSpecimenList = new ArrayList<Specimen>();
 
-        List<SpecimenDetail> specimenDetailList = specimens.getSpecimenDetailList();
+        final List<SpecimenDetail> specimenDetailList = specimens.getSpecimenDetailList();
         Iterator<SpecimenDetail> specimenDetailItr = null;
         SpecimenDetail specimenDetail = null;
 
         try {
             for (specimenDetailItr = specimenDetailList.iterator(); specimenDetailItr.hasNext();) {
                 specimenDetail = specimenDetailItr.next();
-                Specimen incomingSpecimen = specimenDetail.getSpecimen();
+                final Specimen incomingSpecimen = specimenDetail.getSpecimen();
 
                 // Get the corresponding existing Specimen using the Label
-                Specimen existingSpecimen = getExistingSpecimen(incomingSpecimen.getLabel());
+                final Specimen existingSpecimen = getExistingSpecimen(incomingSpecimen.getLabel());
                 incomingSpecimen.setId(existingSpecimen.getId());
                 // Specimen Collection Group is required.
                 incomingSpecimen.setSpecimenCollectionGroup(existingSpecimen.getSpecimenCollectionGroup());
@@ -349,14 +366,14 @@ public class CaTissueSpecimenClient {
     private boolean isUpdateSpecimenRequestDataValid(SpecimenDetail inSpecimenDetail, Specimen existingSpecimen)
             throws ApplicationException {
         boolean hasValidData = true;
-        String inCPE = inSpecimenDetail.getCollectionProtocolEvent();
-        String existCPE = existingSpecimen.getSpecimenCollectionGroup().getCollectionProtocolEvent()
+        final String inCPE = inSpecimenDetail.getCollectionProtocolEvent();
+        final String existCPE = existingSpecimen.getSpecimenCollectionGroup().getCollectionProtocolEvent()
                 .getCollectionPointLabel();
-        String inCP = inSpecimenDetail.getCollectionProtocol().getTitle();
-        String existCP = existingSpecimen.getSpecimenCollectionGroup().getCollectionProtocolEvent()
+        final String inCP = inSpecimenDetail.getCollectionProtocol().getTitle();
+        final String existCP = existingSpecimen.getSpecimenCollectionGroup().getCollectionProtocolEvent()
                 .getCollectionProtocol().getTitle();
-        String inSC = inSpecimenDetail.getSpecimen().getSpecimenClass();
-        String existSC = existingSpecimen.getSpecimenClass();
+        final String inSC = inSpecimenDetail.getSpecimen().getSpecimenClass();
+        final String existSC = existingSpecimen.getSpecimenClass();
 
         if (!inCPE.equals(existCPE)) {
             hasValidData = false;
@@ -388,12 +405,12 @@ public class CaTissueSpecimenClient {
      * @param specimens
      */
     private void performRollbackUpdatedSpecimens(Specimens specimens) throws ApplicationException {
-        List<SpecimenDetail> specimenDetailList = specimens.getSpecimenDetailList();
-        Iterator<SpecimenDetail> specimenDetailItr = specimenDetailList.iterator();
+        final List<SpecimenDetail> specimenDetailList = specimens.getSpecimenDetailList();
+        final Iterator<SpecimenDetail> specimenDetailItr = specimenDetailList.iterator();
 
         while (specimenDetailItr.hasNext()) {
-            SpecimenDetail specimenDetail = specimenDetailItr.next();
-            Specimen existingSpecimen = specimenDetail.getSpecimen();
+            final SpecimenDetail specimenDetail = specimenDetailItr.next();
+            final Specimen existingSpecimen = specimenDetail.getSpecimen();
             try {
                 updateSpecimen(existingSpecimen);
             } catch (ApplicationException e) {
@@ -423,10 +440,10 @@ public class CaTissueSpecimenClient {
 
     private Specimens copyFromExistingSpecimen(List<Specimen> existingSpecimenList) {
 
-        Specimens existingSpecimens = new Specimens();
+        final Specimens existingSpecimens = new Specimens();
         Iterator<Specimen> specimenItr = null;
         for (specimenItr = existingSpecimenList.iterator(); specimenItr.hasNext();) {
-            Specimen existingSpecimen = specimenItr.next();
+            final Specimen existingSpecimen = specimenItr.next();
             Specimen specimen = null;
             if (TISSUE.equalsIgnoreCase(existingSpecimen.getSpecimenClass())) {
                 specimen = new TissueSpecimen();
@@ -443,10 +460,10 @@ public class CaTissueSpecimenClient {
             specimen.setAvailableQuantity(existingSpecimen.getAvailableQuantity());
             specimen.setBarcode(existingSpecimen.getBarcode());
             specimen.setLabel(existingSpecimen.getLabel());
-            SpecimenCollectionGroup specimenCollectionGroup = new SpecimenCollectionGroup();
+            final SpecimenCollectionGroup specimenCollectionGroup = new SpecimenCollectionGroup();
             specimenCollectionGroup.setId(existingSpecimen.getSpecimenCollectionGroup().getId());
             specimen.setSpecimenCollectionGroup(specimenCollectionGroup);
-            SpecimenCharacteristics chars = new SpecimenCharacteristics();
+            final SpecimenCharacteristics chars = new SpecimenCharacteristics();
             chars.setTissueSide(existingSpecimen.getSpecimenCharacteristics().getTissueSide());
             chars.setTissueSite(existingSpecimen.getSpecimenCharacteristics().getTissueSite());
             specimen.setSpecimenCharacteristics(chars);
@@ -454,7 +471,7 @@ public class CaTissueSpecimenClient {
             specimen.setLineage(existingSpecimen.getLineage());
             specimen.setIsAvailable(existingSpecimen.getIsAvailable());
             specimen.setCollectionStatus(existingSpecimen.getCollectionStatus());
-            SpecimenDetail specimenDetail = new SpecimenDetail();
+            final SpecimenDetail specimenDetail = new SpecimenDetail();
             specimenDetail.setSpecimen(specimen);
             existingSpecimens.add(specimenDetail);
         }
@@ -468,11 +485,11 @@ public class CaTissueSpecimenClient {
      * @param specimens
      */
     private void performRollbackCreatedSpecimens(Specimens specimens) throws ApplicationException {
-        List<SpecimenDetail> specimenDetailList = specimens.getSpecimenDetailList();
-        Iterator<SpecimenDetail> specimenDetailItr = specimenDetailList.iterator();
+        final List<SpecimenDetail> specimenDetailList = specimens.getSpecimenDetailList();
+        final Iterator<SpecimenDetail> specimenDetailItr = specimenDetailList.iterator();
         while (specimenDetailItr.hasNext()) {
-            SpecimenDetail specimenDetail = specimenDetailItr.next();
-            String specimenLabel = specimenDetail.getSpecimen().getLabel();
+            final SpecimenDetail specimenDetail = specimenDetailItr.next();
+            final String specimenLabel = specimenDetail.getSpecimen().getLabel();
             Specimen existingSpecimen = null;
             try {
                 existingSpecimen = getExistingSpecimen(specimenLabel);
@@ -500,10 +517,10 @@ public class CaTissueSpecimenClient {
     private void softDeleteSpecimen(Specimen existingSpecimen) throws ApplicationException {
         // First change the Label of the Specimen to some dummy value..
         // like "Soft_Del_+ label/barcode +Timestamp"
-        Specimen updatedSpecimen = updateSpecimenLabel(existingSpecimen);
+        final Specimen updatedSpecimen = updateSpecimenLabel(existingSpecimen);
 
         // Then set the Specimen to Disabled
-        DisposalEventParameters disposalEventParameters = new DisposalEventParameters();
+        final DisposalEventParameters disposalEventParameters = new DisposalEventParameters();
         updatedSpecimen.setActivityStatus(ACTIVITY_STATUS_DISABLED);
         disposalEventParameters.setSpecimen(updatedSpecimen);
         disposalEventParameters.setActivityStatus(ACTIVITY_STATUS_DISABLED);
@@ -522,13 +539,13 @@ public class CaTissueSpecimenClient {
     private Specimen updateSpecimenLabel(Specimen specimen) throws ApplicationException {
         specimen.setLabel("Soft-Del__" + specimen.getLabel() + "__" + getCurrentDateTime());
         specimen.setBarcode("Soft-Del__" + specimen.getBarcode() + "__" + getCurrentDateTime());
-        Specimen updatedSpecimen = updateSpecimen(specimen);
-        return updatedSpecimen;
+        return updateSpecimen(specimen);
     }
 
     private String getCurrentDateTime() {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss.SSS");
+        final Calendar cal = Calendar.getInstance();
+        final Locale locale = Locale.US;
+        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss.SSS", locale);
         return sdf.format(cal.getTime());
 
     }
@@ -548,8 +565,8 @@ public class CaTissueSpecimenClient {
 
     private List<SpecimenCollectionGroup> getSpecimenCollectionGroupList(SpecimenDetail specimenDetail)
             throws ApplicationException {
-        String shortTitle = specimenDetail.getCollectionProtocol().getShortTitle();
-        String label = specimenDetail.getCollectionProtocolEvent();
+        final String shortTitle = specimenDetail.getCollectionProtocol().getShortTitle();
+        final String label = specimenDetail.getCollectionProtocolEvent();
         return caTissueAPIClient.getApplicationService().query(
                 CqlUtility.getSpecimenCollectionGroupListQuery(shortTitle, label));
     }

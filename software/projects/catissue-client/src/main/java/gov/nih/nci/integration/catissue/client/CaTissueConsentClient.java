@@ -12,6 +12,7 @@ import gov.nih.nci.integration.catissue.domain.Consents;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 
 import java.io.StringReader;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -21,6 +22,7 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
@@ -35,15 +37,17 @@ public class CaTissueConsentClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueConsentClient.class);
     private final CaTissueAPIClientWithRegularAuthentication caTissueAPIClient;
-    private XStream xStream = new XStream(new StaxDriver());
+    private final XStream xStream = new XStream(new StaxDriver());
 
     /**
      * Constructor
-     * @param loginName - loginName for the API authentication 
-     * @param password - password for the API authentication 
-     * @throws Exception - Exception
+     * 
+     * @param loginName - loginName for the API authentication
+     * @param password - password for the API authentication
+     * @throws MalformedURLException - MalformedURLException
+     * @throws BeansException - BeansException
      */
-    public CaTissueConsentClient(String loginName, String password) throws Exception {
+    public CaTissueConsentClient(String loginName, String password) throws BeansException, MalformedURLException {
         super();
         Thread.currentThread().setContextClassLoader(CaTissueConsentClient.class.getClassLoader());
         this.caTissueAPIClient = new CaTissueAPIClientWithRegularAuthentication(loginName, password);
@@ -67,16 +71,17 @@ public class CaTissueConsentClient {
      * @throws ApplicationException - if any exception occurred during data retrieval
      */
     public String getExistingConsents(String consentsListXMLStr) throws ApplicationException {
-
-        LOG.debug("Inside getExistingConsentsData...The Incoming XML for getExistingConsentsData() is --> "
-                + consentsListXMLStr);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Inside getExistingConsentsData...The Incoming XML for getExistingConsentsData() is --> "
+                    + consentsListXMLStr);
+        }
 
         // Parse the incoming XML String. The returned object will contain data
         // from the incoming consents XML
-        Consents incomingConsents = parseConsentsListXML(consentsListXMLStr);
+        final Consents incomingConsents = parseConsentsListXML(consentsListXMLStr);
 
         // Fetch the existing Consents
-        Consents exitingConsents = fetchExistingConsents(incomingConsents);
+        final Consents exitingConsents = fetchExistingConsents(incomingConsents);
 
         return xStream.toXML(exitingConsents);
     }
@@ -89,11 +94,14 @@ public class CaTissueConsentClient {
      * @throws ApplicationException - if any exception occurred during data insertion
      */
     public String registerConsents(String consentsListXMLStr) throws ApplicationException {
-        LOG.debug("Inside CaTissueConsentClient...The Incoming XML for registerConsents() is --> " + consentsListXMLStr);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Inside CaTissueConsentClient...The Incoming XML for registerConsents() is --> "
+                    + consentsListXMLStr);
+        }
 
         // Parse the incoming XML String. The returned object will contain data
         // from the incoming specimens XML
-        Consents incomingConsents = parseConsentsListXML(consentsListXMLStr);
+        final Consents incomingConsents = parseConsentsListXML(consentsListXMLStr);
 
         // perform the actual logic to register the Consents.. Also do the
         // rollback, if required
@@ -110,12 +118,14 @@ public class CaTissueConsentClient {
      * @throws ApplicationException - if any exception occurred during rollback itself
      */
     public void rollbackConsentRegistration(String consentsListXMLStr) throws ApplicationException {
-        LOG.debug("Inside rollbackConsentRegistration...The Incoming XML for rollbackConsentRegistration() is --> "
-                + consentsListXMLStr);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Inside rollbackConsentRegistration...The Incoming XML for rollbackConsentRegistration() is --> "
+                    + consentsListXMLStr);
+        }
 
         // Parse the incoming XML String. The returned object will contain data
         // from the incoming specimens XML
-        Consents incomingConsents = parseConsentsListXML(consentsListXMLStr);
+        final Consents incomingConsents = parseConsentsListXML(consentsListXMLStr);
 
         // rollback the consents
         performRollbackConsentRegistration(incomingConsents);
@@ -129,14 +139,14 @@ public class CaTissueConsentClient {
      * @throws ApplicationException
      */
     private Consents fetchExistingConsents(Consents incomingConsents) throws ApplicationException {
-        Consents existingConsents = new Consents();
-        List<ConsentDetail> exitingConsentDetailsList = new ArrayList<ConsentDetail>();
-        Iterator<ConsentDetail> incomingConsentDetailItr = incomingConsents.getConsentsDetailsList().iterator();
+        final Consents existingConsents = new Consents();
+        final List<ConsentDetail> exitingConsentDetailsList = new ArrayList<ConsentDetail>();
+        final Iterator<ConsentDetail> incomingConsentDetailItr = incomingConsents.getConsentsDetailsList().iterator();
         while (incomingConsentDetailItr.hasNext()) {
-            ConsentDetail consentDetail = incomingConsentDetailItr.next();
-            ConsentDetail existingConsentDetail = new ConsentDetail();
-            String specimenLabel = consentDetail.getConsentData().getSpecimenLabel().trim();
-            Specimen existingSpecimen = getExistingSpecimen(specimenLabel);
+            final ConsentDetail consentDetail = incomingConsentDetailItr.next();
+            final ConsentDetail existingConsentDetail = new ConsentDetail();
+            final String specimenLabel = consentDetail.getConsentData().getSpecimenLabel().trim();
+            final Specimen existingSpecimen = getExistingSpecimen(specimenLabel);
             if (existingSpecimen == null) {
                 LOG.error("Specimen for given LABEL " + specimenLabel + " doesn't exist.");
                 throw new ApplicationException("Specimen for given LABEL doesn't exist");
@@ -155,7 +165,7 @@ public class CaTissueConsentClient {
      * @throws ApplicationException
      */
     private void performRegisterConsents(Consents consents) throws ApplicationException {
-        List<ConsentDetail> consentDetailList = consents.getConsentsDetailsList();
+        final List<ConsentDetail> consentDetailList = consents.getConsentsDetailsList();
         Iterator<ConsentDetail> consentDetailItr = null;
         Specimen existingSpecimen = null;
         try {
@@ -182,10 +192,10 @@ public class CaTissueConsentClient {
 
     private void performRegisterConsentsForChildSpecimens(Specimen existingSpecimen, ConsentDetail consentDetail)
             throws ApplicationException {
-        Collection<AbstractSpecimen> childSpecimenCollection = existingSpecimen.getChildSpecimenCollection();
-        Iterator<AbstractSpecimen> itrChildSpecimen = childSpecimenCollection.iterator();
+        final Collection<AbstractSpecimen> childSpecimenCollection = existingSpecimen.getChildSpecimenCollection();
+        final Iterator<AbstractSpecimen> itrChildSpecimen = childSpecimenCollection.iterator();
         while (itrChildSpecimen.hasNext()) {
-            Specimen childSpecimen = (Specimen) itrChildSpecimen.next();
+            final Specimen childSpecimen = (Specimen) itrChildSpecimen.next();
             childSpecimen.setConsentTierStatusCollection(consentDetail.getConsentData().getConsentTierStatusSet());
             updateSpecimen(childSpecimen);
 
@@ -208,22 +218,23 @@ public class CaTissueConsentClient {
      * @throws ApplicationException
      */
     private ConsentDetail populateConsentTierId(ConsentDetail consentDetail) throws ApplicationException {
-        Set<ConsentTierStatus> conTierStatusSet = consentDetail.getConsentData().getConsentTierStatusSet();
-        Iterator<ConsentTierStatus> itrTierStatus = conTierStatusSet.iterator();
+        final Set<ConsentTierStatus> conTierStatusSet = consentDetail.getConsentData().getConsentTierStatusSet();
+        final Iterator<ConsentTierStatus> itrTierStatus = conTierStatusSet.iterator();
         // iterate thru all the consentTierStatus's statement
         while (itrTierStatus.hasNext()) {
             boolean isTierIdFound = false;
-            ConsentTierStatus tierStatus = itrTierStatus.next();
-            String stmt = tierStatus.getConsentTier().getStatement();
+            final ConsentTierStatus tierStatus = itrTierStatus.next();
+            final String stmt = tierStatus.getConsentTier().getStatement();
             // get the CollectionProtocol and then its consentTierCollection
-            CollectionProtocol cp = getExistingCollectionProtocol(consentDetail.getCollectionProtocol().getShortTitle());
+            final CollectionProtocol cp = getExistingCollectionProtocol(consentDetail.getCollectionProtocol()
+                    .getShortTitle());
             if (cp != null) {
-                Collection<ConsentTier> consentTierCollection = cp.getConsentTierCollection();
-                Iterator<ConsentTier> itrConsentTier = consentTierCollection.iterator();
+                final Collection<ConsentTier> consentTierCollection = cp.getConsentTierCollection();
+                final Iterator<ConsentTier> itrConsentTier = consentTierCollection.iterator();
                 // iterate thru each consentTier and compare for the statement..
                 // if it matches- get its corresponding Id
                 while (itrConsentTier.hasNext()) {
-                    ConsentTier consentTier = itrConsentTier.next();
+                    final ConsentTier consentTier = itrConsentTier.next();
                     if (stmt.equalsIgnoreCase(consentTier.getStatement())) {
                         tierStatus.getConsentTier().setId(consentTier.getId());
                         isTierIdFound = true;
@@ -264,7 +275,7 @@ public class CaTissueConsentClient {
      * @throws ApplicationException
      */
     private void performRollbackConsentRegistration(Consents consents) throws ApplicationException {
-        List<ConsentDetail> consentDetailList = consents.getConsentsDetailsList();
+        final List<ConsentDetail> consentDetailList = consents.getConsentsDetailsList();
         Iterator<ConsentDetail> consentDetailItr = null;
         Specimen existingSpecimen = null;
         ConsentDetail consentDetail = null;
@@ -288,17 +299,17 @@ public class CaTissueConsentClient {
     private void performRollbackConsentForChildSpecimens(Specimen existingSpecimen, ConsentDetail consentDetail)
             throws ApplicationException {
         try {
-            Collection<AbstractSpecimen> childSpecimenCollection = existingSpecimen.getChildSpecimenCollection();
+            final Collection<AbstractSpecimen> childSpecimenCollection = existingSpecimen.getChildSpecimenCollection();
 
-            Iterator<AbstractSpecimen> itrChildSpecimen = childSpecimenCollection.iterator();
+            final Iterator<AbstractSpecimen> itrChildSpecimen = childSpecimenCollection.iterator();
             while (itrChildSpecimen.hasNext()) {
-                Specimen childSpecimen = (Specimen) itrChildSpecimen.next();
+                final Specimen childSpecimen = (Specimen) itrChildSpecimen.next();
                 childSpecimen.setConsentTierStatusCollection(consentDetail.getConsentData().getConsentTierStatusSet());
                 updateSpecimen(childSpecimen);
                 // do it recursively
                 performRollbackConsentForChildSpecimens(childSpecimen, consentDetail);
             }
-        } catch (ApplicationException e) {            
+        } catch (ApplicationException e) {
             LOG.error("Exception During Rollback of Consent for ChildSpecimen with SpecimenLabel as "
                     + consentDetail.getConsentData().getSpecimenLabel(), e);
             throw new ApplicationException("Rollback Consent Failed for ChildSpecimen "
@@ -314,8 +325,7 @@ public class CaTissueConsentClient {
      * @return
      */
     private Consents parseConsentsListXML(String consentsListXMLStr) {
-        Consents consents = (Consents) xStream.fromXML(new StringReader(consentsListXMLStr));
-        return consents;
+        return (Consents) xStream.fromXML(new StringReader(consentsListXMLStr));
     }
 
     /**
@@ -325,17 +335,18 @@ public class CaTissueConsentClient {
      * @return
      */
     private ConsentData getConsentData(Specimen existingSpecimen) {
-        ConsentData existingConsentData = new ConsentData();
-        Set<ConsentTierStatus> existingTierStatusCollection = new LinkedHashSet<ConsentTierStatus>();
-        Collection<ConsentTierStatus> consentTierStatusCollection = existingSpecimen.getConsentTierStatusCollection();
+        final ConsentData existingConsentData = new ConsentData();
+        final Set<ConsentTierStatus> existingTierStatusCollection = new LinkedHashSet<ConsentTierStatus>();
+        final Collection<ConsentTierStatus> consentTierStatusCollection = existingSpecimen
+                .getConsentTierStatusCollection();
 
         if (consentTierStatusCollection != null) {
-            Iterator<ConsentTierStatus> itr = consentTierStatusCollection.iterator();
+            final Iterator<ConsentTierStatus> itr = consentTierStatusCollection.iterator();
             while (itr.hasNext()) {
-                ConsentTierStatus tierStatus = itr.next();
-                ConsentTierStatus exitingTierStatus = new ConsentTierStatus();
+                final ConsentTierStatus tierStatus = itr.next();
+                final ConsentTierStatus exitingTierStatus = new ConsentTierStatus();
                 exitingTierStatus.setStatus(tierStatus.getStatus());
-                ConsentTier exitingConsentTier = new ConsentTier();
+                final ConsentTier exitingConsentTier = new ConsentTier();
                 exitingConsentTier.setId(tierStatus.getConsentTier().getId());
                 exitingConsentTier.setStatement(tierStatus.getConsentTier().getStatement());
                 exitingTierStatus.setConsentTier(exitingConsentTier);
