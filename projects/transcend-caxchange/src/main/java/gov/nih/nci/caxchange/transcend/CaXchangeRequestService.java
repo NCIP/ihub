@@ -40,8 +40,8 @@ import com.mirth.connect.connectors.ws.WebServiceMessageReceiver;
  */
 
 @javax.jws.WebService(serviceName = "CaXchangeRequestService", portName = "soap", 
-    targetNamespace = "http://caXchange.nci.nih.gov/caxchangerequest", 
-    endpointInterface = "gov.nih.nci.caxchange.messaging.CaXchangeRequestPortType")
+targetNamespace = "http://caXchange.nci.nih.gov/caxchangerequest", 
+endpointInterface = "gov.nih.nci.caxchange.messaging.CaXchangeRequestPortType")
 public class CaXchangeRequestService extends AcceptMessage {
 
     private static final Logger LOG = LoggerFactory.getLogger(CaXchangeRequestService.class.getName());
@@ -50,6 +50,7 @@ public class CaXchangeRequestService extends AcceptMessage {
 
     /**
      * Constructor
+     * 
      * @param webServiceMessageReceiver - webServiceMessageReceiver
      */
     public CaXchangeRequestService(WebServiceMessageReceiver webServiceMessageReceiver) {
@@ -58,106 +59,95 @@ public class CaXchangeRequestService extends AcceptMessage {
 
     /**
      * This method is used process the message
+     * 
      * @param parameters - parameters
      * @return ResponseMessage
      */
     @WebResult(name = "responseMessage", targetNamespace = "http://caXchange.nci.nih.gov/caxchangerequest", 
-                partName = "parameters")
+            partName = "parameters")
     @WebMethod
     public gov.nih.nci.caxchange.messaging.ResponseMessage processRequest(
             @WebParam(partName = "parameters", name = "message", 
-                targetNamespace = "http://caXchange.nci.nih.gov/caxchangerequest") Message parameters) {
+            targetNamespace = "http://caXchange.nci.nih.gov/caxchangerequest") Message parameters) {
         LOG.debug("Executing operation processRequest");
 
-        Long caXchangeId = Calendar.getInstance().getTimeInMillis();
+        final Long caXchangeId = Calendar.getInstance().getTimeInMillis();
         // setting this value as String, but inside the app is expecting a long value
         parameters.getMetadata().setCaXchangeIdentifier(String.valueOf(caXchangeId));
 
-        gov.nih.nci.caxchange.messaging.ResponseMessage respMessage = new ResponseMessage();
-        ResponseMetadata rm = new ResponseMetadata();
+        final gov.nih.nci.caxchange.messaging.ResponseMessage respMessage = new ResponseMessage();
+        final ResponseMetadata rm = new ResponseMetadata();
         rm.setExternalIdentifier(parameters.getMetadata().getExternalIdentifier());
         rm.setCaXchangeIdentifier(parameters.getMetadata().getCaXchangeIdentifier());
         respMessage.setResponseMetadata(rm);
 
         try {
-
-            String reqstr = getCaXchangeRequestxml(parameters);
-
+            final String reqstr = getCaXchangeRequestxml(parameters);
             if (StringUtils.isEmpty(reqstr)) {
-                ErrorDetails errorDetails = new ErrorDetails();
+                final ErrorDetails errorDetails = new ErrorDetails();
                 errorDetails.setErrorCode(String.valueOf(IntegrationError._1050));
                 errorDetails.setErrorDescription(IntegrationError._1050.getMessage((Object) null));
 
-                Response response = new Response();
+                final Response response = new Response();
                 response.setCaXchangeError(errorDetails);
                 response.setResponseStatus(Statuses.FAILURE);
-
                 respMessage.setResponse(response);
                 return respMessage;
-
             }
 
             String mcResponse = webServiceMessageReceiver.processData(reqstr);
-
             LOG.info("MC RESPONSE:" + mcResponse);
-
             if (StringUtils.isEmpty(mcResponse)) {
-                throw new Exception("No proper response from iHub");
+                throw new JAXBException("No proper response from iHub");
             }
 
             if ((mcResponse.indexOf("Error") > -1 || mcResponse.indexOf("Exception") > -1
                     || mcResponse.indexOf("ERROR") > -1 || mcResponse.indexOf("error") > -1)) {
                 mcResponse = StringUtils.remove(mcResponse, "SUCCESS:");
                 mcResponse = StringUtils.remove(mcResponse, "FAILURE:");
-
-                Response response = new Response();
+                final Response response = new Response();
                 response.setCaXchangeError(getErrorDetailsFromCaXchangeError(mcResponse));
                 response.setResponseStatus(Statuses.FAILURE);
-
                 respMessage.setResponse(response);
                 return respMessage;
             }
 
-            Response response = new Response();
+            final Response response = new Response();
             response.setResponseStatus(Statuses.SUCCESS);
             response.getTargetResponse().add(prepareTargetResponse(parameters));
             respMessage.setResponse(response);
 
             return respMessage;
-            // CHECKSTYLE:OFF
-        } catch (java.lang.Exception ex) {
-            // CHECKSTYLE:OFF
-            ErrorDetails errorDetails = new ErrorDetails();
+        } catch (JAXBException ex) {
+            final ErrorDetails errorDetails = new ErrorDetails();
             errorDetails.setErrorCode(String.valueOf(IntegrationError._1000.getErrorCode()));
             errorDetails.setErrorDescription(IntegrationError._1000.getMessage(null) + ex.getMessage());
-
-            Response response = new Response();
+            final Response response = new Response();
             response.setCaXchangeError(errorDetails);
             response.setResponseStatus(Statuses.FAILURE);
-
             respMessage.setResponse(response);
             return respMessage;
         }
+
     }
 
     private String getCaXchangeRequestxml(final Message parameter) {
         String requestXML = null;
+
+        final QName qname = new QName("http://caXchange.nci.nih.gov/caxchangerequest", "caxchangerequest");
+        final JAXBElement<Message> message = new JAXBElement<Message>(qname, Message.class, parameter);
+        final StringWriter sw = new StringWriter();
         try {
-            QName qname = new QName("http://caXchange.nci.nih.gov/caxchangerequest", "caxchangerequest");
-            JAXBElement<Message> message = new JAXBElement<Message>(qname, Message.class, parameter);
-            StringWriter sw = new StringWriter();
             getMarshaller().marshal(message, sw);
             requestXML = sw.toString();
-            // CHECKSTYLE:OFF
-        } catch (Exception ex) {
-            // CHECKSTYLE:OFF
-            LOG.error("Error marshalling CaXchangeRequest!", ex);
+        } catch (JAXBException e) {
+            LOG.error("Error marshalling CaXchangeRequest!", e);
         }
         return requestXML;
     }
 
     private ErrorDetails getErrorDetailsFromCaXchangeError(String errorXml) throws JAXBException {
-        StreamSource ss = new StreamSource(new StringReader(errorXml));
+        final StreamSource ss = new StreamSource(new StringReader(errorXml));
         return ((JAXBElement<ErrorDetails>) getUnmarshaller(ErrorDetails.class).unmarshal(ss, ErrorDetails.class))
                 .getValue();
     }
@@ -177,12 +167,12 @@ public class CaXchangeRequestService extends AcceptMessage {
     }
 
     private TargetResponseMessage prepareTargetResponse(Message parameters) {
-        TargetResponseMessage trm = new TargetResponseMessage();
-        Metadata md = parameters.getMetadata();
+        final TargetResponseMessage trm = new TargetResponseMessage();
+        final Metadata md = parameters.getMetadata();
         trm.setTargetServiceIdentifier(md.getServiceType());
         trm.setTargetServiceOperation(md.getOperationName().getValue());
         trm.setTargetMessageStatus(MessageStatuses.RESPONSE);
-        MessagePayload mp = new MessagePayload();
+        final MessagePayload mp = new MessagePayload();
         mp.setXmlSchemaDefinition("http://caXchange.nci.nih.gov/messaging");
         trm.setTargetBusinessMessage(mp);
         return trm;
