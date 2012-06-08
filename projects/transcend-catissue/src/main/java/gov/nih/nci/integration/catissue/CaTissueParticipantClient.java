@@ -26,9 +26,9 @@ public class CaTissueParticipantClient {
     private Class<?> caTissueClientClass = null;
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueParticipantClient.class);
 
-    private String caTissueLibLocation = "";
-    private String loginName = null;
-    private String password = null;
+    private final String caTissueLibLocation;
+    private final String loginName;
+    private final String password ;
 
     private final Executor ex = Executors.newCachedThreadPool();
 

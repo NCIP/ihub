@@ -31,13 +31,13 @@ public class CaTissueUpdateRegistrationServiceInvocationStrategy implements Serv
     private static final Logger LOG = LoggerFactory
             .getLogger(CaTissueUpdateRegistrationServiceInvocationStrategy.class);
 
-    private int retryCount = 0;
+    private final int retryCount;
 
-    private CaTissueParticipantClient caTissueParticipantClient;
+    private final CaTissueParticipantClient caTissueParticipantClient;
 
-    private XSLTTransformer xsltTransformer;
+    private final XSLTTransformer xsltTransformer;
 
-    private Map<String, IntegrationError> msgToErrMap;
+    private final Map<String, IntegrationError> msgToErrMap;
 
     /**
      * Constructor

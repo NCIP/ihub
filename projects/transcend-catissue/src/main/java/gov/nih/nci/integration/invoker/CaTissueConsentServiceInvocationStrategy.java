@@ -30,13 +30,13 @@ public class CaTissueConsentServiceInvocationStrategy implements ServiceInvocati
 
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueConsentServiceInvocationStrategy.class);
 
-    private int retryCount = 0;
+    private final int retryCount;
 
-    private CaTissueConsentClient caTissueConsentClient;
+    private final CaTissueConsentClient caTissueConsentClient;
 
-    private XSLTTransformer xsltTransformer;
+    private final XSLTTransformer xsltTransformer;
 
-    private Map<String, IntegrationError> msgToErrMap;
+    private final Map<String, IntegrationError> msgToErrMap;
 
     /**
      * Constructor

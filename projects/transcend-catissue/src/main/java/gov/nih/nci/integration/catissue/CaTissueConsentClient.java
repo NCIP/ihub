@@ -20,14 +20,15 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Rohit Gupta
  */
+@SuppressWarnings("PMD.CyclomaticComplexity")
 public class CaTissueConsentClient {
 
     private static final String CLIENT_CLASSNAME = "gov.nih.nci.integration.catissue.client.CaTissueConsentClient";
     private Class<?> caTissueConsentClientClass = null;
 
-    private String caTissueLibLocation = "";
-    private String loginName = null;
-    private String password = null;
+    private final String caTissueLibLocation;
+    private final String loginName;
+    private final String password;
 
     private final Executor ex = Executors.newCachedThreadPool();
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueConsentClient.class);

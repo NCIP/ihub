@@ -20,14 +20,15 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Rohit Gupta
  */
+@SuppressWarnings({"PMD.CyclomaticComplexity" })
 public class CaTissueSpecimenClient {
 
     private static final String CLIENT_CLASSNAME = "gov.nih.nci.integration.catissue.client.CaTissueSpecimenClient";
     private Class<?> caTissueSpecimenClientClass = null;
 
-    private String caTissueLibLocation = "";
-    private String loginName = null;
-    private String password = null;
+    private final String caTissueLibLocation;
+    private final String loginName;
+    private final String password;
 
     private final Executor ex = Executors.newCachedThreadPool();
 
@@ -94,9 +95,7 @@ public class CaTissueSpecimenClient {
             result1 = ecs.take().get();
             if (!result1.isFault()) {
                 result1.setResult("Successfully called isSpecimensExist !");
-            } else {
-
-            }
+            } 
         } catch (InterruptedException e) {
             result1 = getServiceInvocationResult(IntegrationError._1051, e);
         } catch (ExecutionException e) {
@@ -127,9 +126,7 @@ public class CaTissueSpecimenClient {
             result2 = ecs.take().get();
             if (!result2.isFault()) {
                 result2.setResult("Successfully created Specimens in CaTissue!");
-            } else {
-
-            }
+            } 
         } catch (InterruptedException e) {
             result2 = getServiceInvocationResult(IntegrationError._1051, e);
         } catch (ExecutionException e) {
@@ -208,9 +205,7 @@ public class CaTissueSpecimenClient {
             result1 = ecs.take().get();
             if (!result1.isFault()) {
                 result1.setResult("Successfully fetched Specimens from CaTissue!");
-            } else {
-
-            }
+            } 
         } catch (InterruptedException e) {
             result1 = getServiceInvocationResult(IntegrationError._1051, e);
         } catch (ExecutionException e) {
@@ -238,9 +233,7 @@ public class CaTissueSpecimenClient {
             result2 = ecs.take().get();
             if (!result2.isFault()) {
                 result2.setResult("Successfully Updated Specimens from CaTissue!");
-            } else {
-
-            }
+            } 
         } catch (InterruptedException e) {
             result2 = getServiceInvocationResult(IntegrationError._1051, e);
         } catch (ExecutionException e) {
