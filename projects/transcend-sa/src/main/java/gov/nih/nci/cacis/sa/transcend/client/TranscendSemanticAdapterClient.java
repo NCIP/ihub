@@ -37,25 +37,25 @@ public class TranscendSemanticAdapterClient {
         try {
             wsdlUrl = new URL(wsdl);
         } catch (MalformedURLException e) {
-            IntegrationException ie = new IntegrationException(IntegrationError._1055);
+            final IntegrationException ie = new IntegrationException(IntegrationError._1055);
             return populateCaCISError(ie.getErrorType().name(), String.valueOf(ie.getErrorCode()), ie.getMessage(), "");
         }
         final AcceptSourcePortType saClient = new TranscendSemanticAdapterService(wsdlUrl).getAcceptSourcePortSoap11();
 
         try {
-            CaCISResponse response = saClient.acceptSource(unmarshal(requestStr));
+            final CaCISResponse response = saClient.acceptSource(unmarshal(requestStr));
             return response.getStatus().toString();
         } catch (AcceptSourceFault e) {
-            CaCISError ce = e.getFaultInfo().getCaCISError().get(0);
+            final CaCISError ce = e.getFaultInfo().getCaCISError().get(0);
             return populateCaCISError(ce.getErrorType().name(), ce.getErrorCode(), ce.getErrorMessage(), ce.getDetail());
         } catch (JAXBException e) {
-            IntegrationException ie = new IntegrationException(IntegrationError._1041, e, e.getMessage());
+            final IntegrationException ie = new IntegrationException(IntegrationError._1041, e, e.getMessage());
             return populateCaCISError(ie.getErrorType().name(), String.valueOf(ie.getErrorCode()), ie.getMessage(), "");
         }
     }
 
     private CaCISRequest unmarshal(String requestStr) throws JAXBException {
-        JAXBContext ctx = JAXBContext.newInstance(CaCISRequest.class);
+        final JAXBContext ctx = JAXBContext.newInstance(CaCISRequest.class);
         return (CaCISRequest) ctx.createUnmarshaller().unmarshal(new StringReader(requestStr));
     }
 

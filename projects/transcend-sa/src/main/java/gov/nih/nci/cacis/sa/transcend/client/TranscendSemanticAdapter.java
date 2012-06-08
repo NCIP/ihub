@@ -43,12 +43,11 @@ public class TranscendSemanticAdapter extends AcceptMessage {
 
     private static final Logger LOG = LoggerFactory.getLogger(TranscendSemanticAdapter.class.getName());
 
-    private String customLibDir = "custom-lib/";
-
     private JAXBContext jc = null;
 
     /**
      * Constructor
+     * 
      * @param webServiceMessageReceiver - WebServiceMessageReceiver
      */
     public TranscendSemanticAdapter(WebServiceMessageReceiver webServiceMessageReceiver) {
@@ -66,70 +65,68 @@ public class TranscendSemanticAdapter extends AcceptMessage {
     @WebMethod
     public CaCISResponse acceptSource(
             @WebParam(partName = "parameter", name = "caCISRequest", 
-                targetNamespace = "http://cacis.nci.nih.gov") CaCISRequest parameter)
+            targetNamespace = "http://cacis.nci.nih.gov") CaCISRequest parameter)
             throws AcceptSourceFault {
 
         LOG.info("Executing operation acceptSource");
 
-        gov.nih.nci.cacis.sa.transcend.CaCISResponse response = new CaCISResponse();
+        final gov.nih.nci.cacis.sa.transcend.CaCISResponse response = new CaCISResponse();
 
-        try {
-            String reqstr = getCaCISRequestxml(parameter);
+        final String reqstr = getCaCISRequestxml(parameter);
 
-            if (StringUtils.isEmpty(reqstr)) {
-                throw new AcceptSourceFault("Error marshalling CaCISRequest!");
-            }
+        if (StringUtils.isEmpty(reqstr)) {
+            throw new AcceptSourceFault("Error marshalling CaCISRequest!");
+        }
 
-            String mcResponse = webServiceMessageReceiver.processData(reqstr);
+        String mcResponse = webServiceMessageReceiver.processData(reqstr);
 
-            LOG.info("MC RESPONSE:" + mcResponse);
+        LOG.info("MC RESPONSE:" + mcResponse);
 
-            if (mcResponse != null
-                    && (mcResponse.indexOf("Error") > -1 || mcResponse.indexOf("Exception") > -1
-                            || mcResponse.indexOf("ERROR") > -1 || mcResponse.indexOf("error") > -1)) {
-                mcResponse = StringUtils.remove(mcResponse, "SUCCESS:");
-                mcResponse = StringUtils.remove(mcResponse, "FAILURE:");
-                AcceptSourceFault fault = new AcceptSourceFault("Error processing Data from Source System",
+        if (mcResponse != null
+                && (mcResponse.indexOf("Error") > -1 || mcResponse.indexOf("Exception") > -1
+                        || mcResponse.indexOf("ERROR") > -1 || mcResponse.indexOf("error") > -1)) {
+            mcResponse = StringUtils.remove(mcResponse, "SUCCESS:");
+            mcResponse = StringUtils.remove(mcResponse, "FAILURE:");
+            AcceptSourceFault fault;
+            try {
+                fault = new AcceptSourceFault("Error processing Data from Source System",
                         getCaCISFaultFromXml(mcResponse));
                 throw fault;
+            } catch (JAXBException ex) {
+                final CaCISFault cf = new CaCISFault();
+                final CaCISError ce = new CaCISError();
+                final IntegrationError ie = IntegrationError._1000;
+                ce.setErrorCode(String.valueOf(ie.getErrorCode()));
+                ce.setErrorMessage(ie.getMessage((Object) null));
+                ce.setErrorType(ErrorType.TRANSMISSION);
+                ce.setDetail(stackTraceAsString(ex));
+                cf.getCaCISError().add(ce);
+                fault = new AcceptSourceFault("Error accepting Data from Source System!" + ex.getMessage(), cf);
+                throw fault;
             }
-            response.setStatus(ResponseStatusType.SUCCESS);
 
-            return response;
-            // CHECKSTYLE:OFF
-        } catch (java.lang.Exception ex) {
-            // CHECKSTYLE:OFF
-            if (ex instanceof AcceptSourceFault) {
-                throw (AcceptSourceFault) ex;
-            }
-            CaCISFault cf = new CaCISFault();
-            CaCISError ce = new CaCISError();
-            IntegrationError ie = IntegrationError._1000;
-            ce.setErrorCode(String.valueOf(ie.getErrorCode()));
-            ce.setErrorMessage(ie.getMessage((Object) null));
-            ce.setErrorType(ErrorType.TRANSMISSION);
-            ce.setDetail(stackTraceAsString(ex));
-            cf.getCaCISError().add(ce);
-            AcceptSourceFault fault = new AcceptSourceFault("Error accepting Data from Source System!"
-                    + ex.getMessage(), cf);
-            throw fault;
         }
+        response.setStatus(ResponseStatusType.SUCCESS);
+
+        return response;
+
     }
 
     private String getCaCISRequestxml(final CaCISRequest parameter) {
+
+        final StringWriter sw = new StringWriter();
         try {
-            StringWriter sw = new StringWriter();
             getMarshaller().marshal(parameter, sw);
-            return sw.toString();
-        } catch (Exception ex) {
-            LOG.error("Error marshalling CaCISRequest!", ex);
+        } catch (JAXBException e) {
+            LOG.error("Error marshalling CaCISRequest!", e);
             return null;
         }
+        return sw.toString();
 
     }
 
     private CaCISFault getCaCISFaultFromXml(String faultXML) throws JAXBException {
-        StreamSource ss = new StreamSource(new StringReader(faultXML));
+        final StreamSource ss = new StreamSource(new StringReader(faultXML));
         return ((JAXBElement<CaCISFault>) getUnmarshaller().unmarshal(ss, CaCISFault.class)).getValue();
     }
 
