@@ -3,6 +3,7 @@ package gov.nih.nci.caxchange.messaging;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
@@ -29,17 +30,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = "classpath:applicationContext-mirth-deploy-test.xml")
 public class RegistrationIntegrationTest {
 
-    // CHECKSTYLE:OFF
-    private final static SimpleDateFormat sdf = new SimpleDateFormat("MMddmm");// NOPMD
-    private final static SimpleDateFormat ssnsdf = new SimpleDateFormat("MM-ddmm");// NOPMD
-    // CHECKSTYLE:ON
+    private final Locale locale = Locale.US;
+    private final SimpleDateFormat sdf = new SimpleDateFormat("MMddmm", locale);
+    private final SimpleDateFormat ssnsdf = new SimpleDateFormat("MM-ddmm", locale);
 
     @Value("${transcend.caxchange.service.url}")
     private String transcendCaxchangeServiceUrl;
 
-    private Date currDt = new Date();
+    private final Date currDt = new Date();
 
-    private HttpClient httpclient = new DefaultHttpClient();
+    private final HttpClient httpclient = new DefaultHttpClient();
 
     /**
      * Testcase for sending invalid credential message
@@ -141,10 +141,11 @@ public class RegistrationIntegrationTest {
             if (entity != null) {
                 String output = EntityUtils.toString(entity);
                 Assert.assertNotNull(output);
+
                 Assert.assertEquals(
                         true,
                         output.contains("<errorCode>1014</errorCode>")
-                                || output.contains("<errorCode>1051</errorCode>"));
+                                || output.contains("<errorCode>1032</errorCode>"));
             }
         } catch (ClientProtocolException e) {
             Assert.fail(e.getMessage());
@@ -208,7 +209,7 @@ public class RegistrationIntegrationTest {
                 Assert.assertEquals(
                         true,
                         output.contains("<errorCode>1012</errorCode>")
-                                || output.contains("<errorCode>1051</errorCode>"));
+                                || output.contains("<errorCode>1032</errorCode>"));
             }
         } catch (ClientProtocolException e) {
             Assert.fail(e.getMessage());
@@ -256,6 +257,7 @@ public class RegistrationIntegrationTest {
         message = message.replaceAll("XX-XXXX", ssnsdf.format(currDt));
         return message;
     }
+
     // CHECKSTYLE:ON
     private String removeCaXchangeIdentifier(String output) {
         int startTagEnd = output.indexOf("<caXchangeIdentifier>");
