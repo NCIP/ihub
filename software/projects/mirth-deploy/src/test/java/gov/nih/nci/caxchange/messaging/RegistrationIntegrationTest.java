@@ -47,18 +47,18 @@ public class RegistrationIntegrationTest {
     @Test
     public void sendInvalidIHubCredentialsMessage() {
         try {
-            HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
+            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             String msg = getCreateMsg();
             msg = msg.replaceAll("<mes:userName>tolvenuser</mes:userName>",
                     "<mes:userName>tolvenuser-invalid</mes:userName>");
-            StringEntity reqentity = new StringEntity(msg);
+            final StringEntity reqentity = new StringEntity(msg);
             httppost.setEntity(reqentity);
             httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
 
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity entity = response.getEntity();
+            final HttpResponse response = httpclient.execute(httppost);
+            final HttpEntity entity = response.getEntity();
             if (entity != null) {
-                String output = EntityUtils.toString(entity);
+                final String output = EntityUtils.toString(entity);
                 Assert.assertNotNull(output);
                 Assert.assertEquals(getInvalidCredentialsCreateMsg(), removeCaXchangeIdentifier(output));
             }
@@ -77,15 +77,15 @@ public class RegistrationIntegrationTest {
     @Test
     public void sendRegistrationMessage() {
         try {
-            HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            StringEntity reqentity = new StringEntity(getCreateMsg());
+            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
+            final StringEntity reqentity = new StringEntity(getCreateMsg());
             httppost.setEntity(reqentity);
             httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
 
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity entity = response.getEntity();
+            final HttpResponse response = httpclient.execute(httppost);
+            final HttpEntity entity = response.getEntity();
             if (entity != null) {
-                String output = EntityUtils.toString(entity);
+                final String output = EntityUtils.toString(entity);
                 Assert.assertNotNull(output);
                 Assert.assertEquals(getSuccessCreateMsg(), removeCaXchangeIdentifier(output));
             }
@@ -104,15 +104,15 @@ public class RegistrationIntegrationTest {
     @Test
     public void sendUpdateRegistrationMessage() {
         try {
-            HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            StringEntity reqentity = new StringEntity(getUpdateMsg());
+            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
+            final StringEntity reqentity = new StringEntity(getUpdateMsg());
             httppost.setEntity(reqentity);
             httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
 
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity entity = response.getEntity();
+            final HttpResponse response = httpclient.execute(httppost);
+            final HttpEntity entity = response.getEntity();
             if (entity != null) {
-                String output = EntityUtils.toString(entity);
+                final String output = EntityUtils.toString(entity);
                 Assert.assertNotNull(output);
                 Assert.assertEquals(getSuccessUpdateMsg(), removeCaXchangeIdentifier(output));
             }
@@ -131,15 +131,15 @@ public class RegistrationIntegrationTest {
     @Test
     public void sendDuplicateRegistrationMessage() {
         try {
-            HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            StringEntity reqentity = new StringEntity(getCreateMsg());
+            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
+            final StringEntity reqentity = new StringEntity(getCreateMsg());
             httppost.setEntity(reqentity);
             httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
 
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity entity = response.getEntity();
+            final HttpResponse response = httpclient.execute(httppost);
+            final HttpEntity entity = response.getEntity();
             if (entity != null) {
-                String output = EntityUtils.toString(entity);
+                final String output = EntityUtils.toString(entity);
                 Assert.assertNotNull(output);
 
                 Assert.assertEquals(
@@ -162,17 +162,17 @@ public class RegistrationIntegrationTest {
     @Test
     public void sendInvalidStudyRegistrationMessage() {
         try {
-            HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
+            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             String msg = getCreateMsg();
             msg = msg.replaceAll("6482", "CP-01");
-            StringEntity reqentity = new StringEntity(msg);
+            final StringEntity reqentity = new StringEntity(msg);
             httppost.setEntity(reqentity);
             httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
 
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity entity = response.getEntity();
+            final HttpResponse response = httpclient.execute(httppost);
+            final HttpEntity entity = response.getEntity();
             if (entity != null) {
-                String output = EntityUtils.toString(entity);
+                final String output = EntityUtils.toString(entity);
                 Assert.assertNotNull(output);
                 Assert.assertEquals(
                         true,
@@ -194,17 +194,17 @@ public class RegistrationIntegrationTest {
     @Test
     public void sendInvalidInstitutionRegistrationMessage() {
         try {
-            HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
+            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             String msg = getCreateMsg();
             msg = msg.replaceAll("DCP", "XYZ");
-            StringEntity reqentity = new StringEntity(msg);
+            final StringEntity reqentity = new StringEntity(msg);
             httppost.setEntity(reqentity);
             httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
 
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity entity = response.getEntity();
+            final HttpResponse response = httpclient.execute(httppost);
+            final HttpEntity entity = response.getEntity();
             if (entity != null) {
-                String output = EntityUtils.toString(entity);
+                final String output = EntityUtils.toString(entity);
                 Assert.assertNotNull(output);
                 Assert.assertEquals(
                         true,
@@ -265,7 +265,7 @@ public class RegistrationIntegrationTest {
             return "";
         }
         startTagEnd = startTagEnd + 21;
-        int endTagStart = output.indexOf("</caXchangeIdentifier>");
+        final int endTagStart = output.indexOf("</caXchangeIdentifier>");
         if (endTagStart < 0) {
             return "";
         }
