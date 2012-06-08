@@ -23,18 +23,14 @@ import org.slf4j.LoggerFactory;
 public class CaTissueParticipantClient {
 
     private static final String CLIENT_CLASSNM = "gov.nih.nci.integration.catissue.client.CaTissueParticipantClient";
-    private Class caTissueClientClass = null;
+    private Class<?> caTissueClientClass = null;
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueParticipantClient.class);
 
     private String caTissueLibLocation = "";
     private String loginName = null;
     private String password = null;
 
-    private static Class[] registerMethodParamTypes = { String.class };
-    private static Class[] updateRegistrationMethodParamTypes = { String.class };
-    private static Class[] deleteMethodParamTypes = { String.class };
-
-    private Executor ex = Executors.newCachedThreadPool();
+    private final Executor ex = Executors.newCachedThreadPool();
 
     /**
      * Constructor
@@ -56,9 +52,9 @@ public class CaTissueParticipantClient {
 
     private void init() throws IntegrationException {
         try {
-            File libFile = new File(caTissueLibLocation);
+            final File libFile = new File(caTissueLibLocation);
             // creating the custom classloader that bypasses the systemclassloader
-            CustomUrlClassLoader ccl = new CustomUrlClassLoader(ClassLoader.getSystemClassLoader().getParent(),
+            final CustomUrlClassLoader ccl = new CustomUrlClassLoader(ClassLoader.getSystemClassLoader().getParent(),
                     libFile.getAbsolutePath());
             caTissueClientClass = ccl.loadClass(CLIENT_CLASSNM);
         } catch (MalformedURLException e) {
@@ -78,11 +74,10 @@ public class CaTissueParticipantClient {
      */
     public ServiceInvocationResult registerParticipant(final String participantXMLStr) {
         ServiceInvocationResult result = null;
-
         CaTissueTask task = null;
         try {
             task = new CaTissueTask(caTissueClientClass, loginName, password, "registerParticipantFromXML",
-                    registerMethodParamTypes, participantXMLStr);
+                    participantXMLStr);
         } catch (IntegrationException e1) {
             LOG.error("IntegrationException occured while calling registerParticipantFromXML.", e1);
             result = getServiceInvocationResult(IntegrationError._1051, e1);
@@ -90,14 +85,12 @@ public class CaTissueParticipantClient {
         }
 
         try {
-            ExecutorCompletionService<ServiceInvocationResult> ecs = new ExecutorCompletionService<ServiceInvocationResult>(
-                    ex);
+            final ExecutorCompletionService<ServiceInvocationResult> ecs = 
+                    new ExecutorCompletionService<ServiceInvocationResult>(ex);
             ecs.submit(task);
             result = ecs.take().get();
             if (!result.isFault()) {
                 result.setResult("Successfully registered participant in CaTissue!");
-            } else {
-
             }
         } catch (InterruptedException e) {
             LOG.error("InterruptedException occured while calling registerParticipantFromXML.", e);
@@ -118,11 +111,10 @@ public class CaTissueParticipantClient {
      */
     public ServiceInvocationResult updateRegistrationParticipant(final String participantXMLStr) {
         ServiceInvocationResult result = null;
-
         CaTissueTask task = null;
         try {
             task = new CaTissueTask(caTissueClientClass, loginName, password, "updateParticipantRegistrationFromXML",
-                    updateRegistrationMethodParamTypes, participantXMLStr);
+                    participantXMLStr);
         } catch (IntegrationException e1) {
             LOG.error("IntegrationException occured while calling updateParticipantRegistrationFromXML.", e1);
             result = getServiceInvocationResult(IntegrationError._1051, e1);
@@ -130,8 +122,8 @@ public class CaTissueParticipantClient {
         }
 
         try {
-            ExecutorCompletionService<ServiceInvocationResult> ecs = new ExecutorCompletionService<ServiceInvocationResult>(
-                    ex);
+            final ExecutorCompletionService<ServiceInvocationResult> ecs = 
+                    new ExecutorCompletionService<ServiceInvocationResult>(ex);
             ecs.submit(task);
             result = ecs.take().get();
             if (!result.isFault()) {
@@ -156,11 +148,10 @@ public class CaTissueParticipantClient {
      */
     public ServiceInvocationResult deleteParticipant(final String participantXMLStr) {
         ServiceInvocationResult result = null;
-
         CaTissueTask task = null;
         try {
             task = new CaTissueTask(caTissueClientClass, loginName, password, "deleteParticipantFromXML",
-                    deleteMethodParamTypes, participantXMLStr);
+                    participantXMLStr);
         } catch (IntegrationException e1) {
             LOG.error("IntegrationException occured while calling deleteParticipantFromXML.", e1);
             result = getServiceInvocationResult(IntegrationError._1051, e1);
@@ -168,8 +159,8 @@ public class CaTissueParticipantClient {
         }
 
         try {
-            ExecutorCompletionService<ServiceInvocationResult> ecs = new ExecutorCompletionService<ServiceInvocationResult>(
-                    ex);
+            final ExecutorCompletionService<ServiceInvocationResult> ecs = 
+                    new ExecutorCompletionService<ServiceInvocationResult>(ex);
             ecs.submit(task);
             result = ecs.take().get();
             if (!result.isFault()) {
@@ -187,7 +178,7 @@ public class CaTissueParticipantClient {
     }
 
     private ServiceInvocationResult getServiceInvocationResult(IntegrationError error, Exception e) {
-        ServiceInvocationResult result = new ServiceInvocationResult();
+        final ServiceInvocationResult result = new ServiceInvocationResult();
         if (e instanceof IntegrationException) {
             result.setInvocationException(e);
         } else {
