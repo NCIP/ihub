@@ -21,32 +21,47 @@ public class CaTissueTask implements Callable<ServiceInvocationResult> {
 
     private Object caTissueClientInstance;
     private Method methodToInvoke;
-    private String message;
+    private final String message;
 
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueTask.class);
 
     /**
      * Constructor
+     * 
      * @param caTissueParticipantClientClass - caTissueParticipantClientClass
      * @param loginName - loginName
      * @param password - password
      * @param methodName - methodName
-     * @param paramClasses - paramClasses
-     * @param message
+     * @param message - message
      * @throws IntegrationException - IntegrationException
      */
-    // CHECKSTYLE:OFF
-    public CaTissueTask(Class caTissueParticipantClientClass, String loginName, String password, String methodName,
-            Class[] paramClasses, String message) throws IntegrationException {
+
+    public CaTissueTask(Class<?> caTissueParticipantClientClass, String loginName, String password, String methodName,
+            String message) throws IntegrationException {
         super();
+
+        Constructor<?> constructor;
         try {
-            Constructor constructor = caTissueParticipantClientClass.getDeclaredConstructor(String.class, String.class);
+            constructor = caTissueParticipantClientClass.getDeclaredConstructor(String.class, String.class);
             this.caTissueClientInstance = constructor.newInstance(loginName, password);
             methodToInvoke = caTissueParticipantClientClass.getDeclaredMethod(methodName, String.class);
-           
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
-            e.printStackTrace();
+        } catch (SecurityException e) {
+            LOG.error("CaTissueTask-SecurityException inside the Constructor. ", e);
+            throw new IntegrationException(IntegrationError._1052, e.getMessage());
+        } catch (NoSuchMethodException e) {
+            LOG.error("CaTissueTask-NoSuchMethodException inside the Constructor. ", e);
+            throw new IntegrationException(IntegrationError._1052, e.getMessage());
+        } catch (IllegalArgumentException e) {
+            LOG.error("CaTissueTask-IllegalArgumentException inside the Constructor. ", e);
+            throw new IntegrationException(IntegrationError._1052, e.getMessage());
+        } catch (InstantiationException e) {
+            LOG.error("CaTissueTask-InstantiationException inside the Constructor. ", e);
+            throw new IntegrationException(IntegrationError._1052, e.getMessage());
+        } catch (IllegalAccessException e) {
+            LOG.error("CaTissueTask-IllegalAccessException inside the Constructor. ", e);
+            throw new IntegrationException(IntegrationError._1052, e.getMessage());
+        } catch (InvocationTargetException e) {
+            LOG.error("CaTissueTask-InvocationTargetException inside the Constructor. ", e);
             throw new IntegrationException(IntegrationError._1052, e.getMessage());
         }
 
@@ -55,23 +70,26 @@ public class CaTissueTask implements Callable<ServiceInvocationResult> {
 
     @Override
     public ServiceInvocationResult call() {
-        ServiceInvocationResult result = new ServiceInvocationResult();
+        final ServiceInvocationResult result = new ServiceInvocationResult();
         try {
-            Object retValue = methodToInvoke.invoke(caTissueClientInstance, message);
+            final Object retValue = methodToInvoke.invoke(caTissueClientInstance, message);
             result.setDataChanged(true);
             result.setOriginalData(retValue);
         } catch (InvocationTargetException e) {
-            String exceptionMessage = e.getTargetException().getMessage();
-            LOG.error("Inside CaTissueTask..call()..InvocationTargetException Message is :: " + exceptionMessage);
-            IntegrationException ie = new IntegrationException(IntegrationError._1051, e.getTargetException(),
+            final String exceptionMessage = e.getTargetException().getMessage();
+            LOG.error("Inside CaTissueTask..call()..InvocationTargetException is :: ", e);
+            final IntegrationException ie = new IntegrationException(IntegrationError._1051, e.getTargetException(),
                     exceptionMessage);
             result.setInvocationException(ie);
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
-            String exceptionMessage = e.getMessage();
-            LOG.error("Inside CaTissueTask..call()..Exception Message is :: " + exceptionMessage);
-            IntegrationException ie = new IntegrationException(IntegrationError._1051, e, exceptionMessage);
+        } catch (IllegalArgumentException e) {
+            final String exceptionMessage = e.getMessage();
+            LOG.error("Inside CaTissueTask..call()..IllegalArgumentException is :: ", e);
+            final IntegrationException ie = new IntegrationException(IntegrationError._1051, e, exceptionMessage);
+            result.setInvocationException(ie);
+        } catch (IllegalAccessException e) {
+            final String exceptionMessage = e.getMessage();
+            LOG.error("Inside CaTissueTask..call()..IllegalAccessException is :: ", e);
+            final IntegrationException ie = new IntegrationException(IntegrationError._1051, e, exceptionMessage);
             result.setInvocationException(ie);
         }
 
