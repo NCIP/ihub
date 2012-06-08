@@ -10,7 +10,7 @@ import edu.wustl.catissuecore.domain.Participant;
  */
 public class Specimens {
 
-    private List<SpecimenDetail> specimenDetailList;
+    private final List<SpecimenDetail> specimenDetailList;
     private Participant participant;
 
     /**
