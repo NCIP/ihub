@@ -16,6 +16,7 @@ import gov.nih.nci.integration.transformer.XSLTTransformer;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -41,6 +42,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This is Strategy class for Participant Update Registration for caAERS
+ * 
  * @author chandrasekaravr
  * 
  */
@@ -48,23 +50,22 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements Servic
 
     private static final Logger LOG = LoggerFactory.getLogger(CaAERSUpdateRegistrationServiceInvocationStrategy.class);
 
-    // CHECKSTYLE:OFF
-    private static QName QNAME = new QName(// NOPMD
-            "http://schema.integration.caaers.cabig.nci.nih.gov/participant", "participant");;
-    // CHECKSTYLE:ON
+    private static QName qname = new QName("http://schema.integration.caaers.cabig.nci.nih.gov/participant",
+            "participant");;
 
-    private CaAERSParticipantServiceWSClient client;
+    private final CaAERSParticipantServiceWSClient client;
 
-    private int retryCount;
+    private final int retryCount;
 
-    private XSLTTransformer xsltTransformer;
+    private final XSLTTransformer xsltTransformer;
 
     private Marshaller marshaller = null;
 
-    private Map<String, IntegrationError> msgToErrMap;
+    private final Map<String, IntegrationError> msgToErrMap;
 
     /**
      * Constructor
+     * 
      * @param xsltTransformer - XSLTTransformer
      * @param client - CaAERSParticipantServiceWSClient object
      * @param retryCount - retry Count
@@ -76,7 +77,7 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements Servic
         this.client = client;
         this.retryCount = retryCount;
 
-        HashMap<String, IntegrationError> msgToErrMapBase = new LinkedHashMap<String, IntegrationError>();
+        final HashMap<String, IntegrationError> msgToErrMapBase = new LinkedHashMap<String, IntegrationError>();
 
         msgToErrMapBase.put("User is not authorized on this Study", IntegrationError._1009);
         msgToErrMapBase.put("Unable to retrieve participant", IntegrationError._1010);
@@ -100,27 +101,28 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements Servic
 
     @Override
     public ServiceInvocationResult invoke(ServiceInvocationMessage msg) {
-        ServiceInvocationResult result = new ServiceInvocationResult();
+        final ServiceInvocationResult result = new ServiceInvocationResult();
         IntegrationException ie = null;
         try {
 
-            String participantXMLStr = transformToParticipantXML(msg.getMessage().getRequest());
+            final String participantXMLStr = transformToParticipantXML(msg.getMessage().getRequest());
 
-            CaaersServiceResponse caaersGetResponse = client.getParticipant(participantXMLStr);
+            final CaaersServiceResponse caaersGetResponse = client.getParticipant(participantXMLStr);
             ServiceResponse response = caaersGetResponse.getServiceResponse();
             ParticipantType existingPrtcpnt = null;
             if ("0".equals(response.getResponsecode())) {
                 result.setResult(response.getResponsecode() + " : " + response.getMessage());
-                Participants prtcpnts = (Participants) response.getResponseData().getAny();
+                final Participants prtcpnts = (Participants) response.getResponseData().getAny();
                 existingPrtcpnt = prtcpnts.getParticipant().get(0);
             } else {
                 handleErrorResponse(response, result);
                 handleException(result);
                 return result;
             }
-            String originalData = marshalParticipantType(existingPrtcpnt);
 
-            CaaersServiceResponse caaersresponse = client.updateParticipant(participantXMLStr);
+            final String originalData = marshalParticipantType(existingPrtcpnt);
+
+            final CaaersServiceResponse caaersresponse = client.updateParticipant(participantXMLStr);
             response = caaersresponse.getServiceResponse();
             if ("0".equals(response.getResponsecode())) {
                 result.setResult(response.getResponsecode() + " : " + response.getMessage());
@@ -130,16 +132,16 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements Servic
                 handleErrorResponse(response, result);
             }
         } catch (SOAPFaultException e) {
-            e.printStackTrace();
+            LOG.error("CaAERSUpdateRegistrationStrategy. SOAPFaultException while calling updateParticipant.", e);
             ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            LOG.error("CaAERSUpdateRegistrationStrategy. MalformedURLException while calling updateParticipant.", e);
             ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
         } catch (JAXBException e) {
-            e.printStackTrace();
+            LOG.error("CaAERSUpdateRegistrationStrategy. JAXBException while calling updateParticipant.", e);
             ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
         } catch (WebServiceException e) {
-            e.printStackTrace();
+            LOG.error("CaAERSUpdateRegistrationStrategy. WebServiceException while calling updateParticipant.", e);
             ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
         } catch (IntegrationException e) {
             ie = e;
@@ -153,28 +155,28 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements Servic
 
     @Override
     public ServiceInvocationResult rollback(ServiceInvocationMessage msg) {
-        ServiceInvocationResult result = new ServiceInvocationResult();
+        final ServiceInvocationResult result = new ServiceInvocationResult();
         IntegrationException ie = null;
         try {
-            String participantXMLStr = msg.getOriginalData();
-            CaaersServiceResponse caaersresponse = client.updateParticipant(participantXMLStr);
-            ServiceResponse response = caaersresponse.getServiceResponse();
+            final String participantXMLStr = msg.getOriginalData();
+            final CaaersServiceResponse caaersresponse = client.updateParticipant(participantXMLStr);
+            final ServiceResponse response = caaersresponse.getServiceResponse();
             if ("0".equals(response.getResponsecode())) {
                 result.setResult(response.getResponsecode() + " : " + response.getMessage());
             } else {
                 handleErrorResponse(response, result);
             }
         } catch (SOAPFaultException e) {
-            e.printStackTrace();
+            LOG.error("CaAERSUpdateRegistrationStrategy.SOAPFaultException while rollback for updateParticipant.", e);
             ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            LOG.error("CaAERSUpdateRegistrationStrategy.MalformedURLException while rollback for updateParticipant.", e);
             ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
         } catch (JAXBException e) {
-            e.printStackTrace();
+            LOG.error("CaAERSUpdateRegistrationStrategy.JAXBException while rollback for updateParticipant.", e);
             ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
         } catch (WebServiceException e) {
-            e.printStackTrace();
+            LOG.error("CaAERSUpdateRegistrationStrategy.WebServiceException while rollback for updateParticipant.", e);
             ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
         } catch (IntegrationException e) {
             ie = e;
@@ -199,35 +201,37 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements Servic
 
             participantXMLStr = new String(os.toByteArray());
         } catch (IntegrationException e) {
-            e.printStackTrace();
+            LOG.error(
+                    "CaAERSUpdateRegistrationStrategy..IntegrationException occurred while transformToParticipantXML.",
+                    e);
             throw e;
         } finally {
             try {
                 is.close();
-                // CHECKSTYLE:OFF
-            } catch (Exception e) {
-                LOG.error("Inside CaAERSUpdateRegistrationServiceInvocationStrategy..Exception occurred while closing InputStream. ", e);
+            } catch (IOException e) {
+                LOG.error("Inside CaAERSUpdateRegistrationStrategy..IOException occurred while closing InputStream. ",
+                        e);
             }
             try {
                 os.close();
-            } catch (Exception e) {
-                LOG.error("Inside CaAERSUpdateRegistrationServiceInvocationStrategy..Exception occurred while closing ByteArrayOutputStream. ", e);
+            } catch (IOException e) {
+                LOG.error("Inside CaAERSUpdateRegistrationStrategy..IOException occurred while closing OutputStream. ",
+                        e);
             }
-            // CHECKSTYLE:ON
         }
         return participantXMLStr;
     }
 
     private String marshalParticipantType(ParticipantType participantType) throws IntegrationException {
-        StringWriter sw = new StringWriter();
+        final StringWriter sw = new StringWriter();
 
         try {
-            JAXBElement<ParticipantType> jaxbEle = new JAXBElement<ParticipantType>(QNAME, ParticipantType.class, null,
-                    participantType);
-            PrintWriter pw = new PrintWriter(sw);
+            final JAXBElement<ParticipantType> jaxbEle = new JAXBElement<ParticipantType>(qname, ParticipantType.class,
+                    null, participantType);
+            final PrintWriter pw = new PrintWriter(sw);
             getMarshaller().marshal(jaxbEle, pw);
         } catch (JAXBException e) {
-            IntegrationException ie = new IntegrationException(IntegrationError._1053, e,
+            final IntegrationException ie = new IntegrationException(IntegrationError._1053, e,
                     "Unable to serialize retrieved Participant");
             throw ie;
         }
@@ -236,14 +240,14 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements Servic
 
     private Marshaller getMarshaller() throws JAXBException {
         if (marshaller == null) {
-            JAXBContext jc = JAXBContext.newInstance(ParticipantType.class);
+            final JAXBContext jc = JAXBContext.newInstance(ParticipantType.class);
             marshaller = jc.createMarshaller();
         }
         return marshaller;
     }
 
     private void handleErrorResponse(ServiceResponse response, ServiceInvocationResult result) {
-        List<WsError> wserrors = response.getWsError();
+        final List<WsError> wserrors = response.getWsError();
         WsError error = null;
         IntegrationException ie = null;
         if (wserrors != null && !wserrors.isEmpty()) {
@@ -262,7 +266,7 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements Servic
             return;
         }
 
-        Exception exception = result.getInvocationException();
+        final Exception exception = result.getInvocationException();
         Throwable cause = exception;
         while (cause instanceof IntegrationException) {
             cause = cause.getCause();
@@ -270,13 +274,14 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements Servic
         if (cause == null) {
             return;
         }
-        String[] throwableMsgs = getThrowableMsgs(cause);
+
+        final String[] throwableMsgs = getThrowableMsgs(cause);
         IntegrationException newie = (IntegrationException) exception;
 
-        Set<String> keys = msgToErrMap.keySet();
+        final Set<String> keys = msgToErrMap.keySet();
 
         for (String lkupStr : keys) {
-            String msg = getMatchingMsg(lkupStr, throwableMsgs);
+            final String msg = getMatchingMsg(lkupStr, throwableMsgs);
             if (msg != null) {
                 newie = new IntegrationException(msgToErrMap.get(lkupStr), cause, msg);
                 break;
@@ -287,7 +292,7 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements Servic
     }
 
     private String[] getThrowableMsgs(Throwable cause) {
-        Throwable[] throwables = ExceptionUtils.getThrowables(cause);
+        final Throwable[] throwables = ExceptionUtils.getThrowables(cause);
         String[] msgs = new String[throwables.length];
         for (int i = 0; i < throwables.length; i++) {
             msgs[i] = throwables[i].getMessage();

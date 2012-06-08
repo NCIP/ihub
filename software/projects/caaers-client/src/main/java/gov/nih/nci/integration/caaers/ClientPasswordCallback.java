@@ -15,9 +15,9 @@ import org.apache.ws.security.WSPasswordCallback;
  */
 public class ClientPasswordCallback implements CallbackHandler {
 
-    private String userName;
+    private final String userName;
 
-    private String password;
+    private final String password;
 
     /**
      * Constructor
@@ -37,7 +37,7 @@ public class ClientPasswordCallback implements CallbackHandler {
      * @throws UnsupportedCallbackException - UnsupportedCallbackException
      */
     public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
-        WSPasswordCallback pc = (WSPasswordCallback) callbacks[0];
+        final WSPasswordCallback pc = (WSPasswordCallback) callbacks[0];
         if (userName.equals(pc.getIdentifier())) {
             pc.setPassword(password);
         }
