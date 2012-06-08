@@ -2,8 +2,15 @@ package gov.nih.nci.integration.catissue.client;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import gov.nih.nci.system.applicationservice.ApplicationException;
 
+import java.net.MalformedURLException;
+
+import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 
 /**
  * This is an integration test class for Specimen client flows.
@@ -12,21 +19,39 @@ import org.junit.Test;
  */
 public class CaTissueSpecimenIntegrationTest {
 
+    private static final Logger LOG = LoggerFactory.getLogger(CaTissueSpecimenIntegrationTest.class);
+    private CaTissueSpecimenClient caTissueSpecimenClient;
+
+    /**
+     * To initialize the things
+     */
+    @Test
+    @Before
+    public void initialize() {
+        try {
+            caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+        } catch (BeansException e) {
+            LOG.error("CaTissueConsentIntegrationTest-BeansException inside initialize() ", e);
+        } catch (MalformedURLException e) {
+            LOG.error("CaTissueConsentIntegrationTest-ApplicationException inside initialize() ", e);
+        }
+
+        assertNotNull(caTissueSpecimenClient);
+    }
+
     /**
      * Testcase for Create Specimen when CollectionProtocol is invalid
      */
     @Test
     public void createInvalidCollectionProtocolSpecimens() {
-        CaTissueSpecimenClient caTissueSpecimenClient;
         String existXML = null;
         String createdXML = "CREATED";
         try {
-            caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
             existXML = caTissueSpecimenClient.isSpecimensExist(getInsertInvalidCollectionProtocolXMLStr());
             caTissueSpecimenClient.createSpecimens(getInsertInvalidCollectionProtocolXMLStr());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
+
+        } catch (ApplicationException e) {
+
             existXML = null;
             createdXML = null;
         }
@@ -39,16 +64,16 @@ public class CaTissueSpecimenIntegrationTest {
      */
     @Test
     public void createInvalidSpecimenClass() {
-        CaTissueSpecimenClient caTissueSpecimenClient;
+
         String existXML = null;
         String createdXML = "CREATED";
         try {
-            caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+
             existXML = caTissueSpecimenClient.isSpecimensExist(getInsertInvalidSpecimenClassXMLStr());
             caTissueSpecimenClient.createSpecimens(getInsertInvalidSpecimenClassXMLStr());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
+
+        } catch (ApplicationException e) {
+
             existXML = null;
             createdXML = null;
         }
@@ -61,16 +86,16 @@ public class CaTissueSpecimenIntegrationTest {
      */
     @Test
     public void createInvalidAvailableQuantity() {
-        CaTissueSpecimenClient caTissueSpecimenClient;
+
         String existXML = null;
         String createdXML = "CREATED";
         try {
-            caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+
             existXML = caTissueSpecimenClient.isSpecimensExist(getInsertInvalidAvailableQuantityXMLStr());
             caTissueSpecimenClient.createSpecimens(getInsertInvalidAvailableQuantityXMLStr());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
+
+        } catch (ApplicationException e) {
+
             existXML = null;
             createdXML = null;
         }
@@ -83,16 +108,16 @@ public class CaTissueSpecimenIntegrationTest {
      */
     @Test
     public void createInvalidSpecimenType() {
-        CaTissueSpecimenClient caTissueSpecimenClient;
+
         String existXML = null;
         String createdXML = "CREATED";
         try {
-            caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+
             existXML = caTissueSpecimenClient.isSpecimensExist(getInsertInvalidSpecimenTypeXMLStr());
             caTissueSpecimenClient.createSpecimens(getInsertInvalidSpecimenTypeXMLStr());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
+
+        } catch (ApplicationException e) {
+
             existXML = null;
             createdXML = null;
         }
@@ -105,16 +130,16 @@ public class CaTissueSpecimenIntegrationTest {
      */
     @Test
     public void createInvalidTissueSide() {
-        CaTissueSpecimenClient caTissueSpecimenClient;
+
         String existXML = null;
         String createdXML = "CREATED";
         try {
-            caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+
             existXML = caTissueSpecimenClient.isSpecimensExist(getInsertInvalidTissueSideXMLStr());
             caTissueSpecimenClient.createSpecimens(getInsertInvalidTissueSideXMLStr());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
+
+        } catch (ApplicationException e) {
+
             existXML = null;
             createdXML = null;
         }
@@ -127,16 +152,16 @@ public class CaTissueSpecimenIntegrationTest {
      */
     @Test
     public void createInvalidTissueSite() {
-        CaTissueSpecimenClient caTissueSpecimenClient;
+
         String existXML = null;
         String createdXML = "CREATED";
         try {
-            caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+
             existXML = caTissueSpecimenClient.isSpecimensExist(getInsertInvalidTissueSiteXMLStr());
             caTissueSpecimenClient.createSpecimens(getInsertInvalidTissueSiteXMLStr());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
+
+        } catch (ApplicationException e) {
+
             existXML = null;
             createdXML = null;
         }
@@ -149,16 +174,16 @@ public class CaTissueSpecimenIntegrationTest {
      */
     @Test
     public void createInvalidPathologicalStatus() {
-        CaTissueSpecimenClient caTissueSpecimenClient;
+
         String existXML = null;
         String createdXML = "CREATED";
         try {
-            caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+
             existXML = caTissueSpecimenClient.isSpecimensExist(getInsertInvalidPathologicalStatusXMLStr());
             caTissueSpecimenClient.createSpecimens(getInsertInvalidPathologicalStatusXMLStr());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
+
+        } catch (ApplicationException e) {
+
             existXML = null;
             createdXML = null;
         }
@@ -171,16 +196,16 @@ public class CaTissueSpecimenIntegrationTest {
      */
     @Test
     public void createSpecimens() {
-        CaTissueSpecimenClient caTissueSpecimenClient;
+
         String existXML = null;
         String createdXML = "CREATED";
         try {
-            caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+
             existXML = caTissueSpecimenClient.isSpecimensExist(getInsertExistingSpecimenXMLStr());
             caTissueSpecimenClient.createSpecimens(getInsertSpecimenXMLStr());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
+
+        } catch (ApplicationException e) {
+
             existXML = null;
             createdXML = null;
         }
@@ -194,17 +219,17 @@ public class CaTissueSpecimenIntegrationTest {
      */
     @Test
     public void createExistingSpecimens() {
-        CaTissueSpecimenClient caTissueSpecimenClient;
+
         String existXML = null;
         String createdXML = "CREATED";
         try {
-            caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+
             // existXML=
             // caTissueSpecimenClient.isSpecimensExist(getInsertExistingSpecimenXMLStr());
             caTissueSpecimenClient.createSpecimens(getInsertExistingSpecimenXMLStr());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
+
+        } catch (ApplicationException e) {
+
             existXML = null;
             createdXML = null;
         }
@@ -218,14 +243,11 @@ public class CaTissueSpecimenIntegrationTest {
     @Test
     public void updateSpecimens() {
         String retXML = null;
-        CaTissueSpecimenClient caTissueSpecimenClient;
-        try {
-            caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
-            retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenXMLStr());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
 
+        try {
+            retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenXMLStr());
+
+        } catch (ApplicationException e) {
         }
         assertNotNull(retXML);
     }
@@ -235,14 +257,13 @@ public class CaTissueSpecimenIntegrationTest {
      */
     @Test
     public void updateSpecimensSpecimenNotExist() {
-        CaTissueSpecimenClient caTissueSpecimenClient;
+
         String retXML = null;
         try {
-            caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+
             retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenNotExistXMLStr());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
+
+        } catch (ApplicationException e) {
 
         }
         assertNull(retXML);
@@ -253,15 +274,15 @@ public class CaTissueSpecimenIntegrationTest {
      */
     @Test
     public void updateSpecimensInvalidAvailableQtyXMLStr() {
-        CaTissueSpecimenClient caTissueSpecimenClient;
+
         String retXML = null;
         try {
-            caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+
             retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenInvalidAvailableQtyXMLStr());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
+
+        } catch (ApplicationException e) {
             retXML = null;
-            // CHECKSTYLE:ON
+
         }
         assertNull(retXML);
     }
@@ -271,16 +292,16 @@ public class CaTissueSpecimenIntegrationTest {
      */
     @Test
     public void updateSpecimensCollectionProtocolChangeXMLStr() {
-        CaTissueSpecimenClient caTissueSpecimenClient;
+
         String retXML = null;
         String existXML = "UPDATING_SPECIMEN";
         try {
-            caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+
             existXML = caTissueSpecimenClient.getExistingSpecimens(getUpdateSpecimenCollectionProtocolChangeXMLStr());
             retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenCollectionProtocolChangeXMLStr());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
+
+        } catch (ApplicationException e) {
+
             existXML = null;
             retXML = null;
         }
@@ -293,17 +314,17 @@ public class CaTissueSpecimenIntegrationTest {
      */
     @Test
     public void updateSpecimensCollectionEventProtocolChangeXMLStr() {
-        CaTissueSpecimenClient caTissueSpecimenClient;
+
         String retXML = null;
         String existXML = "UPDATING_SPECIMEN";
         try {
-            caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+
             existXML = caTissueSpecimenClient
                     .getExistingSpecimens(getUpdateSpecimenCollectionProtocolEventChangeXMLStr());
             retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenCollectionProtocolEventChangeXMLStr());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
+
+        } catch (ApplicationException e) {
+
             existXML = null;
             retXML = null;
         }
@@ -316,16 +337,16 @@ public class CaTissueSpecimenIntegrationTest {
      */
     @Test
     public void updateSpecimensSpecimenClassChange() {
-        CaTissueSpecimenClient caTissueSpecimenClient;
+
         String retXML = null;
         String existXML = "UPDATING_SPECIMEN";
         try {
-            caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+
             existXML = caTissueSpecimenClient.getExistingSpecimens(getUpdateSpecimenClassChangeXMLStr());
             retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenClassChangeXMLStr());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
+
+        } catch (ApplicationException e) {
+
             existXML = null;
             retXML = null;
         }
@@ -338,16 +359,16 @@ public class CaTissueSpecimenIntegrationTest {
      */
     @Test
     public void updateSpecimensInvalidSpecimenType() {
-        CaTissueSpecimenClient caTissueSpecimenClient;
+
         String retXML = null;
         String existXML = "UPDATING_SPECIMEN";
         try {
-            caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+
             existXML = caTissueSpecimenClient.getExistingSpecimens(getUpdateSpecimenInvalidSpecimenTypeXMLStr());
             retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenInvalidSpecimenTypeXMLStr());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
+
+        } catch (ApplicationException e) {
+
             existXML = null;
             retXML = null;
         }
@@ -360,16 +381,16 @@ public class CaTissueSpecimenIntegrationTest {
      */
     @Test
     public void updateSpecimensInvalidTissueSide() {
-        CaTissueSpecimenClient caTissueSpecimenClient;
+
         String retXML = null;
         String existXML = "UPDATING_SPECIMEN";
         try {
-            caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+
             existXML = caTissueSpecimenClient.getExistingSpecimens(getUpdateSpecimenInvalidTissueSideXMLStr());
             retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenInvalidTissueSideXMLStr());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
+           
+        } catch (ApplicationException e) {
+           
             existXML = null;
             retXML = null;
         }
@@ -382,16 +403,16 @@ public class CaTissueSpecimenIntegrationTest {
      */
     @Test
     public void updateSpecimensInvalidTissueSite() {
-        CaTissueSpecimenClient caTissueSpecimenClient;
+
         String retXML = null;
         String existXML = "UPDATING_SPECIMEN";
         try {
-            caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+
             existXML = caTissueSpecimenClient.getExistingSpecimens(getUpdateSpecimenInvalidTissueSiteXMLStr());
             retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenInvalidTissueSiteXMLStr());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
+           
+        } catch (ApplicationException e) {
+           
             existXML = null;
             retXML = null;
         }
@@ -405,13 +426,13 @@ public class CaTissueSpecimenIntegrationTest {
     @Test
     public void rollbackSpecimens() {
         String retXML = "DELETE_SPECIMEN";
-        CaTissueSpecimenClient caTissueSpecimenClient;
+
         try {
-            caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit123");
+
             caTissueSpecimenClient.rollbackCreatedSpecimens(getRollbackSpecimenXMLStr());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
+           
+        } catch (ApplicationException e) {
+
             e.printStackTrace();
             retXML = null;
         }

@@ -2,8 +2,15 @@ package gov.nih.nci.integration.catissue.client;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import gov.nih.nci.system.applicationservice.ApplicationException;
 
+import java.net.MalformedURLException;
+
+import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 
 /**
  * This is the TestClass for registerConsent flow.
@@ -13,23 +20,39 @@ import org.junit.Test;
 
 public class CaTissueConsentIntegrationTest {
 
+    private static final Logger LOG = LoggerFactory.getLogger(CaTissueConsentIntegrationTest.class);
+    private CaTissueConsentClient caTissueConsentClient;
+
+    /**
+     * To initialize the things
+     */
+    @Test
+    @Before
+    public void initialize() {
+        try {
+            caTissueConsentClient = new CaTissueConsentClient("admin@admin.com", "Rohit123");
+        } catch (BeansException e) {
+            LOG.error("CaTissueConsentIntegrationTest-BeansException inside initialize() ", e);
+        } catch (MalformedURLException e) {
+            LOG.error("CaTissueConsentIntegrationTest-ApplicationException inside initialize() ", e);
+        }
+
+        assertNotNull(caTissueConsentClient);
+    }
+
     /**
      * Testcase for registerConsents flow
      */
     @Test
     public void registerConsents() {
-        String retXML = "REGISTER_SPECIMEN";
-        CaTissueConsentClient caTissueConsentClient;
+        String retConsentXML = null;
         try {
-            caTissueConsentClient = new CaTissueConsentClient("admin@admin.com", "Rohit123");
             caTissueConsentClient.registerConsents(getRegisterConsentXMLStr());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
-            e.printStackTrace();
-            retXML = null;
+            retConsentXML = "REGISTER_CONSENT";
+        } catch (ApplicationException e) {
+            LOG.error("CaTissueConsentIntegrationTest-ApplicationException inside registerConsents() ", e);
         }
-        assertNotNull(retXML);
+        assertNotNull(retConsentXML);
     }
 
     /**
@@ -37,18 +60,15 @@ public class CaTissueConsentIntegrationTest {
      */
     @Test
     public void registerConsentsSpecimenNotExist() {
-        String existXML = "SPECIMEN_EXIST";
-        String retXML = "REGISTER_SPECIMEN";
-        CaTissueConsentClient caTissueConsentClient;
+        String existXML = null;
+        String retXML = null;
         try {
-            caTissueConsentClient = new CaTissueConsentClient("admin@admin.com", "Rohit123");
             caTissueConsentClient.getExistingConsents(getRegisterConsentSpecimenNotExistXMLStr());
             caTissueConsentClient.registerConsents(getRegisterConsentSpecimenNotExistXMLStr());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
-            existXML = null;
-            retXML = null;
+            existXML = "SPECIMEN_EXIST_FOR_REGISTER_CONSENT";
+            retXML = "REGISTER_SPECIMEN_RETURN";
+        } catch (ApplicationException e) {
+            LOG.error("ApplicationException inside registerConsentsSpecimenNotExist() ", e);
         }
         assertNull(existXML);
         assertNull(retXML);
@@ -59,18 +79,15 @@ public class CaTissueConsentIntegrationTest {
      */
     @Test
     public void registerConsentsCollectionProtocolNotExist() {
-        String existXML = "SPECIMEN_EXIST";
-        String retXML = "REGISTER_SPECIMEN";
-        CaTissueConsentClient caTissueConsentClient;
+        String existXML = null;
+        String retXML = null;
         try {
-            caTissueConsentClient = new CaTissueConsentClient("admin@admin.com", "Rohit123");
             caTissueConsentClient.getExistingConsents(getRegisterConsentCollectionProtocolNotExistXMLStr());
             caTissueConsentClient.registerConsents(getRegisterConsentCollectionProtocolNotExistXMLStr());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
-            existXML = null;
-            retXML = null;
+            existXML = "SPECIMEN_EXIST";
+            retXML = "REGISTER_SPECIMEN";
+        } catch (ApplicationException e) {
+            LOG.error("ApplicationException inside registerConsentsCollectionProtocolNotExist() ", e);
         }
         assertNull(existXML);
         assertNull(retXML);
@@ -81,42 +98,35 @@ public class CaTissueConsentIntegrationTest {
      */
     @Test
     public void registerConsentsStatementNotExist() {
-        String existXML = "SPECIMEN_EXIST";
-        String retXML = "REGISTER_SPECIMEN";
-        CaTissueConsentClient caTissueConsentClient;
+        String existXML = null;
+        String retXML = null;
         try {
-            caTissueConsentClient = new CaTissueConsentClient("admin@admin.com", "Rohit123");
             caTissueConsentClient.getExistingConsents(getRegisterConsentStatementNotExistXMLStr());
             caTissueConsentClient.registerConsents(getRegisterConsentStatementNotExistXMLStr());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
-            existXML = null;
-            retXML = null;
+            existXML = "SPECIMEN_EXIST";
+            retXML = "REGISTER_SPECIMEN";
+        } catch (ApplicationException e) {
+            LOG.error("ApplicationException inside registerConsentsCollectionProtocolNotExist() ", e);
         }
         assertNull(existXML);
         assertNull(retXML);
     }
 
     /**
-     * Testcase for rollback of registerConsents 
+     * Testcase for rollback of registerConsents
      */
-    @Test
+//    @Test
     public void rollbackConsents() {
-        String existXML = "SPECIMEN_EXIST";
-        String retXML = "REGISTER_SPECIMEN";
+        String existXML = null;
+        String retXML = null;
 
-        CaTissueConsentClient caTissueConsentClient;
         try {
-            caTissueConsentClient = new CaTissueConsentClient("admin@admin.com", "Rohit123");
             caTissueConsentClient.getExistingConsents(getRollbackConsentXMLStr());
             caTissueConsentClient.rollbackConsentRegistration(getRollbackConsentXMLStr());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            // CHECKSTYLE:ON
-            e.printStackTrace();
-            existXML = null;
-            retXML = null;
+            existXML = "SPECIMEN_EXIST";
+            retXML = "REGISTER_SPECIMEN";
+        } catch (ApplicationException e) {
+            LOG.error("ApplicationException inside rollbackConsents() ", e);
         }
         assertNotNull(existXML);
         assertNotNull(retXML);
