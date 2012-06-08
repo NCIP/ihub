@@ -14,6 +14,7 @@ import gov.nih.nci.integration.transformer.XSLTTransformer;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.util.Collections;
@@ -33,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This is Strategy class for Participant Registration for caAERS
+ * 
  * @author chandrasekaravr
  * 
  */
@@ -40,16 +42,17 @@ public class CaAERSRegistrationServiceInvocationStrategy implements ServiceInvoc
 
     private static final Logger LOG = LoggerFactory.getLogger(CaAERSRegistrationServiceInvocationStrategy.class);
 
-    private CaAERSParticipantServiceWSClient client;
+    private final CaAERSParticipantServiceWSClient client;
 
-    private int retryCount;
+    private final int retryCount;
 
-    private XSLTTransformer xsltTransformer;
+    private final XSLTTransformer xsltTransformer;
 
-    private Map<String, IntegrationError> msgToErrMap;
+    private final Map<String, IntegrationError> msgToErrMap;
 
     /**
      * Constructor
+     * 
      * @param xsltTransformer - XSLTTransformer
      * @param client - CaAERSParticipantServiceWSClient
      * @param retryCount - retryCount
@@ -61,7 +64,7 @@ public class CaAERSRegistrationServiceInvocationStrategy implements ServiceInvoc
         this.client = client;
         this.retryCount = retryCount;
 
-        HashMap<String, IntegrationError> msgToErrMapBase = new LinkedHashMap<String, IntegrationError>();
+        final HashMap<String, IntegrationError> msgToErrMapBase = new LinkedHashMap<String, IntegrationError>();
 
         msgToErrMapBase.put("User is not authorized on this Study", IntegrationError._1009);
         msgToErrMapBase.put("Invalid Username/Password", IntegrationError._1011);
@@ -84,13 +87,13 @@ public class CaAERSRegistrationServiceInvocationStrategy implements ServiceInvoc
 
     @Override
     public ServiceInvocationResult invoke(ServiceInvocationMessage msg) {
-        ServiceInvocationResult result = new ServiceInvocationResult();
+        final ServiceInvocationResult result = new ServiceInvocationResult();
         IntegrationException ie = null;
         try {
-            String participantXMLStr = transformToParticipantXML(msg.getMessage().getRequest());
+            final String participantXMLStr = transformToParticipantXML(msg.getMessage().getRequest());
 
-            CaaersServiceResponse caaersresponse = client.createParticipant(participantXMLStr);
-            ServiceResponse response = caaersresponse.getServiceResponse();
+            final CaaersServiceResponse caaersresponse = client.createParticipant(participantXMLStr);
+            final ServiceResponse response = caaersresponse.getServiceResponse();
             if ("0".equals(response.getResponsecode())) {
                 result.setResult(response.getResponsecode() + " : " + response.getMessage());
                 result.setDataChanged(true);
@@ -99,16 +102,16 @@ public class CaAERSRegistrationServiceInvocationStrategy implements ServiceInvoc
                 handleErrorResponse(response, result);
             }
         } catch (SOAPFaultException e) {
-            e.printStackTrace();
+            LOG.error("CaAERSRegistrationStrategy. SOAPFaultException while calling createParticipant.", e);
             ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            LOG.error("CaAERSRegistrationStrategy. MalformedURLException while calling createParticipant.", e);
             ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
         } catch (JAXBException e) {
-            e.printStackTrace();
+            LOG.error("CaAERSRegistrationStrategy. JAXBException while calling createParticipant.", e);
             ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
         } catch (WebServiceException e) {
-            e.printStackTrace();
+            LOG.error("CaAERSRegistrationStrategy. WebServiceException while calling createParticipant.", e);
             ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
         } catch (IntegrationException e) {
             ie = e;
@@ -122,28 +125,28 @@ public class CaAERSRegistrationServiceInvocationStrategy implements ServiceInvoc
 
     @Override
     public ServiceInvocationResult rollback(ServiceInvocationMessage msg) {
-        ServiceInvocationResult result = new ServiceInvocationResult();
+        final ServiceInvocationResult result = new ServiceInvocationResult();
         IntegrationException ie = null;
         try {
-            String participantXMLStr = transformToParticipantXML(msg.getMessage().getRequest());
-            CaaersServiceResponse caaersresponse = client.deleteParticipant(participantXMLStr);
-            ServiceResponse response = caaersresponse.getServiceResponse();
+            final String participantXMLStr = transformToParticipantXML(msg.getMessage().getRequest());
+            final CaaersServiceResponse caaersresponse = client.deleteParticipant(participantXMLStr);
+            final ServiceResponse response = caaersresponse.getServiceResponse();
             if ("0".equals(response.getResponsecode())) {
                 result.setResult(response.getResponsecode() + " : " + response.getMessage());
             } else {
                 handleErrorResponse(response, result);
             }
         } catch (SOAPFaultException e) {
-            e.printStackTrace();
+            LOG.error("CaAERSRegistrationStrategy. SOAPFaultException while rollback of createParticipant.", e);
             ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            LOG.error("CaAERSRegistrationStrategy. MalformedURLException while rollback of createParticipant.", e);
             ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
         } catch (JAXBException e) {
-            e.printStackTrace();
+            LOG.error("CaAERSRegistrationStrategy. JAXBException while rollback of createParticipant.", e);
             ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
         } catch (WebServiceException e) {
-            e.printStackTrace();
+            LOG.error("CaAERSRegistrationStrategy. WebServiceException while rollback of createParticipant.", e);
             ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
         } catch (IntegrationException e) {
             ie = e;
@@ -168,38 +171,34 @@ public class CaAERSRegistrationServiceInvocationStrategy implements ServiceInvoc
 
             participantXMLStr = new String(os.toByteArray());
         } catch (IntegrationException e) {
-            e.printStackTrace();
+            LOG.error("CaAERSRegistrationStrategy.IntegrationException occurred while transformToParticipantXML. ", e);
             throw e;
         } finally {
             try {
                 is.close();
-                // CHECKSTYLE:OFF
-            } catch (Exception e) {
-                LOG.error("Inside CaAERSRegistrationServiceInvocationStrategy...Exception occurred while closing InputStream. ", e);
+            } catch (IOException e) {
+                LOG.error("Inside CaAERSRegistrationStrategy.Exception occurred while closing InputStream. ", e);
             }
-            // CHECKSTYLE:ON
             try {
                 os.close();
-                // CHECKSTYLE:OFF
-            } catch (Exception e) {
-                LOG.error("Inside CaAERSRegistrationServiceInvocationStrategy...Exception occurred while closing ByteArrayOutputStream. ", e);
+            } catch (IOException e) {
+                LOG.error("CaAERSRegistrationStrategy.Exception occurred while closing OutputStream. ", e);
             }
-            // CHECKSTYLE:ON
         }
         return participantXMLStr;
     }
 
     private void handleErrorResponse(ServiceResponse response, ServiceInvocationResult result) {
-        List<WsError> wserrors = response.getWsError();
+        final List<WsError> wserrors = response.getWsError();
         WsError error = null;
         IntegrationException ie = null;
         if (wserrors != null && !wserrors.isEmpty()) {
             error = wserrors.get(0);
             ie = new IntegrationException(IntegrationError._1053, new Throwable(error.getException()), error // NOPMD
-                    .getErrorDesc()); 
+                    .getErrorDesc());
         } else {
             ie = new IntegrationException(IntegrationError._1053, new Throwable(response.getMessage()), response // NOPMD
-                    .getMessage()); 
+                    .getMessage());
         }
         result.setInvocationException(ie);
     }
@@ -209,7 +208,7 @@ public class CaAERSRegistrationServiceInvocationStrategy implements ServiceInvoc
             return;
         }
 
-        Exception exception = result.getInvocationException();
+        final Exception exception = result.getInvocationException();
         Throwable cause = exception;
         while (cause instanceof IntegrationException) {
             cause = cause.getCause();
@@ -218,13 +217,13 @@ public class CaAERSRegistrationServiceInvocationStrategy implements ServiceInvoc
             return;
         }
 
-        String[] throwableMsgs = getThrowableMsgs(cause);
+        final String[] throwableMsgs = getThrowableMsgs(cause);
         IntegrationException newie = (IntegrationException) exception;
 
-        Set<String> keys = msgToErrMap.keySet();
+        final Set<String> keys = msgToErrMap.keySet();
 
         for (String lkupStr : keys) {
-            String msg = getMatchingMsg(lkupStr, throwableMsgs);
+            final String msg = getMatchingMsg(lkupStr, throwableMsgs);
             if (msg != null) {
                 newie = new IntegrationException(msgToErrMap.get(lkupStr), cause, msg);
                 break;
@@ -235,7 +234,7 @@ public class CaAERSRegistrationServiceInvocationStrategy implements ServiceInvoc
     }
 
     private String[] getThrowableMsgs(Throwable cause) {
-        Throwable[] throwables = ExceptionUtils.getThrowables(cause);
+        final Throwable[] throwables = ExceptionUtils.getThrowables(cause);
         String[] msgs = new String[throwables.length];
         for (int i = 0; i < throwables.length; i++) {
             msgs[i] = throwables[i].getMessage();

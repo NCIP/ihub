@@ -6,6 +6,8 @@ import gov.nih.nci.integration.exception.IntegrationError;
 import gov.nih.nci.integration.exception.IntegrationException;
 import gov.nih.nci.integration.transformer.XSLTTransformer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +16,9 @@ import org.springframework.context.annotation.Scope;
 
 /**
  * This class is used to read the caAERS configurations
+ * 
  * @author Vinodh
- *
+ * 
  */
 @Configuration
 public class CaAERSConfig {
@@ -41,8 +44,11 @@ public class CaAERSConfig {
     @Autowired
     private XSLTTransformer xsltTransformer;
 
+    private static final Logger LOG = LoggerFactory.getLogger(CaAERSConfig.class);
+
     /**
      * To get clientPasswordCallback
+     * 
      * @return ClientPasswordCallback object
      */
     @Bean
@@ -52,6 +58,7 @@ public class CaAERSConfig {
 
     /**
      * To get caAERSParticipantServiceWSClient
+     * 
      * @return CaAERSParticipantServiceWSClient object
      * @throws IntegrationException - IntegrationException
      */
@@ -60,9 +67,9 @@ public class CaAERSConfig {
         return new CaAERSParticipantServiceWSClient(serviceUrl + "?wsdl", userName, clientPasswordCallback());
     }
 
-    
     /**
      * To get caAersRegistrationServiceInvocationStrategy
+     * 
      * @return CaAERSRegistrationServiceInvocationStrategy object
      * @throws IntegrationException - IntegrationException
      */
@@ -76,14 +83,14 @@ public class CaAERSConfig {
             return new CaAERSRegistrationServiceInvocationStrategy(xsltTransformer, caAERSParticipantServiceWSClient(),
                     Integer.parseInt(retryCountStr));
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+            LOG.error("CaAERSConfig..NumberFormatException inside caAersRegistrationServiceInvocationStrategy. ", e);
             throw new IntegrationException(IntegrationError._1051, e, (Object) null);
         }
     }
 
-    
     /**
      * To get caAersUpdateRegistrationServiceInvocationStrategy
+     * 
      * @return CaAERSUpdateRegistrationServiceInvocationStrategy obejct
      * @throws IntegrationException - IntegrationException
      */
@@ -97,7 +104,8 @@ public class CaAERSConfig {
             return new CaAERSUpdateRegistrationServiceInvocationStrategy(xsltTransformer,
                     caAERSParticipantServiceWSClient(), Integer.parseInt(retryCountStr));
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+            LOG.error("CaAERSConfig..NumberFormatException inside caAersUpdateRegistrationServiceInvocationStrategy. ",
+                    e);
             throw new IntegrationException(IntegrationError._1051, e, (Object) null);
         }
     }
