@@ -52,7 +52,7 @@ public class CaTissueConsentServiceInvocationStrategy implements ServiceInvocati
         this.caTissueConsentClient = caTissueSpecimenClient;
         this.xsltTransformer = xsltTransformer;
 
-        HashMap<String, IntegrationError> msgToErrMapBase = new LinkedHashMap<String, IntegrationError>();
+        final HashMap<String, IntegrationError> msgToErrMapBase = new LinkedHashMap<String, IntegrationError>();
         msgToErrMapBase.put("Specimen for given LABEL doesn't exist", IntegrationError._1090);
         msgToErrMapBase.put("Collection Protocol was not found in caTissue", IntegrationError._1091);
         msgToErrMapBase.put("ConsentTier Statement was not found for given CollectionProtocol in caTissue",
@@ -77,7 +77,7 @@ public class CaTissueConsentServiceInvocationStrategy implements ServiceInvocati
         ServiceInvocationResult serviceInvocationResult = new ServiceInvocationResult();
         try {
             // transform the InterimConsentXML into CreateSpecimenXML
-            String consentListXMLStr = transformToConsentXML(msg.getMessage().getRequest());
+            final String consentListXMLStr = transformToConsentXML(msg.getMessage().getRequest());
 
             // call the method to register Consents
             serviceInvocationResult = caTissueConsentClient.registerConsents(consentListXMLStr);
@@ -92,7 +92,7 @@ public class CaTissueConsentServiceInvocationStrategy implements ServiceInvocati
     @Override
     public ServiceInvocationResult rollback(ServiceInvocationMessage msg) {
         ServiceInvocationResult serviceInvocationResult = new ServiceInvocationResult();
-        String consentListXMLStr = msg.getOriginalData();
+        final String consentListXMLStr = msg.getOriginalData();
         // call the method to rollback Specimens
         serviceInvocationResult = caTissueConsentClient.rollbackConsents(consentListXMLStr);
         return serviceInvocationResult;
@@ -134,7 +134,7 @@ public class CaTissueConsentServiceInvocationStrategy implements ServiceInvocati
             return;
         }
 
-        Exception exception = result.getInvocationException();
+        final Exception exception = result.getInvocationException();
         Throwable cause = exception;
         while (cause instanceof IntegrationException) {
             cause = cause.getCause();
@@ -143,13 +143,13 @@ public class CaTissueConsentServiceInvocationStrategy implements ServiceInvocati
             return;
         }
 
-        String[] throwableMsgs = getThrowableMsgs(cause);
+        final String[] throwableMsgs = getThrowableMsgs(cause);
         IntegrationException newie = (IntegrationException) exception;
 
-        Set<String> keys = msgToErrMap.keySet();
+        final Set<String> keys = msgToErrMap.keySet();
 
         for (String lkupStr : keys) {
-            String msg = getMatchingMsg(lkupStr, throwableMsgs);
+            final String msg = getMatchingMsg(lkupStr, throwableMsgs);
             if (msg != null) {
                 newie = new IntegrationException(msgToErrMap.get(lkupStr), cause, msg);
                 break;
@@ -160,7 +160,7 @@ public class CaTissueConsentServiceInvocationStrategy implements ServiceInvocati
     }
 
     private String[] getThrowableMsgs(Throwable cause) {
-        Throwable[] throwables = ExceptionUtils.getThrowables(cause);
+        final Throwable[] throwables = ExceptionUtils.getThrowables(cause);
         String[] msgs = new String[throwables.length];
         for (int i = 0; i < throwables.length; i++) {
             msgs[i] = throwables[i].getMessage();

@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This is Strategy class for Specimen
+ * 
  * @author Rohit Gupta
  */
 public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocationStrategy {
@@ -51,7 +52,7 @@ public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocat
         this.caTissueSpecimenClient = caTissueSpecimenClient;
         this.xsltTransformer = xsltTransformer;
 
-        HashMap<String, IntegrationError> msgToErrMapBase = new LinkedHashMap<String, IntegrationError>();
+        final HashMap<String, IntegrationError> msgToErrMapBase = new LinkedHashMap<String, IntegrationError>();
 
         msgToErrMapBase.put("Specimen with the same LABEL already exists", IntegrationError._1080);
         msgToErrMapBase.put("Specimen Type is invalid", IntegrationError._1081);
@@ -80,7 +81,7 @@ public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocat
         ServiceInvocationResult serviceInvocationResult = new ServiceInvocationResult();
         try {
             // transform the InterimCreateSpecimenXML into CreateSpecimenXML
-            String specimenListXMLStr = transformToSpecimenXML(msg.getMessage().getRequest());
+            final String specimenListXMLStr = transformToSpecimenXML(msg.getMessage().getRequest());
 
             // call the method to create Specimens
             serviceInvocationResult = caTissueSpecimenClient.createSpecimens(specimenListXMLStr);
@@ -98,13 +99,13 @@ public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocat
 
         try {
 
-            String specimenListXMLStr = transformToSpecimenXML(msg.getMessage().getRequest());
+            final String specimenListXMLStr = transformToSpecimenXML(msg.getMessage().getRequest());
 
             // call the method to rollback Specimens
             serviceInvocationResult = caTissueSpecimenClient.rollbackCreatedSpecimens(specimenListXMLStr);
         } catch (IntegrationException e) {
-            serviceInvocationResult.setInvocationException(e);           
-        } 
+            serviceInvocationResult.setInvocationException(e);
+        }
         return serviceInvocationResult;
     }
 
@@ -133,7 +134,7 @@ public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocat
         } finally {
             try {
                 is.close();
-                os.close();               
+                os.close();
             } catch (IOException e) {
                 LOG.error("CaTissueSpecimenServiceInvocationStrategy.. Exception while closing the stream : " + e);
             }
@@ -146,7 +147,7 @@ public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocat
             return;
         }
 
-        Exception exception = result.getInvocationException();
+        final Exception exception = result.getInvocationException();
         Throwable cause = exception;
         while (cause instanceof IntegrationException) {
             cause = cause.getCause();
@@ -155,13 +156,13 @@ public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocat
             return;
         }
 
-        String[] throwableMsgs = getThrowableMsgs(cause);
+        final String[] throwableMsgs = getThrowableMsgs(cause);
         IntegrationException newie = (IntegrationException) exception;
 
-        Set<String> keys = msgToErrMap.keySet();
+        final Set<String> keys = msgToErrMap.keySet();
 
         for (String lkupStr : keys) {
-            String msg = getMatchingMsg(lkupStr, throwableMsgs);
+            final String msg = getMatchingMsg(lkupStr, throwableMsgs);
             if (msg != null) {
                 newie = new IntegrationException(msgToErrMap.get(lkupStr), cause, msg);
                 break;
@@ -172,7 +173,7 @@ public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocat
     }
 
     private String[] getThrowableMsgs(Throwable cause) {
-        Throwable[] throwables = ExceptionUtils.getThrowables(cause);
+        final Throwable[] throwables = ExceptionUtils.getThrowables(cause);
         String[] msgs = new String[throwables.length];
         for (int i = 0; i < throwables.length; i++) {
             msgs[i] = throwables[i].getMessage();

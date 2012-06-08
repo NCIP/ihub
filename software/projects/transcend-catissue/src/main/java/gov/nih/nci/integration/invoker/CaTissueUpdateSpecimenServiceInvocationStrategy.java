@@ -53,7 +53,7 @@ public class CaTissueUpdateSpecimenServiceInvocationStrategy implements ServiceI
         this.caTissueSpecimenClient = caTissueSpecimenClient;
         this.xsltTransformer = xsltTransformer;
 
-        HashMap<String, IntegrationError> msgToErrMapBase = new LinkedHashMap<String, IntegrationError>();
+        final HashMap<String, IntegrationError> msgToErrMapBase = new LinkedHashMap<String, IntegrationError>();
 
         msgToErrMapBase.put("Specimen with the same LABEL already exists", IntegrationError._1080);
         msgToErrMapBase.put("Specimen Type is invalid", IntegrationError._1081);
@@ -87,7 +87,7 @@ public class CaTissueUpdateSpecimenServiceInvocationStrategy implements ServiceI
         ServiceInvocationResult serviceInvocationResult = new ServiceInvocationResult();
         try {
             // transform the InterimCreateSpecimenXML into SpecimenXML
-            String specimenListXMLStr = transformToSpecimenXML(msg.getMessage().getRequest());
+            final String specimenListXMLStr = transformToSpecimenXML(msg.getMessage().getRequest());
 
             // call the method to update Specimens
             serviceInvocationResult = caTissueSpecimenClient.updateSpecimens(specimenListXMLStr);
@@ -103,7 +103,7 @@ public class CaTissueUpdateSpecimenServiceInvocationStrategy implements ServiceI
     @Override
     public ServiceInvocationResult rollback(ServiceInvocationMessage msg) {
         ServiceInvocationResult serviceInvocationResult = new ServiceInvocationResult();
-        String specimenListXMLStr = msg.getOriginalData();
+        final String specimenListXMLStr = msg.getOriginalData();
         // call the method to rollback Specimens
         serviceInvocationResult = caTissueSpecimenClient.rollbackUpdatedSpecimens(specimenListXMLStr);
         return serviceInvocationResult;
@@ -144,7 +144,7 @@ public class CaTissueUpdateSpecimenServiceInvocationStrategy implements ServiceI
             return;
         }
 
-        Exception exception = result.getInvocationException();
+        final Exception exception = result.getInvocationException();
         Throwable cause = exception;
         while (cause instanceof IntegrationException) {
             cause = cause.getCause();
@@ -153,13 +153,13 @@ public class CaTissueUpdateSpecimenServiceInvocationStrategy implements ServiceI
             return;
         }
 
-        String[] throwableMsgs = getThrowableMsgs(cause);
+        final String[] throwableMsgs = getThrowableMsgs(cause);
         IntegrationException newie = (IntegrationException) exception;
 
-        Set<String> keys = msgToErrMap.keySet();
+        final Set<String> keys = msgToErrMap.keySet();
 
         for (String lkupStr : keys) {
-            String msg = getMatchingMsg(lkupStr, throwableMsgs);
+            final String msg = getMatchingMsg(lkupStr, throwableMsgs);
             if (msg != null) {
                 newie = new IntegrationException(msgToErrMap.get(lkupStr), cause, msg);
                 break;
@@ -170,7 +170,7 @@ public class CaTissueUpdateSpecimenServiceInvocationStrategy implements ServiceI
     }
 
     private String[] getThrowableMsgs(Throwable cause) {
-        Throwable[] throwables = ExceptionUtils.getThrowables(cause);
+        final Throwable[] throwables = ExceptionUtils.getThrowables(cause);
         String[] msgs = new String[throwables.length];
         for (int i = 0; i < throwables.length; i++) {
             msgs[i] = throwables[i].getMessage();

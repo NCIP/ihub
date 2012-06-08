@@ -52,7 +52,7 @@ public class CaTissueRegistrationServiceInvocationStrategy implements ServiceInv
         this.caTissueParticipantClient = caTissueParticipantClient;
         this.xsltTransformer = xsltTransformer;
 
-        HashMap<String, IntegrationError> msgToErrMapBase = new LinkedHashMap<String, IntegrationError>();
+        final HashMap<String, IntegrationError> msgToErrMapBase = new LinkedHashMap<String, IntegrationError>();
 
         msgToErrMapBase.put("Error authenticating user", IntegrationError._1019);
         // CHECKSTYLE:OFF
@@ -81,7 +81,7 @@ public class CaTissueRegistrationServiceInvocationStrategy implements ServiceInv
     public ServiceInvocationResult invoke(ServiceInvocationMessage msg) {
         ServiceInvocationResult serviceInvocationResult = new ServiceInvocationResult();
         try {
-            String participantXMLStr = transformToParticipantXML(msg.getMessage().getRequest());
+            final String participantXMLStr = transformToParticipantXML(msg.getMessage().getRequest());
             serviceInvocationResult = caTissueParticipantClient.registerParticipant(participantXMLStr);
         } catch (IntegrationException e) {
             serviceInvocationResult.setInvocationException(e);
@@ -94,7 +94,7 @@ public class CaTissueRegistrationServiceInvocationStrategy implements ServiceInv
     public ServiceInvocationResult rollback(ServiceInvocationMessage msg) {
         ServiceInvocationResult serviceInvocationResult = new ServiceInvocationResult();
         try {
-            String participantXMLStr = transformToParticipantXML(msg.getMessage().getRequest());
+            final String participantXMLStr = transformToParticipantXML(msg.getMessage().getRequest());
             serviceInvocationResult = caTissueParticipantClient.deleteParticipant(participantXMLStr);
         } catch (IntegrationException e) {
             serviceInvocationResult.setInvocationException(e);
@@ -140,7 +140,7 @@ public class CaTissueRegistrationServiceInvocationStrategy implements ServiceInv
             return;
         }
 
-        Exception exception = result.getInvocationException();
+        final Exception exception = result.getInvocationException();
         Throwable cause = exception;
         while (cause instanceof IntegrationException) {
             cause = cause.getCause();
@@ -149,13 +149,13 @@ public class CaTissueRegistrationServiceInvocationStrategy implements ServiceInv
             return;
         }
 
-        String[] throwableMsgs = getThrowableMsgs(cause);
+        final String[] throwableMsgs = getThrowableMsgs(cause);
         IntegrationException newie = (IntegrationException) exception;
 
-        Set<String> keys = msgToErrMap.keySet();
+        final Set<String> keys = msgToErrMap.keySet();
 
         for (String lkupStr : keys) {
-            String msg = getMatchingMsg(lkupStr, throwableMsgs);
+            final String msg = getMatchingMsg(lkupStr, throwableMsgs);
             if (msg != null) {
                 newie = new IntegrationException(msgToErrMap.get(lkupStr), cause, msg);
                 break;
@@ -166,7 +166,7 @@ public class CaTissueRegistrationServiceInvocationStrategy implements ServiceInv
     }
 
     private String[] getThrowableMsgs(Throwable cause) {
-        Throwable[] throwables = ExceptionUtils.getThrowables(cause);
+        final Throwable[] throwables = ExceptionUtils.getThrowables(cause);
         String[] msgs = new String[throwables.length];
         for (int i = 0; i < throwables.length; i++) {
             msgs[i] = throwables[i].getMessage();
