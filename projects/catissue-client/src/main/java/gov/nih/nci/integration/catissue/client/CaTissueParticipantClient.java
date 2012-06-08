@@ -1,6 +1,7 @@
 package gov.nih.nci.integration.catissue.client;
 
 import java.io.StringReader;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -9,6 +10,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.basic.DateConverter;
@@ -36,22 +38,20 @@ public class CaTissueParticipantClient {
 
     private final CaTissueAPIClientWithRegularAuthentication caTissueAPIClient;
 
-    private XStream xStream = new XStream(new StaxDriver());
+    private final XStream xStream = new XStream(new StaxDriver());
 
     /**
      * Constructor
      * 
      * @param loginName - loginName for the API authentication
      * @param password - password for the API authentication
-     * @throws Exception - Exception
+     * @throws MalformedURLException - MalformedURLException
+     * @throws BeansException - BeansException
      */
-    public CaTissueParticipantClient(String loginName, String password) throws Exception {
+    public CaTissueParticipantClient(String loginName, String password) throws BeansException, MalformedURLException {
         super();
-
         Thread.currentThread().setContextClassLoader(CaTissueParticipantClient.class.getClassLoader());
-
         this.caTissueAPIClient = new CaTissueAPIClientWithRegularAuthentication(loginName, password);
-
         initXStream();
     }
 
@@ -73,7 +73,7 @@ public class CaTissueParticipantClient {
         xStream.alias("collectionProtocolRegistration", CollectionProtocolRegistration.class);
         xStream.alias("participantMedicalIdentifier", ParticipantMedicalIdentifier.class);
 
-        String[] accFrmts = new String[] { "", "yyyyMMdd", "yyyy-MM-dd", "MM/dd/yyyy", // catissue formats
+        final String[] accFrmts = new String[] { "", "yyyyMMdd", "yyyy-MM-dd", "MM/dd/yyyy", // catissue formats
                 "yyyy-MM-dd HH:mm:ss.S a", "yyyy-MM-dd HH:mm:ssz", "yyyy-MM-dd HH:mm:ss z", // JDK 1.3 needs both
                                                                                             // versions
                 "yyyy-MM-dd HH:mm:ssa" }; // backwards compatibility
@@ -114,9 +114,9 @@ public class CaTissueParticipantClient {
      * 
      * @param participantXMLStr - Participant information in the form of XMLString
      * @return XMLString - currently null
-     * @throws Exception Exception
+     * @throws ApplicationException ApplicationException
      */
-    public String registerParticipantFromXML(String participantXMLStr) throws Exception {
+    public String registerParticipantFromXML(String participantXMLStr) throws ApplicationException {
         return registerParticipant(participantXMLStr);
     }
 
@@ -129,7 +129,7 @@ public class CaTissueParticipantClient {
      * @throws ApplicationException - ApplicationException
      */
     public String registerParticipant(String participantXMLStr) throws ApplicationException {
-        Participant participant = parseParticipant(participantXMLStr);
+        final Participant participant = parseParticipant(participantXMLStr);
         registerParticipant(participant);
 
         return null;
@@ -168,9 +168,9 @@ public class CaTissueParticipantClient {
      * 
      * @param participantXMLStr - Participant update information in the form of XMLString
      * @return exisitingParticipant detail in form of XMLString which might be required for Rollback
-     * @throws Exception - Exception
+     * @throws ApplicationException - ApplicationException
      */
-    public String updateParticipantRegistrationFromXML(String participantXMLStr) throws Exception {
+    public String updateParticipantRegistrationFromXML(String participantXMLStr) throws ApplicationException {
         return updateParticipantRegistration(participantXMLStr);
     }
 
@@ -197,25 +197,32 @@ public class CaTissueParticipantClient {
      */
     public Participant updateParticipantRegistration(Participant participant) throws ApplicationException {
         if (participant == null || StringUtils.isEmpty(participant.getSocialSecurityNumber())) {
-            throw new ApplicationException("Participant does not contain the unique identifier, SSN!");
+            LOG.error("Participant does not contain the unique identifier SSN "
+                    + participant.getLastName());
+            throw new ApplicationException("Participant does not contain the unique identifier SSN");
         }
         if (participant == null || StringUtils.isEmpty(participant.getLastName())) {
-            throw new ApplicationException("Participant does not contain the unique medical identifier!");
+            LOG.error("Participant does not contain the unique medical identifier "
+                    + participant.getLastName());
+            throw new ApplicationException("Participant does not contain the unique medical identifier");
         }
 
-        Participant existingParticipant = getParticipantForPatientId(participant.getLastName());
+        final Participant existingParticipant = getParticipantForPatientId(participant.getLastName());
         if (existingParticipant == null) {
+            LOG.error("CaTissue does not contain a participant with the unique identifier, "
+                    + participant.getLastName());
             throw new ApplicationException("CaTissue does not contain a participant with the unique identifier, "
                     + participant.getLastName());
         }
 
         participant.setId(existingParticipant.getId());
-        ArrayList<CollectionProtocolRegistration> existingCprLst = new ArrayList<CollectionProtocolRegistration>(
+        final ArrayList<CollectionProtocolRegistration> existingCprLst = new ArrayList<CollectionProtocolRegistration>(
                 existingParticipant.getCollectionProtocolRegistrationCollection());
-        Collection<CollectionProtocolRegistration> cprColl = participant.getCollectionProtocolRegistrationCollection();
+        final Collection<CollectionProtocolRegistration> cprColl = participant
+                .getCollectionProtocolRegistrationCollection();
         int cnt = 0;
-        for (Iterator iterator = cprColl.iterator(); iterator.hasNext();) {
-            CollectionProtocolRegistration collectionProtocolRegistration = (CollectionProtocolRegistration) iterator
+        for (final Iterator<CollectionProtocolRegistration> iterator = cprColl.iterator(); iterator.hasNext();) {
+            final CollectionProtocolRegistration collectionProtocolRegistration = (CollectionProtocolRegistration) iterator
                     .next();
             collectionProtocolRegistration.setId(existingCprLst.get(cnt).getId());
             cnt++;
@@ -234,17 +241,17 @@ public class CaTissueParticipantClient {
      * 
      * @param participantXMLStr participant to be delete in the form of XMLString
      * @return true if participant is deleted
-     * @throws Exception - Exception
+     * @throws ApplicationException - ApplicationException
      */
-    public boolean deleteParticipantFromXML(String participantXMLStr) throws Exception {
-        Participant participant = deleteParticipant(participantXMLStr) ;
-        boolean flag = false; 
-        
+    public boolean deleteParticipantFromXML(String participantXMLStr) throws ApplicationException {
+        final Participant participant = deleteParticipant(participantXMLStr);
+        boolean flag = false;
+
         if (participant != null) {
             flag = true;
-        } 
-        
-        return flag;      
+        }
+
+        return flag;
     }
 
     /**
@@ -256,7 +263,7 @@ public class CaTissueParticipantClient {
      * @throws ApplicationException - ApplicationException
      */
     public Participant deleteParticipant(String participantXMLStr) throws ApplicationException {
-        Participant participant = parseParticipant(participantXMLStr);
+        final Participant participant = parseParticipant(participantXMLStr);
         return deleteParticipant(participant);
     }
 
@@ -272,7 +279,7 @@ public class CaTissueParticipantClient {
             throw new ApplicationException("Participant does not contain the unique identifier, SSN!");
         }
 
-        Participant persistedParticipant = getParticipantForPatientId(participant.getLastName());
+        final Participant persistedParticipant = getParticipantForPatientId(participant.getLastName());
         if (persistedParticipant == null) {
             return null;
         }
@@ -280,10 +287,10 @@ public class CaTissueParticipantClient {
         persistedParticipant.setSocialSecurityNumber(null);
         persistedParticipant.setLastName(null);
 
-        Iterator<CollectionProtocolRegistration> iter = persistedParticipant
+        final Iterator<CollectionProtocolRegistration> iter = persistedParticipant
                 .getCollectionProtocolRegistrationCollection().iterator();
         while (iter.hasNext()) {
-            CollectionProtocolRegistration collectionProtocolRegistration = (CollectionProtocolRegistration) iter
+            final CollectionProtocolRegistration collectionProtocolRegistration = (CollectionProtocolRegistration) iter
                     .next();
             collectionProtocolRegistration.setProtocolParticipantIdentifier("");
             collectionProtocolRegistration.setActivityStatus("Disabled");
@@ -322,7 +329,7 @@ public class CaTissueParticipantClient {
      * @throws ApplicationException - ApplicationException
      */
     public Participant getParticipantForSSN(String ssn) throws ApplicationException {
-        List<Participant> prtcpntLst = caTissueAPIClient.getApplicationService().query(
+        final List<Participant> prtcpntLst = caTissueAPIClient.getApplicationService().query(
                 CqlUtility.getParticipantForSSN(ssn));
         if (prtcpntLst == null || prtcpntLst.isEmpty()) {
             // TODO : decide on throwing exception vs returning null
@@ -341,7 +348,7 @@ public class CaTissueParticipantClient {
      * @throws ApplicationException - ApplicationException
      */
     public Participant getParticipantForPatientId(String mrn) throws ApplicationException {
-        List<Participant> prtcpntLst = caTissueAPIClient.getApplicationService().query(
+        final List<Participant> prtcpntLst = caTissueAPIClient.getApplicationService().query(
                 CqlUtility.getParticipantForPatientId(mrn));
         if (prtcpntLst == null || prtcpntLst.isEmpty()) {
             // TODO : decide on throwing exception vs returning null
@@ -358,14 +365,14 @@ public class CaTissueParticipantClient {
      * @throws ApplicationException - ApplicationException
      */
     private Participant populateCPTitle(Participant participant) throws ApplicationException {
-        ArrayList<CollectionProtocolRegistration> cprColl = new ArrayList<CollectionProtocolRegistration>(
+        final ArrayList<CollectionProtocolRegistration> cprColl = new ArrayList<CollectionProtocolRegistration>(
                 participant.getCollectionProtocolRegistrationCollection());
         if (cprColl != null) {
             // We are expecting only ONE CPR here
-            String shortTitle = cprColl.get(0).getCollectionProtocol().getShortTitle();
+            final String shortTitle = cprColl.get(0).getCollectionProtocol().getShortTitle();
 
             // get the existing CollectionProtocol for given shortTitle
-            CollectionProtocol fetchedCP = getExistingCollectionProtocol(shortTitle);
+            final CollectionProtocol fetchedCP = getExistingCollectionProtocol(shortTitle);
             if (fetchedCP != null) {
                 // set the fetched CP_Title into the Participant-CPR-CP-title
                 cprColl.get(0).getCollectionProtocol().setTitle(fetchedCP.getTitle());
@@ -382,7 +389,7 @@ public class CaTissueParticipantClient {
     }
 
     private Participant copyFrom(Participant participant) {
-        Participant p = ParticipantFactory.getInstance().createObject();
+        final Participant p = ParticipantFactory.getInstance().createObject();
 
         p.setId(participant.getId());
         p.setActivityStatus(participant.getActivityStatus());
@@ -395,28 +402,29 @@ public class CaTissueParticipantClient {
         p.setSocialSecurityNumber(participant.getSocialSecurityNumber());
         p.setVitalStatus(participant.getVitalStatus());
 
-        Iterator<Race> iter = participant.getRaceCollection().iterator();
+        final Iterator<Race> iter = participant.getRaceCollection().iterator();
         while (iter.hasNext()) {
-            Race race = (Race) iter.next();
-            Race r = RaceFactory.getInstance().createObject();
+            final Race race = (Race) iter.next();
+            final Race r = RaceFactory.getInstance().createObject();
             r.setParticipant(p);
             r.setRaceName(race.getRaceName());
             p.getRaceCollection().add(r);
         }
 
-        Iterator<CollectionProtocolRegistration> cprIter = participant.getCollectionProtocolRegistrationCollection()
-                .iterator();
+        final Iterator<CollectionProtocolRegistration> cprIter = participant
+                .getCollectionProtocolRegistrationCollection().iterator();
         while (cprIter.hasNext()) {
-            CollectionProtocolRegistration collectionProtocolRegistration = (CollectionProtocolRegistration) cprIter
+            final CollectionProtocolRegistration collectionProtocolRegistration = (CollectionProtocolRegistration) cprIter
                     .next();
 
-            CollectionProtocol collectionProtocol = collectionProtocolRegistration.getCollectionProtocol();
-            CollectionProtocol cp = CollectionProtocolFactory.getInstance().createObject();
+            final CollectionProtocol collectionProtocol = collectionProtocolRegistration.getCollectionProtocol();
+            final CollectionProtocol cp = CollectionProtocolFactory.getInstance().createObject();
             cp.setActivityStatus(collectionProtocol.getActivityStatus());
             cp.setTitle(collectionProtocol.getTitle());
             cp.setShortTitle(collectionProtocol.getShortTitle());
 
-            CollectionProtocolRegistration cpr = CollectionProtocolRegistrationFactory.getInstance().createObject();
+            final CollectionProtocolRegistration cpr = CollectionProtocolRegistrationFactory.getInstance()
+                    .createObject();
             cpr.setParticipant(p);
             cpr.setConsentSignatureDate(collectionProtocolRegistration.getConsentSignatureDate());
             cpr.setRegistrationDate(collectionProtocolRegistration.getRegistrationDate());
