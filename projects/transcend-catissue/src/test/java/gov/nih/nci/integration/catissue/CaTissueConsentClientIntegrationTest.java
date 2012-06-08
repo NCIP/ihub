@@ -26,7 +26,7 @@ public class CaTissueConsentClientIntegrationTest {
      */
     @Test
     public void registerConsents() {
-        ServiceInvocationResult svc = caTissueConsentClient.registerConsents(getRegisterConsentXMLStr());
+        final ServiceInvocationResult svc = caTissueConsentClient.registerConsents(getRegisterConsentXMLStr());
 
         if (svc.isDataChanged() && svc.getInvocationException() != null) {
             caTissueConsentClient.rollbackConsents(svc.getOriginalData().toString());

@@ -26,7 +26,7 @@ public class CaTissueSpecimenClientIntegrationTest {
      */
     @Test
     public void createSpecimen() {
-        ServiceInvocationResult svc = caTissueSpecimenClient.createSpecimens(getCreateSpecimenXMLStr());
+        final ServiceInvocationResult svc = caTissueSpecimenClient.createSpecimens(getCreateSpecimenXMLStr());
         assertNotNull(svc);
 
     }
@@ -36,7 +36,7 @@ public class CaTissueSpecimenClientIntegrationTest {
      */
     @Test
     public void updateSpecimen() {
-        ServiceInvocationResult svc = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenXMLStr());
+        final ServiceInvocationResult svc = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenXMLStr());
         assertNotNull(svc);
 
     }
