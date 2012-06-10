@@ -15,6 +15,8 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author chandrasekaravr
@@ -27,6 +29,8 @@ public class XSLTTransformer {
     private Transformer transformer = null;
 
     private TransformerFactory factory = null; //NOPMD
+    
+    private static final Logger LOG = LoggerFactory.getLogger(XSLTTransformer.class);
 
     /**
      * Constructor
@@ -57,9 +61,11 @@ public class XSLTTransformer {
     public void initTransformer(String xslFileName, String xslBasePath)// NOPMD
             throws IntegrationException {
         if (factory == null) { //NOPMD
+            LOG.error("XSLTTransformer..factory is NULL while init the transformer ");
             throw new IntegrationException(IntegrationError._1060);
         }
         if (StringUtils.isEmpty(xslFileName)) {
+            LOG.error("XSLTTransformer..xslFileName is NULL while init the transformer ");
             throw new IntegrationException(IntegrationError._1061);
         }
         if (StringUtils.isEmpty(xslBasePath)) {
@@ -71,8 +77,10 @@ public class XSLTTransformer {
         try {
             transformer = factory.newTransformer(factory.getURIResolver().resolve(xslFileName, xslBasePath));
         } catch (TransformerConfigurationException e) {
+            LOG.error("XSLTTransformer..TransformerConfigurationException while init the transformer ", e );
             throw new IntegrationException(IntegrationError._1025, e);
         } catch (TransformerException e) {
+            LOG.error("XSLTTransformer..TransformerException while init the transformer ", e );
             throw new IntegrationException(IntegrationError._1026, e);
         }
     }
@@ -95,6 +103,7 @@ public class XSLTTransformer {
         try {
             transformer.transform(new StreamSource(in), new StreamResult(out));
         } catch (TransformerException e) {
+            LOG.error("XSLTTransformer..TransformerException while transforming the XML ", e );
             throw new IntegrationException(IntegrationError._1027, e);
         }
     }
