@@ -63,6 +63,9 @@ public class CaTissueRegistrationServiceInvocationStrategy implements ServiceInv
         msgToErrMapBase.put(
                 "Submission failed since a Participant with the same SOCIAL_SECURITY_NUMBER already exists.",
                 IntegrationError._1032);
+        msgToErrMapBase.put("Participant does not contain the unique identifier SSN", IntegrationError._1034);
+        msgToErrMapBase.put("Participant does not contain the unique medical identifier", IntegrationError._1035);
+
 
         msgToErrMap = Collections.synchronizedMap(msgToErrMapBase);
     }
