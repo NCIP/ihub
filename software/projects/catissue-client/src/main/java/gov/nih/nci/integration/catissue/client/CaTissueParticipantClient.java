@@ -144,10 +144,10 @@ public class CaTissueParticipantClient {
      */
     public Participant registerParticipant(Participant participant) throws ApplicationException {
         if (participant == null || StringUtils.isEmpty(participant.getSocialSecurityNumber())) {
-            throw new ApplicationException("Participant does not contain the unique identifier, SSN!");
+            throw new ApplicationException("Participant does not contain the unique identifier SSN");
         }
         if (participant == null || StringUtils.isEmpty(participant.getLastName())) {
-            throw new ApplicationException("Participant does not contain the unique medical identifier!");
+            throw new ApplicationException("Participant does not contain the unique medical identifier");
         }
 
         // populate the CP-Title inside Participant-CPR-CP-Title. We are getting 'shortTitle' in the request
