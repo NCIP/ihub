@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Scope;
  * 
  */
 @Configuration
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class ServiceConfig {
 
     @Value("${catissue.api.service.retry}")
