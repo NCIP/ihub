@@ -1,7 +1,7 @@
 Release Notes:
 
 Version: RC1
-SVN Tag: https://ncisvn.nci.nih.gov/svn/iHub/tags/iHub_RC1
+SVN Tag: https://ncisvn.nci.nih.gov/svn/iHub/tags/iHub_1.0_RC1
 
 Use cases completed:
 1) Create Registration Flow - Registers participant to caaers and catissue with rollback upon error
