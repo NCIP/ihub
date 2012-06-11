@@ -244,14 +244,16 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements Servic
         final List<WsError> wserrors = response.getWsError();
         WsError error = null;
         IntegrationException ie = null;
-        if (wserrors != null && !wserrors.isEmpty()) {
+        
+        if (wserrors == null || wserrors.isEmpty()) {
+            ie = new IntegrationException(IntegrationError._1053, new Throwable(response.getMessage()), response // NOPMD
+                    .getMessage());
+        } else {
             error = wserrors.get(0);
             ie = new IntegrationException(IntegrationError._1053, new Throwable(error.getException()), error // NOPMD
                     .getErrorDesc());
-        } else {
-            ie = new IntegrationException(IntegrationError._1053, new Throwable(response.getMessage()), response // NOPMD
-                    .getMessage());
         }
+        
         result.setInvocationException(ie);
     }
 

@@ -228,7 +228,13 @@ public class CaTissueConsentClient {
             // get the CollectionProtocol and then its consentTierCollection
             final CollectionProtocol cp = getExistingCollectionProtocol(consentDetail.getCollectionProtocol()
                     .getShortTitle());
-            if (cp != null) {
+            
+            if (cp == null) {
+                // i.e collection protocol not found is caTissue
+                LOG.error("populateConsentTierId failed as Collection Protocol was not found in caTissue for the identifier "
+                        + consentDetail.getCollectionProtocol().getTitle());
+                throw new ApplicationException("Collection Protocol was not found in caTissue");
+            } else {
                 final Collection<ConsentTier> consentTierCollection = cp.getConsentTierCollection();
                 final Iterator<ConsentTier> itrConsentTier = consentTierCollection.iterator();
                 // iterate thru each consentTier and compare for the statement..
@@ -241,12 +247,8 @@ public class CaTissueConsentClient {
                         break;
                     }
                 }
-            } else {
-                // i.e collection protocol not found is caTissue
-                LOG.error("populateConsentTierId failed as Collection Protocol was not found in caTissue for the identifier "
-                        + consentDetail.getCollectionProtocol().getTitle());
-                throw new ApplicationException("Collection Protocol was not found in caTissue");
             }
+            
 
             if (!isTierIdFound) {
                 // i.e tierId not found for given CollectionProtocol & Statement
