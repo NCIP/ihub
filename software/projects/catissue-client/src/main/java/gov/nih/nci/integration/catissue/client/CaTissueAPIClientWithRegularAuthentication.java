@@ -13,19 +13,22 @@ import gov.nih.nci.system.query.hql.DeleteHQLQuery;
 import java.net.MalformedURLException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 
 /**
- * CaTissueAPIClient
+ * This Class works as CaTissueAPIClient for accessing the caTissue APIs
  * 
  * @author chandrasekaravr
  * 
  */
-@SuppressWarnings( { "PMD.AvoidCatchingGenericException","PMD.SignatureDeclareThrowsException" } )
 public class CaTissueAPIClientWithRegularAuthentication {
 
     private final String loginName;
     private final String password;
+
+    private static final Logger LOG = LoggerFactory.getLogger(CaTissueAPIClientWithRegularAuthentication.class);
 
     /**
      * Constructor
@@ -49,12 +52,14 @@ public class CaTissueAPIClientWithRegularAuthentication {
      * @return CaTissueWritableAppService
      * @throws ApplicationException - ApplicationException
      */
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public final CaTissueWritableAppService getApplicationService() throws ApplicationException {
         try {
             return getAppService(loginName, password);
             // CHECKSTYLE:OFF
         } catch (Exception e) {
             // CHECKSTYLE:ON
+            LOG.error("CaTissueAPIClientWithRegularAuthentication.. exception inside getApplicationService().", e);
             throw new ApplicationException(e);
         }
     }
@@ -144,9 +149,8 @@ public class CaTissueAPIClientWithRegularAuthentication {
 
     }
 
-    // CHECKSTYLE:OFF
-    final protected CaTissueWritableAppService getAppService(String username, String password) throws Exception {
+    @SuppressWarnings("PMD.SignatureDeclareThrowsException")
+    private CaTissueWritableAppService getAppService(String username, String password) throws Exception {
         return (CaTissueWritableAppService) ApplicationServiceProvider.getApplicationService(username, password);
     }
-    // CHECKSTYLE:ON
 }
