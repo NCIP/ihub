@@ -100,6 +100,7 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements Servic
     }
 
     @Override
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public ServiceInvocationResult invoke(ServiceInvocationMessage msg) {
         final ServiceInvocationResult result = new ServiceInvocationResult();
         IntegrationException ie = null;
@@ -131,24 +132,17 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements Servic
             } else {
                 handleErrorResponse(response, result);
             }
-        } catch (SOAPFaultException e) {
-            LOG.error("CaAERSUpdateRegistrationStrategy. SOAPFaultException while calling updateParticipant.", e);
+            // CHECKSTYLE:OFF
+        } catch (Exception e) {
+            LOG.error("CaAERSUpdateRegistrationStrategy. Exception while calling updateParticipant.", e);
+            // CHECKSTYLE:ON
             ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
-        } catch (MalformedURLException e) {
-            LOG.error("CaAERSUpdateRegistrationStrategy. MalformedURLException while calling updateParticipant.", e);
-            ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
-        } catch (JAXBException e) {
-            LOG.error("CaAERSUpdateRegistrationStrategy. JAXBException while calling updateParticipant.", e);
-            ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
-        } catch (WebServiceException e) {
-            LOG.error("CaAERSUpdateRegistrationStrategy. WebServiceException while calling updateParticipant.", e);
-            ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
-        } catch (IntegrationException e) {
-            ie = e;
         }
+
         if (!result.isFault()) {
             result.setInvocationException(ie);
         }
+
         handleException(result);
         return result;
     }
