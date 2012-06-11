@@ -1,13 +1,14 @@
 Release Notes:
 
 Version: RC1
+SVN Tag: https://ncisvn.nci.nih.gov/svn/iHub/tags/iHub_RC1
 
 Use cases completed:
 1) Create Registration Flow - Registers participant to caaers and catissue with rollback upon error
 2) Update Registration Flow - updates registered participant in caaers and catissue with rollback upon error
 3) Create Specimen Flow - Creates specimens in catissue for the registered participant in a study under a study calendar event
 4) Update Specimen Flow - Updates specimens in catissue for the registered participant in a study under a study calendar event
-5) Consent Flow - Updates consents for specimens in catissue
+5) Consent Flow - Setting consents for specimens in catissue
 
 Tasks/Bugs:
 
@@ -69,5 +70,6 @@ IHUB-207	Add iHub deployment guide
 Known Issues:
 1) Study subject identifier is placed as the lastname in catissue and not as external medical identifier
 2) Participant medical identifier is not being persisted as external medical identifier
-
-2) 
+3) Consent flow can handle only specimens with only one level of child specimens due to restriction from the catissue api
+4) Didnt have a valid trim for Consents, expecting the canonical format itself as part of inbound caxhange message
+ 
