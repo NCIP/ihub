@@ -30,6 +30,7 @@
 		<copy todir="${user.home}/.integration/ihub">
 			<fileset dir="${classes.dir}">
 				<include name="**/*.xsl"/>
+				<include name="**/*-lookup.xml"/>
 				<include name="transcend-ihub.properties"/>
 				<include name="messages/*.properties"/>
 				<exclude name="**/.svn"/>

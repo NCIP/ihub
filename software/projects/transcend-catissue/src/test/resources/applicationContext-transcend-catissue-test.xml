@@ -14,7 +14,7 @@
     <!-- enable processing of annotations such as @Autowired and @Configuration -->
     <context:annotation-config/>
 	
-	<bean class="gov.nih.nci.integration.dao.CommonPropsConfig"/>	
+	<bean class="gov.nih.nci.integration.dao.CommonPropsTestConfig"/>	
     <bean class="gov.nih.nci.integration.transformer.TransformerConfig"/>
 	<!-- uncomment this once required
 	<bean class="gov.nih.nci.integration.invoker.CaTissueConfig"/>
