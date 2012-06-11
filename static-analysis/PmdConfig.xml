@@ -74,7 +74,6 @@
         <exclude name="EmptyMethodInAbstractClassShouldBeAbstract" />
 		<exclude name="AbstractClassWithoutAbstractMethod"/> 
 		<exclude name="PreserveStackTrace"/>
-		<exclude name="UseCollectionIsEmpty"/>
 		<!-- ESD-197 -->
     </rule>
 
