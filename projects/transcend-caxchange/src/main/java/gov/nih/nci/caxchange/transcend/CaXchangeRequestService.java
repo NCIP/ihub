@@ -42,6 +42,7 @@ import com.mirth.connect.connectors.ws.WebServiceMessageReceiver;
 @javax.jws.WebService(serviceName = "CaXchangeRequestService", portName = "soap", 
 targetNamespace = "http://caXchange.nci.nih.gov/caxchangerequest", 
 endpointInterface = "gov.nih.nci.caxchange.messaging.CaXchangeRequestPortType")
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class CaXchangeRequestService extends AcceptMessage {
 
     private static final Logger LOG = LoggerFactory.getLogger(CaXchangeRequestService.class.getName());
