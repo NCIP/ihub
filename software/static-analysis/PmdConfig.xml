@@ -130,7 +130,7 @@
 
     <!-- String and StringBuffer  Rules -->
     <rule ref="rulesets/strings.xml">
-     <exclude name="AvoidDuplicateLiterals" />
+ 
     </rule>
 
     <!-- Unused Code Rules -->
