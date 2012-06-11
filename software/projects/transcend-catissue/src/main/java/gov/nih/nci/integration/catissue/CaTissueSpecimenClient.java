@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Rohit Gupta
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity" })
 public class CaTissueSpecimenClient {
 
     private static final String CLIENT_CLASSNAME = "gov.nih.nci.integration.catissue.client.CaTissueSpecimenClient";
@@ -51,6 +50,7 @@ public class CaTissueSpecimenClient {
         init();
     }
 
+    
     private void init() throws IntegrationException {
         try {
             final File libFile = new File(caTissueLibLocation);
@@ -61,14 +61,15 @@ public class CaTissueSpecimenClient {
 
             caTissueSpecimenClientClass = ccl.loadClass(CLIENT_CLASSNAME);
         } catch (MalformedURLException e) {
-            LOG.error("MalformedURLException occured while initializing CaTissueSpecimenClient.", e);
+            LOG.error("MalformedURLException  while initializing CaTissueSpecimenClient.", e);
             throw new IntegrationException(IntegrationError._1000, e);
         } catch (ClassNotFoundException e) {
-            LOG.error("ClassNotFoundException occured while initializing CaTissueSpecimenClient.", e);
+            LOG.error("ClassNotFoundException  while initializing CaTissueSpecimenClient.", e);
             throw new IntegrationException(IntegrationError._1000, e);
         }
     }
 
+    
     /**
      * This method is used to create bio-specimens in caTissue
      * 
@@ -78,29 +79,8 @@ public class CaTissueSpecimenClient {
     public ServiceInvocationResult createSpecimens(final String specimenListXMLStr) {
         ServiceInvocationResult result1, result2 = null;
 
-        CaTissueTask task1, task2 = null;
-        try {
-            task1 = new CaTissueTask(caTissueSpecimenClientClass, loginName, password, "isSpecimensExist",
-                    specimenListXMLStr);
-        } catch (IntegrationException e1) {
-            LOG.error("Exception occured while instantiating CaTissueTask for isSpecimenExist.", e1);
-            result1 = getServiceInvocationResult(IntegrationError._1051, e1);
-            return result1;
-        }
-
-        try {
-            final ExecutorCompletionService<ServiceInvocationResult> ecs = 
-                    new ExecutorCompletionService<ServiceInvocationResult>(ex);
-            ecs.submit(task1);
-            result1 = ecs.take().get();
-            if (!result1.isFault()) {
-                result1.setResult("Successfully called isSpecimensExist !");
-            } 
-        } catch (InterruptedException e) {
-            result1 = getServiceInvocationResult(IntegrationError._1051, e);
-        } catch (ExecutionException e) {
-            result1 = getServiceInvocationResult(IntegrationError._1051, e);
-        }
+        // method call to check if given specimen already exist in caTissue
+        result1 = isSpecimensExist(specimenListXMLStr);
 
         if (result1.getInvocationException() != null) {
             // We don't want to call the Rollback if a Specimen is already
@@ -110,28 +90,8 @@ public class CaTissueSpecimenClient {
             return result1;
         }
 
-        // It means that Specimen is not existing so try to execute below code..
-        try {
-            task2 = new CaTissueTask(caTissueSpecimenClientClass, loginName, password, "createSpecimens",
-                    specimenListXMLStr);
-        } catch (IntegrationException e1) {
-            result2 = getServiceInvocationResult(IntegrationError._1051, e1);
-            return result2;
-        }
-
-        try {
-            final ExecutorCompletionService<ServiceInvocationResult> ecs = 
-                    new ExecutorCompletionService<ServiceInvocationResult>(ex);
-            ecs.submit(task2);
-            result2 = ecs.take().get();
-            if (!result2.isFault()) {
-                result2.setResult("Successfully created Specimens in CaTissue!");
-            } 
-        } catch (InterruptedException e) {
-            result2 = getServiceInvocationResult(IntegrationError._1051, e);
-        } catch (ExecutionException e) {
-            result2 = getServiceInvocationResult(IntegrationError._1051, e);
-        }
+        // It means that Specimen is not existing, so try to execute below code..
+        result2 = createCaTissueSpecimens(specimenListXMLStr);
 
         if (result2.getInvocationException() != null) {
             // It means that the Specimens were NOT present at the starting when
@@ -144,6 +104,77 @@ public class CaTissueSpecimenClient {
         return result2;
     }
 
+    
+    /**
+     * This method is used to check if the specimen is already existing
+     */
+    private ServiceInvocationResult isSpecimensExist(final String specimenListXMLStr) {
+        CaTissueTask task = null;
+        ServiceInvocationResult result = null;
+        try {
+            task = new CaTissueTask(caTissueSpecimenClientClass, loginName, password, "isSpecimensExist",
+                    specimenListXMLStr);
+        } catch (IntegrationException e1) {
+            LOG.error("Exception  while instantiating CaTissueTask for isSpecimenExist.", e1);
+            result = getServiceInvocationResult(IntegrationError._1051, e1);
+            return result;
+        }
+
+        try {
+            final ExecutorCompletionService<ServiceInvocationResult> ecs = 
+                    new ExecutorCompletionService<ServiceInvocationResult>(ex);
+            ecs.submit(task);
+            result = ecs.take().get();
+            if (!result.isFault()) {
+                result.setResult("Successfully called isSpecimensExist !");
+            }
+        } catch (InterruptedException e) {
+            LOG.error("InterruptedException  while calling isSpecimenExist. ", e);
+            result = getServiceInvocationResult(IntegrationError._1051, e);
+        } catch (ExecutionException e) {
+            LOG.error("ExecutionException  while calling isSpecimenExist. ", e);
+            result = getServiceInvocationResult(IntegrationError._1051, e);
+        }
+
+        return result;
+    }
+
+    
+    /**
+     * This method is used to call the createSpecimen of caTissueClient
+     */
+    private ServiceInvocationResult createCaTissueSpecimens(final String specimenListXMLStr) {
+        ServiceInvocationResult result = null;
+        CaTissueTask task = null;
+        try {
+            task = new CaTissueTask(caTissueSpecimenClientClass, loginName, password, "createSpecimens",
+                    specimenListXMLStr);
+        } catch (IntegrationException e1) {
+            LOG.error("IntegrationException while instantiating CaTissueTask for createSpecimens.", e1);
+            result = getServiceInvocationResult(IntegrationError._1051, e1);
+            return result;
+        }
+
+        try {
+            final ExecutorCompletionService<ServiceInvocationResult> ecs = 
+                    new ExecutorCompletionService<ServiceInvocationResult>(ex);
+            ecs.submit(task);
+            result = ecs.take().get();
+            if (!result.isFault()) {
+                result.setResult("Successfully created Specimens in CaTissue!");
+            }
+        } catch (InterruptedException e) {
+            LOG.error("InterruptedException  while calling createSpecimens. ", e);
+            result = getServiceInvocationResult(IntegrationError._1051, e);
+        } catch (ExecutionException e) {
+            LOG.error("ExecutionException  while calling createSpecimens. ", e);
+            result = getServiceInvocationResult(IntegrationError._1051, e);
+        }
+
+        return result;
+    }
+
+    
     /**
      * This method is used to Rollback the specimen changes for createSpecimen flow
      * 
@@ -157,7 +188,7 @@ public class CaTissueSpecimenClient {
             task = new CaTissueTask(caTissueSpecimenClientClass, loginName, password, "rollbackCreatedSpecimens",
                     specimenListXMLStr);
         } catch (IntegrationException e1) {
-            LOG.error("IntegrationException occured while Rollbacking createSpecimen.", e1);
+            LOG.error("IntegrationException  while instantiating CaTissueTask for rollbackCreatedSpecimens. ", e1);
             result = getServiceInvocationResult(IntegrationError._1051, e1);
             return result;
         }
@@ -168,17 +199,20 @@ public class CaTissueSpecimenClient {
             ecs.submit(task);
             result = ecs.take().get();
             if (!result.isFault()) {
-                result.setResult("Successfully rollback Specimens from CaTissue!");
+                result.setResult("Successfully rollback Specimens from CaTissue.");
             }
         } catch (InterruptedException e) {
+            LOG.error("InterruptedException  while calling rollbackCreatedSpecimens. ", e);
             result = getServiceInvocationResult(IntegrationError._1051, e);
         } catch (ExecutionException e) {
+            LOG.error("ExecutionException  while calling rollbackCreatedSpecimens. ", e);
             result = getServiceInvocationResult(IntegrationError._1051, e);
         }
 
         return result;
     }
 
+    
     /**
      * This method is used to update bio-specimens in caTissue
      * 
@@ -188,57 +222,15 @@ public class CaTissueSpecimenClient {
     public ServiceInvocationResult updateSpecimens(final String specimenListXMLStr) {
         ServiceInvocationResult result1, result2, finalResult = null;
 
-        CaTissueTask task1, task2 = null;
-        try {
-            task1 = new CaTissueTask(caTissueSpecimenClientClass, loginName, password, "getExistingSpecimens",
-                    specimenListXMLStr);
-        } catch (IntegrationException e1) {
-            LOG.error("IntegrationException occured while instantiating CaTissueTask for getExistingSpecimens.", e1);
-            result1 = getServiceInvocationResult(IntegrationError._1051, e1);
-            return result1;
-        }
-
-        try {
-            final ExecutorCompletionService<ServiceInvocationResult> ecs = 
-                    new ExecutorCompletionService<ServiceInvocationResult>(ex);
-            ecs.submit(task1);
-            result1 = ecs.take().get();
-            if (!result1.isFault()) {
-                result1.setResult("Successfully fetched Specimens from CaTissue!");
-            } 
-        } catch (InterruptedException e) {
-            result1 = getServiceInvocationResult(IntegrationError._1051, e);
-        } catch (ExecutionException e) {
-            result1 = getServiceInvocationResult(IntegrationError._1051, e);
-        }
+        result1 = getExistingSpecimens(specimenListXMLStr);
 
         if (result1.getInvocationException() != null) {
             // If some exception while fetching the data, don't try for updation.
             return result1;
         }
 
-        try {
-            task2 = new CaTissueTask(caTissueSpecimenClientClass, loginName, password, "updateSpecimens",
-                    specimenListXMLStr);
-        } catch (IntegrationException e1) {
-            LOG.error("IntegrationException occured while calling updateSpecimens.", e1);
-            result2 = getServiceInvocationResult(IntegrationError._1051, e1);
-            return result2;
-        }
-
-        try {
-            final ExecutorCompletionService<ServiceInvocationResult> ecs = 
-                    new ExecutorCompletionService<ServiceInvocationResult>(ex);
-            ecs.submit(task2);
-            result2 = ecs.take().get();
-            if (!result2.isFault()) {
-                result2.setResult("Successfully Updated Specimens from CaTissue!");
-            } 
-        } catch (InterruptedException e) {
-            result2 = getServiceInvocationResult(IntegrationError._1051, e);
-        } catch (ExecutionException e) {
-            result2 = getServiceInvocationResult(IntegrationError._1051, e);
-        }
+        // If 'getExistingSpecimens' call is fine then try to 'updateSpecimen'
+        result2 = updateCaTissueSpecimens(specimenListXMLStr);
 
         if (result2.getInvocationException() != null) {
             finalResult = new ServiceInvocationResult();
@@ -252,6 +244,71 @@ public class CaTissueSpecimenClient {
         return finalResult;
     }
 
+    
+    private ServiceInvocationResult getExistingSpecimens(final String specimenListXMLStr) {
+        CaTissueTask task = null;
+        ServiceInvocationResult result = null;
+        try {
+            task = new CaTissueTask(caTissueSpecimenClientClass, loginName, password, "getExistingSpecimens",
+                    specimenListXMLStr);
+        } catch (IntegrationException e1) {
+            LOG.error("IntegrationException  while instantiating CaTissueTask for getExistingSpecimens. ", e1);
+            result = getServiceInvocationResult(IntegrationError._1051, e1);
+            return result;
+        }
+
+        try {
+            final ExecutorCompletionService<ServiceInvocationResult> ecs = 
+                    new ExecutorCompletionService<ServiceInvocationResult>(ex);
+            ecs.submit(task);
+            result = ecs.take().get();
+            if (!result.isFault()) {
+                result.setResult("Successfully fetched Specimens from CaTissue!");
+            }
+        } catch (InterruptedException e) {
+            LOG.error("InterruptedException  while calling getExistingSpecimens. ", e);
+            result = getServiceInvocationResult(IntegrationError._1051, e);
+        } catch (ExecutionException e) {
+            LOG.error("ExecutionException  while calling getExistingSpecimens. ", e);
+            result = getServiceInvocationResult(IntegrationError._1051, e);
+        }
+
+        return result;
+    }
+
+    
+    private ServiceInvocationResult updateCaTissueSpecimens(final String specimenListXMLStr) {
+        CaTissueTask task = null;
+        ServiceInvocationResult result = null;
+        try {
+            task = new CaTissueTask(caTissueSpecimenClientClass, loginName, password, "updateSpecimens",
+                    specimenListXMLStr);
+        } catch (IntegrationException e1) {
+            LOG.error("IntegrationException  while calling updateSpecimens.", e1);
+            result = getServiceInvocationResult(IntegrationError._1051, e1);
+            return result;
+        }
+
+        try {
+            final ExecutorCompletionService<ServiceInvocationResult> ecs = 
+                    new ExecutorCompletionService<ServiceInvocationResult>(ex);
+            ecs.submit(task);
+            result = ecs.take().get();
+            if (!result.isFault()) {
+                result.setResult("Successfully Updated Specimens from CaTissue.");
+            }
+        } catch (InterruptedException e) {
+            LOG.error("InterruptedException  while calling updateSpecimens. ", e);
+            result = getServiceInvocationResult(IntegrationError._1051, e);
+        } catch (ExecutionException e) {
+            LOG.error("ExecutionException  while calling updateSpecimens. ", e);
+            result = getServiceInvocationResult(IntegrationError._1051, e);
+        }
+
+        return result;
+    }
+
+    
     /**
      * This method is used to Rollback the specimen changes for updateSpecimen flow
      * 
@@ -266,7 +323,7 @@ public class CaTissueSpecimenClient {
             task = new CaTissueTask(caTissueSpecimenClientClass, loginName, password, "rollbackUpdatedSpecimens",
                     specimenListXMLStr);
         } catch (IntegrationException e1) {
-            LOG.error("IntegrationException occured while instantiating CaTissueTask for rollbackUpdatedSpecimens.", e1);
+            LOG.error("IntegrationException  while instantiating CaTissueTask for rollbackUpdatedSpecimens. ", e1);
             result = getServiceInvocationResult(IntegrationError._1051, e1);
             return result;
         }
@@ -280,14 +337,17 @@ public class CaTissueSpecimenClient {
                 result.setResult("Successfully rollback Specimens from CaTissue!");
             }
         } catch (InterruptedException e) {
+            LOG.error("InterruptedException  while calling rollbackUpdatedSpecimens. ", e);
             result = getServiceInvocationResult(IntegrationError._1051, e);
         } catch (ExecutionException e) {
+            LOG.error("ExecutionException  while calling rollbackUpdatedSpecimens. ", e);
             result = getServiceInvocationResult(IntegrationError._1051, e);
         }
 
         return result;
     }
 
+    
     private ServiceInvocationResult getServiceInvocationResult(IntegrationError error, Exception e) {
         final ServiceInvocationResult result = new ServiceInvocationResult();
         result.setInvocationException(new IntegrationException(error, e));
