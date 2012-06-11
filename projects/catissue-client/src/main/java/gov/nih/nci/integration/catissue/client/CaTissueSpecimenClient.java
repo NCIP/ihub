@@ -283,7 +283,7 @@ public class CaTissueSpecimenClient {
             boolean scgFound = false;
             final List<SpecimenCollectionGroup> scgList = getSpecimenCollectionGroupList(specimenDetail);
 
-            if ((scgList != null) && (scgList.size() > 0)) {
+            if (scgList != null && !scgList.isEmpty()) {
                 for (SpecimenCollectionGroup scg : scgList) {
                     final CollectionProtocol cpObj = scg.getCollectionProtocolRegistration().getCollectionProtocol();
                     if (cpObj.getTitle().equals(cp.getTitle())) {
