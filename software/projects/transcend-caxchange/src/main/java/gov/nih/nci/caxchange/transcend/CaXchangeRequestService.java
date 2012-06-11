@@ -118,17 +118,21 @@ public class CaXchangeRequestService extends AcceptMessage {
             respMessage.setResponse(response);
 
             return respMessage;
-        } catch (JAXBException ex) {
-            final ErrorDetails errorDetails = new ErrorDetails();
-            errorDetails.setErrorCode(String.valueOf(IntegrationError._1000.getErrorCode()));
-            errorDetails.setErrorDescription(IntegrationError._1000.getMessage(null) + ex.getMessage());
-            final Response response = new Response();
-            response.setCaXchangeError(errorDetails);
-            response.setResponseStatus(Statuses.FAILURE);
-            respMessage.setResponse(response);
-            return respMessage;
+        } catch (JAXBException ex) {        
+            return getJAXBExceptionResponseMessage(respMessage, ex);
         }
 
+    }
+    
+    private ResponseMessage getJAXBExceptionResponseMessage(ResponseMessage respMessage, JAXBException ex) {
+        final ErrorDetails errorDetails = new ErrorDetails();
+        errorDetails.setErrorCode(String.valueOf(IntegrationError._1000.getErrorCode()));
+        errorDetails.setErrorDescription(IntegrationError._1000.getMessage(null) + ex.getMessage());
+        final Response response = new Response();
+        response.setCaXchangeError(errorDetails);
+        response.setResponseStatus(Statuses.FAILURE);
+        respMessage.setResponse(response);
+        return respMessage;
     }
 
     private String getCaXchangeRequestxml(final Message parameter) {
