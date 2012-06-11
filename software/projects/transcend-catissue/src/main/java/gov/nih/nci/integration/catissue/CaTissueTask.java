@@ -13,11 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
+ * A caTissue Task that returns a result and may throw an exception
  * @author chandrasekaravr
  * 
  */
-@SuppressWarnings( { "PMD.AvoidCatchingGenericException" } )
 public class CaTissueTask implements Callable<ServiceInvocationResult> {
 
     private Object caTissueClientInstance;
@@ -36,7 +35,7 @@ public class CaTissueTask implements Callable<ServiceInvocationResult> {
      * @param message - message
      * @throws IntegrationException - IntegrationException
      */
-
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public CaTissueTask(Class<?> caTissueParticipantClientClass, String loginName, String password, String methodName,
             String message) throws IntegrationException {
         super();
