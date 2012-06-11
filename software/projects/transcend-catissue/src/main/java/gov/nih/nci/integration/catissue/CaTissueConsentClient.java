@@ -91,13 +91,13 @@ public class CaTissueConsentClient {
         result2 = registerCaTissueConsents(consentListXMLStr);
 
         // Merge result1 & result2 to get the final result
-        if (result2.getInvocationException() != null) {
+        if (result2.getInvocationException() == null) {
+            finalResult = result2;
+        } else {
             finalResult = new ServiceInvocationResult();
             finalResult.setDataChanged(true);
             finalResult.setOriginalData(result1.getOriginalData());
             finalResult.setInvocationException(result2.getInvocationException());
-        } else {
-            finalResult = result2;
         }
 
         return finalResult;
