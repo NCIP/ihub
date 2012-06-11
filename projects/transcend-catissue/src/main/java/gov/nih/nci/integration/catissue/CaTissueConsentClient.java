@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Rohit Gupta
  */
-@SuppressWarnings("PMD.CyclomaticComplexity")
 public class CaTissueConsentClient {
 
     private static final String CLIENT_CLASSNAME = "gov.nih.nci.integration.catissue.client.CaTissueConsentClient";
@@ -51,6 +50,7 @@ public class CaTissueConsentClient {
         init();
     }
 
+    
     private void init() throws IntegrationException {
         try {
             final File libFile = new File(caTissueLibLocation);
@@ -60,15 +60,16 @@ public class CaTissueConsentClient {
                     libFile.getAbsolutePath());
             caTissueConsentClientClass = ccl.loadClass(CLIENT_CLASSNAME);
         } catch (MalformedURLException e) {
-            LOG.error("MalformedURLException occured while initializing CaTissueConsentClient.", e);
+            LOG.error("MalformedURLException  while initializing CaTissueConsentClient.", e);
             throw new IntegrationException(IntegrationError._1000, e);
         } catch (ClassNotFoundException e) {
-            LOG.error("ClassNotFoundException occured while initializing CaTissueConsentClient.", e);
+            LOG.error("ClassNotFoundException  while initializing CaTissueConsentClient.", e);
             throw new IntegrationException(IntegrationError._1000, e);
         }
 
     }
 
+    
     /**
      * This method is used Register the Consents
      * 
@@ -77,61 +78,17 @@ public class CaTissueConsentClient {
      */
     public ServiceInvocationResult registerConsents(final String consentListXMLStr) {
         ServiceInvocationResult result1, result2, finalResult = null;
-        CaTissueTask task1, task2 = null;
 
-        // First get the existing Specimen/Consent data - which will be needed
-        // incase of Rollback
-        try {
-            task1 = new CaTissueTask(caTissueConsentClientClass, loginName, password, "getExistingConsents",
-                    consentListXMLStr);
-        } catch (IntegrationException e1) {
-            result1 = getServiceInvocationResult(IntegrationError._1051, e1);
-            return result1;
-        }
-
-        try {
-            final ExecutorCompletionService<ServiceInvocationResult> ecs = 
-                    new ExecutorCompletionService<ServiceInvocationResult>(ex);
-            ecs.submit(task1);
-
-            result1 = ecs.take().get();
-
-            if (!result1.isFault()) {
-                result1.setResult("Successfully Fetched Consent in CaTissue!");
-            }
-        } catch (InterruptedException e) {
-            result1 = getServiceInvocationResult(IntegrationError._1051, e);
-        } catch (ExecutionException e) {
-            result1 = getServiceInvocationResult(IntegrationError._1051, e);
-        }
+        // First get the existing Specimen/Consent data - incase of Rollback
+        result1 = getExistingConsents(consentListXMLStr);
 
         if (result1.getInvocationException() != null) {
-            // return if some issue while fetching the data itself.
+            // return if some exception while fetching the data itself.
             return result1;
         }
 
-        // now perform registerConsent operation
-        try {
-            task2 = new CaTissueTask(caTissueConsentClientClass, loginName, password, "registerConsents",
-                    consentListXMLStr);
-        } catch (IntegrationException e1) {
-            result2 = getServiceInvocationResult(IntegrationError._1051, e1);
-            return result2;
-        }
-
-        try {
-            final ExecutorCompletionService<ServiceInvocationResult> ecs = 
-                    new ExecutorCompletionService<ServiceInvocationResult>(ex);
-            ecs.submit(task2);
-            result2 = ecs.take().get();
-            if (!result2.isFault()) {
-                result2.setResult("Successfully Registered Consent in CaTissue!");
-            }
-        } catch (InterruptedException e) {
-            result2 = getServiceInvocationResult(IntegrationError._1051, e);
-        } catch (ExecutionException e) {
-            result2 = getServiceInvocationResult(IntegrationError._1051, e);
-        }
+        // If 'getExistingConsents' call is fine then call 'registerConsent'
+        result2 = registerCaTissueConsents(consentListXMLStr);
 
         // Merge result1 & result2 to get the final result
         if (result2.getInvocationException() != null) {
@@ -146,6 +103,71 @@ public class CaTissueConsentClient {
         return finalResult;
     }
 
+    
+    /**
+     * This method is used to call getExistingConsents() of CaTissueClient
+     */
+    private ServiceInvocationResult getExistingConsents(final String consentListXMLStr) {
+        CaTissueTask task1 = null;
+        ServiceInvocationResult result1 = null;
+        try {
+            task1 = new CaTissueTask(caTissueConsentClientClass, loginName, password, "getExistingConsents",
+                    consentListXMLStr);
+        } catch (IntegrationException e1) {
+            result1 = getServiceInvocationResult(IntegrationError._1051, e1);
+            return result1;
+        }
+
+        try {
+            final ExecutorCompletionService<ServiceInvocationResult> ecs = 
+                    new ExecutorCompletionService<ServiceInvocationResult>(ex);
+            ecs.submit(task1);
+            result1 = ecs.take().get();
+            if (!result1.isFault()) {
+                result1.setResult("Successfully Fetched Consent in CaTissue!");
+            }
+        } catch (InterruptedException e) {
+            result1 = getServiceInvocationResult(IntegrationError._1051, e);
+        } catch (ExecutionException e) {
+            result1 = getServiceInvocationResult(IntegrationError._1051, e);
+        }
+
+        return result1;
+    }
+
+    
+    /**
+     * This method is used to call registerConsents() of CaTissueClient
+     */
+    private ServiceInvocationResult registerCaTissueConsents(final String consentListXMLStr) {
+        CaTissueTask task = null;
+        ServiceInvocationResult result = null;
+        try {
+            task = new CaTissueTask(caTissueConsentClientClass, loginName, password, "registerConsents",
+                    consentListXMLStr);
+        } catch (IntegrationException e1) {
+            result = getServiceInvocationResult(IntegrationError._1051, e1);
+            return result;
+        }
+
+        try {
+            final ExecutorCompletionService<ServiceInvocationResult> ecs = 
+                    new ExecutorCompletionService<ServiceInvocationResult>(ex);
+            ecs.submit(task);
+            result = ecs.take().get();
+            if (!result.isFault()) {
+                result.setResult("Successfully Registered Consent in CaTissue!");
+            }
+        } catch (InterruptedException e) {
+            result = getServiceInvocationResult(IntegrationError._1051, e);
+        } catch (ExecutionException e) {
+            result = getServiceInvocationResult(IntegrationError._1051, e);
+        }
+
+        return result;
+    }
+
+    
     /***
      * This method is used to Rollback the Consents
      * 
@@ -159,8 +181,7 @@ public class CaTissueConsentClient {
             task = new CaTissueTask(caTissueConsentClientClass, loginName, password, "rollbackConsentRegistration",
                     consentListXMLStr);
         } catch (IntegrationException e1) {
-            LOG.error("IntegrationException occured while instantiating CaTissueTask for rollbackConsentRegistration.",
-                    e1);
+            LOG.error("IntegrationException  while instantiating CaTissueTask for rollbackConsentRegistration.", e1);
             result = getServiceInvocationResult(IntegrationError._1051, e1);
             return result;
         }
@@ -182,6 +203,7 @@ public class CaTissueConsentClient {
         return result;
     }
 
+    
     private ServiceInvocationResult getServiceInvocationResult(IntegrationError error, Exception e) {
         final ServiceInvocationResult result = new ServiceInvocationResult();
         result.setInvocationException(new IntegrationException(error, e));
