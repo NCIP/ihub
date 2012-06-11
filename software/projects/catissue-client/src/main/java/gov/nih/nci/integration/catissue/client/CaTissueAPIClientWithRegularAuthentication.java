@@ -141,13 +141,14 @@ public class CaTissueAPIClientWithRegularAuthentication {
      */
     public <T> T searchById(Class<T> klass, T example) throws ApplicationException {
         final List<T> result = getApplicationService().search(klass, example);
-        if (result != null && result.size() > 0) {
-            return result.get(0);
-        } else {
+        
+        if (result == null || result.isEmpty()) {
             return null;
+        } else {
+            return result.get(0);
         }
-
-    }
+        
+      }
 
     @SuppressWarnings("PMD.SignatureDeclareThrowsException")
     private CaTissueWritableAppService getAppService(String username, String password) throws Exception {
