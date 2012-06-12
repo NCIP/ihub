@@ -59,10 +59,10 @@ public class CaTissueParticipantClient {
             caTissueClientClass = ccl.loadClass(CLIENT_CLASSNM);
         } catch (MalformedURLException e) {
             LOG.error("MalformedURLException occured while initializing CaTissueParticipantClient.", e);
-            throw new IntegrationException(IntegrationError._1052, e.getMessage());
+            throw new IntegrationException(IntegrationError._1052, e);
         } catch (ClassNotFoundException e) {
             LOG.error("ClassNotFoundException occured while initializing CaTissueParticipantClient.", e);
-            throw new IntegrationException(IntegrationError._1052, e.getMessage());
+            throw new IntegrationException(IntegrationError._1052, e);
         }
     }
 
