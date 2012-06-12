@@ -55,9 +55,9 @@ public class CaTissueAPIClientWithRegularAuthentication {
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public final CaTissueWritableAppService getApplicationService() throws ApplicationException {
         try {
-            return getAppService(loginName, password);
+            return (CaTissueWritableAppService) ApplicationServiceProvider.getApplicationService(loginName, password);
             // CHECKSTYLE:OFF
-        } catch (Exception e) {
+        } catch (Exception e) {  
             // CHECKSTYLE:ON
             LOG.error("CaTissueAPIClientWithRegularAuthentication.. exception inside getApplicationService().", e);
             throw new ApplicationException(e);
@@ -150,8 +150,5 @@ public class CaTissueAPIClientWithRegularAuthentication {
         
       }
 
-    @SuppressWarnings("PMD.SignatureDeclareThrowsException")
-    private CaTissueWritableAppService getAppService(String username, String password) throws Exception {
-        return (CaTissueWritableAppService) ApplicationServiceProvider.getApplicationService(username, password);
-    }
+   
 }
