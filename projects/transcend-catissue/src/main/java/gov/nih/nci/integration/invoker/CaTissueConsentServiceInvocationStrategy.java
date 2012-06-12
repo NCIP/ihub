@@ -57,6 +57,7 @@ public class CaTissueConsentServiceInvocationStrategy implements ServiceInvocati
         msgToErrMapBase.put("Collection Protocol was not found in caTissue", IntegrationError._1091);
         msgToErrMapBase.put("ConsentTier Statement was not found for given CollectionProtocol in caTissue",
                 IntegrationError._1092);
+        msgToErrMapBase.put("Error occurred : Unable to rollback. Please check the logs.", IntegrationError._1093);
 
         msgToErrMap = Collections.synchronizedMap(msgToErrMapBase);
     }
