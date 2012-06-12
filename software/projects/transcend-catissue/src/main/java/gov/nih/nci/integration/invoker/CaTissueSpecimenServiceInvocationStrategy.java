@@ -61,6 +61,7 @@ public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocat
         msgToErrMapBase.put("Specimen Collection Group not found in caTissue", IntegrationError._1084);
         msgToErrMapBase.put("Available Quantity cannot be greater than the Initial Quantity", IntegrationError._1085);
         msgToErrMapBase.put("Pathological Status is invalid", IntegrationError._1086);
+        msgToErrMapBase.put("Error occurred : Unable to rollback. Please check the logs.", IntegrationError._1093);
 
         msgToErrMap = Collections.synchronizedMap(msgToErrMapBase);
     }

@@ -67,6 +67,7 @@ public class CaTissueUpdateSpecimenServiceInvocationStrategy implements ServiceI
         msgToErrMapBase.put("Collection Protocol can't be changed while updating the Specimen", IntegrationError._1088);
         msgToErrMapBase.put("Specimen Class can't be changed while updating the Specimen", IntegrationError._1089);
         msgToErrMapBase.put("Specimen for given LABEL doesn't exist", IntegrationError._1090);
+        msgToErrMapBase.put("Error occurred : Unable to rollback. Please check the logs.", IntegrationError._1093);
 
         msgToErrMap = Collections.synchronizedMap(msgToErrMapBase);
     }
