@@ -49,7 +49,7 @@ public class CaTissueTask implements Callable<ServiceInvocationResult> {
         } catch (Exception e) {
             LOG.error("CaTissueTask-Exception inside the Constructor. ", e);
          // CHECKSTYLE:ON
-            throw new IntegrationException(IntegrationError._1052, e.getMessage());
+            throw new IntegrationException(IntegrationError._1052, e);
         } 
 
         this.message = message;
