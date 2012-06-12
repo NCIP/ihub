@@ -158,7 +158,7 @@ public class CaTissueParticipantClient {
         } catch (ApplicationException ae) {
             LOG.error("Create Registration Failed for Participant with SSN " + participant.getSocialSecurityNumber(),
                     ae);
-            throw new ApplicationException(ae.getCause());
+            throw new ApplicationException(ae);
         }
         return null;
     }

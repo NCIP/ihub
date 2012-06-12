@@ -186,7 +186,7 @@ public class CaTissueConsentClient {
         } catch (ApplicationException ae) {
             LOG.error("Register Consent Failed for Specimen" + existingSpecimen.getLabel(), ae);
             throw new ApplicationException("Register Consent Failed for Specimen" + existingSpecimen.getLabel()
-                    + " and exception is " + ae.getCause() + ae.getMessage());
+                    + " and exception is " + ae.getCause() + ae.getMessage(), ae);
         }
     }
 
@@ -294,7 +294,7 @@ public class CaTissueConsentClient {
             // code for handling the exception
             LOG.error("Exception During Rollback of Consent with SpecimenLabel as "
                     + consentDetail.getConsentData().getSpecimenLabel(), ae);
-            throw new ApplicationException("Error occurred : Unable to rollback. Please check the logs.");
+            throw new ApplicationException("Error occurred : Unable to rollback. Please check the logs.", ae);
         }
     }
 
@@ -314,8 +314,7 @@ public class CaTissueConsentClient {
         } catch (ApplicationException e) {
             LOG.error("Exception During Rollback of Consent for ChildSpecimen with SpecimenLabel as "
                     + consentDetail.getConsentData().getSpecimenLabel(), e);
-            throw new ApplicationException("Rollback Consent Failed for ChildSpecimen "
-                    + consentDetail.getConsentData().getSpecimenLabel() + " and exception is " + e.getCause());
+            throw new ApplicationException("Error occurred : Unable to rollback. Please check the logs.", e);
         }
 
     }
