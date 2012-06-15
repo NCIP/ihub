@@ -25,6 +25,8 @@ public final class CaAERSServiceInvocationStrategyFactory {
 
     private static ServiceInvocationStrategy caaersUpdateRegistrationServiceInvocationStrategy = null;
 
+    private static ServiceInvocationStrategy caaersAdverseEventServiceInvocationStrategy = null;
+
     private static Boolean initStatus = null;
 
     private static final Logger LOG = LoggerFactory.getLogger(CaAERSServiceInvocationStrategyFactory.class);
@@ -37,6 +39,7 @@ public final class CaAERSServiceInvocationStrategyFactory {
                 Executors.newSingleThreadExecutor());
 
         ecs.submit(new Callable<Boolean>() {
+
             @Override
             public Boolean call() throws MalformedURLException, BeansException {
                 final CustomClasspathXmlApplicationContext ctx = new CustomClasspathXmlApplicationContext(
@@ -45,6 +48,8 @@ public final class CaAERSServiceInvocationStrategyFactory {
                         .getBean("caAersRegistrationServiceInvocationStrategy");
                 caaersUpdateRegistrationServiceInvocationStrategy = (ServiceInvocationStrategy) ctx
                         .getBean("caAersUpdateRegistrationServiceInvocationStrategy");
+                caaersAdverseEventServiceInvocationStrategy = (ServiceInvocationStrategy) ctx
+                        .getBean("caAersAdverseEventServiceInvocationStrategy");
                 return Boolean.TRUE;
             }
         });
@@ -95,6 +100,26 @@ public final class CaAERSServiceInvocationStrategyFactory {
         }
         if (initStatus) {
             return caaersUpdateRegistrationServiceInvocationStrategy;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Method to get createCaAERSAdverseEventServiceInvocationStrategy
+     * 
+     * @param caaersLibLocation - caaersLibLocation
+     * @param caaersConfig - caaersConfig
+     * @return caaersAdverseEventServiceInvocationStrategy
+     */
+    public static ServiceInvocationStrategy createCaAERSAdverseEventServiceInvocationStrategy(
+            final String[] caaersLibLocation, final String... caaersConfig) {
+
+        if (initStatus == null && caaersAdverseEventServiceInvocationStrategy == null) {
+            init(caaersLibLocation, caaersConfig);
+        }
+        if (initStatus) {
+            return caaersAdverseEventServiceInvocationStrategy;
         } else {
             return null;
         }
