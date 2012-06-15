@@ -152,4 +152,25 @@ public class CaAERSConfig {
             throw new IntegrationException(IntegrationError._1051, e, (Object) null);
         }
     }
+
+    /**
+     * To get CaAERSUpdateAdverseEventServiceInvocationStrategy
+     * 
+     * @return CaAERSUpdateAdverseEventServiceInvocationStrategy object
+     * @throws IntegrationException - IntegrationException
+     */
+    @Bean
+    @Scope("prototype")
+    public CaAERSUpdateAdverseEventServiceInvocationStrategy caAersUpdateAdverseEventServiceInvocationStrategy()
+            throws IntegrationException {
+
+        try {
+            xsltTransformerAdverseEvent.initTransformer(caaersAdverseEventXsl, baseXSLPath);
+            return new CaAERSUpdateAdverseEventServiceInvocationStrategy(xsltTransformerAdverseEvent,
+                    caAERSAdverseEventServiceWSClient(), Integer.parseInt(retryCountStr));
+        } catch (NumberFormatException e) {
+            LOG.error("NumberFormatException inside caAersUpdateAdverseEventServiceInvocationStrategy. ", e);
+            throw new IntegrationException(IntegrationError._1051, e, (Object) null);
+        }
+    }
 }
