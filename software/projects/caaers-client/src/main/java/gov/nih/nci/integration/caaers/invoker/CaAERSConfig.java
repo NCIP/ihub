@@ -1,5 +1,6 @@
 package gov.nih.nci.integration.caaers.invoker;
 
+import gov.nih.nci.integration.caaers.CaAERSAdverseEventServiceWSClient;
 import gov.nih.nci.integration.caaers.CaAERSParticipantServiceWSClient;
 import gov.nih.nci.integration.caaers.ClientPasswordCallback;
 import gov.nih.nci.integration.exception.IntegrationError;
@@ -30,7 +31,10 @@ public class CaAERSConfig {
     private String password;
 
     @Value("${caaers.registration.service.url}")
-    private String serviceUrl;
+    private String registrationServiceUrl;
+    
+    @Value("${caaers.adverseevent.service.url}")
+    private String adverseEventServiceUrl;
 
     @Value("${caaers.retry.count}")
     private String retryCountStr;
@@ -57,14 +61,25 @@ public class CaAERSConfig {
     }
 
     /**
-     * To get caAERSParticipantServiceWSClient
+     * To get CaAERSParticipantServiceWSClient
      * 
      * @return CaAERSParticipantServiceWSClient object
      * @throws IntegrationException - IntegrationException
      */
     @Bean
     public CaAERSParticipantServiceWSClient caAERSParticipantServiceWSClient() throws IntegrationException {
-        return new CaAERSParticipantServiceWSClient(serviceUrl + "?wsdl", userName, clientPasswordCallback());
+        return new CaAERSParticipantServiceWSClient(registrationServiceUrl + "?wsdl", userName, clientPasswordCallback());
+    }
+    
+    
+    /**
+     * To get CaAERSAdverseEventServiceWSClient
+     * @return  CaAERSAdverseEventServiceWSClient
+     * @throws IntegrationException - IntegrationException
+     */
+    @Bean
+    public CaAERSAdverseEventServiceWSClient caAERSAdverseEventServiceWSClient() throws IntegrationException {
+        return new CaAERSAdverseEventServiceWSClient(adverseEventServiceUrl + "?wsdl", userName, clientPasswordCallback());
     }
 
     /**
