@@ -11,6 +11,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
@@ -35,24 +37,18 @@ public class XSLTTransformerAdverseEventTest {
     @Value("${caaers.adverseevent.xsl}")
     private String caaersAdverseEventXsl;
 
-    /**
-     * 
-     */
-    @Test
-    public void createAdverseEvent() {
-        System.out.println("Hi..");// NOPMD
-    }
+    private static final Logger LOG = LoggerFactory.getLogger(XSLTTransformerAdverseEventTest.class);
 
     /**
-     * Testcase for transforming Interim XML to XMLString
+     * Test case for transforming Interim XML to XMLString
      * 
      * @throws IntegrationException - IntegrationException
      */
     @Test
     public void transformInterimToXMLStringTest() throws IntegrationException {
-        System.out.println("Hi");// NOPMD
         xsltTransformer.initTransformer(caaersAdverseEventXsl, baseXSLPath);
-        String trnsfrmdMsg = transformXML(getAEInterimMessage());
+        final String trnsfrmdMsg = transformXML(getAEInterimMessage());
+        System.out.println("XMLString --> " + trnsfrmdMsg);// NOPMD
         Assert.assertNotNull(trnsfrmdMsg);
     }
 
@@ -77,22 +73,21 @@ public class XSLTTransformerAdverseEventTest {
 
             xmlStr = new String(os.toByteArray());
         } catch (IntegrationException e) {
-            e.printStackTrace();
+            LOG.error("IntegrationException inside transformXML(). " + e);
             throw e;
         } finally {
             try {
                 is.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("IOException while closing InputStream. " + e);
             }
             try {
                 os.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("IOException while closing OutputStream. " + e);
             }
         }
 
-        System.out.println("XMLString --> " + xmlStr); // NOPMD
         return xmlStr;
     }
 
