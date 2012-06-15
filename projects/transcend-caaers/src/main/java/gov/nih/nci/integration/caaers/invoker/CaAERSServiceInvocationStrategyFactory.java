@@ -27,6 +27,8 @@ public final class CaAERSServiceInvocationStrategyFactory {
 
     private static ServiceInvocationStrategy caaersAdverseEventServiceInvocationStrategy = null;
 
+    private static ServiceInvocationStrategy caaersUpdateAdverseEventServiceInvocationStrategy = null;
+
     private static Boolean initStatus = null;
 
     private static final Logger LOG = LoggerFactory.getLogger(CaAERSServiceInvocationStrategyFactory.class);
@@ -50,6 +52,8 @@ public final class CaAERSServiceInvocationStrategyFactory {
                         .getBean("caAersUpdateRegistrationServiceInvocationStrategy");
                 caaersAdverseEventServiceInvocationStrategy = (ServiceInvocationStrategy) ctx
                         .getBean("caAersAdverseEventServiceInvocationStrategy");
+                caaersUpdateAdverseEventServiceInvocationStrategy = (ServiceInvocationStrategy) ctx
+                        .getBean("caAersUpdateAdverseEventServiceInvocationStrategy");
                 return Boolean.TRUE;
             }
         });
@@ -106,7 +110,7 @@ public final class CaAERSServiceInvocationStrategyFactory {
     }
 
     /**
-     * Method to get createCaAERSAdverseEventServiceInvocationStrategy
+     * Method to get CaAERSAdverseEventServiceInvocationStrategy
      * 
      * @param caaersLibLocation - caaersLibLocation
      * @param caaersConfig - caaersConfig
@@ -120,6 +124,26 @@ public final class CaAERSServiceInvocationStrategyFactory {
         }
         if (initStatus) {
             return caaersAdverseEventServiceInvocationStrategy;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Method to get CaAERSUpdateAdverseEventServiceInvocationStrategy
+     * 
+     * @param caaersLibLocation - caaersLibLocation
+     * @param caaersConfig - caaersConfig
+     * @return createCaAERSUpdateAdverseEventServiceInvocationStrategy
+     */
+    public static ServiceInvocationStrategy createCaAERSUpdateAdverseEventServiceInvocationStrategy(
+            final String[] caaersLibLocation, final String... caaersConfig) {
+
+        if (initStatus == null && caaersUpdateAdverseEventServiceInvocationStrategy == null) {
+            init(caaersLibLocation, caaersConfig);
+        }
+        if (initStatus) {
+            return caaersUpdateAdverseEventServiceInvocationStrategy;
         } else {
             return null;
         }
