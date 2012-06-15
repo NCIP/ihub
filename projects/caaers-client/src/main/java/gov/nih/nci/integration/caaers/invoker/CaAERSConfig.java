@@ -32,7 +32,7 @@ public class CaAERSConfig {
 
     @Value("${caaers.registration.service.url}")
     private String registrationServiceUrl;
-    
+
     @Value("${caaers.adverseevent.service.url}")
     private String adverseEventServiceUrl;
 
@@ -45,8 +45,14 @@ public class CaAERSConfig {
     @Value("${caaers.participant.xsl}")
     private String caaersParticipantXsl;
 
+    @Value("${caaers.adverseevent.xsl}")
+    private String caaersAdverseEventXsl;
+
     @Autowired
-    private XSLTTransformer xsltTransformer;
+    private XSLTTransformer xsltTransformerParticipant;
+
+    @Autowired
+    private XSLTTransformer xsltTransformerAdverseEvent;
 
     private static final Logger LOG = LoggerFactory.getLogger(CaAERSConfig.class);
 
@@ -68,22 +74,24 @@ public class CaAERSConfig {
      */
     @Bean
     public CaAERSParticipantServiceWSClient caAERSParticipantServiceWSClient() throws IntegrationException {
-        return new CaAERSParticipantServiceWSClient(registrationServiceUrl + "?wsdl", userName, clientPasswordCallback());
+        return new CaAERSParticipantServiceWSClient(registrationServiceUrl + "?wsdl", userName,
+                clientPasswordCallback());
     }
-    
-    
+
     /**
      * To get CaAERSAdverseEventServiceWSClient
-     * @return  CaAERSAdverseEventServiceWSClient
+     * 
+     * @return CaAERSAdverseEventServiceWSClient
      * @throws IntegrationException - IntegrationException
      */
     @Bean
     public CaAERSAdverseEventServiceWSClient caAERSAdverseEventServiceWSClient() throws IntegrationException {
-        return new CaAERSAdverseEventServiceWSClient(adverseEventServiceUrl + "?wsdl", userName, clientPasswordCallback());
+        return new CaAERSAdverseEventServiceWSClient(adverseEventServiceUrl + "?wsdl", userName,
+                clientPasswordCallback());
     }
 
     /**
-     * To get caAersRegistrationServiceInvocationStrategy
+     * To get CaAERSRegistrationServiceInvocationStrategy
      * 
      * @return CaAERSRegistrationServiceInvocationStrategy object
      * @throws IntegrationException - IntegrationException
@@ -94,9 +102,9 @@ public class CaAERSConfig {
             throws IntegrationException {
 
         try {
-            xsltTransformer.initTransformer(caaersParticipantXsl, baseXSLPath);
-            return new CaAERSRegistrationServiceInvocationStrategy(xsltTransformer, caAERSParticipantServiceWSClient(),
-                    Integer.parseInt(retryCountStr));
+            xsltTransformerParticipant.initTransformer(caaersParticipantXsl, baseXSLPath);
+            return new CaAERSRegistrationServiceInvocationStrategy(xsltTransformerParticipant,
+                    caAERSParticipantServiceWSClient(), Integer.parseInt(retryCountStr));
         } catch (NumberFormatException e) {
             LOG.error("CaAERSConfig..NumberFormatException inside caAersRegistrationServiceInvocationStrategy. ", e);
             throw new IntegrationException(IntegrationError._1051, e, (Object) null);
@@ -104,7 +112,7 @@ public class CaAERSConfig {
     }
 
     /**
-     * To get caAersUpdateRegistrationServiceInvocationStrategy
+     * To get CaAERSUpdateRegistrationServiceInvocationStrategy
      * 
      * @return CaAERSUpdateRegistrationServiceInvocationStrategy obejct
      * @throws IntegrationException - IntegrationException
@@ -115,12 +123,32 @@ public class CaAERSConfig {
             throws IntegrationException {
 
         try {
-            xsltTransformer.initTransformer(caaersParticipantXsl, baseXSLPath);
-            return new CaAERSUpdateRegistrationServiceInvocationStrategy(xsltTransformer,
+            xsltTransformerParticipant.initTransformer(caaersParticipantXsl, baseXSLPath);
+            return new CaAERSUpdateRegistrationServiceInvocationStrategy(xsltTransformerParticipant,
                     caAERSParticipantServiceWSClient(), Integer.parseInt(retryCountStr));
         } catch (NumberFormatException e) {
-            LOG.error("CaAERSConfig..NumberFormatException inside caAersUpdateRegistrationServiceInvocationStrategy. ",
-                    e);
+            LOG.error("NumberFormatException inside caAersUpdateRegistrationServiceInvocationStrategy. ", e);
+            throw new IntegrationException(IntegrationError._1051, e, (Object) null);
+        }
+    }
+
+    /**
+     * To get CaAERSAdverseEventServiceInvocationStrategy
+     * 
+     * @return CaAERSAdverseEventServiceInvocationStrategy object
+     * @throws IntegrationException - IntegrationException
+     */
+    @Bean
+    @Scope("prototype")
+    public CaAERSAdverseEventServiceInvocationStrategy caAersAdverseEventServiceInvocationStrategy()
+            throws IntegrationException {
+
+        try {
+            xsltTransformerAdverseEvent.initTransformer(caaersAdverseEventXsl, baseXSLPath);
+            return new CaAERSAdverseEventServiceInvocationStrategy(xsltTransformerAdverseEvent,
+                    caAERSAdverseEventServiceWSClient(), Integer.parseInt(retryCountStr));
+        } catch (NumberFormatException e) {
+            LOG.error("NumberFormatException inside caAersAdverseEventServiceInvocationStrategy. ", e);
             throw new IntegrationException(IntegrationError._1051, e, (Object) null);
         }
     }
