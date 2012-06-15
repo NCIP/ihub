@@ -33,6 +33,10 @@ public enum StrategyIdentifier {
     CAEERS_CREATE_AE,
 
     /**
+     * for caAERS Update Adverse Event
+     */
+    CAEERS_UPDATE_AE,
+    /**
      * for caTissue Create Specimen
      */
     CATISSUE_CREATE_SPECIMEN,
