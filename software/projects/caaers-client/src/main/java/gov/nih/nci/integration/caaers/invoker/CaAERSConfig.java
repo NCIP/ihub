@@ -55,6 +55,8 @@ public class CaAERSConfig {
     private XSLTTransformer xsltTransformerAdverseEvent;
 
     private static final Logger LOG = LoggerFactory.getLogger(CaAERSConfig.class);
+    
+    private static final String PROTOTYPE = "prototype";
 
     /**
      * To get clientPasswordCallback
@@ -97,7 +99,7 @@ public class CaAERSConfig {
      * @throws IntegrationException - IntegrationException
      */
     @Bean
-    @Scope("prototype")
+    @Scope(PROTOTYPE)
     public CaAERSRegistrationServiceInvocationStrategy caAersRegistrationServiceInvocationStrategy()
             throws IntegrationException {
 
@@ -118,7 +120,7 @@ public class CaAERSConfig {
      * @throws IntegrationException - IntegrationException
      */
     @Bean
-    @Scope("prototype")
+    @Scope(PROTOTYPE)
     public CaAERSUpdateRegistrationServiceInvocationStrategy caAersUpdateRegistrationServiceInvocationStrategy()
             throws IntegrationException {
 
@@ -139,7 +141,7 @@ public class CaAERSConfig {
      * @throws IntegrationException - IntegrationException
      */
     @Bean
-    @Scope("prototype")
+    @Scope(PROTOTYPE)
     public CaAERSAdverseEventServiceInvocationStrategy caAersAdverseEventServiceInvocationStrategy()
             throws IntegrationException {
 
@@ -160,7 +162,7 @@ public class CaAERSConfig {
      * @throws IntegrationException - IntegrationException
      */
     @Bean
-    @Scope("prototype")
+    @Scope(PROTOTYPE)
     public CaAERSUpdateAdverseEventServiceInvocationStrategy caAersUpdateAdverseEventServiceInvocationStrategy()
             throws IntegrationException {
 
