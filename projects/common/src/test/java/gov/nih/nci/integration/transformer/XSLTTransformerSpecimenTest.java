@@ -11,6 +11,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
@@ -35,6 +37,8 @@ public class XSLTTransformerSpecimenTest {
     @Value("${catissue.api.specimen.xsl}")
     private String catissueSpecimenXsl;
 
+    private static final Logger LOG = LoggerFactory.getLogger(XSLTTransformerSpecimenTest.class);
+
     /**
      * Testcase for transforming Interim XML to XMLString
      * 
@@ -42,13 +46,9 @@ public class XSLTTransformerSpecimenTest {
      */
     @Test
     public void transformSpecimenInterimToXMLStringTest() throws IntegrationException {
-
         xsltTransformer.initTransformer(catissueSpecimenXsl, baseXSLPath);
-
-        String trnsfrmdMsg = transformXML(getInterimSpecimenXML());
-
+        final String trnsfrmdMsg = transformXML(getInterimSpecimenXML());
         Assert.assertNotNull(trnsfrmdMsg);
-
     }
 
     private String transformXML(String message) throws IntegrationException {
@@ -64,18 +64,18 @@ public class XSLTTransformerSpecimenTest {
 
             xmlStr = new String(os.toByteArray());
         } catch (IntegrationException e) {
-            e.printStackTrace();
+            LOG.error("IntegrationException inside transformXML(). " + e);
             throw e;
         } finally {
             try {
                 is.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("IOException while closing InputStream. " + e);
             }
             try {
                 os.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("IOException while closing OutputStream. " + e);
             }
         }
         return xmlStr;
