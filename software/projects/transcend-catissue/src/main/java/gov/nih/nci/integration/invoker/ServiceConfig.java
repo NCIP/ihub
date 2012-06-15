@@ -19,7 +19,6 @@ import org.springframework.context.annotation.Scope;
  * 
  */
 @Configuration
-@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class ServiceConfig {
 
     @Value("${catissue.api.service.retry}")
@@ -55,6 +54,8 @@ public class ServiceConfig {
     @Autowired
     private XSLTTransformer xsltTransformerConsent;
 
+    private static final String PROTOTYPE = "prototype";
+
     /**
      * To get CaTissueRegistrationServiceInvocationStrategy
      * 
@@ -62,7 +63,7 @@ public class ServiceConfig {
      * @throws IntegrationException - IntegrationException
      */
     @Bean
-    @Scope("prototype")
+    @Scope(PROTOTYPE)
     public ServiceInvocationStrategy caTissueRegistrationServiceInvocationStrategy() throws IntegrationException {
         xsltTransformer.initTransformer(catissueParticipantXsl, baseXSLPath);
         return new CaTissueRegistrationServiceInvocationStrategy(Integer.parseInt(retryCntStr),
@@ -76,7 +77,7 @@ public class ServiceConfig {
      * @throws IntegrationException - IntegrationException
      */
     @Bean
-    @Scope("prototype")
+    @Scope(PROTOTYPE)
     public ServiceInvocationStrategy caTissueUpdateRegistrationServiceInvocationStrategy() throws IntegrationException {
         xsltTransformer.initTransformer(catissueParticipantXsl, baseXSLPath);
         return new CaTissueUpdateRegistrationServiceInvocationStrategy(Integer.parseInt(retryCntStr),
@@ -90,7 +91,7 @@ public class ServiceConfig {
      * @throws IntegrationException - IntegrationException
      */
     @Bean
-    @Scope("prototype")
+    @Scope(PROTOTYPE)
     public ServiceInvocationStrategy caTissueSpecimenServiceInvocationStrategy() throws IntegrationException {
         xsltTransformerSpecimen.initTransformer(catissueSpecimenXsl, baseXSLPath);
         return new CaTissueSpecimenServiceInvocationStrategy(Integer.parseInt(retryCntStr), caTissueSpecimenClient,
@@ -104,7 +105,7 @@ public class ServiceConfig {
      * @throws IntegrationException - IntegrationException
      */
     @Bean
-    @Scope("prototype")
+    @Scope(PROTOTYPE)
     public ServiceInvocationStrategy caTissueUpdateSpecimenServiceInvocationStrategy() throws IntegrationException {
         xsltTransformerSpecimen.initTransformer(catissueSpecimenXsl, baseXSLPath);
         return new CaTissueUpdateSpecimenServiceInvocationStrategy(Integer.parseInt(retryCntStr),
@@ -118,7 +119,7 @@ public class ServiceConfig {
      * @throws IntegrationException - IntegrationException
      */
     @Bean
-    @Scope("prototype")
+    @Scope(PROTOTYPE)
     public ServiceInvocationStrategy caTissueConsentServiceInvocationStrategy() throws IntegrationException {
         xsltTransformerConsent.initTransformer(catissueConsentXsl, baseXSLPath);
         return new CaTissueConsentServiceInvocationStrategy(Integer.parseInt(retryCntStr), caTissueConsentClient,
