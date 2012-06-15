@@ -331,10 +331,7 @@ public class CaTissueParticipantClient {
     public Participant getParticipantForSSN(String ssn) throws ApplicationException {
         final List<Participant> prtcpntLst = caTissueAPIClient.getApplicationService().query(
                 CqlUtility.getParticipantForSSN(ssn));
-        if (prtcpntLst == null || prtcpntLst.isEmpty()) {
-            // TODO : decide on throwing exception vs returning null
-            // throw new
-            // ApplicationException("No participant found for the SSN!");
+        if (prtcpntLst == null || prtcpntLst.isEmpty()) {          
             return null;
         }
         return prtcpntLst.get(0);
@@ -350,8 +347,7 @@ public class CaTissueParticipantClient {
     public Participant getParticipantForPatientId(String mrn) throws ApplicationException {
         final List<Participant> prtcpntLst = caTissueAPIClient.getApplicationService().query(
                 CqlUtility.getParticipantForPatientId(mrn));
-        if (prtcpntLst == null || prtcpntLst.isEmpty()) {
-            // TODO : decide on throwing exception vs returning null
+        if (prtcpntLst == null || prtcpntLst.isEmpty()) {           
             return null;
         }
         return prtcpntLst.get(0);
