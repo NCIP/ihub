@@ -19,7 +19,6 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
-import javax.xml.ws.soap.SOAPFaultException;
 
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.endpoint.Client;
@@ -98,10 +97,8 @@ public class CaAERSAdverseEventServiceWSClient {
      * @param adverseEventXMLStr - XMLString containing the list of adverse event to be created
      * @return CreateAdverseEventResponse - response from the webservice call
      * @throws JAXBException - JAXBException
-     * @throws SOAPFaultException - SOAPFaultException
      */
-    public CreateAdverseEventResponse createAdverseEvent(String adverseEventXMLStr) throws JAXBException,
-            SOAPFaultException {
+    public CreateAdverseEventResponse createAdverseEvent(String adverseEventXMLStr) throws JAXBException {
 
         // parse the incoming XML String
         final AdverseEventsInputMessage inputMessage = parseAdverseEventXMLStr(adverseEventXMLStr);
@@ -110,17 +107,8 @@ public class CaAERSAdverseEventServiceWSClient {
         adverseEvent.setAdverseEventsInputMessage(inputMessage);
 
         CreateAdverseEventResponse serviceResponse = null;
-        try {
-            serviceResponse = client.createAdverseEvent(adverseEvent);
-        } catch (SOAPFaultException e) {
-            LOG.error("SOAPFaultException while calling createAdverseEvent. ", e);
-            throw e;
-            // CHECKSTYLE:OFF
-        } catch (Exception e) { //NOPMD
-            // CHECKSTYLE:ON
-            LOG.error("Exception while calling createAdverseEvent. ", e);
-           
-        }
+
+        serviceResponse = client.createAdverseEvent(adverseEvent);
 
         return serviceResponse;
     }
@@ -131,10 +119,8 @@ public class CaAERSAdverseEventServiceWSClient {
      * @param adverseEventXMLStr - XMLString containing the list of adverse event to be created
      * @return CreateOrUpdateAdverseEventResponse - response from the webservice call
      * @throws JAXBException - JAXBException
-     * @throws SOAPFaultException - SOAPFaultException
      */
-    public CreateOrUpdateAdverseEventResponse updateAdverseEvent(String adverseEventXMLStr) throws JAXBException,
-            SOAPFaultException {
+    public CreateOrUpdateAdverseEventResponse updateAdverseEvent(String adverseEventXMLStr) throws JAXBException {
 
         // parse the incoming XML String
         final AdverseEventsInputMessage inputMessage = parseAdverseEventXMLStr(adverseEventXMLStr);
@@ -143,12 +129,8 @@ public class CaAERSAdverseEventServiceWSClient {
         adverseEvent.setAdverseEventsInputMessage(inputMessage);
 
         CreateOrUpdateAdverseEventResponse serviceResponse = null;
-        try {
-            serviceResponse = client.createOrUpdateAdverseEvent(adverseEvent);
-        } catch (SOAPFaultException e) {
-            LOG.error("SOAPFaultException while calling updateAdverseEvent. ", e);
-            throw e;
-        }
+
+        serviceResponse = client.createOrUpdateAdverseEvent(adverseEvent);
 
         return serviceResponse;
     }
@@ -159,10 +141,8 @@ public class CaAERSAdverseEventServiceWSClient {
      * @param adverseEventXMLStr - XMLString containing the list of adverse event to be deleted
      * @return DeleteAdverseEventResponse
      * @throws JAXBException - JAXBException
-     * @throws SOAPFaultException - SOAPFaultException
      */
-    public DeleteAdverseEventResponse deleteAdverseEvent(String adverseEventXMLStr) throws JAXBException,
-            SOAPFaultException {
+    public DeleteAdverseEventResponse deleteAdverseEvent(String adverseEventXMLStr) throws JAXBException {
 
         // parse the incoming XML String
         final AdverseEventsInputMessage inputMessage = parseAdverseEventXMLStr(adverseEventXMLStr);
@@ -171,12 +151,8 @@ public class CaAERSAdverseEventServiceWSClient {
         adverseEvent.setAdverseEventsInputMessage(inputMessage);
 
         DeleteAdverseEventResponse serviceResponse = null;
-        try {
-            serviceResponse = client.deleteAdverseEvent(adverseEvent);
-        } catch (SOAPFaultException e) {
-            LOG.error("SOAPFaultException while calling deleteAdverseEvent. ", e);
-            throw e;
-        }
+
+        serviceResponse = client.deleteAdverseEvent(adverseEvent);
 
         return serviceResponse;
     }
