@@ -1,6 +1,6 @@
 package gov.nih.nci.integration.caaers.invoker;
 
-import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CreateAdverseEventResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CreateOrUpdateAdverseEventResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.DeleteAdverseEventResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
@@ -89,7 +89,7 @@ public class CaAERSAdverseEventServiceInvocationStrategy implements ServiceInvoc
         try {
             final String adverseEventXMLStr = transformToAdverseEventXML(msg.getMessage().getRequest());
 
-            final CreateAdverseEventResponse caaersresponse = client.createAdverseEvent(adverseEventXMLStr);
+            final CreateOrUpdateAdverseEventResponse caaersresponse = client.createAdverseEvent(adverseEventXMLStr);
             final ServiceResponse response = caaersresponse.getCaaersServiceResponse().getServiceResponse();
             if ("0".equals(response.getResponsecode())) {
                 result.setResult(response.getResponsecode() + " : " + response.getMessage());
