@@ -1,70 +1,76 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <xsl:stylesheet version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns0="http://caXchange.nci.nih.gov/messaging"
+	xmlns:a="http://cacis.nci.nih.gov" xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest">
+
 	<xsl:output method="xml" />
 	<xsl:template match="/">
-		<ns2:adverseevent
-			xmlns:ns2="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent"
-			xmlns:ns3="http://schema.integration.caaers.cabig.nci.nih.gov/common">
-			<ns2:adverseEvents>
-				<xsl:for-each select="adverseevents/adverseEventsList/adverseEvent">
-					<ns2:adverseEvent>
+		<ns22:adverseevent
+			xmlns:ns22="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent"
+			xmlns:ns33="http://schema.integration.caaers.cabig.nci.nih.gov/common">
+			<ns22:adverseEvents>
+				<xsl:for-each
+					select="ns2:caxchangerequest/a:adverseevents/a:adverseEventsList/a:adverseEvent">
+					<ns22:adverseEvent>
 						<verbatim>
-							<xsl:value-of select="verbatim" />
+							<xsl:value-of select="a:verbatim" />
 						</verbatim>
 						<grade>
-							<xsl:value-of select="grade" />
+							<xsl:value-of select="a:grade" />
 						</grade>
 						<expected>
-							<xsl:value-of select="expected" />
+							<xsl:value-of select="a:expected" />
 						</expected>
 						<attributionSummary>
-							<xsl:value-of select="attribution" />
+							<xsl:value-of select="a:attribution" />
 						</attributionSummary>
 						<startDate>
-							<xsl:value-of select="onsetDate" />
+							<xsl:value-of select="a:onsetDate" />
 						</startDate>
 						<endDate>
-							<xsl:value-of select="resolutionDate" />
+							<xsl:value-of select="a:resolutionDate" />
 						</endDate>
 						<ctepCode>
-							<xsl:value-of select="codedTerm" />
+							<xsl:value-of select="a:codedTerm" />
 						</ctepCode>
-						<xsl:for-each select="seriousReasonsList/reason">
+						<xsl:for-each select="a:seriousReasonsList/a:reason">
 							<outcome>
 								<outComeEnumType>
 									<xsl:value-of select="." />
 								</outComeEnumType>
 							</outcome>
 						</xsl:for-each>
-					</ns2:adverseEvent>
+					</ns22:adverseEvent>
 				</xsl:for-each>
-			</ns2:adverseEvents>
-			<ns2:criteria>
+			</ns22:adverseEvents>
+			<ns22:criteria>
 				<participantIdentifier>
 					<xsl:value-of
-						select="adverseevents/participantInfo/studySubjectIdentifier" />
+						select="ns2:caxchangerequest/a:adverseevents/a:participantInfo/a:studySubjectIdentifier" />
 				</participantIdentifier>
 				<studyIdentifier>
-					<xsl:value-of select="adverseevents/studyInfo/studyIdentifier" />
+					<xsl:value-of
+						select="ns2:caxchangerequest/a:adverseevents/a:studyInfo/a:studyIdentifier" />
 				</studyIdentifier>
 				<course>
 					<startDateOfThisCourse>
 						<xsl:value-of
-							select="adverseevents/timeframeInfo/reportingPeriod/startDateOfThisCourse" />
+							select="ns2:caxchangerequest/a:adverseevents/a:timeframeInfo/a:reportingPeriod/a:startDateOfThisCourse" />
 					</startDateOfThisCourse>
 					<endDateOfThisCourse>
 						<xsl:value-of
-							select="adverseevents/timeframeInfo/reportingPeriod/endDateOfThisCourse" />
+							select="ns2:caxchangerequest/a:adverseevents/a:timeframeInfo/a:reportingPeriod/a:endDateOfThisCourse" />
 					</endDateOfThisCourse>
 					<treatmentType>
-						<xsl:value-of select="adverseevents/timeframeInfo/periodType" />
+						<xsl:value-of
+							select="ns2:caxchangerequest/a:adverseevents/a:timeframeInfo/a:periodType" />
 					</treatmentType>
 					<treatmentAssignmentCode>
-						<xsl:value-of select="adverseevents/timeframeInfo/assignedTreatment" />
+						<xsl:value-of
+							select="ns2:caxchangerequest/a:adverseevents/a:timeframeInfo/a:assignedTreatment" />
 					</treatmentAssignmentCode>
 				</course>
-			</ns2:criteria>
-		</ns2:adverseevent>
+			</ns22:criteria>
+		</ns22:adverseevent>
 	</xsl:template>
 </xsl:stylesheet>
