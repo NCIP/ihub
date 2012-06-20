@@ -80,7 +80,9 @@ public class TranscendSemanticAdapter extends AcceptMessage {
 
         String mcResponse = webServiceMessageReceiver.processData(reqstr);
 
-        LOG.debug("TranscendSemanticAdapter..MC RESPONSE:" + mcResponse);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("TranscendSemanticAdapter..MC RESPONSE:" + mcResponse);
+        }        
 
         if (mcResponse != null
                 && (mcResponse.indexOf("Error") > -1 || mcResponse.indexOf("Exception") > -1
