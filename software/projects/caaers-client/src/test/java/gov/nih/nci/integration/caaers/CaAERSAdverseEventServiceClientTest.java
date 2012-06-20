@@ -7,7 +7,6 @@ import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEvents;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventsInputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AttributionType;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CourseType;
-import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CreateAdverseEventResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CreateOrUpdateAdverseEventResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.Criteria;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.DeleteAdverseEventResponse;
@@ -57,7 +56,7 @@ public class CaAERSAdverseEventServiceClientTest {
     public void createAdverseEvent() {
         final String adverseEventXMLStr = getAdverseEventXMLStr();
         try {
-            final CreateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
+            final CreateOrUpdateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
                     .createAdverseEvent(adverseEventXMLStr);
             assertEquals("Response code is NOT proper for CreateAdverseEvent.", Long.valueOf(0),
                     Long.valueOf(response.getCaaersServiceResponse().getServiceResponse().getResponsecode()));
@@ -73,7 +72,7 @@ public class CaAERSAdverseEventServiceClientTest {
     public void createAEStudyNotExist() {
         final String adverseEventXMLStr = getAEStudyNotExist();
         try {
-            final CreateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
+            final CreateOrUpdateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
                     .createAdverseEvent(adverseEventXMLStr);
             assertEquals("Response code is NOT proper for CreateAEStudyNotExist.", Long.valueOf(1),
                     Long.valueOf(response.getCaaersServiceResponse().getServiceResponse().getResponsecode()));
@@ -89,7 +88,7 @@ public class CaAERSAdverseEventServiceClientTest {
     public void createAEParticipantNotExist() {
         final String adverseEventXMLStr = getAEParticipantNotExist();
         try {
-            final CreateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
+            final CreateOrUpdateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
                     .createAdverseEvent(adverseEventXMLStr);
             assertEquals("Response code is NOT proper for CreateParticipantNotExist.", Long.valueOf(1),
                     Long.valueOf(response.getCaaersServiceResponse().getServiceResponse().getResponsecode()));
@@ -105,7 +104,7 @@ public class CaAERSAdverseEventServiceClientTest {
     public void createAEParticipantNotAssignedToStudy() {
         final String adverseEventXMLStr = getAEParticipantNotAssignedToStudy();
         try {
-            final CreateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
+            final CreateOrUpdateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
                     .createAdverseEvent(adverseEventXMLStr);
             assertEquals("Response code is NOT proper for CreateAEParticipantNotAssignedToStudy.", Long.valueOf(1),
                     Long.valueOf(response.getCaaersServiceResponse().getServiceResponse().getResponsecode()));
@@ -121,7 +120,7 @@ public class CaAERSAdverseEventServiceClientTest {
     public void createAEInvalidStartDateofAE() {
         final String adverseEventXMLStr = getAEInvalidAEStartDate();
         try {
-            final CreateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
+            final CreateOrUpdateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
                     .createAdverseEvent(adverseEventXMLStr);
             assertEquals("Response code is NOT proper for CreateAEInvalidStartDateofAE.", Long.valueOf(1),
                     Long.valueOf(response.getCaaersServiceResponse().getServiceResponse().getResponsecode()));
@@ -137,7 +136,7 @@ public class CaAERSAdverseEventServiceClientTest {
     public void createAEInvalidEndDateofAE() {
         final String adverseEventXMLStr = getAEInvalidAEEndDate();
         try {
-            final CreateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
+            final CreateOrUpdateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
                     .createAdverseEvent(adverseEventXMLStr);
             assertEquals("Response code is NOT proper for CreateAEInvalidEndDateofAE.", Long.valueOf(1),
                     Long.valueOf(response.getCaaersServiceResponse().getServiceResponse().getResponsecode()));
@@ -153,7 +152,7 @@ public class CaAERSAdverseEventServiceClientTest {
     public void createAEInvalidStartEndDateCombinationofAE() {
         final String adverseEventXMLStr = getAEStartDateGreaterThanEndDate();
         try {
-            final CreateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
+            final CreateOrUpdateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
                     .createAdverseEvent(adverseEventXMLStr);
             assertEquals("Response code is NOT proper for CreateAEInvalidStartEndDateCombinationofAE.",
                     Long.valueOf(1),
@@ -169,7 +168,7 @@ public class CaAERSAdverseEventServiceClientTest {
     @Test
     public void createAEStartDateOfThisCourse() {
         final String adverseEventXMLStr = getAEInvalidStartDateOfThisCourse();
-        CreateAdverseEventResponse response = null;
+        CreateOrUpdateAdverseEventResponse response = null;
         try {
             response = caAERSAdverseEventServiceWSClient.createAdverseEvent(adverseEventXMLStr);
 
@@ -188,7 +187,7 @@ public class CaAERSAdverseEventServiceClientTest {
     public void createAEEndDateOfThisCourse() {
         final String adverseEventXMLStr = getAEInvalidEndDateOfThisCourse();
         try {
-            final CreateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
+            final CreateOrUpdateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
                     .createAdverseEvent(adverseEventXMLStr);
             assertEquals("Response code is NOT proper for CreateAEEndDateOfThisCourse.", Long.valueOf(1),
                     Long.valueOf(response.getCaaersServiceResponse().getServiceResponse().getResponsecode()));
@@ -204,7 +203,7 @@ public class CaAERSAdverseEventServiceClientTest {
     public void createAEStartDateGreaterThanEndDateOfThisCourse() {
         final String adverseEventXMLStr = getAEStartDateGreaterEndDateofThisCourse();
         try {
-            final CreateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
+            final CreateOrUpdateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
                     .createAdverseEvent(adverseEventXMLStr);
             assertEquals("Response code is NOT proper for CreateAEStartDateGreaterThanEndDateOfThisCourse.",
                     Long.valueOf(1),
@@ -220,7 +219,7 @@ public class CaAERSAdverseEventServiceClientTest {
     @Test
     public void createAEInvalidOutComeEnumType() {
         final String adverseEventXMLStr = getAEInvalidOutComeEnumType();
-        CreateAdverseEventResponse response = null;
+        CreateOrUpdateAdverseEventResponse response = null;
         try {
             response = caAERSAdverseEventServiceWSClient.createAdverseEvent(adverseEventXMLStr);
 
@@ -239,7 +238,7 @@ public class CaAERSAdverseEventServiceClientTest {
     @Test
     public void createAEInvalidAttributionType() {
         final String adverseEventXMLStr = getAEInvalidArrtibutionType();
-        CreateAdverseEventResponse response = null;
+        CreateOrUpdateAdverseEventResponse response = null;
         try {
             response = caAERSAdverseEventServiceWSClient.createAdverseEvent(adverseEventXMLStr);
 
