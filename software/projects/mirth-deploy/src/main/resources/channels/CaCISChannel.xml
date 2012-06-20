@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>2.1.1.5490</version>
   <lastModified>
-    <time>1338811767996</time>
+    <time>1340220072834</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>1</revision>
+  <revision>2</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -208,6 +208,9 @@ return;</property>
             <name>AdverseEventTransformationTransformer</name>
             <script>var aeMsg = null;
 try {
+
+	logger.debug(&quot;msg in CaCIS Channel-AETC-Trns = &quot; +msg);
+
 	var aeMsgStr = transformMessage(msg, &quot;crToAeMsgTransformer&quot;);
 
 	aeMsg = new XML(aeMsgStr);
@@ -226,6 +229,9 @@ return;</script>
                 <string>Script</string>
                 <string>var aeMsg = null;
 try {
+
+	logger.debug(&quot;msg in CaCIS Channel-AETC-Trns = &quot; +msg);
+
 	var aeMsgStr = transformMessage(msg, &quot;crToAeMsgTransformer&quot;);
 
 	aeMsg = new XML(aeMsgStr);
@@ -257,7 +263,7 @@ return;</string>
         <rules>
           <rule>
             <sequenceNumber>0</sequenceNumber>
-            <name>Accept message if &quot;$(&apos;msgTyp&apos;)&quot; equals globalMap.get(&apos;AE&apos;)</name>
+            <name>Accept message if &quot;$(&apos;msgTyp&apos;)&quot; equals globalMap.get(&apos;AE&apos;) or globalMap.get(&apos;UPDTAE&apos;)</name>
             <data class="map">
               <entry>
                 <string>Name</string>
@@ -267,6 +273,7 @@ return;</string>
                 <string>Values</string>
                 <list>
                   <string>globalMap.get(&apos;AE&apos;)</string>
+                  <string>globalMap.get(&apos;UPDTAE&apos;)</string>
                 </list>
               </entry>
               <entry>
@@ -283,7 +290,7 @@ return;</string>
               </entry>
             </data>
             <type>Rule Builder</type>
-            <script>if($(&apos;msgTyp&apos;) == globalMap.get(&apos;AE&apos;))
+            <script>if($(&apos;msgTyp&apos;) == globalMap.get(&apos;AE&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTAE&apos;))
 {
 return true;
 }
@@ -592,6 +599,7 @@ var msgTyp = $(&apos;msgTyp&apos;);
 logger.info(&quot;msgTyp=&quot;+ msgTyp);
 
 if(	msgTyp != globalMap.get(&apos;AE&apos;) 
+	&amp;&amp; msgTyp != globalMap.get(&apos;UPDTAE&apos;)
 	&amp;&amp; msgTyp != globalMap.get(&apos;REGN&apos;)
 	&amp;&amp; msgTyp != globalMap.get(&apos;UPDTREGN&apos;)
 	&amp;&amp; msgTyp != globalMap.get(&apos;SPMN&apos;)
@@ -679,7 +687,7 @@ if(commonAppCtx == null) {
 var baseXSLClasspath=&quot;@{integration.transformer.xsl.baseClassPath}&quot;;
 
 var crToRegnMsgTransformer = commonAppCtx.getBean(&quot;xsltTransformer&quot;);
-crToRegnMsgTransformer.initTransformer(&quot;CaCISRequest-to-MsgBroadcasterInboundMsg.xsl&quot;, baseXSLClasspath);
+crToRegnMsgTransformer.initTransformer(&quot;caCISRequest-to-MsgBroadcasterParticipantInboundMsg.xsl&quot;, baseXSLClasspath);
 
 globalMap.put(&quot;crToRegnMsgTransformer&quot;, crToRegnMsgTransformer);
 
@@ -697,7 +705,7 @@ globalMap.put(&quot;crToConsentMsgTransformer&quot;, crToConsentMsgTransformer);
 
 
 var crToAeMsgTransformer = commonAppCtx.getBean(&quot;xsltTransformer&quot;);
-crToAeMsgTransformer.initTransformer(&quot;CaCISRequest-to-MsgBroadcasterInboundMsg.xsl&quot;, baseXSLClasspath);
+crToAeMsgTransformer.initTransformer(&quot;caCISRequest-to-MsgBroadcasterAdverseEventInboundMsg.xsl&quot;, baseXSLClasspath);
 
 globalMap.put(&quot;crToAeMsgTransformer&quot;, crToAeMsgTransformer);
 
