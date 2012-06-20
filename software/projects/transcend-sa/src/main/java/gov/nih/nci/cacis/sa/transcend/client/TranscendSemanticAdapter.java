@@ -68,7 +68,7 @@ public class TranscendSemanticAdapter extends AcceptMessage {
             targetNamespace = "http://cacis.nci.nih.gov") CaCISRequest parameter)
             throws AcceptSourceFault {
 
-        LOG.info("Executing operation acceptSource");
+        LOG.debug("Executing operation acceptSource");
 
         final gov.nih.nci.cacis.sa.transcend.CaCISResponse response = new CaCISResponse();
 
@@ -80,7 +80,7 @@ public class TranscendSemanticAdapter extends AcceptMessage {
 
         String mcResponse = webServiceMessageReceiver.processData(reqstr);
 
-        LOG.info("MC RESPONSE:" + mcResponse);
+        LOG.debug("TranscendSemanticAdapter..MC RESPONSE:" + mcResponse);
 
         if (mcResponse != null
                 && (mcResponse.indexOf("Error") > -1 || mcResponse.indexOf("Exception") > -1
