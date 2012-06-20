@@ -97,7 +97,7 @@ public class CaXchangeRequestService extends AcceptMessage {
             }
 
             String mcResponse = webServiceMessageReceiver.processData(reqstr);
-            LOG.info("MC RESPONSE:" + mcResponse);
+            LOG.debug("CaXchangeRequestService..MC RESPONSE:" + mcResponse);
             if (StringUtils.isEmpty(mcResponse)) {
                 throw new JAXBException("No proper response from iHub");
             }
