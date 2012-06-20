@@ -2,8 +2,6 @@ package gov.nih.nci.integration.caaers;
 
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventManagementServiceInterface;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventsInputMessage;
-import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CreateAdverseEvent;
-import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CreateAdverseEventResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CreateOrUpdateAdverseEvent;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CreateOrUpdateAdverseEventResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.DeleteAdverseEvent;
@@ -98,17 +96,17 @@ public class CaAERSAdverseEventServiceWSClient {
      * @return CreateAdverseEventResponse - response from the webservice call
      * @throws JAXBException - JAXBException
      */
-    public CreateAdverseEventResponse createAdverseEvent(String adverseEventXMLStr) throws JAXBException {
+    public CreateOrUpdateAdverseEventResponse createAdverseEvent(String adverseEventXMLStr) throws JAXBException {
 
         // parse the incoming XML String
         final AdverseEventsInputMessage inputMessage = parseAdverseEventXMLStr(adverseEventXMLStr);
 
-        final CreateAdverseEvent adverseEvent = new CreateAdverseEvent();
+        final CreateOrUpdateAdverseEvent adverseEvent = new CreateOrUpdateAdverseEvent();
         adverseEvent.setAdverseEventsInputMessage(inputMessage);
 
-        CreateAdverseEventResponse serviceResponse = null;
+        CreateOrUpdateAdverseEventResponse serviceResponse = null;
 
-        serviceResponse = client.createAdverseEvent(adverseEvent);
+        serviceResponse = client.createOrUpdateAdverseEvent(adverseEvent);
 
         return serviceResponse;
     }
