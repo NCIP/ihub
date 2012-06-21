@@ -1,7 +1,5 @@
 package gov.nih.nci.caxchange.messaging;
 
-import gov.nih.nci.integration.util.JAXBMarshaller;
-
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -17,48 +15,53 @@ import org.junit.Test;
 
 /**
  * Testcase for Marshaling/Unmarshaling the XML
+ * 
  * @author Vinodh
- *
+ * 
  */
 public class RequestMarshallingTest {
 
     /**
      * Testcase for marshaling the Message
+     * 
      * @throws JAXBException - JAXBException
      */
     @Test
     public void marshallMessage() throws JAXBException {
-        Object obj = unmarshall(getMessage(), Message.class);
+        final Object obj = unmarshall(getMessage(), Message.class);
 
-        Message msg = ((JAXBElement<Message>) obj).getValue();
-        JAXBMarshaller jm = new JAXBMarshaller();
+        final Message msg = ((JAXBElement<Message>) obj).getValue();
+        // final JAXBMarshaller jm = new JAXBMarshaller();
 
-        QName qname = new QName("http://caXchange.nci.nih.gov/caxchangerequest", "caxchangerequest");
-        JAXBElement<Message> message = new JAXBElement<Message>(qname, Message.class, msg);
-        String s = marshal(message, Message.class);
+        final QName qname = new QName("http://caXchange.nci.nih.gov/caxchangerequest", "caxchangerequest");
+        final JAXBElement<Message> message = new JAXBElement<Message>(qname, Message.class, msg);
+        marshal(message, Message.class);
+        // final String s = marshal(message, Message.class);
+
     }
 
     /**
      * Testcase for marshaling the error
+     * 
      * @throws JAXBException - JAXBException
      */
     @Test
     public void marshallError() throws JAXBException {
-        ErrorDetails errorDetails = new ErrorDetails();
+        final ErrorDetails errorDetails = new ErrorDetails();
         errorDetails.setErrorCode("EC");
         errorDetails.setErrorDescription("ED");
-        Response response = new Response();
+        final Response response = new Response();
         response.setCaXchangeError(errorDetails);
         response.setResponseStatus(Statuses.FAILURE);
 
-        QName qname = new QName("http://caXchange.nci.nih.gov/messaging", "response");
+        final QName qname = new QName("http://caXchange.nci.nih.gov/messaging", "response");
 
-        JAXBElement<Response> respJ = new JAXBElement<Response>(qname, Response.class, response);
+        final JAXBElement<Response> respJ = new JAXBElement<Response>(qname, Response.class, response);
 
         String xml = marshal(respJ, Response.class);
 
-        QName ceQname = new QName("http://caXchange.nci.nih.gov/messaging", "caXchangeError");
-        JAXBElement<ErrorDetails> edJ = new JAXBElement<ErrorDetails>(ceQname, ErrorDetails.class, errorDetails);
+        final QName ceQname = new QName("http://caXchange.nci.nih.gov/messaging", "caXchangeError");
+        final JAXBElement<ErrorDetails> edJ = new JAXBElement<ErrorDetails>(ceQname, ErrorDetails.class, errorDetails);
         xml = marshal(edJ, ErrorDetails.class);
     }
 
@@ -78,7 +81,8 @@ public class RequestMarshallingTest {
     }
 
     /**
-     * marshal 
+     * marshal
+     * 
      * @param obj - object to be marshal
      * @param claz - class
      * @return String after marshaling

@@ -46,7 +46,7 @@ public class RegistrationLoadTest {
 
     private Date currDt = new Date();
 
-    private ExecutorService es = Executors.newFixedThreadPool(10);
+    private final ExecutorService es = Executors.newFixedThreadPool(10);
 
     /**
      * Testcase for sending the messages
@@ -56,11 +56,11 @@ public class RegistrationLoadTest {
     @Test
     public void sendRegistrationMessage() throws InterruptedException {
 
-        Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(currDt.getTime() + 5000);
         currDt = calendar.getTime();
 
-        Timer timer = new Timer();
+        final Timer timer = new Timer();
         timer.schedule(getTimerTask(0), currDt);
         timer.schedule(getTimerTask(1), currDt);
         timer.schedule(getTimerTask(2), currDt);
@@ -87,16 +87,16 @@ public class RegistrationLoadTest {
 
     private void sendMessage(int sfx) {
         try {
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            StringEntity reqentity = new StringEntity(getCreateMsg(sfx));
+            final HttpClient httpclient = new DefaultHttpClient();
+            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
+            final StringEntity reqentity = new StringEntity(getCreateMsg(sfx));
             httppost.setEntity(reqentity);
             httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
 
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity entity = response.getEntity();
+            final HttpResponse response = httpclient.execute(httppost);
+            final HttpEntity entity = response.getEntity();
             if (entity != null) {
-                String output = EntityUtils.toString(entity);
+                final String output = EntityUtils.toString(entity);
                 Assert.assertNotNull(output);
                 Assert.assertEquals(true, output.contains("SUCCESS"));
             }
