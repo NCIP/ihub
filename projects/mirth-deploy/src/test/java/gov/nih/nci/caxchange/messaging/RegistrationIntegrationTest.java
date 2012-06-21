@@ -40,6 +40,8 @@ public class RegistrationIntegrationTest {
     private final Date currDt = new Date();
 
     private final HttpClient httpclient = new DefaultHttpClient();
+    
+    private static final String XMLTEXT = "text/xml";
 
     /**
      * Testcase for sending invalid credential message
@@ -53,7 +55,7 @@ public class RegistrationIntegrationTest {
                     "<mes:userName>tolvenuser-invalid</mes:userName>");
             final StringEntity reqentity = new StringEntity(msg);
             httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
@@ -80,7 +82,7 @@ public class RegistrationIntegrationTest {
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             final StringEntity reqentity = new StringEntity(getCreateMsg());
             httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
@@ -107,7 +109,7 @@ public class RegistrationIntegrationTest {
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             final StringEntity reqentity = new StringEntity(getUpdateMsg());
             httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
@@ -134,7 +136,7 @@ public class RegistrationIntegrationTest {
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             final StringEntity reqentity = new StringEntity(getCreateMsg());
             httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
@@ -167,7 +169,7 @@ public class RegistrationIntegrationTest {
             msg = msg.replaceAll("6482", "CP-01");
             final StringEntity reqentity = new StringEntity(msg);
             httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
@@ -199,7 +201,7 @@ public class RegistrationIntegrationTest {
             msg = msg.replaceAll("DCP", "XYZ");
             final StringEntity reqentity = new StringEntity(msg);
             httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
