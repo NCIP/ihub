@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>2.1.1.5490</version>
   <lastModified>
-    <time>1340128231103</time>
+    <time>1340291846328</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>2</revision>
+  <revision>5</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -94,8 +94,8 @@ var srvcInvcAndAgg  = commonAppCtx.getBean(&quot;serviceInvocatorAndResultAggreg
 
 channelMap.put(&quot;serviceInvocatorAndAggregator&quot;, srvcInvcAndAgg );
 
-logger.debug(&quot;referenceMsgId = &quot; + $(&apos;referenceMsgId&apos;));
-logger.debug(&quot;srvcInvcAndAgg = &quot; + channelMap.get(&quot;serviceInvocatorAndAggregator&quot;));
+// logger.debug(&quot;referenceMsgId = &quot; + $(&apos;referenceMsgId&apos;));
+// logger.debug(&quot;srvcInvcAndAgg = &quot; + channelMap.get(&quot;serviceInvocatorAndAggregator&quot;));
 
 return;</script>
           <type>JavaScript</type>
@@ -108,8 +108,8 @@ var srvcInvcAndAgg  = commonAppCtx.getBean(&quot;serviceInvocatorAndResultAggreg
 
 channelMap.put(&quot;serviceInvocatorAndAggregator&quot;, srvcInvcAndAgg );
 
-logger.debug(&quot;referenceMsgId = &quot; + $(&apos;referenceMsgId&apos;));
-logger.debug(&quot;srvcInvcAndAgg = &quot; + channelMap.get(&quot;serviceInvocatorAndAggregator&quot;));
+// logger.debug(&quot;referenceMsgId = &quot; + $(&apos;referenceMsgId&apos;));
+// logger.debug(&quot;srvcInvcAndAgg = &quot; + channelMap.get(&quot;serviceInvocatorAndAggregator&quot;));
 
 return;</string>
             </entry>
@@ -165,13 +165,14 @@ if ($(&apos;operationName&apos;) == &apos;Create Adverse Event&apos;) {
 	caaersSvcInvStrtgy = globalMap.get(&quot;caAERSAdverseEventServiceInvocationStrategy&quot;);
 } 
 
-if ($(&apos;operationName&apos;) == &apos;Update Registration&apos;) {
+if ($(&apos;operationName&apos;) == &apos;Update Adverse Event&apos;) {
 	caaersSvcInvStrtgy = globalMap.get(&quot;caAERSUpdateAdverseEventServiceInvocationStrategy&quot;);
 }
 
-
 var refMsgIdStr = $(&apos;referenceMsgId&apos;);
 var refMsgId = Packages.java.lang.Long.parseLong(refMsgIdStr);
+
+logger.debug(&quot;inside MBC -- CaAERSAdverseEventConnector -- Interim XML is --&gt; &quot; + messageObject.getEncodedData());
 
 srvcInvcAndAgg.invokeService(refMsgId, messageObject.getEncodedData(), caaersSvcInvStrtgy);
 
@@ -306,6 +307,8 @@ if ($(&apos;operationName&apos;) == &apos;Update Registration&apos;) {
 var refMsgIdStr = $(&apos;referenceMsgId&apos;);
 var refMsgId = Packages.java.lang.Long.parseLong(refMsgIdStr);
 
+logger.debug(&quot;inside MBC -- CaAERSRegistrationConnector -- Interim XML is --&gt; &quot; + messageObject.getEncodedData());
+
 srvcInvcAndAgg.invokeService(refMsgId, messageObject.getEncodedData(), caaersSvcInvStrtgy);
 
 return;</property>
@@ -378,15 +381,15 @@ PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
             <name>Accept message if &quot;$(&apos;operationName&apos;)&quot; equals globalMap.get(&apos;REGN&apos;) or globalMap.get(&apos;UPDTREGN&apos;)</name>
             <data class="map">
               <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
                 <string>Values</string>
                 <list>
                   <string>globalMap.get(&apos;REGN&apos;)</string>
                   <string>globalMap.get(&apos;UPDTREGN&apos;)</string>
                 </list>
-              </entry>
-              <entry>
-                <string>Name</string>
-                <string></string>
               </entry>
               <entry>
                 <string>Field</string>
@@ -437,6 +440,8 @@ if ($(&apos;operationName&apos;) == &apos;Update Registration&apos;) {
 
 var refMsgIdStr = $(&apos;referenceMsgId&apos;);
 var refMsgId = Packages.java.lang.Long.parseLong(refMsgIdStr);
+
+logger.debug(&quot;inside MBC -- CaTissueRegistrationConnector -- Interim XML is --&gt; &quot; + messageObject.getEncodedData());
 
 srvcInvcAndAgg.invokeService(refMsgId, messageObject.getEncodedData(), catissueSvcInvStrtgy);
 
@@ -570,7 +575,7 @@ if ($(&apos;operationName&apos;) == &apos;Update Biospecimen&apos;) {
 var refMsgIdStr = $(&apos;referenceMsgId&apos;);
 var refMsgId = Packages.java.lang.Long.parseLong(refMsgIdStr);
 
-logger.debug(&quot;RG -- inside MBC -- SpecimenConnector -- Interim XML is --&gt; &quot; + messageObject.getEncodedData());
+logger.debug(&quot;inside MBC -- CaTissueSpecimenConnector -- Interim XML is --&gt; &quot; + messageObject.getEncodedData());
 
 srvcInvcAndAgg.invokeService(refMsgId, messageObject.getEncodedData(), catissueSvcInvStrtgy);
 
@@ -825,7 +830,7 @@ default xml namespace=&quot;http://caXchange.nci.nih.gov/messaging&quot;;
 
 var svcTyp = msg[&apos;metadata&apos;][&apos;operationName&apos;].toString();
 
-logger.info(&quot;svcTyp in MBC res agg = &quot; + svcTyp);
+logger.debug(&quot;svcTyp in MBC-RAC = &quot; + svcTyp);
 
 if(	svcTyp != globalMap.get(&apos;AE&apos;) 
 	&amp;&amp; svcTyp != globalMap.get(&apos;UPDTAE&apos;)
@@ -854,7 +859,7 @@ if(svcInvRes.isFault()){
 	var excep = svcInvRes.getInvocationException();	
 	var	retValue = convertIntegrationExceptionToMsgBCError(excep);
 		
-	logger.debug(&quot;exception in RAC = &quot; + retValue);
+	logger.info(&quot;exception in MBC-RAC = &quot; + retValue);
  
 	responseMap.put(&quot;MessageBroadcasterChannelResponse&quot;, ResponseFactory.getFailureResponse(retValue) );
 } else {
