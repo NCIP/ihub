@@ -31,6 +31,8 @@ public class SpecimenIntegrationTest {
     private String transcendCaxchangeServiceUrl;
 
     private final HttpClient httpclient = new DefaultHttpClient();
+    
+    private static final String XMLTEXT = "text/xml";
 
     /**
      * Testcase for Create Specimen when CollectionProtocol is invalid
@@ -41,7 +43,7 @@ public class SpecimenIntegrationTest {
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             final StringEntity reqentity = new StringEntity(getInsertInvalidCollectionProtocolXMLStr());
             httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
@@ -70,7 +72,7 @@ public class SpecimenIntegrationTest {
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             final StringEntity reqentity = new StringEntity(getInsertInvalidAvailableQuantityXMLStr());
             httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
@@ -99,7 +101,7 @@ public class SpecimenIntegrationTest {
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             final StringEntity reqentity = new StringEntity(getInsertInvalidSpecimenTypeXMLStr());
             httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
@@ -128,7 +130,7 @@ public class SpecimenIntegrationTest {
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             final StringEntity reqentity = new StringEntity(getInsertInvalidTissueSideXMLStr());
             httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
@@ -157,7 +159,7 @@ public class SpecimenIntegrationTest {
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             final StringEntity reqentity = new StringEntity(getInsertInvalidTissueSiteXMLStr());
             httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
@@ -186,7 +188,7 @@ public class SpecimenIntegrationTest {
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             final StringEntity reqentity = new StringEntity(getInsertInvalidPathologicalStatusXMLStr());
             httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
@@ -215,7 +217,7 @@ public class SpecimenIntegrationTest {
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             final StringEntity reqentity = new StringEntity(getInsertInvalidSpecimenClassXMLStr());
             httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
@@ -244,7 +246,7 @@ public class SpecimenIntegrationTest {
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             final StringEntity reqentity = new StringEntity(getInsertSpecimenXMLStr());
             httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
@@ -273,7 +275,7 @@ public class SpecimenIntegrationTest {
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             final StringEntity reqentity = new StringEntity(getInsertExistingSpecimenXMLStr());
             httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
@@ -302,7 +304,7 @@ public class SpecimenIntegrationTest {
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             final StringEntity reqentity = new StringEntity(getUpdateSpecimenXMLStr());
             httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
@@ -331,7 +333,7 @@ public class SpecimenIntegrationTest {
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             final StringEntity reqentity = new StringEntity(getUpdateSpecimenNotExistXMLStr());
             httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
@@ -360,7 +362,7 @@ public class SpecimenIntegrationTest {
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             final StringEntity reqentity = new StringEntity(getUpdateSpecimenInvalidAvailableQtyXMLStr());
             httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
@@ -389,7 +391,7 @@ public class SpecimenIntegrationTest {
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             final StringEntity reqentity = new StringEntity(getUpdateSpecimenCollectionProtocolChangeXMLStr());
             httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
@@ -418,7 +420,7 @@ public class SpecimenIntegrationTest {
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             final StringEntity reqentity = new StringEntity(getUpdateSpecimenCollectionProtocolEventChangeXMLStr());
             httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
@@ -448,7 +450,7 @@ public class SpecimenIntegrationTest {
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             final StringEntity reqentity = new StringEntity(getUpdateSpecimenClassChangeXMLStr());
             httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
@@ -477,7 +479,7 @@ public class SpecimenIntegrationTest {
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             final StringEntity reqentity = new StringEntity(getUpdateSpecimenInvalidSpecimenTypeXMLStr());
             httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
@@ -506,7 +508,7 @@ public class SpecimenIntegrationTest {
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             final StringEntity reqentity = new StringEntity(getUpdateSpecimenInvalidTissueSideXMLStr());
             httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
@@ -535,7 +537,7 @@ public class SpecimenIntegrationTest {
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             final StringEntity reqentity = new StringEntity(getUpdateSpecimenInvalidTissueSiteXMLStr());
             httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml");
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
