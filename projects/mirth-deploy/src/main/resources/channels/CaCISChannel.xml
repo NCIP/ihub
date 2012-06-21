@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>2.1.1.5490</version>
   <lastModified>
-    <time>1340220072834</time>
+    <time>1340292169272</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>2</revision>
+  <revision>4</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -38,7 +38,7 @@ default xml namespace = &apos;http://caXchange.nci.nih.gov/messaging&apos;;
 
 var msgTyp = caxchangeMsg[&apos;metadata&apos;][&apos;operationName&apos;].toString();
 
-logger.info(&apos;extracted msgtyp = &apos;+ msgTyp.toString());
+logger.debug(&apos;inside CaCISChannel-extracted msgtyp = &apos;+ msgTyp.toString());
 
 channelMap.put(&apos;caxchangeMsg&apos;, caxchangeMsg);
 channelMap.put(&apos;msgTyp&apos;, msgTyp.toString());</script>
@@ -58,7 +58,7 @@ default xml namespace = &apos;http://caXchange.nci.nih.gov/messaging&apos;;
 
 var msgTyp = caxchangeMsg[&apos;metadata&apos;][&apos;operationName&apos;].toString();
 
-logger.info(&apos;extracted msgtyp = &apos;+ msgTyp.toString());
+logger.debug(&apos;inside CaCISChannel-extracted msgtyp = &apos;+ msgTyp.toString());
 
 channelMap.put(&apos;caxchangeMsg&apos;, caxchangeMsg);
 channelMap.put(&apos;msgTyp&apos;, msgTyp.toString());</string>
@@ -101,7 +101,7 @@ return;</property>
             <name>RegistrationTransformationTransformer</name>
             <script>var regnMsg = null;
 try {
-	logger.debug(&quot;msg in Regn Trns = &quot; +msg);
+	logger.debug(&quot;msg in Regn Trns (Wrapper XML)= &quot; +msg);
 	var regnMsgStr = transformMessage(msg, &quot;crToRegnMsgTransformer&quot;);
 
 	regnMsg = new XML(regnMsgStr);
@@ -120,7 +120,7 @@ return;</script>
                 <string>Script</string>
                 <string>var regnMsg = null;
 try {
-	logger.debug(&quot;msg in Regn Trns = &quot; +msg);
+	logger.debug(&quot;msg in Regn Trns (Wrapper XML)= &quot; +msg);
 	var regnMsgStr = transformMessage(msg, &quot;crToRegnMsgTransformer&quot;);
 
 	regnMsg = new XML(regnMsgStr);
@@ -209,7 +209,7 @@ return;</property>
             <script>var aeMsg = null;
 try {
 
-	logger.debug(&quot;msg in CaCIS Channel-AETC-Trns = &quot; +msg);
+	logger.debug(&quot;msg in CaCIS Channel-AETC-Trns(Wrapper XML) = &quot; +msg);
 
 	var aeMsgStr = transformMessage(msg, &quot;crToAeMsgTransformer&quot;);
 
@@ -230,7 +230,7 @@ return;</script>
                 <string>var aeMsg = null;
 try {
 
-	logger.debug(&quot;msg in CaCIS Channel-AETC-Trns = &quot; +msg);
+	logger.debug(&quot;msg in CaCIS Channel-AETC-Trns(Wrapper XML) = &quot; +msg);
 
 	var aeMsgStr = transformMessage(msg, &quot;crToAeMsgTransformer&quot;);
 
@@ -319,7 +319,7 @@ return;</property>
             <name>SpecimenTransformationTransformer</name>
             <script>var spmnMsg = null;
 try {
-	logger.debug(&quot;msg in CaCIS Channel-STC-Trns = &quot; +msg);
+	logger.debug(&quot;msg in CaCIS Channel-STC-Trns(Wrapper XML) = &quot; +msg);
 	var spmnMsgStr = transformMessage(msg, &quot;crToSpmnMsgTransformer&quot;);
 
 	spmnMsg = new XML(spmnMsgStr);
@@ -338,7 +338,7 @@ return;</script>
                 <string>Script</string>
                 <string>var spmnMsg = null;
 try {
-	logger.debug(&quot;msg in CaCIS Channel-STC-Trns = &quot; +msg);
+	logger.debug(&quot;msg in CaCIS Channel-STC-Trns(Wrapper XML) = &quot; +msg);
 	var spmnMsgStr = transformMessage(msg, &quot;crToSpmnMsgTransformer&quot;);
 
 	spmnMsg = new XML(spmnMsgStr);
@@ -542,7 +542,7 @@ return false;</script>
         <rules>
           <rule>
             <sequenceNumber>0</sequenceNumber>
-            <name>Accept message if &quot;$(&apos;msgTyp&apos;)&quot; equals globalMap.get(&apos;REGN&apos;) or globalMap.get(&apos;AE&apos;) or globalMap.get(&apos;UPDTREGN&apos;) or globalMap.get(&apos;SPMN&apos;) or globalMap.get(&apos;UPDTSPMN&apos;) or globalMap.get(&apos;REGTCNST&apos;)</name>
+            <name>Accept message if &quot;$(&apos;msgTyp&apos;)&quot; equals globalMap.get(&apos;REGN&apos;) or globalMap.get(&apos;AE&apos;) or globalMap.get(&apos;UPDTREGN&apos;) or globalMap.get(&apos;SPMN&apos;) or globalMap.get(&apos;UPDTSPMN&apos;) or globalMap.get(&apos;REGTCNST&apos;) or globalMap.get(&apos;UPDTAE&apos;)</name>
             <data class="map">
               <entry>
                 <string>Name</string>
@@ -557,6 +557,7 @@ return false;</script>
                   <string>globalMap.get(&apos;SPMN&apos;)</string>
                   <string>globalMap.get(&apos;UPDTSPMN&apos;)</string>
                   <string>globalMap.get(&apos;REGTCNST&apos;)</string>
+                  <string>globalMap.get(&apos;UPDTAE&apos;)</string>
                 </list>
               </entry>
               <entry>
@@ -573,7 +574,7 @@ return false;</script>
               </entry>
             </data>
             <type>Rule Builder</type>
-            <script>if($(&apos;msgTyp&apos;) == globalMap.get(&apos;REGN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;AE&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTREGN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;SPMN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTSPMN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;REGTCNST&apos;))
+            <script>if($(&apos;msgTyp&apos;) == globalMap.get(&apos;REGN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;AE&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTREGN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;SPMN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTSPMN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;REGTCNST&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTAE&apos;))
 {
 return true;
 }
