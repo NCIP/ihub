@@ -10,7 +10,7 @@
 			xmlns:ns33="http://schema.integration.caaers.cabig.nci.nih.gov/common">
 			<ns22:adverseEvents>
 				<xsl:for-each
-					select="ns2:caxchangerequest/a:adverseevents/a:adverseEventsList/a:adverseEvent">
+					select="ns2:caxchangerequest/a:adverseeventinput/a:adverseEventsList/a:adverseEvent">
 					<ns22:adverseEvent>
 						<verbatim>
 							<xsl:value-of select="a:verbatim" />
@@ -22,21 +22,21 @@
 							<xsl:value-of select="a:expected" />
 						</expected>
 						<attributionSummary>
-							<xsl:value-of select="a:attribution" />
+							<xsl:value-of select="a:attributionSummary" />
 						</attributionSummary>
 						<startDate>
-							<xsl:value-of select="a:onsetDate" />
+							<xsl:value-of select="a:startDate" />
 						</startDate>
 						<endDate>
-							<xsl:value-of select="a:resolutionDate" />
+							<xsl:value-of select="a:endDate" />
 						</endDate>
 						<ctepCode>
-							<xsl:value-of select="a:codedTerm" />
+							<xsl:value-of select="a:ctepCode" />
 						</ctepCode>
-						<xsl:for-each select="a:seriousReasonsList/a:reason">
+						<xsl:for-each select="a:outcome">
 							<outcome>
 								<outComeEnumType>
-									<xsl:value-of select="." />
+									<xsl:value-of select="a:outComeEnumType" />
 								</outComeEnumType>
 							</outcome>
 						</xsl:for-each>
@@ -46,28 +46,28 @@
 			<ns22:criteria>
 				<participantIdentifier>
 					<xsl:value-of
-						select="ns2:caxchangerequest/a:adverseevents/a:participantInfo/a:studySubjectIdentifier" />
+						select="ns2:caxchangerequest/a:adverseeventinput/a:criteria/a:participantIdentifier" />
 				</participantIdentifier>
 				<studyIdentifier>
 					<xsl:value-of
-						select="ns2:caxchangerequest/a:adverseevents/a:studyInfo/a:studyIdentifier" />
+						select="ns2:caxchangerequest/a:adverseeventinput/a:criteria/a:studyIdentifier" />
 				</studyIdentifier>
 				<course>
 					<startDateOfThisCourse>
 						<xsl:value-of
-							select="ns2:caxchangerequest/a:adverseevents/a:timeframeInfo/a:reportingPeriod/a:startDateOfThisCourse" />
+							select="ns2:caxchangerequest/a:adverseeventinput/a:criteria/a:course/a:startDateOfThisCourse" />
 					</startDateOfThisCourse>
 					<endDateOfThisCourse>
 						<xsl:value-of
-							select="ns2:caxchangerequest/a:adverseevents/a:timeframeInfo/a:reportingPeriod/a:endDateOfThisCourse" />
+							select="ns2:caxchangerequest/a:adverseeventinput/a:criteria/a:course/a:endDateOfThisCourse" />
 					</endDateOfThisCourse>
 					<treatmentType>
 						<xsl:value-of
-							select="ns2:caxchangerequest/a:adverseevents/a:timeframeInfo/a:periodType" />
+							select="ns2:caxchangerequest/a:adverseeventinput/a:criteria/a:course/a:treatmentType" />
 					</treatmentType>
 					<treatmentAssignmentCode>
 						<xsl:value-of
-							select="ns2:caxchangerequest/a:adverseevents/a:timeframeInfo/a:assignedTreatment" />
+							select="ns2:caxchangerequest/a:adverseeventinput/a:criteria/a:course/a:treatmentAssignmentCode" />
 					</treatmentAssignmentCode>
 				</course>
 			</ns22:criteria>

@@ -11,75 +11,65 @@
 			<ns0:metadata>
 				<xsl:copy-of select="//ns2:caxchangerequest/ns0:metadata/node()|@*" />
 			</ns0:metadata>
-			<adverseevents xmlns="http://cacis.nci.nih.gov">
-				<studyInfo>
+			<adverseeventinput xmlns="http://cacis.nci.nih.gov">
+				<criteria>
+					<participantIdentifier>
+						<xsl:value-of
+							select="ns3:caCISRequest/ns3:sourceData/ns2:caxchangerequest/ns0:request/ns0:businessMessagePayload/ns1:trim/ns1:adverseeventinput/ns1:criteria/ns1:participantIdentifier" />
+					</participantIdentifier>
 					<studyIdentifier>
 						<xsl:value-of
-							select="ns3:caCISRequest/ns3:sourceData/ns2:caxchangerequest/ns0:request/ns0:businessMessagePayload/ns1:trim/ns1:adverseevents/ns1:studyInfo/ns1:studyIdentifier" />
+							select="ns3:caCISRequest/ns3:sourceData/ns2:caxchangerequest/ns0:request/ns0:businessMessagePayload/ns1:trim/ns1:adverseeventinput/ns1:criteria/ns1:studyIdentifier" />
 					</studyIdentifier>
-				</studyInfo>
-				<participantInfo>
-					<studySubjectIdentifier>
-						<xsl:value-of
-							select="ns3:caCISRequest/ns3:sourceData/ns2:caxchangerequest/ns0:request/ns0:businessMessagePayload/ns1:trim/ns1:adverseevents/ns1:participantInfo/ns1:studySubjectIdentifier" />
-					</studySubjectIdentifier>
-				</participantInfo>
-				<timeframeInfo>
-					<reportingPeriod>
+					<course>
 						<startDateOfThisCourse>
 							<xsl:value-of
-								select="ns3:caCISRequest/ns3:sourceData/ns2:caxchangerequest/ns0:request/ns0:businessMessagePayload/ns1:trim/ns1:adverseevents/ns1:timeframeInfo/ns1:reportingPeriod/ns1:startDateOfThisCourse" />
+								select="ns3:caCISRequest/ns3:sourceData/ns2:caxchangerequest/ns0:request/ns0:businessMessagePayload/ns1:trim/ns1:adverseeventinput/ns1:criteria/ns1:course/ns1:startDateOfThisCourse" />
 						</startDateOfThisCourse>
 						<endDateOfThisCourse>
 							<xsl:value-of
-								select="ns3:caCISRequest/ns3:sourceData/ns2:caxchangerequest/ns0:request/ns0:businessMessagePayload/ns1:trim/ns1:adverseevents/ns1:timeframeInfo/ns1:reportingPeriod/ns1:endDateOfThisCourse" />
+								select="ns3:caCISRequest/ns3:sourceData/ns2:caxchangerequest/ns0:request/ns0:businessMessagePayload/ns1:trim/ns1:adverseeventinput/ns1:criteria/ns1:course/ns1:endDateOfThisCourse" />
 						</endDateOfThisCourse>
-					</reportingPeriod>
-					<periodType>
-						<xsl:value-of
-							select="ns3:caCISRequest/ns3:sourceData/ns2:caxchangerequest/ns0:request/ns0:businessMessagePayload/ns1:trim/ns1:adverseevents/ns1:timeframeInfo/ns1:periodType" />
-					</periodType>
-					<assignedTreatment>
-						<xsl:value-of
-							select="ns3:caCISRequest/ns3:sourceData/ns2:caxchangerequest/ns0:request/ns0:businessMessagePayload/ns1:trim/ns1:adverseevents/ns1:timeframeInfo/ns1:assignedTreatment" />
-					</assignedTreatment>
-				</timeframeInfo>
+						<treatmentType>Treatment</treatmentType>
+						<treatmentAssignmentCode>TAC</treatmentAssignmentCode>
+					</course>
+				</criteria>
 				<adverseEventsList>
 					<xsl:for-each
-						select="ns3:caCISRequest/ns3:sourceData/ns2:caxchangerequest/ns0:request/ns0:businessMessagePayload/ns1:trim/ns1:adverseevents/ns1:adverseEventsList/ns1:adverseEvent">
+						select="ns3:caCISRequest/ns3:sourceData/ns2:caxchangerequest/ns0:request/ns0:businessMessagePayload/ns1:trim/ns1:adverseeventinput/ns1:adverseEventsList/ns1:adverseEvent">
 						<adverseEvent>
 							<verbatim>
 								<xsl:value-of select="ns1:verbatim" />
 							</verbatim>
-							<codedTerm>
-								<xsl:value-of select="ns1:codedTerm" />
-							</codedTerm>
+							<ctepCode>
+								<xsl:value-of select="ns1:ctepCode" />
+							</ctepCode>
 							<grade>
 								<xsl:value-of select="ns1:grade" />
 							</grade>
-							<onsetDate>
-								<xsl:value-of select="ns1:onsetDate" />
-							</onsetDate>
-							<resolutionDate>
-								<xsl:value-of select="ns1:resolutionDate" />
-							</resolutionDate>
+							<startDate>
+								<xsl:value-of select="ns1:startDate" />
+							</startDate>
+							<endDate>
+								<xsl:value-of select="ns1:endDate" />
+							</endDate>
 							<expected>
 								<xsl:value-of select="ns1:expected" />
 							</expected>
-							<attribution>
-								<xsl:value-of select="ns1:attribution" />
-							</attribution>
-							<seriousReasonsList>
-								<xsl:for-each select="ns1:seriousReasonsList/ns1:reason">
-									<reason>
-										<xsl:value-of select="." />
-									</reason>
-								</xsl:for-each>
-							</seriousReasonsList>
+							<attributionSummary>
+								<xsl:value-of select="ns1:attributionSummary" />
+							</attributionSummary>
+							<xsl:for-each select="ns1:outcome">
+								<outcome>
+									<outComeEnumType>
+										<xsl:value-of select="ns1:outComeEnumType" />
+									</outComeEnumType>
+								</outcome>
+							</xsl:for-each>
 						</adverseEvent>
 					</xsl:for-each>
 				</adverseEventsList>
-			</adverseevents>
+			</adverseeventinput>
 		</ns2:caxchangerequest>
 	</xsl:template>
 </xsl:stylesheet>
