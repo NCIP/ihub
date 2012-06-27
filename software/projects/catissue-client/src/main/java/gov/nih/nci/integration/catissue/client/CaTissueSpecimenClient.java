@@ -38,7 +38,7 @@ import com.thoughtworks.xstream.io.xml.StaxDriver;
 public class CaTissueSpecimenClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueSpecimenClient.class);
-    private final CaTissueAPIClientWithRegularAuthentication caTissueAPIClient;
+    private CaTissueAPIClientWithRegularAuthentication caTissueAPIClient;
     private final XStream xStream = new XStream(new StaxDriver());
 
     private static final String ACTIVITY_STATUS_DISABLED = "Disabled";
@@ -144,8 +144,9 @@ public class CaTissueSpecimenClient {
      */
     public String updateSpecimens(String specimenListXMLStr) throws ApplicationException {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Inside CaTissueSpecimenClient... updateSpecimens()..The Incoming XML is --> " + specimenListXMLStr);
-        }        
+            LOG.debug("Inside CaTissueSpecimenClient... updateSpecimens()..The Incoming XML is --> "
+                    + specimenListXMLStr);
+        }
 
         // This object contain data from the incoming specimens xml
         final Specimens specimens = parseSpecimenListXML(specimenListXMLStr);
@@ -169,7 +170,7 @@ public class CaTissueSpecimenClient {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Inside CaTissueSpecimenClient... rollbackCreatedSpecimens()..The Incoming XML is --> "
                     + specimenListXMLStr);
-        }        
+        }
 
         // This object contain data from the incoming specimens xml
         final Specimens specimens = parseSpecimenListXML(specimenListXMLStr);
@@ -192,7 +193,7 @@ public class CaTissueSpecimenClient {
             LOG.debug("Inside CaTissueSpecimenClient... rollbackUpdatedSpecimens()..The Incoming XML is --> "
                     + specimenListXMLStr);
         }
-        
+
         // This object contain data from the incoming specimens xml
         final Specimens specimens = parseSpecimenListXML(specimenListXMLStr);
 
@@ -263,7 +264,6 @@ public class CaTissueSpecimenClient {
         return copyFromExistingSpecimen(existingSpecimenList);
     }
 
-       
     /**
      * This method has the code/logic to call the createSpecimen.
      * 
@@ -343,6 +343,7 @@ public class CaTissueSpecimenClient {
                 incomingSpecimen.setLineage(existingSpecimen.getLineage());
                 incomingSpecimen.getSpecimenCharacteristics().setId(
                         existingSpecimen.getSpecimenCharacteristics().getId());
+               
                 updateSpecimen(incomingSpecimen);
 
                 updatedSpecimenList.add(incomingSpecimen);
@@ -350,7 +351,7 @@ public class CaTissueSpecimenClient {
         } catch (ApplicationException e) {
             LOG.error("UpdateSpecimen Failed for Label" + specimenDetail.getSpecimen().getLabel(), e);
             throw new ApplicationException("UpdateSpecimen Failed for Label" + specimenDetail.getSpecimen().getLabel()
-                    + " and exception is " + e.getCause(),e);
+                    + " and exception is " + e.getCause(), e);
         }
 
         return updatedSpecimenList;
@@ -366,13 +367,18 @@ public class CaTissueSpecimenClient {
             throws ApplicationException {
         boolean hasValidData = true;
         final String inCPE = inSpecimenDetail.getCollectionProtocolEvent();
-        final String existCPE = existingSpecimen.getSpecimenCollectionGroup().getCollectionProtocolEvent()
-                .getCollectionPointLabel();
+        String existCPE = "";
         final String inCP = inSpecimenDetail.getCollectionProtocol().getTitle();
-        final String existCP = existingSpecimen.getSpecimenCollectionGroup().getCollectionProtocolEvent()
-                .getCollectionProtocol().getTitle();
+        String existCP = "";
         final String inSC = inSpecimenDetail.getSpecimen().getSpecimenClass();
         final String existSC = existingSpecimen.getSpecimenClass();
+
+        if (existingSpecimen.getSpecimenCollectionGroup() != null) {
+            existCPE = existingSpecimen.getSpecimenCollectionGroup().getCollectionProtocolEvent()
+                    .getCollectionPointLabel();
+            existCP = existingSpecimen.getSpecimenCollectionGroup().getCollectionProtocolEvent()
+                    .getCollectionProtocol().getTitle();
+        }
 
         if (!inCPE.equals(existCPE)) {
             hasValidData = false;
@@ -568,6 +574,14 @@ public class CaTissueSpecimenClient {
         final String label = specimenDetail.getCollectionProtocolEvent();
         return caTissueAPIClient.getApplicationService().query(
                 CqlUtility.getSpecimenCollectionGroupListQuery(shortTitle, label));
+    }
+
+    /**
+     * 
+     * @param caTissueAPIClient CaTissueAPIClientWithRegularAuthentication
+     */
+    public void setCaTissueAPIClient(CaTissueAPIClientWithRegularAuthentication caTissueAPIClient) {
+        this.caTissueAPIClient = caTissueAPIClient;
     }
 
 }

@@ -36,7 +36,7 @@ public class CaTissueParticipantClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueParticipantClient.class);
 
-    private final CaTissueAPIClientWithRegularAuthentication caTissueAPIClient;
+    private CaTissueAPIClientWithRegularAuthentication caTissueAPIClient;
 
     private final XStream xStream = new XStream(new StaxDriver());
 
@@ -152,15 +152,16 @@ public class CaTissueParticipantClient {
 
         // populate the CP-Title inside Participant-CPR-CP-Title. We are getting 'shortTitle' in the request
         populateCPTitle(participant);
+        Participant returnParticipant = null;
 
         try {
-            caTissueAPIClient.insert(participant);
+            returnParticipant = caTissueAPIClient.insert(participant);
         } catch (ApplicationException ae) {
             LOG.error("Create Registration Failed for Participant with SSN " + participant.getSocialSecurityNumber(),
                     ae);
             throw new ApplicationException(ae);
         }
-        return null;
+        return returnParticipant;
     }
 
     /**
@@ -197,13 +198,11 @@ public class CaTissueParticipantClient {
      */
     public Participant updateParticipantRegistration(Participant participant) throws ApplicationException {
         if (participant == null || StringUtils.isEmpty(participant.getSocialSecurityNumber())) {
-            LOG.error("Participant does not contain the unique identifier SSN "
-                    + participant.getLastName());
+            LOG.error("Participant does not contain the unique identifier SSN " + participant.getLastName());
             throw new ApplicationException("Participant does not contain the unique identifier SSN");
         }
         if (participant == null || StringUtils.isEmpty(participant.getLastName())) {
-            LOG.error("Participant does not contain the unique medical identifier "
-                    + participant.getLastName());
+            LOG.error("Participant does not contain the unique medical identifier " + participant.getLastName());
             throw new ApplicationException("Participant does not contain the unique medical identifier");
         }
 
@@ -331,7 +330,7 @@ public class CaTissueParticipantClient {
     public Participant getParticipantForSSN(String ssn) throws ApplicationException {
         final List<Participant> prtcpntLst = caTissueAPIClient.getApplicationService().query(
                 CqlUtility.getParticipantForSSN(ssn));
-        if (prtcpntLst == null || prtcpntLst.isEmpty()) {          
+        if (prtcpntLst == null || prtcpntLst.isEmpty()) {
             return null;
         }
         return prtcpntLst.get(0);
@@ -347,7 +346,7 @@ public class CaTissueParticipantClient {
     public Participant getParticipantForPatientId(String mrn) throws ApplicationException {
         final List<Participant> prtcpntLst = caTissueAPIClient.getApplicationService().query(
                 CqlUtility.getParticipantForPatientId(mrn));
-        if (prtcpntLst == null || prtcpntLst.isEmpty()) {           
+        if (prtcpntLst == null || prtcpntLst.isEmpty()) {
             return null;
         }
         return prtcpntLst.get(0);
@@ -431,6 +430,14 @@ public class CaTissueParticipantClient {
         }
 
         return p;
+    }
+
+    /**
+     * 
+     * @param caTissueAPIClient CaTissueAPIClientWithRegularAuthentication
+     */
+    public void setCaTissueAPIClient(CaTissueAPIClientWithRegularAuthentication caTissueAPIClient) {
+        this.caTissueAPIClient = caTissueAPIClient;
     }
 
 }

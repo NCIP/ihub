@@ -53,11 +53,11 @@ public class CaTissueAPIClientWithRegularAuthentication {
      * @throws ApplicationException - ApplicationException
      */
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    public final CaTissueWritableAppService getApplicationService() throws ApplicationException {
+    public CaTissueWritableAppService getApplicationService() throws ApplicationException {
         try {
             return (CaTissueWritableAppService) ApplicationServiceProvider.getApplicationService(loginName, password);
             // CHECKSTYLE:OFF
-        } catch (Exception e) {  
+        } catch (Exception e) {
             // CHECKSTYLE:ON
             LOG.error("CaTissueAPIClientWithRegularAuthentication.. exception inside getApplicationService().", e);
             throw new ApplicationException(e);
@@ -141,14 +141,13 @@ public class CaTissueAPIClientWithRegularAuthentication {
      */
     public <T> T searchById(Class<T> klass, T example) throws ApplicationException {
         final List<T> result = getApplicationService().search(klass, example);
-        
+
         if (result == null || result.isEmpty()) {
             return null;
         } else {
             return result.get(0);
         }
-        
-      }
 
-   
+    }
+
 }

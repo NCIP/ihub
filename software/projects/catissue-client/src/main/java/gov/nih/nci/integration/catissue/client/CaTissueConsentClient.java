@@ -36,7 +36,7 @@ import com.thoughtworks.xstream.io.xml.StaxDriver;
 public class CaTissueConsentClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueConsentClient.class);
-    private final CaTissueAPIClientWithRegularAuthentication caTissueAPIClient;
+    private CaTissueAPIClientWithRegularAuthentication caTissueAPIClient;
     private final XStream xStream = new XStream(new StaxDriver());
 
     /**
@@ -228,7 +228,7 @@ public class CaTissueConsentClient {
             // get the CollectionProtocol and then its consentTierCollection
             final CollectionProtocol cp = getExistingCollectionProtocol(consentDetail.getCollectionProtocol()
                     .getShortTitle());
-            
+
             if (cp == null) {
                 // i.e collection protocol not found is caTissue
                 LOG.error("populateConsentTierId failed as Collection Protocol was not found in caTissue for the identifier "
@@ -236,19 +236,20 @@ public class CaTissueConsentClient {
                 throw new ApplicationException("Collection Protocol was not found in caTissue");
             } else {
                 final Collection<ConsentTier> consentTierCollection = cp.getConsentTierCollection();
-                final Iterator<ConsentTier> itrConsentTier = consentTierCollection.iterator();
-                // iterate thru each consentTier and compare for the statement..
-                // if it matches- get its corresponding Id
-                while (itrConsentTier.hasNext()) {
-                    final ConsentTier consentTier = itrConsentTier.next();
-                    if (stmt.equalsIgnoreCase(consentTier.getStatement())) {
-                        tierStatus.getConsentTier().setId(consentTier.getId());
-                        isTierIdFound = true;
-                        break;
+                if (consentTierCollection != null) {
+                    final Iterator<ConsentTier> itrConsentTier = consentTierCollection.iterator();
+                    // iterate thru each consentTier and compare for the statement..
+                    // if it matches- get its corresponding Id
+                    while (itrConsentTier.hasNext()) {
+                        final ConsentTier consentTier = itrConsentTier.next();
+                        if (stmt.equalsIgnoreCase(consentTier.getStatement())) {
+                            tierStatus.getConsentTier().setId(consentTier.getId());
+                            isTierIdFound = true;
+                            break;
+                        }
                     }
                 }
             }
-            
 
             if (!isTierIdFound) {
                 // i.e tierId not found for given CollectionProtocol & Statement
@@ -302,15 +303,18 @@ public class CaTissueConsentClient {
             throws ApplicationException {
         try {
             final Collection<AbstractSpecimen> childSpecimenCollection = existingSpecimen.getChildSpecimenCollection();
-
-            final Iterator<AbstractSpecimen> itrChildSpecimen = childSpecimenCollection.iterator();
-            while (itrChildSpecimen.hasNext()) {
-                final Specimen childSpecimen = (Specimen) itrChildSpecimen.next();
-                childSpecimen.setConsentTierStatusCollection(consentDetail.getConsentData().getConsentTierStatusSet());
-                updateSpecimen(childSpecimen);
-                // do it recursively
-                performRollbackConsentForChildSpecimens(childSpecimen, consentDetail);
+            if (childSpecimenCollection != null) {
+                final Iterator<AbstractSpecimen> itrChildSpecimen = childSpecimenCollection.iterator();
+                while (itrChildSpecimen.hasNext()) {
+                    final Specimen childSpecimen = (Specimen) itrChildSpecimen.next();
+                    childSpecimen.setConsentTierStatusCollection(consentDetail.getConsentData()
+                            .getConsentTierStatusSet());
+                    updateSpecimen(childSpecimen);
+                    // do it recursively
+                    performRollbackConsentForChildSpecimens(childSpecimen, consentDetail);
+                }
             }
+
         } catch (ApplicationException e) {
             LOG.error("Exception During Rollback of Consent for ChildSpecimen with SpecimenLabel as "
                     + consentDetail.getConsentData().getSpecimenLabel(), e);
@@ -377,6 +381,14 @@ public class CaTissueConsentClient {
         // get the specimen, corresponding to the cdmsSpecimenId
         specimen = caTissueAPIClient.searchById(Specimen.class, specimen);
         return specimen;
+    }
+
+    /**
+     * 
+     * @param caTissueAPIClient CaTissueAPIClientWithRegularAuthentication
+     */
+    public void setCaTissueAPIClient(CaTissueAPIClientWithRegularAuthentication caTissueAPIClient) {
+        this.caTissueAPIClient = caTissueAPIClient;
     }
 
 }
