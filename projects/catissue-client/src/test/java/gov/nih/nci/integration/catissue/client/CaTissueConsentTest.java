@@ -28,7 +28,7 @@ public class CaTissueConsentTest {
 
     private CaTissueConsentClient caTissueConsentClient = null;
     private CaTissueAPIClientWithRegularAuthentication caTissueAPIClient = null;
-    private CaTissueWritableAppService appService = null;
+    private CaTissueWritableAppService writableAppService = null;
 
     /**
      * To initialize the things
@@ -39,7 +39,7 @@ public class CaTissueConsentTest {
     @Test
     @Before
     public void initialize() throws BeansException, MalformedURLException {
-        appService = org.easymock.EasyMock.createMock(CaTissueWritableAppService.class);
+        writableAppService = org.easymock.EasyMock.createMock(CaTissueWritableAppService.class);
         caTissueAPIClient = EasyMock.createMock(CaTissueAPIClientWithRegularAuthentication.class);
         caTissueConsentClient = new CaTissueConsentClient("", "");
         caTissueConsentClient.setCaTissueAPIClient(caTissueAPIClient);
@@ -58,7 +58,7 @@ public class CaTissueConsentTest {
         final CollectionProtocol collectionProtocol = EasyMock.createMock(CollectionProtocol.class);
 
         try {
-            EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(appService);
+            EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
             EasyMock.expect(
                     caTissueAPIClient.searchById((Class<Specimen>) EasyMock.anyObject(),
                             (Specimen) org.easymock.EasyMock.anyObject())).andReturn(specimen);
@@ -89,7 +89,7 @@ public class CaTissueConsentTest {
         String retConsentXML = "";
         final Specimen specimen = null;
         try {
-            EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(appService);
+            EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
             EasyMock.expect(
                     caTissueAPIClient.searchById((Class<Specimen>) EasyMock.anyObject(),
                             (Specimen) org.easymock.EasyMock.anyObject())).andReturn(specimen);
@@ -122,7 +122,7 @@ public class CaTissueConsentTest {
         final Specimen specimen = new Specimen();
         specimen.setLabel("TolvenTestUser252TissueSpecimen173");
         try {
-            EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(appService);
+            EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
             EasyMock.expect(
                     caTissueAPIClient.searchById((Class<Specimen>) EasyMock.anyObject(),
                             (Specimen) org.easymock.EasyMock.anyObject())).andReturn(specimen);
