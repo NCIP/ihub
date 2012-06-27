@@ -3,6 +3,12 @@ package gov.nih.nci.integration.catissue.client;
 import static org.junit.Assert.assertNotNull;
 
 import java.net.MalformedURLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import org.easymock.classextension.EasyMock;
 import org.junit.Before;
@@ -13,8 +19,15 @@ import org.springframework.beans.BeansException;
 
 import edu.wustl.catissuecore.cacore.CaTissueWritableAppService;
 import edu.wustl.catissuecore.domain.CollectionProtocol;
+import edu.wustl.catissuecore.domain.CollectionProtocolRegistration;
 import edu.wustl.catissuecore.domain.Participant;
+import edu.wustl.catissuecore.domain.Race;
+import edu.wustl.catissuecore.factory.CollectionProtocolFactory;
+import edu.wustl.catissuecore.factory.CollectionProtocolRegistrationFactory;
+import edu.wustl.catissuecore.factory.ParticipantFactory;
+import edu.wustl.catissuecore.factory.RaceFactory;
 import gov.nih.nci.system.applicationservice.ApplicationException;
+import gov.nih.nci.system.query.cql.CQLQuery;
 
 /**
  * This is the TestClass for Participant Registration flow.
@@ -28,7 +41,8 @@ public class CaTissueParticipantTest {
 
     private CaTissueParticipantClient caTissueParticipantClient = null;
     private CaTissueAPIClientWithRegularAuthentication caTissueAPIClient = null;
-    private CaTissueWritableAppService appService = null;
+    private CaTissueWritableAppService writableAppService = null;
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.US);
 
     /**
      * To initialize the things
@@ -39,7 +53,7 @@ public class CaTissueParticipantTest {
     @Test
     @Before
     public void initialize() throws BeansException, MalformedURLException {
-        appService = org.easymock.EasyMock.createMock(CaTissueWritableAppService.class);
+        writableAppService = org.easymock.EasyMock.createMock(CaTissueWritableAppService.class);
         caTissueAPIClient = EasyMock.createMock(CaTissueAPIClientWithRegularAuthentication.class);
         caTissueParticipantClient = new CaTissueParticipantClient("", "");
         caTissueParticipantClient.setCaTissueAPIClient(caTissueAPIClient);
@@ -58,7 +72,7 @@ public class CaTissueParticipantTest {
         final Participant participant = new Participant();
 
         try {
-            EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(appService);
+            EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
             EasyMock.expect(
                     caTissueAPIClient.searchById((Class<CollectionProtocol>) EasyMock.anyObject(),
                             (CollectionProtocol) org.easymock.EasyMock.anyObject())).andReturn(collectionProtocol);
@@ -74,6 +88,91 @@ public class CaTissueParticipantTest {
             retXMLString = "REGISTER_PARTICIPANT_FAILED";
         }
         assertNotNull(retXMLString);
+    }
+
+    /**
+     * Mock Testcase for Update Participant Registration
+     * 
+     * @throws ParseException - ParseException
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void updateParticipantRegistration() throws ParseException {
+        String retXMLString = "";
+        final CollectionProtocol collectionProtocol = new CollectionProtocol();
+        collectionProtocol.setTitle("6482");
+        collectionProtocol.setShortTitle("6482");
+
+        final Participant participant = getParticipant();
+
+        final String participantXML = caTissueParticipantClient.getxStream().toXML(participant);
+
+        final List<Object> participantList = new ArrayList<Object>();
+        participantList.add(participant);
+
+        try {
+            EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
+            EasyMock.expect(
+                    caTissueAPIClient.searchById((Class<CollectionProtocol>) EasyMock.anyObject(),
+                            (CollectionProtocol) org.easymock.EasyMock.anyObject())).andReturn(collectionProtocol);
+            EasyMock.expect(caTissueAPIClient.update((Participant) org.easymock.EasyMock.anyObject())).andReturn(
+                    participant);
+            EasyMock.expect(writableAppService.query((CQLQuery) org.easymock.EasyMock.anyObject())).andReturn(
+                    participantList);
+
+            EasyMock.replay(caTissueAPIClient);
+            EasyMock.replay(writableAppService);
+
+            caTissueParticipantClient.updateParticipantRegistrationFromXML(participantXML);
+
+            retXMLString = "UPDATE_PARTICIPANT_REGISTRATION";
+        } catch (ApplicationException e) {
+            LOG.error("CaTissueParticipantTest-ApplicationException inside registerParticipant() ", e);
+            retXMLString = "UPDATE_PARTICIPANT_REGISTRATION_FAILED";
+        }
+        assertNotNull(retXMLString);
+    }
+
+    private Participant getParticipant() throws ParseException {
+        final ParticipantFactory prtcpntFact = ParticipantFactory.getInstance();
+        final Participant participant = prtcpntFact.createObject();
+
+        participant.setActivityStatus("Active");
+        participant.setBirthDate(dateFormat.parse("19410502"));
+        participant.setEthnicity("Unknown");
+        participant.setGender("Unspecified");
+        participant.setFirstName("JOHN5");
+        // participant.setLastName("DOE5");
+        // MRN or Medical Identifier is being set as lastName for identification
+        participant.setLastName("488060801");
+        participant.setVitalStatus("Alive");
+        participant.setSocialSecurityNumber("123-05-0608");
+
+        final Race race = RaceFactory.getInstance().createObject();
+        race.setParticipant(participant);
+        race.setRaceName("White");
+        participant.getRaceCollection().add(race);
+        participant.getCollectionProtocolRegistrationCollection().add(initCollectionProtocolRegistration(participant));
+        return participant;
+    }
+
+    private CollectionProtocolRegistration initCollectionProtocolRegistration(Participant participant) {
+
+        final CollectionProtocolFactory cpFact = CollectionProtocolFactory.getInstance();
+        final CollectionProtocol cp = cpFact.createObject();
+        final String cpTitle = "CP-01";
+        cp.setTitle(cpTitle);
+
+        final CollectionProtocolRegistrationFactory cprFact = CollectionProtocolRegistrationFactory.getInstance();
+        final CollectionProtocolRegistration collectionProtocolRegistration = cprFact.createObject();
+        collectionProtocolRegistration.setCollectionProtocol(cp);
+
+        collectionProtocolRegistration.setParticipant(participant);
+        collectionProtocolRegistration.setActivityStatus("Active");
+        collectionProtocolRegistration.setRegistrationDate(new Date());
+        collectionProtocolRegistration.setConsentSignatureDate(new Date());
+        collectionProtocolRegistration.setProtocolParticipantIdentifier("123050608");
+        return collectionProtocolRegistration;
     }
 
     // CHECKSTYLE:OFF
