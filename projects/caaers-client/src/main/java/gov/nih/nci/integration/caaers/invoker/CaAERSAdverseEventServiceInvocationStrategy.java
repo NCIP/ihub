@@ -1,7 +1,6 @@
 package gov.nih.nci.integration.caaers.invoker;
 
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CreateOrUpdateAdverseEventResponse;
-import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.DeleteAdverseEventResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
 import gov.nih.nci.integration.caaers.CaAERSAdverseEventServiceWSClient;
@@ -120,6 +119,8 @@ public class CaAERSAdverseEventServiceInvocationStrategy implements ServiceInvoc
     @Override
     public ServiceInvocationResult rollback(ServiceInvocationMessage msg) {
         final ServiceInvocationResult result = new ServiceInvocationResult();
+        /*
+         * // As per the latest discussion, we are NOT calling the delete method.
         IntegrationException ie = null;
         try {
             final String adverseEventXMLStr = transformToAdverseEventXML(msg.getMessage().getRequest());
@@ -129,24 +130,20 @@ public class CaAERSAdverseEventServiceInvocationStrategy implements ServiceInvoc
                 result.setResult(response.getResponsecode() + " : " + response.getMessage());
             } else {
                 handleErrorResponse(response, result);
-            }
+            }            
+
         } catch (SOAPFaultException e) {
             LOG.error("SOAPFaultException while rollback of createAdverseEvent.", e);
-            ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
-        } catch (JAXBException e) {
-            LOG.error("JAXBException while rollback of createAdverseEvent.", e);
             ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
         } catch (WebServiceException e) {
             LOG.error("WebServiceException while rollback of createAdverseEvent.", e);
             ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
-        } catch (IntegrationException e) {
-            LOG.error("IntegrationException while rollback of createAdverseEvent.", e);
-            ie = e;
-        }
+        } 
         if (!result.isFault()) {
             result.setInvocationException(ie);
         }
         handleException(result);
+        */
         return result;
     }
 
