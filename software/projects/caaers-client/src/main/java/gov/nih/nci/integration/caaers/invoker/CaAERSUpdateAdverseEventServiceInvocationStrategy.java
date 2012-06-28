@@ -1,7 +1,6 @@
 package gov.nih.nci.integration.caaers.invoker;
 
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CreateOrUpdateAdverseEventResponse;
-import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.DeleteAdverseEventResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
 import gov.nih.nci.integration.caaers.CaAERSAdverseEventServiceWSClient;
@@ -120,9 +119,13 @@ public class CaAERSUpdateAdverseEventServiceInvocationStrategy implements Servic
     @Override
     public ServiceInvocationResult rollback(ServiceInvocationMessage msg) {
         final ServiceInvocationResult result = new ServiceInvocationResult();
+        /*
         IntegrationException ie = null;
+        
+         // As per the latest discussion, we are NOT calling the delete method.
         try {
-            final String adverseEventXMLStr = transformToAdverseEventXML(msg.getMessage().getRequest());
+            final String adverseEventXMLStr = transformToAdverseEventXML(msg.getMessage().getRequest());        
+            
             final DeleteAdverseEventResponse caaersresponse = client.deleteAdverseEvent(adverseEventXMLStr);
             final ServiceResponse response = caaersresponse.getCaaersServiceResponse().getServiceResponse();
             if ("0".equals(response.getResponsecode())) {
@@ -130,11 +133,9 @@ public class CaAERSUpdateAdverseEventServiceInvocationStrategy implements Servic
             } else {
                 handleErrorResponse(response, result);
             }
+           
         } catch (SOAPFaultException e) {
             LOG.error("SOAPFaultException while rollback of updateAdverseEvent.", e);
-            ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
-        } catch (JAXBException e) {
-            LOG.error("JAXBException while rollback of updateAdverseEvent.", e);
             ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
         } catch (WebServiceException e) {
             LOG.error("WebServiceException while rollback of updateAdverseEvent.", e);
@@ -147,6 +148,7 @@ public class CaAERSUpdateAdverseEventServiceInvocationStrategy implements Servic
             result.setInvocationException(ie);
         }
         handleException(result);
+         */
         return result;
     }
 
