@@ -695,10 +695,10 @@
     </target>
 	
 	<!-- ============================================================== 
-		target: corbetura-init                                                
+		target: cobertura-init                                                
 	============================================================== -->
 		
-	<target name="corbetura-init" unless="skip.review.reports" depends="clean-cobertura-dir">
+	<target name="cobertura-init" unless="skip.review.reports" depends="clean-cobertura-dir">
 			<!--
 			cobertura-instrument=net.sourceforge.cobertura.ant.InstrumentTask
 			cobertura-merge=net.sourceforge.cobertura.ant.MergeTask
@@ -727,7 +727,7 @@
 	<condition property="testPattern" value="**/${test}.class" else="**/*Test.class">
 		<isset property="test"/>
 	</condition>
-	<target name="test" if="run.test" depends="corbetura-init , clean-test-results" description="Runs the testcases">
+	<target name="test" if="run.test" depends="cobertura-init , clean-test-results" description="Runs the testcases">
 		<runJunit coberturaDataFile="${cobertura.report.dir}/cobertura.ser" 
 			includeTestPattern="${testPattern}" 
 			excludeTestPattern="**/*IntegrationTest.class,**/*LoadTest.class"/>
