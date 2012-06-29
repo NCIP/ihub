@@ -13,6 +13,8 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Test class for CaCISFault
@@ -23,6 +25,7 @@ import org.junit.Test;
 public class AcceptSourceFaultTest {
 
     private final QName faultQame = new QName("http://cacis.nci.nih.gov", "caCISFault");
+    private static final Logger LOG = LoggerFactory.getLogger(AcceptSourceFaultTest.class);
 
     /**
      * Testcase for createFault
@@ -32,46 +35,46 @@ public class AcceptSourceFaultTest {
     @Test
     public void createFault() throws JAXBException {
 
-        CaCISFault cf = new CaCISFault();
-        CaCISError ce = new CaCISError();
+        final CaCISFault cf = new CaCISFault();
+        final CaCISError ce = new CaCISError();
         ce.setErrorCode("EC");
         ce.setErrorMessage("EM");
         ce.setErrorType(ErrorType.VALIDATION);
         ce.setDetail("detail");
         cf.getCaCISError().add(ce);
 
-        String faultXml = getCaCISFaultxml(cf);
+        final String faultXml = getCaCISFaultxml(cf);
         Assert.assertEquals(getFaultString(), faultXml);
 
-        CaCISFault newCf = getCaCISFaultFromXml(getFaultString());
+        final CaCISFault newCf = getCaCISFaultFromXml(getFaultString());
         Assert.assertEquals("EC", newCf.getCaCISError().get(0).getErrorCode());
     }
 
     private String getCaCISFaultxml(final CaCISFault parameter) {
 
-        StringWriter sw = new StringWriter();
-        JAXBElement<CaCISFault> cfj = new JAXBElement<CaCISFault>(faultQame, CaCISFault.class, parameter);
+        final StringWriter sw = new StringWriter();
+        final JAXBElement<CaCISFault> cfj = new JAXBElement<CaCISFault>(faultQame, CaCISFault.class, parameter);
         try {
             getMarshaller().marshal(cfj, sw);
-        } catch (JAXBException e) {           
-            e.printStackTrace();
+        } catch (JAXBException e) {
+            LOG.error("JAXBException ", e);
         }
         return sw.toString();
 
     }
 
     private CaCISFault getCaCISFaultFromXml(String faultXML) throws JAXBException {
-        StreamSource ss = new StreamSource(new StringReader(faultXML));
+        final StreamSource ss = new StreamSource(new StringReader(faultXML));
         return ((JAXBElement<CaCISFault>) getUnmarshaller().unmarshal(ss, CaCISFault.class)).getValue();
     }
 
     private Marshaller getMarshaller() throws JAXBException {
-        JAXBContext jc = JAXBContext.newInstance(CaCISFault.class);
+        final JAXBContext jc = JAXBContext.newInstance(CaCISFault.class);
         return jc.createMarshaller();
     }
 
     private Unmarshaller getUnmarshaller() throws JAXBException {
-        JAXBContext jc = JAXBContext.newInstance(CaCISFault.class);
+        final JAXBContext jc = JAXBContext.newInstance(CaCISFault.class);
         return jc.createUnmarshaller();
     }
 
