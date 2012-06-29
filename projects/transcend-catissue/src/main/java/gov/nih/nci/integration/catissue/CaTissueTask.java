@@ -28,7 +28,7 @@ public class CaTissueTask implements Callable<ServiceInvocationResult> {
     /**
      * Constructor
      * 
-     * @param caTissueParticipantClientClass - caTissueParticipantClientClass
+     * @param caTissueClientClass - caTissueClientClass
      * @param loginName - loginName
      * @param password - password
      * @param methodName - methodName
@@ -36,15 +36,15 @@ public class CaTissueTask implements Callable<ServiceInvocationResult> {
      * @throws IntegrationException - IntegrationException
      */
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    public CaTissueTask(Class<?> caTissueParticipantClientClass, String loginName, String password, String methodName,
+    public CaTissueTask(Class<?> caTissueClientClass, String loginName, String password, String methodName,
             String message) throws IntegrationException {
         super();
 
         Constructor<?> constructor;
         try {
-            constructor = caTissueParticipantClientClass.getDeclaredConstructor(String.class, String.class);
+            constructor = caTissueClientClass.getDeclaredConstructor(String.class, String.class);
             this.caTissueClientInstance = constructor.newInstance(loginName, password);
-            methodToInvoke = caTissueParticipantClientClass.getDeclaredMethod(methodName, String.class);
+            methodToInvoke = caTissueClientClass.getDeclaredMethod(methodName, String.class);
          // CHECKSTYLE:OFF
         } catch (Exception e) {
             LOG.error("CaTissueTask-Exception inside the Constructor. ", e);
