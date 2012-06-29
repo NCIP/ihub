@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  */
 public class CaTissueConsentClient {
 
-    private static final String CLIENT_CLASSNAME = "gov.nih.nci.integration.catissue.client.CaTissueConsentClient";
+    private final String clientClassName;
     private Class<?> caTissueConsentClientClass = null;
 
     private final String caTissueLibLocation;
@@ -38,15 +38,16 @@ public class CaTissueConsentClient {
      * @param caTissueLibLocation - caTissueLibLocation
      * @param loginName - loginName
      * @param password - password
+     * @param clientClassName - clientClassName
      * @throws IntegrationException - IntegrationException
      */
-    public CaTissueConsentClient(String caTissueLibLocation, String loginName, String password)
+    public CaTissueConsentClient(String caTissueLibLocation, String loginName, String password, String clientClassName)
             throws IntegrationException {
         super();
         this.caTissueLibLocation = caTissueLibLocation;
         this.loginName = loginName;
         this.password = password;
-
+        this.clientClassName = clientClassName;
         init();
     }
 
@@ -58,7 +59,7 @@ public class CaTissueConsentClient {
             // creating the custom classloader that bypasses the systemclassloader
             final CustomUrlClassLoader ccl = new CustomUrlClassLoader(ClassLoader.getSystemClassLoader().getParent(),
                     libFile.getAbsolutePath());
-            caTissueConsentClientClass = ccl.loadClass(CLIENT_CLASSNAME);
+            caTissueConsentClientClass = ccl.loadClass(clientClassName);
         } catch (MalformedURLException e) {
             LOG.error("MalformedURLException  while initializing CaTissueConsentClient.", e);
             throw new IntegrationException(IntegrationError._1000, e);

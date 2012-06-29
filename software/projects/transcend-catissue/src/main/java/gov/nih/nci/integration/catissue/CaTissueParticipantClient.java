@@ -22,13 +22,14 @@ import org.slf4j.LoggerFactory;
  */
 public class CaTissueParticipantClient {
 
-    private static final String CLIENT_CLASSNM = "gov.nih.nci.integration.catissue.client.CaTissueParticipantClient";
+    private final String clientClassName;
+
     private Class<?> caTissueClientClass = null;
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueParticipantClient.class);
 
     private final String caTissueLibLocation;
     private final String loginName;
-    private final String password ;
+    private final String password;
 
     private final Executor ex = Executors.newCachedThreadPool();
 
@@ -38,15 +39,16 @@ public class CaTissueParticipantClient {
      * @param caTissueLibLocation - caTissueLibLocation
      * @param loginName - loginName
      * @param password - password
+     * @param clientClassName - clientClassName
      * @throws IntegrationException - IntegrationException
      */
-    public CaTissueParticipantClient(String caTissueLibLocation, String loginName, String password)
-            throws IntegrationException {
+    public CaTissueParticipantClient(String caTissueLibLocation, String loginName, String password,
+            String clientClassName) throws IntegrationException {
         super();
         this.caTissueLibLocation = caTissueLibLocation;
         this.loginName = loginName;
         this.password = password;
-
+        this.clientClassName = clientClassName;
         init();
     }
 
@@ -56,7 +58,7 @@ public class CaTissueParticipantClient {
             // creating the custom classloader that bypasses the systemclassloader
             final CustomUrlClassLoader ccl = new CustomUrlClassLoader(ClassLoader.getSystemClassLoader().getParent(),
                     libFile.getAbsolutePath());
-            caTissueClientClass = ccl.loadClass(CLIENT_CLASSNM);
+            caTissueClientClass = ccl.loadClass(clientClassName);
         } catch (MalformedURLException e) {
             LOG.error("MalformedURLException occured while initializing CaTissueParticipantClient.", e);
             throw new IntegrationException(IntegrationError._1052, e);
