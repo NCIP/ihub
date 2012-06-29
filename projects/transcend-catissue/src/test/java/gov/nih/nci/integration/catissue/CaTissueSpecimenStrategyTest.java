@@ -6,6 +6,7 @@ import gov.nih.nci.integration.domain.StrategyIdentifier;
 import gov.nih.nci.integration.exception.IntegrationError;
 import gov.nih.nci.integration.exception.IntegrationException;
 import gov.nih.nci.integration.invoker.CaTissueSpecimenServiceInvocationStrategy;
+import gov.nih.nci.integration.invoker.CaTissueUpdateSpecimenServiceInvocationStrategy;
 import gov.nih.nci.integration.invoker.ServiceInvocationResult;
 import gov.nih.nci.integration.transformer.XSLTTransformer;
 
@@ -35,6 +36,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class CaTissueSpecimenStrategyTest {
 
     private CaTissueSpecimenServiceInvocationStrategy caTissueSpecimenStrategy;
+    private CaTissueUpdateSpecimenServiceInvocationStrategy caTissueUpdateSpecimenStrategy;
     private XSLTTransformer xsltTransformer;
 
     private CaTissueSpecimenClient caTissueSpecimenClient;
@@ -54,6 +56,8 @@ public class CaTissueSpecimenStrategyTest {
         xsltTransformer = EasyMock.createMock(XSLTTransformer.class);
         caTissueSpecimenStrategy = new CaTissueSpecimenServiceInvocationStrategy(RETRY_COUNT, caTissueSpecimenClient,
                 xsltTransformer);
+        caTissueUpdateSpecimenStrategy = new CaTissueUpdateSpecimenServiceInvocationStrategy(RETRY_COUNT,
+                caTissueSpecimenClient, xsltTransformer);
     }
 
     /**
@@ -71,7 +75,7 @@ public class CaTissueSpecimenStrategyTest {
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
 
             public Object answer() {
-                return getRegisterConsentXMLStr();
+                return getSpecimenXMLStr();
             }
         }).anyTimes();
 
@@ -79,7 +83,7 @@ public class CaTissueSpecimenStrategyTest {
         EasyMock.expect(caTissueSpecimenClient.createSpecimens((String) EasyMock.anyObject())).andReturn(clientResult);
         EasyMock.replay(caTissueSpecimenClient);
         final ServiceInvocationMessage serviceInvocationMessage = prepareServiceInvocationMessage(REFMSGID,
-                getRegisterConsentXMLStr(), stTime, caTissueSpecimenStrategy.getStrategyIdentifier());
+                getSpecimenXMLStr(), stTime, caTissueSpecimenStrategy.getStrategyIdentifier());
         final ServiceInvocationResult strategyResult = caTissueSpecimenStrategy.invoke(serviceInvocationMessage);
         Assert.assertNotNull(strategyResult);
     }
@@ -99,13 +103,13 @@ public class CaTissueSpecimenStrategyTest {
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
 
             public Object answer() {
-                return getRegisterConsentXMLStr();
+                return getSpecimenXMLStr();
             }
         }).anyTimes();
 
         final ServiceInvocationResult clientResult = new ServiceInvocationResult();
         clientResult.setDataChanged(false);
-        clientResult.setOriginalData(getRegisterConsentXMLStr());
+        clientResult.setOriginalData(getSpecimenXMLStr());
         final IntegrationException ie = new IntegrationException(IntegrationError._1085,
                 "Available Quantity cannot be greater than the Initial Quantity");
         clientResult.setInvocationException(ie);
@@ -113,7 +117,7 @@ public class CaTissueSpecimenStrategyTest {
         EasyMock.expect(caTissueSpecimenClient.createSpecimens((String) EasyMock.anyObject())).andReturn(clientResult);
         EasyMock.replay(caTissueSpecimenClient);
         final ServiceInvocationMessage serviceInvocationMessage = prepareServiceInvocationMessage(REFMSGID,
-                getRegisterConsentXMLStr(), stTime, caTissueSpecimenStrategy.getStrategyIdentifier());
+                getSpecimenXMLStr(), stTime, caTissueSpecimenStrategy.getStrategyIdentifier());
         final ServiceInvocationResult strategyResult = caTissueSpecimenStrategy.invoke(serviceInvocationMessage);
         Assert.assertNotNull(strategyResult);
     }
@@ -133,7 +137,7 @@ public class CaTissueSpecimenStrategyTest {
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
 
             public Object answer() {
-                return getRegisterConsentXMLStr();
+                return getSpecimenXMLStr();
             }
         }).anyTimes();
 
@@ -143,8 +147,100 @@ public class CaTissueSpecimenStrategyTest {
                 clientResult);
         EasyMock.replay(caTissueSpecimenClient);
         final ServiceInvocationMessage serviceInvocationMessage = prepareServiceInvocationMessage(REFMSGID,
-                getRegisterConsentXMLStr(), stTime, caTissueSpecimenStrategy.getStrategyIdentifier());
+                getSpecimenXMLStr(), stTime, caTissueSpecimenStrategy.getStrategyIdentifier());
         final ServiceInvocationResult strategyResult = caTissueSpecimenStrategy.rollback(serviceInvocationMessage);
+        Assert.assertNotNull(strategyResult);
+    }
+
+    /**
+     * Tests updateSpecimens using the ServiceInvocationStrategy class for the success scenario
+     * 
+     * @throws IntegrationException - IntegrationException
+     * @throws JAXBException - JAXBException
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Test
+    public void updateSpecimens() throws IntegrationException, JAXBException {
+        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+
+        xsltTransformer.transform(null, null, null);
+        EasyMock.expectLastCall().andAnswer(new IAnswer() {
+
+            public Object answer() {
+                return getSpecimenXMLStr();
+            }
+        }).anyTimes();
+
+        final ServiceInvocationResult clientResult = new ServiceInvocationResult();
+        EasyMock.expect(caTissueSpecimenClient.updateSpecimens((String) EasyMock.anyObject())).andReturn(clientResult);
+        EasyMock.replay(caTissueSpecimenClient);
+        final ServiceInvocationMessage serviceInvocationMessage = prepareServiceInvocationMessage(REFMSGID,
+                getSpecimenXMLStr(), stTime, caTissueUpdateSpecimenStrategy.getStrategyIdentifier());
+        final ServiceInvocationResult strategyResult = caTissueUpdateSpecimenStrategy.invoke(serviceInvocationMessage);
+        Assert.assertNotNull(strategyResult);
+    }
+
+    /**
+     * Tests updateSpecimens using the ServiceInvocationStrategy class for the failure scenario
+     * 
+     * @throws IntegrationException - IntegrationException
+     * @throws JAXBException - JAXBException
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Test
+    public void updateSpecimensFailure() throws IntegrationException, JAXBException {
+        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+
+        xsltTransformer.transform(null, null, null);
+        EasyMock.expectLastCall().andAnswer(new IAnswer() {
+
+            public Object answer() {
+                return getSpecimenXMLStr();
+            }
+        }).anyTimes();
+
+        final ServiceInvocationResult clientResult = new ServiceInvocationResult();
+        clientResult.setDataChanged(false);
+        clientResult.setOriginalData(getSpecimenXMLStr());
+        final IntegrationException ie = new IntegrationException(IntegrationError._1085,
+                "Available Quantity cannot be greater than the Initial Quantity");
+        clientResult.setInvocationException(ie);
+
+        EasyMock.expect(caTissueSpecimenClient.updateSpecimens((String) EasyMock.anyObject())).andReturn(clientResult);
+        EasyMock.replay(caTissueSpecimenClient);
+        final ServiceInvocationMessage serviceInvocationMessage = prepareServiceInvocationMessage(REFMSGID,
+                getSpecimenXMLStr(), stTime, caTissueUpdateSpecimenStrategy.getStrategyIdentifier());
+        final ServiceInvocationResult strategyResult = caTissueUpdateSpecimenStrategy.invoke(serviceInvocationMessage);
+        Assert.assertNotNull(strategyResult);
+    }
+
+    /**
+     * Tests rollbackUpdatedSpecimens using the ServiceInvocationStrategy class for the success scenario
+     * 
+     * @throws IntegrationException - IntegrationException
+     * @throws JAXBException - JAXBException
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Test
+    public void rollbackUpdatedSpecimens() throws IntegrationException, JAXBException {
+        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+
+        xsltTransformer.transform(null, null, null);
+        EasyMock.expectLastCall().andAnswer(new IAnswer() {
+
+            public Object answer() {
+                return getSpecimenXMLStr();
+            }
+        }).anyTimes();
+
+        final ServiceInvocationResult clientResult = new ServiceInvocationResult();
+        EasyMock.expect(caTissueSpecimenClient.rollbackUpdatedSpecimens((String) EasyMock.anyObject())).andReturn(
+                clientResult);
+        EasyMock.replay(caTissueSpecimenClient);
+        final ServiceInvocationMessage serviceInvocationMessage = prepareServiceInvocationMessage(REFMSGID,
+                getSpecimenXMLStr(), stTime, caTissueUpdateSpecimenStrategy.getStrategyIdentifier());
+        final ServiceInvocationResult strategyResult = caTissueUpdateSpecimenStrategy
+                .rollback(serviceInvocationMessage);
         Assert.assertNotNull(strategyResult);
     }
 
@@ -163,7 +259,7 @@ public class CaTissueSpecimenStrategyTest {
     }
 
     // CHECKSTYLE:OFF
-    private String getRegisterConsentXMLStr() {
+    private String getSpecimenXMLStr() {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?><specimens xmlns:ns2=\"http://caXchange.nci.nih.gov/caxchangerequest\" xmlns:ns0=\"http://caXchange.nci.nih.gov/messaging\" xmlns:a=\"http://cacis.nci.nih.gov\"><participant><lastName>66604232</lastName><activityStatus>Active</activityStatus></participant><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"TissueSpecimen\"><initialQuantity>100</initialQuantity><pathologicalStatus>Malignant</pathologicalStatus><specimenClass>Tissue</specimenClass><specimenType>Fixed Tissue</specimenType><specimenCharacteristics><tissueSide>Right</tissueSide><tissueSite>Placenta</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>50</availableQuantity><barcode>TestUser0016</barcode><label>TestUser0016</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"TissueSpecimen\"><initialQuantity>400</initialQuantity><pathologicalStatus>Malignant</pathologicalStatus><specimenClass>Tissue</specimenClass><specimenType>Fixed Tissue</specimenType><specimenCharacteristics><tissueSide>Right</tissueSide><tissueSite>Placenta</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>200</availableQuantity><barcode>TestUser0017</barcode><label>TestUser0017</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail></specimens>";
     }
 
