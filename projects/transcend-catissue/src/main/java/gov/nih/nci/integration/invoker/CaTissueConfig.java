@@ -26,6 +26,15 @@ public class CaTissueConfig {
     @Value("${catissue.api.login.password}")
     private String catissueApiPassword;
 
+    @Value("${catissue.participant.client}")
+    private String catissueParticipantclientClass;
+
+    @Value("${catissue.specimen.client}")
+    private String catissueSpecimenclientClass;
+
+    @Value("${catissue.consent.client}")
+    private String catissueConsentclientClass;
+
     /**
      * To get CaTissueParticipantClient
      * 
@@ -34,7 +43,8 @@ public class CaTissueConfig {
      */
     @Bean
     public CaTissueParticipantClient caTissueParticipantClient() throws IntegrationException {
-        return new CaTissueParticipantClient(caTissueLibLocation, catissueApiLoginName, catissueApiPassword);
+        return new CaTissueParticipantClient(caTissueLibLocation, catissueApiLoginName, catissueApiPassword,
+                catissueParticipantclientClass);
     }
 
     /**
@@ -45,7 +55,8 @@ public class CaTissueConfig {
      */
     @Bean
     public CaTissueSpecimenClient caTissueSpecimenClient() throws IntegrationException {
-        return new CaTissueSpecimenClient(caTissueLibLocation, catissueApiLoginName, catissueApiPassword);
+        return new CaTissueSpecimenClient(caTissueLibLocation, catissueApiLoginName, catissueApiPassword,
+                catissueSpecimenclientClass);
     }
 
     /**
@@ -56,7 +67,8 @@ public class CaTissueConfig {
      */
     @Bean
     public CaTissueConsentClient caTissueConsentClient() throws IntegrationException {
-        return new CaTissueConsentClient(caTissueLibLocation, catissueApiLoginName, catissueApiPassword);
+        return new CaTissueConsentClient(caTissueLibLocation, catissueApiLoginName, catissueApiPassword,
+                catissueConsentclientClass);
     }
 
 }
