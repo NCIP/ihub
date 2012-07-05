@@ -782,17 +782,16 @@
 	<condition property="skip.cobertura.check" value="true">
 		<isfalse value="${run.cobertura.check}"/>
 	</condition>
-	<target name="cobertura-check" unless="skip.cobertura.check" description="-> Will check the corbetura coverage rate">
-		<taskdef  resource="tasks.properties" classpathref="test.lib.classpath"/>
-		<cobertura-check branchrate="${cobertura.branchrate}" totalbranchrate="${cobertura.totalbranchrate}" totallinerate="${cobertura.totallinerate}" 
-			haltonfailure="false" failureproperty="cobertura.check.failure" 
-			datafile="${cobertura.report.dir}/cobertura.ser" />
-	</target>
+	<target name="cobertura-check" description="-> Will check the corbetura coverage rate">
+			<taskdef resource="tasks.properties" classpathref="test.lib.classpath" />
+			<cobertura-check totalbranchrate="${cobertura.totalbranchrate}" totallinerate="${cobertura.totallinerate}" 
+				failureproperty="cobertura.check.failure" datafile="${cobertura.report.dir}/cobertura.ser" />
+		</target>
 	
 	<!-- ============================================================== 
 		target: test-report                                                
 	============================================================== -->
-	<target name="test-report" if="run.test" depends="test,cobertura-report"
+	<target name="test-report" if="run.test" depends="test,cobertura-report,cobertura-check"
 		description="Runs all junit tests, generates test report and cobertura report">
 		<echo message="Executing in ${ant.project.name}" />
 		<mkdir dir="${test.reports.dir}"/>
