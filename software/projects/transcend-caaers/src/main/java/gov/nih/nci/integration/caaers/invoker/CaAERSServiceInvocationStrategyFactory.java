@@ -5,7 +5,6 @@ import gov.nih.nci.integration.util.CustomClasspathXmlApplicationContext;
 
 import java.net.MalformedURLException;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.Executors;
 
@@ -30,6 +29,14 @@ public final class CaAERSServiceInvocationStrategyFactory {
     private static ServiceInvocationStrategy caaersUpdateAdverseEventServiceInvocationStrategy = null;
 
     private static Boolean initStatus = null;
+
+    /**
+     * 
+     * @param initStatus - initStatus
+     */
+    public static void setInitStatus(Boolean initStatus) {
+        CaAERSServiceInvocationStrategyFactory.initStatus = initStatus;
+    }
 
     private static final Logger LOG = LoggerFactory.getLogger(CaAERSServiceInvocationStrategyFactory.class);
 
@@ -60,11 +67,9 @@ public final class CaAERSServiceInvocationStrategyFactory {
 
         try {
             initStatus = ecs.take().get();
-        } catch (InterruptedException e) {
-            LOG.error("CaAERSServiceInvocationStrategyFactory.InterruptedException inside init(). ", e);
-            initStatus = Boolean.FALSE;
-        } catch (ExecutionException e) {
-            LOG.error("CaAERSServiceInvocationStrategyFactory.ExecutionException inside init(). ", e);
+            // CHECKSTYLE:OFF
+        } catch (Exception e) { // NOPMD
+            LOG.error("CaAERSServiceInvocationStrategyFactory.Exception inside init(). ", e);
             initStatus = Boolean.FALSE;
         }
     }
@@ -79,7 +84,7 @@ public final class CaAERSServiceInvocationStrategyFactory {
     public static ServiceInvocationStrategy createCaAERSRegistrationServiceInvocationStrategy(
             final String[] caaersLibLocation, final String... caaersConfig) {
 
-        if (initStatus == null && caaersRegistrationServiceInvocationStrategy == null) {
+        if (initStatus == null || caaersRegistrationServiceInvocationStrategy == null) {
             init(caaersLibLocation, caaersConfig);
         }
         if (initStatus) {
@@ -99,7 +104,7 @@ public final class CaAERSServiceInvocationStrategyFactory {
     public static ServiceInvocationStrategy createCaAERSUpdateRegistrationServiceInvocationStrategy(
             final String[] caaersLibLocation, final String... caaersConfig) {
 
-        if (initStatus == null && caaersUpdateRegistrationServiceInvocationStrategy == null) {
+        if (initStatus == null || caaersUpdateRegistrationServiceInvocationStrategy == null) {
             init(caaersLibLocation, caaersConfig);
         }
         if (initStatus) {
@@ -119,7 +124,7 @@ public final class CaAERSServiceInvocationStrategyFactory {
     public static ServiceInvocationStrategy createCaAERSAdverseEventServiceInvocationStrategy(
             final String[] caaersLibLocation, final String... caaersConfig) {
 
-        if (initStatus == null && caaersAdverseEventServiceInvocationStrategy == null) {
+        if (initStatus == null || caaersAdverseEventServiceInvocationStrategy == null) {
             init(caaersLibLocation, caaersConfig);
         }
         if (initStatus) {
@@ -139,7 +144,7 @@ public final class CaAERSServiceInvocationStrategyFactory {
     public static ServiceInvocationStrategy createCaAERSUpdateAdverseEventServiceInvocationStrategy(
             final String[] caaersLibLocation, final String... caaersConfig) {
 
-        if (initStatus == null && caaersUpdateAdverseEventServiceInvocationStrategy == null) {
+        if (initStatus == null || caaersUpdateAdverseEventServiceInvocationStrategy == null) {
             init(caaersLibLocation, caaersConfig);
         }
         if (initStatus) {
@@ -148,4 +153,5 @@ public final class CaAERSServiceInvocationStrategyFactory {
             return null;
         }
     }
+
 }
