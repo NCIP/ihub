@@ -91,6 +91,68 @@ public class CaTissueParticipantTest {
     }
 
     /**
+     * Mock Testcase for Register Participant when SSN is blank is the incoming request
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void registerParticipantForBlankSSN() {
+        String retXMLString = "";
+        final CollectionProtocol collectionProtocol = new CollectionProtocol();
+        collectionProtocol.setTitle("6482");
+        collectionProtocol.setShortTitle("6482");
+        final Participant participant = new Participant();
+
+        try {
+            EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
+            EasyMock.expect(
+                    caTissueAPIClient.searchById((Class<CollectionProtocol>) EasyMock.anyObject(),
+                            (CollectionProtocol) org.easymock.EasyMock.anyObject())).andReturn(collectionProtocol);
+            EasyMock.expect(caTissueAPIClient.insert((Participant) org.easymock.EasyMock.anyObject())).andReturn(
+                    participant);
+            EasyMock.replay(caTissueAPIClient);
+
+            caTissueParticipantClient.registerParticipantFromXML(getParticipantXMLStrForBlankSSN());
+
+            retXMLString = "REGISTER_PARTICIPANT";
+        } catch (ApplicationException e) {
+            LOG.error("CaTissueParticipantTest-ApplicationException inside registerParticipantForBlankSSN() ", e);
+            retXMLString = "REGISTER_PARTICIPANT_FAILED";
+        }
+        assertNotNull(retXMLString);
+    }
+
+    /**
+     * Mock Testcase for Register Participant when SSN is blank is the incoming request
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void registerParticipantForLastNameNULL() {
+        String retXMLString = "";
+        final CollectionProtocol collectionProtocol = new CollectionProtocol();
+        collectionProtocol.setTitle("6482");
+        collectionProtocol.setShortTitle("6482");
+        final Participant participant = new Participant();
+
+        try {
+            EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
+            EasyMock.expect(
+                    caTissueAPIClient.searchById((Class<CollectionProtocol>) EasyMock.anyObject(),
+                            (CollectionProtocol) org.easymock.EasyMock.anyObject())).andReturn(collectionProtocol);
+            EasyMock.expect(caTissueAPIClient.insert((Participant) org.easymock.EasyMock.anyObject())).andReturn(
+                    participant);
+            EasyMock.replay(caTissueAPIClient);
+
+            caTissueParticipantClient.registerParticipantFromXML(getParticipantXMLStrForLastNameNULL());
+
+            retXMLString = "REGISTER_PARTICIPANT";
+        } catch (ApplicationException e) {
+            LOG.error("CaTissueParticipantTest-ApplicationException inside registerParticipantForBlankSSN() ", e);
+            retXMLString = "REGISTER_PARTICIPANT_FAILED";
+        }
+        assertNotNull(retXMLString);
+    }
+
+    /**
      * Mock Testcase for Update Participant Registration
      * 
      * @throws ParseException - ParseException
@@ -129,6 +191,131 @@ public class CaTissueParticipantTest {
         } catch (ApplicationException e) {
             LOG.error("CaTissueParticipantTest-ApplicationException inside registerParticipant() ", e);
             retXMLString = "UPDATE_PARTICIPANT_REGISTRATION_FAILED";
+        }
+        assertNotNull(retXMLString);
+    }
+
+    /**
+     * Mock Testcase for Update Participant Registration when PArticipant is not found in the caTissue
+     * 
+     * @throws ParseException - ParseException
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void updateParticipantRegistrationParticipantNotFound() throws ParseException {
+        String retXMLString = "";
+        final CollectionProtocol collectionProtocol = new CollectionProtocol();
+        collectionProtocol.setTitle("6482");
+        collectionProtocol.setShortTitle("6482");
+
+        final Participant participant = getParticipant();
+
+        final String participantXML = caTissueParticipantClient.getxStream().toXML(participant);
+
+        final List<Object> participantList = null; // to replicate the scenario of participant not found
+
+        try {
+            EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
+            EasyMock.expect(
+                    caTissueAPIClient.searchById((Class<CollectionProtocol>) EasyMock.anyObject(),
+                            (CollectionProtocol) org.easymock.EasyMock.anyObject())).andReturn(collectionProtocol);
+            EasyMock.expect(caTissueAPIClient.update((Participant) org.easymock.EasyMock.anyObject())).andReturn(
+                    participant);
+            EasyMock.expect(writableAppService.query((CQLQuery) org.easymock.EasyMock.anyObject())).andReturn(
+                    participantList);
+
+            EasyMock.replay(caTissueAPIClient);
+            EasyMock.replay(writableAppService);
+
+            caTissueParticipantClient.updateParticipantRegistrationFromXML(participantXML);
+
+            retXMLString = "UPDATE_PARTICIPANT_REGISTRATION";
+        } catch (ApplicationException e) {
+            LOG.error("CaTissueParticipantTest-ApplicationException inside registerParticipant() ", e);
+            retXMLString = "UPDATE_PARTICIPANT_REGISTRATION_FAILED";
+        }
+        assertNotNull(retXMLString);
+    }
+
+    /**
+     * Mock Testcase for Update Participant Registration when SSN is blank is incoming request
+     * 
+     * @throws ParseException - ParseException
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void updateParticipantRegistrationForBlankSSN() throws ParseException {
+        String retXMLString = "";
+        final CollectionProtocol collectionProtocol = new CollectionProtocol();
+        collectionProtocol.setTitle("6482");
+        collectionProtocol.setShortTitle("6482");
+
+        final Participant participant = getParticipant();
+        participant.setSocialSecurityNumber("");
+
+        final String participantXML = caTissueParticipantClient.getxStream().toXML(participant);
+
+        final List<Object> participantList = new ArrayList<Object>();
+        participantList.add(participant);
+
+        try {
+            EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
+            EasyMock.expect(
+                    caTissueAPIClient.searchById((Class<CollectionProtocol>) EasyMock.anyObject(),
+                            (CollectionProtocol) org.easymock.EasyMock.anyObject())).andReturn(collectionProtocol);
+            EasyMock.expect(caTissueAPIClient.update((Participant) org.easymock.EasyMock.anyObject())).andReturn(
+                    participant);
+            EasyMock.expect(writableAppService.query((CQLQuery) org.easymock.EasyMock.anyObject())).andReturn(
+                    participantList);
+
+            EasyMock.replay(caTissueAPIClient);
+            EasyMock.replay(writableAppService);
+
+            caTissueParticipantClient.updateParticipantRegistrationFromXML(participantXML);
+
+            retXMLString = "UPDATE_PARTICIPANT_REGISTRATION";
+        } catch (ApplicationException e) {
+            LOG.error("CaTissueParticipantTest-ApplicationException inside registerParticipant() ", e);
+            retXMLString = "UPDATE_PARTICIPANT_REGISTRATION_FAILED";
+        }
+        assertNotNull(retXMLString);
+    }
+
+    /**
+     * Mock Testcase for deleteParticipant
+     * 
+     * @throws ParseException - ParseException
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void deleteParticipant() throws ParseException {
+        String retXMLString = "";
+        final Participant participant = getParticipant();
+        final String participantXML = caTissueParticipantClient.getxStream().toXML(participant);
+        final List<Object> participantList = new ArrayList<Object>();
+        participantList.add(participant);
+
+        final CollectionProtocolRegistration cpr = new CollectionProtocolRegistration();
+
+        try {
+            EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
+            EasyMock.expect(
+                    caTissueAPIClient.update((CollectionProtocolRegistration) org.easymock.EasyMock.anyObject()))
+                    .andReturn(cpr);
+            EasyMock.expect(caTissueAPIClient.update((Participant) org.easymock.EasyMock.anyObject())).andReturn(
+                    participant);
+            EasyMock.expect(writableAppService.query((CQLQuery) org.easymock.EasyMock.anyObject())).andReturn(
+                    participantList);
+
+            EasyMock.replay(caTissueAPIClient);
+            EasyMock.replay(writableAppService);
+
+            caTissueParticipantClient.deleteParticipantFromXML(participantXML);
+
+            retXMLString = "DELETE_PARTICIPANT_REGISTRATION";
+        } catch (ApplicationException e) {
+            LOG.error("CaTissueParticipantTest-ApplicationException inside registerParticipant() ", e);
+            retXMLString = "DELETE_PARTICIPANT_REGISTRATION_FAILED";
         }
         assertNotNull(retXMLString);
     }
@@ -179,6 +366,14 @@ public class CaTissueParticipantTest {
 
     private String getParticipantXMLStr() {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?> <catissue:participant xmlns:p=\"http://integration.nci.nih.gov/participant\" xmlns:catissue=\"http://domain.catissuecore.wustl.edu/participant\" xmlns:g=\"http://catissue/gender/data\"> <catissue:activityStatus>Active</catissue:activityStatus> <catissue:birthDate>1965-11-24</catissue:birthDate> <catissue:ethnicity>Not Hispanic or Latino</catissue:ethnicity> <catissue:firstName>Cherry061501</catissue:firstName> <catissue:gender>Male Gender</catissue:gender> <catissue:lastName>488061501</catissue:lastName> <catissue:socialSecurityNumber>123-06-1501</catissue:socialSecurityNumber> <catissue:vitalStatus>Alive</catissue:vitalStatus> <catissue:collectionProtocolRegistrationCollection class=\"set\"> <catissue:collectionProtocolRegistration> <catissue:activityStatus>Active</catissue:activityStatus> <catissue:consentSignatureDate>2012-06-27</catissue:consentSignatureDate> <catissue:protocolParticipantIdentifier>488061501</catissue:protocolParticipantIdentifier> <catissue:registrationDate>2012-03-07</catissue:registrationDate> <catissue:specimenCollectionGroupCollection class=\"set\"/> <catissue:collectionProtocol> <catissue:shortTitle>6482</catissue:shortTitle> <catissue:collectionProtocolEventCollection class=\"linked-hash-set\"/> <catissue:childCollectionProtocolCollection class=\"linked-hash-set\"/> <catissue:studyFormContextCollection class=\"set\"/> <catissue:collectionProtocolRegistrationCollection class=\"set\"/> <catissue:siteCollection class=\"set\"/> <catissue:clinicalDiagnosisCollection class=\"linked-hash-set\"/> <catissue:distributionProtocolCollection class=\"linked-hash-set\"/> <catissue:coordinatorCollection class=\"linked-hash-set\"/> <catissue:assignedProtocolUserCollection class=\"set\"/> <catissue:gridGrouperPrivileges/> </catissue:collectionProtocol> <catissue:participant reference=\"../../..\"/> <catissue:isToInsertAnticipatorySCGs>true</catissue:isToInsertAnticipatorySCGs> </catissue:collectionProtocolRegistration> </catissue:collectionProtocolRegistrationCollection> <catissue:raceCollection class=\"set\"> <catissue:race> <catissue:raceName>White</catissue:raceName> <catissue:participant reference=\"../../..\"/> </catissue:race> </catissue:raceCollection> <catissue:participantMedicalIdentifierCollection class=\"set\"/> <catissue:participantRecordEntryCollection class=\"set\"/> </catissue:participant>";
+    }
+
+    private String getParticipantXMLStrForBlankSSN() {
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?> <catissue:participant xmlns:p=\"http://integration.nci.nih.gov/participant\" xmlns:catissue=\"http://domain.catissuecore.wustl.edu/participant\" xmlns:g=\"http://catissue/gender/data\"> <catissue:activityStatus>Active</catissue:activityStatus> <catissue:birthDate>1965-11-24</catissue:birthDate> <catissue:ethnicity>Not Hispanic or Latino</catissue:ethnicity> <catissue:firstName>Cherry061501</catissue:firstName> <catissue:gender>Male Gender</catissue:gender> <catissue:lastName>488061501</catissue:lastName> <catissue:socialSecurityNumber></catissue:socialSecurityNumber> <catissue:vitalStatus>Alive</catissue:vitalStatus> <catissue:collectionProtocolRegistrationCollection class=\"set\"> <catissue:collectionProtocolRegistration> <catissue:activityStatus>Active</catissue:activityStatus> <catissue:consentSignatureDate>2012-06-27</catissue:consentSignatureDate> <catissue:protocolParticipantIdentifier>488061501</catissue:protocolParticipantIdentifier> <catissue:registrationDate>2012-03-07</catissue:registrationDate> <catissue:specimenCollectionGroupCollection class=\"set\"/> <catissue:collectionProtocol> <catissue:shortTitle>6482</catissue:shortTitle> <catissue:collectionProtocolEventCollection class=\"linked-hash-set\"/> <catissue:childCollectionProtocolCollection class=\"linked-hash-set\"/> <catissue:studyFormContextCollection class=\"set\"/> <catissue:collectionProtocolRegistrationCollection class=\"set\"/> <catissue:siteCollection class=\"set\"/> <catissue:clinicalDiagnosisCollection class=\"linked-hash-set\"/> <catissue:distributionProtocolCollection class=\"linked-hash-set\"/> <catissue:coordinatorCollection class=\"linked-hash-set\"/> <catissue:assignedProtocolUserCollection class=\"set\"/> <catissue:gridGrouperPrivileges/> </catissue:collectionProtocol> <catissue:participant reference=\"../../..\"/> <catissue:isToInsertAnticipatorySCGs>true</catissue:isToInsertAnticipatorySCGs> </catissue:collectionProtocolRegistration> </catissue:collectionProtocolRegistrationCollection> <catissue:raceCollection class=\"set\"> <catissue:race> <catissue:raceName>White</catissue:raceName> <catissue:participant reference=\"../../..\"/> </catissue:race> </catissue:raceCollection> <catissue:participantMedicalIdentifierCollection class=\"set\"/> <catissue:participantRecordEntryCollection class=\"set\"/> </catissue:participant>";
+    }
+
+    private String getParticipantXMLStrForLastNameNULL() {
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?> <catissue:participant xmlns:p=\"http://integration.nci.nih.gov/participant\" xmlns:catissue=\"http://domain.catissuecore.wustl.edu/participant\" xmlns:g=\"http://catissue/gender/data\"> <catissue:activityStatus>Active</catissue:activityStatus> <catissue:birthDate>1965-11-24</catissue:birthDate> <catissue:ethnicity>Not Hispanic or Latino</catissue:ethnicity> <catissue:firstName>Cherry061501</catissue:firstName> <catissue:gender>Male Gender</catissue:gender> <catissue:lastName></catissue:lastName> <catissue:socialSecurityNumber>123-06-1501</catissue:socialSecurityNumber> <catissue:vitalStatus>Alive</catissue:vitalStatus> <catissue:collectionProtocolRegistrationCollection class=\"set\"> <catissue:collectionProtocolRegistration> <catissue:activityStatus>Active</catissue:activityStatus> <catissue:consentSignatureDate>2012-06-27</catissue:consentSignatureDate> <catissue:protocolParticipantIdentifier>488061501</catissue:protocolParticipantIdentifier> <catissue:registrationDate>2012-03-07</catissue:registrationDate> <catissue:specimenCollectionGroupCollection class=\"set\"/> <catissue:collectionProtocol> <catissue:shortTitle>6482</catissue:shortTitle> <catissue:collectionProtocolEventCollection class=\"linked-hash-set\"/> <catissue:childCollectionProtocolCollection class=\"linked-hash-set\"/> <catissue:studyFormContextCollection class=\"set\"/> <catissue:collectionProtocolRegistrationCollection class=\"set\"/> <catissue:siteCollection class=\"set\"/> <catissue:clinicalDiagnosisCollection class=\"linked-hash-set\"/> <catissue:distributionProtocolCollection class=\"linked-hash-set\"/> <catissue:coordinatorCollection class=\"linked-hash-set\"/> <catissue:assignedProtocolUserCollection class=\"set\"/> <catissue:gridGrouperPrivileges/> </catissue:collectionProtocol> <catissue:participant reference=\"../../..\"/> <catissue:isToInsertAnticipatorySCGs>true</catissue:isToInsertAnticipatorySCGs> </catissue:collectionProtocolRegistration> </catissue:collectionProtocolRegistrationCollection> <catissue:raceCollection class=\"set\"> <catissue:race> <catissue:raceName>White</catissue:raceName> <catissue:participant reference=\"../../..\"/> </catissue:race> </catissue:raceCollection> <catissue:participantMedicalIdentifierCollection class=\"set\"/> <catissue:participantRecordEntryCollection class=\"set\"/> </catissue:participant>";
     }
 
     // CHECKSTYLE:ON
