@@ -103,11 +103,11 @@ public class CaTissueConsentStrategyTest {
 
         final ServiceInvocationResult clientResult = new ServiceInvocationResult();
         clientResult.setDataChanged(false);
-        clientResult.setOriginalData(getRegisterConsentXMLStr());
-        final IntegrationException ie = new IntegrationException(IntegrationError._1090,
-                "Specimen for given LABEL doesn't exist");
+
+        final IntegrationException ie = new IntegrationException(IntegrationError._1090, new Throwable( // NOPMD
+                "Specimen for given LABEL doesn't exist"), "Specimen for given LABEL doesn't exist");
         clientResult.setInvocationException(ie);
-        
+
         EasyMock.expect(caTissueConsentClient.registerConsents((String) EasyMock.anyObject())).andReturn(clientResult);
         EasyMock.replay(caTissueConsentClient);
         final ServiceInvocationMessage serviceInvocationMessage = prepareServiceInvocationMessage(REFMSGID,

@@ -108,7 +108,9 @@ public class CaTissueParticipantStrategyTest {
         final ServiceInvocationResult clientResult = new ServiceInvocationResult();
         clientResult.setDataChanged(false);
         clientResult.setOriginalData(getSpecimenXMLStr());
-        final IntegrationException ie = new IntegrationException(IntegrationError._1034,
+
+        final IntegrationException ie = new IntegrationException(IntegrationError._1034, new Throwable( // NOPMD
+                "Participant does not contain the unique identifier SSN"),
                 "Participant does not contain the unique identifier SSN");
         clientResult.setInvocationException(ie);
 
@@ -202,7 +204,8 @@ public class CaTissueParticipantStrategyTest {
         final ServiceInvocationResult clientResult = new ServiceInvocationResult();
         clientResult.setDataChanged(false);
         clientResult.setOriginalData(getSpecimenXMLStr());
-        final IntegrationException ie = new IntegrationException(IntegrationError._1034,
+        final IntegrationException ie = new IntegrationException(IntegrationError._1034, new Throwable( // NOPMD
+                "Participant does not contain the unique identifier SSN"),
                 "Participant does not contain the unique identifier SSN");
         clientResult.setInvocationException(ie);
 

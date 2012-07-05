@@ -108,7 +108,9 @@ public class CaTissueSpecimenStrategyTest {
         final ServiceInvocationResult clientResult = new ServiceInvocationResult();
         clientResult.setDataChanged(false);
         clientResult.setOriginalData(getSpecimenXMLStr());
-        final IntegrationException ie = new IntegrationException(IntegrationError._1085,
+
+        final IntegrationException ie = new IntegrationException(IntegrationError._1085, new Throwable( // NOPMD
+                "Available Quantity cannot be greater than the Initial Quantity"),
                 "Available Quantity cannot be greater than the Initial Quantity");
         clientResult.setInvocationException(ie);
 
@@ -200,7 +202,8 @@ public class CaTissueSpecimenStrategyTest {
         final ServiceInvocationResult clientResult = new ServiceInvocationResult();
         clientResult.setDataChanged(false);
         clientResult.setOriginalData(getSpecimenXMLStr());
-        final IntegrationException ie = new IntegrationException(IntegrationError._1085,
+        final IntegrationException ie = new IntegrationException(IntegrationError._1085, new Throwable( // NOPMD
+                "Available Quantity cannot be greater than the Initial Quantity"),
                 "Available Quantity cannot be greater than the Initial Quantity");
         clientResult.setInvocationException(ie);
 
