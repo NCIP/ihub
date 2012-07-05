@@ -77,9 +77,6 @@ public class CaTissueSpecimenClient {
      * @throws ApplicationException - Throws exception if Specimen already exist
      */
     public String isSpecimensExist(String specimenListXMLStr) throws ApplicationException {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Inside isSpecimensExist...The Incoming XML for isSpecimensExist() is --> " + specimenListXMLStr);
-        }
 
         // Parse the incoming XML String. The returned object will contain data
         // from the incoming specimens XML
@@ -96,10 +93,6 @@ public class CaTissueSpecimenClient {
      * @throws ApplicationException - if any exception occurred during data retrieval
      */
     public String getExistingSpecimens(String specimenListXMLStr) throws ApplicationException {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Inside getExistingSpecimens...The Incoming XML for getExistingSpecimens() is --> "
-                    + specimenListXMLStr);
-        }
 
         // Parse the incoming XML String. The returned object will contain data
         // from the incoming consents XML
@@ -119,10 +112,6 @@ public class CaTissueSpecimenClient {
      * @throws ApplicationException - if any exception occurred during data insertion
      */
     public String createSpecimens(String specimenListXMLStr) throws ApplicationException {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Inside CaTissueSpecimenClient...The Incoming XML for createSpecimens() is --> "
-                    + specimenListXMLStr);
-        }
 
         // Parse the incoming XML String. The returned object will contain data
         // from the incoming specimens XML
@@ -143,10 +132,6 @@ public class CaTissueSpecimenClient {
      * @throws ApplicationException - if any exception occurred during data updation
      */
     public String updateSpecimens(String specimenListXMLStr) throws ApplicationException {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Inside CaTissueSpecimenClient... updateSpecimens()..The Incoming XML is --> "
-                    + specimenListXMLStr);
-        }
 
         // This object contain data from the incoming specimens xml
         final Specimens specimens = parseSpecimenListXML(specimenListXMLStr);
@@ -167,10 +152,6 @@ public class CaTissueSpecimenClient {
      * @throws ApplicationException - if any exception occurred during rollback itself
      */
     public String rollbackCreatedSpecimens(String specimenListXMLStr) throws ApplicationException {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Inside CaTissueSpecimenClient... rollbackCreatedSpecimens()..The Incoming XML is --> "
-                    + specimenListXMLStr);
-        }
 
         // This object contain data from the incoming specimens xml
         final Specimens specimens = parseSpecimenListXML(specimenListXMLStr);
@@ -189,10 +170,6 @@ public class CaTissueSpecimenClient {
      * @throws ApplicationException - if any exception occurred during rollback itself
      */
     public String rollbackUpdatedSpecimens(String specimenListXMLStr) throws ApplicationException {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Inside CaTissueSpecimenClient... rollbackUpdatedSpecimens()..The Incoming XML is --> "
-                    + specimenListXMLStr);
-        }
 
         // This object contain data from the incoming specimens xml
         final Specimens specimens = parseSpecimenListXML(specimenListXMLStr);
@@ -343,7 +320,7 @@ public class CaTissueSpecimenClient {
                 incomingSpecimen.setLineage(existingSpecimen.getLineage());
                 incomingSpecimen.getSpecimenCharacteristics().setId(
                         existingSpecimen.getSpecimenCharacteristics().getId());
-               
+
                 updateSpecimen(incomingSpecimen);
 
                 updatedSpecimenList.add(incomingSpecimen);

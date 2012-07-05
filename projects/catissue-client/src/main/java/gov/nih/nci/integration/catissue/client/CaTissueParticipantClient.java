@@ -320,21 +320,6 @@ public class CaTissueParticipantClient {
         return caTissueAPIClient.getApplicationService().query(CqlUtility.getParticipantsForCP(cpTitle));
     }
 
-    /**
-     * Retrieve the participant for given SSN
-     * 
-     * @param ssn - SSN for which participant has to be fetched
-     * @return Participant
-     * @throws ApplicationException - ApplicationException
-     */
-    public Participant getParticipantForSSN(String ssn) throws ApplicationException {
-        final List<Participant> prtcpntLst = caTissueAPIClient.getApplicationService().query(
-                CqlUtility.getParticipantForSSN(ssn));
-        if (prtcpntLst == null || prtcpntLst.isEmpty()) {
-            return null;
-        }
-        return prtcpntLst.get(0);
-    }
 
     /**
      * Retrieve the participant for given PatientId
