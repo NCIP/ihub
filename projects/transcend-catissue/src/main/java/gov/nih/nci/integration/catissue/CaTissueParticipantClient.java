@@ -6,7 +6,6 @@ import gov.nih.nci.integration.invoker.ServiceInvocationResult;
 import gov.nih.nci.integration.util.CustomUrlClassLoader;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorCompletionService;
@@ -59,11 +58,9 @@ public class CaTissueParticipantClient {
             final CustomUrlClassLoader ccl = new CustomUrlClassLoader(ClassLoader.getSystemClassLoader().getParent(),
                     libFile.getAbsolutePath());
             caTissueClientClass = ccl.loadClass(clientClassName);
-        } catch (MalformedURLException e) {
-            LOG.error("MalformedURLException occured while initializing CaTissueParticipantClient.", e);
-            throw new IntegrationException(IntegrationError._1052, e);
-        } catch (ClassNotFoundException e) {
-            LOG.error("ClassNotFoundException occured while initializing CaTissueParticipantClient.", e);
+            // CHECKSTYLE:OFF
+        } catch (Exception e) { // NOPMD
+            LOG.error("Exception occured while initializing CaTissueParticipantClient.", e);
             throw new IntegrationException(IntegrationError._1052, e);
         }
     }
@@ -87,8 +84,8 @@ public class CaTissueParticipantClient {
         }
 
         try {
-            final ExecutorCompletionService<ServiceInvocationResult> ecs = 
-                    new ExecutorCompletionService<ServiceInvocationResult>(ex);
+            final ExecutorCompletionService<ServiceInvocationResult> ecs = new ExecutorCompletionService<ServiceInvocationResult>(
+                    ex);
             ecs.submit(task);
             result = ecs.take().get();
             if (!result.isFault()) {
@@ -124,8 +121,8 @@ public class CaTissueParticipantClient {
         }
 
         try {
-            final ExecutorCompletionService<ServiceInvocationResult> ecs = 
-                    new ExecutorCompletionService<ServiceInvocationResult>(ex);
+            final ExecutorCompletionService<ServiceInvocationResult> ecs = new ExecutorCompletionService<ServiceInvocationResult>(
+                    ex);
             ecs.submit(task);
             result = ecs.take().get();
             if (!result.isFault()) {
@@ -161,8 +158,8 @@ public class CaTissueParticipantClient {
         }
 
         try {
-            final ExecutorCompletionService<ServiceInvocationResult> ecs = 
-                    new ExecutorCompletionService<ServiceInvocationResult>(ex);
+            final ExecutorCompletionService<ServiceInvocationResult> ecs = new ExecutorCompletionService<ServiceInvocationResult>(
+                    ex);
             ecs.submit(task);
             result = ecs.take().get();
             if (!result.isFault()) {
