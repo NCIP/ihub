@@ -1,6 +1,7 @@
 package gov.nih.nci.integration.caaers;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import gov.nih.nci.integration.caaers.invoker.CaAERSServiceInvocationStrategyFactory;
 import gov.nih.nci.integration.domain.IHubMessage;
@@ -23,6 +24,19 @@ import org.junit.Test;
 public class CaAERSServiceInvocationStrategyFactoryTest {
 
     /**
+     * Testcase for createCaAERSUpdateAdverseEventServiceInvocationStrategy
+     */
+    @Test
+    public void createCaAERSUpdateAdverseEventServiceInvocationStrategyFailure() {
+        final File customLibLoc = new File("..\\caaers-client\\build\\caaers-client-lib-123\\");
+        final File distLoc = new File("..\\caaers-client\\build\\dist\\");
+        final ServiceInvocationStrategy suaeis = CaAERSServiceInvocationStrategyFactory
+                .createCaAERSUpdateAdverseEventServiceInvocationStrategy(new String[] { customLibLoc.getAbsolutePath(),
+                        distLoc.getAbsolutePath() }, "classpath*:applicationContext-caaers-client-test.xml");
+        assertNull(suaeis);
+    }
+
+    /**
      * Testcase for createCaAERSServiceInvocationStrategy
      */
     @Test
@@ -36,18 +50,8 @@ public class CaAERSServiceInvocationStrategyFactoryTest {
                 .createCaAERSUpdateRegistrationServiceInvocationStrategy(new String[] { customLibLoc.getAbsolutePath(),
                         distLoc.getAbsolutePath() }, "classpath*:applicationContext-caaers-client-test.xml");
 
-        final ServiceInvocationStrategy saeis = CaAERSServiceInvocationStrategyFactory
-                .createCaAERSAdverseEventServiceInvocationStrategy(new String[] { customLibLoc.getAbsolutePath(),
-                        distLoc.getAbsolutePath() }, "classpath*:applicationContext-caaers-client-test.xml");
-
-        final ServiceInvocationStrategy suaeis = CaAERSServiceInvocationStrategyFactory
-                .createCaAERSUpdateAdverseEventServiceInvocationStrategy(new String[] { customLibLoc.getAbsolutePath(),
-                        distLoc.getAbsolutePath() }, "classpath*:applicationContext-caaers-client-test.xml");
-
         assertNotNull(sris);
         assertNotNull(suris);
-        assertNotNull(saeis);
-        assertNotNull(suaeis);
 
         final ServiceInvocationMessage msg = new ServiceInvocationMessage();
         msg.setStrategyIdentifier(StrategyIdentifier.CAEERS_CREATE_REGISTRATION);
@@ -61,6 +65,46 @@ public class CaAERSServiceInvocationStrategyFactoryTest {
         assertNotNull(res);
         assertTrue(res.isFault());
         assertNotNull(res.getInvocationException());
+    }
+
+    /**
+     * Testcase for createCaAERSAdverseEventServiceInvocationStrategy
+     */
+    @Test
+    public void createCaAERSAdverseEventServiceInvocationStrategy() {
+        final File customLibLoc = new File("..\\caaers-client\\build\\caaers-client-lib\\");
+        final File distLoc = new File("..\\caaers-client\\build\\dist\\");
+        final ServiceInvocationStrategy saeis = CaAERSServiceInvocationStrategyFactory
+                .createCaAERSAdverseEventServiceInvocationStrategy(new String[] { customLibLoc.getAbsolutePath(),
+                        distLoc.getAbsolutePath() }, "classpath*:applicationContext-caaers-client-test.xml");
+        assertNotNull(saeis);
+    }
+
+    /**
+     * Testcase for createCaAERSUpdateAdverseEventServiceInvocationStrategy
+     */
+    @Test
+    public void createCaAERSUpdateAdverseEventServiceInvocationStrategy() {
+        final File customLibLoc = new File("..\\caaers-client\\build\\caaers-client-lib\\");
+        final File distLoc = new File("..\\caaers-client\\build\\dist\\");
+        final ServiceInvocationStrategy suaeis = CaAERSServiceInvocationStrategyFactory
+                .createCaAERSUpdateAdverseEventServiceInvocationStrategy(new String[] { customLibLoc.getAbsolutePath(),
+                        distLoc.getAbsolutePath() }, "classpath*:applicationContext-caaers-client-test.xml");
+        assertNotNull(suaeis);
+    }
+    
+    /**
+     * Testcase for createCaAERSAdverseEventServiceInvocationStrategy
+     */
+    @Test
+    public void createCaAERSAdverseEventServiceInvocationStrategyFailure() {
+        final File customLibLoc = new File("..\\caaers-client\\build\\caaers-client-lib\\");
+        final File distLoc = new File("..\\caaers-client\\build\\dist\\");
+        CaAERSServiceInvocationStrategyFactory.setInitStatus(null);
+        final ServiceInvocationStrategy saeis = CaAERSServiceInvocationStrategyFactory
+                .createCaAERSAdverseEventServiceInvocationStrategy(new String[] { customLibLoc.getAbsolutePath(),
+                        distLoc.getAbsolutePath() }, "classpath*:applicationContext-caaers-client-test.xml");
+        assertNull(saeis);
     }
 
     // CHECKSTYLE:OFF
