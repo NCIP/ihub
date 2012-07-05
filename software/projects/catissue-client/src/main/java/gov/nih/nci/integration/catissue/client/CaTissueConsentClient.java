@@ -71,10 +71,6 @@ public class CaTissueConsentClient {
      * @throws ApplicationException - if any exception occurred during data retrieval
      */
     public String getExistingConsents(String consentsListXMLStr) throws ApplicationException {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Inside getExistingConsentsData...The Incoming XML for getExistingConsentsData() is --> "
-                    + consentsListXMLStr);
-        }
 
         // Parse the incoming XML String. The returned object will contain data
         // from the incoming consents XML
@@ -94,10 +90,6 @@ public class CaTissueConsentClient {
      * @throws ApplicationException - if any exception occurred during data insertion
      */
     public String registerConsents(String consentsListXMLStr) throws ApplicationException {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Inside CaTissueConsentClient...The Incoming XML for registerConsents() is --> "
-                    + consentsListXMLStr);
-        }
 
         // Parse the incoming XML String. The returned object will contain data
         // from the incoming specimens XML
@@ -118,10 +110,6 @@ public class CaTissueConsentClient {
      * @throws ApplicationException - if any exception occurred during rollback itself
      */
     public void rollbackConsentRegistration(String consentsListXMLStr) throws ApplicationException {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Inside rollbackConsentRegistration...The Incoming XML for rollbackConsentRegistration() is --> "
-                    + consentsListXMLStr);
-        }
 
         // Parse the incoming XML String. The returned object will contain data
         // from the incoming specimens XML
@@ -190,9 +178,9 @@ public class CaTissueConsentClient {
         }
     }
 
-    private void performRegisterConsentsForChildSpecimens(Specimen existingSpecimen, ConsentDetail consentDetail)
+    private void performRegisterConsentsForChildSpecimens(Specimen parentSpecimen, ConsentDetail consentDetail)
             throws ApplicationException {
-        final Collection<AbstractSpecimen> childSpecimenCollection = existingSpecimen.getChildSpecimenCollection();
+        final Collection<AbstractSpecimen> childSpecimenCollection = parentSpecimen.getChildSpecimenCollection();
         final Iterator<AbstractSpecimen> itrChildSpecimen = childSpecimenCollection.iterator();
         while (itrChildSpecimen.hasNext()) {
             final Specimen childSpecimen = (Specimen) itrChildSpecimen.next();
