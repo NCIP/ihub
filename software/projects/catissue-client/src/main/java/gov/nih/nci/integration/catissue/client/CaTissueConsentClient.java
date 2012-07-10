@@ -28,7 +28,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 /**
- * This is the Client class to perform Consent Related Operations (RegisterConsent, RollbackConsent etc).
+ * This is the Client class to perform Consent Status Update Related Operations (RegisterConsent, RollbackConsent etc).
  * 
  * @author Rohit Gupta
  */
@@ -160,16 +160,21 @@ public class CaTissueConsentClient {
             for (consentDetailItr = consentDetailList.iterator(); consentDetailItr.hasNext();) {
                 ConsentDetail consentDetail = consentDetailItr.next();
                 existingSpecimen = getExistingSpecimen(consentDetail.getConsentData().getSpecimenLabel().trim());
+
                 // populate the tierId for given 'statement' inside consentDetail
                 consentDetail = populateConsentTierId(consentDetail);
-                // set the collection
+                // set the ConsentTierStatusCollection to main/parent specimen
                 existingSpecimen.setConsentTierStatusCollection(consentDetail.getConsentData()
                         .getConsentTierStatusSet());
+
+                // set the consentTierCollection for child specimens
+                populateConsentTierStatusCollectionforChildSpecimens(existingSpecimen, consentDetail);
+
                 // and then update the specimen
                 updateSpecimen(existingSpecimen);
 
-                // update the child specimen(s) now
-                performRegisterConsentsForChildSpecimens(existingSpecimen, consentDetail);
+                // Currently this is updating consent status of only parent specimen and not child specimen. This is a
+                // known issue.
             }
         } catch (ApplicationException ae) {
             LOG.error("Register Consent Failed for Specimen" + existingSpecimen.getLabel(), ae);
@@ -178,23 +183,17 @@ public class CaTissueConsentClient {
         }
     }
 
-    private void performRegisterConsentsForChildSpecimens(Specimen parentSpecimen, ConsentDetail consentDetail)
-            throws ApplicationException {
+    /**
+     * This method is used to set the consentTierStatusCollection to the child specimens of the given parent specimen
+     */
+    private void populateConsentTierStatusCollectionforChildSpecimens(Specimen parentSpecimen,
+            ConsentDetail consentDetail) throws ApplicationException {
         final Collection<AbstractSpecimen> childSpecimenCollection = parentSpecimen.getChildSpecimenCollection();
         final Iterator<AbstractSpecimen> itrChildSpecimen = childSpecimenCollection.iterator();
         while (itrChildSpecimen.hasNext()) {
             final Specimen childSpecimen = (Specimen) itrChildSpecimen.next();
             childSpecimen.setConsentTierStatusCollection(consentDetail.getConsentData().getConsentTierStatusSet());
-            updateSpecimen(childSpecimen);
-
-            // do it recursively for child specimen
-            /*
-             * Currently this is working only when Main Specimen has 1 level of child specimen. If the child specimen
-             * further has child specimens, then the below code doesn't work properly. This is a known issue at the
-             * moment and the KC link is https://cabig-kc.nci. nih.gov/Biospecimen/forums/viewtopic.php?f=19
-             * &t=1600&sid=005c36d237d7af0ef232dc5b1daecb31
-             */
-            performRegisterConsentsForChildSpecimens(childSpecimen, consentDetail);
+            populateConsentTierStatusCollectionforChildSpecimens(childSpecimen, consentDetail);
         }
     }
 
@@ -276,8 +275,13 @@ public class CaTissueConsentClient {
                 existingSpecimen = getExistingSpecimen(consentDetail.getConsentData().getSpecimenLabel());
                 existingSpecimen.setConsentTierStatusCollection(consentDetail.getConsentData()
                         .getConsentTierStatusSet());
+
+                // set the consentTierCollection for child specimens
+                populateConsentTierStatusCollectionforChildSpecimens(existingSpecimen, consentDetail);
+
+                // and then update the specimen
                 updateSpecimen(existingSpecimen);
-                performRollbackConsentForChildSpecimens(existingSpecimen, consentDetail);
+
             }
         } catch (ApplicationException ae) {
             // code for handling the exception
@@ -285,30 +289,6 @@ public class CaTissueConsentClient {
                     + consentDetail.getConsentData().getSpecimenLabel(), ae);
             throw new ApplicationException("Error occurred : Unable to rollback. Please check the logs.", ae);
         }
-    }
-
-    private void performRollbackConsentForChildSpecimens(Specimen existingSpecimen, ConsentDetail consentDetail)
-            throws ApplicationException {
-        try {
-            final Collection<AbstractSpecimen> childSpecimenCollection = existingSpecimen.getChildSpecimenCollection();
-            if (childSpecimenCollection != null) {
-                final Iterator<AbstractSpecimen> itrChildSpecimen = childSpecimenCollection.iterator();
-                while (itrChildSpecimen.hasNext()) {
-                    final Specimen childSpecimen = (Specimen) itrChildSpecimen.next();
-                    childSpecimen.setConsentTierStatusCollection(consentDetail.getConsentData()
-                            .getConsentTierStatusSet());
-                    updateSpecimen(childSpecimen);
-                    // do it recursively
-                    performRollbackConsentForChildSpecimens(childSpecimen, consentDetail);
-                }
-            }
-
-        } catch (ApplicationException e) {
-            LOG.error("Exception During Rollback of Consent for ChildSpecimen with SpecimenLabel as "
-                    + consentDetail.getConsentData().getSpecimenLabel(), e);
-            throw new ApplicationException("Error occurred : Unable to rollback. Please check the logs.", e);
-        }
-
     }
 
     /**
