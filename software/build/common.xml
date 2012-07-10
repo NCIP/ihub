@@ -782,7 +782,7 @@
 	<condition property="skip.cobertura.check" value="true">
 		<isfalse value="${run.cobertura.check}"/>
 	</condition>
-	<target name="cobertura-check" description="-> Will check the corbetura coverage rate">
+	<target name="cobertura-check" unless="skip.cobertura.check" description="-> Will check the corbetura coverage rate">
 			<taskdef resource="tasks.properties" classpathref="test.lib.classpath" />
 			<cobertura-check totalbranchrate="${cobertura.totalbranchrate}" totallinerate="${cobertura.totallinerate}" 
 				failureproperty="cobertura.check.failure" datafile="${cobertura.report.dir}/cobertura.ser" />
