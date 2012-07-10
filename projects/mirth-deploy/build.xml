@@ -1,82 +1,94 @@
 <project name="mirth-deploy" basedir=".">
 
-	<property name="project.software.dir" value="${basedir}/../.."/>
-	
+	<property name="project.software.dir" value="${basedir}/../.." />
+
 	<!-- sub-project level build properties takes precedence,
 		 if not present in these property files properties that are present 
 		 globally in project.software.dir properties will be used -->
-		
-		<property file="${basedir}/local-build.properties" />
-		<property file="${basedir}/build.properties" />
-		
-		<import file="${project.software.dir}/build/common.xml"/>
-    
-    <target name="help" description="Prints usage information.">
-        <echo message="================================================================================" />
-        <echo message="          Service: ${ant.project.name}" />
-        <echo message="--------------------------------------------------------------------------------" />
-        <echo message="|  USAGE:                                                                      |" />
-        <echo message="|    Type 'ant -h' for general help with Ant                                   |" />
-        <echo message="|    Type 'ant -p' for a description of this project's build targets.          |" />
-        <echo message="|    Type 'ant -f ivy-build.xml all' To build all.                             |" />
-        <echo message="================================================================================" />
-    </target>
+
+	<property file="${basedir}/local-build.properties" />
+	<property file="${basedir}/build.properties" />
+
+	<import file="${project.software.dir}/build/common.xml" />
 	
+	<target name="help" description="Prints usage information.">
+		<echo message="================================================================================" />
+		<echo message="          Service: ${ant.project.name}" />
+		<echo message="--------------------------------------------------------------------------------" />
+		<echo message="|  USAGE:                                                                      |" />
+		<echo message="|    Type 'ant -h' for general help with Ant                                   |" />
+		<echo message="|    Type 'ant -p' for a description of this project's build targets.          |" />
+		<echo message="|    Type 'ant -f ivy-build.xml all' To build all.                             |" />
+		<echo message="================================================================================" />
+	</target>
+
+	<!-- Download & Merge the iHub/Cacis templates -->
+	<target name="mergeMCCodetemplates">
+		<echo message="Downloading and Merging the Cacis template....." />
+		<property name="cacistemplate.dir" location="${classes.dir}/codetemplates" />
+		<get src="${mc.cacistemplate.loc}" dest="${cacistemplate.dir}"/>
+		<taskdef name="mergeFile" classname="gov.nih.nci.caxchange.messaging.MergeFilesTask" classpath="${classes.dir}" />	
+		<property name="the.fileNames" value="${cacistemplate.dir}/mc-code-templates.xml;${cacistemplate.dir}/ihub-mc-code-templates-standalone.xml;${cacistemplate.dir}/ihub-mc-code-templates.xml" />
+		<mergeFile fileNames="${the.fileNames}" />
+	</target>
+
+	<target name="deploy.resources" description="Will deploy supporting resources" depends="mergeMCCodetemplates">
+	</target>
+
 	<target name="deploy-mc" description="Will deploy to mirth connect.">
 		<copy todir="${mirth.home}/custom-lib" includeemptydirs="true">
-			<fileset dir="${build.dir}/lib/" includes="*.jar"></fileset>
+			<fileset dir="${build.dir}/lib/" includes="*.jar">
+			</fileset>
 		</copy>
 	</target>
-	
+
 	<target name="prepare.mirth" description="Can be used to do any preparation at Mirth side like cleanup">
 		<!-- removing conflicting jars from MC -->
 		<delete>
 			<fileset dir="${mirth.home}">
-			    <include name="lib/mule/antlr-runtime.jar"/>
+				<include name="lib/mule/antlr-runtime.jar" />
 			</fileset>
 		</delete>
 	</target>
-	
-	<target name="test-integration" if="run.test" description="Runs the integration testcases">			
+
+	<target name="test-integration" if="run.test" description="Runs the integration testcases">
 		<!-- overriding test-integration-report to do nothing, as they are all for smoke tests -->
-	</target>	
-	
-	<target name="run-smoke-tests" if="run.test" description="Runs the integration testcases as smoke tests">
-		<runJunit coberturaDataFile="${cobertura.report.dir}/cobertura.ser" 
-					includeTestPattern="**/*IntegrationTest.class" 
-					excludeTestPattern=""/>
 	</target>
-	
+
+	<target name="run-smoke-tests" if="run.test" description="Runs the integration testcases as smoke tests">
+		<runJunit coberturaDataFile="${cobertura.report.dir}/cobertura.ser" includeTestPattern="**/*IntegrationTest.class" excludeTestPattern="" />
+	</target>
+
 	<target name="smoke-test" description="Runs smoke tests">
 		<propertyfile file="${user.home.java.path}/.integration/ihub/transcend-ihub.properties">
-			<entry key="caaers.client.user" value="${test.caaers.client.user}"/>
-			<entry key="caaers.client.psswd" value="${test.caaers.client.psswd}"/>
-			<entry key="catissue.api.login.username" value="${test.catissue.api.login.username}"/>
-			<entry key="catissue.api.login.password" value="${test.catissue.api.login.password}"/>
+			<entry key="caaers.client.user" value="${test.caaers.client.user}" />
+			<entry key="caaers.client.psswd" value="${test.caaers.client.psswd}" />
+			<entry key="catissue.api.login.username" value="${test.catissue.api.login.username}" />
+			<entry key="catissue.api.login.password" value="${test.catissue.api.login.password}" />
 		</propertyfile>
-		
-		<antcall target="stop.mirth.connect"/>
-		<antcall target="start.mirth.connect"/>
-			
-		<antcall target="run-smoke-tests"/>
-			
+
+		<antcall target="stop.mirth.connect" />
+		<antcall target="start.mirth.connect" />
+
+		<antcall target="run-smoke-tests" />
+
 		<propertyfile file="${user.home.java.path}/.integration/ihub/transcend-ihub.properties">
-			<entry key="caaers.client.user" value="${caaers.client.user}"/>
-			<entry key="caaers.client.psswd" value="${caaers.client.psswd}"/>
-			<entry key="catissue.api.login.username" value="${catissue.api.login.username}"/>
-			<entry key="catissue.api.login.password" value="${catissue.api.login.password}"/>
+			<entry key="caaers.client.user" value="${caaers.client.user}" />
+			<entry key="caaers.client.psswd" value="${caaers.client.psswd}" />
+			<entry key="catissue.api.login.username" value="${catissue.api.login.username}" />
+			<entry key="catissue.api.login.password" value="${catissue.api.login.password}" />
 		</propertyfile>
-		
-		<mkdir dir="${test.reports.dir}"/>
-        <junitreport todir="${test.reports.dir}">
-            <fileset dir="${test.results.dir}">
-                <include name="TEST-*.xml"/>
-            </fileset>
-            <report format="frames" todir="${test.reports.dir}"/>
-        </junitreport>
-			
-		<antcall target="stop.mirth.connect"/>
-		<antcall target="start.mirth.connect"/>
+
+		<mkdir dir="${test.reports.dir}" />
+		<junitreport todir="${test.reports.dir}">
+			<fileset dir="${test.results.dir}">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${test.reports.dir}" />
+		</junitreport>
+
+		<antcall target="stop.mirth.connect" />
+		<antcall target="start.mirth.connect" />
 	</target>
 
 </project>
