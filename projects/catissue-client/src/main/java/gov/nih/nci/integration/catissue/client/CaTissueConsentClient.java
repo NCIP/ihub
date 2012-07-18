@@ -189,11 +189,13 @@ public class CaTissueConsentClient {
     private void populateConsentTierStatusCollectionforChildSpecimens(Specimen parentSpecimen,
             ConsentDetail consentDetail) throws ApplicationException {
         final Collection<AbstractSpecimen> childSpecimenCollection = parentSpecimen.getChildSpecimenCollection();
-        final Iterator<AbstractSpecimen> itrChildSpecimen = childSpecimenCollection.iterator();
-        while (itrChildSpecimen.hasNext()) {
-            final Specimen childSpecimen = (Specimen) itrChildSpecimen.next();
-            childSpecimen.setConsentTierStatusCollection(consentDetail.getConsentData().getConsentTierStatusSet());
-            populateConsentTierStatusCollectionforChildSpecimens(childSpecimen, consentDetail);
+        if (childSpecimenCollection != null) {
+            final Iterator<AbstractSpecimen> itrChildSpecimen = childSpecimenCollection.iterator();
+            while (itrChildSpecimen.hasNext()) {
+                final Specimen childSpecimen = (Specimen) itrChildSpecimen.next();
+                childSpecimen.setConsentTierStatusCollection(consentDetail.getConsentData().getConsentTierStatusSet());
+                populateConsentTierStatusCollectionforChildSpecimens(childSpecimen, consentDetail);
+            }
         }
     }
 
