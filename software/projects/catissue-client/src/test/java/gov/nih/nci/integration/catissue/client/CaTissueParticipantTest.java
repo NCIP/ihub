@@ -2,6 +2,10 @@ package gov.nih.nci.integration.catissue.client;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -362,20 +366,33 @@ public class CaTissueParticipantTest {
         return collectionProtocolRegistration;
     }
 
-    // CHECKSTYLE:OFF
-
     private String getParticipantXMLStr() {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?> <catissue:participant xmlns:p=\"http://integration.nci.nih.gov/participant\" xmlns:catissue=\"http://domain.catissuecore.wustl.edu/participant\" xmlns:g=\"http://catissue/gender/data\"> <catissue:activityStatus>Active</catissue:activityStatus> <catissue:birthDate>1965-11-24</catissue:birthDate> <catissue:ethnicity>Not Hispanic or Latino</catissue:ethnicity> <catissue:firstName>Cherry061501</catissue:firstName> <catissue:gender>Male Gender</catissue:gender> <catissue:lastName>488061501</catissue:lastName> <catissue:socialSecurityNumber>123-06-1501</catissue:socialSecurityNumber> <catissue:vitalStatus>Alive</catissue:vitalStatus> <catissue:collectionProtocolRegistrationCollection class=\"set\"> <catissue:collectionProtocolRegistration> <catissue:activityStatus>Active</catissue:activityStatus> <catissue:consentSignatureDate>2012-06-27</catissue:consentSignatureDate> <catissue:protocolParticipantIdentifier>488061501</catissue:protocolParticipantIdentifier> <catissue:registrationDate>2012-03-07</catissue:registrationDate> <catissue:specimenCollectionGroupCollection class=\"set\"/> <catissue:collectionProtocol> <catissue:shortTitle>6482</catissue:shortTitle> <catissue:collectionProtocolEventCollection class=\"linked-hash-set\"/> <catissue:childCollectionProtocolCollection class=\"linked-hash-set\"/> <catissue:studyFormContextCollection class=\"set\"/> <catissue:collectionProtocolRegistrationCollection class=\"set\"/> <catissue:siteCollection class=\"set\"/> <catissue:clinicalDiagnosisCollection class=\"linked-hash-set\"/> <catissue:distributionProtocolCollection class=\"linked-hash-set\"/> <catissue:coordinatorCollection class=\"linked-hash-set\"/> <catissue:assignedProtocolUserCollection class=\"set\"/> <catissue:gridGrouperPrivileges/> </catissue:collectionProtocol> <catissue:participant reference=\"../../..\"/> <catissue:isToInsertAnticipatorySCGs>true</catissue:isToInsertAnticipatorySCGs> </catissue:collectionProtocolRegistration> </catissue:collectionProtocolRegistrationCollection> <catissue:raceCollection class=\"set\"> <catissue:race> <catissue:raceName>White</catissue:raceName> <catissue:participant reference=\"../../..\"/> </catissue:race> </catissue:raceCollection> <catissue:participantMedicalIdentifierCollection class=\"set\"/> <catissue:participantRecordEntryCollection class=\"set\"/> </catissue:participant>";
+        return getXMLString("Participant_Mock.xml");
     }
 
     private String getParticipantXMLStrForBlankSSN() {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?> <catissue:participant xmlns:p=\"http://integration.nci.nih.gov/participant\" xmlns:catissue=\"http://domain.catissuecore.wustl.edu/participant\" xmlns:g=\"http://catissue/gender/data\"> <catissue:activityStatus>Active</catissue:activityStatus> <catissue:birthDate>1965-11-24</catissue:birthDate> <catissue:ethnicity>Not Hispanic or Latino</catissue:ethnicity> <catissue:firstName>Cherry061501</catissue:firstName> <catissue:gender>Male Gender</catissue:gender> <catissue:lastName>488061501</catissue:lastName> <catissue:socialSecurityNumber></catissue:socialSecurityNumber> <catissue:vitalStatus>Alive</catissue:vitalStatus> <catissue:collectionProtocolRegistrationCollection class=\"set\"> <catissue:collectionProtocolRegistration> <catissue:activityStatus>Active</catissue:activityStatus> <catissue:consentSignatureDate>2012-06-27</catissue:consentSignatureDate> <catissue:protocolParticipantIdentifier>488061501</catissue:protocolParticipantIdentifier> <catissue:registrationDate>2012-03-07</catissue:registrationDate> <catissue:specimenCollectionGroupCollection class=\"set\"/> <catissue:collectionProtocol> <catissue:shortTitle>6482</catissue:shortTitle> <catissue:collectionProtocolEventCollection class=\"linked-hash-set\"/> <catissue:childCollectionProtocolCollection class=\"linked-hash-set\"/> <catissue:studyFormContextCollection class=\"set\"/> <catissue:collectionProtocolRegistrationCollection class=\"set\"/> <catissue:siteCollection class=\"set\"/> <catissue:clinicalDiagnosisCollection class=\"linked-hash-set\"/> <catissue:distributionProtocolCollection class=\"linked-hash-set\"/> <catissue:coordinatorCollection class=\"linked-hash-set\"/> <catissue:assignedProtocolUserCollection class=\"set\"/> <catissue:gridGrouperPrivileges/> </catissue:collectionProtocol> <catissue:participant reference=\"../../..\"/> <catissue:isToInsertAnticipatorySCGs>true</catissue:isToInsertAnticipatorySCGs> </catissue:collectionProtocolRegistration> </catissue:collectionProtocolRegistrationCollection> <catissue:raceCollection class=\"set\"> <catissue:race> <catissue:raceName>White</catissue:raceName> <catissue:participant reference=\"../../..\"/> </catissue:race> </catissue:raceCollection> <catissue:participantMedicalIdentifierCollection class=\"set\"/> <catissue:participantRecordEntryCollection class=\"set\"/> </catissue:participant>";
+        return getXMLString("Participant_BlankSSN_Mock.xml");
     }
 
     private String getParticipantXMLStrForLastNameNULL() {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?> <catissue:participant xmlns:p=\"http://integration.nci.nih.gov/participant\" xmlns:catissue=\"http://domain.catissuecore.wustl.edu/participant\" xmlns:g=\"http://catissue/gender/data\"> <catissue:activityStatus>Active</catissue:activityStatus> <catissue:birthDate>1965-11-24</catissue:birthDate> <catissue:ethnicity>Not Hispanic or Latino</catissue:ethnicity> <catissue:firstName>Cherry061501</catissue:firstName> <catissue:gender>Male Gender</catissue:gender> <catissue:lastName></catissue:lastName> <catissue:socialSecurityNumber>123-06-1501</catissue:socialSecurityNumber> <catissue:vitalStatus>Alive</catissue:vitalStatus> <catissue:collectionProtocolRegistrationCollection class=\"set\"> <catissue:collectionProtocolRegistration> <catissue:activityStatus>Active</catissue:activityStatus> <catissue:consentSignatureDate>2012-06-27</catissue:consentSignatureDate> <catissue:protocolParticipantIdentifier>488061501</catissue:protocolParticipantIdentifier> <catissue:registrationDate>2012-03-07</catissue:registrationDate> <catissue:specimenCollectionGroupCollection class=\"set\"/> <catissue:collectionProtocol> <catissue:shortTitle>6482</catissue:shortTitle> <catissue:collectionProtocolEventCollection class=\"linked-hash-set\"/> <catissue:childCollectionProtocolCollection class=\"linked-hash-set\"/> <catissue:studyFormContextCollection class=\"set\"/> <catissue:collectionProtocolRegistrationCollection class=\"set\"/> <catissue:siteCollection class=\"set\"/> <catissue:clinicalDiagnosisCollection class=\"linked-hash-set\"/> <catissue:distributionProtocolCollection class=\"linked-hash-set\"/> <catissue:coordinatorCollection class=\"linked-hash-set\"/> <catissue:assignedProtocolUserCollection class=\"set\"/> <catissue:gridGrouperPrivileges/> </catissue:collectionProtocol> <catissue:participant reference=\"../../..\"/> <catissue:isToInsertAnticipatorySCGs>true</catissue:isToInsertAnticipatorySCGs> </catissue:collectionProtocolRegistration> </catissue:collectionProtocolRegistrationCollection> <catissue:raceCollection class=\"set\"> <catissue:race> <catissue:raceName>White</catissue:raceName> <catissue:participant reference=\"../../..\"/> </catissue:race> </catissue:raceCollection> <catissue:participantMedicalIdentifierCollection class=\"set\"/> <catissue:participantRecordEntryCollection class=\"set\"/> </catissue:participant>";
+        return getXMLString("Participant_LastNameNull_Mock.xml");
     }
 
-    // CHECKSTYLE:ON
+    private String getXMLString(String fileName) {
+        final StringBuffer fileContents = new StringBuffer();
+        final InputStream is = CaTissueConsentIntegrationTest.class.getClassLoader().getResourceAsStream(
+                "payloads_participant/" + fileName);
+        final BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        String strLine;
+        try {
+            while ((strLine = br.readLine()) != null) { // NOPMD
+                fileContents.append(strLine);
+            }
+            is.close();
+        } catch (IOException e) {
+            System.err.println("Error while reading contents of file : " + fileName + ". " + e);// NOPMD
+        }
+        return fileContents.toString();
+    }
 
 }
