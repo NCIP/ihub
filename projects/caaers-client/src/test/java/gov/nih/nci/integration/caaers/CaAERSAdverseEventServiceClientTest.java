@@ -13,6 +13,8 @@ import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.DeleteAdverseEve
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.OutComeEnumType;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.OutcomeType;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.GregorianCalendar;
 
@@ -52,7 +54,7 @@ public class CaAERSAdverseEventServiceClientTest {
     /**
      * TestCase for Creating Adverse Event in caAERS
      */
-    @Test
+    // @Test
     public void createAdverseEvent() {
         final String adverseEventXMLStr = getAdverseEventXMLStr();
         try {
@@ -84,7 +86,7 @@ public class CaAERSAdverseEventServiceClientTest {
     /**
      * TestCase for Creating Adverse Event in caAERS when Participant does not exist in caAERS.
      */
-    @Test
+    // @Test
     public void createAEParticipantNotExist() {
         final String adverseEventXMLStr = getAEParticipantNotExist();
         try {
@@ -100,7 +102,7 @@ public class CaAERSAdverseEventServiceClientTest {
     /**
      * TestCase for Creating Adverse Event in caAERS when Participant is NOT assigned to given Study.
      */
-    @Test
+    // @Test
     public void createAEParticipantNotAssignedToStudy() {
         final String adverseEventXMLStr = getAEParticipantNotAssignedToStudy();
         try {
@@ -116,7 +118,7 @@ public class CaAERSAdverseEventServiceClientTest {
     /**
      * TestCase for Creating Adverse Event in caAERS when startDate of an AE is Invalid
      */
-    @Test
+    // @Test
     public void createAEInvalidStartDateofAE() {
         final String adverseEventXMLStr = getAEInvalidAEStartDate();
         try {
@@ -132,7 +134,7 @@ public class CaAERSAdverseEventServiceClientTest {
     /**
      * TestCase for Creating Adverse Event in caAERS when endDate of an AE is Invalid. The endDate is Blank in this case
      */
-    @Test
+    // @Test
     public void createAEInvalidEndDateofAE() {
         final String adverseEventXMLStr = getAEInvalidAEEndDate();
         try {
@@ -148,7 +150,7 @@ public class CaAERSAdverseEventServiceClientTest {
     /**
      * TestCase for Creating Adverse Event in caAERS when startDate on AE is greater than endDate
      */
-    @Test
+    // @Test
     public void createAEInvalidStartEndDateCombinationofAE() {
         final String adverseEventXMLStr = getAEStartDateGreaterThanEndDate();
         try {
@@ -165,7 +167,7 @@ public class CaAERSAdverseEventServiceClientTest {
     /**
      * TestCase for Creating Adverse Event in caAERS when startDate of the Course is Invalid
      */
-    @Test
+    // @Test
     public void createAEStartDateOfThisCourse() {
         final String adverseEventXMLStr = getAEInvalidStartDateOfThisCourse();
         CreateOrUpdateAdverseEventResponse response = null;
@@ -183,7 +185,7 @@ public class CaAERSAdverseEventServiceClientTest {
     /**
      * TestCase for Creating Adverse Event in caAERS when endDate of the Course is Invalid
      */
-    @Test
+    // @Test
     public void createAEEndDateOfThisCourse() {
         final String adverseEventXMLStr = getAEInvalidEndDateOfThisCourse();
         try {
@@ -199,7 +201,7 @@ public class CaAERSAdverseEventServiceClientTest {
     /**
      * TestCase for Creating Adverse Event in caAERS when startDate is greater than the endDate of the Course
      */
-    @Test
+    // @Test
     public void createAEStartDateGreaterThanEndDateOfThisCourse() {
         final String adverseEventXMLStr = getAEStartDateGreaterEndDateofThisCourse();
         try {
@@ -216,7 +218,7 @@ public class CaAERSAdverseEventServiceClientTest {
     /**
      * TestCase for Creating Adverse Event in caAERS when OutComeEnumType is Invalid
      */
-    @Test
+    // @Test
     public void createAEInvalidOutComeEnumType() {
         final String adverseEventXMLStr = getAEInvalidOutComeEnumType();
         CreateOrUpdateAdverseEventResponse response = null;
@@ -235,7 +237,7 @@ public class CaAERSAdverseEventServiceClientTest {
     /**
      * TestCase for Creating Adverse Event in caAERS when AttributionType is Invalid
      */
-    @Test
+    // @Test
     public void createAEInvalidAttributionType() {
         final String adverseEventXMLStr = getAEInvalidArrtibutionType();
         CreateOrUpdateAdverseEventResponse response = null;
@@ -254,7 +256,7 @@ public class CaAERSAdverseEventServiceClientTest {
     /**
      * TestCase for Updating the Adverse Event in caAERS
      */
-    @Test
+    // @Test
     public void updateAdverseEvent() {
 
         try {
@@ -287,7 +289,7 @@ public class CaAERSAdverseEventServiceClientTest {
     /**
      * TestCase for Updating the Adverse Event in caAERS when Participant does not exist in caAERS.
      */
-    @Test
+    // @Test
     public void updateAEParticipantNotExist() {
         final String adverseEventXMLStr = getAEParticipantNotExist();
         try {
@@ -303,7 +305,7 @@ public class CaAERSAdverseEventServiceClientTest {
     /**
      * TestCase for Updating the Adverse Event in caAERS when Participant is NOT assigned to given Study.
      */
-    @Test
+    // @Test
     public void updateAEParticipantNotAssignedToStudy() {
         final String adverseEventXMLStr = getAEParticipantNotAssignedToStudy();
         try {
@@ -319,7 +321,7 @@ public class CaAERSAdverseEventServiceClientTest {
     /**
      * TestCase for Updating the Adverse Event in caAERS when startDate of an AE is Invalid
      */
-    @Test
+    // @Test
     public void updateAEInvalidStartDateofAE() {
         final String adverseEventXMLStr = getAEInvalidAEStartDate();
         try {
@@ -335,7 +337,7 @@ public class CaAERSAdverseEventServiceClientTest {
     /**
      * TestCase for Updating the Adverse Event in caAERS when endDate of an AE is Invalid.
      */
-    @Test
+    // @Test
     public void updateAEInvalidEndDateofAE() {
         final String adverseEventXMLStr = getAEInvalidAEEndDate();
         try {
@@ -351,7 +353,7 @@ public class CaAERSAdverseEventServiceClientTest {
     /**
      * TestCase for Updating the Adverse Event in caAERS when startDate on AE is greater than endDate
      */
-    @Test
+    // @Test
     public void updateAEInvalidStartEndDateCombinationofAE() {
         final String adverseEventXMLStr = getAEStartDateGreaterThanEndDate();
         try {
@@ -368,7 +370,7 @@ public class CaAERSAdverseEventServiceClientTest {
     /**
      * TestCase for Updating the Adverse Event in caAERS when startDate of the Course is Invalid
      */
-    @Test
+    // @Test
     public void updateAEStartDateOfThisCourse() {
         final String adverseEventXMLStr = getAEInvalidStartDateOfThisCourse();
         CreateOrUpdateAdverseEventResponse response = null;
@@ -385,7 +387,7 @@ public class CaAERSAdverseEventServiceClientTest {
     /**
      * TestCase for Updating the Adverse Event in caAERS when endDate of the Course is Invalid
      */
-    @Test
+    // @Test
     public void updateAEEndDateOfThisCourse() {
         final String adverseEventXMLStr = getAEInvalidEndDateOfThisCourse();
         try {
@@ -401,7 +403,7 @@ public class CaAERSAdverseEventServiceClientTest {
     /**
      * TestCase for Updating the Adverse Event in caAERS when startDate is greater than the endDate of the Course
      */
-    @Test
+    // @Test
     public void updateAEStartDateGreaterThanEndDateOfThisCourse() {
         final String adverseEventXMLStr = getAEStartDateGreaterEndDateofThisCourse();
         try {
@@ -418,7 +420,7 @@ public class CaAERSAdverseEventServiceClientTest {
     /**
      * TestCase for Updating the Adverse Event in caAERS when OutComeEnumType is Invalid
      */
-    @Test
+    // @Test
     public void updateAEInvalidOutComeEnumType() {
         final String adverseEventXMLStr = getAEInvalidOutComeEnumType();
         CreateOrUpdateAdverseEventResponse response = null;
@@ -436,7 +438,7 @@ public class CaAERSAdverseEventServiceClientTest {
     /**
      * TestCase for Updating the Adverse Event in caAERS when AttributionType is Invalid
      */
-    @Test
+    // @Test
     public void updateAEInvalidAttributionType() {
         final String adverseEventXMLStr = getAEInvalidArrtibutionType();
         CreateOrUpdateAdverseEventResponse response = null;
@@ -471,56 +473,65 @@ public class CaAERSAdverseEventServiceClientTest {
         return jc.createMarshaller();
     }
 
-    // CHECKSTYLE:OFF
     private String getAdverseEventXMLStr() {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ns2:adverseevent xmlns:ns2=\"http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent\" xmlns:ns3=\"http://schema.integration.caaers.cabig.nci.nih.gov/common\"><ns2:adverseEvents><ns2:adverseEvent><verbatim>Event1 Verbatim</verbatim><grade>3</grade><expected>true</expected><attributionSummary>POSSIBLE</attributionSummary><startDate>2012-07-10-04:00</startDate><endDate>2012-07-11-04:00</endDate><ctepCode>10001367</ctepCode><outcome><outComeEnumType>LIFE_THREATENING</outComeEnumType></outcome><outcome><outComeEnumType>HOSPITALIZATION</outComeEnumType></outcome></ns2:adverseEvent><ns2:adverseEvent><verbatim>Event2 Verbatim</verbatim><grade>4</grade><expected>true</expected><attributionSummary>DEFINITE</attributionSummary><startDate>2012-07-10-04:00</startDate><endDate>2012-07-11-04:00</endDate><ctepCode>10014004</ctepCode><outcome><outComeEnumType>CONGENITAL_ANOMALY</outComeEnumType></outcome><outcome><outComeEnumType>OTHER_SERIOUS</outComeEnumType></outcome></ns2:adverseEvent></ns2:adverseEvents><ns2:criteria><participantIdentifier>PM-113</participantIdentifier><studyIdentifier>7216</studyIdentifier><course><startDateOfThisCourse>2012-07-12-04:00</startDateOfThisCourse><endDateOfThisCourse>2012-07-15-04:00</endDateOfThisCourse><treatmentType>Treatment</treatmentType><treatmentAssignmentCode>TAC</treatmentAssignmentCode></course></ns2:criteria></ns2:adverseevent>";
+        return getXMLString("AdverseEvent.xml");
     }
 
     private String getAEStudyNotExist() {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ns2:adverseevent xmlns:ns2=\"http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent\" xmlns:ns3=\"http://schema.integration.caaers.cabig.nci.nih.gov/common\"><ns2:adverseEvents><ns2:adverseEvent><verbatim>Event1 Verbatim</verbatim><grade>3</grade><expected>true</expected><attributionSummary>POSSIBLE</attributionSummary><startDate>2012-07-10-04:00</startDate><endDate>2012-07-11-04:00</endDate><ctepCode>10001367</ctepCode><outcome><outComeEnumType>LIFE_THREATENING</outComeEnumType></outcome><outcome><outComeEnumType>HOSPITALIZATION</outComeEnumType></outcome></ns2:adverseEvent><ns2:adverseEvent><verbatim>Event2 Verbatim</verbatim><grade>4</grade><expected>true</expected><attributionSummary>DEFINITE</attributionSummary><startDate>2012-07-10-04:00</startDate><endDate>2012-07-11-04:00</endDate><ctepCode>10014004</ctepCode><outcome><outComeEnumType>CONGENITAL_ANOMALY</outComeEnumType></outcome><outcome><outComeEnumType>OTHER_SERIOUS</outComeEnumType></outcome></ns2:adverseEvent></ns2:adverseEvents><ns2:criteria><participantIdentifier>PM-113</participantIdentifier><studyIdentifier>12345</studyIdentifier><course><startDateOfThisCourse>2012-07-12-04:00</startDateOfThisCourse><endDateOfThisCourse>2012-07-15-04:00</endDateOfThisCourse><treatmentType>Treatment</treatmentType><treatmentAssignmentCode>TAC</treatmentAssignmentCode></course></ns2:criteria></ns2:adverseevent>";
+        return getXMLString("AEStudyNotExist.xml");
     }
 
     private String getAEParticipantNotExist() {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ns2:adverseevent xmlns:ns2=\"http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent\" xmlns:ns3=\"http://schema.integration.caaers.cabig.nci.nih.gov/common\"><ns2:adverseEvents><ns2:adverseEvent><verbatim>Event1 Verbatim</verbatim><grade>3</grade><expected>true</expected><attributionSummary>POSSIBLE</attributionSummary><startDate>2012-07-10-04:00</startDate><endDate>2012-07-11-04:00</endDate><ctepCode>10001367</ctepCode><outcome><outComeEnumType>LIFE_THREATENING</outComeEnumType></outcome><outcome><outComeEnumType>HOSPITALIZATION</outComeEnumType></outcome></ns2:adverseEvent><ns2:adverseEvent><verbatim>Event2 Verbatim</verbatim><grade>4</grade><expected>true</expected><attributionSummary>DEFINITE</attributionSummary><startDate>2012-07-10-04:00</startDate><endDate>2012-07-11-04:00</endDate><ctepCode>10014004</ctepCode><outcome><outComeEnumType>CONGENITAL_ANOMALY</outComeEnumType></outcome><outcome><outComeEnumType>OTHER_SERIOUS</outComeEnumType></outcome></ns2:adverseEvent></ns2:adverseEvents><ns2:criteria><participantIdentifier>PM-001</participantIdentifier><studyIdentifier>7216</studyIdentifier><course><startDateOfThisCourse>2012-07-12-04:00</startDateOfThisCourse><endDateOfThisCourse>2012-07-15-04:00</endDateOfThisCourse><treatmentType>Treatment</treatmentType><treatmentAssignmentCode>TAC</treatmentAssignmentCode></course></ns2:criteria></ns2:adverseevent>";
+        return getXMLString("AEParticipantNotExist.xml");
     }
 
     private String getAEParticipantNotAssignedToStudy() {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ns2:adverseevent xmlns:ns2=\"http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent\" xmlns:ns3=\"http://schema.integration.caaers.cabig.nci.nih.gov/common\"><ns2:adverseEvents><ns2:adverseEvent><verbatim>Event1 Verbatim</verbatim><grade>3</grade><expected>true</expected><attributionSummary>POSSIBLE</attributionSummary><startDate>2012-07-10-04:00</startDate><endDate>2012-07-11-04:00</endDate><ctepCode>10001367</ctepCode><outcome><outComeEnumType>LIFE_THREATENING</outComeEnumType></outcome><outcome><outComeEnumType>HOSPITALIZATION</outComeEnumType></outcome></ns2:adverseEvent><ns2:adverseEvent><verbatim>Event2 Verbatim</verbatim><grade>4</grade><expected>true</expected><attributionSummary>DEFINITE</attributionSummary><startDate>2012-07-10-04:00</startDate><endDate>2012-07-11-04:00</endDate><ctepCode>10014004</ctepCode><outcome><outComeEnumType>CONGENITAL_ANOMALY</outComeEnumType></outcome><outcome><outComeEnumType>OTHER_SERIOUS</outComeEnumType></outcome></ns2:adverseEvent></ns2:adverseEvents><ns2:criteria><participantIdentifier>PM-113</participantIdentifier><studyIdentifier>7211</studyIdentifier><course><startDateOfThisCourse>2012-07-12-04:00</startDateOfThisCourse><endDateOfThisCourse>2012-07-15-04:00</endDateOfThisCourse><treatmentType>Treatment</treatmentType><treatmentAssignmentCode>TAC</treatmentAssignmentCode></course></ns2:criteria></ns2:adverseevent>";
+        return getXMLString("AEParticipantNotAssignedToStudy.xml");
     }
 
     private String getAEInvalidAEStartDate() {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ns2:adverseevent xmlns:ns2=\"http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent\" xmlns:ns3=\"http://schema.integration.caaers.cabig.nci.nih.gov/common\"><ns2:adverseEvents><ns2:adverseEvent><verbatim>Event1 Verbatim</verbatim><grade>3</grade><expected>true</expected><attributionSummary>POSSIBLE</attributionSummary><startDate>2012-37-10-04:00</startDate><endDate>2012-07-11-04:00</endDate><ctepCode>10001367</ctepCode><outcome><outComeEnumType>LIFE_THREATENING</outComeEnumType></outcome><outcome><outComeEnumType>HOSPITALIZATION</outComeEnumType></outcome></ns2:adverseEvent><ns2:adverseEvent><verbatim>Event2 Verbatim</verbatim><grade>4</grade><expected>true</expected><attributionSummary>DEFINITE</attributionSummary><startDate>2012-07-10-04:00</startDate><endDate>2012-07-11-04:00</endDate><ctepCode>10014004</ctepCode><outcome><outComeEnumType>CONGENITAL_ANOMALY</outComeEnumType></outcome><outcome><outComeEnumType>OTHER_SERIOUS</outComeEnumType></outcome></ns2:adverseEvent></ns2:adverseEvents><ns2:criteria><participantIdentifier>PM-113</participantIdentifier><studyIdentifier>7216</studyIdentifier><course><startDateOfThisCourse>2012-07-12-04:00</startDateOfThisCourse><endDateOfThisCourse>2012-07-15-04:00</endDateOfThisCourse><treatmentType>Treatment</treatmentType><treatmentAssignmentCode>TAC</treatmentAssignmentCode></course></ns2:criteria></ns2:adverseevent>";
+        return getXMLString("AEInvalidAEStartDate.xml");
     }
 
     private String getAEInvalidAEEndDate() {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ns2:adverseevent xmlns:ns2=\"http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent\" xmlns:ns3=\"http://schema.integration.caaers.cabig.nci.nih.gov/common\"><ns2:adverseEvents><ns2:adverseEvent><verbatim>Event1 Verbatim</verbatim><grade>3</grade><expected>true</expected><attributionSummary>POSSIBLE</attributionSummary><startDate>2012-07-10-04:00</startDate><endDate>2012-07-51-04:00</endDate><ctepCode>10001367</ctepCode><outcome><outComeEnumType>LIFE_THREATENING</outComeEnumType></outcome><outcome><outComeEnumType>HOSPITALIZATION</outComeEnumType></outcome></ns2:adverseEvent><ns2:adverseEvent><verbatim>Event2 Verbatim</verbatim><grade>4</grade><expected>true</expected><attributionSummary>DEFINITE</attributionSummary><startDate>2012-07-10-04:00</startDate><endDate>2012-07-11-04:00</endDate><ctepCode>10014004</ctepCode><outcome><outComeEnumType>CONGENITAL_ANOMALY</outComeEnumType></outcome><outcome><outComeEnumType>OTHER_SERIOUS</outComeEnumType></outcome></ns2:adverseEvent></ns2:adverseEvents><ns2:criteria><participantIdentifier>PM-113</participantIdentifier><studyIdentifier>7216</studyIdentifier><course><startDateOfThisCourse>2012-07-12-04:00</startDateOfThisCourse><endDateOfThisCourse>2012-07-15-04:00</endDateOfThisCourse><treatmentType>Treatment</treatmentType><treatmentAssignmentCode>TAC</treatmentAssignmentCode></course></ns2:criteria></ns2:adverseevent>";
+        return getXMLString("AEInvalidAEEndDate.xml");
     }
 
     private String getAEStartDateGreaterThanEndDate() {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ns2:adverseevent xmlns:ns2=\"http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent\" xmlns:ns3=\"http://schema.integration.caaers.cabig.nci.nih.gov/common\"><ns2:adverseEvents><ns2:adverseEvent><verbatim>Event1 Verbatim</verbatim><grade>3</grade><expected>true</expected><attributionSummary>POSSIBLE</attributionSummary><startDate>2012-07-15-04:00</startDate><endDate>2012-07-11-04:00</endDate><ctepCode>10001367</ctepCode><outcome><outComeEnumType>LIFE_THREATENING</outComeEnumType></outcome><outcome><outComeEnumType>HOSPITALIZATION</outComeEnumType></outcome></ns2:adverseEvent><ns2:adverseEvent><verbatim>Event2 Verbatim</verbatim><grade>4</grade><expected>true</expected><attributionSummary>DEFINITE</attributionSummary><startDate>2012-07-10-04:00</startDate><endDate>2012-07-11-04:00</endDate><ctepCode>10014004</ctepCode><outcome><outComeEnumType>CONGENITAL_ANOMALY</outComeEnumType></outcome><outcome><outComeEnumType>OTHER_SERIOUS</outComeEnumType></outcome></ns2:adverseEvent></ns2:adverseEvents><ns2:criteria><participantIdentifier>PM-113</participantIdentifier><studyIdentifier>7216</studyIdentifier><course><startDateOfThisCourse>2012-07-12-04:00</startDateOfThisCourse><endDateOfThisCourse>2012-07-15-04:00</endDateOfThisCourse><treatmentType>Treatment</treatmentType><treatmentAssignmentCode>TAC</treatmentAssignmentCode></course></ns2:criteria></ns2:adverseevent>";
+        return getXMLString("AEStartDateGreaterThanEndDate.xml");
     }
 
     private String getAEInvalidStartDateOfThisCourse() {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ns2:adverseevent xmlns:ns2=\"http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent\" xmlns:ns3=\"http://schema.integration.caaers.cabig.nci.nih.gov/common\"><ns2:adverseEvents><ns2:adverseEvent><verbatim>Event1 Verbatim</verbatim><grade>3</grade><expected>true</expected><attributionSummary>POSSIBLE</attributionSummary><startDate>2012-07-10-04:00</startDate><endDate>2012-07-11-04:00</endDate><ctepCode>10001367</ctepCode><outcome><outComeEnumType>LIFE_THREATENING</outComeEnumType></outcome><outcome><outComeEnumType>HOSPITALIZATION</outComeEnumType></outcome></ns2:adverseEvent><ns2:adverseEvent><verbatim>Event2 Verbatim</verbatim><grade>4</grade><expected>true</expected><attributionSummary>DEFINITE</attributionSummary><startDate>2012-07-10-04:00</startDate><endDate>2012-07-11-04:00</endDate><ctepCode>10014004</ctepCode><outcome><outComeEnumType>CONGENITAL_ANOMALY</outComeEnumType></outcome><outcome><outComeEnumType>OTHER_SERIOUS</outComeEnumType></outcome></ns2:adverseEvent></ns2:adverseEvents><ns2:criteria><participantIdentifier>PM-113</participantIdentifier><studyIdentifier>7216</studyIdentifier><course><startDateOfThisCourse>2012-57-12-04:00</startDateOfThisCourse><endDateOfThisCourse>2012-07-15-04:00</endDateOfThisCourse><treatmentType>Treatment</treatmentType><treatmentAssignmentCode>TAC</treatmentAssignmentCode></course></ns2:criteria></ns2:adverseevent>";
+        return getXMLString("AEInvalidStartDateOfThisCourse.xml");
     }
 
     private String getAEInvalidEndDateOfThisCourse() {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ns2:adverseevent xmlns:ns2=\"http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent\" xmlns:ns3=\"http://schema.integration.caaers.cabig.nci.nih.gov/common\"><ns2:adverseEvents><ns2:adverseEvent><verbatim>Event1 Verbatim</verbatim><grade>3</grade><expected>true</expected><attributionSummary>POSSIBLE</attributionSummary><startDate>2012-07-10-04:00</startDate><endDate>2012-07-11-04:00</endDate><ctepCode>10001367</ctepCode><outcome><outComeEnumType>LIFE_THREATENING</outComeEnumType></outcome><outcome><outComeEnumType>HOSPITALIZATION</outComeEnumType></outcome></ns2:adverseEvent><ns2:adverseEvent><verbatim>Event2 Verbatim</verbatim><grade>4</grade><expected>true</expected><attributionSummary>DEFINITE</attributionSummary><startDate>2012-07-10-04:00</startDate><endDate>2012-07-11-04:00</endDate><ctepCode>10014004</ctepCode><outcome><outComeEnumType>CONGENITAL_ANOMALY</outComeEnumType></outcome><outcome><outComeEnumType>OTHER_SERIOUS</outComeEnumType></outcome></ns2:adverseEvent></ns2:adverseEvents><ns2:criteria><participantIdentifier>PM-113</participantIdentifier><studyIdentifier>7216</studyIdentifier><course><startDateOfThisCourse>2012-07-12-04:00</startDateOfThisCourse><endDateOfThisCourse>2012-07-75-04:00</endDateOfThisCourse><treatmentType>Treatment</treatmentType><treatmentAssignmentCode>TAC</treatmentAssignmentCode></course></ns2:criteria></ns2:adverseevent>";
+        return getXMLString("AEInvalidEndDateOfThisCourse.xml");
     }
 
     private String getAEStartDateGreaterEndDateofThisCourse() {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ns2:adverseevent xmlns:ns2=\"http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent\" xmlns:ns3=\"http://schema.integration.caaers.cabig.nci.nih.gov/common\"><ns2:adverseEvents><ns2:adverseEvent><verbatim>Event1 Verbatim</verbatim><grade>3</grade><expected>true</expected><attributionSummary>POSSIBLE</attributionSummary><startDate>2012-07-10-04:00</startDate><endDate>2012-07-11-04:00</endDate><ctepCode>10001367</ctepCode><outcome><outComeEnumType>LIFE_THREATENING</outComeEnumType></outcome><outcome><outComeEnumType>HOSPITALIZATION</outComeEnumType></outcome></ns2:adverseEvent><ns2:adverseEvent><verbatim>Event2 Verbatim</verbatim><grade>4</grade><expected>true</expected><attributionSummary>DEFINITE</attributionSummary><startDate>2012-07-10-04:00</startDate><endDate>2012-07-11-04:00</endDate><ctepCode>10014004</ctepCode><outcome><outComeEnumType>CONGENITAL_ANOMALY</outComeEnumType></outcome><outcome><outComeEnumType>OTHER_SERIOUS</outComeEnumType></outcome></ns2:adverseEvent></ns2:adverseEvents><ns2:criteria><participantIdentifier>PM-113</participantIdentifier><studyIdentifier>7216</studyIdentifier><course><startDateOfThisCourse>2012-07-17-04:00</startDateOfThisCourse><endDateOfThisCourse>2012-07-15-04:00</endDateOfThisCourse><treatmentType>Treatment</treatmentType><treatmentAssignmentCode>TAC</treatmentAssignmentCode></course></ns2:criteria></ns2:adverseevent>";
+        return getXMLString("AEStartDateGreaterEndDateofThisCourse.xml");
     }
 
     private String getAEInvalidOutComeEnumType() {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ns2:adverseevent xmlns:ns2=\"http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent\" xmlns:ns3=\"http://schema.integration.caaers.cabig.nci.nih.gov/common\"><ns2:adverseEvents><ns2:adverseEvent><verbatim>Event1 Verbatim</verbatim><grade>3</grade><expected>true</expected><attributionSummary>POSSIBLE</attributionSummary><startDate>2012-07-10-04:00</startDate><endDate>2012-07-11-04:00</endDate><ctepCode>10001367</ctepCode><outcome><outComeEnumType>LIFE_THREATENING_1234</outComeEnumType></outcome><outcome><outComeEnumType>HOSPITALIZATION</outComeEnumType></outcome></ns2:adverseEvent><ns2:adverseEvent><verbatim>Event2 Verbatim</verbatim><grade>4</grade><expected>true</expected><attributionSummary>DEFINITE</attributionSummary><startDate>2012-07-10-04:00</startDate><endDate>2012-07-11-04:00</endDate><ctepCode>10014004</ctepCode><outcome><outComeEnumType>CONGENITAL_ANOMALY</outComeEnumType></outcome><outcome><outComeEnumType>OTHER_SERIOUS</outComeEnumType></outcome></ns2:adverseEvent></ns2:adverseEvents><ns2:criteria><participantIdentifier>PM-113</participantIdentifier><studyIdentifier>7216</studyIdentifier><course><startDateOfThisCourse>2012-07-12-04:00</startDateOfThisCourse><endDateOfThisCourse>2012-07-15-04:00</endDateOfThisCourse><treatmentType>Treatment</treatmentType><treatmentAssignmentCode>TAC</treatmentAssignmentCode></course></ns2:criteria></ns2:adverseevent>";
+        return getXMLString("AEInvalidOutComeEnumType.xml");
     }
 
     private String getAEInvalidArrtibutionType() {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ns2:adverseevent xmlns:ns2=\"http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent\" xmlns:ns3=\"http://schema.integration.caaers.cabig.nci.nih.gov/common\"><ns2:adverseEvents><ns2:adverseEvent><verbatim>Event1 Verbatim</verbatim><grade>3</grade><expected>true</expected><attributionSummary>789_POSSIBLE_123</attributionSummary><startDate>2012-07-10-04:00</startDate><endDate>2012-07-11-04:00</endDate><ctepCode>10001367</ctepCode><outcome><outComeEnumType>LIFE_THREATENING</outComeEnumType></outcome><outcome><outComeEnumType>HOSPITALIZATION</outComeEnumType></outcome></ns2:adverseEvent><ns2:adverseEvent><verbatim>Event2 Verbatim</verbatim><grade>4</grade><expected>true</expected><attributionSummary>DEFINITE</attributionSummary><startDate>2012-07-10-04:00</startDate><endDate>2012-07-11-04:00</endDate><ctepCode>10014004</ctepCode><outcome><outComeEnumType>CONGENITAL_ANOMALY</outComeEnumType></outcome><outcome><outComeEnumType>OTHER_SERIOUS</outComeEnumType></outcome></ns2:adverseEvent></ns2:adverseEvents><ns2:criteria><participantIdentifier>PM-113</participantIdentifier><studyIdentifier>7216</studyIdentifier><course><startDateOfThisCourse>2012-07-12-04:00</startDateOfThisCourse><endDateOfThisCourse>2012-07-15-04:00</endDateOfThisCourse><treatmentType>Treatment</treatmentType><treatmentAssignmentCode>TAC</treatmentAssignmentCode></course></ns2:criteria></ns2:adverseevent>";
+        return getXMLString("AEInvalidAttributionType.xml");
     }
 
-    // CHECKSTYLE:ON
+    private String getXMLString(String fileName) {
+        String contents = null;
+        final InputStream is = CaAERSAdverseEventServiceClientTest.class.getClassLoader().getResourceAsStream(
+                "payloads_adverseevent/" + fileName);
+        try {
+            contents = org.apache.cxf.helpers.IOUtils.toString(is);
+        } catch (IOException e) {
+            System.err.println("Error while reading contents of file : " + fileName + ". " + e);// NOPMD
+        }
+        return contents;
+    }
 
     private String getAdverseEventsInputMessageString() {
         StringWriter sw = null;
