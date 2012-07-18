@@ -18,6 +18,8 @@ import gov.nih.nci.integration.exception.IntegrationException;
 import gov.nih.nci.integration.invoker.ServiceInvocationResult;
 import gov.nih.nci.integration.transformer.XSLTTransformer;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.sql.Date;
 import java.util.GregorianCalendar;
@@ -427,16 +429,13 @@ public class CaAERSParticipantStrategyTest {
         Assert.assertNotNull(result);
     }
 
-    // CHECKSTYLE:OFF
     private String getParticipantInterimMessage() {
-        return "<xr:caxchangerequest xmlns:xr=\"http://caXchange.nci.nih.gov/caxchangerequest\" xmlns:mes=\"http://caXchange.nci.nih.gov/messaging\" xmlns:p=\"http://integration.nci.nih.gov/participant\" xmlns:ns1trim=\"urn:tolven-org:trim:4.0\" xmlns:xs=\"http://www.w3.org/TR/2008/REC-xml-20081126#\"><mes:metadata><mes:serviceType xmlns:ns2=\"http://caXchange.nci.nih.gov/caxchangerequest\" xmlns=\"http://caXchange.nci.nih.gov/messaging\" xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:cda=\"urn:hl7-org:v3\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">iHub</mes:serviceType><mes:operationName xmlns:ns2=\"http://caXchange.nci.nih.gov/caxchangerequest\" xmlns=\"http://caXchange.nci.nih.gov/messaging\" xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:cda=\"urn:hl7-org:v3\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">Create Registration</mes:operationName><mes:externalIdentifier xmlns:ns2=\"http://caXchange.nci.nih.gov/caxchangerequest\" xmlns=\"http://caXchange.nci.nih.gov/messaging\" xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:cda=\"urn:hl7-org:v3\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">322061501</mes:externalIdentifier><mes:caXchangeIdentifier xmlns:ns2=\"http://caXchange.nci.nih.gov/caxchangerequest\" xmlns=\"http://caXchange.nci.nih.gov/messaging\" xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:cda=\"urn:hl7-org:v3\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">1340892539847</mes:caXchangeIdentifier><mes:credentials xmlns:ns2=\"http://caXchange.nci.nih.gov/caxchangerequest\" xmlns=\"http://caXchange.nci.nih.gov/messaging\" xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:cda=\"urn:hl7-org:v3\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><mes:userName>tolvenuser</mes:userName><mes:password>changeme</mes:password></mes:credentials></mes:metadata><mes:request><mes:businessMessagePayload><xmlSchemaDefinition xmlns=\"http://cacis.nci.nih.gov\">http://integration.nci.nih.gov/participant</xmlSchemaDefinition><p:participant xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" id=\"1\" version=\"1\" xsi:schemaLocation=\"http://integration.nci.nih.gov/participant Participant.xsd \"><p:firstName>Cherry061501</p:firstName><p:lastName>Blossom061501</p:lastName><p:maidenName/><p:middleName/><p:birthDate>1965-11-24</p:birthDate><p:gender>Male</p:gender><p:race>White</p:race><p:ethnicity>Not Hispanic or Latino</p:ethnicity><p:activityStatus>Active</p:activityStatus><p:registrationDate>2012-03-07</p:registrationDate><p:identifiers><p:organizationAssignedIdentifier id=\"1\" version=\"1\"><p:type>MRN</p:type><p:value>666061501</p:value><p:primaryIndicator>true</p:primaryIndicator><p:organization id=\"1\" version=\"1\"><p:name>QU</p:name><p:nciInstituteCode>DCP</p:nciInstituteCode></p:organization></p:organizationAssignedIdentifier><p:organizationAssignedIdentifier id=\"2\" version=\"1\"><p:type>SSN</p:type><p:value>123-06-1501</p:value><p:primaryIndicator>false</p:primaryIndicator><p:organization id=\"1\" version=\"1\"><p:name>SSN</p:name><p:nciInstituteCode>SSN</p:nciInstituteCode></p:organization></p:organizationAssignedIdentifier><p:systemAssignedIdentifier id=\"1\" version=\"1\"><p:type>MRN</p:type><p:value>666061501</p:value><p:primaryIndicator>true</p:primaryIndicator><p:systemName>MRN</p:systemName></p:systemAssignedIdentifier></p:identifiers><p:assignments><p:assignment id=\"1\" version=\"1\"><p:studySubjectIdentifier>488061501</p:studySubjectIdentifier><p:studySite id=\"1\" version=\"1\"><p:study id=\"1\" version=\"1\"><p:identifiers><p:identifier id=\"1\" version=\"1\"><p:type>Protocol Authority Identifier</p:type><p:value>6482</p:value></p:identifier></p:identifiers></p:study><p:organization id=\"1\" version=\"1\"><p:name>QU</p:name><p:nciInstituteCode>DCP</p:nciInstituteCode></p:organization></p:studySite></p:assignment></p:assignments></p:participant></mes:businessMessagePayload></mes:request></xr:caxchangerequest>";
+        return getXMLString("ParticipantInterim.xml");
     }
 
     private String getParticipantXMLString() {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?> <caaers:participant xmlns:p=\"http://integration.nci.nih.gov/participant\" xmlns:caaers=\"http://schema.integration.caaers.cabig.nci.nih.gov/participant\" id=\"1\" version=\"1\"> <firstName>Cherry061501</firstName> <lastName>Blossom061501</lastName> <maidenName/> <middleName/> <birthDate>1965-11-24</birthDate> <gender>Male</gender> <race>White</race> <ethnicity>Not Hispanic or Latino</ethnicity> <identifiers> <caaers:organizationAssignedIdentifier id=\"1\" version=\"1\"> <type>MRN</type> <value>666061501</value> <primaryIndicator>true</primaryIndicator> <caaers:organization id=\"1\" version=\"1\"> <name>QU</name> <nciInstituteCode>DCP</nciInstituteCode> </caaers:organization> </caaers:organizationAssignedIdentifier> <caaers:systemAssignedIdentifier id=\"1\" version=\"1\"> <type>MRN</type> <value>666061501</value> <primaryIndicator>true</primaryIndicator> <systemName>MRN</systemName> </caaers:systemAssignedIdentifier> </identifiers> <assignments> <caaers:assignment id=\"1\" version=\"1\"> <studySubjectIdentifier>488061501</studySubjectIdentifier> <caaers:studySite id=\"1\" version=\"1\"> <caaers:study id=\"1\" version=\"1\"> <identifiers> <identifier id=\"1\" version=\"1\"> <type>Protocol Authority Identifier</type> <value>6482</value> </identifier> </identifiers> </caaers:study> <caaers:organization id=\"1\" version=\"1\"> <name>QU</name> <nciInstituteCode>DCP</nciInstituteCode> </caaers:organization> </caaers:studySite> </caaers:assignment> </assignments> </caaers:participant>";
+        return getXMLString("Participant.xml");
     }
-
-    // CHECKSTYLE:ON
 
     private ServiceInvocationMessage prepareServiceInvocationMessage(Long referenceMessageId, String message,
             Date startTime, StrategyIdentifier strategyIdentifier) {
@@ -531,5 +530,17 @@ public class CaAERSParticipantStrategyTest {
         participants.getParticipant().add(participant);
         resDataType.setAny(participants);
         return resDataType;
+    }
+
+    private String getXMLString(String fileName) {
+        String contents = null;
+        final InputStream is = CaAERSAdverseEventServiceClientTest.class.getClassLoader().getResourceAsStream(
+                "payloads_participant/" + fileName);
+        try {
+            contents = org.apache.cxf.helpers.IOUtils.toString(is);
+        } catch (IOException e) {
+            System.err.println("Error while reading contents of file : " + fileName + ". " + e);// NOPMD
+        }
+        return contents;
     }
 }
