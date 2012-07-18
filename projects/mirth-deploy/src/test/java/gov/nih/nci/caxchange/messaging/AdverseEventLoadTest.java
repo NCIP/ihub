@@ -1,6 +1,9 @@
 package gov.nih.nci.caxchange.messaging;
 
+import gov.nih.nci.integration.catissue.CaTissueParticipantClientIntegrationTest;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
@@ -109,12 +112,9 @@ public class AdverseEventLoadTest {
         }
     }
 
-    // CHECKSTYLE:OFF
     private String getCreateAdverseEventXMLStr() {
-        return "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:mes=\"http://caXchange.nci.nih.gov/messaging\"><soapenv:Header/><soapenv:Body><mes:caXchangeRequestMessage><mes:metadata><mes:transactionControl>?</mes:transactionControl><mes:serviceType>iHub</mes:serviceType><mes:operationName>Create Adverse Event</mes:operationName><mes:externalIdentifier>32225879</mes:externalIdentifier><mes:caXchangeIdentifier/><mes:credentials><mes:userName>tolvenuser</mes:userName><mes:groupName>nogrid</mes:groupName><mes:gridIdentifier>nogrid</mes:gridIdentifier><mes:password>changeme</mes:password><mes:delegatedCredentialReference>nocredentials</mes:delegatedCredentialReference></mes:credentials></mes:metadata><mes:request><mes:businessMessagePayload><mes:xmlSchemaDefinition>urn:tolven-org:trim:4.0</mes:xmlSchemaDefinition><trim xmlns=\"urn:tolven-org:trim:4.0\"><adverseeventinput><criteria><participantIdentifier>PM-113</participantIdentifier><studyIdentifier>7216</studyIdentifier><course><startDateOfThisCourse>2012-07-12-04:00</startDateOfThisCourse><endDateOfThisCourse>2012-07-15-04:00</endDateOfThisCourse><treatmentType>Treatment</treatmentType><treatmentAssignmentCode>TAC</treatmentAssignmentCode></course></criteria><adverseEventsList><adverseEvent><verbatim>Event1 Verbatim</verbatim><ctepCode>Adrenal insufficiency</ctepCode><grade>3</grade><startDate>2012-07-10-04:00</startDate><endDate>2012-07-11-04:00</endDate><expected>true</expected><attributionSummary>POSSIBLE</attributionSummary><outcome><outComeEnumType>LIFE_THREATENING</outComeEnumType></outcome><outcome><outComeEnumType>HOSPITALIZATION</outComeEnumType></outcome></adverseEvent><adverseEvent><verbatim>Event2 Verbatim</verbatim><ctepCode>Aspartateamino transferase increased</ctepCode><grade>4</grade><startDate>2012-07-10-04:00</startDate><endDate>2012-07-11-04:00</endDate><expected>true</expected><attributionSummary>DEFINITE</attributionSummary><outcome><outComeEnumType>CONGENITAL_ANOMALY</outComeEnumType></outcome><outcome><outComeEnumType>OTHER_SERIOUS</outComeEnumType></outcome></adverseEvent></adverseEventsList></adverseeventinput></trim></mes:businessMessagePayload></mes:request></mes:caXchangeRequestMessage></soapenv:Body></soapenv:Envelope>";
+        return getXMLString("CreateAdverseEvent.xml");
     }
-
-    // CHECKSTYLE:ON
 
     private Runnable getRunnable() {
         return new Runnable() {
@@ -134,5 +134,17 @@ public class AdverseEventLoadTest {
                 es.execute(getRunnable());
             }
         };
+    }
+
+    private String getXMLString(String fileName) {
+        String contents = null;
+        final InputStream is = CaTissueParticipantClientIntegrationTest.class.getClassLoader().getResourceAsStream(
+                "payloads_adverseevent/" + fileName);
+        try {
+            contents = org.apache.cxf.helpers.IOUtils.toString(is);
+        } catch (IOException e) {
+            System.err.println("Error while reading contents of file : " + fileName + ". " + e);// NOPMD
+        }
+        return contents;
     }
 }
