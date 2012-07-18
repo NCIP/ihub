@@ -1,6 +1,9 @@
 package gov.nih.nci.caxchange.messaging;
 
+import gov.nih.nci.integration.catissue.CaTissueParticipantClientIntegrationTest;
+
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
@@ -32,9 +35,9 @@ public class RegisterConsentIntegrationTest {
     private String transcendCaxchangeServiceUrl;
 
     private final HttpClient httpclient = new DefaultHttpClient();
-    
+
     private static final String XMLTEXT = "text/xml";
-    
+
     /**
      * Testcase for registerConsents flow
      */
@@ -48,11 +51,11 @@ public class RegisterConsentIntegrationTest {
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
-            
+
             String createdXML = null;
-            
+
             if (entity != null) {
-                createdXML = EntityUtils.toString(entity);     
+                createdXML = EntityUtils.toString(entity);
                 Assert.assertEquals(true, createdXML.contains("<responseStatus>SUCCESS</responseStatus>"));
             }
         } catch (ClientProtocolException e) {
@@ -63,7 +66,7 @@ public class RegisterConsentIntegrationTest {
             Assert.fail(e.getMessage());
         }
     }
-    
+
     /**
      * Testcase for registerConsents when Specimen doesn't exist
      */
@@ -77,11 +80,11 @@ public class RegisterConsentIntegrationTest {
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
-            
+
             String createdXML = null;
-            
+
             if (entity != null) {
-                createdXML = EntityUtils.toString(entity);     
+                createdXML = EntityUtils.toString(entity);
                 Assert.assertEquals(true, createdXML.contains("<errorCode>1090</errorCode>"));
             }
         } catch (ClientProtocolException e) {
@@ -92,7 +95,7 @@ public class RegisterConsentIntegrationTest {
             Assert.fail(e.getMessage());
         }
     }
-    
+
     /**
      * Testcase for registerConsents when collectionProtocol doesn't exist
      */
@@ -106,11 +109,11 @@ public class RegisterConsentIntegrationTest {
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
-            
+
             String createdXML = null;
-            
+
             if (entity != null) {
-                createdXML = EntityUtils.toString(entity);         
+                createdXML = EntityUtils.toString(entity);
                 Assert.assertEquals(true, createdXML.contains("<errorCode>1091</errorCode>"));
             }
         } catch (ClientProtocolException e) {
@@ -121,11 +124,10 @@ public class RegisterConsentIntegrationTest {
             Assert.fail(e.getMessage());
         }
     }
-    
-  
+
     /**
      * Testcase for registerConsents when Tier statement doesn't exist
-     */  
+     */
     @Test
     public void registerConsentsStatementNotExist() {
         try {
@@ -136,11 +138,11 @@ public class RegisterConsentIntegrationTest {
 
             final HttpResponse response = httpclient.execute(httppost);
             final HttpEntity entity = response.getEntity();
-            
+
             String createdXML = null;
-            
+
             if (entity != null) {
-                createdXML = EntityUtils.toString(entity);          
+                createdXML = EntityUtils.toString(entity);
                 Assert.assertEquals(true, createdXML.contains("<errorCode>1092</errorCode>"));
             }
         } catch (ClientProtocolException e) {
@@ -151,25 +153,32 @@ public class RegisterConsentIntegrationTest {
             Assert.fail(e.getMessage());
         }
     }
-  
- // CHECKSTYLE:OFF
+
     private String getRegisterConsentXMLStr() {
-        return "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:mes=\"http://caXchange.nci.nih.gov/messaging\"><soapenv:Header/><soapenv:Body><mes:caXchangeRequestMessage><mes:metadata><mes:transactionControl>?</mes:transactionControl><mes:serviceType>iHub</mes:serviceType><mes:operationName>Register Consent</mes:operationName><mes:externalIdentifier>32225879</mes:externalIdentifier><mes:caXchangeIdentifier/><mes:credentials><mes:userName>tolvenuser</mes:userName><mes:groupName>nogrid</mes:groupName><mes:gridIdentifier>nogrid</mes:gridIdentifier><mes:password>changeme</mes:password><mes:delegatedCredentialReference>nocredentials</mes:delegatedCredentialReference></mes:credentials></mes:metadata><mes:request><mes:businessMessagePayload><mes:xmlSchemaDefinition>urn:tolven-org:trim:4.0</mes:xmlSchemaDefinition><trim xmlns=\"urn:tolven-org:trim:4.0\"><consents xmlns=\"http://cacis.nci.nih.gov\"><participant><cdmsSubjectId>66604232</cdmsSubjectId></participant><consentsDetailsList><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen><cdmsSpecimenId>TolvenTestUser252TissueSpecimen12</cdmsSpecimenId></specimen><collectionProtocol><title>Tolven Tissue Protocol</title><shortTitle>ttp</shortTitle></collectionProtocol><consentTierResponses><tier><statement>This is a statement</statement><response>Yes</response></tier><tier><statement>This is a second statement.</statement><response>No</response></tier></consentTierResponses></consentDetails><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen><cdmsSpecimenId>TolvenTestUser252TissueSpecimen155</cdmsSpecimenId></specimen><collectionProtocol><title>Tolven Tissue Protocol</title><shortTitle>ttp</shortTitle></collectionProtocol><consentTierResponses><tier><statement>This is a statement</statement><response>Not Specified</response></tier><tier><statement>This is a second statement.</statement><response>Withdrawn</response></tier></consentTierResponses></consentDetails></consentsDetailsList></consents></trim></mes:businessMessagePayload></mes:request></mes:caXchangeRequestMessage></soapenv:Body></soapenv:Envelope>";
+        return getXMLString("RegisterConsent.xml");
     }
-    
-    
+
     private String getRegisterConsentSpecimenNotExistXMLStr() {
-        return "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:mes=\"http://caXchange.nci.nih.gov/messaging\"><soapenv:Header/><soapenv:Body><mes:caXchangeRequestMessage><mes:metadata><mes:transactionControl>?</mes:transactionControl><mes:serviceType>iHub</mes:serviceType><mes:operationName>Register Consent</mes:operationName><mes:externalIdentifier>32225879</mes:externalIdentifier><mes:caXchangeIdentifier/><mes:credentials><mes:userName>tolvenuser</mes:userName><mes:groupName>nogrid</mes:groupName><mes:gridIdentifier>nogrid</mes:gridIdentifier><mes:password>changeme</mes:password><mes:delegatedCredentialReference>nocredentials</mes:delegatedCredentialReference></mes:credentials></mes:metadata><mes:request><mes:businessMessagePayload><mes:xmlSchemaDefinition>urn:tolven-org:trim:4.0</mes:xmlSchemaDefinition><trim xmlns=\"urn:tolven-org:trim:4.0\"><consents xmlns=\"http://cacis.nci.nih.gov\"><participant><cdmsSubjectId>66604232</cdmsSubjectId></participant><consentsDetailsList><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen><cdmsSpecimenId>TolvenTestUser252TissueSpecimen2221</cdmsSpecimenId></specimen><collectionProtocol><title>Tolven Tissue Protocol</title><shortTitle>ttp</shortTitle></collectionProtocol><consentTierResponses><tier><statement>This is a statement</statement><response>Yes</response></tier><tier><statement>This is a second statement.</statement><response>No</response></tier></consentTierResponses></consentDetails><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen><cdmsSpecimenId>TolvenTestUser252TissueSpecimen155</cdmsSpecimenId></specimen><collectionProtocol><title>Tolven Tissue Protocol</title><shortTitle>ttp</shortTitle></collectionProtocol><consentTierResponses><tier><statement>This is a statement</statement><response>Not Specified</response></tier><tier><statement>This is a second statement.</statement><response>Withdrawn</response></tier></consentTierResponses></consentDetails></consentsDetailsList></consents></trim></mes:businessMessagePayload></mes:request></mes:caXchangeRequestMessage></soapenv:Body></soapenv:Envelope>";
+        return getXMLString("RegisterConsentSpecimenNotExist.xml");
     }
-   
+
     private String getRegisterConsentCollectionProtocolNotExistXMLStr() {
-        return "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:mes=\"http://caXchange.nci.nih.gov/messaging\"><soapenv:Header/><soapenv:Body><mes:caXchangeRequestMessage><mes:metadata><mes:transactionControl>?</mes:transactionControl><mes:serviceType>iHub</mes:serviceType><mes:operationName>Register Consent</mes:operationName><mes:externalIdentifier>32225879</mes:externalIdentifier><mes:caXchangeIdentifier/><mes:credentials><mes:userName>tolvenuser</mes:userName><mes:groupName>nogrid</mes:groupName><mes:gridIdentifier>nogrid</mes:gridIdentifier><mes:password>changeme</mes:password><mes:delegatedCredentialReference>nocredentials</mes:delegatedCredentialReference></mes:credentials></mes:metadata><mes:request><mes:businessMessagePayload><mes:xmlSchemaDefinition>urn:tolven-org:trim:4.0</mes:xmlSchemaDefinition><trim xmlns=\"urn:tolven-org:trim:4.0\"><consents xmlns=\"http://cacis.nci.nih.gov\"><participant><cdmsSubjectId>66604232</cdmsSubjectId></participant><consentsDetailsList><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen><cdmsSpecimenId>TolvenTestUser252TissueSpecimen12</cdmsSpecimenId></specimen><collectionProtocol><title>Tolven Tissue Protocol123</title><shortTitle>ttp123</shortTitle></collectionProtocol><consentTierResponses><tier><statement>This is a statement</statement><response>Yes</response></tier><tier><statement>This is a second statement.</statement><response>No</response></tier></consentTierResponses></consentDetails><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen><cdmsSpecimenId>TolvenTestUser252TissueSpecimen155</cdmsSpecimenId></specimen><collectionProtocol><title>Tolven Tissue Protocol</title><shortTitle>ttp</shortTitle></collectionProtocol><consentTierResponses><tier><statement>This is a statement</statement><response>Not Specified</response></tier><tier><statement>This is a second statement.</statement><response>Withdrawn</response></tier></consentTierResponses></consentDetails></consentsDetailsList></consents></trim></mes:businessMessagePayload></mes:request></mes:caXchangeRequestMessage></soapenv:Body></soapenv:Envelope>";
+        return getXMLString("RegisterConsentCollectionProtocolNotExist.xml");
     }
-    
-    
+
     private String getRegisterConsentStatementNotExistXMLStr() {
-        return "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:mes=\"http://caXchange.nci.nih.gov/messaging\"><soapenv:Header/><soapenv:Body><mes:caXchangeRequestMessage><mes:metadata><mes:transactionControl>?</mes:transactionControl><mes:serviceType>iHub</mes:serviceType><mes:operationName>Register Consent</mes:operationName><mes:externalIdentifier>32225879</mes:externalIdentifier><mes:caXchangeIdentifier/><mes:credentials><mes:userName>tolvenuser</mes:userName><mes:groupName>nogrid</mes:groupName><mes:gridIdentifier>nogrid</mes:gridIdentifier><mes:password>changeme</mes:password><mes:delegatedCredentialReference>nocredentials</mes:delegatedCredentialReference></mes:credentials></mes:metadata><mes:request><mes:businessMessagePayload><mes:xmlSchemaDefinition>urn:tolven-org:trim:4.0</mes:xmlSchemaDefinition><trim xmlns=\"urn:tolven-org:trim:4.0\"><consents xmlns=\"http://cacis.nci.nih.gov\"><participant><cdmsSubjectId>66604232</cdmsSubjectId></participant><consentsDetailsList><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen><cdmsSpecimenId>TolvenTestUser252TissueSpecimen12</cdmsSpecimenId></specimen><collectionProtocol><title>Tolven Tissue Protocol</title><shortTitle>ttp</shortTitle></collectionProtocol><consentTierResponses><tier><statement>This is 123 a statement</statement><response>Yes</response></tier><tier><statement>This is a second statement.</statement><response>No</response></tier></consentTierResponses></consentDetails><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen><cdmsSpecimenId>TolvenTestUser252TissueSpecimen155</cdmsSpecimenId></specimen><collectionProtocol><title>Tolven Tissue Protocol</title><shortTitle>ttp</shortTitle></collectionProtocol><consentTierResponses><tier><statement>This is a statement</statement><response>Not Specified</response></tier><tier><statement>This is a second statement.</statement><response>Withdrawn</response></tier></consentTierResponses></consentDetails></consentsDetailsList></consents></trim></mes:businessMessagePayload></mes:request></mes:caXchangeRequestMessage></soapenv:Body></soapenv:Envelope>";
+        return getXMLString("RegisterConsentStatementNotExist.xml");
     }
-    
- // CHECKSTYLE:ON
+
+    private String getXMLString(String fileName) {
+        String contents = null;
+        final InputStream is = CaTissueParticipantClientIntegrationTest.class.getClassLoader().getResourceAsStream(
+                "payloads_consent/" + fileName);
+        try {
+            contents = org.apache.cxf.helpers.IOUtils.toString(is);
+        } catch (IOException e) {
+            System.err.println("Error while reading contents of file : " + fileName + ". " + e);// NOPMD
+        }
+        return contents;
+    }
 }
