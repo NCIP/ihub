@@ -2,6 +2,10 @@ package gov.nih.nci.integration.catissue.client;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.HashSet;
@@ -226,19 +230,32 @@ public class CaTissueConsentTest {
 
     }
 
-    // CHECKSTYLE:OFF
     private String getRegisterConsentXMLStr() {
-        return "<?xml version=\"1.0\" ?><consents><participant><lastName>66604232</lastName></participant><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><consentData><specimenLabel>TolvenTestUser252TissueSpecimen173</specimenLabel><consentTierStatus><consentTier><statement>This is a statement</statement></consentTier><status>Yes</status></consentTierStatus><consentTierStatus><consentTier><statement>This is a second statement.</statement></consentTier><status>No</status></consentTierStatus></consentData><collectionProtocol><title>Tolven Tissue Protocol</title><shortTitle>ttp</shortTitle></collectionProtocol></consentDetails></consents>";
+        return getXMLString("RegisterConsent_Mock.xml");
     }
 
     private String getRegisterConsentSpecimenNotExistXMLStr() {
-        return "<?xml version=\"1.0\" ?><consents><participant><lastName>66604232</lastName></participant><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><consentData><specimenLabel>TestUser5000</specimenLabel><consentTierStatus><consentTier><statement>This is a statement</statement></consentTier><status>Yes</status></consentTierStatus><consentTierStatus><consentTier><statement>This is a second statement.</statement></consentTier><status>No</status></consentTierStatus></consentData><collectionProtocol><title>Tolven Tissue Protocol</title><shortTitle>ttp</shortTitle></collectionProtocol></consentDetails></consents>";
+        return getXMLString("RegisterConsentSpecimenNotExist_Mock.xml");
     }
 
     private String getRollbackConsentXMLStr() {
-        return "<?xml version=\"1.0\" ?><consents><participant><lastName>66604232</lastName></participant><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><consentData><specimenLabel>TolvenTestUser252TissueSpecimen173</specimenLabel><consentTierStatus><consentTier><statement>This is a statement</statement></consentTier><status>Yes</status></consentTierStatus><consentTierStatus><consentTier><statement>This is a second statement.</statement></consentTier><status>No</status></consentTierStatus></consentData><collectionProtocol><title>Tolven Tissue Protocol</title><shortTitle>ttp</shortTitle></collectionProtocol></consentDetails></consents>";
+        return getXMLString("RollbackSpecimen_Mock.xml");
     }
 
-    // CHECKSTYLE:ON
-
+    private String getXMLString(String fileName) {
+        final StringBuffer fileContents = new StringBuffer();
+        final InputStream is = CaTissueConsentIntegrationTest.class.getClassLoader().getResourceAsStream(
+                "payloads_consent/" + fileName);
+        final BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        String strLine;
+        try {
+            while ((strLine = br.readLine()) != null) { // NOPMD
+                fileContents.append(strLine);
+            }
+            is.close();
+        } catch (IOException e) {
+            System.err.println("Error while reading contents of file : " + fileName + ". " + e);// NOPMD
+        }
+        return fileContents.toString();
+    }
 }

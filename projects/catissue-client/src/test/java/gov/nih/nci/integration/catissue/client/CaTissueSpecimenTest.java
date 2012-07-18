@@ -2,6 +2,10 @@ package gov.nih.nci.integration.catissue.client;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 
 import org.easymock.classextension.EasyMock;
@@ -176,11 +180,11 @@ public class CaTissueSpecimenTest {
         specimen.setLabel("TolvenTestUser252TissueSpecimen173");
         final SpecimenCollectionGroup spg = new SpecimenCollectionGroup();
         final CollectionProtocolEvent cpe = new CollectionProtocolEvent();
-         final CollectionProtocol cp = new CollectionProtocol();
-         cp.setShortTitle("ttp");
-         cp.setTitle("ttp");
-         cpe.setCollectionPointLabel("CPE");
-         cpe.setCollectionProtocol(cp);
+        final CollectionProtocol cp = new CollectionProtocol();
+        cp.setShortTitle("ttp");
+        cp.setTitle("ttp");
+        cpe.setCollectionPointLabel("CPE");
+        cpe.setCollectionProtocol(cp);
         spg.setCollectionProtocolEvent(cpe);
         specimen.setSpecimenCollectionGroup(spg);
 
@@ -201,7 +205,7 @@ public class CaTissueSpecimenTest {
         }
         assertNotNull(retXML);
     }
-    
+
     /**
      * Mock Testcase for getting existing Specimens when SpecimenClass is not same
      */
@@ -362,24 +366,37 @@ public class CaTissueSpecimenTest {
         assertNotNull(retXML);
     }
 
-    // CHECKSTYLE:OFF
-
     private String getInsertSpecimenXMLStr() {
-        return "<?xml version=\"1.0\" ?><specimens><participant><lastName>66604232</lastName><activityStatus>Active</activityStatus></participant><specimenDetail><collectionProtocolEvent>CPE</collectionProtocolEvent><specimen class=\"TissueSpecimen\"><initialQuantity>9.0</initialQuantity><pathologicalStatus>Malignant</pathologicalStatus><specimenClass>Tissue</specimenClass><specimenType>Fixed Tissue</specimenType><specimenCharacteristics><tissueSide>Right</tissueSide><tissueSite>Placenta</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>4.0</availableQuantity><barcode>TestUser0041</barcode><label>TestUser0041</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail></specimens>";
+        return getXMLString("CreateSpecimen_Mock.xml");
     }
 
     private String getInsertExistingSpecimenXMLStr() {
-        return "<?xml version=\"1.0\" ?><specimens><participant><lastName>66604232</lastName><activityStatus>Active</activityStatus></participant><specimenDetail><collectionProtocolEvent>CPE</collectionProtocolEvent><specimen class=\"TissueSpecimen\"><initialQuantity>9.0</initialQuantity><pathologicalStatus>Malignant</pathologicalStatus><specimenClass>Tissue</specimenClass><specimenType>Fixed Tissue</specimenType><specimenCharacteristics><tissueSide>Right</tissueSide><tissueSite>Placenta</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>4.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen171</barcode><label>TolvenTestUser252TissueSpecimen171</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail><specimenDetail><collectionProtocolEvent>CPE</collectionProtocolEvent><specimen class=\"FluidSpecimen\"><initialQuantity>8.0</initialQuantity><pathologicalStatus>Not Specified</pathologicalStatus><specimenClass>Fluid</specimenClass><specimenType>Not Specified</specimenType><specimenCharacteristics><tissueSide>Not Specified</tissueSide><tissueSite>Not Specified</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>2.0</availableQuantity><barcode>TolvenTestUser252TissueSpecimen172</barcode><label>TolvenTestUser252TissueSpecimen172</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail></specimens>";
+        return getXMLString("CreateExistingSpecimen_Mock.xml");
     }
 
     private String getUpdateSpecimenXMLStr() {
-        return "<?xml version=\"1.0\" ?><specimens><participant><lastName>66604232</lastName><activityStatus>Active</activityStatus></participant><specimenDetail><collectionProtocolEvent>CPE</collectionProtocolEvent><specimen class=\"TissueSpecimen\"><initialQuantity>9.0</initialQuantity><pathologicalStatus>Malignant</pathologicalStatus><specimenClass>Tissue</specimenClass><specimenType>Fixed Tissue</specimenType><specimenCharacteristics><tissueSide>Right</tissueSide><tissueSite>Placenta</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>4.0</availableQuantity><barcode>TestUser0041</barcode><label>TestUser0041</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail></specimens>";
+        return getXMLString("UpdateSpecimen_Mock.xml");
     }
 
     private String getRollbackSpecimenXMLStr() {
-        return "<?xml version=\"1.0\" ?><specimens><participant><lastName>66604232</lastName><activityStatus>Active</activityStatus></participant><specimenDetail><collectionProtocolEvent>CPE</collectionProtocolEvent><specimen class=\"TissueSpecimen\"><initialQuantity>9.0</initialQuantity><pathologicalStatus>Malignant</pathologicalStatus><specimenClass>Tissue</specimenClass><specimenType>Fixed Tissue</specimenType><specimenCharacteristics><tissueSide>Right</tissueSide><tissueSite>Placenta</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>4.0</availableQuantity><barcode>TestUser0041</barcode><label>TestUser0041</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail></specimens>";
+        return getXMLString("RollbackSpecimen_Mock.xml");
     }
 
-    // CHECKSTYLE:ON
+    private String getXMLString(String fileName) {
+        final StringBuffer fileContents = new StringBuffer();
+        final InputStream is = CaTissueSpecimenIntegrationTest.class.getClassLoader().getResourceAsStream(
+                "payloads_specimen/" + fileName);
+        final BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        String strLine;
+        try {
+            while ((strLine = br.readLine()) != null) { // NOPMD
+                fileContents.append(strLine);
+            }
+            is.close();
+        } catch (IOException e) {
+            System.err.println("Error while reading contents of file : " + fileName + ". " + e);// NOPMD
+        }
+        return fileContents.toString();
+    }
 
 }

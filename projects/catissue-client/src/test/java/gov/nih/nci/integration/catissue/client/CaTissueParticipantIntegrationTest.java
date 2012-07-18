@@ -5,16 +5,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import edu.wustl.catissuecore.domain.CollectionProtocol;
-import edu.wustl.catissuecore.domain.CollectionProtocolRegistration;
-import edu.wustl.catissuecore.domain.Participant;
-import edu.wustl.catissuecore.domain.Race;
-import edu.wustl.catissuecore.factory.CollectionProtocolFactory;
-import edu.wustl.catissuecore.factory.CollectionProtocolRegistrationFactory;
-import edu.wustl.catissuecore.factory.ParticipantFactory;
-import edu.wustl.catissuecore.factory.RaceFactory;
-import gov.nih.nci.system.applicationservice.ApplicationException;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,6 +22,16 @@ import javax.xml.bind.JAXBException;
 import org.junit.Test;
 
 import com.thoughtworks.xstream.XStream;
+
+import edu.wustl.catissuecore.domain.CollectionProtocol;
+import edu.wustl.catissuecore.domain.CollectionProtocolRegistration;
+import edu.wustl.catissuecore.domain.Participant;
+import edu.wustl.catissuecore.domain.Race;
+import edu.wustl.catissuecore.factory.CollectionProtocolFactory;
+import edu.wustl.catissuecore.factory.CollectionProtocolRegistrationFactory;
+import edu.wustl.catissuecore.factory.ParticipantFactory;
+import edu.wustl.catissuecore.factory.RaceFactory;
+import gov.nih.nci.system.applicationservice.ApplicationException;
 
 /**
  * 
@@ -41,10 +46,11 @@ public class CaTissueParticipantIntegrationTest {
 
     /**
      * Constructor
+     * 
      * @throws Exception - Exception
      */
     public CaTissueParticipantIntegrationTest() throws Exception {
-        caTissueParticipantClient = new CaTissueParticipantClient("admin@admin.com", "Aa_111111");
+        caTissueParticipantClient = new CaTissueParticipantClient("admin@admin.com", "Rohit1234");
     }
 
     /**
@@ -95,8 +101,8 @@ public class CaTissueParticipantIntegrationTest {
         assertNotNull(existingPrtcpntStr);
 
         // update with original incoming msg - equivalent to update msg
-        ArrayList<CollectionProtocolRegistration> cprList = new ArrayList<CollectionProtocolRegistration>(participant
-                .getCollectionProtocolRegistrationCollection());
+        ArrayList<CollectionProtocolRegistration> cprList = new ArrayList<CollectionProtocolRegistration>(
+                participant.getCollectionProtocolRegistrationCollection());
         cprList.get(0).getCollectionProtocol().setTitle("6482");
         existParticipant = caTissueParticipantClient.updateParticipantRegistration(participant);
         assertNotNull(existParticipant);
@@ -125,6 +131,7 @@ public class CaTissueParticipantIntegrationTest {
 
     /**
      * Testcase for parseParticipant
+     * 
      * @throws JAXBException - JAXBException
      * @throws ParseException - ParseException
      */
@@ -139,7 +146,7 @@ public class CaTissueParticipantIntegrationTest {
 
         XStream xStream = caTissueParticipantClient.getxStream();
         String participantXML = xStream.toXML(participant);
-    
+
         Participant parsedParticipant = (Participant) xStream.fromXML(new StringReader(participantXML));
 
         assertNotNull(parsedParticipant);
@@ -156,13 +163,14 @@ public class CaTissueParticipantIntegrationTest {
 
     /**
      * Testcase for submitRegistrationFromXMLPayload
+     * 
      * @throws ApplicationException - ApplicationException
      */
     // @Test
     public void submitRegistrationFromXMLPayload() throws ApplicationException {
 
         String registeredParticipantStr = caTissueParticipantClient.registerParticipant(getParticipantXMLStr());
-  
+
         Participant registeredParticipant = caTissueParticipantClient.getParticipantForPatientId("995683");
 
         assertNotNull(registeredParticipant);
@@ -230,31 +238,24 @@ public class CaTissueParticipantIntegrationTest {
     }
 
     private String getParticipantXMLStr() {
-        return "<?xml version=\"1.0\" ?><participant><activityStatus>Active</activityStatus>"
-                + "<birthDate>1941-05-02 00:00:00.0 EDT</birthDate><ethnicity>Unknown</ethnicity>"
-                + "<firstName>JOHN5</firstName><gender>Unspecified</gender><lastName>995683</lastName>"
-                + "<socialSecurityNumber>123-45-6814</socialSecurityNumber><vitalStatus>Alive</vitalStatus>"
-                + "<collectionProtocolRegistrationCollection class=\"set\"><collectionProtocolRegistration>"
-                + "<activityStatus>Active</activityStatus>"
-                + "<consentSignatureDate>2012-03-30 14:36:24.822 EDT</consentSignatureDate>"
-                + "<protocolParticipantIdentifier></protocolParticipantIdentifier>"
-                + "<registrationDate>2012-03-30 14:36:24.822 EDT</registrationDate>"
-                + "<specimenCollectionGroupCollection class=\"set\"></specimenCollectionGroupCollection>"
-                + "<collectionProtocol><title>CP-01</title><collectionProtocolEventCollection class=\"linked-hash-set\"/>"
-                + "<childCollectionProtocolCollection class=\"linked-hash-set\"/>"
-                + "<studyFormContextCollection class=\"set\"></studyFormContextCollection>"
-                + "<collectionProtocolRegistrationCollection class=\"set\"/>"
-                + "<siteCollection class=\"set\"></siteCollection>"
-                + "<clinicalDiagnosisCollection class=\"linked-hash-set\"/>"
-                + "<distributionProtocolCollection class=\"linked-hash-set\"/>"
-                + "<coordinatorCollection class=\"linked-hash-set\"/>"
-                + "<assignedProtocolUserCollection class=\"set\"></assignedProtocolUserCollection>"
-                + "<gridGrouperPrivileges></gridGrouperPrivileges></collectionProtocol>"
-                + "<participant reference=\"../../..\"></participant>"
-                + "<isToInsertAnticipatorySCGs>true</isToInsertAnticipatorySCGs></collectionProtocolRegistration>"
-                + "</collectionProtocolRegistrationCollection><raceCollection class=\"set\"></raceCollection>"
-                + "<participantMedicalIdentifierCollection class=\"linked-hash-set\"/>"
-                + "<participantRecordEntryCollection class=\"set\"/></participant>";
+        return getXMLString("Participant.xml");
+    }
+
+    private String getXMLString(String fileName) {
+        final StringBuffer fileContents = new StringBuffer();
+        final InputStream is = CaTissueParticipantIntegrationTest.class.getClassLoader().getResourceAsStream(
+                "payloads_participant/" + fileName);
+        final BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        String strLine;
+        try {
+            while ((strLine = br.readLine()) != null) { // NOPMD
+                fileContents.append(strLine);
+            }
+            is.close();
+        } catch (IOException e) {
+            System.err.println("Error while reading contents of file : " + fileName + ". " + e);// NOPMD
+        }
+        return fileContents.toString();
     }
 
 }
