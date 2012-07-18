@@ -2,10 +2,12 @@ package gov.nih.nci.integration.transformer;
 
 import gov.nih.nci.integration.exception.IntegrationException;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import junit.framework.Assert;
 
@@ -52,13 +54,9 @@ public class XSLTTransformerAdverseEventTest {
         Assert.assertNotNull(trnsfrmdMsg);
     }
 
-    // CHECKSTYLE:OFF
-
     private String getAEInterimMessage() {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><adverseevents><studyInfo><studyIdentifier>7216</studyIdentifier></studyInfo><participantInfo><studySubjectIdentifier>PM-113</studySubjectIdentifier></participantInfo><timeframeInfo><reportingPeriod><startDateOfThisCourse>2012-07-12-04:00</startDateOfThisCourse><endDateOfThisCourse>2012-07-15-04:00</endDateOfThisCourse></reportingPeriod><periodType>Treatment</periodType><assignedTreatment>TAC</assignedTreatment></timeframeInfo><adverseEventsList><adverseEvent><verbatim>Event1 Verbatim</verbatim><codedTerm>Adrenal insufficiency</codedTerm><grade>3</grade><onsetDate>2012-07-10-04:00</onsetDate><resolutionDate>2012-07-11-04:00</resolutionDate><expected>true</expected><attribution>POSSIBLE</attribution><seriousReasonsList><reason>LIFE_THREATENING</reason><reason>HOSPITALIZATION</reason></seriousReasonsList></adverseEvent><adverseEvent><verbatim>Event2 Verbatim</verbatim><codedTerm>Aspartateamino transferase increased</codedTerm><grade>4</grade><onsetDate>2012-07-10-04:00</onsetDate><resolutionDate>2012-07-11-04:00</resolutionDate><expected>true</expected><attribution>DEFINITE</attribution><seriousReasonsList><reason>CONGENITAL_ANOMALY</reason><reason>OTHER_SERIOUS</reason></seriousReasonsList></adverseEvent></adverseEventsList></adverseevents>";
+        return getXMLString("AEInterim.xml");
     }
-
-    // CHECKSTYLE:ON
 
     private String transformXML(String message) throws IntegrationException {
         String xmlStr = null;
@@ -89,6 +87,23 @@ public class XSLTTransformerAdverseEventTest {
         }
 
         return xmlStr;
+    }
+
+    private String getXMLString(String fileName) {
+        final StringBuffer fileContents = new StringBuffer();
+        final InputStream is = XSLTTransformerAdverseEventTest.class.getClassLoader().getResourceAsStream(
+                "payloads_adverseevent/" + fileName);
+        final BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        String strLine;
+        try {
+            while ((strLine = br.readLine()) != null) { // NOPMD
+                fileContents.append(strLine);
+            }
+            is.close();
+        } catch (IOException e) {
+            System.err.println("Error while reading contents of file : " + fileName + ". " + e);// NOPMD
+        }
+        return fileContents.toString();
     }
 
 }
