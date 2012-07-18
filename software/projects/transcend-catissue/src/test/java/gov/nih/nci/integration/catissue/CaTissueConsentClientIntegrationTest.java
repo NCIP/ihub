@@ -2,6 +2,9 @@ package gov.nih.nci.integration.catissue;
 
 import gov.nih.nci.integration.invoker.ServiceInvocationResult;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +37,20 @@ public class CaTissueConsentClientIntegrationTest {
 
     }
 
-    // CHECKSTYLE:OFF
     private String getRegisterConsentXMLStr() {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?><consents xmlns:ns2=\"http://caXchange.nci.nih.gov/caxchangerequest\" xmlns:ns0=\"http://caXchange.nci.nih.gov/messaging\" xmlns:a=\"http://cacis.nci.nih.gov\"><participant><lastName>66604232</lastName></participant><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><consentData><specimenLabel>TolvenTestUser252TissueSpecimen124</specimenLabel><consentTierStatus><consentTier><statement>This is a statement</statement></consentTier><status>Yes</status></consentTierStatus><consentTierStatus><consentTier><statement>This is a second statement.</statement></consentTier><status>No</status></consentTierStatus></consentData><collectionProtocol><title>Tolven Tissue Protocol</title><shortTitle>ttp</shortTitle></collectionProtocol></consentDetails><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><consentData><specimenLabel>TolvenTestUser252TissueSpecimen155</specimenLabel><consentTierStatus><consentTier><statement>This is a statement</statement></consentTier><status>Not Specified</status></consentTierStatus><consentTierStatus><consentTier><statement>This is a second statement.</statement></consentTier><status>Withdrawn</status></consentTierStatus></consentData><collectionProtocol><title>Tolven Tissue Protocol</title><shortTitle>ttp</shortTitle></collectionProtocol></consentDetails></consents>";
+        return getXMLString("RegisterConsent.xml");
+    }
+
+    private String getXMLString(String fileName) {
+        String contents = null;
+        final InputStream is = CaTissueConsentClientIntegrationTest.class.getClassLoader().getResourceAsStream(
+                "payloads/" + fileName);
+        try {
+            contents = org.apache.cxf.helpers.IOUtils.toString(is);
+        } catch (IOException e) {
+            System.err.println("Error while reading contents of file : " + fileName + ". " + e);// NOPMD
+        }
+        return contents;
     }
 
 }

@@ -1,6 +1,10 @@
 package gov.nih.nci.integration.catissue;
 
 import static org.junit.Assert.assertNotNull;
+
+import java.io.IOException;
+import java.io.InputStream;
+
 import gov.nih.nci.integration.exception.IntegrationException;
 import gov.nih.nci.integration.invoker.ServiceInvocationResult;
 
@@ -57,8 +61,7 @@ public class CaTissueConsentTest {
         final ServiceInvocationResult svc = caTissueConsentClient.registerConsents(getConsentXMLStr());
         assertNotNull(svc);
     }
-    
-    
+
     /**
      * TestCase to test the rollbackConsents of Wrapper client
      * 
@@ -70,9 +73,20 @@ public class CaTissueConsentTest {
         assertNotNull(svc);
     }
 
-    // CHECKSTYLE:OFF
     private String getConsentXMLStr() {
-        return "<?xml version=\"1.0\" ?><consents><participant><lastName>66604232</lastName></participant><consentDetails><collectionProtocolEvent>CPL</collectionProtocolEvent><consentData><specimenLabel>TolvenTestUser252TissueSpecimen173</specimenLabel><consentTierStatus><consentTier><statement>This is a statement</statement></consentTier><status>Yes</status></consentTierStatus><consentTierStatus><consentTier><statement>This is a second statement.</statement></consentTier><status>No</status></consentTierStatus></consentData><collectionProtocol><title>Tolven Tissue Protocol</title><shortTitle>ttp</shortTitle></collectionProtocol></consentDetails></consents>";
+        return getXMLString("RegisterConsent.xml");
+    }
+
+    private String getXMLString(String fileName) {
+        String contents = null;
+        final InputStream is = CaTissueConsentClientIntegrationTest.class.getClassLoader().getResourceAsStream(
+                "payloads/" + fileName);
+        try {
+            contents = org.apache.cxf.helpers.IOUtils.toString(is);
+        } catch (IOException e) {
+            System.err.println("Error while reading contents of file : " + fileName + ". " + e);// NOPMD
+        }
+        return contents;
     }
 
 }

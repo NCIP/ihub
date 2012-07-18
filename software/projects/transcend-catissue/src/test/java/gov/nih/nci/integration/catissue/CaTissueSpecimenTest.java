@@ -4,6 +4,9 @@ import static org.junit.Assert.assertNotNull;
 import gov.nih.nci.integration.exception.IntegrationException;
 import gov.nih.nci.integration.invoker.ServiceInvocationResult;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -102,9 +105,20 @@ public class CaTissueSpecimenTest {
         assertNotNull(svc);
     }
 
-    // CHECKSTYLE:OFF
     private String getSpecimenXMLStr() {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?><specimens xmlns:ns2=\"http://caXchange.nci.nih.gov/caxchangerequest\" xmlns:ns0=\"http://caXchange.nci.nih.gov/messaging\" xmlns:a=\"http://cacis.nci.nih.gov\"><participant><lastName>66604232</lastName><activityStatus>Active</activityStatus></participant><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen class=\"TissueSpecimen\"><initialQuantity>100</initialQuantity><pathologicalStatus>Malignant</pathologicalStatus><specimenClass>Tissue</specimenClass><specimenType>Fixed Tissue</specimenType><specimenCharacteristics><tissueSide>Right</tissueSide><tissueSite>Placenta</tissueSite></specimenCharacteristics><activityStatus>Active</activityStatus><availableQuantity>10</availableQuantity><barcode>TestUser0016</barcode><label>TestUser0016</label><isAvailable>true</isAvailable><collectionStatus>Collected</collectionStatus></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail></specimens>";
+        return getXMLString("CreateSpecimen.xml");
+    }
+
+    private String getXMLString(String fileName) {
+        String contents = null;
+        final InputStream is = CaTissueParticipantClientIntegrationTest.class.getClassLoader().getResourceAsStream(
+                "payloads/" + fileName);
+        try {
+            contents = org.apache.cxf.helpers.IOUtils.toString(is);
+        } catch (IOException e) {
+            System.err.println("Error while reading contents of file : " + fileName + ". " + e);// NOPMD
+        }
+        return contents;
     }
 
 }
