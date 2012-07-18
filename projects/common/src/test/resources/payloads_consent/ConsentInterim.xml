@@ -1,0 +1,73 @@
+<ns2:caxchangerequest xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest"
+	xmlns:consents="http://cacis.nci.nih.gov" xmlns:b="urn:tolven-org:trim:4.0"
+	xmlns:c="http://caXchange.nci.nih.gov/messaging" xmlns:mes="http://caXchange.nci.nih.gov/messaging"
+	xmlns:a="http://cacis.nci.nih.gov" xmlns:trim="urn:tolven-org:trim:4.0">
+	<ns0:metadata xmlns:ns0="http://caXchange.nci.nih.gov/messaging">
+		<serviceType xmlns="http://caXchange.nci.nih.gov/messaging"
+			xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1trim="urn:tolven-org:trim:4.0"
+			xmlns:cda="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">iHub</serviceType>
+		<mes:operationName xmlns="http://caXchange.nci.nih.gov/messaging"
+			xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1trim="urn:tolven-org:trim:4.0"
+			xmlns:cda="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Register Consent
+		</mes:operationName>
+		<mes:externalIdentifier xmlns="http://caXchange.nci.nih.gov/messaging"
+			xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1trim="urn:tolven-org:trim:4.0"
+			xmlns:cda="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">32225879
+		</mes:externalIdentifier>
+		<mes:caXchangeIdentifier xmlns="http://caXchange.nci.nih.gov/messaging"
+			xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1trim="urn:tolven-org:trim:4.0"
+			xmlns:cda="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">1342472032462
+		</mes:caXchangeIdentifier>
+	</ns0:metadata>
+	<ns0:request xmlns:ns0="http://caXchange.nci.nih.gov/messaging">
+		<ns0:businessMessagePayload>
+			<consents xmlns="http://cacis.nci.nih.gov">
+				<participant>
+					<cdmsSubjectId>66604232</cdmsSubjectId>
+				</participant>
+				<consentsDetailsList>
+					<consentDetails>
+						<collectionProtocolEvent>CPL</collectionProtocolEvent>
+						<specimen>
+							<cdmsSpecimenId>TolvenTestUser252TissueSpecimen122</cdmsSpecimenId>
+						</specimen>
+						<collectionProtocol>
+							<title>Tolven Tissue Protocol</title>
+							<shortTitle>ttp</shortTitle>
+						</collectionProtocol>
+						<consentTierResponses>
+							<tier>
+								<statement>This is a statement</statement>
+								<response>Yes</response>
+							</tier>
+							<tier>
+								<statement>This is a second statement.</statement>
+								<response>No</response>
+							</tier>
+						</consentTierResponses>
+					</consentDetails>
+					<consentDetails>
+						<collectionProtocolEvent>CPL</collectionProtocolEvent>
+						<specimen>
+							<cdmsSpecimenId>TolvenTestUser252TissueSpecimen155</cdmsSpecimenId>
+						</specimen>
+						<collectionProtocol>
+							<title>Tolven Tissue Protocol</title>
+							<shortTitle>ttp</shortTitle>
+						</collectionProtocol>
+						<consentTierResponses>
+							<tier>
+								<statement>This is a statement</statement>
+								<response>Not Specified</response>
+							</tier>
+							<tier>
+								<statement>This is a second statement.</statement>
+								<response>Withdrawn</response>
+							</tier>
+						</consentTierResponses>
+					</consentDetails>
+				</consentsDetailsList>
+			</consents>
+		</ns0:businessMessagePayload>
+	</ns0:request>
+</ns2:caxchangerequest>
