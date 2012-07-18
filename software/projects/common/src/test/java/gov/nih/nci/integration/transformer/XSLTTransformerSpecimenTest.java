@@ -2,10 +2,12 @@ package gov.nih.nci.integration.transformer;
 
 import gov.nih.nci.integration.exception.IntegrationException;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import junit.framework.Assert;
 
@@ -81,10 +83,24 @@ public class XSLTTransformerSpecimenTest {
         return xmlStr;
     }
 
-    // CHECKSTYLE:OFF
     private String getInterimSpecimenXML() {
-        return "<ns2:caxchangerequest xmlns:ns2=\"http://caXchange.nci.nih.gov/caxchangerequest\"><ns0:metadata xmlns:ns0=\"http://caXchange.nci.nih.gov/messaging\"><mes:serviceType xmlns:mes=\"http://caXchange.nci.nih.gov/messaging\" xmlns=\"http://caXchange.nci.nih.gov/messaging\" xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns1trim=\"urn:tolven-org:trim:4.0\" xmlns:cda=\"urn:hl7-org:v3\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">iHub</mes:serviceType><mes:operationName xmlns:mes=\"http://caXchange.nci.nih.gov/messaging\" xmlns=\"http://caXchange.nci.nih.gov/messaging\" xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns1trim=\"urn:tolven-org:trim:4.0\" xmlns:cda=\"urn:hl7-org:v3\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">SPECIMEN</mes:operationName><mes:externalIdentifier xmlns:mes=\"http://caXchange.nci.nih.gov/messaging\" xmlns=\"http://caXchange.nci.nih.gov/messaging\" xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns1trim=\"urn:tolven-org:trim:4.0\" xmlns:cda=\"urn:hl7-org:v3\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">32225879</mes:externalIdentifier><mes:caXchangeIdentifier xmlns:mes=\"http://caXchange.nci.nih.gov/messaging\" xmlns=\"http://caXchange.nci.nih.gov/messaging\" xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns1trim=\"urn:tolven-org:trim:4.0\" xmlns:cda=\"urn:hl7-org:v3\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">null</mes:caXchangeIdentifier><mes:credentials xmlns:mes=\"http://caXchange.nci.nih.gov/messaging\" xmlns=\"http://caXchange.nci.nih.gov/messaging\" xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns1trim=\"urn:tolven-org:trim:4.0\" xmlns:cda=\"urn:hl7-org:v3\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><mes:userName>tolvenuser</mes:userName><mes:groupName>nogrid</mes:groupName><mes:gridIdentifier>nogrid</mes:gridIdentifier><mes:password>changeme</mes:password><mes:delegatedCredentialReference>nocredentials</mes:delegatedCredentialReference></mes:credentials></ns0:metadata><ns0:request xmlns:ns0=\"http://caXchange.nci.nih.gov/messaging\"><ns0:businessMessagePayload><specimens xmlns=\"http://cacis.nci.nih.gov\"><participant><activityStatus>Active</activityStatus><cdmsSubjectId>66604232</cdmsSubjectId></participant><specimenDetailsList><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen><cdmsSpecimenId>TolvenTestUser252TissueSpecimen121</cdmsSpecimenId><barcode>TolvenTestUser252TissueSpecimen121</barcode><activityStatus>Active</activityStatus><specimenClass>Tissue</specimenClass><specimenType>Fixed Tissue</specimenType><pathologicalStatus>Malignant</pathologicalStatus><initialQuantity>1</initialQuantity><availableQuantity>1</availableQuantity><specimenCharacteristics><tissueSite>Placenta</tissueSite><tissueSide>Right</tissueSide></specimenCharacteristics></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail><specimenDetail><collectionProtocolEvent>CPL</collectionProtocolEvent><specimen><cdmsSpecimenId>TolvenTestUser252TissueSpecimen122</cdmsSpecimenId><barcode>TolvenTestUser252TissueSpecimen122</barcode><activityStatus>Active</activityStatus><specimenClass>Tissue</specimenClass><specimenType>Fixed Tissue</specimenType><pathologicalStatus>Malignant</pathologicalStatus><initialQuantity>1</initialQuantity><availableQuantity>1</availableQuantity><specimenCharacteristics><tissueSite>Placenta</tissueSite><tissueSide>Right</tissueSide></specimenCharacteristics></specimen><collectionProtocol><title>6482</title><shortTitle>6482</shortTitle></collectionProtocol></specimenDetail></specimenDetailsList></specimens></ns0:businessMessagePayload></ns0:request></ns2:caxchangerequest>";
+        return getXMLString("SpecimenInterim.xml");
     }
 
-    // CHECKSTYLE:ON
+    private String getXMLString(String fileName) {
+        final StringBuffer fileContents = new StringBuffer();
+        final InputStream is = XSLTTransformerConsentTest.class.getClassLoader().getResourceAsStream(
+                "payloads_specimen/" + fileName);
+        final BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        String strLine;
+        try {
+            while ((strLine = br.readLine()) != null) { // NOPMD
+                fileContents.append(strLine);
+            }
+            is.close();
+        } catch (IOException e) {
+            System.err.println("Error while reading contents of file : " + fileName + ". " + e);// NOPMD
+        }
+        return fileContents.toString();
+    }
 }
