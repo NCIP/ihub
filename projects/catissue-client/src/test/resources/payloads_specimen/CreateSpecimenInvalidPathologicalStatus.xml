@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specimens xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest"
+	xmlns:ns0="http://caXchange.nci.nih.gov/messaging" xmlns:a="http://cacis.nci.nih.gov">
+	<participant>
+		<lastName>66604232</lastName>
+		<activityStatus>Active</activityStatus>
+	</participant>
+	<specimenDetail>
+		<collectionProtocolEvent>CPL</collectionProtocolEvent>
+		<specimen class="TissueSpecimen">
+			<initialQuantity>100</initialQuantity>
+			<pathologicalStatus>Malignant123</pathologicalStatus>
+			<specimenClass>Tissue</specimenClass>
+			<specimenType>Fixed Tissue</specimenType>
+			<specimenCharacteristics>
+				<tissueSide>Right</tissueSide>
+				<tissueSite>Placenta</tissueSite>
+			</specimenCharacteristics>
+			<activityStatus>Active</activityStatus>
+			<availableQuantity>50</availableQuantity>
+			<barcode>TestUser0041</barcode>
+			<label>TestUser0041</label>
+			<isAvailable>true</isAvailable>
+			<collectionStatus>Collected</collectionStatus>
+		</specimen>
+		<collectionProtocol>
+			<title>6482</title>
+			<shortTitle>6482</shortTitle>
+		</collectionProtocol>
+	</specimenDetail>
+	<specimenDetail>
+		<collectionProtocolEvent>CPL</collectionProtocolEvent>
+		<specimen class="TissueSpecimen">
+			<initialQuantity>400</initialQuantity>
+			<pathologicalStatus>Malignant</pathologicalStatus>
+			<specimenClass>Tissue</specimenClass>
+			<specimenType>Fixed Tissue</specimenType>
+			<specimenCharacteristics>
+				<tissueSide>Right</tissueSide>
+				<tissueSite>Placenta</tissueSite>
+			</specimenCharacteristics>
+			<activityStatus>Active</activityStatus>
+			<availableQuantity>200</availableQuantity>
+			<barcode>TestUser0042</barcode>
+			<label>TestUser0042</label>
+			<isAvailable>true</isAvailable>
+			<collectionStatus>Collected</collectionStatus>
+		</specimen>
+		<collectionProtocol>
+			<title>6482</title>
+			<shortTitle>6482</shortTitle>
+		</collectionProtocol>
+	</specimenDetail>
+</specimens>
