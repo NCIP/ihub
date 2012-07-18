@@ -1,5 +1,7 @@
 package gov.nih.nci.cacis.sa.transcend;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 
@@ -43,7 +45,7 @@ public class AcceptSourceFaultTest {
         ce.setDetail("detail");
         cf.getCaCISError().add(ce);
 
-        final String faultXml = getCaCISFaultxml(cf);
+        final String faultXml = getCaCISFaultxml(cf);        
         Assert.assertEquals(getFaultString(), faultXml);
 
         final CaCISFault newCf = getCaCISFaultFromXml(getFaultString());
@@ -78,8 +80,18 @@ public class AcceptSourceFaultTest {
         return jc.createUnmarshaller();
     }
 
-    // CHECKSTYLE:OFF
     private String getFaultString() {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><caCISFault xmlns=\"http://cacis.nci.nih.gov\"><caCISError errorType=\"VALIDATION\" errorCode=\"EC\" errorMessage=\"EM\" detail=\"detail\"/></caCISFault>";
+        return getXMLString("FaultString.xml");
+    }
+
+    private String getXMLString(String fileName) {
+        String contents = null;
+        final InputStream is = AcceptSourceFaultTest.class.getClassLoader().getResourceAsStream("payloads/" + fileName);
+        try {
+            contents = org.apache.cxf.helpers.IOUtils.toString(is);
+        } catch (IOException e) {
+            System.err.println("Error while reading contents of file : " + fileName + ". " + e);// NOPMD
+        }
+        return contents;
     }
 }
