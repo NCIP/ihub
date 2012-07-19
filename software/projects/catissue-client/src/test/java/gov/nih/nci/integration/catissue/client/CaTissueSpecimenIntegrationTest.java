@@ -462,7 +462,7 @@ public class CaTissueSpecimenIntegrationTest {
             }
             is.close();
         } catch (IOException e) {
-            System.err.println("Error while reading contents of file : " + fileName + ". " + e);// NOPMD
+           
         }
         return fileContents.toString();
     }
