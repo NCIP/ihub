@@ -2,12 +2,10 @@ package gov.nih.nci.integration.transformer;
 
 import gov.nih.nci.integration.exception.IntegrationException;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 
 import junit.framework.Assert;
 
@@ -88,19 +86,14 @@ public class XSLTTransformerSpecimenTest {
     }
 
     private String getXMLString(String fileName) {
-        final StringBuffer fileContents = new StringBuffer();
-        final InputStream is = XSLTTransformerConsentTest.class.getClassLoader().getResourceAsStream(
+        String contents = null;
+        final InputStream is = XSLTTransformerSpecimenTest.class.getClassLoader().getResourceAsStream(
                 "payloads_specimen/" + fileName);
-        final BufferedReader br = new BufferedReader(new InputStreamReader(is));
-        String strLine;
         try {
-            while ((strLine = br.readLine()) != null) { // NOPMD
-                fileContents.append(strLine);
-            }
-            is.close();
+            contents = org.apache.cxf.helpers.IOUtils.toString(is);
         } catch (IOException e) {
-            System.err.println("Error while reading contents of file : " + fileName + ". " + e);// NOPMD
+            LOG.error("Error while reading contents of file : " + fileName + ". " + e);
         }
-        return fileContents.toString();
+        return contents;
     }
 }
