@@ -25,6 +25,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -46,6 +48,7 @@ public class CaAERSAdverseEventStrategyTest {
     private static final Long REFMSGID = 12345L;
     private static final String SUCCESS = "Success";
     private static final String FAILURE = "Failure";
+    private static final Logger LOG = LoggerFactory.getLogger(CaAERSAdverseEventStrategyTest.class);
 
     /**
      * To initialize the things
@@ -295,7 +298,7 @@ public class CaAERSAdverseEventStrategyTest {
         try {
             contents = org.apache.cxf.helpers.IOUtils.toString(is);
         } catch (IOException e) {
-            System.err.println("Error while reading contents of file : " + fileName + ". " + e);// NOPMD
+            LOG.error("Error while reading contents of file : " + fileName + ". " + e);
         }
         return contents;
     }
