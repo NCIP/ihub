@@ -38,6 +38,8 @@ import javax.xml.ws.soap.SOAPFaultException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -57,6 +59,7 @@ public class CaAERSParticipantServiceClientTest {
 
     @Autowired
     private CaAERSParticipantServiceWSClient caAERSParticipantServiceClient;
+    private static final Logger LOG = LoggerFactory.getLogger(CaAERSParticipantServiceClientTest.class);
 
     /**
      * Testcase for marshlling participant type
@@ -140,7 +143,7 @@ public class CaAERSParticipantServiceClientTest {
         try {
             final CaaersServiceResponse caaersresponse = caAERSParticipantServiceClient
                     .createParticipant(participantXMLStr);
-        } catch (SOAPFaultException e) {          
+        } catch (SOAPFaultException e) {
             Assert.assertEquals(getXMLString("ParticipantSOAPFaultExceptionMsg.txt"), e.getMessage());
         } catch (IntegrationException e) {
             Assert.assertEquals(IntegrationError._1053.getErrorCode(), e.getErrorCode());
@@ -232,7 +235,7 @@ public class CaAERSParticipantServiceClientTest {
         try {
             contents = org.apache.cxf.helpers.IOUtils.toString(is);
         } catch (IOException e) {
-            System.err.println("Error while reading contents of file : " + fileName + ". " + e);// NOPMD
+            LOG.error("Error while reading contents of file : " + fileName + ". " + e);
         }
         return contents;
     }

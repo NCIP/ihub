@@ -16,6 +16,8 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -43,6 +45,9 @@ public class CaAERSRegistrationServiceInvocationStrategyIntegrationTest {
     private ServiceInvocationMessageDao serviceInvocationMessageDao;
 
     private static final Long REFMSGID = 12345L;
+
+    private static final Logger LOG = LoggerFactory
+            .getLogger(CaAERSRegistrationServiceInvocationStrategyIntegrationTest.class);
 
     /**
      * Tests createParticipant using the ServiceInvocationStrategy class.
@@ -97,10 +102,10 @@ public class CaAERSRegistrationServiceInvocationStrategyIntegrationTest {
         Assert.assertTrue(result.isFault());
     }
 
-  
     private String getInvalidPStr() {
         return getXMLString("Participant.xml");
     }
+
     private String getXMLString(String fileName) {
         String contents = null;
         final InputStream is = CaAERSAdverseEventServiceClientTest.class.getClassLoader().getResourceAsStream(
@@ -108,7 +113,7 @@ public class CaAERSRegistrationServiceInvocationStrategyIntegrationTest {
         try {
             contents = org.apache.cxf.helpers.IOUtils.toString(is);
         } catch (IOException e) {
-            System.err.println("Error while reading contents of file : " + fileName + ". " + e);// NOPMD
+            LOG.error("Error while reading contents of file : " + fileName + ". " + e);
         }
         return contents;
     }
