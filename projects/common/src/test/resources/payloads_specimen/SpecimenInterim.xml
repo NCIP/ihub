@@ -24,7 +24,8 @@
 			<mes:groupName>nogrid</mes:groupName>
 			<mes:gridIdentifier>nogrid</mes:gridIdentifier>
 			<mes:password>changeme</mes:password>
-			<mes:delegatedCredentialReference>nocredentials</mes:delegatedCredentialReference>
+			<mes:delegatedCredentialReference>nocredentials
+			</mes:delegatedCredentialReference>
 		</mes:credentials>
 	</ns0:metadata>
 	<ns0:request xmlns:ns0="http://caXchange.nci.nih.gov/messaging">
@@ -55,6 +56,11 @@
 							<title>6482</title>
 							<shortTitle>6482</shortTitle>
 						</collectionProtocol>
+						<guidanceForBreastCoreBiopsy>
+							<guidanceForBreastCoreBiopsyType>STEREOTACTIC
+							</guidanceForBreastCoreBiopsyType>
+							<otherText />
+						</guidanceForBreastCoreBiopsy>
 					</specimenDetail>
 					<specimenDetail>
 						<collectionProtocolEvent>CPL</collectionProtocolEvent>
@@ -76,6 +82,11 @@
 							<title>6482</title>
 							<shortTitle>6482</shortTitle>
 						</collectionProtocol>
+						<guidanceForBreastCoreBiopsy>
+							<guidanceForBreastCoreBiopsyType>STEREOTACTIC
+							</guidanceForBreastCoreBiopsyType>
+							<otherText />
+						</guidanceForBreastCoreBiopsy>
 					</specimenDetail>
 				</specimenDetailsList>
 			</specimens>
