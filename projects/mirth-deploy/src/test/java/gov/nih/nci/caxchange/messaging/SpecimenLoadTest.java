@@ -24,6 +24,8 @@ import org.apache.http.util.EntityUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -44,6 +46,8 @@ public class SpecimenLoadTest {
     private Date currDt = new Date();
 
     private final ExecutorService es = Executors.newFixedThreadPool(10);
+
+    private static final Logger LOG = LoggerFactory.getLogger(SpecimenLoadTest.class);
 
     /**
      * Testcase for sending the messages
@@ -143,7 +147,7 @@ public class SpecimenLoadTest {
         try {
             contents = org.apache.cxf.helpers.IOUtils.toString(is);
         } catch (IOException e) {
-            System.err.println("Error while reading contents of file : " + fileName + ". " + e);// NOPMD
+            LOG.error("Error while reading contents of file : " + fileName + ". " + e);
         }
         return contents;
     }
