@@ -2,6 +2,7 @@ package gov.nih.nci.integration.catissue.domain;
 
 import edu.wustl.catissuecore.domain.CollectionProtocol;
 import edu.wustl.catissuecore.domain.Specimen;
+import gov.nih.nci.dynext.guidance_for_breast_core_biopsy.GuidanceForBreastCoreBiopsy;
 
 /**
  * @author Rohit Gupta
@@ -11,6 +12,7 @@ public class SpecimenDetail {
     private Specimen specimen;
     private CollectionProtocol collectionProtocol;
     private String collectionProtocolEvent;
+    private GuidanceForBreastCoreBiopsy guidanceForBreastCoreBiopsy;
 
     /**
      * To get collectionProtocolEvent
@@ -64,6 +66,22 @@ public class SpecimenDetail {
      */
     public void setCollectionProtocol(CollectionProtocol collectionProtocol) {
         this.collectionProtocol = collectionProtocol;
+    }
+
+    /**
+     * 
+     * @return GuidanceForBreastCoreBiopsy
+     */
+    public GuidanceForBreastCoreBiopsy getGuidanceForBreastCoreBiopsy() {
+        return guidanceForBreastCoreBiopsy;
+    }
+
+    /**
+     * 
+     * @param guidanceForBreastCoreBiopsy - GuidanceForBreastCoreBiopsy
+     */
+    public void setGuidanceForBreastCoreBiopsy(GuidanceForBreastCoreBiopsy guidanceForBreastCoreBiopsy) {
+        this.guidanceForBreastCoreBiopsy = guidanceForBreastCoreBiopsy;
     }
 
 }
