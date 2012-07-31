@@ -8,6 +8,8 @@ import java.io.InputStream;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -23,6 +25,8 @@ public class CaTissueSpecimenClientIntegrationTest {
 
     @Autowired
     private CaTissueSpecimenClient caTissueSpecimenClient;
+
+    private static final Logger LOG = LoggerFactory.getLogger(CaTissueSpecimenClientIntegrationTest.class);
 
     /**
      * Test case when trying to create existing Specimen
@@ -87,7 +91,7 @@ public class CaTissueSpecimenClientIntegrationTest {
         try {
             contents = org.apache.cxf.helpers.IOUtils.toString(is);
         } catch (IOException e) {
-            System.err.println("Error while reading contents of file : " + fileName + ". " + e);// NOPMD
+            LOG.error("Error while reading contents of file : " + fileName + ". " + e);
         }
         return contents;
     }

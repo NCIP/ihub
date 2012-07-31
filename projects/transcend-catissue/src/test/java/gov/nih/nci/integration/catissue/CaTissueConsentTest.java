@@ -1,16 +1,17 @@
 package gov.nih.nci.integration.catissue;
 
 import static org.junit.Assert.assertNotNull;
+import gov.nih.nci.integration.exception.IntegrationException;
+import gov.nih.nci.integration.invoker.ServiceInvocationResult;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import gov.nih.nci.integration.exception.IntegrationException;
-import gov.nih.nci.integration.invoker.ServiceInvocationResult;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -38,6 +39,8 @@ public class CaTissueConsentTest {
 
     @Value("${catissue.consent.mock.client}")
     private String consentMockClientClass;
+
+    private static final Logger LOG = LoggerFactory.getLogger(CaTissueConsentTest.class);
 
     /**
      * To initialize the things
@@ -84,7 +87,7 @@ public class CaTissueConsentTest {
         try {
             contents = org.apache.cxf.helpers.IOUtils.toString(is);
         } catch (IOException e) {
-            System.err.println("Error while reading contents of file : " + fileName + ". " + e);// NOPMD
+            LOG.error("Error while reading contents of file : " + fileName + ". " + e);
         }
         return contents;
     }
