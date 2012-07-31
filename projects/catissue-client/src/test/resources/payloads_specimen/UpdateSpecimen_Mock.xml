@@ -17,8 +17,8 @@
 			</specimenCharacteristics>
 			<activityStatus>Active</activityStatus>
 			<availableQuantity>4.0</availableQuantity>
-			<barcode>TestUser0041</barcode>
-			<label>TestUser0041</label>
+			<barcode>TestSpecimen0001</barcode>
+			<label>TestSpecimen0001</label>
 			<isAvailable>true</isAvailable>
 			<collectionStatus>Collected</collectionStatus>
 		</specimen>
@@ -26,5 +26,9 @@
 			<title>6482</title>
 			<shortTitle>6482</shortTitle>
 		</collectionProtocol>
+		<guidanceForBreastCoreBiopsy>
+			<guidanceForBreastCoreBiopsyType>STEREOTACTIC</guidanceForBreastCoreBiopsyType>
+			<otherText />
+		</guidanceForBreastCoreBiopsy>
 	</specimenDetail>
 </specimens>

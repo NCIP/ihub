@@ -27,6 +27,10 @@
 			<title>ttp</title>
 			<shortTitle>ttp</shortTitle>
 		</collectionProtocol>
+		<guidanceForBreastCoreBiopsy>
+			<guidanceForBreastCoreBiopsyType>STEREOTACTIC</guidanceForBreastCoreBiopsyType>
+			<otherText />
+		</guidanceForBreastCoreBiopsy>
 	</specimenDetail>
 	<specimenDetail>
 		<collectionProtocolEvent>CPL</collectionProtocolEvent>
@@ -50,5 +54,9 @@
 			<title>6482</title>
 			<shortTitle>6482</shortTitle>
 		</collectionProtocol>
+		<guidanceForBreastCoreBiopsy>
+			<guidanceForBreastCoreBiopsyType>STEREOTACTIC</guidanceForBreastCoreBiopsyType>
+			<otherText />
+		</guidanceForBreastCoreBiopsy>
 	</specimenDetail>
 </specimens>
