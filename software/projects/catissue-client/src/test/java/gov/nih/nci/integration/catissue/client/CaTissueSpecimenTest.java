@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.util.Collection;
+import java.util.HashSet;
 
 import org.easymock.classextension.EasyMock;
 import org.junit.Before;
@@ -23,6 +25,8 @@ import edu.wustl.catissuecore.domain.Specimen;
 import edu.wustl.catissuecore.domain.SpecimenCharacteristics;
 import edu.wustl.catissuecore.domain.SpecimenCollectionGroup;
 import edu.wustl.catissuecore.domain.User;
+import edu.wustl.catissuecore.domain.deintegration.SpecimenRecordEntry;
+import gov.nih.nci.dynext.guidance_for_breast_core_biopsy.GuidanceForBreastCoreBiopsy;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 
 /**
@@ -265,12 +269,28 @@ public class CaTissueSpecimenTest {
         sc.setTissueSide("Right");
         sc.setTissueSite("Placenta");
         specimen.setSpecimenCharacteristics(sc);
+
+        final SpecimenRecordEntry sre = new SpecimenRecordEntry();
+        final GuidanceForBreastCoreBiopsy gfbcb = new GuidanceForBreastCoreBiopsy();
+        gfbcb.setGuidanceForBreastCoreBiopsyType("OTHER");
+        gfbcb.setOtherText("some other text");
+        gfbcb.setSpecimenRecordEntry_GuidanceForBreastCoreBiopsy(sre);
+        final Collection<GuidanceForBreastCoreBiopsy> gfbcbCollection = new HashSet<GuidanceForBreastCoreBiopsy>();
+        gfbcbCollection.add(gfbcb);
+        sre.setGuidanceForBreastCoreBiopsyCollection(gfbcbCollection);
+        sre.setSpecimen(specimen);
+        final Collection<SpecimenRecordEntry> specimenRecordEntryCollection = new HashSet<SpecimenRecordEntry>();
+        specimenRecordEntryCollection.add(sre);
+        specimen.setSpecimenRecordEntryCollection(specimenRecordEntryCollection);
+
         try {
             EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
             EasyMock.expect(
                     caTissueAPIClient.searchById((Class<Specimen>) EasyMock.anyObject(),
                             (Specimen) org.easymock.EasyMock.anyObject())).andReturn(specimen);
 
+            EasyMock.expect(caTissueAPIClient.update((SpecimenRecordEntry) org.easymock.EasyMock.anyObject()))
+                    .andReturn(sre);
             EasyMock.expect(caTissueAPIClient.update((Specimen) org.easymock.EasyMock.anyObject())).andReturn(specimen);
             EasyMock.replay(caTissueAPIClient);
 
@@ -305,12 +325,26 @@ public class CaTissueSpecimenTest {
         sc.setTissueSide("Right");
         sc.setTissueSite("Placenta");
         specimen.setSpecimenCharacteristics(sc);
+
+        final SpecimenRecordEntry sre = new SpecimenRecordEntry();
+        final GuidanceForBreastCoreBiopsy gfbcb = new GuidanceForBreastCoreBiopsy();
+        gfbcb.setGuidanceForBreastCoreBiopsyType("OTHER");
+        gfbcb.setOtherText("some other text");
+        gfbcb.setSpecimenRecordEntry_GuidanceForBreastCoreBiopsy(sre);
+        final Collection<GuidanceForBreastCoreBiopsy> gfbcbCollection = new HashSet<GuidanceForBreastCoreBiopsy>();
+        gfbcbCollection.add(gfbcb);
+        sre.setGuidanceForBreastCoreBiopsyCollection(gfbcbCollection);
+        sre.setSpecimen(specimen);
+        final Collection<SpecimenRecordEntry> specimenRecordEntryCollection = new HashSet<SpecimenRecordEntry>();
+        specimenRecordEntryCollection.add(sre);
+        specimen.setSpecimenRecordEntryCollection(specimenRecordEntryCollection);
+
         try {
             EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
             EasyMock.expect(
                     caTissueAPIClient.searchById((Class<Specimen>) EasyMock.anyObject(),
                             (Specimen) org.easymock.EasyMock.anyObject())).andReturn(specimen);
-
+            EasyMock.expect(caTissueAPIClient.update(sre)).andReturn(sre);
             EasyMock.expect(caTissueAPIClient.update((Specimen) org.easymock.EasyMock.anyObject())).andReturn(specimen);
             EasyMock.replay(caTissueAPIClient);
 
@@ -394,7 +428,7 @@ public class CaTissueSpecimenTest {
             }
             is.close();
         } catch (IOException e) {
-           
+
         }
         return fileContents.toString();
     }
