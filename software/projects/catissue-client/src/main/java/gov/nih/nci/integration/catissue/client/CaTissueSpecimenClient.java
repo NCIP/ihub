@@ -9,6 +9,8 @@ import edu.wustl.catissuecore.domain.SpecimenCharacteristics;
 import edu.wustl.catissuecore.domain.SpecimenCollectionGroup;
 import edu.wustl.catissuecore.domain.TissueSpecimen;
 import edu.wustl.catissuecore.domain.User;
+import edu.wustl.catissuecore.domain.deintegration.SpecimenRecordEntry;
+import gov.nih.nci.dynext.guidance_for_breast_core_biopsy.GuidanceForBreastCoreBiopsy;
 import gov.nih.nci.integration.catissue.domain.SpecimenDetail;
 import gov.nih.nci.integration.catissue.domain.Specimens;
 import gov.nih.nci.system.applicationservice.ApplicationException;
@@ -18,11 +20,14 @@ import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -66,6 +71,7 @@ public class CaTissueSpecimenClient {
         xStream.alias("TissueSpecimen", TissueSpecimen.class);
         xStream.alias("FluidSpecimen", FluidSpecimen.class);
         xStream.alias("collectionProtocol", CollectionProtocol.class);
+        xStream.alias("guidanceForBreastCoreBiopsy", GuidanceForBreastCoreBiopsy.class);
         xStream.addImplicitCollection(Specimens.class, "specimenDetailList");
     }
 
@@ -279,7 +285,9 @@ public class CaTissueSpecimenClient {
             }
 
             try {
-                // method call to createSpecimen
+                // populate GuidanceForBreastCoreBiopsy inside specimen object
+                populateGuidanceForBreastCoreBiopsy(specimen, specimenDetail);
+                // method call to createSpecimen in caTissue
                 createSpecimen(specimen);
             } catch (ApplicationException e) {
                 LOG.error("CreateSpecimen Failed for Label" + specimen.getLabel(), e);
@@ -291,6 +299,38 @@ public class CaTissueSpecimenClient {
 
     private Specimen createSpecimen(Specimen specimen) throws ApplicationException {
         return caTissueAPIClient.insert(specimen);
+    }
+
+    /**
+     * This method is used to populate 'GuidanceForBreastCoreBiopsy object' inside 'Specimen object'
+     * 
+     * @return - Specimen with GuidanceForBreastCoreBiopsy populate, if present in the request
+     */
+    private Specimen populateGuidanceForBreastCoreBiopsy(Specimen specimen, SpecimenDetail specimenDetail) {
+        final String biopsyType = specimenDetail.getGuidanceForBreastCoreBiopsy().getGuidanceForBreastCoreBiopsyType();
+        // Check if biopsyType is not available in the request
+        if (StringUtils.isBlank(biopsyType)) {
+            return specimen;
+        }
+
+        final SpecimenRecordEntry sre = new SpecimenRecordEntry();
+        final GuidanceForBreastCoreBiopsy gfbcb = new GuidanceForBreastCoreBiopsy();
+        gfbcb.setGuidanceForBreastCoreBiopsyType(specimenDetail.getGuidanceForBreastCoreBiopsy()
+                .getGuidanceForBreastCoreBiopsyType());
+        gfbcb.setOtherText(specimenDetail.getGuidanceForBreastCoreBiopsy().getOtherText());
+        gfbcb.setSpecimenRecordEntry_GuidanceForBreastCoreBiopsy(sre);
+
+        final Collection<GuidanceForBreastCoreBiopsy> gfbcbCollection = new HashSet<GuidanceForBreastCoreBiopsy>();
+        gfbcbCollection.add(gfbcb);
+
+        sre.setGuidanceForBreastCoreBiopsyCollection(gfbcbCollection);
+        sre.setSpecimen(specimen);
+
+        final Collection<SpecimenRecordEntry> specimenRecordEntryCollection = new HashSet<SpecimenRecordEntry>();
+        specimenRecordEntryCollection.add(sre);
+        specimen.setSpecimenRecordEntryCollection(specimenRecordEntryCollection);
+
+        return specimen;
     }
 
     /**
@@ -320,7 +360,9 @@ public class CaTissueSpecimenClient {
                 incomingSpecimen.setLineage(existingSpecimen.getLineage());
                 incomingSpecimen.getSpecimenCharacteristics().setId(
                         existingSpecimen.getSpecimenCharacteristics().getId());
-
+                // update GuidanceForBreastCoreBiopsy in caTissue
+                updateGuidanceForBreastCoreBiopsy(existingSpecimen, specimenDetail);
+                // update Specimen in caTissue
                 updateSpecimen(incomingSpecimen);
 
                 updatedSpecimenList.add(incomingSpecimen);
@@ -382,6 +424,46 @@ public class CaTissueSpecimenClient {
     }
 
     /**
+     * This method is used to update GuidanceForBreastCoreBiopsy for a Specimen in caTissue
+     * 
+     * @param existingSpecimen
+     * @param specimenDetail
+     * @throws ApplicationException
+     */
+    private void updateGuidanceForBreastCoreBiopsy(Specimen existingSpecimen, SpecimenDetail specimenDetail)
+            throws ApplicationException {
+
+        final String biopsyType = specimenDetail.getGuidanceForBreastCoreBiopsy().getGuidanceForBreastCoreBiopsyType();
+        // If biopsyType is not available in the request, then no need to call update -- just return
+        if (StringUtils.isBlank(biopsyType)) {
+            return;
+        }
+
+        if (existingSpecimen.getSpecimenRecordEntryCollection() != null) {
+            final Iterator<SpecimenRecordEntry> sreItr = existingSpecimen.getSpecimenRecordEntryCollection().iterator();
+            while (sreItr.hasNext()) {
+                final SpecimenRecordEntry sre = sreItr.next();
+                if (sre.getGuidanceForBreastCoreBiopsyCollection() != null) {
+                    final Iterator<GuidanceForBreastCoreBiopsy> gfbcbItr = sre
+                            .getGuidanceForBreastCoreBiopsyCollection().iterator();
+                    while (gfbcbItr.hasNext()) {
+                        final GuidanceForBreastCoreBiopsy gfbcb = gfbcbItr.next();
+                        // update the values with the incoming values
+                        gfbcb.setGuidanceForBreastCoreBiopsyType(specimenDetail.getGuidanceForBreastCoreBiopsy()
+                                .getGuidanceForBreastCoreBiopsyType());
+                        gfbcb.setOtherText(specimenDetail.getGuidanceForBreastCoreBiopsy().getOtherText());
+                        gfbcb.setSpecimenRecordEntry_GuidanceForBreastCoreBiopsy(sre);
+                        // call update to update GuidanceForBreastCoreBiopsy in caTissue
+                        caTissueAPIClient.update(sre);
+                    }
+                }
+            }
+
+        }
+
+    }
+
+    /**
      * This method will rollback the specimens for Update_Specimen flow
      * 
      * @param specimens
@@ -394,6 +476,9 @@ public class CaTissueSpecimenClient {
             final SpecimenDetail specimenDetail = specimenDetailItr.next();
             final Specimen existingSpecimen = specimenDetail.getSpecimen();
             try {
+                // rollback the GuidanceForBreastCoreBiopsy
+                updateGuidanceForBreastCoreBiopsy(existingSpecimen, specimenDetail);
+                // rollback the Specimen
                 updateSpecimen(existingSpecimen);
             } catch (ApplicationException e) {
                 LOG.error("Exception occured during Rollback of UpdateSpecimen " + existingSpecimen.getLabel(), e);
