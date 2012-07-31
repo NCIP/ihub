@@ -84,17 +84,35 @@
 												<collectionProtocol>
 													<xsl:for-each select="ns1:act/ns1:relationship">
 														<xsl:if test="@name = 'collectionProtocol'">
-															<xsl:if
-																test="ns1:act/ns1:observation/ns1:value/ns1:label = 'title'">
-																<title><xsl:value-of select="ns1:act/ns1:observation/ns1:value/ns1:ST" /></title>
-															</xsl:if>
-															<xsl:if
-																test="ns1:act/ns1:observation/ns1:value/ns1:label = 'shortTitle'">
-																<shortTitle><xsl:value-of select="ns1:act/ns1:observation/ns1:value/ns1:ST" /></shortTitle>
-															</xsl:if>
+															<xsl:for-each select="ns1:act/ns1:observation/ns1:value">
+																<xsl:choose>
+																	<xsl:when test="ns1:label = 'title'">
+																		<title><xsl:value-of select="ns1:ST" /></title>
+																	</xsl:when>
+																	<xsl:otherwise>
+																		<shortTitle><xsl:value-of select="ns1:ST" /></shortTitle>
+																	</xsl:otherwise>
+																</xsl:choose>
+															</xsl:for-each>															
 														</xsl:if>
 													</xsl:for-each>
 												</collectionProtocol>
+												<guidanceForBreastCoreBiopsy>
+													<xsl:for-each select="ns1:act/ns1:relationship">
+														<xsl:if test="@name = 'guidanceForBreastCoreBiopsy'">
+															<xsl:for-each select="ns1:act/ns1:observation/ns1:value">
+																<xsl:choose>
+																	<xsl:when test="ns1:label = 'guidanceForBreastCoreBiopsyType'">
+																		<guidanceForBreastCoreBiopsyType><xsl:value-of select="ns1:ST" /></guidanceForBreastCoreBiopsyType>
+																	</xsl:when>
+																	<xsl:otherwise>
+																		<otherText><xsl:value-of select="ns1:ST" /></otherText>
+																	</xsl:otherwise>
+																</xsl:choose>
+															</xsl:for-each>															
+														</xsl:if>
+													</xsl:for-each>													
+												</guidanceForBreastCoreBiopsy>
 											</xsl:if>
 										</specimenDetail>
 									</xsl:for-each>
