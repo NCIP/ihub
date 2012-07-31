@@ -16,6 +16,8 @@ import java.io.InputStream;
 import java.sql.Date;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Test class for CaAERSServiceInvocationStrategyFactory
@@ -24,6 +26,8 @@ import org.junit.Test;
  * 
  */
 public class CaAERSServiceInvocationStrategyFactoryTest {
+
+    private static final Logger LOG = LoggerFactory.getLogger(CaAERSServiceInvocationStrategyFactoryTest.class);
 
     /**
      * Testcase for createCaAERSUpdateAdverseEventServiceInvocationStrategy
@@ -120,7 +124,7 @@ public class CaAERSServiceInvocationStrategyFactoryTest {
         try {
             contents = org.apache.cxf.helpers.IOUtils.toString(is);
         } catch (IOException e) {
-            System.err.println("Error while reading contents of file : " + fileName + ". " + e);// NOPMD
+            LOG.error("Error while reading contents of file : " + fileName + ". " + e);
         }
         return contents;
     }
