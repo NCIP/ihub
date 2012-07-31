@@ -45,7 +45,7 @@ public class AcceptSourceFaultTest {
         ce.setDetail("detail");
         cf.getCaCISError().add(ce);
 
-        final String faultXml = getCaCISFaultxml(cf);        
+        final String faultXml = getCaCISFaultxml(cf);
         Assert.assertEquals(getFaultString(), faultXml);
 
         final CaCISFault newCf = getCaCISFaultFromXml(getFaultString());
@@ -90,7 +90,7 @@ public class AcceptSourceFaultTest {
         try {
             contents = org.apache.cxf.helpers.IOUtils.toString(is);
         } catch (IOException e) {
-            System.err.println("Error while reading contents of file : " + fileName + ". " + e);// NOPMD
+            LOG.error("Error while reading contents of file : " + fileName + ". " + e);
         }
         return contents;
     }
