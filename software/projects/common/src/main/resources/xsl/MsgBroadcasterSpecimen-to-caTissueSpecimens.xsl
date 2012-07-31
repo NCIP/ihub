@@ -32,6 +32,10 @@
 						<title><xsl:value-of select="a:collectionProtocol/a:title" /></title>
 						<shortTitle><xsl:value-of select="a:collectionProtocol/a:shortTitle" /></shortTitle>
 					</collectionProtocol>
+					<guidanceForBreastCoreBiopsy>
+						<guidanceForBreastCoreBiopsyType><xsl:value-of select="a:guidanceForBreastCoreBiopsy/a:guidanceForBreastCoreBiopsyType" /></guidanceForBreastCoreBiopsyType>
+						<otherText><xsl:value-of select="a:guidanceForBreastCoreBiopsy/a:otherText" /></otherText>
+					</guidanceForBreastCoreBiopsy>
 				</specimenDetail>
 			</xsl:for-each>
 		</specimens>
