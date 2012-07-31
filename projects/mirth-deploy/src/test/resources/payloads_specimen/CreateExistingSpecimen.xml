@@ -262,6 +262,21 @@
 												</act>
 											</relationship>
 											<relationship typeCode="APND" direction="IN"
+												name="guidanceForBreastCoreBiopsy">
+												<act moodCode="APT" classCode="ACCM">
+													<observation>
+														<value>
+															<label>guidanceForBreastCoreBiopsyType</label>
+															<ST>OTHER</ST>
+														</value>
+														<value>
+															<label>otherText</label>
+															<ST>some other text</ST>
+														</value>
+													</observation>
+												</act>
+											</relationship>
+											<relationship typeCode="APND" direction="IN"
 												name="specimenClass">
 												<act moodCode="APT" classCode="ACCM">
 													<observation>

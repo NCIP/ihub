@@ -20,12 +20,14 @@
 					<!--Optional: -->
 					<mes:password>changeme</mes:password>
 					<!--Optional: -->
-					<mes:delegatedCredentialReference>nocredentials</mes:delegatedCredentialReference>
+					<mes:delegatedCredentialReference>nocredentials
+					</mes:delegatedCredentialReference>
 				</mes:credentials>
 			</mes:metadata>
 			<mes:request>
 				<mes:businessMessagePayload>
-					<mes:xmlSchemaDefinition>urn:tolven-org:trim:4.0</mes:xmlSchemaDefinition>
+					<mes:xmlSchemaDefinition>urn:tolven-org:trim:4.0
+					</mes:xmlSchemaDefinition>
 					<trim xmlns="urn:tolven-org:trim:4.0">
 						<extends>patientAct</extends>
 						<name>obs/evn/randomization</name>
@@ -69,7 +71,8 @@
 							<id>
 								<II>
 									<root>1.2.1.165000</root>
-									<extension>echr:patient-1021093:caseReportForm-1030047</extension>
+									<extension>echr:patient-1021093:caseReportForm-1030047
+									</extension>
 								</II>
 							</id>
 							<code>
@@ -189,7 +192,7 @@
 									<observation>
 										<value>
 											<label>cdmsSubjectId</label>
-											<ST>66604232</ST>
+											<ST>996125</ST>
 										</value>
 									</observation>
 								</act>
@@ -216,7 +219,7 @@
 													<observation>
 														<value>
 															<label>cdmsSpecimenId</label>
-															<ST>TestUser0016</ST>
+															<ST>TestSpecimen0015</ST>
 														</value>
 													</observation>
 												</act>
@@ -227,7 +230,7 @@
 													<observation>
 														<value>
 															<label>barCode</label>
-															<ST>TestUser0016</ST>
+															<ST>TestSpecimen0015</ST>
 														</value>
 													</observation>
 												</act>
@@ -254,6 +257,21 @@
 														<value>
 															<label>shortTitle</label>
 															<ST>6482</ST>
+														</value>
+													</observation>
+												</act>
+											</relationship>
+											<relationship typeCode="APND" direction="IN"
+												name="guidanceForBreastCoreBiopsy">
+												<act moodCode="APT" classCode="ACCM">
+													<observation>
+														<value>
+															<label>guidanceForBreastCoreBiopsyType</label>
+															<ST>OTHER</ST>
+														</value>
+														<value>
+															<label>otherText</label>
+															<ST>some other text</ST>
 														</value>
 													</observation>
 												</act>
@@ -308,140 +326,7 @@
 													<observation>
 														<value>
 															<label>availableQuantity</label>
-															<ST>50</ST>
-														</value>
-													</observation>
-												</act>
-											</relationship>
-											<relationship typeCode="APND" direction="IN"
-												name="specimenCharacteristics">
-												<act moodCode="APT" classCode="ACCM">
-													<observation>
-														<value>
-															<label>tissueSite</label>
-															<ST>Placenta</ST>
-														</value>
-														<value>
-															<label>tissueSide</label>
-															<ST>Right</ST>
-														</value>
-													</observation>
-												</act>
-											</relationship>
-										</act>
-									</relationship>
-									<relationship typeCode="APND" direction="IN" name="specimen">
-										<act moodCode="APT" classCode="ACCM">
-											<relationship typeCode="APND" direction="IN"
-												name="collectionProtocolEvent">
-												<act moodCode="APT" classCode="ACCM">
-													<observation>
-														<value>
-															<label>collectionProtocolEvent</label>
-															<ST>CPL</ST>
-														</value>
-													</observation>
-												</act>
-											</relationship>
-											<relationship typeCode="APND" direction="IN"
-												name="cdmsSpecimenId">
-												<act moodCode="APT" classCode="ACCM">
-													<observation>
-														<value>
-															<label>cdmsSpecimenId</label>
-															<ST>TestUser0017</ST>
-														</value>
-													</observation>
-												</act>
-											</relationship>
-											<relationship typeCode="APND" direction="IN"
-												name="barCode">
-												<act moodCode="APT" classCode="ACCM">
-													<observation>
-														<value>
-															<label>barCode</label>
-															<ST>TestUser0017</ST>
-														</value>
-													</observation>
-												</act>
-											</relationship>
-											<relationship typeCode="APND" direction="IN"
-												name="activityStatus">
-												<act moodCode="APT" classCode="ACCM">
-													<observation>
-														<value>
-															<label>activityStatus</label>
-															<ST>Active</ST>
-														</value>
-													</observation>
-												</act>
-											</relationship>
-											<relationship typeCode="APND" direction="IN"
-												name="collectionProtocol">
-												<act moodCode="APT" classCode="ACCM">
-													<observation>
-														<value>
-															<label>title</label>
-															<ST>6482</ST>
-														</value>
-														<value>
-															<label>shortTitle</label>
-															<ST>6482</ST>
-														</value>
-													</observation>
-												</act>
-											</relationship>
-											<relationship typeCode="APND" direction="IN"
-												name="specimenClass">
-												<act moodCode="APT" classCode="ACCM">
-													<observation>
-														<value>
-															<label>specimenClass</label>
-															<ST>Tissue</ST>
-														</value>
-													</observation>
-												</act>
-											</relationship>
-											<relationship typeCode="APND" direction="IN"
-												name="specimenType">
-												<act moodCode="APT" classCode="ACCM">
-													<observation>
-														<value>
-															<label>specimenType</label>
-															<ST>Fixed Tissue</ST>
-														</value>
-													</observation>
-												</act>
-											</relationship>
-											<relationship typeCode="APND" direction="IN"
-												name="pathologicalStatus">
-												<act moodCode="APT" classCode="ACCM">
-													<observation>
-														<value>
-															<label>pathologicalStatus</label>
-															<ST>Malignant</ST>
-														</value>
-													</observation>
-												</act>
-											</relationship>
-											<relationship typeCode="APND" direction="IN"
-												name="initialQuantity">
-												<act moodCode="APT" classCode="ACCM">
-													<observation>
-														<value>
-															<label>initialQuantity</label>
-															<ST>400</ST>
-														</value>
-													</observation>
-												</act>
-											</relationship>
-											<relationship typeCode="APND" direction="IN"
-												name="availableQuantity">
-												<act moodCode="APT" classCode="ACCM">
-													<observation>
-														<value>
-															<label>availableQuantity</label>
-															<ST>200</ST>
+															<ST>100</ST>
 														</value>
 													</observation>
 												</act>
@@ -482,19 +367,22 @@
 						</valueSet>
 						<valueSet name="treatmentConsentNoReasons">
 							<CE>
-								<displayName>Decided not to have neoadjuvant chemotherapy</displayName>
+								<displayName>Decided not to have neoadjuvant chemotherapy
+								</displayName>
 								<code>C0183107</code>
 								<codeSystem>2.16.840.1.113883.6.56</codeSystem>
 								<codeSystemVersion>2007AA</codeSystemVersion>
 							</CE>
 							<CE>
-								<displayName>Decided not to be treated with a novel agent</displayName>
+								<displayName>Decided not to be treated with a novel agent
+								</displayName>
 								<code>C0183108</code>
 								<codeSystem>2.16.840.1.113883.6.56</codeSystem>
 								<codeSystemVersion>2007AA</codeSystemVersion>
 							</CE>
 							<CE>
-								<displayName>Patient found to be ineligible for study</displayName>
+								<displayName>Patient found to be ineligible for study
+								</displayName>
 								<code>C0183109</code>
 								<codeSystem>2.16.840.1.113883.6.56</codeSystem>
 								<codeSystemVersion>2007AA</codeSystemVersion>
