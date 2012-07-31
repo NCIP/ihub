@@ -16,6 +16,8 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Testcase for Marshaling/Unmarshaling the XML
@@ -24,6 +26,8 @@ import org.junit.Test;
  * 
  */
 public class RequestMarshallingTest {
+
+    private static final Logger LOG = LoggerFactory.getLogger(RequestMarshallingTest.class);
 
     /**
      * Testcase for marshaling the Message
@@ -114,7 +118,7 @@ public class RequestMarshallingTest {
         try {
             contents = org.apache.cxf.helpers.IOUtils.toString(is);
         } catch (IOException e) {
-            System.err.println("Error while reading contents of file : " + fileName + ". " + e);// NOPMD
+            LOG.error("Error while reading contents of file : " + fileName + ". " + e);
         }
         return contents;
     }
