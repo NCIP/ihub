@@ -32,6 +32,15 @@
         
         <exclude module="jaxb-xjc"/>
         <exclude module="jaxb-impl"/>
+        
+        <!-- compile only dependencies -->
+        <dependency org="org.apache.ant" name="ant" rev="1.8.0" conf="build->master(*)"/>
+			
+        <!-- Logging-->
+        <dependency  org="org.slf4j" name="slf4j-simple" rev="1.6.4" conf="build->default(*)">
+			<exclude conf="dist"/>
+		</dependency>
+        <dependency org="org.slf4j" name="slf4j-api" rev="1.6.4" />
 		
 		<dependency org="gov.nih.nci.ihub" name="common" rev="latest.integration"  conf="runtime->dist;test->test;static-analysis->static-analysis"/>
         <dependency org="gov.nih.nci.ihub" name="transcend-catissue" rev="latest.integration"  conf="runtime->dist;test->test;static-analysis->static-analysis"/>
