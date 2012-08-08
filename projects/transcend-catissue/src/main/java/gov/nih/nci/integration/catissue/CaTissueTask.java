@@ -64,18 +64,18 @@ public class CaTissueTask implements Callable<ServiceInvocationResult> {
             result.setOriginalData(retValue);
         } catch (InvocationTargetException e) {
             final String exceptionMessage = e.getTargetException().getMessage();
-            LOG.error("Inside CaTissueTask..call()..InvocationTargetException is :: ", e);
+            LOG.error("InvocationTargetException is :: ", e);
             final IntegrationException ie = new IntegrationException(IntegrationError._1051, e.getTargetException(),
                     exceptionMessage);
             result.setInvocationException(ie);
         } catch (IllegalArgumentException e) {
             final String exceptionMessage = e.getMessage();
-            LOG.error("Inside CaTissueTask..call()..IllegalArgumentException is :: ", e);
+            LOG.error("IllegalArgumentException is :: ", e);
             final IntegrationException ie = new IntegrationException(IntegrationError._1051, e, exceptionMessage);
             result.setInvocationException(ie);
         } catch (IllegalAccessException e) {
             final String exceptionMessage = e.getMessage();
-            LOG.error("Inside CaTissueTask..call()..IllegalAccessException is :: ", e);
+            LOG.error("IllegalAccessException is :: ", e);
             final IntegrationException ie = new IntegrationException(IntegrationError._1051, e, exceptionMessage);
             result.setInvocationException(ie);
         }
