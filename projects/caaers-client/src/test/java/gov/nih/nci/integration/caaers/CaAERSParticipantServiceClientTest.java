@@ -1,6 +1,5 @@
 package gov.nih.nci.integration.caaers;
 
-import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ParticipantIdentifierType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.StudyIdentifierType;
@@ -21,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -45,13 +45,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
+ * This client test code only tests the client communication and does code coverage. So, if there is proper service, it
+ * will fail with SOAPFaultException because of schema validation. If not will fail with IntegrationException because of
+ * Connection Refused.
  * 
  * @author chandrasekaravr
- * 
- *         This client test code only tests the client communication and does code coverage. So, if there is proper
- *         service, it will fail with SOAPFaultException because of schema validation. If not will fail with
- *         IntegrationException because of Connection Refused.
- * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContext-caaers-client-test.xml")
@@ -134,84 +132,74 @@ public class CaAERSParticipantServiceClientTest {
 
     /**
      * Testcase for createParticipant
+     * 
+     * @throws JAXBException - JAXBException
+     * @throws MalformedURLException - MalformedURLException
      */
     @Test
-    public void createParticipant() {
-
+    public void createParticipant() throws MalformedURLException, JAXBException {
         final String participantXMLStr = getPStr();
-
         try {
-            final CaaersServiceResponse caaersresponse = caAERSParticipantServiceClient
-                    .createParticipant(participantXMLStr);
+            caAERSParticipantServiceClient.createParticipant(participantXMLStr);
         } catch (SOAPFaultException e) {
             Assert.assertEquals(getXMLString("ParticipantSOAPFaultExceptionMsg.txt"), e.getMessage());
         } catch (IntegrationException e) {
             Assert.assertEquals(IntegrationError._1053.getErrorCode(), e.getErrorCode());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) {
-            Assert.fail("Expected either SOAPFaultException or IntegrationException only!");
         }
-
     }
 
     /**
      * Testcase for getParticipant
+     * 
+     * @throws JAXBException - JAXBException
+     * @throws MalformedURLException - MalformedURLException
      */
     @Test
-    public void getParticipant() {
-
+    public void getParticipant() throws MalformedURLException, JAXBException {
         final String participantXMLStr = getPStr();
-
         try {
             caAERSParticipantServiceClient.getParticipant(participantXMLStr);
         } catch (SOAPFaultException e) {
             Assert.assertEquals(getXMLString("ParticipantSOAPFaultExceptionMsg.txt"), e.getMessage());
         } catch (IntegrationException e) {
             Assert.assertEquals(IntegrationError._1053.getErrorCode(), e.getErrorCode());
-        } catch (Exception e) {
-            Assert.fail("Expected either SOAPFaultException or IntegrationException only!");
         }
-
     }
 
     /**
      * Testcase for updateParticipant
+     * 
+     * @throws JAXBException - JAXBException
+     * @throws MalformedURLException - MalformedURLException
      */
     @Test
-    public void updateParticipant() {
-
+    public void updateParticipant() throws MalformedURLException, JAXBException {
         final String participantXMLStr = getPStr();
-
         try {
             caAERSParticipantServiceClient.updateParticipant(participantXMLStr);
         } catch (SOAPFaultException e) {
             Assert.assertEquals(getXMLString("ParticipantSOAPFaultExceptionMsg.txt"), e.getMessage());
         } catch (IntegrationException e) {
             Assert.assertEquals(IntegrationError._1053.getErrorCode(), e.getErrorCode());
-        } catch (Exception e) {
-            Assert.fail("Expected either SOAPFaultException or IntegrationException only!");
         }
-
     }
 
     /**
      * Testcase for deleteParticipant
+     * 
+     * @throws JAXBException - JAXBException
+     * @throws MalformedURLException - MalformedURLException
      */
     @Test
-    public void deleteParticipant() {
-
+    public void deleteParticipant() throws MalformedURLException, JAXBException {
         final String participantXMLStr = getPStr();
-
         try {
             caAERSParticipantServiceClient.deleteParticipant(participantXMLStr);
         } catch (SOAPFaultException e) {
             Assert.assertEquals(getXMLString("ParticipantSOAPFaultExceptionMsg.txt"), e.getMessage());
         } catch (IntegrationException e) {
             Assert.assertEquals(IntegrationError._1053.getErrorCode(), e.getErrorCode());
-        } catch (Exception e) {
-            Assert.fail("Expected either SOAPFaultException or IntegrationException only!");
         }
-
     }
 
     private Marshaller getMarshaller() throws JAXBException {
