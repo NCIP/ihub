@@ -14,24 +14,24 @@
 			<adverseeventinput xmlns="http://cacis.nci.nih.gov">
 				<criteria>
 					<participantIdentifier>
-						<xsl:value-of
-							select="ns3:caCISRequest/ns3:sourceData/ns2:caxchangerequest/ns0:request/ns0:businessMessagePayload/ns1:trim/ns1:adverseeventinput/ns1:criteria/ns1:participantIdentifier" />
+						<xsl:value-of select="ns3:caCISRequest/ns3:sourceData/ns2:caxchangerequest/ns0:request/ns0:businessMessagePayload/ns1:trim/ns1:adverseeventinput/ns1:criteria/ns1:participantIdentifier" />
 					</participantIdentifier>
 					<studyIdentifier>
-						<xsl:value-of
-							select="ns3:caCISRequest/ns3:sourceData/ns2:caxchangerequest/ns0:request/ns0:businessMessagePayload/ns1:trim/ns1:adverseeventinput/ns1:criteria/ns1:studyIdentifier" />
+						<xsl:value-of select="ns3:caCISRequest/ns3:sourceData/ns2:caxchangerequest/ns0:request/ns0:businessMessagePayload/ns1:trim/ns1:adverseeventinput/ns1:criteria/ns1:studyIdentifier" />
 					</studyIdentifier>
 					<course>
 						<startDateOfThisCourse>
-							<xsl:value-of
-								select="ns3:caCISRequest/ns3:sourceData/ns2:caxchangerequest/ns0:request/ns0:businessMessagePayload/ns1:trim/ns1:adverseeventinput/ns1:criteria/ns1:course/ns1:startDateOfThisCourse" />
+							<xsl:value-of select="ns3:caCISRequest/ns3:sourceData/ns2:caxchangerequest/ns0:request/ns0:businessMessagePayload/ns1:trim/ns1:adverseeventinput/ns1:criteria/ns1:course/ns1:startDateOfThisCourse" />
 						</startDateOfThisCourse>
 						<endDateOfThisCourse>
-							<xsl:value-of
-								select="ns3:caCISRequest/ns3:sourceData/ns2:caxchangerequest/ns0:request/ns0:businessMessagePayload/ns1:trim/ns1:adverseeventinput/ns1:criteria/ns1:course/ns1:endDateOfThisCourse" />
+							<xsl:value-of select="ns3:caCISRequest/ns3:sourceData/ns2:caxchangerequest/ns0:request/ns0:businessMessagePayload/ns1:trim/ns1:adverseeventinput/ns1:criteria/ns1:course/ns1:endDateOfThisCourse" />
 						</endDateOfThisCourse>
-						<treatmentType>Treatment</treatmentType>
-						<treatmentAssignmentCode>TAC</treatmentAssignmentCode>
+						<treatmentType>
+							<xsl:value-of select="ns3:caCISRequest/ns3:sourceData/ns2:caxchangerequest/ns0:request/ns0:businessMessagePayload/ns1:trim/ns1:adverseeventinput/ns1:criteria/ns1:course/ns1:treatmentType" />
+						</treatmentType>
+						<treatmentAssignmentCode>
+							<xsl:value-of select="ns3:caCISRequest/ns3:sourceData/ns2:caxchangerequest/ns0:request/ns0:businessMessagePayload/ns1:trim/ns1:adverseeventinput/ns1:criteria/ns1:course/ns1:treatmentAssignmentCode" />
+						</treatmentAssignmentCode>
 					</course>
 				</criteria>
 				<adverseEventsList>
