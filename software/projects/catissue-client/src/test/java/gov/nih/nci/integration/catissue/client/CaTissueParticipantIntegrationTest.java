@@ -20,6 +20,8 @@ import java.util.List;
 import javax.xml.bind.JAXBException;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -41,8 +43,8 @@ import gov.nih.nci.system.applicationservice.ApplicationException;
 public class CaTissueParticipantIntegrationTest {
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-
-    private final CaTissueParticipantClient caTissueParticipantClient;
+    private final CaTissueParticipantClient caTissueParticipantClient;    
+    private static final Logger LOG = LoggerFactory.getLogger(CaTissueParticipantIntegrationTest.class);
 
     /**
      * Constructor
@@ -248,12 +250,12 @@ public class CaTissueParticipantIntegrationTest {
         final BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String strLine;
         try {
-            while ((strLine = br.readLine()) != null) { // NOPMD
+            while ((strLine = br.readLine()) != null) {
                 fileContents.append(strLine);
             }
             is.close();
         } catch (IOException e) {
-            
+            LOG.error("CaTissueParticipantIntegrationTest-IOException inside getXMLString() ", e);
         }
         return fileContents.toString();
     }
