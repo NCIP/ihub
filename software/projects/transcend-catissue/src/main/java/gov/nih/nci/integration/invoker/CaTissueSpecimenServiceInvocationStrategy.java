@@ -30,7 +30,7 @@ public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocat
 
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueSpecimenServiceInvocationStrategy.class);
 
-    private  final int retryCount;
+    private final int retryCount;
 
     private final CaTissueSpecimenClient caTissueSpecimenClient;
 
@@ -62,6 +62,9 @@ public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocat
         msgToErrMapBase.put("Available Quantity cannot be greater than the Initial Quantity", IntegrationError._1085);
         msgToErrMapBase.put("Pathological Status is invalid", IntegrationError._1086);
         msgToErrMapBase.put("Error occurred : Unable to rollback. Please check the logs.", IntegrationError._1093);
+        msgToErrMapBase.put("GuidanceForBreastCoreBiopsyType is mandatory while creating the Specimen.",
+                IntegrationError._1094);
+        msgToErrMapBase.put("Non-OTHER biopsyType shouldn't contain otherText.", IntegrationError._1095);
 
         msgToErrMap = Collections.synchronizedMap(msgToErrMapBase);
     }
