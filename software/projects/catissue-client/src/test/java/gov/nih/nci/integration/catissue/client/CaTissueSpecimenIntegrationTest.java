@@ -71,8 +71,8 @@ public class CaTissueSpecimenIntegrationTest {
         try {
             existXML = caTissueSpecimenClient.isSpecimensExist(getInsertInvalidSpecimenClassXMLStr());
             caTissueSpecimenClient.createSpecimens(getInsertInvalidSpecimenClassXMLStr());
-            // CHECKSTYLE:OFF
-        } catch (Exception e) { // NOPMD
+            
+        } catch (ApplicationException e) {
             existXML = null;
             createdXML = null;
         }
@@ -297,7 +297,7 @@ public class CaTissueSpecimenIntegrationTest {
         try {
             existXML = caTissueSpecimenClient.getExistingSpecimens(getUpdateSpecimenClassChangeXMLStr());
             retXML = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenClassChangeXMLStr());
-        } catch (Exception e) { // NOPMD
+        } catch (ApplicationException e) {
             existXML = null;
             retXML = null;
         }
@@ -457,12 +457,12 @@ public class CaTissueSpecimenIntegrationTest {
         final BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String strLine;
         try {
-            while ((strLine = br.readLine()) != null) { // NOPMD
+            while ((strLine = br.readLine()) != null) { 
                 fileContents.append(strLine);
             }
             is.close();
         } catch (IOException e) {
-           
+            LOG.error("CaTissueSpecimenIntegrationTest-IOException inside getXMLString() ", e);
         }
         return fileContents.toString();
     }
