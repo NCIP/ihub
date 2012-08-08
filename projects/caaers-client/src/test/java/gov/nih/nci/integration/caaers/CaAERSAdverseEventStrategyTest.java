@@ -3,6 +3,7 @@ package gov.nih.nci.integration.caaers;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CreateOrUpdateAdverseEventResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.common.Status;
 import gov.nih.nci.integration.caaers.invoker.CaAERSAdverseEventServiceInvocationStrategy;
 import gov.nih.nci.integration.caaers.invoker.CaAERSUpdateAdverseEventServiceInvocationStrategy;
 import gov.nih.nci.integration.domain.IHubMessage;
@@ -76,7 +77,7 @@ public class CaAERSAdverseEventStrategyTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void createAdverseEventSuccess() throws IntegrationException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime());
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -109,7 +110,7 @@ public class CaAERSAdverseEventStrategyTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void createAdverseEventFailure() throws IntegrationException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime());
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -140,7 +141,7 @@ public class CaAERSAdverseEventStrategyTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void createAERollback() throws IntegrationException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime());
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -167,7 +168,7 @@ public class CaAERSAdverseEventStrategyTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void updateAdverseEventSuccess() throws IntegrationException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime());
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -201,7 +202,7 @@ public class CaAERSAdverseEventStrategyTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void updateAdverseEventFailure() throws IntegrationException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime());
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -235,7 +236,7 @@ public class CaAERSAdverseEventStrategyTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void updateAERollback() throws IntegrationException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime());
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -268,7 +269,7 @@ public class CaAERSAdverseEventStrategyTest {
         serviceInvocationMessage.setStrategyIdentifier(strategyIdentifier);
         final IHubMessage iHubMessage = new IHubMessage();
         iHubMessage.setStartTime(startTime);
-        iHubMessage.setEndTime(new Date(new java.util.Date().getTime())); // NOPMD
+        iHubMessage.setEndTime(new Date(new java.util.Date().getTime()));
         iHubMessage.setRequest(message);
         iHubMessage.setReferenceMessageId(referenceMessageId);
         serviceInvocationMessage.setReferenceMessageId(referenceMessageId);
@@ -281,8 +282,10 @@ public class CaAERSAdverseEventStrategyTest {
         final CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
         final ServiceResponse serviceResponse = new ServiceResponse();
         if (type.equalsIgnoreCase(SUCCESS)) {
+            serviceResponse.setStatus(Status.PROCESSED);
             serviceResponse.setResponsecode("0");
         } else {
+            serviceResponse.setStatus(Status.FAILED_TO_PROCESS);
             serviceResponse.setResponsecode("1");
             serviceResponse.setMessage("incoming data is not proper.");
         }
