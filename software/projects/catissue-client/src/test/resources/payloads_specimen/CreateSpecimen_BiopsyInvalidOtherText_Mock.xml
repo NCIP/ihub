@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<specimens>
+	<participant>
+		<lastName>66604232</lastName>
+		<activityStatus>Active</activityStatus>
+	</participant>
+	<specimenDetail>
+		<collectionProtocolEvent>CPE</collectionProtocolEvent>
+		<specimen class="TissueSpecimen">
+			<initialQuantity>9.0</initialQuantity>
+			<pathologicalStatus>Malignant</pathologicalStatus>
+			<specimenClass>Tissue</specimenClass>
+			<specimenType>Fixed Tissue</specimenType>
+			<specimenCharacteristics>
+				<tissueSide>Right</tissueSide>
+				<tissueSite>Placenta</tissueSite>
+			</specimenCharacteristics>
+			<activityStatus>Active</activityStatus>
+			<availableQuantity>4.0</availableQuantity>
+			<barcode>TestUser0041</barcode>
+			<label>TestUser0041</label>
+			<isAvailable>true</isAvailable>
+			<collectionStatus>Collected</collectionStatus>
+		</specimen>
+		<collectionProtocol>
+			<title>6482</title>
+			<shortTitle>6482</shortTitle>
+		</collectionProtocol>
+		<guidanceForBreastCoreBiopsy>
+			<guidanceForBreastCoreBiopsyType>MRI</guidanceForBreastCoreBiopsyType>
+			<otherText>some other text</otherText>
+		</guidanceForBreastCoreBiopsy>
+	</specimenDetail>
+</specimens>
