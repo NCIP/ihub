@@ -163,12 +163,12 @@ public class CaTissueConsentIntegrationTest {
         final BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String strLine;
         try {
-            while ((strLine = br.readLine()) != null) { // NOPMD
+            while ((strLine = br.readLine()) != null) { 
                 fileContents.append(strLine);
             }
             is.close();
         } catch (IOException e) {
-            
+            LOG.error("CaTissueConsentIntegrationTest-IOException inside getXMLString() ", e);
         }
         return fileContents.toString();
     }
