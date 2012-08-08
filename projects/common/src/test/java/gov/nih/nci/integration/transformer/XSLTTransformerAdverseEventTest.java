@@ -47,8 +47,7 @@ public class XSLTTransformerAdverseEventTest {
     @Test
     public void transformInterimToXMLStringTest() throws IntegrationException {
         xsltTransformer.initTransformer(caaersAdverseEventXsl, baseXSLPath);
-        final String trnsfrmdMsg = transformXML(getAEInterimMessage());
-        System.out.println("XMLString --> " + trnsfrmdMsg);// NOPMD
+        final String trnsfrmdMsg = transformXML(getAEInterimMessage());        
         Assert.assertNotNull(trnsfrmdMsg);
     }
 
