@@ -42,8 +42,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class RegistrationLoadTest {
 
     // CHECKSTYLE:OFF
-    private final static SimpleDateFormat sdf = new SimpleDateFormat("MMddmm");// NOPMD
-    private final static SimpleDateFormat ssnsdf = new SimpleDateFormat("MM-ddmm");// NOPMD
+    private final static SimpleDateFormat SDF = new SimpleDateFormat("MMddmm");
+    private final static SimpleDateFormat SSNSDF = new SimpleDateFormat("MM-ddmm");
     // CHECKSTYLE:ON
 
     @Value("${transcend.caxchange.service.url}")
@@ -122,8 +122,8 @@ public class RegistrationLoadTest {
 
     private String getMsg(int sfx) {
         String message = getXMLString("Participant.xml");
-        message = message.replaceAll("XXXXXX", sdf.format(currDt) + sfx);
-        message = message.replaceAll("XX-XXXX", ssnsdf.format(currDt));
+        message = message.replaceAll("XXXXXX", SDF.format(currDt) + sfx);
+        message = message.replaceAll("XX-XXXX", SSNSDF.format(currDt));
         return message;
     }
 
