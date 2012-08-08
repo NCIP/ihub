@@ -50,6 +50,8 @@ public class CaTissueSpecimenClient {
     private static final String TISSUE = "Tissue";
     private static final String FLUID = "Fluid";
     private static final String SPECIMEN_NOT_EXISTING = "SPECIMEN_NOT_EXISTING";
+    private static final String OTHER = "OTHER";
+    private static final String NON_OTHER_BIOPSY_CONTAINS_OTHERTEXT = "Non-OTHER biopsyType shouldn't contain otherText.";
 
     /**
      * Constructor
@@ -253,7 +255,6 @@ public class CaTissueSpecimenClient {
      * @param specimens to be created
      */
     private void performCreateSpecimens(Specimens specimens) throws ApplicationException {
-
         final List<SpecimenDetail> specimenDetailList = specimens.getSpecimenDetailList();
         Iterator<SpecimenDetail> specimenDetailItr = null;
         Specimen specimen = null;
@@ -261,40 +262,78 @@ public class CaTissueSpecimenClient {
         for (specimenDetailItr = specimenDetailList.iterator(); specimenDetailItr.hasNext();) {
             SpecimenDetail specimenDetail = null;
             specimenDetail = (SpecimenDetail) specimenDetailItr.next();
-            final CollectionProtocol cp = specimenDetail.getCollectionProtocol();
             specimen = specimenDetail.getSpecimen();
-            boolean scgFound = false;
-            final List<SpecimenCollectionGroup> scgList = getSpecimenCollectionGroupList(specimenDetail);
-
-            if (scgList != null && !scgList.isEmpty()) {
-                for (SpecimenCollectionGroup scg : scgList) {
-                    final CollectionProtocol cpObj = scg.getCollectionProtocolRegistration().getCollectionProtocol();
-                    if (cpObj.getTitle().equals(cp.getTitle())) {
-                        scgFound = true;
-                        // Participant has a SpecimenCollectionGroup under the given protocol
-                        specimen.setSpecimenCollectionGroup(scg);
-                        break;
-                    }
-                }
-            }
-
-            if (!scgFound) {
-                // throw exception
-                LOG.error("Specimen Collection Group was not found in caTissue for Label " + specimen.getLabel());
-                throw new ApplicationException("Specimen Collection Group not found in caTissue");
-            }
-
+            // check if the request data is Valid
+            isCreateSpecimenRequestDataValid(specimenDetail);
             try {
                 // populate GuidanceForBreastCoreBiopsy inside specimen object
                 populateGuidanceForBreastCoreBiopsy(specimen, specimenDetail);
+
                 // method call to createSpecimen in caTissue
                 createSpecimen(specimen);
             } catch (ApplicationException e) {
-                LOG.error("CreateSpecimen Failed for Label" + specimen.getLabel(), e);
-                throw new ApplicationException("CreateSpecimen Failed for Label"
+                LOG.error("CreateSpecimen Failed for Label " + specimen.getLabel(), e);
+                throw new ApplicationException("CreateSpecimen Failed for Label "
                         + specimenDetail.getSpecimen().getLabel() + " and exception is " + e.getCause(), e);
             }
         }
+    }
+
+    /**
+     * This method is used to perform the validation check while creating the specimen
+     * 
+     * @param specimenDetail - incoming specimen details
+     * @return
+     * @throws ApplicationException - incase the request data is invalid
+     */
+    private boolean isCreateSpecimenRequestDataValid(SpecimenDetail specimenDetail) throws ApplicationException {
+        // check for GuidanceForBreastCoreBiopsy validation
+        isValidGuidanceForBreastCoreBiopsyPresent(specimenDetail);
+
+        // check for CollectionProtocol
+        isCollectionProtocolPresent(specimenDetail);
+
+        return true;
+    }
+
+    private boolean isValidGuidanceForBreastCoreBiopsyPresent(SpecimenDetail specimenDetail)
+            throws ApplicationException {
+        final GuidanceForBreastCoreBiopsy gfbcb = specimenDetail.getGuidanceForBreastCoreBiopsy();
+        // check for mandatory guidanceForBreastCoreBiopsyType
+        if ((gfbcb == null) || StringUtils.isBlank(gfbcb.getGuidanceForBreastCoreBiopsyType())) {
+            throw new ApplicationException("GuidanceForBreastCoreBiopsyType is mandatory while creating the Specimen.");
+        }
+
+        final String biopsyType = gfbcb.getGuidanceForBreastCoreBiopsyType();
+        // check that non-OTHER biopsyType shouldn't have otherText
+        if (!biopsyType.equalsIgnoreCase(OTHER) && StringUtils.isNotBlank(gfbcb.getOtherText())) {
+            throw new ApplicationException(NON_OTHER_BIOPSY_CONTAINS_OTHERTEXT);
+        }
+        return true;
+    }
+
+    private boolean isCollectionProtocolPresent(SpecimenDetail specimenDetail) throws ApplicationException {
+        final CollectionProtocol cp = specimenDetail.getCollectionProtocol();
+        final Specimen specimen = specimenDetail.getSpecimen();
+        boolean scgFound = false;
+        final List<SpecimenCollectionGroup> scgList = getSpecimenCollectionGroupList(specimenDetail);
+        if (scgList != null && !scgList.isEmpty()) {
+            for (SpecimenCollectionGroup scg : scgList) {
+                final CollectionProtocol cpObj = scg.getCollectionProtocolRegistration().getCollectionProtocol();
+                if (cpObj.getTitle().equals(cp.getTitle())) {
+                    scgFound = true;
+                    // Participant has a SpecimenCollectionGroup under the given protocol
+                    specimen.setSpecimenCollectionGroup(scg);
+                    break;
+                }
+            }
+        }
+        if (!scgFound) {
+            // throw exception
+            LOG.error("Specimen Collection Group was not found in caTissue for Label " + specimen.getLabel());
+            throw new ApplicationException("Specimen Collection Group not found in caTissue");
+        }
+        return scgFound;
     }
 
     private Specimen createSpecimen(Specimen specimen) throws ApplicationException {
@@ -368,8 +407,8 @@ public class CaTissueSpecimenClient {
                 updatedSpecimenList.add(incomingSpecimen);
             }
         } catch (ApplicationException e) {
-            LOG.error("UpdateSpecimen Failed for Label" + specimenDetail.getSpecimen().getLabel(), e);
-            throw new ApplicationException("UpdateSpecimen Failed for Label" + specimenDetail.getSpecimen().getLabel()
+            LOG.error("UpdateSpecimen Failed for Label " + specimenDetail.getSpecimen().getLabel(), e);
+            throw new ApplicationException("UpdateSpecimen Failed for Label " + specimenDetail.getSpecimen().getLabel()
                     + " and exception is " + e.getCause(), e);
         }
 
@@ -401,21 +440,21 @@ public class CaTissueSpecimenClient {
 
         if (!inCPE.equals(existCPE)) {
             hasValidData = false;
-            LOG.error("UpdateSpecimen Request Failed for Label" + existingSpecimen.getLabel()
+            LOG.error("UpdateSpecimen Request Failed for Label " + existingSpecimen.getLabel()
                     + " and exception is Collection Protocol Event can't be changed while updating the Specimen");
             throw new ApplicationException("Collection Protocol Event can't be changed while updating the Specimen");
         }
 
         if (!inCP.equals(existCP)) {
             hasValidData = false;
-            LOG.error("UpdateSpecimen Request Failed for Label" + existingSpecimen.getLabel()
+            LOG.error("UpdateSpecimen Request Failed for Label " + existingSpecimen.getLabel()
                     + " and exception is Collection Protocol can't be changed while updating the Specimen");
             throw new ApplicationException("Collection Protocol can't be changed while updating the Specimen");
         }
 
         if (!inSC.equals(existSC)) {
             hasValidData = false;
-            LOG.error("UpdateSpecimen Request Failed for Label" + existingSpecimen.getLabel()
+            LOG.error("UpdateSpecimen Request Failed for Label " + existingSpecimen.getLabel()
                     + " and exception is Specimen Class can't be changed while updating the Specimen");
             throw new ApplicationException("Specimen Class can't be changed while updating the Specimen");
         }
@@ -433,11 +472,26 @@ public class CaTissueSpecimenClient {
     private void updateGuidanceForBreastCoreBiopsy(Specimen existingSpecimen, SpecimenDetail specimenDetail)
             throws ApplicationException {
 
-        final String biopsyType = specimenDetail.getGuidanceForBreastCoreBiopsy().getGuidanceForBreastCoreBiopsyType();
         // If biopsyType is not available in the request, then no need to call update -- just return
-        if (StringUtils.isBlank(biopsyType)) {
+        if (specimenDetail.getGuidanceForBreastCoreBiopsy() == null) {
             return;
+        } else {
+            final String biopsyType = specimenDetail.getGuidanceForBreastCoreBiopsy()
+                    .getGuidanceForBreastCoreBiopsyType();
+            if (StringUtils.isBlank(biopsyType)) {
+                return; // If biopsyType is not available in the request, then return
+            } else {
+                final String otherText = specimenDetail.getGuidanceForBreastCoreBiopsy().getOtherText();
+                // check that non-OTHER biopsyType shouldn't have otherText
+                if (!biopsyType.equalsIgnoreCase(OTHER) && StringUtils.isNotBlank(otherText)) {
+                    throw new ApplicationException(NON_OTHER_BIOPSY_CONTAINS_OTHERTEXT, new ApplicationException(
+                            NON_OTHER_BIOPSY_CONTAINS_OTHERTEXT));
+                }
+            }
         }
+
+        // check that Multiple GuidanceForBreastCoreBiopsy are NOT present
+        checkForMultipleGuidanceForBreastCoreBiopsy(existingSpecimen);
 
         if (existingSpecimen.getSpecimenRecordEntryCollection() != null) {
             final Iterator<SpecimenRecordEntry> sreItr = existingSpecimen.getSpecimenRecordEntryCollection().iterator();
@@ -458,9 +512,30 @@ public class CaTissueSpecimenClient {
                     }
                 }
             }
-
         }
+    }
 
+    /**
+     * This method is used to check if the specimen has multiple GuidanceForBreastCoreBiopsy element
+     * 
+     * @param existingSpecimen
+     * @throws ApplicationException - throw exception if multiple GuidanceForBreastCoreBiopsy present
+     */
+    private void checkForMultipleGuidanceForBreastCoreBiopsy(Specimen existingSpecimen) throws ApplicationException {
+        if (existingSpecimen.getSpecimenRecordEntryCollection() != null) {
+            final Iterator<SpecimenRecordEntry> sreItr = existingSpecimen.getSpecimenRecordEntryCollection().iterator();
+            int gfbcbCount = 0;
+            while (sreItr.hasNext()) {
+                final SpecimenRecordEntry sre = sreItr.next();
+                if (sre.getGuidanceForBreastCoreBiopsyCollection() != null) {
+                    gfbcbCount = gfbcbCount + sre.getGuidanceForBreastCoreBiopsyCollection().size();
+                    if (gfbcbCount > 1) { // NOPMD
+                        throw new ApplicationException("Specimen contains multiple GuidanceForBreastCoreBiopsyType.",
+                                new ApplicationException("Specimen contains multiple GuidanceForBreastCoreBiopsyType.")); 
+                    }
+                }
+            }
+        }
     }
 
     /**
