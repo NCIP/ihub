@@ -74,7 +74,7 @@ public class CaTissueSpecimenStrategyTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void createSpecimens() throws IntegrationException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime());
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -102,7 +102,7 @@ public class CaTissueSpecimenStrategyTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void createSpecimensInvalidAvailableQuantity() throws IntegrationException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime()); 
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -138,7 +138,7 @@ public class CaTissueSpecimenStrategyTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void rollbackCreatedSpecimens() throws IntegrationException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime()); 
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -168,7 +168,7 @@ public class CaTissueSpecimenStrategyTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void updateSpecimens() throws IntegrationException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime()); 
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -196,7 +196,7 @@ public class CaTissueSpecimenStrategyTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void updateSpecimensFailure() throws IntegrationException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime()); 
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -231,7 +231,7 @@ public class CaTissueSpecimenStrategyTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void rollbackUpdatedSpecimens() throws IntegrationException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime()); 
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -258,7 +258,7 @@ public class CaTissueSpecimenStrategyTest {
         serviceInvocationMessage.setStrategyIdentifier(strategyIdentifier);
         final IHubMessage iHubMessage = new IHubMessage();
         iHubMessage.setStartTime(startTime);
-        iHubMessage.setEndTime(new Date(new java.util.Date().getTime())); // NOPMD
+        iHubMessage.setEndTime(new Date(new java.util.Date().getTime())); 
         iHubMessage.setRequest(message);
         iHubMessage.setReferenceMessageId(referenceMessageId);
         serviceInvocationMessage.setReferenceMessageId(referenceMessageId);
