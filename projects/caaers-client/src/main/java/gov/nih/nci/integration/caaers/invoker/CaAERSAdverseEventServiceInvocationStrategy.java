@@ -89,12 +89,13 @@ public class CaAERSAdverseEventServiceInvocationStrategy implements ServiceInvoc
             final String adverseEventXMLStr = transformToAdverseEventXML(msg.getMessage().getRequest());
 
             final CreateOrUpdateAdverseEventResponse caaersresponse = client.createAdverseEvent(adverseEventXMLStr);
-            final ServiceResponse response = caaersresponse.getCaaersServiceResponse().getServiceResponse();
-            if ("0".equals(response.getResponsecode())) {
+            final ServiceResponse response = caaersresponse.getCaaersServiceResponse().getServiceResponse();            
+
+            if ("FAILED_TO_PROCESS".equalsIgnoreCase(response.getStatus().name())) {
+                handleErrorResponse(response, result);
+            } else {
                 result.setResult(response.getResponsecode() + " : " + response.getMessage());
                 result.setDataChanged(true);
-            } else {
-                handleErrorResponse(response, result);
             }
         } catch (SOAPFaultException e) {
             LOG.error("SOAPFaultException while calling createAdverseEvent.", e);
@@ -120,30 +121,19 @@ public class CaAERSAdverseEventServiceInvocationStrategy implements ServiceInvoc
     public ServiceInvocationResult rollback(ServiceInvocationMessage msg) {
         final ServiceInvocationResult result = new ServiceInvocationResult();
         /*
-         * // As per the latest discussion, we are NOT calling the delete method.
-        IntegrationException ie = null;
-        try {
-            final String adverseEventXMLStr = transformToAdverseEventXML(msg.getMessage().getRequest());
-            final DeleteAdverseEventResponse caaersresponse = client.deleteAdverseEvent(adverseEventXMLStr);
-            final ServiceResponse response = caaersresponse.getCaaersServiceResponse().getServiceResponse();
-            if ("0".equals(response.getResponsecode())) {
-                result.setResult(response.getResponsecode() + " : " + response.getMessage());
-            } else {
-                handleErrorResponse(response, result);
-            }            
-
-        } catch (SOAPFaultException e) {
-            LOG.error("SOAPFaultException while rollback of createAdverseEvent.", e);
-            ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
-        } catch (WebServiceException e) {
-            LOG.error("WebServiceException while rollback of createAdverseEvent.", e);
-            ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
-        } 
-        if (!result.isFault()) {
-            result.setInvocationException(ie);
-        }
-        handleException(result);
-        */
+         * // As per the latest discussion, we are NOT calling the delete method. IntegrationException ie = null; try {
+         * final String adverseEventXMLStr = transformToAdverseEventXML(msg.getMessage().getRequest()); final
+         * DeleteAdverseEventResponse caaersresponse = client.deleteAdverseEvent(adverseEventXMLStr); final
+         * ServiceResponse response = caaersresponse.getCaaersServiceResponse().getServiceResponse(); if
+         * ("0".equals(response.getResponsecode())) { result.setResult(response.getResponsecode() + " : " +
+         * response.getMessage()); } else { handleErrorResponse(response, result); }
+         * 
+         * } catch (SOAPFaultException e) { LOG.error("SOAPFaultException while rollback of createAdverseEvent.", e); ie
+         * = new IntegrationException(IntegrationError._1053, e, e.getMessage()); } catch (WebServiceException e) {
+         * LOG.error("WebServiceException while rollback of createAdverseEvent.", e); ie = new
+         * IntegrationException(IntegrationError._1053, e, e.getMessage()); } if (!result.isFault()) {
+         * result.setInvocationException(ie); } handleException(result);
+         */
         return result;
     }
 
@@ -155,9 +145,7 @@ public class CaAERSAdverseEventServiceInvocationStrategy implements ServiceInvoc
         try {
             os = new ByteArrayOutputStream();
             is = new ByteArrayInputStream(message.getBytes());
-
             xsltTransformer.transform(null, is, os);
-
             adverseEventXMLStr = new String(os.toByteArray());
         } catch (IntegrationException e) {
             LOG.error("IntegrationException occurred while transformToAdverseEventXML. ", e);
