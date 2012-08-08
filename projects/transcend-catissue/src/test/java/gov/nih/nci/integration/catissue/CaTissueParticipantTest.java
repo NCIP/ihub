@@ -67,7 +67,7 @@ public class CaTissueParticipantTest {
                     catissueApiPassword, participantMockClientClass);
             svc = client.registerParticipant(getParticipantXMLStr());
 
-        } catch (IntegrationException e) { // NOPMD
+        } catch (IntegrationException e) { 
             svc = null;
         }
 
