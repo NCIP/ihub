@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.regex.PatternSyntaxException;
 
 import org.apache.tools.ant.Task;
 
@@ -57,31 +58,32 @@ public class MergeFilesTask extends Task {
             String strLine;
 
             // Read File Line By Line
-            while ((strLine = br.readLine()) != null) { // NOPMD
+            for (strLine = br.readLine(); strLine != null; strLine = br.readLine()) {
                 if (!strLine.contains("list>")) {
                     fileContents.append(strLine);
-                    fileContents.append("\n"); // NOPMD
+                    fileContents.append('\n');
                 }
             }
+
             // Close the input stream
             in.close();
-            // CHECKSTYLE:OFF
         } catch (IOException e) {
-            System.err.println("Error while reading contents of file : " + fileName + ". " + e.getMessage());// NOPMD
+            fileContents.append("");
         }
         return fileContents.toString();
     }
 
-    private void copyMergedFile(String mergedFileName, String mergedFileContents) { // NOPMD
+    private void copyMergedFile(String mergedFileName, String mergedFileContents) {
+        BufferedWriter out;
         try {
-            final BufferedWriter out = new BufferedWriter(new FileWriter(mergedFileName));
-            mergedFileContents = "<list>" + "\n" + mergedFileContents + "</list>";
-            out.write(mergedFileContents);
+            out = new BufferedWriter(new FileWriter(mergedFileName));
+            final String mergedContents = "<list>" + "\n" + mergedFileContents + "</list>";
+            out.write(mergedContents);
             out.close();
-            System.out.println("Merging Done");// NOPMD
-        } catch (IOException e) { // NOPMD
+        } catch (IOException e) {
             System.err.println("Exception while copying the merged file: " + e.getMessage()); // NOPMD
         }
+
     }
 
     private String[] convertDelimStringToArray(String str, String strDelim) {
@@ -89,8 +91,7 @@ public class MergeFilesTask extends Task {
             String[] arstrRet = null;
             arstrRet = str.split(strDelim);
             return arstrRet;
-        } catch (Exception ex) { // NOPMD
-            System.err.println("Exception during convertDelimStringToArray: " + ex.getMessage()); // NOPMD
+        } catch (PatternSyntaxException ex) {
             return null;
         }
     }
