@@ -101,7 +101,7 @@ public class CaTissueParticipantStrategyTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void registerParticipantFailure() throws IntegrationException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime());
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -138,7 +138,7 @@ public class CaTissueParticipantStrategyTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void rollbackRegisterParticipant() throws IntegrationException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime()); 
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -167,7 +167,7 @@ public class CaTissueParticipantStrategyTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void updateParticipantRegistration() throws IntegrationException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime());
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -197,7 +197,7 @@ public class CaTissueParticipantStrategyTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void updateParticipantRegistrationFailure() throws IntegrationException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime()); 
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -234,7 +234,7 @@ public class CaTissueParticipantStrategyTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void rollbakUpdateParticipantRegistration() throws IntegrationException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime()); 
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -261,7 +261,7 @@ public class CaTissueParticipantStrategyTest {
         serviceInvocationMessage.setStrategyIdentifier(strategyIdentifier);
         final IHubMessage iHubMessage = new IHubMessage();
         iHubMessage.setStartTime(startTime);
-        iHubMessage.setEndTime(new Date(new java.util.Date().getTime())); // NOPMD
+        iHubMessage.setEndTime(new Date(new java.util.Date().getTime())); 
         iHubMessage.setRequest(message);
         iHubMessage.setReferenceMessageId(referenceMessageId);
         serviceInvocationMessage.setReferenceMessageId(referenceMessageId);

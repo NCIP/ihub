@@ -70,7 +70,7 @@ public class CaTissueConsentStrategyTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void registerConsents() throws IntegrationException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime()); 
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -98,7 +98,7 @@ public class CaTissueConsentStrategyTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void registerConsentsSpecimenNotExist() throws IntegrationException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime()); 
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -111,7 +111,7 @@ public class CaTissueConsentStrategyTest {
         final ServiceInvocationResult clientResult = new ServiceInvocationResult();
         clientResult.setDataChanged(false);
 
-        final IntegrationException ie = new IntegrationException(IntegrationError._1090, new Throwable( // NOPMD
+        final IntegrationException ie = new IntegrationException(IntegrationError._1090, new Throwable( //NOPMD
                 "Specimen for given LABEL doesn't exist"), "Specimen for given LABEL doesn't exist");
         clientResult.setInvocationException(ie);
 
@@ -132,7 +132,7 @@ public class CaTissueConsentStrategyTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void rollbackConsents() throws IntegrationException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime()); 
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -157,7 +157,7 @@ public class CaTissueConsentStrategyTest {
         serviceInvocationMessage.setStrategyIdentifier(strategyIdentifier);
         final IHubMessage iHubMessage = new IHubMessage();
         iHubMessage.setStartTime(startTime);
-        iHubMessage.setEndTime(new Date(new java.util.Date().getTime())); // NOPMD
+        iHubMessage.setEndTime(new Date(new java.util.Date().getTime()));
         iHubMessage.setRequest(message);
         iHubMessage.setReferenceMessageId(referenceMessageId);
         serviceInvocationMessage.setReferenceMessageId(referenceMessageId);
