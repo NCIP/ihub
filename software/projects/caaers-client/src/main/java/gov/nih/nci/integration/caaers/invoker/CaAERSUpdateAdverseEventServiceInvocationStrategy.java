@@ -90,11 +90,12 @@ public class CaAERSUpdateAdverseEventServiceInvocationStrategy implements Servic
 
             final CreateOrUpdateAdverseEventResponse caaersresponse = client.updateAdverseEvent(adverseEventXMLStr);
             final ServiceResponse response = caaersresponse.getCaaersServiceResponse().getServiceResponse();
-            if ("0".equals(response.getResponsecode())) {
+
+            if ("FAILED_TO_PROCESS".equalsIgnoreCase(response.getStatus().name())) {
+                handleErrorResponse(response, result);
+            } else {
                 result.setResult(response.getResponsecode() + " : " + response.getMessage());
                 result.setDataChanged(true);
-            } else {
-                handleErrorResponse(response, result);
             }
         } catch (SOAPFaultException e) {
             LOG.error("SOAPFaultException while calling updateAdverseEvent.", e);
@@ -120,34 +121,22 @@ public class CaAERSUpdateAdverseEventServiceInvocationStrategy implements Servic
     public ServiceInvocationResult rollback(ServiceInvocationMessage msg) {
         final ServiceInvocationResult result = new ServiceInvocationResult();
         /*
-        IntegrationException ie = null;
-        
-         // As per the latest discussion, we are NOT calling the delete method.
-        try {
-            final String adverseEventXMLStr = transformToAdverseEventXML(msg.getMessage().getRequest());        
-            
-            final DeleteAdverseEventResponse caaersresponse = client.deleteAdverseEvent(adverseEventXMLStr);
-            final ServiceResponse response = caaersresponse.getCaaersServiceResponse().getServiceResponse();
-            if ("0".equals(response.getResponsecode())) {
-                result.setResult(response.getResponsecode() + " : " + response.getMessage());
-            } else {
-                handleErrorResponse(response, result);
-            }
-           
-        } catch (SOAPFaultException e) {
-            LOG.error("SOAPFaultException while rollback of updateAdverseEvent.", e);
-            ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
-        } catch (WebServiceException e) {
-            LOG.error("WebServiceException while rollback of updateAdverseEvent.", e);
-            ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
-        } catch (IntegrationException e) {
-            LOG.error("IntegrationException while rollback of updateAdverseEvent.", e);
-            ie = e;
-        }
-        if (!result.isFault()) {
-            result.setInvocationException(ie);
-        }
-        handleException(result);
+         * IntegrationException ie = null;
+         * 
+         * // As per the latest discussion, we are NOT calling the delete method. try { final String adverseEventXMLStr
+         * = transformToAdverseEventXML(msg.getMessage().getRequest());
+         * 
+         * final DeleteAdverseEventResponse caaersresponse = client.deleteAdverseEvent(adverseEventXMLStr); final
+         * ServiceResponse response = caaersresponse.getCaaersServiceResponse().getServiceResponse(); if
+         * ("0".equals(response.getResponsecode())) { result.setResult(response.getResponsecode() + " : " +
+         * response.getMessage()); } else { handleErrorResponse(response, result); }
+         * 
+         * } catch (SOAPFaultException e) { LOG.error("SOAPFaultException while rollback of updateAdverseEvent.", e); ie
+         * = new IntegrationException(IntegrationError._1053, e, e.getMessage()); } catch (WebServiceException e) {
+         * LOG.error("WebServiceException while rollback of updateAdverseEvent.", e); ie = new
+         * IntegrationException(IntegrationError._1053, e, e.getMessage()); } catch (IntegrationException e) {
+         * LOG.error("IntegrationException while rollback of updateAdverseEvent.", e); ie = e; } if (!result.isFault())
+         * { result.setInvocationException(ie); } handleException(result);
          */
         return result;
     }
