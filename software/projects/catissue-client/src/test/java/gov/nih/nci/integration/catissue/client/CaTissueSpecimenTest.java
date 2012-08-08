@@ -87,6 +87,62 @@ public class CaTissueSpecimenTest {
     }
 
     /**
+     * Mock Testcase for createSpecimens when Biopsy is Blank
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void createSpecimensBlankBiopsy() {
+        String retSpecimenXML = "";
+        final Specimen specimen = null;
+
+        try {
+            EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
+            EasyMock.expect(
+                    caTissueAPIClient.searchById((Class<Specimen>) EasyMock.anyObject(),
+                            (Specimen) org.easymock.EasyMock.anyObject())).andReturn(specimen);
+
+            EasyMock.expect(caTissueAPIClient.insert((Specimen) org.easymock.EasyMock.anyObject())).andReturn(specimen);
+            EasyMock.replay(caTissueAPIClient);
+
+            caTissueSpecimenClient.isSpecimensExist(getInsertSpecimenBlankBiopsyXMLStr());
+            caTissueSpecimenClient.createSpecimens(getInsertSpecimenBlankBiopsyXMLStr());
+            retSpecimenXML = "CREATE_SPECIMEN";
+        } catch (ApplicationException e) {
+            LOG.error("CaTissueSpecimenTest-ApplicationException inside createSpecimens() ", e);
+            retSpecimenXML = "CREATE_SPECIMEN_FAILED";
+        }
+        assertNotNull(retSpecimenXML);
+    }
+
+    /**
+     * Mock Testcase for createSpecimens when Biopsy's Other text combination is invalid
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void createSpecimensInvalidBiopsyOtherText() {
+        String retSpecimenXML = "";
+        final Specimen specimen = null;
+
+        try {
+            EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
+            EasyMock.expect(
+                    caTissueAPIClient.searchById((Class<Specimen>) EasyMock.anyObject(),
+                            (Specimen) org.easymock.EasyMock.anyObject())).andReturn(specimen);
+
+            EasyMock.expect(caTissueAPIClient.insert((Specimen) org.easymock.EasyMock.anyObject())).andReturn(specimen);
+            EasyMock.replay(caTissueAPIClient);
+
+            caTissueSpecimenClient.isSpecimensExist(getInsertSpecimenInvalidBiopsyOtherTextXMLStr());
+            caTissueSpecimenClient.createSpecimens(getInsertSpecimenInvalidBiopsyOtherTextXMLStr());
+            retSpecimenXML = "CREATE_SPECIMEN";
+        } catch (ApplicationException e) {
+            LOG.error("CaTissueSpecimenTest-ApplicationException inside createSpecimens() ", e);
+            retSpecimenXML = "CREATE_SPECIMEN_FAILED";
+        }
+        assertNotNull(retSpecimenXML);
+    }
+
+    /**
      * Mock Testcase for createSpecimens for existing specimen scenario
      */
     @SuppressWarnings("unchecked")
@@ -305,6 +361,62 @@ public class CaTissueSpecimenTest {
     }
 
     /**
+     * Mock Testcase for updating existing Specimens when Biopsy has invalid OtherText combination
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void updateSpecimensBiopsyInvalidOtherText() {
+        String retXML = null;
+        final Specimen specimen = new Specimen();
+        specimen.setId(138L);
+        specimen.setLabel("TolvenTestUser252TissueSpecimen173");
+        specimen.setSpecimenType("Fixed Tissue");
+        specimen.setSpecimenClass("Tissue");
+        final SpecimenCollectionGroup spg = new SpecimenCollectionGroup();
+        spg.setId(4L);
+        specimen.setSpecimenCollectionGroup(spg);
+        specimen.setLineage("New");
+        final SpecimenCharacteristics sc = new SpecimenCharacteristics();
+        sc.setId(138L);
+        sc.setTissueSide("Right");
+        sc.setTissueSite("Placenta");
+        specimen.setSpecimenCharacteristics(sc);
+
+        final SpecimenRecordEntry sre = new SpecimenRecordEntry();
+        final GuidanceForBreastCoreBiopsy gfbcb = new GuidanceForBreastCoreBiopsy();
+        gfbcb.setGuidanceForBreastCoreBiopsyType("OTHER");
+        gfbcb.setOtherText("some other text");
+        gfbcb.setSpecimenRecordEntry_GuidanceForBreastCoreBiopsy(sre);
+        final Collection<GuidanceForBreastCoreBiopsy> gfbcbCollection = new HashSet<GuidanceForBreastCoreBiopsy>();
+        gfbcbCollection.add(gfbcb);
+        sre.setGuidanceForBreastCoreBiopsyCollection(gfbcbCollection);
+        sre.setSpecimen(specimen);
+        final Collection<SpecimenRecordEntry> specimenRecordEntryCollection = new HashSet<SpecimenRecordEntry>();
+        specimenRecordEntryCollection.add(sre);
+        specimen.setSpecimenRecordEntryCollection(specimenRecordEntryCollection);
+
+        try {
+            EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
+            EasyMock.expect(
+                    caTissueAPIClient.searchById((Class<Specimen>) EasyMock.anyObject(),
+                            (Specimen) org.easymock.EasyMock.anyObject())).andReturn(specimen);
+
+            EasyMock.expect(caTissueAPIClient.update((SpecimenRecordEntry) org.easymock.EasyMock.anyObject()))
+                    .andReturn(sre);
+            EasyMock.expect(caTissueAPIClient.update((Specimen) org.easymock.EasyMock.anyObject())).andReturn(specimen);
+            EasyMock.replay(caTissueAPIClient);
+
+            caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenInvalidBiopsyOtherTextXMLStr());
+
+            retXML = "UPDATE_SPECIMEN";
+        } catch (ApplicationException e) {
+            LOG.error("CaTissueSpecimenTest-ApplicationException inside updateSpecimens() ", e);
+            retXML = "UPDATE_SPECIMEN_FAILED";
+        }
+        assertNotNull(retXML);
+    }
+
+    /**
      * Mock Testcase for Rollback Updated Specimens
      */
     @SuppressWarnings("unchecked")
@@ -408,8 +520,20 @@ public class CaTissueSpecimenTest {
         return getXMLString("CreateExistingSpecimen_Mock.xml");
     }
 
+    private String getInsertSpecimenBlankBiopsyXMLStr() {
+        return getXMLString("CreateSpecimen_BiopsyBlank_Mock.xml");
+    }
+
+    private String getInsertSpecimenInvalidBiopsyOtherTextXMLStr() {
+        return getXMLString("CreateSpecimen_BiopsyInvalidOtherText_Mock.xml");
+    }
+
     private String getUpdateSpecimenXMLStr() {
         return getXMLString("UpdateSpecimen_Mock.xml");
+    }
+
+    private String getUpdateSpecimenInvalidBiopsyOtherTextXMLStr() {
+        return getXMLString("UpdateSpecimen_BiopsyInvalidOtherText_Mock.xml");
     }
 
     private String getRollbackSpecimenXMLStr() {
@@ -423,12 +547,12 @@ public class CaTissueSpecimenTest {
         final BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String strLine;
         try {
-            while ((strLine = br.readLine()) != null) { // NOPMD
+            while ((strLine = br.readLine()) != null) {
                 fileContents.append(strLine);
             }
             is.close();
         } catch (IOException e) {
-
+            LOG.error("CaTissueSpecimenTest-IOException inside getXMLString() ", e);
         }
         return fileContents.toString();
     }
