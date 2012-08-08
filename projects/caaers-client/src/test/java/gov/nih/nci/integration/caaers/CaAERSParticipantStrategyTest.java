@@ -94,7 +94,7 @@ public class CaAERSParticipantStrategyTest {
     @Test
     public void registerParticipantSuccess() throws IntegrationException, SOAPFaultException, MalformedURLException,
             JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime());
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -133,7 +133,7 @@ public class CaAERSParticipantStrategyTest {
     @Test
     public void registerParticipantFailure() throws IntegrationException, SOAPFaultException, MalformedURLException,
             JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime()); 
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -171,7 +171,7 @@ public class CaAERSParticipantStrategyTest {
     @Test
     public void updateParticipantRegistrationSuccess() throws IntegrationException, SOAPFaultException,
             MalformedURLException, JAXBException, DatatypeConfigurationException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime()); 
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -212,7 +212,7 @@ public class CaAERSParticipantStrategyTest {
     @Test
     public void updateParticipantRegistrationFailure() throws IntegrationException, SOAPFaultException,
             MalformedURLException, JAXBException, DatatypeConfigurationException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime()); 
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -254,7 +254,7 @@ public class CaAERSParticipantStrategyTest {
     @Test
     public void updateParticipantRegistrationGetParticipantFailure() throws IntegrationException, SOAPFaultException,
             MalformedURLException, JAXBException, DatatypeConfigurationException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime()); 
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -294,7 +294,7 @@ public class CaAERSParticipantStrategyTest {
     @Test
     public void rollbackRegisterParticipantSuccess() throws IntegrationException, SOAPFaultException,
             MalformedURLException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime()); 
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -333,7 +333,7 @@ public class CaAERSParticipantStrategyTest {
     @Test
     public void rollbackRegisterParticipantFailure() throws IntegrationException, SOAPFaultException,
             MalformedURLException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime()); 
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -371,7 +371,7 @@ public class CaAERSParticipantStrategyTest {
     @Test
     public void rollbackUpdateRegisterParticipantSuccess() throws IntegrationException, SOAPFaultException,
             MalformedURLException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime()); 
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -409,7 +409,7 @@ public class CaAERSParticipantStrategyTest {
     @Test
     public void rollbackUpdateRegisterParticipantFailure() throws IntegrationException, SOAPFaultException,
             MalformedURLException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime()); // NOPMD
+        final Date stTime = new Date(new java.util.Date().getTime()); 
 
         xsltTransformer.transform(null, null, null);
         EasyMock.expectLastCall().andAnswer(new IAnswer() {
@@ -447,7 +447,7 @@ public class CaAERSParticipantStrategyTest {
         serviceInvocationMessage.setStrategyIdentifier(strategyIdentifier);
         final IHubMessage iHubMessage = new IHubMessage();
         iHubMessage.setStartTime(startTime);
-        iHubMessage.setEndTime(new Date(new java.util.Date().getTime())); // NOPMD
+        iHubMessage.setEndTime(new Date(new java.util.Date().getTime())); 
         iHubMessage.setRequest(message);
         iHubMessage.setReferenceMessageId(referenceMessageId);
         serviceInvocationMessage.setReferenceMessageId(referenceMessageId);
