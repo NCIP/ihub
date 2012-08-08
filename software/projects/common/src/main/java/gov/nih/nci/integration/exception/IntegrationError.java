@@ -90,7 +90,10 @@ public enum IntegrationError {
     _1090(1090, ErrorType.VALIDATION),
     _1091(1091, ErrorType.VALIDATION),
     _1092(1092, ErrorType.VALIDATION),
-    _1093(1093, ErrorType.VALIDATION);
+    _1093(1093, ErrorType.VALIDATION),
+    _1094(1094, ErrorType.VALIDATION),
+    _1095(1095, ErrorType.VALIDATION),
+    _1096(1096, ErrorType.VALIDATION);
 
     private int errorCode;
 
