@@ -1,6 +1,8 @@
 package gov.nih.nci.integration.caaers;
 
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.common.Status;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.CreateParticipant;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.CreateParticipantResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.DeleteParticipant;
@@ -195,6 +197,11 @@ public class CaAERSParticipantServiceWSClient {
      */
     public CaaersServiceResponse updateParticipant(String participantXMLStr) throws JAXBException,
             MalformedURLException, SOAPFaultException, IntegrationException {
+        // check if the activity status is "Not Active", then don't need to call updateParticipant
+        if (!participantXMLStr.contains("<activityStatus>Active</activityStatus>")) {
+            return getNonActiveParticipantResponse();
+        }
+
         final ParticipantType participant = parseParticipant(participantXMLStr);
 
         final UpdateParticipant updateParticipant = new UpdateParticipant();
@@ -245,5 +252,15 @@ public class CaAERSParticipantServiceWSClient {
             throw e;
         }
         return retValue.getCaaersServiceResponse();
+    }
+
+    private CaaersServiceResponse getNonActiveParticipantResponse() {
+        final CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
+        final ServiceResponse serviceResponse = new ServiceResponse();
+        serviceResponse.setMessage("caAERS doesnt support off-study.");
+        serviceResponse.setStatus(Status.PROCESSED);
+        serviceResponse.setResponsecode("0");
+        caaersServiceResponse.setServiceResponse(serviceResponse);
+        return caaersServiceResponse;
     }
 }
