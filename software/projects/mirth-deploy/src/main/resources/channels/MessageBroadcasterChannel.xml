@@ -161,7 +161,7 @@ var srvcInvcAndAgg = $(&apos;serviceInvocatorAndAggregator&apos;);
 
 var caaersSvcInvStrtgy = null;
 
-if ($(&apos;operationName&apos;) == &apos;Create Adverse Event&apos;) {
+if ($(&apos;operationName&apos;) == &apos;Create Or Update Adverse Event&apos;) {
 	caaersSvcInvStrtgy = globalMap.get(&quot;caAERSAdverseEventServiceInvocationStrategy&quot;);
 } 
 
@@ -295,11 +295,11 @@ var srvcInvcAndAgg = $(&apos;serviceInvocatorAndAggregator&apos;);
 
 var caaersSvcInvStrtgy = null;
 
-if ($(&apos;operationName&apos;) == &apos;Create Registration&apos;) {
+if ($(&apos;operationName&apos;) == &apos;Create Participant Registration&apos;) {
 	caaersSvcInvStrtgy = globalMap.get(&quot;caaersRegistrationServiceInvocationStrategy&quot;);
 } 
 
-if ($(&apos;operationName&apos;) == &apos;Update Registration&apos;) {
+if ($(&apos;operationName&apos;) == &apos;Update Participant Registration&apos;) {
 	caaersSvcInvStrtgy = globalMap.get(&quot;caaersUpdateRegistrationServiceInvocationStrategy&quot;);
 }
 
@@ -430,11 +430,11 @@ var srvcInvcAndAgg = $(&apos;serviceInvocatorAndAggregator&apos;);
 var catissueSvcInvStrtgy = null;
 
 
-if ($(&apos;operationName&apos;) == &apos;Create Registration&apos;) {
+if ($(&apos;operationName&apos;) == &apos;Create Participant Registration&apos;) {
 	catissueSvcInvStrtgy = globalMap.get(&quot;caTissueRegistrationServiceInvocationStrategy&quot;);
 } 
 
-if ($(&apos;operationName&apos;) == &apos;Update Registration&apos;) {
+if ($(&apos;operationName&apos;) == &apos;Update Participant Registration&apos;) {
 	catissueSvcInvStrtgy = globalMap.get(&quot;caTissueUpdateRegistrationServiceInvocationStrategy&quot;);
 }
 
@@ -930,7 +930,7 @@ if(caTissueRegistrationServiceInvocationStrategy == null) {
 }
 globalMap.put(&quot;caTissueRegistrationServiceInvocationStrategy&quot;, caTissueRegistrationServiceInvocationStrategy);
 
-//initialize catissue update registration service invocation strategy
+//initialize catissue Update Participant Registration service invocation strategy
 var caTissueUpdateRegistrationServiceInvocationStrategy = globalMap.get(&quot;caTissueUpdateRegistrationServiceInvocationStrategy&quot;);
 
 if(caTissueUpdateRegistrationServiceInvocationStrategy == null) {
@@ -975,7 +975,7 @@ if(caaersServiceInvocationStrategy == null) {
 }
 globalMap.put(&quot;caaersRegistrationServiceInvocationStrategy&quot;, caaersServiceInvocationStrategy);
 
-//initialize caaers update registration service invocation strategy
+//initialize caaers Update Participant Registration service invocation strategy
 var caaersUpdateServiceInvocationStrategy = globalMap.get(&quot;caaersUpdateRegistrationServiceInvocationStrategy&quot;);
 
 if(caaersUpdateServiceInvocationStrategy == null) {
