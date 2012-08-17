@@ -52,14 +52,27 @@ public class XSLTTransformerTest {
     }
 
     /**
+     * Testcase for transforming Wrapper XML to Interim XML
      * 
      * @throws IntegrationException - IntegrationException
      */
     @Test
-    public void transformMsgBCMsg() throws IntegrationException {
+    public void transformWrapperToInterimXMLTest() throws IntegrationException {
+        xsltTransformer.initTransformer("caCISRequest-to-MsgBroadcasterParticipantInboundMsg.xsl", baseXSLPath);
+        final String trnsfrmdMsg = transformToParticipantXML(getParticipantWrapperXML());
+        Assert.assertNotNull(trnsfrmdMsg);
+    }
+
+    /**
+     * Test case for transforming Interim XML to XMLString
+     * 
+     * @throws IntegrationException - IntegrationException
+     */
+//    @Test
+    public void transformInterimToXMLStringTest() throws IntegrationException {
         xsltTransformer.initTransformer(catissueParticipantXsl, baseXSLPath);
 
-        String trnsfrmdMsg = transformToParticipantXML(getMsgBCMsg());
+        String trnsfrmdMsg = transformToParticipantXML(getParticipantInterimXML());
         Assert.assertNotNull(trnsfrmdMsg);
     }
 
@@ -93,7 +106,11 @@ public class XSLTTransformerTest {
         return participantXMLStr;
     }
 
-    private String getMsgBCMsg() {
+    private String getParticipantWrapperXML() {
+        return getXMLString("ParticipantWrapper.xml");
+    }
+
+    private String getParticipantInterimXML() {
         return getXMLString("ParticipantInterim.xml");
     }
 
