@@ -143,9 +143,6 @@ public class CaTissueParticipantClient {
      * @throws ApplicationException - ApplicationException
      */
     public Participant registerParticipant(Participant participant) throws ApplicationException {
-        if (participant == null || StringUtils.isEmpty(participant.getSocialSecurityNumber())) {
-            throw new ApplicationException("Participant does not contain the unique identifier SSN");
-        }
         if (participant == null || StringUtils.isEmpty(participant.getLastName())) {
             throw new ApplicationException("Participant does not contain the unique medical identifier");
         }
@@ -197,10 +194,6 @@ public class CaTissueParticipantClient {
      * @throws ApplicationException - ApplicationException
      */
     public Participant updateParticipantRegistration(Participant participant) throws ApplicationException {
-        if (participant == null || StringUtils.isEmpty(participant.getSocialSecurityNumber())) {
-            LOG.error("Participant does not contain the unique identifier SSN " + participant.getLastName());
-            throw new ApplicationException("Participant does not contain the unique identifier SSN");
-        }
         if (participant == null || StringUtils.isEmpty(participant.getLastName())) {
             LOG.error("Participant does not contain the unique medical identifier " + participant.getLastName());
             throw new ApplicationException("Participant does not contain the unique medical identifier");
@@ -274,10 +267,6 @@ public class CaTissueParticipantClient {
      * @throws ApplicationException - ApplicationException
      */
     public Participant deleteParticipant(Participant participant) throws ApplicationException {
-        if (participant == null || StringUtils.isEmpty(participant.getSocialSecurityNumber())) {
-            throw new ApplicationException("Participant does not contain the unique identifier, SSN!");
-        }
-
         final Participant persistedParticipant = getParticipantForPatientId(participant.getLastName());
         if (persistedParticipant == null) {
             return null;
@@ -319,7 +308,6 @@ public class CaTissueParticipantClient {
     public List<Participant> getParticipantsForCollectionProtocol(String cpTitle) throws ApplicationException {
         return caTissueAPIClient.getApplicationService().query(CqlUtility.getParticipantsForCP(cpTitle));
     }
-
 
     /**
      * Retrieve the participant for given PatientId
