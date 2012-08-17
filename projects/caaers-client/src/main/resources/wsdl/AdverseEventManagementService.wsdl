@@ -528,6 +528,7 @@
             <xs:enumeration value="Protocol Authority Identifier"></xs:enumeration>
             <xs:enumeration value="Coordinating Center Identifier"></xs:enumeration>
             <xs:enumeration value="NCI Assigned Identifier"></xs:enumeration>
+            <xs:enumeration value="Other"></xs:enumeration>
         </xs:restriction>
     </xs:simpleType>
 
@@ -949,7 +950,7 @@
   </wsdl:binding>
   <wsdl:service name="AdverseEventManagementService">
     <wsdl:port binding="tns:AdverseEventManagementServiceSoapBinding" name="AdverseEventManagementWebServicePort">
-      <soap:address location="https://dev.semanticbits.com/caaers/services/AdverseEventManagementService"></soap:address>
+      <soap:address location="https://localhost:9443/caaers/services/AdverseEventManagementService"></soap:address>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
