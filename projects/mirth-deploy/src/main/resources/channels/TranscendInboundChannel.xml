@@ -1830,10 +1830,10 @@ globalMap.put(&quot;transcend.ihub.client.user&quot;,&quot;@{ihub.user}&quot;);
 globalMap.put(&quot;transcend.ihub.client.password&quot;,&quot;@{ihub.password}&quot;);
 
 // #########  FILTER Related Constants ##########
-globalMap.put(&quot;AE&quot;,&quot;Create Adverse Event&quot;);
+globalMap.put(&quot;AE&quot;,&quot;Create Or Update Adverse Event&quot;);
 globalMap.put(&quot;UPDTAE&quot;,&quot;Update Adverse Event&quot;);
-globalMap.put(&quot;REGN&quot;,&quot;Create Registration&quot;);
-globalMap.put(&quot;UPDTREGN&quot;,&quot;Update Registration&quot;);
+globalMap.put(&quot;REGN&quot;,&quot;Create Participant Registration&quot;);
+globalMap.put(&quot;UPDTREGN&quot;,&quot;Update Participant Registration&quot;);
 globalMap.put(&quot;SPMN&quot;,&quot;Create Biospecimen&quot;);
 globalMap.put(&quot;UPDTSPMN&quot;,&quot;Update Biospecimen&quot;);
 globalMap.put(&quot;REGTCNST&quot;,&quot;Register Consent&quot;);
