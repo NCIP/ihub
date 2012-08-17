@@ -1,0 +1,18 @@
+<g:genders xmlns:g="http://catissue/gender/data">
+	<g:gender>
+		<g:vockey>Male</g:vockey>
+		<g:vocvalue>Male Gender</g:vocvalue>
+	</g:gender>
+	<g:gender>
+		<g:vockey>Female</g:vockey>
+		<g:vocvalue>Female Gender</g:vocvalue>
+	</g:gender>
+	<g:gender>
+		<g:vockey>Unknown</g:vockey>
+		<g:vocvalue>Unknown</g:vocvalue>
+	</g:gender>
+	<g:gender>
+		<g:vockey>Unspecified</g:vockey>
+		<g:vocvalue>Unspecified</g:vocvalue>
+	</g:gender>
+</g:genders>
