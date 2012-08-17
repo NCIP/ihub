@@ -68,8 +68,11 @@ public class CaTissueUpdateSpecimenServiceInvocationStrategy implements ServiceI
         msgToErrMapBase.put("Specimen Class can't be changed while updating the Specimen", IntegrationError._1089);
         msgToErrMapBase.put("Specimen for given LABEL doesn't exist", IntegrationError._1090);
         msgToErrMapBase.put("Error occurred : Unable to rollback. Please check the logs.", IntegrationError._1093);
-        msgToErrMapBase.put("Non-OTHER biopsyType shouldn't contain otherText.", IntegrationError._1095);
-        msgToErrMapBase.put("Specimen contains multiple GuidanceForBreastCoreBiopsyType.", IntegrationError._1096);
+        msgToErrMapBase.put("\'Other Text\' should be provided only when a guidance of \'OTHER\' is selected.",
+                IntegrationError._1095);
+        msgToErrMapBase.put("Only one value for \'Guidance for breast core biopsy\' may be provided.",
+                IntegrationError._1096);
+        msgToErrMapBase.put("The value for \'Guidance for breast core biopsy\' is invalid.", IntegrationError._1097);
 
         msgToErrMap = Collections.synchronizedMap(msgToErrMapBase);
     }

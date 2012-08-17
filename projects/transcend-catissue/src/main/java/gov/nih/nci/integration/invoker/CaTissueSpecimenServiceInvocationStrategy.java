@@ -62,9 +62,10 @@ public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocat
         msgToErrMapBase.put("Available Quantity cannot be greater than the Initial Quantity", IntegrationError._1085);
         msgToErrMapBase.put("Pathological Status is invalid", IntegrationError._1086);
         msgToErrMapBase.put("Error occurred : Unable to rollback. Please check the logs.", IntegrationError._1093);
-        msgToErrMapBase.put("GuidanceForBreastCoreBiopsyType is mandatory while creating the Specimen.",
-                IntegrationError._1094);
-        msgToErrMapBase.put("Non-OTHER biopsyType shouldn't contain otherText.", IntegrationError._1095);
+        msgToErrMapBase.put("Guidance for breast core biopsy is required.", IntegrationError._1094);
+        msgToErrMapBase.put("\'Other Text\' should be provided only when a guidance of \'OTHER\' is selected.",
+                IntegrationError._1095);
+        msgToErrMapBase.put("The value for \'Guidance for breast core biopsy\' is invalid.", IntegrationError._1097);
 
         msgToErrMap = Collections.synchronizedMap(msgToErrMapBase);
     }
