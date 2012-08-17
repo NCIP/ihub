@@ -50,8 +50,16 @@ public class CaTissueSpecimenClient {
     private static final String TISSUE = "Tissue";
     private static final String FLUID = "Fluid";
     private static final String SPECIMEN_NOT_EXISTING = "SPECIMEN_NOT_EXISTING";
+    private static final String ULTRASOUND = "ULTRASOUND";
+    private static final String MRI = "MRI";
+    private static final String STEREOTACTIC = "STEREOTACTIC";
+    private static final String MAMMOGRAPHY = "MAMMOGRAPHY";
+    private static final String PALPATION = "PALPATION";
     private static final String OTHER = "OTHER";
-    private static final String NON_OTHER_BIOPSY_CONTAINS_OTHERTEXT = "Non-OTHER biopsyType shouldn't contain otherText.";
+    private static final String OTHERTEXT_PROVIDED = "\'Other Text\' should be provided only"
+            + " when a guidance of \'OTHER\' is selected.";
+    private static final String INVALID_BIOPSY_TYPE = "The value for \'Guidance for breast core biopsy\' is invalid.";
+    private static final String BIOPSY_REQUIRED = "Guidance for breast core biopsy is required.";
 
     /**
      * Constructor
@@ -296,20 +304,45 @@ public class CaTissueSpecimenClient {
         return true;
     }
 
+    /**
+     * This method is used to perform various validation checks for GuidanceForBreastCoreBiopsy
+     * 
+     * @return true if all validations passes
+     * @throws ApplicationException if any validation fails
+     */
     private boolean isValidGuidanceForBreastCoreBiopsyPresent(SpecimenDetail specimenDetail)
             throws ApplicationException {
         final GuidanceForBreastCoreBiopsy gfbcb = specimenDetail.getGuidanceForBreastCoreBiopsy();
         // check for mandatory guidanceForBreastCoreBiopsyType
         if ((gfbcb == null) || StringUtils.isBlank(gfbcb.getGuidanceForBreastCoreBiopsyType())) {
-            throw new ApplicationException("GuidanceForBreastCoreBiopsyType is mandatory while creating the Specimen.");
+            throw new ApplicationException(BIOPSY_REQUIRED);
         }
 
         final String biopsyType = gfbcb.getGuidanceForBreastCoreBiopsyType();
+
+        // check that the value of biopsyType is among one of the permissible value
+        if (!isPermissibleBiopsyType(biopsyType)) {
+            throw new ApplicationException(INVALID_BIOPSY_TYPE);
+        }
+
         // check that non-OTHER biopsyType shouldn't have otherText
         if (!biopsyType.equalsIgnoreCase(OTHER) && StringUtils.isNotBlank(gfbcb.getOtherText())) {
-            throw new ApplicationException(NON_OTHER_BIOPSY_CONTAINS_OTHERTEXT);
+            throw new ApplicationException(OTHERTEXT_PROVIDED);
         }
         return true;
+    }
+
+    /**
+     * This method is used to check if the biopsyType has one of the permissible value
+     */
+    private boolean isPermissibleBiopsyType(String biopsyType) {
+        boolean flag = false;
+        if (biopsyType.equalsIgnoreCase(ULTRASOUND) || biopsyType.equalsIgnoreCase(MRI)
+                || biopsyType.equalsIgnoreCase(STEREOTACTIC) || biopsyType.equalsIgnoreCase(MAMMOGRAPHY)
+                || biopsyType.equalsIgnoreCase(PALPATION) || biopsyType.equalsIgnoreCase(OTHER)) {
+            flag = true;
+        }
+        return flag;
     }
 
     private boolean isCollectionProtocolPresent(SpecimenDetail specimenDetail) throws ApplicationException {
@@ -380,16 +413,13 @@ public class CaTissueSpecimenClient {
     private List<Specimen> performUpdateSpecimens(Specimens specimens) throws ApplicationException {
 
         final List<Specimen> updatedSpecimenList = new ArrayList<Specimen>();
-
         final List<SpecimenDetail> specimenDetailList = specimens.getSpecimenDetailList();
         Iterator<SpecimenDetail> specimenDetailItr = null;
         SpecimenDetail specimenDetail = null;
-
         try {
             for (specimenDetailItr = specimenDetailList.iterator(); specimenDetailItr.hasNext();) {
                 specimenDetail = specimenDetailItr.next();
                 final Specimen incomingSpecimen = specimenDetail.getSpecimen();
-
                 // Get the corresponding existing Specimen using the Label
                 final Specimen existingSpecimen = getExistingSpecimen(incomingSpecimen.getLabel());
                 incomingSpecimen.setId(existingSpecimen.getId());
@@ -403,7 +433,6 @@ public class CaTissueSpecimenClient {
                 updateGuidanceForBreastCoreBiopsy(existingSpecimen, specimenDetail);
                 // update Specimen in caTissue
                 updateSpecimen(incomingSpecimen);
-
                 updatedSpecimenList.add(incomingSpecimen);
             }
         } catch (ApplicationException e) {
@@ -437,28 +466,24 @@ public class CaTissueSpecimenClient {
             existCP = existingSpecimen.getSpecimenCollectionGroup().getCollectionProtocolEvent()
                     .getCollectionProtocol().getTitle();
         }
-
         if (!inCPE.equals(existCPE)) {
             hasValidData = false;
             LOG.error("UpdateSpecimen Request Failed for Label " + existingSpecimen.getLabel()
                     + " and exception is Collection Protocol Event can't be changed while updating the Specimen");
             throw new ApplicationException("Collection Protocol Event can't be changed while updating the Specimen");
         }
-
         if (!inCP.equals(existCP)) {
             hasValidData = false;
             LOG.error("UpdateSpecimen Request Failed for Label " + existingSpecimen.getLabel()
                     + " and exception is Collection Protocol can't be changed while updating the Specimen");
             throw new ApplicationException("Collection Protocol can't be changed while updating the Specimen");
         }
-
         if (!inSC.equals(existSC)) {
             hasValidData = false;
             LOG.error("UpdateSpecimen Request Failed for Label " + existingSpecimen.getLabel()
                     + " and exception is Specimen Class can't be changed while updating the Specimen");
             throw new ApplicationException("Specimen Class can't be changed while updating the Specimen");
         }
-
         return hasValidData;
     }
 
@@ -482,16 +507,10 @@ public class CaTissueSpecimenClient {
                 return; // If biopsyType is not available in the request, then return
             } else {
                 final String otherText = specimenDetail.getGuidanceForBreastCoreBiopsy().getOtherText();
-                // check that non-OTHER biopsyType shouldn't have otherText
-                if (!biopsyType.equalsIgnoreCase(OTHER) && StringUtils.isNotBlank(otherText)) {
-                    throw new ApplicationException(NON_OTHER_BIOPSY_CONTAINS_OTHERTEXT, new ApplicationException(
-                            NON_OTHER_BIOPSY_CONTAINS_OTHERTEXT));
-                }
+                // check if BiopsyType has valid data for specimen update.
+                isBiopsyTypeValidForUpdateSpecimen(biopsyType, otherText, existingSpecimen);
             }
         }
-
-        // check that Multiple GuidanceForBreastCoreBiopsy are NOT present
-        checkForMultipleGuidanceForBreastCoreBiopsy(existingSpecimen);
 
         if (existingSpecimen.getSpecimenRecordEntryCollection() != null) {
             final Iterator<SpecimenRecordEntry> sreItr = existingSpecimen.getSpecimenRecordEntryCollection().iterator();
@@ -515,6 +534,25 @@ public class CaTissueSpecimenClient {
         }
     }
 
+    private boolean isBiopsyTypeValidForUpdateSpecimen(String biopsyType, String otherText, Specimen existingSpecimen)
+            throws ApplicationException {
+
+        // check that the value of biopsyType is among one of the permissible value
+        if (!isPermissibleBiopsyType(biopsyType)) {
+            throw new ApplicationException(INVALID_BIOPSY_TYPE);
+        }
+
+        // check that non-OTHER biopsyType shouldn't have otherText
+        if (!biopsyType.equalsIgnoreCase(OTHER) && StringUtils.isNotBlank(otherText)) {
+            throw new ApplicationException(OTHERTEXT_PROVIDED, new ApplicationException(OTHERTEXT_PROVIDED));
+        }
+
+        // check that Multiple GuidanceForBreastCoreBiopsy are NOT present
+        checkForMultipleGuidanceForBreastCoreBiopsy(existingSpecimen);
+
+        return true;
+    }
+
     /**
      * This method is used to check if the specimen has multiple GuidanceForBreastCoreBiopsy element
      * 
@@ -529,9 +567,11 @@ public class CaTissueSpecimenClient {
                 final SpecimenRecordEntry sre = sreItr.next();
                 if (sre.getGuidanceForBreastCoreBiopsyCollection() != null) {
                     gfbcbCount = gfbcbCount + sre.getGuidanceForBreastCoreBiopsyCollection().size();
-                    if (gfbcbCount > 1) { // NOPMD
-                        throw new ApplicationException("Specimen contains multiple GuidanceForBreastCoreBiopsyType.",
-                                new ApplicationException("Specimen contains multiple GuidanceForBreastCoreBiopsyType.")); 
+                    if (gfbcbCount > 1) {
+                        throw new ApplicationException(
+                                "Only one value for \'Guidance for breast core biopsy\' may be provided.",
+                                new ApplicationException(
+                                        "Only one value for \'Guidance for breast core biopsy\' may be provided."));
                     }
                 }
             }
@@ -638,7 +678,6 @@ public class CaTissueSpecimenClient {
             } catch (ApplicationException e) {
                 LOG.info("Specimen with label as " + specimenLabel + " not present in caTissue for Rollback ");
             }
-
             try {
                 if (existingSpecimen != null) {
                     softDeleteSpecimen(existingSpecimen);
@@ -679,8 +718,8 @@ public class CaTissueSpecimenClient {
      * 
      */
     private Specimen updateSpecimenLabel(Specimen specimen) throws ApplicationException {
-        specimen.setLabel("Soft-Del__" + specimen.getLabel() + "__" + getCurrentDateTime());
-        specimen.setBarcode("Soft-Del__" + specimen.getBarcode() + "__" + getCurrentDateTime());
+        specimen.setLabel("Soft-Del_" + specimen.getLabel() + "_" + getCurrentDateTime());
+        specimen.setBarcode("Soft-Del_" + specimen.getBarcode() + "_" + getCurrentDateTime());
         return updateSpecimen(specimen);
     }
 
