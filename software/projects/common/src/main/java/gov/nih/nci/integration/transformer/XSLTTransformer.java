@@ -58,9 +58,10 @@ public class XSLTTransformer {
      * @param xslBasePath - Base xsl file path for resolver
      * @throws IntegrationException - exception thrown if any
      */
-    public void initTransformer(String xslFileName, String xslBasePath)// NOPMD
+    public void initTransformer(String xslFileName, String xslBasePath)
             throws IntegrationException {
-        if (factory == null) { //NOPMD
+        String basePath = xslBasePath;
+        if (factory == null) { 
             LOG.error("XSLTTransformer..factory is NULL while init the transformer ");
             throw new IntegrationException(IntegrationError._1060);
         }
@@ -68,14 +69,12 @@ public class XSLTTransformer {
             LOG.error("XSLTTransformer..xslFileName is NULL while init the transformer ");
             throw new IntegrationException(IntegrationError._1061);
         }
-        if (StringUtils.isEmpty(xslBasePath)) {
-            // CHECKSTYLE:OFF
-            xslBasePath = ".";
-            // CHECKSTYLE:ON
+        if (StringUtils.isEmpty(xslBasePath)) {          
+            basePath = ".";           
         }
 
         try {
-            transformer = factory.newTransformer(factory.getURIResolver().resolve(xslFileName, xslBasePath));
+            transformer = factory.newTransformer(factory.getURIResolver().resolve(xslFileName, basePath));
         } catch (TransformerConfigurationException e) {
             LOG.error("XSLTTransformer..TransformerConfigurationException while init the transformer ", e );
             throw new IntegrationException(IntegrationError._1025, e);
