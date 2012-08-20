@@ -1,4 +1,4 @@
-<s:activitystatus xmlns:s="http://catissue/acticitystatus/data">
+<s:activitystatus xmlns:s="http://catissue/activitystatus/data">
 	<s:status>
 		<s:vockey>55561003</s:vockey>
 		<s:vocvalue>Active</s:vocvalue>
