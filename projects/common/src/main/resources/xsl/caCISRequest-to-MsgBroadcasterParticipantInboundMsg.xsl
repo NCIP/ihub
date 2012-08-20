@@ -5,7 +5,7 @@
 	xmlns:ns1="urn:hl7-org:v3" xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest"
 	xmlns:ns3="http://cacis.nci.nih.gov" xmlns:r="http://catissue/race/data"
 	xmlns:e="http://catissue/ethnicity/data" xmlns:g="http://catissue/gender/data"
-	xmlns:s="http://catissue/acticitystatus/data" exclude-result-prefixes="
+	xmlns:s="http://catissue/activitystatus/data" exclude-result-prefixes="
 	ns0 xs ns1 ns2 ns3 ">
 	<xsl:output method="xml" indent="yes" />
 
@@ -82,10 +82,10 @@
 							</xsl:for-each>
 						</p:ethnicity>
 						<p:activityStatus>
-							<xsl:for-each
-								select="$clinicalDocument/ns1:component/ns1:structuredBody/ns1:component/ns1:section/ns1:entry/ns1:observation/ns1:value[@codeSystem='2.16.840.1.113883.6.96']">
-								<xsl:call-template name="show-activityStatus" />
-							</xsl:for-each>
+							<xsl:call-template name="show-activityStatus">
+								<xsl:with-param name="asvalue"
+									select="$clinicalDocument/ns1:component/ns1:structuredBody/ns1:component/ns1:section/ns1:entry/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='263490005'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:value/@code" />
+							</xsl:call-template>
 						</p:activityStatus>
 						<p:registrationDate>
 							<xsl:for-each select="$clinicalDocument/ns1:effectiveTime">
@@ -322,8 +322,9 @@
 
 	<!-- show-activityStatus -->
 	<xsl:template name="show-activityStatus">
+		<xsl:param name="asvalue" />
 		<xsl:apply-templates select="$statuses-top">
-			<xsl:with-param name="curr-key" select="@code" />
+			<xsl:with-param name="curr-key" select="$asvalue" />
 		</xsl:apply-templates>
 	</xsl:template>
 
