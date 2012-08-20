@@ -97,9 +97,8 @@
 								id="1" version="1">
 								<p:type>MRN</p:type>
 								<p:value>
-									<xsl:call-template name="show-id">
-										<xsl:with-param name="id"
-											select="$clinicalDocument/ns1:recordTarget/ns1:patientRole/ns1:id[2]" />
+									<xsl:call-template name="show-MRN">
+										<xsl:with-param name="clinicalDocument" select="$clinicalDocument" />
 									</xsl:call-template>
 								</p:value>
 								<p:primaryIndicator>true</p:primaryIndicator>
@@ -122,9 +121,8 @@
 								version="1">
 								<p:type>MRN</p:type>
 								<p:value>
-									<xsl:call-template name="show-id">
-										<xsl:with-param name="id"
-											select="$clinicalDocument/ns1:recordTarget/ns1:patientRole/ns1:id[2]" />
+									<xsl:call-template name="show-MRN">
+										<xsl:with-param name="clinicalDocument" select="$clinicalDocument" />
 									</xsl:call-template>
 								</p:value>
 								<p:primaryIndicator>true</p:primaryIndicator>
@@ -134,9 +132,8 @@
 						<p:assignments>
 							<p:assignment id="1" version="1">
 								<p:studySubjectIdentifier>
-									<xsl:call-template name="show-id">
-										<xsl:with-param name="id"
-											select="$clinicalDocument/ns1:recordTarget/ns1:patientRole/ns1:id[1]" />
+									<xsl:call-template name="show-StudySubjectId">
+										<xsl:with-param name="clinicalDocument" select="$clinicalDocument" />
 									</xsl:call-template>
 								</p:studySubjectIdentifier>
 								<p:studySite id="1" version="1">
@@ -179,6 +176,44 @@
 				</ns0:businessMessagePayload>
 			</ns0:request>
 		</ns2:caxchangerequest>
+	</xsl:template>
+
+	<!-- show-StudySubjectId -->
+	<xsl:template name="show-StudySubjectId">
+		<xsl:param name="clinicalDocument" />
+		<xsl:if
+			test="	$clinicalDocument/ns1:recordTarget/ns1:patientRole/ns1:id[1]/@assigningAuthorityName = 'iSpy2 Study'">
+			<xsl:call-template name="show-id">
+				<xsl:with-param name="id"
+					select="$clinicalDocument/ns1:recordTarget/ns1:patientRole/ns1:id[1]" />
+			</xsl:call-template>
+		</xsl:if>
+		<xsl:if
+			test="	$clinicalDocument/ns1:recordTarget/ns1:patientRole/ns1:id[2]/@assigningAuthorityName = 'iSpy2 Study'">
+			<xsl:call-template name="show-id">
+				<xsl:with-param name="id"
+					select="$clinicalDocument/ns1:recordTarget/ns1:patientRole/ns1:id[2]" />
+			</xsl:call-template>
+		</xsl:if>
+	</xsl:template>
+
+	<!-- show-MRN -->
+	<xsl:template name="show-MRN">
+		<xsl:param name="clinicalDocument" />
+		<xsl:if
+			test="	$clinicalDocument/ns1:recordTarget/ns1:patientRole/ns1:id[1]/@assigningAuthorityName != 'iSpy2 Study'">
+			<xsl:call-template name="show-id">
+				<xsl:with-param name="id"
+					select="$clinicalDocument/ns1:recordTarget/ns1:patientRole/ns1:id[1]" />
+			</xsl:call-template>
+		</xsl:if>
+		<xsl:if
+			test="	$clinicalDocument/ns1:recordTarget/ns1:patientRole/ns1:id[2]/@assigningAuthorityName != 'iSpy2 Study'">
+			<xsl:call-template name="show-id">
+				<xsl:with-param name="id"
+					select="$clinicalDocument/ns1:recordTarget/ns1:patientRole/ns1:id[2]" />
+			</xsl:call-template>
+		</xsl:if>
 	</xsl:template>
 
 	<!-- show-RaceCollection -->
