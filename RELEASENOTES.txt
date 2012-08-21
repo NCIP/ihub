@@ -1,75 +1,9 @@
 Release Notes:
 
-Version: RC1
-SVN Tag: https://ncisvn.nci.nih.gov/svn/iHub/tags/iHub_1.0_RC1
+Version: CDA_RC1_M1
+Release Date: Aug 21st 2012
+SVN Tag: https://ncisvn.nci.nih.gov/svn/iHub/tags/CDA_RC1_M1
+Deployment Guide: https://wiki.nci.nih.gov/display/Suite/Transcend-IHub+deployment+guide
 
-Use cases completed:
-1) Create Registration Flow - Registers participant to caaers and catissue with rollback upon error
-2) Update Registration Flow - updates registered participant in caaers and catissue with rollback upon error
-3) Create Specimen Flow - Creates specimens in catissue for the registered participant in a study under a study calendar event
-4) Update Specimen Flow - Updates specimens in catissue for the registered participant in a study under a study calendar event
-5) Consent Flow - Setting consents for specimens in catissue
-
-Tasks/Bugs:
-
-IHUB-158	2TRANS: design update semantics
-IHUB-156	2TRANS: Error handling design
-IHUB-152	2TRANS: CaCISChannel / MessageBroadcasterConnector - implement caCIS-iHub message transformer
-IHUB-153	2TRANS: TranscendInboundChannel / HttpListener / Implement JavaScript transformer
-IHUB-154	2TRANS: TranscendInboundChannel / PersistMsgInDB - implement using DAO
-IHUB-155	2TRANS: TranscendInboundChannel / caCISRequestSender - client implementation
-IHUB-157	2TRANS: TranscendInboundChannel / ResponseWriter - implement first cut
-IHUB-159	2TRANS: CaCISChannel / WebServiceListener - service interface setup
-IHUB-162	2TRANS: CaCISChannel / ResponseWriter - implement
-IHUB-163	2TRANS: MessageBroadcasterChannelConnector / caTissue Invocation Strategy - invoke create
-IHUB-164	2TRANS: MessageBroadcasterChannelConnector / caTissue Invocation Strategy - invoke update
-IHUB-165	2TRANS: MessageBroadcasterChannelConnector / caTissue Invocation Strategy - rollback create
-IHUB-166	2TRANS: MessageBroadcasterChannelConnector / caTissue Invocation Strategy - rollback update
-IHUB-167	2TRANS: MessageBroadcasterChannelConnector / caAERS Invocation Strategy - invoke create
-IHUB-168	2TRANS: MessageBroadcasterChannelConnector / caAERS Invocation Strategy - invoke update
-IHUB-169	2TRANS: MessageBroadcasterChannelConnector / caAERS Invocation Strategy - invoke create
-IHUB-170	2TRANS: MessageBroadcasterChannelConnector / caAERS Invocation Strategy - rollback create
-IHUB-171	2TRANS: MessageBroadcasterChannelConnector / caAERS Invocation Strategy - rollback update
-IHUB-172	2TRANS: ServiceBroadcaster & Response Aggregator Framework
-IHUB-173	2TRANS: MessageBroadcasterChannelConnector / CaAERSRegistrationConnector - use ServiceBroadcaster
-IHUB-174	2TRANS: MessageBroadcasterChannelConnector / CaTissueRegistrationConnector - use ServiceBroadcaster
-IHUB-175	2TRANS: Automated Integration Tests
-IHUB-176	Fix build for CI integration scenarios 1) Main project build file 2) Add static-analysis
-IHUB-177	IHUB-165 Install caTissue 2.0 locally
-IHUB-178	Create integration test for registration in CaAERS
-IHUB-179	Add integration test for CaTissue update registration
-IHUB-180	Create more transformer unit tests with sample payloads
-IHUB-181	Fix build for the new CaTissue setup
-IHUB-182	Update all exceptions with IntegrationException that holds error type and error code
-IHUB-183	Fix build for replacing placeholders with values from build property files
-IHUB-184	Transformation to CaTissue message format
-IHUB-185	Transformation to CaAERS message
-IHUB-186	Request an App Scan to be performed by the NCI Systems Team
-IHUB-187	Deploy the iHub-Mirth to the NCI-DEV1 tier
-IHUB-188	Create CatissueSpeciment Client
-IHUB-189	Catissue Update Specimen client
-IHUB-190	Specimen flow : Transform Transcend iHub inbound message to cacis message
-IHUB-191	Specimen flow : Add transformation from cacis message to catissue message
-IHUB-192	Specimen flow : Add catissue create specimen service invocation strategy with rollback
-IHUB-193	Specimen flow : Add catissue update specimen service invocation strategy with rollback
-IHUB-194	Specimen flow : Add connector in MessageBroadcasterChannel to create specimen in catissue
-IHUB-195	Specimen flow : Add connector in MessageBroadcasterChannel to update specimen in catissue
-IHUB-196	Consent flow : Add transformation from ihub inbound message to cacis message for setting consents
-IHUB-197	Consent flow : Add transformation from cacis message to catissue consent message
-IHUB-198	Consent flow : Add connector to MessageBroadcasterChannel to set consents in catissue
-IHUB-199	Consent flow: Add catissue client to set consents
-IHUB-200	Consent flow: Add service invocation strategy to set consent in catissue with rollback
-IHUB-201	Add error handling and error code mapping
-IHUB-202	Fix build script to run static-anlysis
-IHUB-203	Fix build script to run code coverage
-IHUB-204	Fix build script to deploy Transcend-iHub to mirth connect over cacis
-IHUB-205	Create test data for caAERS and caTissue for running smoke tests
-IHUB-206	Fix build script for running smoke tests
-IHUB-207	Add iHub deployment guide
-
-Known Issues:
-1) Study subject identifier is placed as the lastname in catissue and not as external medical identifier
-2) Participant medical identifier is not being persisted as external medical identifier
-3) Consent flow can handle only specimens with only one level of child specimens due to restriction from the catissue api
-4) Didnt have a valid trim for Consents, expecting the canonical format itself as part of inbound caxhange message
- 
+Release Notes:
+https://wiki.nci.nih.gov/display/Suite/Transcend-iHub+-+CDA_RC1_M1+Release+Notes
