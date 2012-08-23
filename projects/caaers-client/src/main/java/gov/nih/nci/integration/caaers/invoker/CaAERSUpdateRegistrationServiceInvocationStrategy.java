@@ -244,7 +244,7 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements Servic
         final List<WsError> wserrors = response.getWsError();
         WsError error = null;
         IntegrationException ie = null;
-        
+
         if (wserrors == null || wserrors.isEmpty()) {
             ie = new IntegrationException(IntegrationError._1053, new Throwable(response.getMessage()), response // NOPMD
                     .getMessage());
@@ -253,7 +253,7 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements Servic
             ie = new IntegrationException(IntegrationError._1053, new Throwable(error.getException()), error // NOPMD
                     .getErrorDesc());
         }
-        
+
         result.setInvocationException(ie);
     }
 
@@ -298,7 +298,7 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements Servic
 
     private String getMatchingMsg(String lookupStr, String[] msgs) {
         for (String string : msgs) {
-            if (string.contains(lookupStr)) {
+            if ((string != null) && string.contains(lookupStr)) {
                 return string;
             }
         }
