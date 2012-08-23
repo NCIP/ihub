@@ -18,7 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * This is the test class to test the methods of the Wrapper Consent Client.
+ * This is the test class to test the methods of the Wrapper Participant Client.
  * 
  * @author Rohit Gupta
  * 
@@ -67,7 +67,7 @@ public class CaTissueParticipantTest {
                     catissueApiPassword, participantMockClientClass);
             svc = client.registerParticipant(getParticipantXMLStr());
 
-        } catch (IntegrationException e) { 
+        } catch (IntegrationException e) {
             svc = null;
         }
 
@@ -105,6 +105,19 @@ public class CaTissueParticipantTest {
     public void updateRegistrationParticipant() throws IntegrationException {
         final ServiceInvocationResult svc = caTissueParticipantClient
                 .updateRegistrationParticipant(getParticipantXMLStr());
+        assertNotNull(svc);
+    }
+
+    /**
+     * TestCase to test the updateRegistrationParticipant for Off Study flow
+     * 
+     * @throws IntegrationException - IntegrationException
+     */
+    @Test
+    public void updateRegistrationParticipantOffStudy() throws IntegrationException {
+        String message = getParticipantXMLStr();
+        message = message.replaceAll("Active", "Closed");
+        final ServiceInvocationResult svc = caTissueParticipantClient.updateRegistrationParticipant(message);
         assertNotNull(svc);
     }
 
