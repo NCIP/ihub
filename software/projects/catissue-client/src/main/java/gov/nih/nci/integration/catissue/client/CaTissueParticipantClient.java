@@ -4,8 +4,11 @@ import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -224,17 +227,49 @@ public class CaTissueParticipantClient {
         populateCPTitle(participant);
 
         // code to handle the existing/new race collection
-        final Collection<Race> existRaceCollection = existingParticipant.getRaceCollection();
-        for (final Iterator<Race> iterator = existRaceCollection.iterator(); iterator.hasNext();) {
-            final Race race = (Race) iterator.next();
-            race.setParticipant(null);
-            race.setRaceName(null);
-            participant.getRaceCollection().add(race);
-        }
+        updateParticipantRaceCollection(existingParticipant, participant);
 
         caTissueAPIClient.update(participant);
 
         return copyFrom(existingParticipant);
+    }
+
+    private Participant updateParticipantRaceCollection(Participant existingParticipant, Participant participant) {
+        final Race[] existRaceArray = (Race[]) existingParticipant.getRaceCollection().toArray(
+                new Race[existingParticipant.getRaceCollection().size()]);
+        final Race[] newRaceArray = (Race[]) participant.getRaceCollection().toArray(
+                new Race[participant.getRaceCollection().size()]);
+
+        final int existRaceCount = existRaceArray.length;
+        final int newRaceCount = newRaceArray.length;
+
+        if (existRaceCount >= newRaceCount) {
+            int i = 0;
+            for (; i < newRaceCount; i++) {
+                existRaceArray[i].setRaceName(newRaceArray[i].getRaceName());
+                existRaceArray[i].setParticipant(newRaceArray[i].getParticipant());
+            }
+            for (; i < existRaceCount; i++) {
+                existRaceArray[i].setRaceName(null);
+                existRaceArray[i].setParticipant(null);
+            }
+            final Set<Race> mySet = new HashSet<Race>();
+            Collections.addAll(mySet, existRaceArray);
+            participant.setRaceCollection(mySet);
+        } else {
+            int i = 0;
+            for (; i < existRaceCount; i++) {
+                existRaceArray[i].setRaceName(newRaceArray[i].getRaceName());
+                existRaceArray[i].setParticipant(newRaceArray[i].getParticipant());
+            }
+            final Set<Race> mySet = new HashSet<Race>();
+            Collections.addAll(mySet, existRaceArray);
+            participant.setRaceCollection(mySet);
+            for (; i < newRaceCount; i++) {
+                participant.getRaceCollection().add(newRaceArray[i]);
+            }
+        }
+        return participant;
     }
 
     /**
