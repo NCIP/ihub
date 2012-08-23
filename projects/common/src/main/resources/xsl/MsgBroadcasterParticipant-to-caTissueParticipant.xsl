@@ -4,9 +4,10 @@
 	xmlns:catissue="http://domain.catissuecore.wustl.edu/participant"
 	xmlns:g="http://catissue/gender/data">
 	<xsl:output method="xml" indent="yes" />
-	
-	<xsl:key name="gender-lookup" match="g:gender" use="g:vockey" />	
-	<xsl:variable name="genders-top" select="document('catissue-genders-lookup.xml')/*" />
+
+	<xsl:key name="gender-lookup" match="g:gender" use="g:vockey" />
+	<xsl:variable name="genders-top"
+		select="document('catissue-genders-lookup.xml')/*" />
 	<xsl:template match="g:genders">
 		<xsl:param name="curr-key" />
 		<xsl:value-of select="key('gender-lookup', $curr-key)/g:vocvalue" />
@@ -23,7 +24,9 @@
 				<xsl:value-of select="//p:participant/p:activityStatus" />
 			</catissue:activityStatus>
 			<catissue:birthDate>
-				<xsl:value-of select="//p:participant/p:birthDate" />
+				<xsl:call-template name="show-dateTime">
+					<xsl:with-param name="dateValue" select="//p:participant/p:birthDate" />
+				</xsl:call-template>
 			</catissue:birthDate>
 			<catissue:ethnicity>
 				<xsl:value-of select="//p:participant/p:ethnicity" />
@@ -43,7 +46,9 @@
 			<catissue:collectionProtocolRegistrationCollection
 				class="set">
 				<catissue:collectionProtocolRegistration>
-					<catissue:activityStatus><xsl:value-of select="//p:participant/p:activityStatus" /></catissue:activityStatus>
+					<catissue:activityStatus>
+						<xsl:value-of select="//p:participant/p:activityStatus" />
+					</catissue:activityStatus>
 					<catissue:consentSignatureDate>
 						<xsl:value-of select="substring-before(current-dateTime(),'T')" />
 					</catissue:consentSignatureDate>
@@ -51,7 +56,10 @@
 						<xsl:value-of select="$studySubjectIdentifier" />
 					</catissue:protocolParticipantIdentifier>
 					<catissue:registrationDate>
-						<xsl:value-of select="//p:participant/p:registrationDate" />
+						<xsl:call-template name="show-dateTime">
+							<xsl:with-param name="dateValue"
+								select="//p:participant/p:registrationDate" />
+						</xsl:call-template>
 					</catissue:registrationDate>
 					<catissue:specimenCollectionGroupCollection
 						class="set" />
@@ -106,4 +114,13 @@
 				class="set" />
 		</catissue:participant>
 	</xsl:template>
+
+	<!-- show dateTime.. format the date from 1967-01-31 to 19670131 -->
+	<xsl:template name="show-dateTime">
+		<xsl:param name="dateValue" />
+		<xsl:value-of select="substring($dateValue,1,4)" />
+		<xsl:value-of select="substring($dateValue,6,2)" />
+		<xsl:value-of select="substring($dateValue,9,2)" />
+	</xsl:template>
+
 </xsl:stylesheet>
