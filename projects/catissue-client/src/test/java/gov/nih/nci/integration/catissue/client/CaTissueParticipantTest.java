@@ -71,8 +71,8 @@ public class CaTissueParticipantTest {
     public void registerParticipant() {
         String retXMLString = "";
         final CollectionProtocol collectionProtocol = new CollectionProtocol();
-        collectionProtocol.setTitle("6482");
-        collectionProtocol.setShortTitle("6482");
+        collectionProtocol.setTitle("6482:6482");
+        collectionProtocol.setShortTitle("6482:6482");
         final Participant participant = new Participant();
 
         try {
@@ -99,42 +99,11 @@ public class CaTissueParticipantTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void registerParticipantForBlankSSN() {
-        String retXMLString = "";
-        final CollectionProtocol collectionProtocol = new CollectionProtocol();
-        collectionProtocol.setTitle("6482");
-        collectionProtocol.setShortTitle("6482");
-        final Participant participant = new Participant();
-
-        try {
-            EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
-            EasyMock.expect(
-                    caTissueAPIClient.searchById((Class<CollectionProtocol>) EasyMock.anyObject(),
-                            (CollectionProtocol) org.easymock.EasyMock.anyObject())).andReturn(collectionProtocol);
-            EasyMock.expect(caTissueAPIClient.insert((Participant) org.easymock.EasyMock.anyObject())).andReturn(
-                    participant);
-            EasyMock.replay(caTissueAPIClient);
-
-            caTissueParticipantClient.registerParticipantFromXML(getParticipantXMLStrForBlankSSN());
-
-            retXMLString = "REGISTER_PARTICIPANT";
-        } catch (ApplicationException e) {
-            LOG.error("CaTissueParticipantTest-ApplicationException inside registerParticipantForBlankSSN() ", e);
-            retXMLString = "REGISTER_PARTICIPANT_FAILED";
-        }
-        assertNotNull(retXMLString);
-    }
-
-    /**
-     * Mock Testcase for Register Participant when SSN is blank is the incoming request
-     */
-    @SuppressWarnings("unchecked")
-    @Test
     public void registerParticipantForLastNameNULL() {
         String retXMLString = "";
         final CollectionProtocol collectionProtocol = new CollectionProtocol();
-        collectionProtocol.setTitle("6482");
-        collectionProtocol.setShortTitle("6482");
+        collectionProtocol.setTitle("6482:6482");
+        collectionProtocol.setShortTitle("6482:6482");
         final Participant participant = new Participant();
 
         try {
@@ -166,8 +135,8 @@ public class CaTissueParticipantTest {
     public void updateParticipantRegistration() throws ParseException {
         String retXMLString = "";
         final CollectionProtocol collectionProtocol = new CollectionProtocol();
-        collectionProtocol.setTitle("6482");
-        collectionProtocol.setShortTitle("6482");
+        collectionProtocol.setTitle("6482:6482");
+        collectionProtocol.setShortTitle("6482:6482");
 
         final Participant participant = getParticipant();
 
@@ -209,8 +178,8 @@ public class CaTissueParticipantTest {
     public void updateParticipantRegistrationParticipantNotFound() throws ParseException {
         String retXMLString = "";
         final CollectionProtocol collectionProtocol = new CollectionProtocol();
-        collectionProtocol.setTitle("6482");
-        collectionProtocol.setShortTitle("6482");
+        collectionProtocol.setTitle("6482:6482");
+        collectionProtocol.setShortTitle("6482:6482");
 
         final Participant participant = getParticipant();
 
@@ -251,8 +220,8 @@ public class CaTissueParticipantTest {
     public void updateParticipantRegistrationForBlankSSN() throws ParseException {
         String retXMLString = "";
         final CollectionProtocol collectionProtocol = new CollectionProtocol();
-        collectionProtocol.setTitle("6482");
-        collectionProtocol.setShortTitle("6482");
+        collectionProtocol.setTitle("6482:6482");
+        collectionProtocol.setShortTitle("6482:6482");
 
         final Participant participant = getParticipant();
         participant.setSocialSecurityNumber("");
@@ -370,10 +339,6 @@ public class CaTissueParticipantTest {
         return getXMLString("Participant_Mock.xml");
     }
 
-    private String getParticipantXMLStrForBlankSSN() {
-        return getXMLString("Participant_BlankSSN_Mock.xml");
-    }
-
     private String getParticipantXMLStrForLastNameNULL() {
         return getXMLString("Participant_LastNameNull_Mock.xml");
     }
@@ -385,7 +350,7 @@ public class CaTissueParticipantTest {
         final BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String strLine;
         try {
-            while ((strLine = br.readLine()) != null) { 
+            while ((strLine = br.readLine()) != null) {
                 fileContents.append(strLine);
             }
             is.close();
