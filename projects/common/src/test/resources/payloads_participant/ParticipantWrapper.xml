@@ -6,9 +6,9 @@
 			xmlns:cda="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<mes:metadata>
 				<mes:serviceType>iHub</mes:serviceType>
-				<mes:operationName>Create Registration</mes:operationName>
-				<mes:externalIdentifier>322080801</mes:externalIdentifier>
-				<mes:caXchangeIdentifier>1344529711680</mes:caXchangeIdentifier>
+				<mes:operationName>Create Participant Registration</mes:operationName>
+				<mes:externalIdentifier>322081301</mes:externalIdentifier>
+				<mes:caXchangeIdentifier>1345485904333</mes:caXchangeIdentifier>
 				<mes:credentials>
 					<mes:userName>tolvenuser</mes:userName>
 					<mes:password>changeme</mes:password>
@@ -16,11 +16,11 @@
 			</mes:metadata>
 			<mes:request>
 				<mes:businessMessagePayload>
-					<mes:xmlSchemaDefinition>urn:tolven-org:trim:4.0</mes:xmlSchemaDefinition>
+					<mes:xmlSchemaDefinition>urn:hl7-org:v3</mes:xmlSchemaDefinition>
 					<ClinicalDocument:ClinicalDocument
 						xmlns:ClinicalDocument="urn:hl7-org:v3" xmlns="urn:hl7-org:v3"
 						xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
-						xsi:schemaLocation="urn:hl7-org:v3 cdaXSD/infrastructure/cda/CDA.xsd">
+						xsi:schemaLocation="urn:hl7-org:v3 ../cdaXSD/infrastructure/cda/CDA.xsd">
 						<realmCode code="US" />
 						<typeId extension="POCD_HD000040" root="2.16.840.1.113883.1.3" />
 						<templateId assigningAuthorityName="HL7 CCDA"
@@ -35,15 +35,17 @@
 						<languageCode code="en-US" />
 						<recordTarget>
 							<patientRole>
-								<id extension="echr:patient-1823431" root="1.2.1.173000" />
-								<id extension="2131823431" root="1.2.1.173000" />
+								<id assigningAuthorityName="iSpy2 Study" extension="echr:patient-1823462"
+									root="1.2.1.173000" />
+								<id assigningAuthorityName="ABC Cancer Institute" extension="2131823462"
+									root="1.2.1.173000" />
 								<addr nullFlavor="NI" />
 								<telecom nullFlavor="NI" />
 								<patient>
 									<name use="L">
-										<given>TestOne</given>
+										<given>FirstName62</given>
 										<given />
-										<family>Patient</family>
+										<family>LastName62</family>
 									</name>
 									<administrativeGenderCode code="F"
 										codeSystem="2.16.840.1.113883.5.1" displayName="Female" />
@@ -91,7 +93,7 @@
 						</documentationOf>
 						<documentationOf>
 							<serviceEvent classCode="CLNTRL">
-								<id extension="32abx" root="2.16.840.1.113883.3.26.1.7" />
+								<id extension="6482" root="6482" />
 								<code nullFlavor="OTH">
 									<originalText>clinical trial</originalText>
 								</code>
@@ -108,6 +110,9 @@
 										</text>
 										<entry typeCode="DRIV">
 											<observation classCode="OBS" moodCode="EVN">
+												<templateId assigningAuthorityName="HL7 CCDA"
+													root="2.16.840.1.113883.10.20.22.4.2" />
+												<id nullFlavor="NI" />
 												<code code="263490005" codeSystem="2.16.840.1.113883.6.96"
 													codeSystemName="SNOMED-CT" displayName="Activity status" />
 												<value code="55561003" codeSystem="2.16.840.1.113883.6.96"
@@ -126,6 +131,9 @@
 										<text />
 										<entry typeCode="DRIV">
 											<observation classCode="OBS" moodCode="EVN">
+												<templateId assigningAuthorityName="HL7 CCDA"
+													root="2.16.840.1.113883.10.20.22.4.2" />
+												<id root="0b1f04da-983c-4438-a093-31011a5f9758" />
 												<code code="103579009" codeSystem="2.16.840.1.113883.6.96"
 													codeSystemName="SNOMED-CT" displayName="race" />
 												<value code="1002-5" codeSystem="2.16.840.1.113883.6.238"
