@@ -228,6 +228,7 @@ public class CaTissueParticipantClient {
         for (final Iterator<Race> iterator = existRaceCollection.iterator(); iterator.hasNext();) {
             final Race race = (Race) iterator.next();
             race.setParticipant(null);
+            race.setRaceName(null);
             participant.getRaceCollection().add(race);
         }
 
