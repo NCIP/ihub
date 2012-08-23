@@ -1,95 +1,89 @@
-<xr:caxchangerequest xmlns:xr="http://caXchange.nci.nih.gov/caxchangerequest"
-	xmlns:mes="http://caXchange.nci.nih.gov/messaging" xmlns:p="http://integration.nci.nih.gov/participant"
-	xmlns:ns1trim="urn:tolven-org:trim:4.0" xmlns:xs="http://www.w3.org/TR/2008/REC-xml-20081126#">
-	<mes:metadata>
-		<mes:serviceType xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest"
+<ns2:caxchangerequest xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest"
+	xmlns:g="http://catissue/gender/data" xmlns:e="http://catissue/ethnicity/data"
+	xmlns:s="http://catissue/activitystatus/data" xmlns:r="http://catissue/race/data"
+	xmlns:p="http://integration.nci.nih.gov/participant">
+	<ns0:metadata xmlns:ns0="http://caXchange.nci.nih.gov/messaging">
+		<mes:serviceType xmlns:mes="http://caXchange.nci.nih.gov/messaging"
 			xmlns="http://caXchange.nci.nih.gov/messaging" xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"
-			xmlns:cda="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">iHub</mes:serviceType>
-		<mes:operationName xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest"
+			xmlns:ns1trim="urn:tolven-org:trim:4.0" xmlns:cda="urn:hl7-org:v3"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">iHub</mes:serviceType>
+		<mes:operationName xmlns:mes="http://caXchange.nci.nih.gov/messaging"
 			xmlns="http://caXchange.nci.nih.gov/messaging" xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"
-			xmlns:cda="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Create Registration
-		</mes:operationName>
-		<mes:externalIdentifier
-			xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest" xmlns="http://caXchange.nci.nih.gov/messaging"
-			xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cda="urn:hl7-org:v3"
-			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">322062801</mes:externalIdentifier>
-		<mes:caXchangeIdentifier
-			xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest" xmlns="http://caXchange.nci.nih.gov/messaging"
-			xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cda="urn:hl7-org:v3"
-			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">1342474459165</mes:caXchangeIdentifier>
-		<mes:credentials xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest"
+			xmlns:ns1trim="urn:tolven-org:trim:4.0" xmlns:cda="urn:hl7-org:v3"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Create Participant Registration</mes:operationName>
+		<mes:externalIdentifier xmlns:mes="http://caXchange.nci.nih.gov/messaging"
 			xmlns="http://caXchange.nci.nih.gov/messaging" xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"
-			xmlns:cda="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			xmlns:ns1trim="urn:tolven-org:trim:4.0" xmlns:cda="urn:hl7-org:v3"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">322081301</mes:externalIdentifier>
+		<mes:caXchangeIdentifier xmlns:mes="http://caXchange.nci.nih.gov/messaging"
+			xmlns="http://caXchange.nci.nih.gov/messaging" xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"
+			xmlns:ns1trim="urn:tolven-org:trim:4.0" xmlns:cda="urn:hl7-org:v3"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">1345485904333</mes:caXchangeIdentifier>
+		<mes:credentials xmlns:mes="http://caXchange.nci.nih.gov/messaging"
+			xmlns="http://caXchange.nci.nih.gov/messaging" xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"
+			xmlns:ns1trim="urn:tolven-org:trim:4.0" xmlns:cda="urn:hl7-org:v3"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<mes:userName>tolvenuser</mes:userName>
 			<mes:password>changeme</mes:password>
 		</mes:credentials>
-	</mes:metadata>
-	<mes:request>
-		<mes:businessMessagePayload>
-			<xmlSchemaDefinition xmlns="http://cacis.nci.nih.gov">http://integration.nci.nih.gov/participant
-			</xmlSchemaDefinition>
+	</ns0:metadata>
+	<ns0:request xmlns:ns0="http://caXchange.nci.nih.gov/messaging">
+		<ns0:businessMessagePayload>
 			<p:participant xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 				id="1" version="1"
 				xsi:schemaLocation="http://integration.nci.nih.gov/participant Participant.xsd ">
-				<p:firstName>Cherry062801</p:firstName>
-				<p:lastName>Blossom062801</p:lastName>
+				<p:firstName>FirstName62</p:firstName>
+				<p:lastName>LastName62</p:lastName>
 				<p:maidenName />
 				<p:middleName />
-				<p:birthDate>1965-11-24</p:birthDate>
-				<p:gender>Male</p:gender>
+				<p:birthDate>1967-01-31</p:birthDate>
+				<p:gender>Female</p:gender>
 				<p:race>White</p:race>
 				<p:ethnicity>Not Hispanic or Latino</p:ethnicity>
 				<p:activityStatus>Active</p:activityStatus>
-				<p:registrationDate>2012-03-07</p:registrationDate>
+				<p:registrationDate>2011-07-22</p:registrationDate>
 				<p:identifiers>
 					<p:organizationAssignedIdentifier
 						id="1" version="1">
 						<p:type>MRN</p:type>
-						<p:value>666062801</p:value>
+						<p:value>1.2.1.173000:2131823462</p:value>
 						<p:primaryIndicator>true</p:primaryIndicator>
 						<p:organization id="1" version="1">
-							<p:name>QU</p:name>
-							<p:nciInstituteCode>DCP</p:nciInstituteCode>
-						</p:organization>
-					</p:organizationAssignedIdentifier>
-					<p:organizationAssignedIdentifier
-						id="2" version="1">
-						<p:type>SSN</p:type>
-						<p:value>123-06-1501</p:value>
-						<p:primaryIndicator>false</p:primaryIndicator>
-						<p:organization id="1" version="1">
-							<p:name>SSN</p:name>
-							<p:nciInstituteCode>SSN</p:nciInstituteCode>
+							<p:name>2.16.840.1.113883.3.26.1.7:echsite87</p:name>
+							<p:nciInstituteCode>2.16.840.1.113883.3.26.1.7:echsite87</p:nciInstituteCode>
 						</p:organization>
 					</p:organizationAssignedIdentifier>
 					<p:systemAssignedIdentifier id="1"
 						version="1">
 						<p:type>MRN</p:type>
-						<p:value>666062801</p:value>
+						<p:value>1.2.1.173000:2131823462</p:value>
 						<p:primaryIndicator>true</p:primaryIndicator>
 						<p:systemName>MRN</p:systemName>
 					</p:systemAssignedIdentifier>
 				</p:identifiers>
 				<p:assignments>
 					<p:assignment id="1" version="1">
-						<p:studySubjectIdentifier>488062801</p:studySubjectIdentifier>
+						<p:studySubjectIdentifier>1.2.1.173000:echr:patient-1823462</p:studySubjectIdentifier>
 						<p:studySite id="1" version="1">
 							<p:study id="1" version="1">
 								<p:identifiers>
 									<p:identifier id="1" version="1">
-										<p:type>Protocol Authority Identifier</p:type>
-										<p:value>6482</p:value>
+										<p:type>Other</p:type>
+										<p:value>6482:6482</p:value>
 									</p:identifier>
 								</p:identifiers>
 							</p:study>
 							<p:organization id="1" version="1">
-								<p:name>QU</p:name>
-								<p:nciInstituteCode>DCP</p:nciInstituteCode>
+								<p:name>2.16.840.1.113883.3.26.1.7:echsite87</p:name>
+								<p:nciInstituteCode>2.16.840.1.113883.3.26.1.7:echsite87</p:nciInstituteCode>
 							</p:organization>
 						</p:studySite>
 					</p:assignment>
 				</p:assignments>
+				<p:raceCollection>
+					<p:race>American Indian or Alaska Native</p:race>
+				</p:raceCollection>
 			</p:participant>
-		</mes:businessMessagePayload>
-	</mes:request>
-</xr:caxchangerequest>
+		</ns0:businessMessagePayload>
+	</ns0:request>
+</ns2:caxchangerequest>
