@@ -223,6 +223,14 @@ public class CaTissueParticipantClient {
         // populate the CP-Title inside Participant-CPR-CP-Title. We are getting 'shortTitle' in the request
         populateCPTitle(participant);
 
+        // code to handle the existing/new race collection
+        final Collection<Race> existRaceCollection = existingParticipant.getRaceCollection();
+        for (final Iterator<Race> iterator = existRaceCollection.iterator(); iterator.hasNext();) {
+            final Race race = (Race) iterator.next();
+            race.setParticipant(null);
+            participant.getRaceCollection().add(race);
+        }
+
         caTissueAPIClient.update(participant);
 
         return copyFrom(existingParticipant);
