@@ -51,68 +51,74 @@
 						xsi:schemaLocation="http://integration.nci.nih.gov/participant Participant.xsd ">
 						<xsl:variable name="clinicalDocument"
 							select="ns3:caCISRequest/ns3:sourceData/ns2:caxchangerequest/ns0:request/ns0:businessMessagePayload/ns1:ClinicalDocument" />
-						<xsl:variable name="patient"
-							select="$clinicalDocument/ns1:recordTarget/ns1:patientRole/ns1:patient" />
+						<xsl:variable name="patientRole"
+							select="$clinicalDocument/ns1:recordTarget/ns1:patientRole" />
 						<p:firstName>
-							<xsl:value-of select="$patient/ns1:name/ns1:given" />
+							<xsl:value-of select="$patientRole/ns1:patient/ns1:name/ns1:given" />
 						</p:firstName>
 						<p:lastName>
-							<xsl:value-of select="$patient/ns1:name/ns1:family" />
+							<xsl:value-of select="$patientRole/ns1:patient/ns1:name/ns1:family" />
 						</p:lastName>
 						<p:maidenName></p:maidenName>
 						<p:middleName></p:middleName>
 						<p:birthDate>
-							<xsl:for-each select="$patient/ns1:birthTime">
-								<xsl:call-template name="show-dateTime" />
-							</xsl:for-each>
+							<xsl:call-template name="show-dateTime">
+								<xsl:with-param name="dateTime"
+									select="$patientRole/ns1:patient/ns1:birthTime/@value" />
+							</xsl:call-template>
 						</p:birthDate>
 						<p:gender>
-							<xsl:for-each select="$patient/ns1:administrativeGenderCode">
-								<xsl:call-template name="show-gender" />
-							</xsl:for-each>
+							<xsl:call-template name="show-gender">
+								<xsl:with-param name="adminGenderCode"
+									select="$patientRole/ns1:patient/ns1:administrativeGenderCode" />
+							</xsl:call-template>
 						</p:gender>
 						<p:race>
-							<xsl:for-each select="$patient/ns1:raceCode">
-								<xsl:call-template name="show-race" />
-							</xsl:for-each>
+							<xsl:call-template name="show-race">
+								<xsl:with-param name="raceValue"
+									select="$patientRole/ns1:patient/ns1:raceCode" />
+							</xsl:call-template>
 						</p:race>
 						<p:ethnicity>
-							<xsl:for-each select="$patient/ns1:ethnicGroupCode">
-								<xsl:call-template name="show-ethnicity" />
-							</xsl:for-each>
+							<xsl:call-template name="show-ethnicity">
+								<xsl:with-param name="ethnicGroupCode"
+									select="$patientRole/ns1:patient/ns1:ethnicGroupCode" />
+							</xsl:call-template>
 						</p:ethnicity>
 						<p:activityStatus>
 							<xsl:call-template name="show-activityStatus">
-								<xsl:with-param name="asvalue"
+								<xsl:with-param name="asValue"
 									select="$clinicalDocument/ns1:component/ns1:structuredBody/ns1:component/ns1:section/ns1:entry/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='263490005'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:value/@code" />
 							</xsl:call-template>
 						</p:activityStatus>
 						<p:registrationDate>
-							<xsl:for-each select="$clinicalDocument/ns1:effectiveTime">
-								<xsl:call-template name="show-dateTime" />
-							</xsl:for-each>
+							<xsl:call-template name="show-dateTime">
+								<xsl:with-param name="dateTime"
+									select="$clinicalDocument/ns1:effectiveTime/@value" />
+							</xsl:call-template>
 						</p:registrationDate>
 						<p:identifiers>
 							<p:organizationAssignedIdentifier
 								id="1" version="1">
 								<p:type>MRN</p:type>
 								<p:value>
-									<xsl:call-template name="show-MRN">
-										<xsl:with-param name="clinicalDocument" select="$clinicalDocument" />
+									<xsl:call-template name="show-id">
+										<xsl:with-param name="id"
+											select="$patientRole/ns1:id[@assigningAuthorityName !='iSpy2 Study']" />
 									</xsl:call-template>
 								</p:value>
 								<p:primaryIndicator>true</p:primaryIndicator>
 								<p:organization id="1" version="1">
 									<p:name>
-										<xsl:call-template name="show-SiteId">
-											<xsl:with-param name="clinicalDocument"
-												select="$clinicalDocument" />
+										<xsl:call-template name="show-id">
+											<xsl:with-param name="id"
+												select="$clinicalDocument/ns1:documentationOf/ns1:serviceEvent/ns1:id[../ns1:code/ns1:originalText='site-specific component of clinical trial']" />
 										</xsl:call-template>
 									</p:name>
 									<p:nciInstituteCode>
-										<xsl:call-template name="show-SiteId">
-											<xsl:with-param name="clinicalDocument"
-												select="$clinicalDocument" />
+										<xsl:call-template name="show-id">
+											<xsl:with-param name="id"
+												select="$clinicalDocument/ns1:documentationOf/ns1:serviceEvent/ns1:id[../ns1:code/ns1:originalText='site-specific component of clinical trial']" />
 										</xsl:call-template>
 									</p:nciInstituteCode>
 								</p:organization>
@@ -121,8 +127,9 @@
 								version="1">
 								<p:type>MRN</p:type>
 								<p:value>
-									<xsl:call-template name="show-MRN">
-										<xsl:with-param name="clinicalDocument" select="$clinicalDocument" />
+									<xsl:call-template name="show-id">
+										<xsl:with-param name="id"
+											select="$patientRole/ns1:id[@assigningAuthorityName !='iSpy2 Study']" />
 									</xsl:call-template>
 								</p:value>
 								<p:primaryIndicator>true</p:primaryIndicator>
@@ -132,8 +139,9 @@
 						<p:assignments>
 							<p:assignment id="1" version="1">
 								<p:studySubjectIdentifier>
-									<xsl:call-template name="show-StudySubjectId">
-										<xsl:with-param name="clinicalDocument" select="$clinicalDocument" />
+									<xsl:call-template name="show-id">
+										<xsl:with-param name="id"
+											select="$patientRole/ns1:id[@assigningAuthorityName='iSpy2 Study']" />
 									</xsl:call-template>
 								</p:studySubjectIdentifier>
 								<p:studySite id="1" version="1">
@@ -142,9 +150,9 @@
 											<p:identifier id="1" version="1">
 												<p:type>Other</p:type>
 												<p:value>
-													<xsl:call-template name="show-StudyId">
-														<xsl:with-param name="clinicalDocument"
-															select="$clinicalDocument" />
+													<xsl:call-template name="show-id">
+														<xsl:with-param name="id"
+															select="$clinicalDocument/ns1:documentationOf/ns1:serviceEvent/ns1:id[../ns1:code/ns1:originalText='clinical trial']" />
 													</xsl:call-template>
 												</p:value>
 											</p:identifier>
@@ -152,15 +160,15 @@
 									</p:study>
 									<p:organization id="1" version="1">
 										<p:name>
-											<xsl:call-template name="show-SiteId">
-												<xsl:with-param name="clinicalDocument"
-													select="$clinicalDocument" />
+											<xsl:call-template name="show-id">
+												<xsl:with-param name="id"
+													select="$clinicalDocument/ns1:documentationOf/ns1:serviceEvent/ns1:id[../ns1:code/ns1:originalText='site-specific component of clinical trial']" />
 											</xsl:call-template>
 										</p:name>
 										<p:nciInstituteCode>
-											<xsl:call-template name="show-SiteId">
-												<xsl:with-param name="clinicalDocument"
-													select="$clinicalDocument" />
+											<xsl:call-template name="show-id">
+												<xsl:with-param name="id"
+													select="$clinicalDocument/ns1:documentationOf/ns1:serviceEvent/ns1:id[../ns1:code/ns1:originalText='site-specific component of clinical trial']" />
 											</xsl:call-template>
 										</p:nciInstituteCode>
 									</p:organization>
@@ -168,101 +176,13 @@
 							</p:assignment>
 						</p:assignments>
 						<p:raceCollection>
-							<xsl:call-template name="show-RaceCollection">
-								<xsl:with-param name="clinicalDocument" select="$clinicalDocument" />
-							</xsl:call-template>
+							<xsl:apply-templates
+								select="//ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='103579009'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:value" />
 						</p:raceCollection>
 					</p:participant>
 				</ns0:businessMessagePayload>
 			</ns0:request>
 		</ns2:caxchangerequest>
-	</xsl:template>
-
-	<!-- show-StudySubjectId -->
-	<xsl:template name="show-StudySubjectId">
-		<xsl:param name="clinicalDocument" />
-		<xsl:if
-			test="	$clinicalDocument/ns1:recordTarget/ns1:patientRole/ns1:id[1]/@assigningAuthorityName = 'iSpy2 Study'">
-			<xsl:call-template name="show-id">
-				<xsl:with-param name="id"
-					select="$clinicalDocument/ns1:recordTarget/ns1:patientRole/ns1:id[1]" />
-			</xsl:call-template>
-		</xsl:if>
-		<xsl:if
-			test="	$clinicalDocument/ns1:recordTarget/ns1:patientRole/ns1:id[2]/@assigningAuthorityName = 'iSpy2 Study'">
-			<xsl:call-template name="show-id">
-				<xsl:with-param name="id"
-					select="$clinicalDocument/ns1:recordTarget/ns1:patientRole/ns1:id[2]" />
-			</xsl:call-template>
-		</xsl:if>
-	</xsl:template>
-
-	<!-- show-MRN -->
-	<xsl:template name="show-MRN">
-		<xsl:param name="clinicalDocument" />
-		<xsl:if
-			test="	$clinicalDocument/ns1:recordTarget/ns1:patientRole/ns1:id[1]/@assigningAuthorityName != 'iSpy2 Study'">
-			<xsl:call-template name="show-id">
-				<xsl:with-param name="id"
-					select="$clinicalDocument/ns1:recordTarget/ns1:patientRole/ns1:id[1]" />
-			</xsl:call-template>
-		</xsl:if>
-		<xsl:if
-			test="	$clinicalDocument/ns1:recordTarget/ns1:patientRole/ns1:id[2]/@assigningAuthorityName != 'iSpy2 Study'">
-			<xsl:call-template name="show-id">
-				<xsl:with-param name="id"
-					select="$clinicalDocument/ns1:recordTarget/ns1:patientRole/ns1:id[2]" />
-			</xsl:call-template>
-		</xsl:if>
-	</xsl:template>
-
-	<!-- show-RaceCollection -->
-	<xsl:template name="show-RaceCollection">
-		<xsl:param name="clinicalDocument" />
-		<xsl:for-each
-			select="$clinicalDocument/ns1:component/ns1:structuredBody/ns1:component/ns1:section/ns1:entry/ns1:observation/ns1:value[@codeSystem='2.16.840.1.113883.6.238']">
-			<p:race>
-				<xsl:call-template name="show-race" />
-			</p:race>
-		</xsl:for-each>
-	</xsl:template>
-
-	<!-- show-StudyId -->
-	<xsl:template name="show-StudyId">
-		<xsl:param name="clinicalDocument" />
-		<xsl:if
-			test="$clinicalDocument/ns1:documentationOf[1]/ns1:serviceEvent/ns1:code/ns1:originalText = 'clinical trial'">
-			<xsl:call-template name="show-id">
-				<xsl:with-param name="id"
-					select="$clinicalDocument/ns1:documentationOf[1]/ns1:serviceEvent/ns1:id" />
-			</xsl:call-template>
-		</xsl:if>
-		<xsl:if
-			test="$clinicalDocument/ns1:documentationOf[2]/ns1:serviceEvent/ns1:code/ns1:originalText = 'clinical trial'">
-			<xsl:call-template name="show-id">
-				<xsl:with-param name="id"
-					select="$clinicalDocument/ns1:documentationOf[2]/ns1:serviceEvent/ns1:id" />
-			</xsl:call-template>
-		</xsl:if>
-	</xsl:template>
-
-	<!-- show-SiteId -->
-	<xsl:template name="show-SiteId">
-		<xsl:param name="clinicalDocument" />
-		<xsl:if
-			test="$clinicalDocument/ns1:documentationOf[1]/ns1:serviceEvent/ns1:code/ns1:originalText = 'site-specific component of clinical trial'">
-			<xsl:call-template name="show-id">
-				<xsl:with-param name="id"
-					select="$clinicalDocument/ns1:documentationOf[1]/ns1:serviceEvent/ns1:id" />
-			</xsl:call-template>
-		</xsl:if>
-		<xsl:if
-			test="$clinicalDocument/ns1:documentationOf[2]/ns1:serviceEvent/ns1:code/ns1:originalText = 'site-specific component of clinical trial'">
-			<xsl:call-template name="show-id">
-				<xsl:with-param name="id"
-					select="$clinicalDocument/ns1:documentationOf[2]/ns1:serviceEvent/ns1:id" />
-			</xsl:call-template>
-		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="node()|@*">
@@ -271,50 +191,63 @@
 		</xsl:copy>
 	</xsl:template>
 
-	<!-- show-gender -->
-	<xsl:template name="show-gender">
-		<xsl:choose>
-			<xsl:when test="@code !=''">
-				<xsl:apply-templates select="$genders-top">
-					<xsl:with-param name="curr-key" select="@code" />
-				</xsl:apply-templates>
-			</xsl:when>
-			<xsl:when test="@nullFlavor !=''">
-				<xsl:apply-templates select="$genders-top">
-					<xsl:with-param name="curr-key" select="@nullFlavor" />
-				</xsl:apply-templates>
-			</xsl:when>
-		</xsl:choose>
+	<!-- show-RaceCollection -->
+	<xsl:template
+		match="//ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='103579009'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:value">
+		<p:race>
+			<xsl:call-template name="show-race">
+				<xsl:with-param name="raceValue" select="." />
+			</xsl:call-template>
+		</p:race>
 	</xsl:template>
-
 
 	<!-- show-race -->
 	<xsl:template name="show-race">
+		<xsl:param name="raceValue" />
 		<xsl:choose>
-			<xsl:when test="@code !=''">
+			<xsl:when test="$raceValue/@code !=''">
 				<xsl:apply-templates select="$races-top">
-					<xsl:with-param name="curr-key" select="@code" />
+					<xsl:with-param name="curr-key" select="$raceValue/@code" />
 				</xsl:apply-templates>
 			</xsl:when>
-			<xsl:when test="@nullFlavor !=''">
+			<xsl:when test="$raceValue/@nullFlavor !=''">
 				<xsl:apply-templates select="$races-top">
-					<xsl:with-param name="curr-key" select="@nullFlavor" />
+					<xsl:with-param name="curr-key" select="$raceValue/@nullFlavor" />
 				</xsl:apply-templates>
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
 
-	<!-- show-ethnicity -->
-	<xsl:template name="show-ethnicity">
+	<!-- show-gender -->
+	<xsl:template name="show-gender">
+		<xsl:param name="adminGenderCode" />
 		<xsl:choose>
-			<xsl:when test="@code !=''">
-				<xsl:apply-templates select="$ethnicities-top">
-					<xsl:with-param name="curr-key" select="@code" />
+			<xsl:when test="$adminGenderCode/@code !=''">
+				<xsl:apply-templates select="$genders-top">
+					<xsl:with-param name="curr-key" select="$adminGenderCode/@code" />
 				</xsl:apply-templates>
 			</xsl:when>
-			<xsl:when test="@nullFlavor !=''">
+			<xsl:when test="$adminGenderCode/@nullFlavor !=''">
+				<xsl:apply-templates select="$genders-top">
+					<xsl:with-param name="curr-key" select="$adminGenderCode/@nullFlavor" />
+				</xsl:apply-templates>
+			</xsl:when>
+		</xsl:choose>
+	</xsl:template>
+
+
+	<!-- show-ethnicity -->
+	<xsl:template name="show-ethnicity">
+		<xsl:param name="ethnicGroupCode" />
+		<xsl:choose>
+			<xsl:when test="$ethnicGroupCode/@code !=''">
 				<xsl:apply-templates select="$ethnicities-top">
-					<xsl:with-param name="curr-key" select="@nullFlavor" />
+					<xsl:with-param name="curr-key" select="$ethnicGroupCode/@code" />
+				</xsl:apply-templates>
+			</xsl:when>
+			<xsl:when test="$ethnicGroupCode/@nullFlavor !=''">
+				<xsl:apply-templates select="$ethnicities-top">
+					<xsl:with-param name="curr-key" select="$ethnicGroupCode/@nullFlavor" />
 				</xsl:apply-templates>
 			</xsl:when>
 		</xsl:choose>
@@ -322,87 +255,29 @@
 
 	<!-- show-activityStatus -->
 	<xsl:template name="show-activityStatus">
-		<xsl:param name="asvalue" />
+		<xsl:param name="asValue" />
 		<xsl:apply-templates select="$statuses-top">
-			<xsl:with-param name="curr-key" select="$asvalue" />
+			<xsl:with-param name="curr-key" select="$asValue" />
 		</xsl:apply-templates>
 	</xsl:template>
 
-	<!-- show dateTime -->
+
+	<!-- format the date 19670131 (or 20110722085054 ) to 1967-01-31 -->
 	<xsl:template name="show-dateTime">
-		<xsl:choose>
-			<xsl:when test="@value">
-				<xsl:call-template name="FormatDate">
-					<xsl:with-param name="DateTime" select="@value" />
-				</xsl:call-template>
-			</xsl:when>
-		</xsl:choose>
-	</xsl:template>
-
-	<!-- format the date 19670131 to 1967-01-31 -->
-	<xsl:template name="FormatDate">
-		<xsl:param name="DateTime" />
-		<xsl:value-of select="substring($DateTime,1,4)" />
+		<xsl:param name="dateTime" />
+		<xsl:value-of select="substring($dateTime,1,4)" />
 		<xsl:value-of select="'-'" />
-		<xsl:value-of select="substring($DateTime,5,2)" />
+		<xsl:value-of select="substring($dateTime,5,2)" />
 		<xsl:value-of select="'-'" />
-		<xsl:value-of select="substring($DateTime,7,2)" />
+		<xsl:value-of select="substring($dateTime,7,2)" />
 	</xsl:template>
-
 
 	<!-- show-id -->
 	<xsl:template name="show-id">
 		<xsl:param name="id" />
-		<xsl:choose>
-			<xsl:when test="not($id)">
-				<xsl:if test="not(@nullFlavor)">
-					<xsl:value-of select="@root" />
-					<xsl:text>:</xsl:text>
-					<xsl:if test="@extension">
-						<xsl:value-of select="@extension" />
-					</xsl:if>
-				</xsl:if>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:if test="not($id/@nullFlavor)">
-					<xsl:value-of select="$id/@root" />
-					<xsl:text>:</xsl:text>
-					<xsl:if test="$id/@extension">
-						<xsl:value-of select="$id/@extension" />
-					</xsl:if>
-				</xsl:if>
-				<xsl:if test="$id/@nullFlavor">
-					<xsl:call-template name="show-nullFlavor">
-						<xsl:with-param name="nf" select="$id/@nullFlavor" />
-					</xsl:call-template>
-				</xsl:if>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-
-	<!-- show-nullFlavor -->
-	<xsl:template name="show-nullFlavor">
-		<xsl:param name="nf" />
-		<xsl:choose>
-			<xsl:when test=" $nf = 'NI' ">
-				<xsl:text>Not Reported</xsl:text>
-			</xsl:when>
-			<xsl:when test=" $nf = 'UNK' ">
-				<xsl:text>Unknown</xsl:text>
-			</xsl:when>
-			<xsl:when test=" $nf = 'INV' ">
-				<xsl:text>Invalid</xsl:text>
-			</xsl:when>
-			<xsl:when test=" $nf = 'MSK' ">
-				<xsl:text>masked</xsl:text>
-			</xsl:when>
-			<xsl:when test=" $nf = 'NA' ">
-				<xsl:text>not applicable</xsl:text>
-			</xsl:when>
-			<xsl:when test=" $nf = 'OTH' ">
-				<xsl:text>other</xsl:text>
-			</xsl:when>
-		</xsl:choose>
+		<xsl:value-of select="$id/@root" />
+		<xsl:text>:</xsl:text>
+		<xsl:value-of select="$id/@extension" />
 	</xsl:template>
 
 </xsl:stylesheet>
