@@ -3,24 +3,26 @@
 	xmlns:catissue="http://domain.catissuecore.wustl.edu/participant"
 	xmlns:g="http://catissue/gender/data">
 	<catissue:activityStatus>Active</catissue:activityStatus>
-	<catissue:birthDate>1965-11-24</catissue:birthDate>
+	<catissue:birthDate>1967-01-31</catissue:birthDate>
 	<catissue:ethnicity>Not Hispanic or Latino</catissue:ethnicity>
-	<catissue:firstName>Cherry062801</catissue:firstName>
-	<catissue:gender>Male Gender</catissue:gender>
-	<catissue:lastName>488062801</catissue:lastName>
-	<catissue:socialSecurityNumber>123-06-1501</catissue:socialSecurityNumber>
+	<catissue:firstName>TRANSCEND</catissue:firstName>
+	<catissue:gender>Female Gender</catissue:gender>
+	<catissue:lastName>1.2.1.173000:echr:patient-1823469
+	</catissue:lastName>
 	<catissue:vitalStatus>Alive</catissue:vitalStatus>
 	<catissue:collectionProtocolRegistrationCollection
 		class="set">
 		<catissue:collectionProtocolRegistration>
 			<catissue:activityStatus>Active</catissue:activityStatus>
-			<catissue:consentSignatureDate>2012-07-16</catissue:consentSignatureDate>
-			<catissue:protocolParticipantIdentifier>488062801</catissue:protocolParticipantIdentifier>
-			<catissue:registrationDate>2012-03-07</catissue:registrationDate>
+			<catissue:consentSignatureDate>2012-08-20
+			</catissue:consentSignatureDate>
+			<catissue:protocolParticipantIdentifier>1.2.1.173000:echr:patient-1823469
+			</catissue:protocolParticipantIdentifier>
+			<catissue:registrationDate>2011-07-22</catissue:registrationDate>
 			<catissue:specimenCollectionGroupCollection
 				class="set" />
 			<catissue:collectionProtocol>
-				<catissue:shortTitle>6482</catissue:shortTitle>
+				<catissue:shortTitle>6482:6482</catissue:shortTitle>
 				<catissue:collectionProtocolEventCollection
 					class="linked-hash-set" />
 				<catissue:childCollectionProtocolCollection
@@ -41,7 +43,8 @@
 				<catissue:gridGrouperPrivileges />
 			</catissue:collectionProtocol>
 			<catissue:participant reference="../../.." />
-			<catissue:isToInsertAnticipatorySCGs>true</catissue:isToInsertAnticipatorySCGs>
+			<catissue:isToInsertAnticipatorySCGs>true
+			</catissue:isToInsertAnticipatorySCGs>
 		</catissue:collectionProtocolRegistration>
 	</catissue:collectionProtocolRegistrationCollection>
 	<catissue:raceCollection class="set">
