@@ -88,8 +88,7 @@
 						<catissue:gridGrouperPrivileges />
 					</catissue:collectionProtocol>
 					<catissue:participant reference="../../.." />
-					<catissue:isToInsertAnticipatorySCGs>true
-					</catissue:isToInsertAnticipatorySCGs>
+					<catissue:isToInsertAnticipatorySCGs>true</catissue:isToInsertAnticipatorySCGs>
 				</catissue:collectionProtocolRegistration>
 			</catissue:collectionProtocolRegistrationCollection>
 			<catissue:raceCollection class="set">
