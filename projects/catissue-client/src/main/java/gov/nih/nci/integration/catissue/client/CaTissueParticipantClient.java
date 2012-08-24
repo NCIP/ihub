@@ -157,8 +157,7 @@ public class CaTissueParticipantClient {
         try {
             returnParticipant = caTissueAPIClient.insert(participant);
         } catch (ApplicationException ae) {
-            LOG.error("Create Registration Failed for Participant with SSN " + participant.getSocialSecurityNumber(),
-                    ae);
+            LOG.error("Create Registration Failed for Participant with Subject ID as " + participant.getLastName(), ae);
             throw new ApplicationException(ae);
         }
         return returnParticipant;
@@ -315,6 +314,7 @@ public class CaTissueParticipantClient {
         if (persistedParticipant == null) {
             return null;
         }
+
         persistedParticipant.setActivityStatus("Disabled");
         persistedParticipant.setSocialSecurityNumber(null);
         persistedParticipant.setLastName(null);
@@ -388,6 +388,7 @@ public class CaTissueParticipantClient {
             if (fetchedCP != null) {
                 // set the fetched CP_Title into the Participant-CPR-CP-title
                 cprColl.get(0).getCollectionProtocol().setTitle(fetchedCP.getTitle());
+                cprColl.get(0).setIsToInsertAnticipatorySCGs(true);
             }
         }
         return participant;
@@ -441,6 +442,7 @@ public class CaTissueParticipantClient {
             cpr.setConsentSignatureDate(collectionProtocolRegistration.getConsentSignatureDate());
             cpr.setRegistrationDate(collectionProtocolRegistration.getRegistrationDate());
             cpr.setProtocolParticipantIdentifier(collectionProtocolRegistration.getProtocolParticipantIdentifier());
+            cpr.setActivityStatus(collectionProtocolRegistration.getActivityStatus());
 
             cpr.setCollectionProtocol(cp);
             p.getCollectionProtocolRegistrationCollection().add(cpr);
