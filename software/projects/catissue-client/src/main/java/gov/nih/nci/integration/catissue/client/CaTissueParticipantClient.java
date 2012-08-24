@@ -387,8 +387,7 @@ public class CaTissueParticipantClient {
             final CollectionProtocol fetchedCP = getExistingCollectionProtocol(shortTitle);
             if (fetchedCP != null) {
                 // set the fetched CP_Title into the Participant-CPR-CP-title
-                cprColl.get(0).getCollectionProtocol().setTitle(fetchedCP.getTitle());
-                cprColl.get(0).setIsToInsertAnticipatorySCGs(true);
+                cprColl.get(0).getCollectionProtocol().setTitle(fetchedCP.getTitle());                
             }
         }
         return participant;
