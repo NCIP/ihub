@@ -112,10 +112,10 @@ public class CaTissueParticipantIntegrationTest {
         assertTrue(!existParticipant.getFirstName().endsWith("updated"));
 
         // simulate rollback update, by deleting the update participant registration
-        // caTissueParticipantClient.deleteParticipant(participant);
+        caTissueParticipantClient.deleteParticipant(participant);
         // assert deletion
-        // Participant afterDel = caTissueParticipantClient.getParticipantForPatientId(participant.getLastName());
-        // assertNull(afterDel);
+        Participant afterDel = caTissueParticipantClient.getParticipantForPatientId(participant.getLastName());
+        assertNull(afterDel);
 
         // re-register with the original participant retrieved before update
         caTissueParticipantClient.registerParticipant(existParticipant);
@@ -193,10 +193,10 @@ public class CaTissueParticipantIntegrationTest {
         participant.setBirthDate(dateFormat.parse("19410502"));
         participant.setEthnicity("Unknown");
         participant.setGender("Unspecified");
-        participant.setFirstName("JOHN6");
-        // participant.setLastName("DOE5");
+        participant.setFirstName("JOHN11");
+
         // MRN or Medical Identifier is being set as lastName for identification
-        participant.setLastName("905082102");
+        participant.setLastName("905082505");
         participant.setVitalStatus("Alive");
         // participant.setSocialSecurityNumber("123-05-0608");
 
@@ -235,7 +235,7 @@ public class CaTissueParticipantIntegrationTest {
         collectionProtocolRegistration.setActivityStatus("Active");
         collectionProtocolRegistration.setRegistrationDate(new Date());
         collectionProtocolRegistration.setConsentSignatureDate(new Date());
-        collectionProtocolRegistration.setProtocolParticipantIdentifier("123082102");
+        collectionProtocolRegistration.setProtocolParticipantIdentifier("123082505");
         return collectionProtocolRegistration;
     }
 
