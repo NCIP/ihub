@@ -1,0 +1,26 @@
+<b:breastCoreBiopsy xmlns:b="http://catissue/guidanceForBreastCoreBiopsy/data">
+	<b:biopsy>
+		<b:vockey>16310003</b:vockey>
+		<b:vocvalue>ULTRASOUND</b:vocvalue>
+	</b:biopsy>
+	<b:biopsy>
+		<b:vockey>241615005</b:vockey>
+		<b:vocvalue>MRI</b:vocvalue>
+	</b:biopsy>
+	<b:biopsy>
+		<b:vockey>258172002</b:vockey>
+		<b:vocvalue>STEREOTACTIC</b:vocvalue>
+	</b:biopsy>
+	<b:biopsy>
+		<b:vockey>71651007</b:vockey>
+		<b:vocvalue>MAMMOGRAPHY</b:vocvalue>
+	</b:biopsy>
+	<b:biopsy>
+		<b:vockey>113011001</b:vockey>
+		<b:vocvalue>PALPATION</b:vocvalue>
+	</b:biopsy>
+	<b:biopsy>
+		<b:vockey>OTH</b:vockey>
+		<b:vocvalue>OTHER</b:vocvalue>
+	</b:biopsy>
+</b:breastCoreBiopsy>

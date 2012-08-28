@@ -1,0 +1,10 @@
+<d:specimenside xmlns:d="http://catissue/characteristic/side/data">
+	<d:side>
+		<d:vockey>7771000</d:vockey>
+		<d:vocvalue>Left</d:vocvalue>
+	</d:side>
+	<d:side>
+		<d:vockey>24028007</d:vockey>
+		<d:vocvalue>Right</d:vocvalue>
+	</d:side>
+</d:specimenside>
