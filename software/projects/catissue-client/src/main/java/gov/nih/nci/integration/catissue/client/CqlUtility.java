@@ -244,17 +244,17 @@ public final class CqlUtility {
     /**
      * Get the CQLQuery for the SpecimenCollectionGroup for given shortTitle & label
      * 
-     * @param shortTitle - shortTitle of CP
-     * @param label - label of the specimen
+     * @param shortTitle - shortTitle of CollectionProtocol
+     * @param cpLabel - CollectionPointLabel of CollectionProtocolEvent
      * @return CQLQuery object
      */
-    public static CQLQuery getSpecimenCollectionGroupListQuery(String shortTitle, String label) {
+    public static CQLQuery getSpecimenCollectionGroupListQuery(String shortTitle, String cpLabel) {
         final CQLAttribute association2Attribute = createAttribute("shortTitle", shortTitle, CQLPredicate.EQUAL_TO);
         final CQLAssociation association2 = createAssociation(CollectionProtocol.class, "collectionProtocol");
         association2.setAttribute(association2Attribute);
 
         final CQLAttribute association11Attribute = createAttribute("id", null, CQLPredicate.IS_NOT_NULL);
-        final CQLAttribute association12Attribute = createAttribute("collectionPointLabel", label,
+        final CQLAttribute association12Attribute = createAttribute("collectionPointLabel", cpLabel,
                 CQLPredicate.EQUAL_TO);
         final CQLGroup group1 = createGroup(CQLLogicalOperator.AND, association11Attribute, association12Attribute,
                 association2);
