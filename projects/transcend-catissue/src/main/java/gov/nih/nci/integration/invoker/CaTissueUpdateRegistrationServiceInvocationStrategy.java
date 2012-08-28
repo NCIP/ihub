@@ -56,9 +56,13 @@ public class CaTissueUpdateRegistrationServiceInvocationStrategy implements Serv
         final HashMap<String, IntegrationError> msgToErrMapBase = new LinkedHashMap<String, IntegrationError>();
 
         msgToErrMapBase.put("Error authenticating user", IntegrationError._1019);
-        msgToErrMapBase.put("CaTissue does not contain a participant with the unique identifier", IntegrationError._1033);
+        msgToErrMapBase.put("CaTissue does not contain a participant with the unique identifier",
+                IntegrationError._1033);
         msgToErrMapBase.put("Participant does not contain the unique identifier SSN", IntegrationError._1034);
         msgToErrMapBase.put("Participant does not contain the unique medical identifier", IntegrationError._1035);
+        msgToErrMapBase.put(
+                "Either Title is not selected or Date format is not correct in Collection Protocol Registration",
+                IntegrationError._1098);
 
         msgToErrMap = Collections.synchronizedMap(msgToErrMapBase);
     }

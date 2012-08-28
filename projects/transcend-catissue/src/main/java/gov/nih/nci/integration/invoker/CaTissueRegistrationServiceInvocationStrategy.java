@@ -65,7 +65,9 @@ public class CaTissueRegistrationServiceInvocationStrategy implements ServiceInv
                 IntegrationError._1032);
         msgToErrMapBase.put("Participant does not contain the unique identifier SSN", IntegrationError._1034);
         msgToErrMapBase.put("Participant does not contain the unique medical identifier", IntegrationError._1035);
-
+        msgToErrMapBase.put(
+                "Either Title is not selected or Date format is not correct in Collection Protocol Registration",
+                IntegrationError._1098);
 
         msgToErrMap = Collections.synchronizedMap(msgToErrMapBase);
     }
