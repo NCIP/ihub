@@ -353,7 +353,7 @@ public class CaTissueSpecimenClient {
         if (scgList != null && !scgList.isEmpty()) {
             for (SpecimenCollectionGroup scg : scgList) {
                 final CollectionProtocol cpObj = scg.getCollectionProtocolRegistration().getCollectionProtocol();
-                if (cpObj.getTitle().equals(cp.getTitle())) {
+                if (cpObj.getShortTitle().equals(cp.getShortTitle())) {
                     scgFound = true;
                     // Participant has a SpecimenCollectionGroup under the given protocol
                     specimen.setSpecimenCollectionGroup(scg);
@@ -455,7 +455,7 @@ public class CaTissueSpecimenClient {
         boolean hasValidData = true;
         final String inCPE = inSpecimenDetail.getCollectionProtocolEvent();
         String existCPE = "";
-        final String inCP = inSpecimenDetail.getCollectionProtocol().getTitle();
+        final String inCP = inSpecimenDetail.getCollectionProtocol().getShortTitle();
         String existCP = "";
         final String inSC = inSpecimenDetail.getSpecimen().getSpecimenClass();
         final String existSC = existingSpecimen.getSpecimenClass();
@@ -464,7 +464,7 @@ public class CaTissueSpecimenClient {
             existCPE = existingSpecimen.getSpecimenCollectionGroup().getCollectionProtocolEvent()
                     .getCollectionPointLabel();
             existCP = existingSpecimen.getSpecimenCollectionGroup().getCollectionProtocolEvent()
-                    .getCollectionProtocol().getTitle();
+                    .getCollectionProtocol().getShortTitle();
         }
         if (!inCPE.equals(existCPE)) {
             hasValidData = false;
@@ -747,9 +747,9 @@ public class CaTissueSpecimenClient {
     private List<SpecimenCollectionGroup> getSpecimenCollectionGroupList(SpecimenDetail specimenDetail)
             throws ApplicationException {
         final String shortTitle = specimenDetail.getCollectionProtocol().getShortTitle();
-        final String label = specimenDetail.getCollectionProtocolEvent();
+        final String collectionPointLabel = specimenDetail.getCollectionProtocolEvent();
         return caTissueAPIClient.getApplicationService().query(
-                CqlUtility.getSpecimenCollectionGroupListQuery(shortTitle, label));
+                CqlUtility.getSpecimenCollectionGroupListQuery(shortTitle, collectionPointLabel));
     }
 
     /**
