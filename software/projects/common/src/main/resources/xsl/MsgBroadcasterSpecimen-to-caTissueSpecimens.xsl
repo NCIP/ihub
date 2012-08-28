@@ -14,7 +14,7 @@
 					<specimen>
 						<xsl:attribute name="class"><xsl:value-of select='concat(string(a:specimen/a:specimenClass), "Specimen")'/></xsl:attribute>
 						<initialQuantity><xsl:value-of select="a:specimen/a:initialQuantity" /></initialQuantity>
-						<pathologicalStatus><xsl:value-of select="a:specimen/a:pathologicalStatus" /></pathologicalStatus>
+						<pathologicalStatus>Not Specified</pathologicalStatus>
 						<specimenClass><xsl:value-of select="a:specimen/a:specimenClass" /></specimenClass>
 						<specimenType><xsl:value-of select="a:specimen/a:specimenType" /></specimenType>
 						<specimenCharacteristics>
