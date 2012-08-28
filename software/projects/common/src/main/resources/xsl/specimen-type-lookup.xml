@@ -1,0 +1,14 @@
+<t:specimentype xmlns:t="http://catissue/specimen/type/data">
+	<t:type>
+		<t:vockey>119376003</t:vockey>
+		<t:vocvalue>Fixed Tissue</t:vocvalue>
+	</t:type>
+	<t:type>
+		<t:vockey>441479001</t:vockey>
+		<t:vocvalue>Fresh Tissue</t:vocvalue>
+	</t:type>
+	<t:type>
+		<t:vockey>119373006</t:vockey>
+		<t:vocvalue>Amniotic Fluid</t:vocvalue>
+	</t:type>
+</t:specimentype>

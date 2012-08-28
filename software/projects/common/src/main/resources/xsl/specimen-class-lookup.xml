@@ -1,0 +1,18 @@
+<c:specimenclass xmlns:c="http://catissue/specimen/class/data">
+	<c:class>
+		<c:vockey>48469005</c:vockey>
+		<c:vocvalue>Cell</c:vocvalue>
+	</c:class>
+	<c:class>
+		<c:vockey>258442002</c:vockey>
+		<c:vocvalue>Fluid</c:vocvalue>
+	</c:class>
+	<c:class>
+		<c:vockey>258562007</c:vockey>
+		<c:vocvalue>Molecular</c:vocvalue>
+	</c:class>
+	<c:class>
+		<c:vockey>119376003</c:vockey>
+		<c:vocvalue>Tissue</c:vocvalue>
+	</c:class>
+</c:specimenclass>

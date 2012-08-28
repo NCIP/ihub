@@ -1,0 +1,14 @@
+<st:specimensite xmlns:st="http://catissue/characteristic/site/data">
+	<st:site>
+		<st:vockey>76752008</st:vockey>
+		<st:vocvalue>SKIN</st:vocvalue>
+	</st:site>
+	<st:site>
+		<st:vockey>76752009</st:vockey>
+		<st:vocvalue>BREAST</st:vocvalue>
+	</st:site>
+	<st:site>
+		<st:vockey>76752010</st:vockey>
+		<st:vocvalue>BRAIN</st:vocvalue>
+	</st:site>
+</st:specimensite>
