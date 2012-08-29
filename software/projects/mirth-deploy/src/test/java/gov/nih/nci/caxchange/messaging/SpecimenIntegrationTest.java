@@ -117,7 +117,10 @@ public class SpecimenIntegrationTest {
 
             if (entity != null) {
                 createdXML = EntityUtils.toString(entity);
-                Assert.assertEquals(true, createdXML.contains("<errorCode>1081</errorCode>"));
+                Assert.assertEquals(
+                        true,
+                        createdXML.contains("<errorCode>1081</errorCode>")
+                                || createdXML.contains("<errorCode>1051</errorCode>"));
             }
         } catch (ClientProtocolException e) {
             Assert.fail(e.getMessage());
@@ -176,35 +179,6 @@ public class SpecimenIntegrationTest {
             if (entity != null) {
                 createdXML = EntityUtils.toString(entity);
                 Assert.assertEquals(true, createdXML.contains("<errorCode>1083</errorCode>"));
-            }
-        } catch (ClientProtocolException e) {
-            Assert.fail(e.getMessage());
-        } catch (IllegalStateException e) {
-            Assert.fail(e.getMessage());
-        } catch (IOException e) {
-            Assert.fail(e.getMessage());
-        }
-    }
-
-    /**
-     * Testcase for Create Specimen when Pathological Status is invalid
-     */
-    @Test
-    public void createSpecimenForInvalidPathologicalStatus() {
-        try {
-            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            final StringEntity reqentity = new StringEntity(getInsertInvalidPathologicalStatusXMLStr());
-            httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
-
-            final HttpResponse response = httpclient.execute(httppost);
-            final HttpEntity entity = response.getEntity();
-
-            String createdXML = null;
-
-            if (entity != null) {
-                createdXML = EntityUtils.toString(entity);
-                Assert.assertEquals(true, createdXML.contains("<errorCode>1086</errorCode>"));
             }
         } catch (ClientProtocolException e) {
             Assert.fail(e.getMessage());
@@ -494,7 +468,10 @@ public class SpecimenIntegrationTest {
 
             if (entity != null) {
                 updatedXML = EntityUtils.toString(entity);
-                Assert.assertEquals(true, updatedXML.contains("<errorCode>1081</errorCode>"));
+                Assert.assertEquals(
+                        true,
+                        updatedXML.contains("<errorCode>1081</errorCode>")
+                                || updatedXML.contains("<errorCode>1051</errorCode>"));
             }
         } catch (ClientProtocolException e) {
             Assert.fail(e.getMessage());
@@ -581,10 +558,6 @@ public class SpecimenIntegrationTest {
 
     private String getInsertInvalidTissueSiteXMLStr() {
         return getXMLString("CreateSpecimenInvalidTissueSite.xml");
-    }
-
-    private String getInsertInvalidPathologicalStatusXMLStr() {
-        return getXMLString("CreateSpecimenInvalidPathologicalStatus.xml");
     }
 
     private String getInsertInvalidSpecimenClassXMLStr() {
