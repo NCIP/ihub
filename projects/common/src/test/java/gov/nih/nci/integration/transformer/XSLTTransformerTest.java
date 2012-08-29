@@ -68,11 +68,11 @@ public class XSLTTransformerTest {
      * 
      * @throws IntegrationException - IntegrationException
      */
-//    @Test
+    // @Test
     public void transformInterimToXMLStringTest() throws IntegrationException {
         xsltTransformer.initTransformer(catissueParticipantXsl, baseXSLPath);
 
-        String trnsfrmdMsg = transformToParticipantXML(getParticipantInterimXML());
+        final String trnsfrmdMsg = transformToParticipantXML(getParticipantInterimXML());
         Assert.assertNotNull(trnsfrmdMsg);
     }
 
@@ -89,18 +89,18 @@ public class XSLTTransformerTest {
 
             participantXMLStr = new String(os.toByteArray());
         } catch (IntegrationException e) {
-            e.printStackTrace();
+            LOG.error("IntegrationException while transformation : " + e);
             throw e;
         } finally {
             try {
                 is.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("IOException while closing InputStream during transformation : " + e);
             }
             try {
                 os.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("IOException while closing InputStream during transformation : " + e);
             }
         }
         return participantXMLStr;
