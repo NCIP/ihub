@@ -11,4 +11,12 @@
 		<t:vockey>119373006</t:vockey>
 		<t:vocvalue>Amniotic Fluid</t:vocvalue>
 	</t:type>
+	<t:type>
+		<t:vockey>48469005</t:vockey>
+		<t:vocvalue>Frozen Cell Block</t:vocvalue>
+	</t:type>
+	<t:type>
+		<t:vockey>441673008</t:vockey>
+		<t:vocvalue>RNA, poly-A enriched</t:vocvalue>
+	</t:type>
 </t:specimentype>
