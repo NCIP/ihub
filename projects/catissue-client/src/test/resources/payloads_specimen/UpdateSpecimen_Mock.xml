@@ -1,33 +1,34 @@
-<?xml version="1.0" ?>
-<specimens>
+<?xml version="1.0" encoding="UTF-8"?>
+<specimens xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest"
+	xmlns:ns0="http://caXchange.nci.nih.gov/messaging" xmlns:a="http://cacis.nci.nih.gov">
 	<participant>
-		<lastName>66604232</lastName>
-		<activityStatus>Active</activityStatus>
+		<lastName>1.2.1.173000:ct8d23431</lastName>
+		<activityStatus />
 	</participant>
 	<specimenDetail>
-		<collectionProtocolEvent>CPE</collectionProtocolEvent>
+		<collectionProtocolEvent>5</collectionProtocolEvent>
 		<specimen class="TissueSpecimen">
-			<initialQuantity>9.0</initialQuantity>
-			<pathologicalStatus>Malignant</pathologicalStatus>
+			<initialQuantity>177</initialQuantity>
+			<pathologicalStatus>Not Specified</pathologicalStatus>
 			<specimenClass>Tissue</specimenClass>
-			<specimenType>Fixed Tissue</specimenType>
+			<specimenType>Fresh Tissue</specimenType>
 			<specimenCharacteristics>
 				<tissueSide>Right</tissueSide>
-				<tissueSite>Placenta</tissueSite>
+				<tissueSite>SKIN</tissueSite>
 			</specimenCharacteristics>
 			<activityStatus>Active</activityStatus>
-			<availableQuantity>4.0</availableQuantity>
-			<barcode>TestSpecimen0001</barcode>
-			<label>TestSpecimen0001</label>
+			<availableQuantity>155</availableQuantity>
+			<barcode>12345:013</barcode>
+			<label>fbfe4b85-2bdc-4305-88be-3e1b763d8caa:013</label>
 			<isAvailable>true</isAvailable>
 			<collectionStatus>Collected</collectionStatus>
 		</specimen>
 		<collectionProtocol>
-			<title>6482</title>
-			<shortTitle>6482</shortTitle>
+			<title />
+			<shortTitle>6482:6482</shortTitle>
 		</collectionProtocol>
 		<guidanceForBreastCoreBiopsy>
-			<guidanceForBreastCoreBiopsyType>STEREOTACTIC</guidanceForBreastCoreBiopsyType>
+			<guidanceForBreastCoreBiopsyType>ULTRASOUND</guidanceForBreastCoreBiopsyType>
 			<otherText />
 		</guidanceForBreastCoreBiopsy>
 	</specimenDetail>
