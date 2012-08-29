@@ -40,6 +40,18 @@ public class XSLTTransformerSpecimenTest {
     private static final Logger LOG = LoggerFactory.getLogger(XSLTTransformerSpecimenTest.class);
 
     /**
+     * Testcase for transforming Wrapper XML to Interim XML
+     * 
+     * @throws IntegrationException - IntegrationException
+     */
+    @Test
+    public void transformWrapperToInterimXMLTest() throws IntegrationException {
+        xsltTransformer.initTransformer("caCISRequest-to-MsgBroadcasterSpecimenInboundMsg.xsl", baseXSLPath);
+        final String trnsfrmdMsg = transformXML(getSpecimenWrapperXML());
+        Assert.assertNotNull(trnsfrmdMsg);
+    }
+
+    /**
      * Testcase for transforming Interim XML to XMLString
      * 
      * @throws IntegrationException - IntegrationException
@@ -79,6 +91,10 @@ public class XSLTTransformerSpecimenTest {
             }
         }
         return xmlStr;
+    }
+
+    private String getSpecimenWrapperXML() {
+        return getXMLString("SpecimenWrapper.xml");
     }
 
     private String getInterimSpecimenXML() {
