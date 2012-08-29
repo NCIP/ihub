@@ -71,7 +71,7 @@ public class CaTissueSpecimenIntegrationTest {
         try {
             existXML = caTissueSpecimenClient.isSpecimensExist(getInsertInvalidSpecimenClassXMLStr());
             caTissueSpecimenClient.createSpecimens(getInsertInvalidSpecimenClassXMLStr());
-            
+
         } catch (ApplicationException e) {
             existXML = null;
             createdXML = null;
@@ -154,24 +154,6 @@ public class CaTissueSpecimenIntegrationTest {
     }
 
     /**
-     * Testcase for Create Specimen when Pathological Status is invalid
-     */
-    @Test
-    public void createInvalidPathologicalStatus() {
-        String existXML = null;
-        String createdXML = "CREATED";
-        try {
-            existXML = caTissueSpecimenClient.isSpecimensExist(getInsertInvalidPathologicalStatusXMLStr());
-            caTissueSpecimenClient.createSpecimens(getInsertInvalidPathologicalStatusXMLStr());
-        } catch (ApplicationException e) {
-            existXML = null;
-            createdXML = null;
-        }
-        assertNull(existXML);
-        assertNull(createdXML);
-    }
-
-    /**
      * Testcase for Create Specimen
      */
     @Test
@@ -185,7 +167,7 @@ public class CaTissueSpecimenIntegrationTest {
             existXML = null;
             createdXML = null;
         }
-        assertNull(existXML);
+        assertNotNull(existXML);
         assertNotNull(createdXML);
     }
 
@@ -406,10 +388,6 @@ public class CaTissueSpecimenIntegrationTest {
         return getXMLString("CreateSpecimenInvalidTissueSite.xml");
     }
 
-    private String getInsertInvalidPathologicalStatusXMLStr() {
-        return getXMLString("CreateSpecimenInvalidPathologicalStatus.xml");
-    }
-
     private String getUpdateSpecimenXMLStr() {
         return getXMLString("UpdateSpecimen.xml");
     }
@@ -457,7 +435,7 @@ public class CaTissueSpecimenIntegrationTest {
         final BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String strLine;
         try {
-            while ((strLine = br.readLine()) != null) { 
+            while ((strLine = br.readLine()) != null) {
                 fileContents.append(strLine);
             }
             is.close();
