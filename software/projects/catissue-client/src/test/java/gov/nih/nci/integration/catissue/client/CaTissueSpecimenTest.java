@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import org.easymock.classextension.EasyMock;
 import org.junit.Before;
@@ -20,6 +22,7 @@ import org.springframework.beans.BeansException;
 import edu.wustl.catissuecore.cacore.CaTissueWritableAppService;
 import edu.wustl.catissuecore.domain.CollectionProtocol;
 import edu.wustl.catissuecore.domain.CollectionProtocolEvent;
+import edu.wustl.catissuecore.domain.CollectionProtocolRegistration;
 import edu.wustl.catissuecore.domain.DisposalEventParameters;
 import edu.wustl.catissuecore.domain.Specimen;
 import edu.wustl.catissuecore.domain.SpecimenCharacteristics;
@@ -28,6 +31,7 @@ import edu.wustl.catissuecore.domain.User;
 import edu.wustl.catissuecore.domain.deintegration.SpecimenRecordEntry;
 import gov.nih.nci.dynext.guidance_for_breast_core_biopsy.GuidanceForBreastCoreBiopsy;
 import gov.nih.nci.system.applicationservice.ApplicationException;
+import gov.nih.nci.system.query.cql.CQLQuery;
 
 /**
  * This is the TestClass for Specimen flow.
@@ -66,6 +70,15 @@ public class CaTissueSpecimenTest {
     public void createSpecimens() {
         String retSpecimenXML = "";
         final Specimen specimen = null;
+        final SpecimenCollectionGroup scg = new SpecimenCollectionGroup();
+        final CollectionProtocol cp = new CollectionProtocol();
+        cp.setShortTitle("6482:6482");
+        cp.setTitle("6482:6482");
+        final CollectionProtocolRegistration cpr = new CollectionProtocolRegistration();
+        cpr.setCollectionProtocol(cp);
+        scg.setCollectionProtocolRegistration(cpr);
+        final List<Object> scgList = new ArrayList<Object>();
+        scgList.add(scg);
 
         try {
             EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
@@ -73,8 +86,11 @@ public class CaTissueSpecimenTest {
                     caTissueAPIClient.searchById((Class<Specimen>) EasyMock.anyObject(),
                             (Specimen) org.easymock.EasyMock.anyObject())).andReturn(specimen);
 
+            EasyMock.expect(writableAppService.query((CQLQuery) org.easymock.EasyMock.anyObject())).andReturn(scgList);
+
             EasyMock.expect(caTissueAPIClient.insert((Specimen) org.easymock.EasyMock.anyObject())).andReturn(specimen);
             EasyMock.replay(caTissueAPIClient);
+            EasyMock.replay(writableAppService);
 
             caTissueSpecimenClient.isSpecimensExist(getInsertSpecimenXMLStr());
             caTissueSpecimenClient.createSpecimens(getInsertSpecimenXMLStr());
@@ -108,7 +124,7 @@ public class CaTissueSpecimenTest {
             caTissueSpecimenClient.createSpecimens(getInsertSpecimenBlankBiopsyXMLStr());
             retSpecimenXML = "CREATE_SPECIMEN";
         } catch (ApplicationException e) {
-            LOG.error("CaTissueSpecimenTest-ApplicationException inside createSpecimens() ", e);
+            LOG.error("CaTissueSpecimenTest-ApplicationException inside createSpecimensBlankBiopsy() ", e);
             retSpecimenXML = "CREATE_SPECIMEN_FAILED";
         }
         assertNotNull(retSpecimenXML);
@@ -136,7 +152,7 @@ public class CaTissueSpecimenTest {
             caTissueSpecimenClient.createSpecimens(getInsertSpecimenInvalidBiopsyOtherTextXMLStr());
             retSpecimenXML = "CREATE_SPECIMEN";
         } catch (ApplicationException e) {
-            LOG.error("CaTissueSpecimenTest-ApplicationException inside createSpecimens() ", e);
+            LOG.error("CaTissueSpecimenTest-ApplicationException inside createSpecimensInvalidBiopsyOtherText() ", e);
             retSpecimenXML = "CREATE_SPECIMEN_FAILED";
         }
         assertNotNull(retSpecimenXML);
@@ -165,7 +181,7 @@ public class CaTissueSpecimenTest {
             caTissueSpecimenClient.createSpecimens(getInsertExistingSpecimenXMLStr());
             retSpecimenXML = "CREATE_EXISTING_SPECIMEN_FAILED";
         } catch (ApplicationException e) {
-            LOG.error("CaTissueSpecimenTest-ApplicationException inside createSpecimens() ", e);
+            LOG.error("CaTissueSpecimenTest-ApplicationException inside createExistingSpecimens() ", e);
             retSpecimenXML = "CREATE_EXISTING_SPECIMEN";
         }
 
@@ -194,7 +210,7 @@ public class CaTissueSpecimenTest {
 
             retXML = "GET_EXISTING_SPECIMEN";
         } catch (ApplicationException e) {
-            LOG.error("CaTissueSpecimenTest-ApplicationException inside getExistingSpecimens() ", e);
+            LOG.error("CaTissueSpecimenTest-ApplicationException inside getExistingSpecimensSpecimenNotFound() ", e);
             retXML = "GET_EXISTING_SPECIMEN_FAILED";
         }
         assertNotNull(retXML);
@@ -209,6 +225,15 @@ public class CaTissueSpecimenTest {
         String retXML = null;
         final Specimen specimen = new Specimen();
         specimen.setLabel("TolvenTestUser252TissueSpecimen173");
+        final SpecimenCollectionGroup spg = new SpecimenCollectionGroup();
+        final CollectionProtocolEvent cpe = new CollectionProtocolEvent();
+        final CollectionProtocol cp = new CollectionProtocol();
+        cp.setShortTitle("6482:6482");
+        cp.setTitle("6482:6482");
+        cpe.setCollectionPointLabel("5.5");
+        cpe.setCollectionProtocol(cp);
+        spg.setCollectionProtocolEvent(cpe);
+        specimen.setSpecimenCollectionGroup(spg);
 
         try {
             EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
@@ -222,7 +247,7 @@ public class CaTissueSpecimenTest {
 
             retXML = "GET_EXISTING_SPECIMEN";
         } catch (ApplicationException e) {
-            LOG.error("CaTissueSpecimenTest-ApplicationException inside getExistingSpecimens() ", e);
+            LOG.error("CaTissueSpecimenTest-ApplicationException inside getExistingSpecimensCPENotSame() ", e);
             retXML = "GET_EXISTING_SPECIMEN_FAILED";
         }
         assertNotNull(retXML);
@@ -243,7 +268,7 @@ public class CaTissueSpecimenTest {
         final CollectionProtocol cp = new CollectionProtocol();
         cp.setShortTitle("ttp");
         cp.setTitle("ttp");
-        cpe.setCollectionPointLabel("CPE");
+        cpe.setCollectionPointLabel("5");
         cpe.setCollectionProtocol(cp);
         spg.setCollectionProtocolEvent(cpe);
         specimen.setSpecimenCollectionGroup(spg);
@@ -260,7 +285,9 @@ public class CaTissueSpecimenTest {
 
             retXML = "GET_EXISTING_SPECIMEN";
         } catch (ApplicationException e) {
-            LOG.error("CaTissueSpecimenTest-ApplicationException inside getExistingSpecimens() ", e);
+            LOG.error(
+                    "CaTissueSpecimenTest-ApplicationException inside getExistingSpecimensCollectionProtocolNotSame() ",
+                    e);
             retXML = "GET_EXISTING_SPECIMEN_FAILED";
         }
         assertNotNull(retXML);
@@ -279,12 +306,13 @@ public class CaTissueSpecimenTest {
         final SpecimenCollectionGroup spg = new SpecimenCollectionGroup();
         final CollectionProtocolEvent cpe = new CollectionProtocolEvent();
         final CollectionProtocol cp = new CollectionProtocol();
-        cp.setShortTitle("6482");
-        cp.setTitle("6482");
-        cpe.setCollectionPointLabel("CPE");
+        cp.setShortTitle("6482:6482");
+        cp.setTitle("6482:6482");
+        cpe.setCollectionPointLabel("5");
         cpe.setCollectionProtocol(cp);
         spg.setCollectionProtocolEvent(cpe);
         specimen.setSpecimenCollectionGroup(spg);
+        specimen.setSpecimenClass("Cell");
 
         try {
             EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
@@ -298,7 +326,50 @@ public class CaTissueSpecimenTest {
 
             retXML = "GET_EXISTING_SPECIMEN";
         } catch (ApplicationException e) {
-            LOG.error("CaTissueSpecimenTest-ApplicationException inside getExistingSpecimens() ", e);
+            LOG.error("CaTissueSpecimenTest-ApplicationException inside getExistingSpecimensSpecimenClassNotSame() ", e);
+            retXML = "GET_EXISTING_SPECIMEN_FAILED";
+        }
+        assertNotNull(retXML);
+    }
+
+    /**
+     * Mock Testcase for getting existing Specimens
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void getExistingSpecimens() {
+        String retXML = null;
+
+        final Specimen specimen = new Specimen();
+        specimen.setLabel("TolvenTestUser252TissueSpecimen173");
+        final SpecimenCollectionGroup spg = new SpecimenCollectionGroup();
+        final CollectionProtocolEvent cpe = new CollectionProtocolEvent();
+        final CollectionProtocol cp = new CollectionProtocol();
+        cp.setShortTitle("6482:6482");
+        cp.setTitle("6482:6482");
+        cpe.setCollectionPointLabel("5");
+        cpe.setCollectionProtocol(cp);
+        spg.setCollectionProtocolEvent(cpe);
+        specimen.setSpecimenCollectionGroup(spg);
+        specimen.setSpecimenClass("Tissue");
+        final SpecimenCharacteristics chars = new SpecimenCharacteristics();
+        chars.setTissueSide("Right");
+        chars.setTissueSite("SKIN");
+        specimen.setSpecimenCharacteristics(chars);
+
+        try {
+            EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
+            EasyMock.expect(
+                    caTissueAPIClient.searchById((Class<Specimen>) EasyMock.anyObject(),
+                            (Specimen) org.easymock.EasyMock.anyObject())).andReturn(specimen);
+
+            EasyMock.replay(caTissueAPIClient);
+
+            caTissueSpecimenClient.getExistingSpecimens(getUpdateSpecimenXMLStr());
+
+            retXML = "GET_EXISTING_SPECIMEN";
+        } catch (ApplicationException e) {
+            LOG.error("CaTissueSpecimenTest-ApplicationException inside getExistingSpecimensSpecimenClassNotSame() ", e);
             retXML = "GET_EXISTING_SPECIMEN_FAILED";
         }
         assertNotNull(retXML);
