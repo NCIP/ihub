@@ -1,0 +1,251 @@
+<caCISRequest xmlns="http://cacis.nci.nih.gov">
+	<sourceData>
+		<ns2:caxchangerequest xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest"
+			xmlns="http://caXchange.nci.nih.gov/messaging" xmlns:mes="http://caXchange.nci.nih.gov/messaging"
+			xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1trim="urn:tolven-org:trim:4.0"
+			xmlns:cda="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<mes:metadata>
+				<mes:serviceType>iHub</mes:serviceType>
+				<mes:operationName>Create Biospecimen</mes:operationName>
+				<mes:externalIdentifier>32225879</mes:externalIdentifier>
+				<mes:caXchangeIdentifier>1346168784759</mes:caXchangeIdentifier>
+				<mes:credentials>
+					<mes:userName>tolvenuser</mes:userName>
+					<mes:groupName>nogrid</mes:groupName>
+					<mes:gridIdentifier>nogrid</mes:gridIdentifier>
+					<mes:password>changeme</mes:password>
+					<mes:delegatedCredentialReference>nocredentials</mes:delegatedCredentialReference>
+				</mes:credentials>
+			</mes:metadata>
+			<mes:request>
+				<mes:businessMessagePayload>
+					<mes:xmlSchemaDefinition>urn:hl7-org:v3</mes:xmlSchemaDefinition>
+					<ClinicalDocument:ClinicalDocument
+						xmlns:ClinicalDocument="urn:hl7-org:v3" xmlns="urn:hl7-org:v3"
+						xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+						xsi:schemaLocation="urn:hl7-org:v3 ../cdaXSD/infrastructure/cda/CDA.xsd">
+						<realmCode code="US" />
+						<typeId extension="POCD_HD000040" root="2.16.840.1.113883.1.3" />
+						<templateId assigningAuthorityName="HL7 CCDA"
+							root="2.16.840.1.113883.10.20.22.1.1" />
+						<id extension="echr:patient-1823431:clinicalNote-1833315" root="1.2.1.173000" />
+						<code nullFlavor="OTH">
+							<originalText>Biospecimen report</originalText>
+						</code>
+						<title>Bio Specimen</title>
+						<effectiveTime value="20110722104303-0700" />
+						<confidentialityCode code="N" />
+						<languageCode code="en-US" />
+						<recordTarget>
+							<patientRole>
+								<id assigningAuthorityName="iSpy2 Study" extension="ct8d23431"
+									root="1.2.1.173000" />
+								<id assigningAuthorityName="ABC Cancer Institute" extension="2131823431"
+									root="1.2.1.173000" />
+								<addr nullFlavor="NI" />
+								<telecom nullFlavor="NI" />
+								<patient>
+									<name use="L">
+										<given>TestOne</given>
+										<given />
+										<family>Patient</family>
+									</name>
+									<administrativeGenderCode code="F"
+										codeSystem="2.16.840.1.113883.5.1" displayName="Female" />
+									<birthTime value="19670131" />
+									<maritalStatusCode code="M"
+										codeSystem="2.16.840.1.113883.5.2" codeSystemName="HL7 MaritalStatus"
+										displayName="Married">
+										<originalText>Now married</originalText>
+									</maritalStatusCode>
+									<raceCode code="2106-3" codeSystem="2.16.840.1.113883.6.238"
+										codeSystemName="Race &amp; Ethnicity - CDC" displayName="White" />
+									<ethnicGroupCode code="2186-5" codeSystem="2.16.840.1.113883.6.238"
+										codeSystemName="Race &amp; Ethnicity - CDC" displayName="Not Hispanic or Latino" />
+								</patient>
+							</patientRole>
+						</recordTarget>
+						<author>
+							<time nullFlavor="NI" />
+							<assignedAuthor>
+								<id extension="sarah.davis@ucsfmedctr.org" root="1.2.1.173000" />
+								<addr nullFlavor="NI" />
+								<telecom nullFlavor="NI" />
+								<assignedPerson>
+									<name nullFlavor="NI" />
+								</assignedPerson>
+							</assignedAuthor>
+						</author>
+						<custodian>
+							<assignedCustodian>
+								<representedCustodianOrganization>
+									<id extension="TranscendTolven" root="2.16.840.1.113883.3.26.1.7" />
+									<name nullFlavor="NI" />
+									<telecom nullFlavor="NI" />
+									<addr nullFlavor="NI" />
+								</representedCustodianOrganization>
+							</assignedCustodian>
+						</custodian>
+						<documentationOf>
+							<serviceEvent classCode="CLNTRL">
+								<id extension="6482" root="6482" />
+								<code nullFlavor="OTH">
+									<originalText>clinical trial</originalText>
+								</code>
+							</serviceEvent>
+						</documentationOf>
+						<component>
+							<structuredBody>
+								<component>
+									<section>
+										<templateId assigningAuthorityName="HL7 CCDA"
+											root="2.16.840.1.113883.10.20.22.2.31" />
+										<code code="59773-2" codeSystem="2.16.840.1.113883.6.1"
+											codeSystemName="LOINC" displayName="PROCEDURE SPECIMENS TAKEN" />
+										<title>BioSpecimen</title>
+										<entry typeCode="DRIV">
+											<procedure classCode="PROC" moodCode="EVN">
+												<templateId assigningAuthorityName="HL7 CCDA"
+													root="2.16.840.1.113883.10.20.22.4.14" />
+												<code nullFlavor="OTH">
+													<originalText>Breast Core Needle Biopsy: side=Right (rigth
+														breast stereotactic needle biopsy )</originalText>
+												</code>
+												<statusCode code="completed" />
+												<effectiveTime value="20110706" />
+												<targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96"
+													codeSystemName="SNOMED-CT" displayName="breast">
+													<originalText>right breast</originalText>
+													<qualifier>
+														<name code="272741003" codeSystem="2.16.840.1.113883.6.96"
+															codeSystemName="SNOMED CT" displayName="laterality" />
+														<value code="24028007" codeSystem="2.16.840.1.113883.6.96"
+															codeSystemName="SNOMED-CT" displayName="right" />
+													</qualifier>
+												</targetSiteCode>
+												<entryRelationship typeCode="COMP">
+													<observation classCode="OBS" moodCode="EVN">
+														<templateId assigningAuthorityName="HL7 CCDA"
+															root="2.16.840.1.113883.10.20.22.4.13" />
+														<id nullFlavor="NI" />
+														<code nullFlavor="OTH">
+															<originalText>Guidance for Breast Core Biopsy</originalText>
+														</code>
+														<statusCode code="completed" />
+														<value code="16310003" codeSystem="2.16.840.1.113883.6.96"
+															displayName="Ultrasound" xsi:type="CD">
+															<originalText>Diagnostic ultrasonography</originalText>
+														</value>
+													</observation>
+												</entryRelationship>
+												<entryRelationship typeCode="COMP">
+													<observation classCode="OBS" moodCode="EVN">
+														<templateId assigningAuthorityName="HL7 CCDA"
+															root="2.16.840.1.113883.10.20.22.4.2" />
+														<id root="80f662f4-29d0-474c-b0e0-7108223835dc" />
+														<code code="123038009" codeSystem="2.16.840.1.113883.6.96"
+															displayName="specimen">
+															<originalText>Biospecimen</originalText>
+														</code>
+														<specimen>
+															<specimenRole>
+																<id extension="013" root="fbfe4b85-2bdc-4305-88be-3e1b763d8caa" />
+																<specimenPlayingEntity>
+																	<code code="119376003" codeSystem="2.16.840.1.113883.6.96"
+																		codeSystemName="SNOMED-CT" displayName="tissue specimen" />
+																</specimenPlayingEntity>
+															</specimenRole>
+														</specimen>
+														<participant typeCode="DEV">
+															<participantRole classCode="MANU">
+																<templateId assigningAuthorityName="HL7 CCDA"
+																	root="2.16.840.1.113883.10.20.22.4.37" />
+																<id extension="013" root="12345" />
+																<playingDevice>
+																	<code nullFlavor="NA">
+																		<originalText>tissue specimen tube</originalText>
+																	</code>
+																</playingDevice>
+																<scopingEntity>
+																	<id nullFlavor="NA" />
+																</scopingEntity>
+															</participantRole>
+														</participant>
+														<entryRelationship typeCode="SUBJ">
+															<observation classCode="OBS" moodCode="EVN">
+																<templateId assigningAuthorityName="HL7 CCDA"
+																	root="2.16.840.1.113883.10.20.22.4.2" />
+																<id nullFlavor="NI" />
+																<code code="371439000" codeSystem="2.16.840.1.113883.6.96"
+																	displayName="specimen type" />
+																<statusCode code="completed" />
+																<value code="441479001" codeSystem="2.16.840.1.113883.6.96"
+																	codeSystemName="SNOMED-CT" displayName="fresh tissue specimen"
+																	xsi:type="CD">
+																	<originalText>fresh tissue</originalText>
+																</value>
+															</observation>
+														</entryRelationship>
+														<entryRelationship typeCode="SUBJ">
+															<observation classCode="OBS" moodCode="EVN">
+																<templateId assigningAuthorityName="HL7 CCDA"
+																	root="2.16.840.1.113883.10.20.22.4.2" />
+																<id root="5b009181-5f0e-4304-a1cb-20b5c03a3868" />
+																<code nullFlavor="OTH">
+																	<originalText>Initial Quantity</originalText>
+																</code>
+																<value unit="g" value="177" xsi:type="PQ" />
+															</observation>
+														</entryRelationship>
+														<entryRelationship typeCode="SUBJ">
+															<observation classCode="OBS" moodCode="EVN">
+																<templateId assigningAuthorityName="HL7 CCDA"
+																	root="2.16.840.1.113883.10.20.22.4.2" />
+																<id root="b470f6a6-455c-4185-b6f6-b2b90e1c8f68" />
+																<code nullFlavor="OTH">
+																	<originalText>Available Quantity</originalText>
+																</code>
+																<value unit="g" value="155" xsi:type="PQ" />
+															</observation>
+														</entryRelationship>
+														<entryRelationship typeCode="SUBJ">
+															<observation classCode="OBS" moodCode="EVN">
+																<templateId assigningAuthorityName="HL7 CCDA"
+																	root="2.16.840.1.113883.10.20.22.4.2" />
+																<id root="b470f6a6-455c-4185-b6f6-b2b90e1c8f68" />
+																<code nullFlavor="OTH">
+																	<originalText>Study Calendar Event Time Point</originalText>
+																</code>
+																<value unit="d" value="5" xsi:type="PQ" />
+															</observation>
+														</entryRelationship>
+														<entryRelationship typeCode="SUBJ">
+															<observation classCode="OBS" moodCode="EVN">
+																<templateId assigningAuthorityName="HL7 CCDA"
+																	root="2.16.840.1.113883.10.20.22.4.2" />
+																<id nullFlavor="NI" />
+																<code code="263490005" codeSystem="2.16.840.1.113883.6.96"
+																	codeSystemName="SNOMED-CT" displayName="Activity status" />
+																<value code="55561003" codeSystem="2.16.840.1.113883.6.96"
+																	codeSystemName="SNOMED-CT" displayName="active"
+																	xsi:type="CD" />
+															</observation>
+														</entryRelationship>
+													</observation>
+												</entryRelationship>
+											</procedure>
+										</entry>
+									</section>
+								</component>
+							</structuredBody>
+						</component>
+					</ClinicalDocument:ClinicalDocument>
+				</mes:businessMessagePayload>
+			</mes:request>
+		</ns2:caxchangerequest>
+	</sourceData>
+	<clinicalMetaData patientIdExtension="patient_id_1"
+		patientIdRoot="2.16.840.1.113883.3" siteIdExtension="site_id"
+		siteIdRoot="2.16.840.1.113883.2" studyIdExtension="study_id"
+		studyIdRoot="2.16.840.1.113883.1" />
+</caCISRequest>
