@@ -1,4 +1,7 @@
-<ns2:caxchangerequest xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest">
+<ns2:caxchangerequest xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest"
+	xmlns:d="http://catissue/characteristic/side/data" xmlns:t="http://catissue/specimen/type/data"
+	xmlns:s="http://catissue/activitystatus/data" xmlns:b="http://catissue/guidanceForBreastCoreBiopsy/data"
+	xmlns:c="http://catissue/specimen/class/data" xmlns:st="http://catissue/characteristic/site/data">
 	<ns0:metadata xmlns:ns0="http://caXchange.nci.nih.gov/messaging">
 		<mes:serviceType xmlns:mes="http://caXchange.nci.nih.gov/messaging"
 			xmlns="http://caXchange.nci.nih.gov/messaging" xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"
@@ -15,7 +18,7 @@
 		<mes:caXchangeIdentifier xmlns:mes="http://caXchange.nci.nih.gov/messaging"
 			xmlns="http://caXchange.nci.nih.gov/messaging" xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"
 			xmlns:ns1trim="urn:tolven-org:trim:4.0" xmlns:cda="urn:hl7-org:v3"
-			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">1342546614390</mes:caXchangeIdentifier>
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">1346168343745</mes:caXchangeIdentifier>
 		<mes:credentials xmlns:mes="http://caXchange.nci.nih.gov/messaging"
 			xmlns="http://caXchange.nci.nih.gov/messaging" xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"
 			xmlns:ns1trim="urn:tolven-org:trim:4.0" xmlns:cda="urn:hl7-org:v3"
@@ -24,67 +27,61 @@
 			<mes:groupName>nogrid</mes:groupName>
 			<mes:gridIdentifier>nogrid</mes:gridIdentifier>
 			<mes:password>changeme</mes:password>
-			<mes:delegatedCredentialReference>nocredentials
-			</mes:delegatedCredentialReference>
+			<mes:delegatedCredentialReference>nocredentials</mes:delegatedCredentialReference>
 		</mes:credentials>
 	</ns0:metadata>
 	<ns0:request xmlns:ns0="http://caXchange.nci.nih.gov/messaging">
 		<ns0:businessMessagePayload>
 			<specimens xmlns="http://cacis.nci.nih.gov">
 				<participant>
-					<activityStatus>Active</activityStatus>
-					<cdmsSubjectId>66604232</cdmsSubjectId>
+					<cdmsSubjectId>1.2.1.173000:ct8d23431</cdmsSubjectId>
 				</participant>
 				<specimenDetailsList>
 					<specimenDetail>
-						<collectionProtocolEvent>CPL</collectionProtocolEvent>
+						<collectionProtocolEvent>5</collectionProtocolEvent>
 						<specimen>
-							<cdmsSpecimenId>TestUser0021</cdmsSpecimenId>
-							<barcode>TestUser0021</barcode>
+							<cdmsSpecimenId>fbfe4b85-2bdc-4305-88be-3e1b763d8caa:011</cdmsSpecimenId>
+							<barcode>12345:011</barcode>
 							<activityStatus>Active</activityStatus>
 							<specimenClass>Tissue</specimenClass>
-							<specimenType>Fixed Tissue</specimenType>
-							<pathologicalStatus>Malignant</pathologicalStatus>
-							<initialQuantity>100</initialQuantity>
-							<availableQuantity>50</availableQuantity>
+							<specimenType>Fresh Tissue</specimenType>
+							<initialQuantity>177</initialQuantity>
+							<availableQuantity>155</availableQuantity>
 							<specimenCharacteristics>
-								<tissueSite>Placenta</tissueSite>
+								<tissueSite>SKIN</tissueSite>
 								<tissueSide>Right</tissueSide>
 							</specimenCharacteristics>
 						</specimen>
 						<collectionProtocol>
-							<title>6482</title>
-							<shortTitle>6482</shortTitle>
+							<title />
+							<shortTitle>6482:6482</shortTitle>
 						</collectionProtocol>
 						<guidanceForBreastCoreBiopsy>
-							<guidanceForBreastCoreBiopsyType>STEREOTACTIC
-							</guidanceForBreastCoreBiopsyType>
+							<guidanceForBreastCoreBiopsyType>ULTRASOUND</guidanceForBreastCoreBiopsyType>
 							<otherText />
 						</guidanceForBreastCoreBiopsy>
 					</specimenDetail>
 					<specimenDetail>
-						<collectionProtocolEvent>CPL</collectionProtocolEvent>
+						<collectionProtocolEvent>5</collectionProtocolEvent>
 						<specimen>
-							<cdmsSpecimenId>TestUser0022</cdmsSpecimenId>
-							<barcode>TestUser0022</barcode>
+							<cdmsSpecimenId>fbfe4b85-2bdc-4305-88be-3e1b763d8cab:012</cdmsSpecimenId>
+							<barcode>12345:012</barcode>
 							<activityStatus>Active</activityStatus>
 							<specimenClass>Tissue</specimenClass>
-							<specimenType>Fixed Tissue</specimenType>
-							<pathologicalStatus>Malignant123</pathologicalStatus>
-							<initialQuantity>400</initialQuantity>
-							<availableQuantity>200</availableQuantity>
+							<specimenType>Fresh Tissue</specimenType>
+							<initialQuantity>187</initialQuantity>
+							<availableQuantity>165</availableQuantity>
 							<specimenCharacteristics>
-								<tissueSite>Placenta</tissueSite>
+								<tissueSite>SKIN</tissueSite>
 								<tissueSide>Right</tissueSide>
 							</specimenCharacteristics>
 						</specimen>
 						<collectionProtocol>
-							<title>6482</title>
-							<shortTitle>6482</shortTitle>
+							<title />
+							<shortTitle>6482:6482</shortTitle>
 						</collectionProtocol>
 						<guidanceForBreastCoreBiopsy>
-							<guidanceForBreastCoreBiopsyType>STEREOTACTIC
-							</guidanceForBreastCoreBiopsyType>
+							<guidanceForBreastCoreBiopsyType>ULTRASOUND</guidanceForBreastCoreBiopsyType>
 							<otherText />
 						</guidanceForBreastCoreBiopsy>
 					</specimenDetail>
