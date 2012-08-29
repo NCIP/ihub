@@ -66,6 +66,7 @@ public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocat
         msgToErrMapBase.put("\'Other Text\' should be provided only when a guidance of \'OTHER\' is selected.",
                 IntegrationError._1095);
         msgToErrMapBase.put("The value for \'Guidance for breast core biopsy\' is invalid.", IntegrationError._1097);
+        msgToErrMapBase.put("com.thoughtworks.xstream.mapper.CannotResolveClassException", IntegrationError._1099);
 
         msgToErrMap = Collections.synchronizedMap(msgToErrMapBase);
     }
