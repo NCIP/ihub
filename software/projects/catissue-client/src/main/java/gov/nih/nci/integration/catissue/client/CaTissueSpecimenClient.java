@@ -1,8 +1,10 @@
 package gov.nih.nci.integration.catissue.client;
 
+import edu.wustl.catissuecore.domain.CellSpecimen;
 import edu.wustl.catissuecore.domain.CollectionProtocol;
 import edu.wustl.catissuecore.domain.DisposalEventParameters;
 import edu.wustl.catissuecore.domain.FluidSpecimen;
+import edu.wustl.catissuecore.domain.MolecularSpecimen;
 import edu.wustl.catissuecore.domain.Participant;
 import edu.wustl.catissuecore.domain.Specimen;
 import edu.wustl.catissuecore.domain.SpecimenCharacteristics;
@@ -49,6 +51,8 @@ public class CaTissueSpecimenClient {
     private static final String ACTIVITY_STATUS_DISABLED = "Disabled";
     private static final String TISSUE = "Tissue";
     private static final String FLUID = "Fluid";
+    private static final String CELL = "Cell";
+    private static final String MOLECULAR = "Molecular";
     private static final String SPECIMEN_NOT_EXISTING = "SPECIMEN_NOT_EXISTING";
     private static final String ULTRASOUND = "ULTRASOUND";
     private static final String MRI = "MRI";
@@ -80,6 +84,8 @@ public class CaTissueSpecimenClient {
         xStream.alias("specimen", Specimen.class);
         xStream.alias("TissueSpecimen", TissueSpecimen.class);
         xStream.alias("FluidSpecimen", FluidSpecimen.class);
+        xStream.alias("CellSpecimen", CellSpecimen.class);
+        xStream.alias("MolecularSpecimen", MolecularSpecimen.class);
         xStream.alias("collectionProtocol", CollectionProtocol.class);
         xStream.alias("guidanceForBreastCoreBiopsy", GuidanceForBreastCoreBiopsy.class);
         xStream.addImplicitCollection(Specimens.class, "specimenDetailList");
@@ -626,13 +632,7 @@ public class CaTissueSpecimenClient {
         Iterator<Specimen> specimenItr = null;
         for (specimenItr = existingSpecimenList.iterator(); specimenItr.hasNext();) {
             final Specimen existingSpecimen = specimenItr.next();
-            Specimen specimen = null;
-            if (TISSUE.equalsIgnoreCase(existingSpecimen.getSpecimenClass())) {
-                specimen = new TissueSpecimen();
-            } else if (FLUID.equalsIgnoreCase(existingSpecimen.getSpecimenClass())) {
-                specimen = new FluidSpecimen();
-            }
-
+            final Specimen specimen = getNarrowSpecimen(existingSpecimen);
             specimen.setId(existingSpecimen.getId());
             specimen.setInitialQuantity(existingSpecimen.getInitialQuantity());
             specimen.setPathologicalStatus(existingSpecimen.getPathologicalStatus());
@@ -659,6 +659,24 @@ public class CaTissueSpecimenClient {
         }
 
         return existingSpecimens;
+    }
+
+    /**
+     * This method is used to create the instance of Specimen as per the SpecimenClass
+     */
+    private Specimen getNarrowSpecimen(Specimen existingSpecimen) {
+        Specimen specimen = null;
+        if (TISSUE.equalsIgnoreCase(existingSpecimen.getSpecimenClass())) {
+            specimen = new TissueSpecimen();
+        } else if (FLUID.equalsIgnoreCase(existingSpecimen.getSpecimenClass())) {
+            specimen = new FluidSpecimen();
+        } else if (CELL.equalsIgnoreCase(existingSpecimen.getSpecimenClass())) {
+            specimen = new CellSpecimen();
+        } else if (MOLECULAR.equalsIgnoreCase(existingSpecimen.getSpecimenClass())) {
+            specimen = new MolecularSpecimen();
+        }
+
+        return specimen;
     }
 
     /**
