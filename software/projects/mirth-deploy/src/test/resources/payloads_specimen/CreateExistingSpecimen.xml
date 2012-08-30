@@ -20,7 +20,8 @@
 					<!--Optional: -->
 					<mes:password>changeme</mes:password>
 					<!--Optional: -->
-					<mes:delegatedCredentialReference>nocredentials</mes:delegatedCredentialReference>
+					<mes:delegatedCredentialReference>nocredentials
+					</mes:delegatedCredentialReference>
 				</mes:credentials>
 			</mes:metadata>
 			<mes:request>
@@ -153,7 +154,8 @@
 															assigningAuthorityName="HL7 CCDA" />
 														<id nullFlavor="NI" />
 														<code nullFlavor="OTH">
-															<originalText>Guidance for Breast Core Biopsy</originalText>
+															<originalText>Guidance for Breast Core Biopsy
+															</originalText>
 														</code>
 														<statusCode code="completed" />
 														<value xsi:type="CD" code="16310003" codeSystem="2.16.840.1.113883.6.96"
@@ -179,7 +181,7 @@
 															<specimenRole>
 																<!--CDMS Specimen ID, assigned by the TRANSCEND CDMS -->
 																<id root="fbfe4b85-2bdc-4305-88be-3e1b763d8caa"
-																	extension="013" />
+																	extension="102" />
 																<!--Specimen Class -->
 																<specimenPlayingEntity>
 																	<code code="119376003" codeSystem="2.16.840.1.113883.6.96"
@@ -194,7 +196,7 @@
 																<templateId root="2.16.840.1.113883.10.20.22.4.37"
 																	assigningAuthorityName="HL7 CCDA" />
 																<!--Barcode (Unique Device Identification (UDI)) -->
-																<id root="12345" extension="013" />
+																<id root="123456" extension="102" />
 																<playingDevice>
 																	<!--Code to identify the specimen Container -->
 																	<code nullFlavor="NA">
@@ -262,7 +264,8 @@
 																	assigningAuthorityName="HL7 CCDA" />
 																<id root="b470f6a6-455c-4185-b6f6-b2b90e1c8f68" />
 																<code nullFlavor="OTH">
-																	<originalText>Study Calendar Event Time Point</originalText>
+																	<originalText>Study Calendar Event Time Point
+																	</originalText>
 																</code>
 																<!--The Quanity value goes here, @unit uses UCUM code: 5 
 																	days -->

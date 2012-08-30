@@ -156,9 +156,9 @@
 															<originalText>Guidance for Breast Core Biopsy</originalText>
 														</code>
 														<statusCode code="completed" />
-														<value xsi:type="CD" code="16310003" codeSystem="2.16.840.1.113883.6.96"
-															displayName="Ultrasound">
-															<originalText>Diagnostic ultrasonography</originalText>
+														<value xsi:type="CD" code="241615005" codeSystem="2.16.840.1.113883.6.96"
+															displayName="241615005">
+															<originalText>Diagnostic MRI</originalText>
 														</value>
 													</observation>
 												</entryRelationship>
@@ -179,7 +179,7 @@
 															<specimenRole>
 																<!--CDMS Specimen ID, assigned by the TRANSCEND CDMS -->
 																<id root="fbfe4b85-2bdc-4305-88be-3e1b763d8caa"
-																	extension="013" />
+																	extension="102" />
 																<!--Specimen Class -->
 																<specimenPlayingEntity>
 																	<code code="119376003" codeSystem="2.16.840.1.113883.6.96"
@@ -194,7 +194,7 @@
 																<templateId root="2.16.840.1.113883.10.20.22.4.37"
 																	assigningAuthorityName="HL7 CCDA" />
 																<!--Barcode (Unique Device Identification (UDI)) -->
-																<id root="12345" extension="013" />
+																<id root="123456" extension="102" />
 																<playingDevice>
 																	<!--Code to identify the specimen Container -->
 																	<code nullFlavor="NA">
@@ -251,185 +251,7 @@
 																</code>
 																<!--The Quanity value goes here, @unit uses UCUM code: 155 
 																	gram -->
-																<value xsi:type="PQ" value="156" unit="g" />
-															</observation>
-														</entryRelationship>
-														<!--Study Calendar Event Time Point -->
-														<entryRelationship typeCode="SUBJ">
-															<observation classCode="OBS" moodCode="EVN">
-																<!--Result observation template -->
-																<templateId root="2.16.840.1.113883.10.20.22.4.2"
-																	assigningAuthorityName="HL7 CCDA" />
-																<id root="b470f6a6-455c-4185-b6f6-b2b90e1c8f68" />
-																<code nullFlavor="OTH">
-																	<originalText>Study Calendar Event Time Point</originalText>
-																</code>
-																<!--The Quanity value goes here, @unit uses UCUM code: 5 
-																	days -->
-																<value xsi:type="PQ" value="5" unit="d" />
-															</observation>
-														</entryRelationship>
-														<!--Activity Status -->
-														<entryRelationship typeCode="SUBJ">
-															<observation classCode="OBS" moodCode="EVN">
-																<!--Result observation template -->
-																<templateId root="2.16.840.1.113883.10.20.22.4.2"
-																	assigningAuthorityName="HL7 CCDA" />
-																<id nullFlavor="NI" />
-																<code code="263490005" codeSystem="2.16.840.1.113883.6.96"
-																	codeSystemName="SNOMED-CT" displayName="Activity status" />
-																<value xsi:type="CD" code="55561003" codeSystem="2.16.840.1.113883.6.96"
-																	displayName="active" codeSystemName="SNOMED-CT" />
-															</observation>
-														</entryRelationship>
-													</observation>
-												</entryRelationship>
-											</procedure>
-										</entry>
-									</section>
-								</component>
-
-								<component>
-									<!--Procedure Specimens Taken Section 59773-2 -->
-									<section>
-										<templateId root="2.16.840.1.113883.10.20.22.2.31"
-											assigningAuthorityName="HL7 CCDA" />
-										<code code="59773-2" codeSystem="2.16.840.1.113883.6.1"
-											codeSystemName="LOINC" displayName="PROCEDURE SPECIMENS TAKEN" />
-										<title>BioSpecimen</title>
-										<entry typeCode="DRIV">
-											<procedure classCode="PROC" moodCode="EVN">
-												<!--Procedure activity procedure template -->
-												<templateId root="2.16.840.1.113883.10.20.22.4.14"
-													assigningAuthorityName="HL7 CCDA" />
-												<code nullFlavor="OTH">
-													<!--Collection Protocol Title and Collection Protocol Short 
-														Title in the format of Collection Protocol Title (Collection Protocol Short 
-														Title) -->
-													<originalText>Breast Core Needle Biopsy: side=Right (rigth
-														breast stereotactic needle biopsy )</originalText>
-												</code>
-												<statusCode code="completed" />
-												<effectiveTime value="20110706" />
-												<!--Specimen Characteristics Site -->
-												<targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96"
-													codeSystemName="SNOMED-CT" displayName="breast">
-													<originalText>right breast</originalText>
-													<!--Specimen Characteristics Side -->
-													<qualifier>
-														<name code="272741003" displayName="laterality"
-															codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" />
-														<value code="24028007" codeSystem="2.16.840.1.113883.6.96"
-															codeSystemName="SNOMED-CT" displayName="right"></value>
-													</qualifier>
-												</targetSiteCode>
-												<!--Guidance for Breast Core Biopsy -->
-												<entryRelationship typeCode="COMP">
-													<observation classCode="OBS" moodCode="EVN">
-														<!--Procedure Activity Observation -->
-														<templateId root="2.16.840.1.113883.10.20.22.4.13"
-															assigningAuthorityName="HL7 CCDA" />
-														<id nullFlavor="NI" />
-														<code nullFlavor="OTH">
-															<originalText>Guidance for Breast Core Biopsy</originalText>
-														</code>
-														<statusCode code="completed" />
-														<value xsi:type="CD" code="16310003" codeSystem="2.16.840.1.113883.6.96"
-															displayName="Ultrasound">
-															<originalText>Diagnostic ultrasonography</originalText>
-														</value>
-													</observation>
-												</entryRelationship>
-												<!--Biospecimen -->
-												<entryRelationship typeCode="COMP">
-													<!--no existing biospecimen CDA template, use result observation 
-														template to record specimen detail -->
-													<observation classCode="OBS" moodCode="EVN">
-														<!--Result observation template -->
-														<templateId root="2.16.840.1.113883.10.20.22.4.2"
-															assigningAuthorityName="HL7 CCDA" />
-														<id root="80f662f4-29d0-474c-b0e0-7108223835dc" />
-														<code code="123038009" codeSystem="2.16.840.1.113883.6.96"
-															displayName="specimen">
-															<originalText>Biospecimen</originalText>
-														</code>
-														<specimen>
-															<specimenRole>
-																<!--CDMS Specimen ID, assigned by the TRANSCEND CDMS -->
-																<id root="fbfe4b85-2bdc-4305-88be-3e1b763d8cab"
-																	extension="012" />
-																<!--Specimen Class -->
-																<specimenPlayingEntity>
-																	<code code="119376003" codeSystem="2.16.840.1.113883.6.96"
-																		codeSystemName="SNOMED-CT" displayName="tissue specimen" />
-																</specimenPlayingEntity>
-															</specimenRole>
-														</specimen>
-														<!--Specimen container (e.g. tube) -->
-														<participant typeCode="DEV">
-															<participantRole classCode="MANU">
-																<!--Product Instance template -->
-																<templateId root="2.16.840.1.113883.10.20.22.4.37"
-																	assigningAuthorityName="HL7 CCDA" />
-																<!--Barcode (Unique Device Identification (UDI)) -->
-																<id root="12345" extension="012" />
-																<playingDevice>
-																	<!--Code to identify the specimen Container -->
-																	<code nullFlavor="NA">
-																		<originalText>tissue specimen tube</originalText>
-																	</code>
-																</playingDevice>
-																<!--who manages the specimen container -->
-																<scopingEntity>
-																	<id nullFlavor="NA" />
-																</scopingEntity>
-															</participantRole>
-														</participant>
-														<!--Specimen Type -->
-														<entryRelationship typeCode="SUBJ">
-															<observation classCode="OBS" moodCode="EVN">
-																<!--Result observation template -->
-																<templateId root="2.16.840.1.113883.10.20.22.4.2"
-																	assigningAuthorityName="HL7 CCDA" />
-																<id nullFlavor="NI" />
-																<code code="371439000" codeSystem="2.16.840.1.113883.6.96"
-																	displayName="specimen type" />
-																<statusCode code="completed" />
-																<!--Specimen Type -->
-																<value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96"
-																	codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
-																	<originalText>fresh tissue</originalText>
-																</value>
-															</observation>
-														</entryRelationship>
-														<!--Initial Quantity -->
-														<entryRelationship typeCode="SUBJ">
-															<observation classCode="OBS" moodCode="EVN">
-																<!--Result observation template -->
-																<templateId root="2.16.840.1.113883.10.20.22.4.2"
-																	assigningAuthorityName="HL7 CCDA" />
-																<id root="5b009181-5f0e-4304-a1cb-20b5c03a3868" />
-																<code nullFlavor="OTH">
-																	<originalText>Initial Quantity</originalText>
-																</code>
-																<!--The Quanity value goes here, @unit uses UCUM code: 177 
-																	gram -->
-																<value xsi:type="PQ" value="187" unit="g" />
-															</observation>
-														</entryRelationship>
-														<!--Available Quantity -->
-														<entryRelationship typeCode="SUBJ">
-															<observation classCode="OBS" moodCode="EVN">
-																<!--Result observation template -->
-																<templateId root="2.16.840.1.113883.10.20.22.4.2"
-																	assigningAuthorityName="HL7 CCDA" />
-																<id root="b470f6a6-455c-4185-b6f6-b2b90e1c8f68" />
-																<code nullFlavor="OTH">
-																	<originalText>Available Quantity</originalText>
-																</code>
-																<!--The Quanity value goes here, @unit uses UCUM code: 155 
-																	gram -->
-																<value xsi:type="PQ" value="465" unit="g" />
+																<value xsi:type="PQ" value="255" unit="g" />
 															</observation>
 														</entryRelationship>
 														<!--Study Calendar Event Time Point -->
