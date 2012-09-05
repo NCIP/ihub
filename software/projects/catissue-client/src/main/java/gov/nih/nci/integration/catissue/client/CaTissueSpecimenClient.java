@@ -272,13 +272,14 @@ public class CaTissueSpecimenClient {
         final List<SpecimenDetail> specimenDetailList = specimens.getSpecimenDetailList();
         Iterator<SpecimenDetail> specimenDetailItr = null;
         Specimen specimen = null;
+        final String lastName = specimens.getParticipant().getLastName();
 
         for (specimenDetailItr = specimenDetailList.iterator(); specimenDetailItr.hasNext();) {
             SpecimenDetail specimenDetail = null;
             specimenDetail = (SpecimenDetail) specimenDetailItr.next();
             specimen = specimenDetail.getSpecimen();
             // check if the request data is Valid
-            isCreateSpecimenRequestDataValid(specimenDetail);
+            isCreateSpecimenRequestDataValid(specimenDetail, lastName);
             try {
                 // populate GuidanceForBreastCoreBiopsy inside specimen object
                 populateGuidanceForBreastCoreBiopsy(specimen, specimenDetail);
@@ -297,15 +298,17 @@ public class CaTissueSpecimenClient {
      * This method is used to perform the validation check while creating the specimen
      * 
      * @param specimenDetail - incoming specimen details
+     * @param lastName - LastName of the Participant
      * @return
      * @throws ApplicationException - incase the request data is invalid
      */
-    private boolean isCreateSpecimenRequestDataValid(SpecimenDetail specimenDetail) throws ApplicationException {
+    private boolean isCreateSpecimenRequestDataValid(SpecimenDetail specimenDetail, String lastName)
+            throws ApplicationException {
         // check for GuidanceForBreastCoreBiopsy validation
         isValidGuidanceForBreastCoreBiopsyPresent(specimenDetail);
 
         // check for CollectionProtocol
-        isCollectionProtocolPresent(specimenDetail);
+        isCollectionProtocolPresent(specimenDetail, lastName);
 
         return true;
     }
@@ -351,15 +354,18 @@ public class CaTissueSpecimenClient {
         return flag;
     }
 
-    private boolean isCollectionProtocolPresent(SpecimenDetail specimenDetail) throws ApplicationException {
+    private boolean isCollectionProtocolPresent(SpecimenDetail specimenDetail, String lastName)
+            throws ApplicationException {
         final CollectionProtocol cp = specimenDetail.getCollectionProtocol();
         final Specimen specimen = specimenDetail.getSpecimen();
+
         boolean scgFound = false;
         final List<SpecimenCollectionGroup> scgList = getSpecimenCollectionGroupList(specimenDetail);
         if (scgList != null && !scgList.isEmpty()) {
             for (SpecimenCollectionGroup scg : scgList) {
                 final CollectionProtocol cpObj = scg.getCollectionProtocolRegistration().getCollectionProtocol();
-                if (cpObj.getShortTitle().equals(cp.getShortTitle())) {
+                if (cpObj.getShortTitle().equals(cp.getShortTitle())
+                        && lastName.equals(scg.getCollectionProtocolRegistration().getParticipant().getLastName())) {
                     scgFound = true;
                     // Participant has a SpecimenCollectionGroup under the given protocol
                     specimen.setSpecimenCollectionGroup(scg);
@@ -435,6 +441,7 @@ public class CaTissueSpecimenClient {
                 incomingSpecimen.setLineage(existingSpecimen.getLineage());
                 incomingSpecimen.getSpecimenCharacteristics().setId(
                         existingSpecimen.getSpecimenCharacteristics().getId());
+                incomingSpecimen.setConsentTierStatusCollection(existingSpecimen.getConsentTierStatusCollection());
                 // update GuidanceForBreastCoreBiopsy in caTissue
                 updateGuidanceForBreastCoreBiopsy(existingSpecimen, specimenDetail);
                 // update Specimen in caTissue
