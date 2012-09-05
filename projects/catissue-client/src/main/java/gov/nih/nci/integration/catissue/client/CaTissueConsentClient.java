@@ -162,7 +162,7 @@ public class CaTissueConsentClient {
                 existingSpecimen = getExistingSpecimen(consentDetail.getConsentData().getSpecimenLabel().trim());
 
                 // populate the tierId for given 'statement' inside consentDetail
-                consentDetail = populateConsentTierId(consentDetail);
+                consentDetail = populateConsentTierId(consentDetail, existingSpecimen);
                 // set the ConsentTierStatusCollection to main/parent specimen
                 existingSpecimen.setConsentTierStatusCollection(consentDetail.getConsentData()
                         .getConsentTierStatusSet());
@@ -203,10 +203,12 @@ public class CaTissueConsentClient {
      * This method is used to populate the 'consent_tier_id' based on the 'Statement'
      * 
      * @param consentDetail
+     * @existingSpecimen existingSpecimen
      * @return
      * @throws ApplicationException
      */
-    private ConsentDetail populateConsentTierId(ConsentDetail consentDetail) throws ApplicationException {
+    private ConsentDetail populateConsentTierId(ConsentDetail consentDetail, Specimen existingSpecimen)
+            throws ApplicationException {
         final Set<ConsentTierStatus> conTierStatusSet = consentDetail.getConsentData().getConsentTierStatusSet();
         final Iterator<ConsentTierStatus> itrTierStatus = conTierStatusSet.iterator();
         // iterate thru all the consentTierStatus's statement
@@ -214,28 +216,19 @@ public class CaTissueConsentClient {
             boolean isTierIdFound = false;
             final ConsentTierStatus tierStatus = itrTierStatus.next();
             final String stmt = tierStatus.getConsentTier().getStatement();
-            // get the CollectionProtocol and then its consentTierCollection
-            final CollectionProtocol cp = getExistingCollectionProtocol(consentDetail.getCollectionProtocol()
-                    .getShortTitle());
-
-            if (cp == null) {
-                // i.e collection protocol not found is caTissue
-                LOG.error("populateConsentTierId failed as Collection Protocol was not found in caTissue for the identifier "
-                        + consentDetail.getCollectionProtocol().getTitle());
-                throw new ApplicationException("Collection Protocol was not found in caTissue");
-            } else {
-                final Collection<ConsentTier> consentTierCollection = cp.getConsentTierCollection();
-                if (consentTierCollection != null) {
-                    final Iterator<ConsentTier> itrConsentTier = consentTierCollection.iterator();
-                    // iterate thru each consentTier and compare for the statement..
-                    // if it matches- get its corresponding Id
-                    while (itrConsentTier.hasNext()) {
-                        final ConsentTier consentTier = itrConsentTier.next();
-                        if (stmt.equalsIgnoreCase(consentTier.getStatement())) {
-                            tierStatus.getConsentTier().setId(consentTier.getId());
-                            isTierIdFound = true;
-                            break;
-                        }
+            final CollectionProtocol cp = existingSpecimen.getSpecimenCollectionGroup().getCollectionProtocolEvent()
+                    .getCollectionProtocol();
+            final Collection<ConsentTier> consentTierCollection = cp.getConsentTierCollection();
+            if (consentTierCollection != null) {
+                final Iterator<ConsentTier> itrConsentTier = consentTierCollection.iterator();
+                // iterate thru each consentTier and compare for the statement..
+                // if it matches- get its corresponding Id
+                while (itrConsentTier.hasNext()) {
+                    final ConsentTier consentTier = itrConsentTier.next();
+                    if (stmt.equalsIgnoreCase(consentTier.getStatement())) {
+                        tierStatus.getConsentTier().setId(consentTier.getId());
+                        isTierIdFound = true;
+                        break;
                     }
                 }
             }
@@ -244,20 +237,13 @@ public class CaTissueConsentClient {
                 // i.e tierId not found for given CollectionProtocol & Statement
                 // combination
                 LOG.error("populateConsentTierId failed as ConsentTier Statement was not found for given CollectionProtocol "
-                        + consentDetail.getCollectionProtocol().getTitle() + "in caTissue.");
+                        + consentDetail.getCollectionProtocol().getShortTitle() + "in caTissue.");
                 throw new ApplicationException(
                         "ConsentTier Statement was not found for given CollectionProtocol in caTissue");
             }
         }
 
         return consentDetail;
-    }
-
-    private CollectionProtocol getExistingCollectionProtocol(String shortTitle) throws ApplicationException {
-        CollectionProtocol cp = new CollectionProtocol();
-        cp.setShortTitle(shortTitle);
-        cp = caTissueAPIClient.searchById(CollectionProtocol.class, cp);
-        return cp;
     }
 
     /**
