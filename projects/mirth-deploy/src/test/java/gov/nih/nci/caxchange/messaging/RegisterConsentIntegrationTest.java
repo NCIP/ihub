@@ -101,35 +101,6 @@ public class RegisterConsentIntegrationTest {
     }
 
     /**
-     * Testcase for registerConsents when collectionProtocol doesn't exist
-     */
-    @Test
-    public void registerConsentsCollectionProtocolNotExist() {
-        try {
-            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            final StringEntity reqentity = new StringEntity(getRegisterConsentCollectionProtocolNotExistXMLStr());
-            httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
-
-            final HttpResponse response = httpclient.execute(httppost);
-            final HttpEntity entity = response.getEntity();
-
-            String createdXML = null;
-
-            if (entity != null) {
-                createdXML = EntityUtils.toString(entity);
-                Assert.assertEquals(true, createdXML.contains("<errorCode>1091</errorCode>"));
-            }
-        } catch (ClientProtocolException e) {
-            Assert.fail(e.getMessage());
-        } catch (IllegalStateException e) {
-            Assert.fail(e.getMessage());
-        } catch (IOException e) {
-            Assert.fail(e.getMessage());
-        }
-    }
-
-    /**
      * Testcase for registerConsents when Tier statement doesn't exist
      */
     @Test
@@ -164,10 +135,6 @@ public class RegisterConsentIntegrationTest {
 
     private String getRegisterConsentSpecimenNotExistXMLStr() {
         return getXMLString("RegisterConsentSpecimenNotExist.xml");
-    }
-
-    private String getRegisterConsentCollectionProtocolNotExistXMLStr() {
-        return getXMLString("RegisterConsentCollectionProtocolNotExist.xml");
     }
 
     private String getRegisterConsentStatementNotExistXMLStr() {
