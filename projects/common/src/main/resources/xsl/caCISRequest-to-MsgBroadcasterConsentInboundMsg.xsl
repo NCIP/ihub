@@ -1,87 +1,99 @@
 <?xml version='1.0' ?>
 <xsl:stylesheet version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:a="http://cacis.nci.nih.gov"
-	xmlns:mes="http://caXchange.nci.nih.gov/messaging" xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest"
-	xmlns:consents="http://cacis.nci.nih.gov" xmlns:trim="urn:tolven-org:trim:4.0">
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns0="http://caXchange.nci.nih.gov/messaging"
+	xmlns:ns1="urn:hl7-org:v3" xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest"
+	xmlns:ns3="http://cacis.nci.nih.gov" xmlns:r="http://catissue/consent/response">
+
+	<xsl:key name="response-lookup" match="r:response" use="r:vockey" />
+	<xsl:variable name="response-top"
+		select="document('consent-response-lookup.xml')/*" />
+	<xsl:template match="r:consentresponse">
+		<xsl:param name="curr-key" />
+		<xsl:value-of select="key('response-lookup', $curr-key)/r:vocvalue" />
+	</xsl:template>
+
 	<xsl:template match="/">
-		<ns2:caxchangerequest xmlns:c="http://caXchange.nci.nih.gov/messaging"
-			xmlns:a="http://cacis.nci.nih.gov" xmlns:b="urn:tolven-org:trim:4.0"
-			xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest">
-			<ns0:metadata xmlns:ns0="http://caXchange.nci.nih.gov/messaging">
-				<serviceType xmlns:ns1trim="urn:tolven-org:trim:4.0"
-					xmlns:cda="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-					xmlns="http://caXchange.nci.nih.gov/messaging" xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"
-					xmlns:mes="http://caXchange.nci.nih.gov/messaging">
-					<xsl:value-of
-						select="consents:caCISRequest/consents:sourceData/ns2:caxchangerequest/mes:metadata/mes:serviceType" />
-				</serviceType>
-				<mes:operationName xmlns:ns1trim="urn:tolven-org:trim:4.0"
-					xmlns:cda="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-					xmlns="http://caXchange.nci.nih.gov/messaging" xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
-					<xsl:value-of
-						select="consents:caCISRequest/consents:sourceData/ns2:caxchangerequest/mes:metadata/mes:operationName" />
-				</mes:operationName>
-				<mes:externalIdentifier xmlns:ns1trim="urn:tolven-org:trim:4.0"
-					xmlns:cda="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-					xmlns="http://caXchange.nci.nih.gov/messaging" xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
-					<xsl:value-of
-						select="consents:caCISRequest/consents:sourceData/ns2:caxchangerequest/mes:metadata/mes:externalIdentifier" />
-				</mes:externalIdentifier>
-				<mes:caXchangeIdentifier xmlns:ns1trim="urn:tolven-org:trim:4.0"
-					xmlns:cda="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-					xmlns="http://caXchange.nci.nih.gov/messaging" xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
-					<xsl:value-of
-						select="consents:caCISRequest/consents:sourceData/ns2:caxchangerequest/mes:metadata/mes:caXchangeIdentifier" />
-				</mes:caXchangeIdentifier>
+		<ns2:caxchangerequest>
+			<ns0:metadata>
+				<xsl:copy-of select="//ns2:caxchangerequest/ns0:metadata/node()|@*" />
 			</ns0:metadata>
-			<ns0:request xmlns:ns0="http://caXchange.nci.nih.gov/messaging">
+			<ns0:request>
 				<ns0:businessMessagePayload>
-					<consents xmlns="http://cacis.nci.nih.gov">
+					<consents>
 						<participant>
 							<cdmsSubjectId>
-								<xsl:value-of
-									select="consents:caCISRequest/consents:sourceData/ns2:caxchangerequest/mes:request/mes:businessMessagePayload/trim:trim/consents:consents/consents:participant/consents:cdmsSubjectId" />
+								<xsl:call-template name="show-id">
+									<xsl:with-param name="id"
+										select="//ns1:ClinicalDocument/ns1:recordTarget/ns1:patientRole/ns1:id[@assigningAuthorityName='iSpy2 Study']" />
+								</xsl:call-template>
 							</cdmsSubjectId>
 						</participant>
 						<consentsDetailsList>
-							<xsl:for-each
-								select="consents:caCISRequest/consents:sourceData/ns2:caxchangerequest/mes:request/mes:businessMessagePayload/trim:trim/consents:consents/consents:consentsDetailsList/consents:consentDetails">
-								<consentDetails>
-									<collectionProtocolEvent>
-										<xsl:value-of select="consents:collectionProtocolEvent" />
-									</collectionProtocolEvent>
-									<specimen>
-										<cdmsSpecimenId>
-											<xsl:value-of select="consents:specimen/consents:cdmsSpecimenId" />
-										</cdmsSpecimenId>
-									</specimen>
-									<collectionProtocol>
-										<title>
-											<xsl:value-of select="consents:collectionProtocol/consents:title" />
-										</title>
-										<shortTitle>
-											<xsl:value-of
-												select="consents:collectionProtocol/consents:shortTitle" />
-										</shortTitle>
-									</collectionProtocol>
-									<consentTierResponses>
-										<xsl:for-each select="consents:consentTierResponses/consents:tier">
-											<tier>
-												<statement>
-													<xsl:value-of select="consents:statement" />
-												</statement>
-												<response>
-													<xsl:value-of select="consents:response" />
-												</response>
-											</tier>
-										</xsl:for-each>
-									</consentTierResponses>
-								</consentDetails>
-							</xsl:for-each>
+							<xsl:apply-templates
+								select="//ns1:ClinicalDocument/ns1:component/ns1:structuredBody/ns1:component" />
 						</consentsDetailsList>
 					</consents>
 				</ns0:businessMessagePayload>
 			</ns0:request>
 		</ns2:caxchangerequest>
 	</xsl:template>
+
+	<xsl:template
+		match="//ns1:ClinicalDocument/ns1:component/ns1:structuredBody/ns1:component">
+		<xsl:call-template name="show-consent-Detail">
+			<xsl:with-param name="component" select="." />
+		</xsl:call-template>
+	</xsl:template>
+
+	<!-- show-consent-Detail -->
+	<xsl:template name="show-consent-Detail">
+		<xsl:param name="component" />
+		<consentDetails>
+			<specimen>
+				<cdmsSpecimenId>
+					<xsl:call-template name="show-id">
+						<xsl:with-param name="id"
+							select="//ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='123038009'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:specimen/ns1:specimenRole/ns1:id" />
+					</xsl:call-template>
+				</cdmsSpecimenId>
+			</specimen>
+			<consentTierResponses>
+				<tier>
+					<statement>Tier 1 consent response</statement>
+					<response>
+						<xsl:call-template name="show-consent-response">
+							<xsl:with-param name="responseCode"
+								select="//ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='309370004'][@codeSystem='2.16.840.1.113883.6.96'][ns1:originalText='Tier 1 consent response']]/ns1:value/@code" />
+						</xsl:call-template>
+					</response>
+				</tier>
+				<tier>
+					<statement>Tier 2 consent response</statement>
+					<response>
+						<xsl:call-template name="show-consent-response">
+							<xsl:with-param name="responseCode"
+								select="//ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='309370004'][@codeSystem='2.16.840.1.113883.6.96'][ns1:originalText='Tier 2 consent response']]/ns1:value/@code" />
+						</xsl:call-template>
+					</response>
+				</tier>
+			</consentTierResponses>
+		</consentDetails>
+	</xsl:template>
+
+	<!-- show-id -->
+	<xsl:template name="show-id">
+		<xsl:param name="id" />
+		<xsl:value-of select="$id/@root" />
+		<xsl:text>:</xsl:text>
+		<xsl:value-of select="$id/@extension" />
+	</xsl:template>
+
+	<!-- show-consent-response -->
+	<xsl:template name="show-consent-response">
+		<xsl:param name="responseCode" />
+		<xsl:apply-templates select="$response-top">
+			<xsl:with-param name="curr-key" select="$responseCode" />
+		</xsl:apply-templates>
+	</xsl:template>
+
 </xsl:stylesheet>
