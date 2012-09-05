@@ -88,7 +88,7 @@
 						<p:activityStatus>
 							<xsl:call-template name="show-activityStatus">
 								<xsl:with-param name="asValue"
-									select="$clinicalDocument/ns1:component/ns1:structuredBody/ns1:component/ns1:section/ns1:entry/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='263490005'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:value/@code" />
+									select="//ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='263490005'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:value/@code" />
 							</xsl:call-template>
 						</p:activityStatus>
 						<p:registrationDate>
