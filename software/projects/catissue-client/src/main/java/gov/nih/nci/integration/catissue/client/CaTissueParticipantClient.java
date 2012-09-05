@@ -3,7 +3,6 @@ package gov.nih.nci.integration.catissue.client;
 import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -21,6 +20,8 @@ import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 import edu.wustl.catissuecore.domain.CollectionProtocol;
 import edu.wustl.catissuecore.domain.CollectionProtocolRegistration;
+import edu.wustl.catissuecore.domain.ConsentTier;
+import edu.wustl.catissuecore.domain.ConsentTierResponse;
 import edu.wustl.catissuecore.domain.Participant;
 import edu.wustl.catissuecore.domain.ParticipantMedicalIdentifier;
 import edu.wustl.catissuecore.domain.Race;
@@ -74,6 +75,8 @@ public class CaTissueParticipantClient {
         xStream.alias("race", Race.class);
         xStream.alias("collectionProtocol", CollectionProtocol.class);
         xStream.alias("collectionProtocolRegistration", CollectionProtocolRegistration.class);
+        xStream.alias("consentTierResponse", ConsentTierResponse.class);
+        xStream.alias("consentTier", ConsentTier.class);
         xStream.alias("participantMedicalIdentifier", ParticipantMedicalIdentifier.class);
 
         final String[] accFrmts = new String[] { "", "yyyyMMdd", "yyyy-MM-dd", "MM/dd/yyyy", // catissue formats
@@ -152,6 +155,7 @@ public class CaTissueParticipantClient {
 
         // populate the CP-Title inside Participant-CPR-CP-Title. We are getting 'shortTitle' in the request
         populateCPTitle(participant);
+
         Participant returnParticipant = null;
 
         try {
@@ -210,20 +214,6 @@ public class CaTissueParticipantClient {
         }
 
         participant.setId(existingParticipant.getId());
-        final ArrayList<CollectionProtocolRegistration> existingCprLst = new ArrayList<CollectionProtocolRegistration>(
-                existingParticipant.getCollectionProtocolRegistrationCollection());
-        final Collection<CollectionProtocolRegistration> cprColl = participant
-                .getCollectionProtocolRegistrationCollection();
-        int cnt = 0;
-        for (final Iterator<CollectionProtocolRegistration> iterator = cprColl.iterator(); iterator.hasNext();) {
-            final CollectionProtocolRegistration collectionProtocolRegistration = (CollectionProtocolRegistration) iterator
-                    .next();
-            collectionProtocolRegistration.setId(existingCprLst.get(cnt).getId());
-            cnt++;
-        }
-
-        // populate the CP-Title inside Participant-CPR-CP-Title. We are getting 'shortTitle' in the request
-        populateCPTitle(participant);
 
         // code to handle the existing/new race collection
         updateParticipantRaceCollection(existingParticipant, participant);
@@ -231,44 +221,6 @@ public class CaTissueParticipantClient {
         caTissueAPIClient.update(participant);
 
         return copyFrom(existingParticipant);
-    }
-
-    private Participant updateParticipantRaceCollection(Participant existingParticipant, Participant participant) {
-        final Race[] existRaceArray = (Race[]) existingParticipant.getRaceCollection().toArray(
-                new Race[existingParticipant.getRaceCollection().size()]);
-        final Race[] newRaceArray = (Race[]) participant.getRaceCollection().toArray(
-                new Race[participant.getRaceCollection().size()]);
-
-        final int existRaceCount = existRaceArray.length;
-        final int newRaceCount = newRaceArray.length;
-
-        if (existRaceCount >= newRaceCount) {
-            int i = 0;
-            for (; i < newRaceCount; i++) {
-                existRaceArray[i].setRaceName(newRaceArray[i].getRaceName());
-                existRaceArray[i].setParticipant(newRaceArray[i].getParticipant());
-            }
-            for (; i < existRaceCount; i++) {
-                existRaceArray[i].setRaceName(null);
-                existRaceArray[i].setParticipant(null);
-            }
-            final Set<Race> mySet = new HashSet<Race>();
-            Collections.addAll(mySet, existRaceArray);
-            participant.setRaceCollection(mySet);
-        } else {
-            int i = 0;
-            for (; i < existRaceCount; i++) {
-                existRaceArray[i].setRaceName(newRaceArray[i].getRaceName());
-                existRaceArray[i].setParticipant(newRaceArray[i].getParticipant());
-            }
-            final Set<Race> mySet = new HashSet<Race>();
-            Collections.addAll(mySet, existRaceArray);
-            participant.setRaceCollection(mySet);
-            for (; i < newRaceCount; i++) {
-                participant.getRaceCollection().add(newRaceArray[i]);
-            }
-        }
-        return participant;
     }
 
     /**
@@ -387,7 +339,45 @@ public class CaTissueParticipantClient {
             final CollectionProtocol fetchedCP = getExistingCollectionProtocol(shortTitle);
             if (fetchedCP != null) {
                 // set the fetched CP_Title into the Participant-CPR-CP-title
-                cprColl.get(0).getCollectionProtocol().setTitle(fetchedCP.getTitle());                
+                cprColl.get(0).getCollectionProtocol().setTitle(fetchedCP.getTitle());
+            }
+        }
+        return participant;
+    }
+
+    private Participant updateParticipantRaceCollection(Participant existingParticipant, Participant participant) {
+        final Race[] existRaceArray = (Race[]) existingParticipant.getRaceCollection().toArray(
+                new Race[existingParticipant.getRaceCollection().size()]);
+        final Race[] newRaceArray = (Race[]) participant.getRaceCollection().toArray(
+                new Race[participant.getRaceCollection().size()]);
+
+        final int existRaceCount = existRaceArray.length;
+        final int newRaceCount = newRaceArray.length;
+
+        if (existRaceCount >= newRaceCount) {
+            int i = 0;
+            for (; i < newRaceCount; i++) {
+                existRaceArray[i].setRaceName(newRaceArray[i].getRaceName());
+                existRaceArray[i].setParticipant(newRaceArray[i].getParticipant());
+            }
+            for (; i < existRaceCount; i++) {
+                existRaceArray[i].setRaceName(null);
+                existRaceArray[i].setParticipant(null);
+            }
+            final Set<Race> mySet = new HashSet<Race>();
+            Collections.addAll(mySet, existRaceArray);
+            participant.setRaceCollection(mySet);
+        } else {
+            int i = 0;
+            for (; i < existRaceCount; i++) {
+                existRaceArray[i].setRaceName(newRaceArray[i].getRaceName());
+                existRaceArray[i].setParticipant(newRaceArray[i].getParticipant());
+            }
+            final Set<Race> mySet = new HashSet<Race>();
+            Collections.addAll(mySet, existRaceArray);
+            participant.setRaceCollection(mySet);
+            for (; i < newRaceCount; i++) {
+                participant.getRaceCollection().add(newRaceArray[i]);
             }
         }
         return participant;
