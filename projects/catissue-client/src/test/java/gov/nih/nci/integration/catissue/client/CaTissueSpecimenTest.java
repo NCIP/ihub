@@ -24,6 +24,7 @@ import edu.wustl.catissuecore.domain.CollectionProtocol;
 import edu.wustl.catissuecore.domain.CollectionProtocolEvent;
 import edu.wustl.catissuecore.domain.CollectionProtocolRegistration;
 import edu.wustl.catissuecore.domain.DisposalEventParameters;
+import edu.wustl.catissuecore.domain.Participant;
 import edu.wustl.catissuecore.domain.Specimen;
 import edu.wustl.catissuecore.domain.SpecimenCharacteristics;
 import edu.wustl.catissuecore.domain.SpecimenCollectionGroup;
@@ -70,13 +71,16 @@ public class CaTissueSpecimenTest {
     public void createSpecimens() {
         String retSpecimenXML = "";
         final Specimen specimen = null;
+        final Participant participant = new Participant();
+        participant.setLastName("1.2.1.173000:ct8d23431");
         final SpecimenCollectionGroup scg = new SpecimenCollectionGroup();
         final CollectionProtocol cp = new CollectionProtocol();
         cp.setShortTitle("6482:6482");
         cp.setTitle("6482:6482");
         final CollectionProtocolRegistration cpr = new CollectionProtocolRegistration();
         cpr.setCollectionProtocol(cp);
-        scg.setCollectionProtocolRegistration(cpr);
+        cpr.setParticipant(participant);
+        scg.setCollectionProtocolRegistration(cpr);        
         final List<Object> scgList = new ArrayList<Object>();
         scgList.add(scg);
 
