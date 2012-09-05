@@ -22,9 +22,12 @@ import org.springframework.beans.BeansException;
 import edu.wustl.catissuecore.cacore.CaTissueWritableAppService;
 import edu.wustl.catissuecore.domain.AbstractSpecimen;
 import edu.wustl.catissuecore.domain.CollectionProtocol;
+import edu.wustl.catissuecore.domain.CollectionProtocolEvent;
+import edu.wustl.catissuecore.domain.CollectionProtocolRegistration;
 import edu.wustl.catissuecore.domain.ConsentTier;
 import edu.wustl.catissuecore.domain.ConsentTierStatus;
 import edu.wustl.catissuecore.domain.Specimen;
+import edu.wustl.catissuecore.domain.SpecimenCollectionGroup;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 
 /**
@@ -65,18 +68,18 @@ public class CaTissueConsentTest {
     public void getExistingConsents() {
         String retConsentXML = "";
         final Specimen specimen = new Specimen();
-        specimen.setLabel("TolvenTestUser252TissueSpecimen173");
+        specimen.setLabel("fbfe4b85-2bdc-4305-88be-3e1b763d8caa:135");
         final Set<ConsentTierStatus> consentTierStatusCollection = new LinkedHashSet<ConsentTierStatus>();
         final ConsentTierStatus consentTierStatus1 = new ConsentTierStatus();
         final ConsentTier consentTier1 = new ConsentTier();
         consentTier1.setId(6L);
-        consentTier1.setStatement("This is a statement");
+        consentTier1.setStatement("Tier 1 consent response");
         consentTierStatus1.setStatus("Yes");
         consentTierStatus1.setConsentTier(consentTier1);
         final ConsentTierStatus consentTierStatus2 = new ConsentTierStatus();
         final ConsentTier consentTier2 = new ConsentTier();
         consentTier2.setId(7L);
-        consentTier2.setStatement("This is a second statement.");
+        consentTier2.setStatement("Tier 2 consent response");
         consentTierStatus2.setStatus("No");
         consentTierStatus2.setConsentTier(consentTier2);
         consentTierStatusCollection.add(consentTierStatus1);
@@ -108,6 +111,83 @@ public class CaTissueConsentTest {
     }
 
     /**
+     * Mock Testcase for registerConsents when TierId not found
+     * 
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void registerConsentsTierIdNotFound() {
+        String retConsentXML = "";
+        final Specimen specimen = new Specimen();
+        specimen.setLabel("fbfe4b85-2bdc-4305-88be-3e1b763d8caa:135");
+
+        final CollectionProtocol cp = new CollectionProtocol();
+        cp.setShortTitle("6482:6482");
+        cp.setTitle("6482:6482");
+        final CollectionProtocolEvent cpv = new CollectionProtocolEvent();
+        cpv.setCollectionPointLabel("5");
+        cpv.setCollectionProtocol(cp);
+        final CollectionProtocolRegistration cpr = new CollectionProtocolRegistration();
+        final SpecimenCollectionGroup scg = new SpecimenCollectionGroup();
+        cpr.setCollectionProtocol(cp);
+
+        scg.setCollectionProtocolRegistration(cpr);
+        scg.setCollectionProtocolEvent(cpv);
+        specimen.setSpecimenCollectionGroup(scg);
+
+        final Set<ConsentTierStatus> consentTierStatusCollection = new LinkedHashSet<ConsentTierStatus>();
+        final ConsentTierStatus consentTierStatus1 = new ConsentTierStatus();
+        final ConsentTier consentTier1 = new ConsentTier();
+        consentTier1.setId(6L);
+        consentTier1.setStatement("Tier 1 consent response");
+        consentTierStatus1.setStatus("Yes");
+        consentTierStatus1.setConsentTier(consentTier1);
+
+        final ConsentTierStatus consentTierStatus2 = new ConsentTierStatus();
+        final ConsentTier consentTier2 = new ConsentTier();
+        consentTier2.setId(7L);
+        consentTier2.setStatement("Tier 2 consent response");
+        consentTierStatus2.setStatus("No");
+        consentTierStatus2.setConsentTier(consentTier2);
+        consentTierStatusCollection.add(consentTierStatus2);
+        consentTierStatusCollection.add(consentTierStatus1);
+        specimen.setConsentTierStatusCollection(consentTierStatusCollection);
+
+        final Collection<AbstractSpecimen> childSpecimenCollection = new HashSet<AbstractSpecimen>();
+        specimen.setChildSpecimenCollection(childSpecimenCollection);
+
+        final Collection<ConsentTier> consentTierCollection = new HashSet<ConsentTier>();
+        consentTierCollection.add(consentTier1);
+        consentTierCollection.add(consentTier2);
+        final CollectionProtocol collectionProtocol = new CollectionProtocol();
+        collectionProtocol.setConsentTierCollection(consentTierCollection);
+
+        try {
+            EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
+            EasyMock.expect(
+                    caTissueAPIClient.searchById((Class<Specimen>) EasyMock.anyObject(),
+                            (Specimen) org.easymock.EasyMock.anyObject())).andReturn(specimen);
+            EasyMock.expect(caTissueAPIClient.update((Specimen) org.easymock.EasyMock.anyObject())).andReturn(specimen);
+            EasyMock.expect(
+                    caTissueAPIClient.searchById((Class<CollectionProtocol>) EasyMock.anyObject(),
+                            (CollectionProtocol) org.easymock.EasyMock.anyObject())).andReturn(collectionProtocol)
+                    .anyTimes();
+
+            EasyMock.replay(caTissueAPIClient);
+
+            caTissueConsentClient.registerConsents(getRegisterConsentXMLStr());
+            // EasyMock.verify(caTissueAPIClient);
+            retConsentXML = "REGISTER_CONSENT";
+        } catch (ApplicationException e) {
+            LOG.error("CaTissueConsentTest-ApplicationException inside registerConsents() ", e);
+            retConsentXML = "REGISTER_CONSENT_FAILED";
+        }
+
+        assertNotNull(retConsentXML);
+
+    }
+
+    /**
      * Mock Testcase for registerConsents
      * 
      */
@@ -116,26 +196,52 @@ public class CaTissueConsentTest {
     public void registerConsents() {
         String retConsentXML = "";
         final Specimen specimen = new Specimen();
-        specimen.setLabel("TolvenTestUser252TissueSpecimen173");
+        specimen.setLabel("fbfe4b85-2bdc-4305-88be-3e1b763d8caa:135");
+        final Collection<ConsentTier> ctColl = new LinkedHashSet<ConsentTier>();
+        final ConsentTier ct1 = new ConsentTier();
+        ct1.setId(1L);
+        ct1.setStatement("Tier 1 consent response");
+        final ConsentTier ct2 = new ConsentTier();
+        ct2.setId(2L);
+        ct2.setStatement("Tier 2 consent response");
+        ctColl.add(ct1);
+        ctColl.add(ct2);
+
+        final CollectionProtocol cp = new CollectionProtocol();
+        cp.setShortTitle("6482:6482");
+        cp.setTitle("6482:6482");
+        cp.setConsentTierCollection(ctColl);
+
+        final CollectionProtocolEvent cpv = new CollectionProtocolEvent();
+        cpv.setCollectionPointLabel("5");
+        cpv.setCollectionProtocol(cp);
+        final CollectionProtocolRegistration cpr = new CollectionProtocolRegistration();
+        final SpecimenCollectionGroup scg = new SpecimenCollectionGroup();
+        cpr.setCollectionProtocol(cp);
+
+        scg.setCollectionProtocolRegistration(cpr);
+        scg.setCollectionProtocolEvent(cpv);
+        specimen.setSpecimenCollectionGroup(scg);
+
         final Set<ConsentTierStatus> consentTierStatusCollection = new LinkedHashSet<ConsentTierStatus>();
         final ConsentTierStatus consentTierStatus1 = new ConsentTierStatus();
         final ConsentTier consentTier1 = new ConsentTier();
         consentTier1.setId(6L);
-        consentTier1.setStatement("This is a statement");
+        consentTier1.setStatement("Tier 1 consent response");
         consentTierStatus1.setStatus("Yes");
         consentTierStatus1.setConsentTier(consentTier1);
 
         final ConsentTierStatus consentTierStatus2 = new ConsentTierStatus();
         final ConsentTier consentTier2 = new ConsentTier();
         consentTier2.setId(7L);
-        consentTier2.setStatement("This is a second statement.");
+        consentTier2.setStatement("Tier 2 consent response");
         consentTierStatus2.setStatus("No");
         consentTierStatus2.setConsentTier(consentTier2);
-        // consentTierStatusCollection.add(consentTierStatus2);
+        consentTierStatusCollection.add(consentTierStatus2);
         consentTierStatusCollection.add(consentTierStatus1);
         specimen.setConsentTierStatusCollection(consentTierStatusCollection);
 
-        Collection<AbstractSpecimen> childSpecimenCollection = new HashSet<AbstractSpecimen>();
+        final Collection<AbstractSpecimen> childSpecimenCollection = new HashSet<AbstractSpecimen>();
         specimen.setChildSpecimenCollection(childSpecimenCollection);
 
         final Collection<ConsentTier> consentTierCollection = new HashSet<ConsentTier>();
@@ -210,7 +316,7 @@ public class CaTissueConsentTest {
     public void rollbackConsents() throws BeansException, MalformedURLException {
         String retConsentXML = "";
         final Specimen specimen = new Specimen();
-        specimen.setLabel("TolvenTestUser252TissueSpecimen173");
+        specimen.setLabel("fbfe4b85-2bdc-4305-88be-3e1b763d8caa:135");
         try {
             EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
             EasyMock.expect(
@@ -249,7 +355,7 @@ public class CaTissueConsentTest {
         final BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String strLine;
         try {
-            while ((strLine = br.readLine()) != null) { 
+            while ((strLine = br.readLine()) != null) {
                 fileContents.append(strLine);
             }
             is.close();
