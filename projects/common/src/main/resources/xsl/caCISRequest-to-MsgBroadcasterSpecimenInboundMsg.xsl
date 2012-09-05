@@ -93,63 +93,61 @@
 	<!-- show-specimen-Detail -->
 	<xsl:template name="show-specimen-Detail">
 		<xsl:param name="component" />
-		<xsl:variable name="observation"
-			select="$component/ns1:section/ns1:entry/ns1:procedure/ns1:entryRelationship/ns1:observation" />
 		<specimenDetail>
 			<collectionProtocolEvent>
 				<xsl:value-of
-					select="$observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code/ns1:originalText='Study Calendar Event Time Point']/ns1:value/@value" />
+					select="//ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code/ns1:originalText='Study Calendar Event Time Point']/ns1:value/@value" />
 			</collectionProtocolEvent>
 			<specimen>
 				<cdmsSpecimenId>
 					<xsl:call-template name="show-id">
 						<xsl:with-param name="id"
-							select="$observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='123038009'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:specimen/ns1:specimenRole/ns1:id" />
+							select="//ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='123038009'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:specimen/ns1:specimenRole/ns1:id" />
 					</xsl:call-template>
 				</cdmsSpecimenId>
 				<barcode>
 					<xsl:call-template name="show-id">
 						<xsl:with-param name="id"
-							select="$observation/ns1:participant/ns1:participantRole[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.37']/ns1:id" />
+							select="//ns1:observation/ns1:participant/ns1:participantRole[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.37']/ns1:id" />
 					</xsl:call-template>
 				</barcode>
 				<activityStatus>
 					<xsl:call-template name="show-activityStatus">
 						<xsl:with-param name="asValue"
-							select="$observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='263490005'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:value/@code" />
+							select="//ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='263490005'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:value/@code" />
 					</xsl:call-template>
 				</activityStatus>
 				<specimenClass>
 					<xsl:call-template name="show-specimen-class">
 						<xsl:with-param name="classCode"
-							select="$observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2']/ns1:specimen/ns1:specimenRole/ns1:specimenPlayingEntity/ns1:code/@code" />
+							select="//ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2']/ns1:specimen/ns1:specimenRole/ns1:specimenPlayingEntity/ns1:code/@code" />
 					</xsl:call-template>
 				</specimenClass>
 				<specimenType>
 					<xsl:call-template name="show-specimen-type">
 						<xsl:with-param name="typeCode"
-							select="$observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='371439000'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:value/@code" />
+							select="//ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='371439000'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:value/@code" />
 					</xsl:call-template>
 				</specimenType>
 				<initialQuantity>
 					<xsl:value-of
-						select="$observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code/ns1:originalText='Initial Quantity']/ns1:value/@value" />
+						select="//ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code/ns1:originalText='Initial Quantity']/ns1:value/@value" />
 				</initialQuantity>
 				<availableQuantity>
 					<xsl:value-of
-						select="$observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code/ns1:originalText='Available Quantity']/ns1:value/@value" />
+						select="//ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code/ns1:originalText='Available Quantity']/ns1:value/@value" />
 				</availableQuantity>
 				<specimenCharacteristics>
 					<tissueSite>
 						<xsl:call-template name="show-specimen-site">
 							<xsl:with-param name="siteCode"
-								select="$component/ns1:section/ns1:entry/ns1:procedure[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.14']/ns1:targetSiteCode/@code" />
+								select="//ns1:procedure[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.14']/ns1:targetSiteCode/@code" />
 						</xsl:call-template>
 					</tissueSite>
 					<tissueSide>
 						<xsl:call-template name="show-specimen-side">
 							<xsl:with-param name="sideCode"
-								select="$component/ns1:section/ns1:entry/ns1:procedure[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.14']/ns1:targetSiteCode/ns1:qualifier[ns1:name[@code='272741003'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:value/@code" />
+								select="//ns1:procedure[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.14']/ns1:targetSiteCode/ns1:qualifier[ns1:name[@code='272741003'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:value/@code" />
 						</xsl:call-template>
 					</tissueSide>
 				</specimenCharacteristics>
@@ -168,13 +166,13 @@
 				<guidanceForBreastCoreBiopsyType>
 					<xsl:call-template name="show-specimen-biopsy">
 						<xsl:with-param name="value"
-							select="$observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.13'][ns1:code/ns1:originalText='Guidance for Breast Core Biopsy']/ns1:value" />
+							select="//ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.13'][ns1:code/ns1:originalText='Guidance for Breast Core Biopsy']/ns1:value" />
 					</xsl:call-template>
 				</guidanceForBreastCoreBiopsyType>
 				<otherText>
 					<xsl:call-template name="show-specimen-biopsy-otherText">
 						<xsl:with-param name="value"
-							select="$observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.13'][ns1:code/ns1:originalText='Guidance for Breast Core Biopsy']/ns1:value" />
+							select="//ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.13'][ns1:code/ns1:originalText='Guidance for Breast Core Biopsy']/ns1:value" />
 					</xsl:call-template>
 				</otherText>
 			</guidanceForBreastCoreBiopsy>
