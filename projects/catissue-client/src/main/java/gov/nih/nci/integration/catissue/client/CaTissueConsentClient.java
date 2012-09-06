@@ -173,8 +173,8 @@ public class CaTissueConsentClient {
                 // and then update the specimen
                 updateSpecimen(existingSpecimen);
 
-                // Currently this is updating consent status of only parent specimen and not child specimen. This is a
-                // known issue.
+                // Currently the consent status of only parent specimen is updated and not child specimen(s). This is a
+                // known issue. The issue like is https://tracker.nci.nih.gov/browse/IHUB-221
             }
         } catch (ApplicationException ae) {
             LOG.error("Register Consent Failed for Specimen" + existingSpecimen.getLabel(), ae);
