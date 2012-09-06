@@ -79,25 +79,6 @@ public class CaTissueConsentIntegrationTest {
     }
 
     /**
-     * Testcase for registerConsents when collectionProtocol doesn't exist
-     */
-    @Test
-    public void registerConsentsCollectionProtocolNotExist() {
-        String existXML = null;
-        String retXML = null;
-        try {
-            caTissueConsentClient.getExistingConsents(getRegisterConsentCollectionProtocolNotExistXMLStr());
-            caTissueConsentClient.registerConsents(getRegisterConsentCollectionProtocolNotExistXMLStr());
-            existXML = "SPECIMEN_EXIST";
-            retXML = "REGISTER_SPECIMEN";
-        } catch (ApplicationException e) {
-            LOG.error("ApplicationException inside registerConsentsCollectionProtocolNotExist() ", e);
-        }
-        assertNull(existXML);
-        assertNull(retXML);
-    }
-
-    /**
      * Testcase for registerConsents when Tier statement doesn't exist
      */
     @Test
@@ -148,10 +129,6 @@ public class CaTissueConsentIntegrationTest {
         return getXMLString("RegisterConsentStatementNotExist.xml");
     }
 
-    private String getRegisterConsentCollectionProtocolNotExistXMLStr() {
-        return getXMLString("RegisterConsentCollectionProtocolNotExist.xml");
-    }
-
     private String getRollbackConsentXMLStr() {
         return getXMLString("RollbackSpecimen.xml");
     }
@@ -163,7 +140,7 @@ public class CaTissueConsentIntegrationTest {
         final BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String strLine;
         try {
-            while ((strLine = br.readLine()) != null) { 
+            while ((strLine = br.readLine()) != null) {
                 fileContents.append(strLine);
             }
             is.close();
