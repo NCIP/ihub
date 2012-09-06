@@ -118,7 +118,7 @@ public class RegisterConsentIntegrationTest {
 
             if (entity != null) {
                 createdXML = EntityUtils.toString(entity);
-                Assert.assertEquals(true, createdXML.contains("<errorCode>1092</errorCode>"));
+                Assert.assertEquals(true, createdXML.contains("<responseStatus>SUCCESS</responseStatus>"));
             }
         } catch (ClientProtocolException e) {
             Assert.fail(e.getMessage());
