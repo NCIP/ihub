@@ -40,20 +40,13 @@
 
 	<xsl:template
 		match="//ns1:ClinicalDocument/ns1:component/ns1:structuredBody/ns1:component">
-		<xsl:call-template name="show-consent-Detail">
-			<xsl:with-param name="component" select="." />
-		</xsl:call-template>
-	</xsl:template>
-
-	<!-- show-consent-Detail -->
-	<xsl:template name="show-consent-Detail">
-		<xsl:param name="component" />
+		<xsl:variable name="entry" select="./ns1:section/ns1:entry" />
 		<consentDetails>
 			<specimen>
 				<cdmsSpecimenId>
 					<xsl:call-template name="show-id">
 						<xsl:with-param name="id"
-							select="//ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='123038009'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:specimen/ns1:specimenRole/ns1:id" />
+							select="$entry/ns1:observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='123038009'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:specimen/ns1:specimenRole/ns1:id" />
 					</xsl:call-template>
 				</cdmsSpecimenId>
 			</specimen>
@@ -63,7 +56,7 @@
 					<response>
 						<xsl:call-template name="show-consent-response">
 							<xsl:with-param name="responseCode"
-								select="//ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='309370004'][@codeSystem='2.16.840.1.113883.6.96'][ns1:originalText='Tier 1 consent response']]/ns1:value/@code" />
+								select="$entry/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='309370004'][@codeSystem='2.16.840.1.113883.6.96'][ns1:originalText='Tier 1 consent response']]/ns1:value/@code" />
 						</xsl:call-template>
 					</response>
 				</tier>
@@ -72,7 +65,7 @@
 					<response>
 						<xsl:call-template name="show-consent-response">
 							<xsl:with-param name="responseCode"
-								select="//ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='309370004'][@codeSystem='2.16.840.1.113883.6.96'][ns1:originalText='Tier 2 consent response']]/ns1:value/@code" />
+								select="$entry/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='309370004'][@codeSystem='2.16.840.1.113883.6.96'][ns1:originalText='Tier 2 consent response']]/ns1:value/@code" />
 						</xsl:call-template>
 					</response>
 				</tier>
