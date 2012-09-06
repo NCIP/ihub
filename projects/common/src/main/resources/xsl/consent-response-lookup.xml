@@ -1,0 +1,10 @@
+<r:consentresponse xmlns:r="http://catissue/consent/response">
+	<r:response>
+		<r:vockey>373066001</r:vockey>
+		<r:vocvalue>Yes</r:vocvalue>
+	</r:response>
+	<r:response>
+		<r:vockey>373067005</r:vockey>
+		<r:vocvalue>No</r:vocvalue>
+	</r:response>
+</r:consentresponse>
