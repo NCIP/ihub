@@ -25,8 +25,6 @@ import edu.wustl.catissuecore.domain.ConsentTierResponse;
 import edu.wustl.catissuecore.domain.Participant;
 import edu.wustl.catissuecore.domain.ParticipantMedicalIdentifier;
 import edu.wustl.catissuecore.domain.Race;
-import edu.wustl.catissuecore.factory.CollectionProtocolFactory;
-import edu.wustl.catissuecore.factory.CollectionProtocolRegistrationFactory;
 import edu.wustl.catissuecore.factory.ParticipantFactory;
 import edu.wustl.catissuecore.factory.RaceFactory;
 import gov.nih.nci.system.applicationservice.ApplicationException;
@@ -41,6 +39,8 @@ public class CaTissueParticipantClient {
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueParticipantClient.class);
 
     private CaTissueAPIClientWithRegularAuthentication caTissueAPIClient;
+
+    private static final String DISABLED = "Disabled";
 
     private final XStream xStream = new XStream(new StaxDriver());
 
@@ -155,9 +155,7 @@ public class CaTissueParticipantClient {
 
         // populate the CP-Title inside Participant-CPR-CP-Title. We are getting 'shortTitle' in the request
         populateCPTitle(participant);
-
         Participant returnParticipant = null;
-
         try {
             returnParticipant = caTissueAPIClient.insert(participant);
         } catch (ApplicationException ae) {
@@ -267,7 +265,7 @@ public class CaTissueParticipantClient {
             return null;
         }
 
-        persistedParticipant.setActivityStatus("Disabled");
+        persistedParticipant.setActivityStatus(DISABLED);
         persistedParticipant.setSocialSecurityNumber(null);
         persistedParticipant.setLastName(null);
 
@@ -277,7 +275,7 @@ public class CaTissueParticipantClient {
             final CollectionProtocolRegistration collectionProtocolRegistration = (CollectionProtocolRegistration) iter
                     .next();
             collectionProtocolRegistration.setProtocolParticipantIdentifier("");
-            collectionProtocolRegistration.setActivityStatus("Disabled");
+            collectionProtocolRegistration.setActivityStatus(DISABLED);
             caTissueAPIClient.update(collectionProtocolRegistration);
         }
 
@@ -308,13 +306,13 @@ public class CaTissueParticipantClient {
     /**
      * Retrieve the participant for given PatientId
      * 
-     * @param mrn - PatientId for which participant has to be fetched
+     * @param participantId - PatientId for which participant has to be fetched
      * @return Participant
      * @throws ApplicationException - ApplicationException
      */
-    public Participant getParticipantForPatientId(String mrn) throws ApplicationException {
+    public Participant getParticipantForPatientId(String participantId) throws ApplicationException {
         final List<Participant> prtcpntLst = caTissueAPIClient.getApplicationService().query(
-                CqlUtility.getParticipantForPatientId(mrn));
+                CqlUtility.getParticipantForPatientId(participantId));
         if (prtcpntLst == null || prtcpntLst.isEmpty()) {
             return null;
         }
@@ -345,6 +343,14 @@ public class CaTissueParticipantClient {
         return participant;
     }
 
+    /**
+     * This method is used to update the Race collection. It will replace the existing Race with the current Race and
+     * then if the current race is MORE, then it will add remaining new race inside the collection. If the new Race is
+     * LESSER than existing then it will set the remaining existing(after replacing with current race) to null. This
+     * logic is implemented to avoid unnecessary null records in the database.
+     * 
+     * @return
+     */
     private Participant updateParticipantRaceCollection(Participant existingParticipant, Participant participant) {
         final Race[] existRaceArray = (Race[]) existingParticipant.getRaceCollection().toArray(
                 new Race[existingParticipant.getRaceCollection().size()]);
@@ -354,13 +360,16 @@ public class CaTissueParticipantClient {
         final int existRaceCount = existRaceArray.length;
         final int newRaceCount = newRaceArray.length;
 
+        // if the existing Race are more than the new/incoming Race
         if (existRaceCount >= newRaceCount) {
             int i = 0;
             for (; i < newRaceCount; i++) {
+                // Iterate(till newRaceCount) & Replace the existing Race with the new/incoming Race
                 existRaceArray[i].setRaceName(newRaceArray[i].getRaceName());
                 existRaceArray[i].setParticipant(newRaceArray[i].getParticipant());
             }
             for (; i < existRaceCount; i++) {
+                // set the remaining(more) existing Race to NULL
                 existRaceArray[i].setRaceName(null);
                 existRaceArray[i].setParticipant(null);
             }
@@ -368,8 +377,10 @@ public class CaTissueParticipantClient {
             Collections.addAll(mySet, existRaceArray);
             participant.setRaceCollection(mySet);
         } else {
+            // if the existing Race are LESS than the new/incoming Race
             int i = 0;
             for (; i < existRaceCount; i++) {
+                // Iterate(till existRaceCount) & Replace the existing Race with the new/incoming Race
                 existRaceArray[i].setRaceName(newRaceArray[i].getRaceName());
                 existRaceArray[i].setParticipant(newRaceArray[i].getParticipant());
             }
@@ -377,6 +388,7 @@ public class CaTissueParticipantClient {
             Collections.addAll(mySet, existRaceArray);
             participant.setRaceCollection(mySet);
             for (; i < newRaceCount; i++) {
+                // add the remaining left new/incoming Race in the collection
                 participant.getRaceCollection().add(newRaceArray[i]);
             }
         }
@@ -411,30 +423,6 @@ public class CaTissueParticipantClient {
             r.setParticipant(p);
             r.setRaceName(race.getRaceName());
             p.getRaceCollection().add(r);
-        }
-
-        final Iterator<CollectionProtocolRegistration> cprIter = participant
-                .getCollectionProtocolRegistrationCollection().iterator();
-        while (cprIter.hasNext()) {
-            final CollectionProtocolRegistration collectionProtocolRegistration = (CollectionProtocolRegistration) cprIter
-                    .next();
-
-            final CollectionProtocol collectionProtocol = collectionProtocolRegistration.getCollectionProtocol();
-            final CollectionProtocol cp = CollectionProtocolFactory.getInstance().createObject();
-            cp.setActivityStatus(collectionProtocol.getActivityStatus());
-            cp.setTitle(collectionProtocol.getTitle());
-            cp.setShortTitle(collectionProtocol.getShortTitle());
-
-            final CollectionProtocolRegistration cpr = CollectionProtocolRegistrationFactory.getInstance()
-                    .createObject();
-            cpr.setParticipant(p);
-            cpr.setConsentSignatureDate(collectionProtocolRegistration.getConsentSignatureDate());
-            cpr.setRegistrationDate(collectionProtocolRegistration.getRegistrationDate());
-            cpr.setProtocolParticipantIdentifier(collectionProtocolRegistration.getProtocolParticipantIdentifier());
-            cpr.setActivityStatus(collectionProtocolRegistration.getActivityStatus());
-
-            cpr.setCollectionProtocol(cp);
-            p.getCollectionProtocolRegistrationCollection().add(cpr);
         }
 
         return p;
