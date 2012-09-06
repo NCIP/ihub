@@ -49,10 +49,14 @@ public class CaTissueSpecimenClient {
     private final XStream xStream = new XStream(new StaxDriver());
 
     private static final String ACTIVITY_STATUS_DISABLED = "Disabled";
+
+    // Different Specimen Classes(Tissue, Fluid, Cell,Molecular)
     private static final String TISSUE = "Tissue";
     private static final String FLUID = "Fluid";
     private static final String CELL = "Cell";
     private static final String MOLECULAR = "Molecular";
+
+    // Different possible value for 'GuidanceForBreastCoreBiopsy'
     private static final String SPECIMEN_NOT_EXISTING = "SPECIMEN_NOT_EXISTING";
     private static final String ULTRASOUND = "ULTRASOUND";
     private static final String MRI = "MRI";
@@ -60,6 +64,7 @@ public class CaTissueSpecimenClient {
     private static final String MAMMOGRAPHY = "MAMMOGRAPHY";
     private static final String PALPATION = "PALPATION";
     private static final String OTHER = "OTHER";
+
     private static final String OTHERTEXT_PROVIDED = "\'Other Text\' should be provided only"
             + " when a guidance of \'OTHER\' is selected.";
     private static final String INVALID_BIOPSY_TYPE = "The value for \'Guidance for breast core biopsy\' is invalid.";
@@ -117,10 +122,10 @@ public class CaTissueSpecimenClient {
     public String getExistingSpecimens(String specimenListXMLStr) throws ApplicationException {
 
         // Parse the incoming XML String. The returned object will contain data
-        // from the incoming consents XML
+        // from the incoming specimen XML
         final Specimens incomingSpecimens = parseSpecimenListXML(specimenListXMLStr);
 
-        // Fetch the existing Consents
+        // Fetch the existing Specimens
         final Specimens exitingSpecimens = fetchExistingSpecimens(incomingSpecimens);
 
         return xStream.toXML(exitingSpecimens);
