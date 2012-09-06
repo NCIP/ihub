@@ -8,7 +8,7 @@
 				<mes:serviceType>iHub</mes:serviceType>
 				<mes:operationName>Register Consent</mes:operationName>
 				<mes:externalIdentifier>32225879</mes:externalIdentifier>
-				<mes:caXchangeIdentifier>1342472032462</mes:caXchangeIdentifier>
+				<mes:caXchangeIdentifier>1346948889462</mes:caXchangeIdentifier>
 				<mes:credentials>
 					<mes:userName>tolvenuser</mes:userName>
 					<mes:groupName>nogrid</mes:groupName>
@@ -19,58 +19,135 @@
 			</mes:metadata>
 			<mes:request>
 				<mes:businessMessagePayload>
-					<mes:xmlSchemaDefinition>urn:tolven-org:trim:4.0</mes:xmlSchemaDefinition>
-					<trim:trim xmlns:trim="urn:tolven-org:trim:4.0" xmlns="urn:tolven-org:trim:4.0"
-						xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-						<consents:consents xmlns:consents="http://cacis.nci.nih.gov"
-							xmlns="http://cacis.nci.nih.gov">
-							<participant>
-								<cdmsSubjectId>66604232</cdmsSubjectId>
-							</participant>
-							<consentsDetailsList>
-								<consentDetails>
-									<collectionProtocolEvent>CPL</collectionProtocolEvent>
-									<specimen>
-										<cdmsSpecimenId>TolvenTestUser252TissueSpecimen122</cdmsSpecimenId>
-									</specimen>
-									<collectionProtocol>
-										<title>Tolven Tissue Protocol</title>
-										<shortTitle>ttp</shortTitle>
-									</collectionProtocol>
-									<consentTierResponses>
-										<tier>
-											<statement>This is a statement</statement>
-											<response>Yes</response>
-										</tier>
-										<tier>
-											<statement>This is a second statement.</statement>
-											<response>No</response>
-										</tier>
-									</consentTierResponses>
-								</consentDetails>
-								<consentDetails>
-									<collectionProtocolEvent>CPL</collectionProtocolEvent>
-									<specimen>
-										<cdmsSpecimenId>TolvenTestUser252TissueSpecimen155</cdmsSpecimenId>
-									</specimen>
-									<collectionProtocol>
-										<title>Tolven Tissue Protocol</title>
-										<shortTitle>ttp</shortTitle>
-									</collectionProtocol>
-									<consentTierResponses>
-										<tier>
-											<statement>This is a statement</statement>
-											<response>Not Specified</response>
-										</tier>
-										<tier>
-											<statement>This is a second statement.</statement>
-											<response>Withdrawn</response>
-										</tier>
-									</consentTierResponses>
-								</consentDetails>
-							</consentsDetailsList>
-						</consents:consents>
-					</trim:trim>
+					<mes:xmlSchemaDefinition>urn:hl7-org:v3</mes:xmlSchemaDefinition>
+					<ClinicalDocument:ClinicalDocument
+						xmlns:ClinicalDocument="urn:hl7-org:v3" xmlns="urn:hl7-org:v3"
+						xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+						xsi:schemaLocation="urn:hl7-org:v3 ../cdaXSD/infrastructure/cda/CDA.xsd">
+						<realmCode code="US" />
+						<typeId extension="POCD_HD000040" root="2.16.840.1.113883.1.3" />
+						<templateId assigningAuthorityName="HL7 CCDA"
+							root="2.16.840.1.113883.10.20.22.1.1" />
+						<id extension="echr:patient-1823431:clinicalNote-1833300" root="1.2.1.173000" />
+						<code code="59284-0" codeSystem="2.16.840.1.113883.6.1"
+							codeSystemName="LOINC" displayName="Consent Document Patient">
+							<originalText>Consent Report</originalText>
+						</code>
+						<title>Consent report</title>
+						<effectiveTime value="20110722085054-0700" />
+						<confidentialityCode code="N" />
+						<languageCode code="en-US" />
+						<recordTarget>
+							<patientRole>
+								<id assigningAuthorityName="iSpy2 Study" extension="echr:patient-18234137"
+									root="1.2.1.173000" />
+								<id assigningAuthorityName="ABC Cancer Institute" extension="21318234137"
+									root="1.2.1.173000" />
+								<addr nullFlavor="NI" />
+								<telecom nullFlavor="NI" />
+								<patient>
+									<name use="L">
+										<given>TestOne</given>
+										<given />
+										<family>Patient</family>
+									</name>
+									<administrativeGenderCode code="F"
+										codeSystem="2.16.840.1.113883.5.1" displayName="Female" />
+									<birthTime value="19670131" />
+									<maritalStatusCode code="M"
+										codeSystem="2.16.840.1.113883.5.2" codeSystemName="HL7 MaritalStatus"
+										displayName="Married">
+										<originalText>Now married</originalText>
+									</maritalStatusCode>
+									<raceCode code="2106-3" codeSystem="2.16.840.1.113883.6.238"
+										codeSystemName="Race &amp; Ethnicity - CDC" displayName="White" />
+									<ethnicGroupCode code="2186-5" codeSystem="2.16.840.1.113883.6.238"
+										codeSystemName="Race &amp; Ethnicity - CDC" displayName="Not Hispanic or Latino" />
+								</patient>
+							</patientRole>
+						</recordTarget>
+						<author>
+							<time nullFlavor="NI" />
+							<assignedAuthor>
+								<id extension="matthew.salesi@ucsfmedctr.org" root="1.2.1.173000" />
+								<addr nullFlavor="NI" />
+								<telecom nullFlavor="NI" />
+								<assignedPerson>
+									<name nullFlavor="NI" />
+								</assignedPerson>
+							</assignedAuthor>
+						</author>
+						<custodian>
+							<assignedCustodian>
+								<representedCustodianOrganization>
+									<id extension="TranscendTolven" root="2.16.840.1.113883.3.26.1.7" />
+									<name nullFlavor="NI" />
+									<telecom nullFlavor="NI" />
+									<addr nullFlavor="NI" />
+								</representedCustodianOrganization>
+							</assignedCustodian>
+						</custodian>
+						<component>
+							<structuredBody>
+								<component>
+									<section>
+										<title>Consent</title>
+										<entry typeCode="DRIV">
+											<observation classCode="OBS" moodCode="EVN">
+												<templateId assigningAuthorityName="HL7 CCDA"
+													root="2.16.840.1.113883.10.20.22.4.2" />
+												<id root="b470f6a6-455c-4185-b6f6-b2b90e1c8f68" />
+												<code nullFlavor="OTH">
+													<originalText>Study Calendar Event Time Point</originalText>
+												</code>
+												<value unit="d" value="5" xsi:type="PQ" />
+												<entryRelationship typeCode="SUBJ">
+													<observation classCode="OBS" moodCode="EVN">
+														<templateId assigningAuthorityName="HL7 CCDA"
+															root="2.16.840.1.113883.10.20.22.4.2" />
+														<id root="80f662f4-29d0-474c-b0e0-7108223835dc" />
+														<code code="123038009" codeSystem="2.16.840.1.113883.6.96"
+															displayName="specimen" />
+														<specimen>
+															<specimenRole>
+																<id extension="137_abc" root="fbfe4b85-2bdc-4305-88be-3e1b763d8caa" />
+															</specimenRole>
+														</specimen>
+													</observation>
+												</entryRelationship>
+											</observation>
+										</entry>
+										<entry typeCode="DRIV">
+											<observation classCode="OBS" moodCode="EVN">
+												<templateId assigningAuthorityName="HL7 CCDA"
+													root="2.16.840.1.113883.10.20.22.4.2" />
+												<code code="309370004" codeSystem="2.16.840.1.113883.6.96"
+													displayName="consent status">
+													<originalText>Tier 1 consent response</originalText>
+												</code>
+												<effectiveTime value="20110704" />
+												<value code="373066001" codeSystem="2.16.840.1.113883.6.96"
+													codeSystemName="SNOMED-CT" displayName="yes" xsi:type="CD" />
+											</observation>
+										</entry>
+										<entry typeCode="DRIV">
+											<observation classCode="OBS" moodCode="EVN">
+												<templateId assigningAuthorityName="HL7 CCDA"
+													root="2.16.840.1.113883.10.20.22.4.2" />
+												<code code="309370004" codeSystem="2.16.840.1.113883.6.96"
+													displayName="consent status">
+													<originalText>Tier 2 consent response</originalText>
+												</code>
+												<effectiveTime value="20110704" />
+												<value code="373067005" codeSystem="2.16.840.1.113883.6.96"
+													codeSystemName="SNOMED-CT" displayName="no" xsi:type="CD" />
+											</observation>
+										</entry>
+									</section>
+								</component>
+							</structuredBody>
+						</component>
+					</ClinicalDocument:ClinicalDocument>
 				</mes:businessMessagePayload>
 			</mes:request>
 		</ns2:caxchangerequest>
