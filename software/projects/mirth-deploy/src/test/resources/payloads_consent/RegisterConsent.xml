@@ -46,10 +46,10 @@
 						<recordTarget>
 							<patientRole>
 								<!--study subject identifier -->
-								<id root="1.2.1.173000" extension="echr:patient-18234135"
+								<id root="1.2.1.173000" extension="ct8d23431"
 									assigningAuthorityName="iSpy2 Study" />
 								<!--patient MRN -->
-								<id root="1.2.1.173000" extension="21318234135"
+								<id root="1.2.1.173000" extension="2131823431"
 									assigningAuthorityName="ABC Cancer Institute" />
 								<addr nullFlavor="NI" />
 								<telecom nullFlavor="NI" />
