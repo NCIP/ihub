@@ -185,6 +185,24 @@ public class CaAERSParticipantServiceClientTest {
     }
 
     /**
+     * Testcase for updateParticipant for Off Study
+     * 
+     * @throws JAXBException - JAXBException
+     * @throws MalformedURLException - MalformedURLException
+     */
+    @Test
+    public void updateParticipantOffStudy() throws MalformedURLException, JAXBException {
+        final String participantXMLStr = getParticipantOffStudyString();
+        try {
+            caAERSParticipantServiceClient.updateParticipant(participantXMLStr);
+        } catch (SOAPFaultException e) {
+            Assert.assertEquals(getXMLString("ParticipantSOAPFaultExceptionMsg.txt"), e.getMessage());
+        } catch (IntegrationException e) {
+            Assert.assertEquals(IntegrationError._1053.getErrorCode(), e.getErrorCode());
+        }
+    }
+
+    /**
      * Testcase for deleteParticipant
      * 
      * @throws JAXBException - JAXBException
@@ -214,6 +232,10 @@ public class CaAERSParticipantServiceClientTest {
 
     private String getPStr() {
         return getXMLString("Participant.xml");
+    }
+
+    private String getParticipantOffStudyString() {
+        return getXMLString("Participant_OffStudy.xml");
     }
 
     private String getXMLString(String fileName) {
