@@ -41,14 +41,14 @@ ihub.messages.db.hibernate.showsql=true
 integration.transformer.xsl.baseClassPath=@{user.home.java.path}/.integration/ihub/xsl/
 
 #static-analysis
-run.static.analysis=false
+run.static.analysis=true
 
 # to skip tests or not
-skip.test=true
+skip.test=false
 # to run cobertura review reports
-run.review.reports=false
+run.review.reports=true
 # to run cobertura coverage rate check
-run.cobertura.check=false
+run.cobertura.check=true
 cobertura.branchrate=55
 cobertura.totalbranchrate=55
 cobertura.totallinerate=65
