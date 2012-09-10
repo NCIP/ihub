@@ -34,7 +34,7 @@ public class CaTissueConsentIntegrationTest {
     @Before
     public void initialize() {
         try {
-            caTissueConsentClient = new CaTissueConsentClient("admin@admin.com", "Rohit1234");
+            caTissueConsentClient = new CaTissueConsentClient("admin@admin.com", "caTissue20");
         } catch (BeansException e) {
             LOG.error("CaTissueConsentIntegrationTest-BeansException inside initialize() ", e);
         } catch (MalformedURLException e) {

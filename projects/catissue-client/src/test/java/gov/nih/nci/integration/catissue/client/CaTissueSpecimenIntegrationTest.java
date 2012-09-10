@@ -33,7 +33,7 @@ public class CaTissueSpecimenIntegrationTest {
     @Before
     public void initialize() {
         try {
-            caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "Rohit1234");
+            caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "caTissue20");
         } catch (BeansException e) {
             LOG.error("CaTissueConsentIntegrationTest-BeansException inside initialize() ", e);
         } catch (MalformedURLException e) {

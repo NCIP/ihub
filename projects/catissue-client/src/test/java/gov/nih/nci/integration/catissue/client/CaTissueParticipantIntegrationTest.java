@@ -53,7 +53,7 @@ public class CaTissueParticipantIntegrationTest {
      * @throws Exception - Exception
      */
     public CaTissueParticipantIntegrationTest() throws Exception {
-        caTissueParticipantClient = new CaTissueParticipantClient("admin@admin.com", "Rohit1234");
+        caTissueParticipantClient = new CaTissueParticipantClient("admin@admin.com", "caTissue20");
     }
 
     /**
