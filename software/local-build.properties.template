@@ -12,7 +12,7 @@ catissue.client.auth.url=http://localhost:8080/catissuecore/http/remoteAuthentic
 
 ## transcend-catissue properties
 catissue.api.login.username=admin@admin.com
-catissue.api.login.password=Aa_111111
+catissue.api.login.password=caTissue20
 catissue.api.service.retry=2
 catissue.api.participant.xsl=MsgBroadcasterParticipant-to-caTissueParticipant.xsl
 catissue.api.specimen.xsl=MsgBroadcasterSpecimen-to-caTissueSpecimens.xsl
