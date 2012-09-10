@@ -19,8 +19,8 @@ catissue.api.specimen.xsl=MsgBroadcasterSpecimen-to-caTissueSpecimens.xsl
 catissue.api.consent.xsl=MsgBroadcasterConsent-to-caTissueConsents.xsl
 
 ## caaers-client properties
-caaers.client.user=SYSTEM_ADMIN
-caaers.client.psswd=system_admin
+caaers.client.user=mayo-super-user
+caaers.client.psswd=Hello-12
 caaers.registration.service.url=https://localhost:8443/caaers/services/ParticipantService
 caaers.adverseevent.service.url=https://localhost:8443/caaers/services/AdverseEventManagementService
 caaers.retry.count=2
