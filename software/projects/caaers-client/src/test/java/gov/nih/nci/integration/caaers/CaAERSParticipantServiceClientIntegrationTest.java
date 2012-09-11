@@ -53,11 +53,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContext-caaers-client-test.xml")
-public class CaAERSParticipantServiceClientTest {
+public class CaAERSParticipantServiceClientIntegrationTest {
 
     @Autowired
     private CaAERSParticipantServiceWSClient caAERSParticipantServiceClient;
-    private static final Logger LOG = LoggerFactory.getLogger(CaAERSParticipantServiceClientTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CaAERSParticipantServiceClientIntegrationTest.class);
 
     /**
      * Testcase for marshlling participant type
@@ -240,7 +240,7 @@ public class CaAERSParticipantServiceClientTest {
 
     private String getXMLString(String fileName) {
         String contents = null;
-        final InputStream is = CaAERSAdverseEventServiceClientTest.class.getClassLoader().getResourceAsStream(
+        final InputStream is = CaAERSAdverseEventServiceClientIntegrationTest.class.getClassLoader().getResourceAsStream(
                 "payloads_participant/" + fileName);
         try {
             contents = org.apache.cxf.helpers.IOUtils.toString(is);

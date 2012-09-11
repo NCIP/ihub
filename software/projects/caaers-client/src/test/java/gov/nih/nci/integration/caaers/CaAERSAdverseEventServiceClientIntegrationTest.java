@@ -45,11 +45,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContext-caaers-client-test.xml")
-public class CaAERSAdverseEventServiceClientTest {
+public class CaAERSAdverseEventServiceClientIntegrationTest {
 
     @Autowired
     private CaAERSAdverseEventServiceWSClient caAERSAdverseEventServiceWSClient;
-    private static final Logger LOG = LoggerFactory.getLogger(CaAERSAdverseEventServiceClientTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CaAERSAdverseEventServiceClientIntegrationTest.class);
 
     /**
      * TestCase for Creating Adverse Event in caAERS
@@ -512,7 +512,7 @@ public class CaAERSAdverseEventServiceClientTest {
 
     private String getXMLString(String fileName) {
         String contents = null;
-        final InputStream is = CaAERSAdverseEventServiceClientTest.class.getClassLoader().getResourceAsStream(
+        final InputStream is = CaAERSAdverseEventServiceClientIntegrationTest.class.getClassLoader().getResourceAsStream(
                 "payloads_adverseevent/" + fileName);
         try {
             contents = org.apache.cxf.helpers.IOUtils.toString(is);
