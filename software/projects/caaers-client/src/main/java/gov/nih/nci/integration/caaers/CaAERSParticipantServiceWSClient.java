@@ -51,9 +51,9 @@ public class CaAERSParticipantServiceWSClient {
 
     private ParticipantServiceInterface client;
 
-    private final String userName;
+    private String userName;
 
-    private final ClientPasswordCallback clientPasswordCallback;
+    private ClientPasswordCallback clientPasswordCallback;
 
     private static final Logger LOG = LoggerFactory.getLogger(CaAERSParticipantServiceWSClient.class);
 
@@ -104,6 +104,22 @@ public class CaAERSParticipantServiceWSClient {
         final TLSClientParameters tlsClientParams = new TLSClientParameters();
         tlsClientParams.setDisableCNCheck(true);
         http.setTlsClientParameters(tlsClientParams);
+    }
+
+    /**
+     * Constructor used for Mocking purpose
+     * 
+     * @param client - ParticipantServiceInterface
+     * @throws IntegrationException - IntegrationException
+     */
+    public CaAERSParticipantServiceWSClient(ParticipantServiceInterface client) throws IntegrationException {
+        try {
+            getUnmarshaller();
+            this.client = client;
+        } catch (JAXBException e) {
+            LOG.error("CaAERSParticipantServiceWSClient()..JAXBException while unmarshlling", e);
+            throw new IntegrationException(IntegrationError._1054, e.getMessage());// NOPMD
+        }
     }
 
     private Unmarshaller getUnmarshaller() throws JAXBException {

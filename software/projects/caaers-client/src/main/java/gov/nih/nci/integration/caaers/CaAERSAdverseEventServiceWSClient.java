@@ -39,8 +39,8 @@ public class CaAERSAdverseEventServiceWSClient {
 
     private Unmarshaller unmarshaller = null;
     private AdverseEventManagementServiceInterface client;
-    private final String userName;
-    private final ClientPasswordCallback clientPasswordCallback;
+    private String userName;
+    private ClientPasswordCallback clientPasswordCallback;
     private static final Logger LOG = LoggerFactory.getLogger(CaAERSAdverseEventServiceWSClient.class);
 
     /**
@@ -87,6 +87,22 @@ public class CaAERSAdverseEventServiceWSClient {
         final TLSClientParameters tlsClientParams = new TLSClientParameters();
         tlsClientParams.setDisableCNCheck(true);
         http.setTlsClientParameters(tlsClientParams);
+    }
+
+    /**
+     * Constructor used for Mocking purpose
+     * 
+     * @param client - AdverseEventManagementServiceInterface
+     * @throws IntegrationException - IntegrationException
+     */
+    public CaAERSAdverseEventServiceWSClient(AdverseEventManagementServiceInterface client) throws IntegrationException {
+        try {
+            getUnmarshaller();
+            this.client = client;
+        } catch (JAXBException e) {
+            LOG.error("CaAERSAdverseEventServiceWSClient()..JAXBException while unmarshlling", e);
+            throw new IntegrationException(IntegrationError._1054, e);
+        }
     }
 
     /**
