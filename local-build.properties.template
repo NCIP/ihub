@@ -49,9 +49,9 @@ skip.test=false
 run.review.reports=true
 # to run cobertura coverage rate check
 run.cobertura.check=true
-cobertura.branchrate=55
-cobertura.totalbranchrate=55
-cobertura.totallinerate=65
+cobertura.branchrate=58
+cobertura.totalbranchrate=58
+cobertura.totallinerate=70
 
 ## Mostly required by the Integration and Load tests
 
