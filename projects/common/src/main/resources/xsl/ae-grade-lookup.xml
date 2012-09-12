@@ -1,0 +1,22 @@
+<g:grades xmlns:g="http://caaers/adverseevent/grade/data">
+	<g:grade>
+		<g:vockey>CTCAE Grade 1</g:vockey>
+		<g:vocvalue>1</g:vocvalue>
+	</g:grade>
+	<g:grade>
+		<g:vockey>CTCAE Grade 2</g:vockey>
+		<g:vocvalue>2</g:vocvalue>
+	</g:grade>
+	<g:grade>
+		<g:vockey>CTCAE Grade 3</g:vockey>
+		<g:vocvalue>3</g:vocvalue>
+	</g:grade>
+	<g:grade>
+		<g:vockey>CTCAE Grade 4</g:vockey>
+		<g:vocvalue>4</g:vocvalue>
+	</g:grade>
+	<g:grade>
+		<g:vockey>CTCAE Grade 5</g:vockey>
+		<g:vocvalue>5</g:vocvalue>
+	</g:grade>
+</g:grades>

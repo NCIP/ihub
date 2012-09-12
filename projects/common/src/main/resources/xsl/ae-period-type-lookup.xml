@@ -1,0 +1,14 @@
+<p:periodtype xmlns:p="http://caaers/adverseevent/periodtype/data">
+	<p:type>
+		<p:vockey>Screening Period</p:vockey>
+		<p:vocvalue>Screening</p:vocvalue>
+	</p:type>
+	<p:type>
+		<p:vockey>Treatment Period</p:vockey>
+		<p:vocvalue>Treatment</p:vocvalue>
+	</p:type>
+	<p:type>
+		<p:vockey>Follow-up Period</p:vockey>
+		<p:vocvalue>Follow-up</p:vocvalue>
+	</p:type>
+</p:periodtype>

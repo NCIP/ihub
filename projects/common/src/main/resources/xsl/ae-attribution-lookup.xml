@@ -1,0 +1,22 @@
+<a:attributiontype xmlns:a="http://caaers/adverseevent/attribution/data">
+	<a:attribution>
+		<a:vockey>Unrelated</a:vockey>
+		<a:vocvalue>UNRELATED</a:vocvalue>
+	</a:attribution>
+	<a:attribution>
+		<a:vockey>Unlikely</a:vockey>
+		<a:vocvalue>UNLIKELY</a:vocvalue>
+	</a:attribution>
+	<a:attribution>
+		<a:vockey>371930009</a:vockey>
+		<a:vocvalue>POSSIBLE</a:vocvalue>
+	</a:attribution>
+	<a:attribution>
+		<a:vockey>Probable</a:vockey>
+		<a:vocvalue>PROBABLE</a:vocvalue>
+	</a:attribution>
+	<a:attribution>
+		<a:vockey>255545003</a:vockey>
+		<a:vocvalue>DEFINITE</a:vocvalue>
+	</a:attribution>
+</a:attributiontype>
