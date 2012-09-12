@@ -1,0 +1,26 @@
+<r:reasons xmlns:r="http://caaers/adverseevent/seriousreasons/data">
+	<r:reason>
+		<r:vockey>405535005</r:vockey>
+		<r:vocvalue>DEATH</r:vocvalue>
+	</r:reason>
+	<r:reason>
+		<r:vockey>440181000</r:vockey>
+		<r:vocvalue>LIFE_THREATENING</r:vocvalue>
+	</r:reason>
+	<r:reason>
+		<r:vockey>308540004</r:vockey>
+		<r:vocvalue>HOSPITALIZATION</r:vocvalue>
+	</r:reason>
+	<r:reason>
+		<r:vockey>Results in persistent or significant incapacity or substantial disruption of the ability to conduct normal life functions</r:vockey>
+		<r:vocvalue>DISABILITY</r:vocvalue>
+	</r:reason>
+	<r:reason>
+		<r:vockey>66091009</r:vockey>
+		<r:vocvalue>CONGENITAL_ANOMALY</r:vocvalue>
+	</r:reason>
+	<r:reason>
+		<r:vockey>Other - Specific Reason</r:vockey>
+		<r:vocvalue>OTHER_SERIOUS</r:vocvalue>
+	</r:reason>
+</r:reasons>
