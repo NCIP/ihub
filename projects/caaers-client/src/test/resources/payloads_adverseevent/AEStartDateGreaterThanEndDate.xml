@@ -12,7 +12,7 @@
 			<attributionSummary>POSSIBLE</attributionSummary>
 			<startDate>2012-07-17-04:00</startDate>
 			<endDate>2012-07-11-04:00</endDate>
-			<ctepCode>Adrenal insufficiency</ctepCode>
+			<ctepCode>10001367</ctepCode>
 			<outcome>
 				<outComeEnumType>LIFE_THREATENING</outComeEnumType>
 			</outcome>
@@ -27,7 +27,7 @@
 			<attributionSummary>DEFINITE</attributionSummary>
 			<startDate>2012-07-10-04:00</startDate>
 			<endDate>2012-07-11-04:00</endDate>
-			<ctepCode>Aspartateamino transferase increased</ctepCode>
+			<ctepCode>10003481</ctepCode>
 			<outcome>
 				<outComeEnumType>CONGENITAL_ANOMALY</outComeEnumType>
 			</outcome>
