@@ -340,7 +340,7 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
             final AdverseEventType event2 = getAdverseEvent2();
             adverseEvents.getAdverseEvent().add(event2);
 
-            criteria.setParticipantIdentifier("PM-113");
+            criteria.setStudySubjectIdentifier("PM-113");
             criteria.setStudyIdentifier("7216");
             final CourseType course = getCourseType();
             criteria.setCourse(course);
