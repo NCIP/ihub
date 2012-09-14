@@ -1,7 +1,6 @@
 package gov.nih.nci.integration.caaers;
 
 import gov.nih.nci.integration.caaers.invoker.CaAERSAdverseEventServiceInvocationStrategy;
-import gov.nih.nci.integration.caaers.invoker.CaAERSUpdateAdverseEventServiceInvocationStrategy;
 import gov.nih.nci.integration.dao.ServiceInvocationMessageDao;
 import gov.nih.nci.integration.domain.ServiceInvocationMessage;
 import gov.nih.nci.integration.domain.StrategyIdentifier;
@@ -35,9 +34,6 @@ public class CaAERSAdverseEventServiceInvocationStrategyIntegrationTest {
     private CaAERSAdverseEventServiceInvocationStrategy caAERSAdverseEventServiceInvocationStrategy;
 
     @Autowired
-    private CaAERSUpdateAdverseEventServiceInvocationStrategy caAERSUpdateAdverseEventServiceInvocationStrategy;
-
-    @Autowired
     private ServiceInvocationMessageDao serviceInvocationMessageDao;
 
     private static final Long REFMSGID = 12345L;
@@ -67,36 +63,14 @@ public class CaAERSAdverseEventServiceInvocationStrategyIntegrationTest {
 
     }
 
-    /**
-     * Tests updateAdverseEvent using the ServiceInvocationStrategy class.
-     */
-    @Test
-    public void updateAdverseEvent() {
-
-        final ServiceBroadcaster sb = new DefaultServiceBroadcaster(serviceInvocationMessageDao);
-        sb.delegateServiceInvocation(REFMSGID, getAEInterimMessage(), caAERSUpdateAdverseEventServiceInvocationStrategy);
-
-        final Map<StrategyIdentifier, ServiceInvocationMessage> msgsMap = serviceInvocationMessageDao
-                .getAllByReferenceMessageId(REFMSGID);
-
-        Assert.assertNotNull(msgsMap);
-        Assert.assertFalse(msgsMap.isEmpty());
-
-        final ServiceInvocationMessage resultMsg = msgsMap.get(caAERSUpdateAdverseEventServiceInvocationStrategy
-                .getStrategyIdentifier());
-        Assert.assertNotNull(resultMsg);
-        Assert.assertNotNull(resultMsg.getInvocationException());
-
-    }
-
     private String getAEInterimMessage() {
         return getXMLString("AEInterimXML.xml");
     }
 
     private String getXMLString(String fileName) {
         String contents = null;
-        final InputStream is = CaAERSAdverseEventServiceClientIntegrationTest.class.getClassLoader().getResourceAsStream(
-                "payloads_adverseevent/" + fileName);
+        final InputStream is = CaAERSAdverseEventServiceClientIntegrationTest.class.getClassLoader()
+                .getResourceAsStream("payloads_adverseevent/" + fileName);
         try {
             contents = org.apache.cxf.helpers.IOUtils.toString(is);
         } catch (IOException e) {
