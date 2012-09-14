@@ -70,7 +70,7 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
     /**
      * TestCase for Creating Adverse Event in caAERS when Study does not exist in caAERS.
      */
-    //@Test
+    @Test
     public void createAEStudyNotExist() {
         final String adverseEventXMLStr = getAEStudyNotExist();
         try {
@@ -86,7 +86,7 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
     /**
      * TestCase for Creating Adverse Event in caAERS when Participant does not exist in caAERS.
      */
-    // @Test
+    @Test
     public void createAEParticipantNotExist() {
         final String adverseEventXMLStr = getAEParticipantNotExist();
         try {
@@ -102,7 +102,7 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
     /**
      * TestCase for Creating Adverse Event in caAERS when Participant is NOT assigned to given Study.
      */
-    // @Test
+    @Test
     public void createAEParticipantNotAssignedToStudy() {
         final String adverseEventXMLStr = getAEParticipantNotAssignedToStudy();
         try {
@@ -118,7 +118,7 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
     /**
      * TestCase for Creating Adverse Event in caAERS when startDate of an AE is Invalid
      */
-    // @Test
+    @Test
     public void createAEInvalidStartDateofAE() {
         final String adverseEventXMLStr = getAEInvalidAEStartDate();
         try {
@@ -134,7 +134,7 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
     /**
      * TestCase for Creating Adverse Event in caAERS when endDate of an AE is Invalid. The endDate is Blank in this case
      */
-    // @Test
+    @Test
     public void createAEInvalidEndDateofAE() {
         final String adverseEventXMLStr = getAEInvalidAEEndDate();
         try {
@@ -150,7 +150,7 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
     /**
      * TestCase for Creating Adverse Event in caAERS when startDate on AE is greater than endDate
      */
-    // @Test
+    @Test
     public void createAEInvalidStartEndDateCombinationofAE() {
         final String adverseEventXMLStr = getAEStartDateGreaterThanEndDate();
         try {
@@ -166,7 +166,7 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
     /**
      * TestCase for Creating Adverse Event in caAERS when startDate of the Course is Invalid
      */
-    // @Test
+    @Test
     public void createAEStartDateOfThisCourse() {
         final String adverseEventXMLStr = getAEInvalidStartDateOfThisCourse();
         CreateOrUpdateAdverseEventResponse response = null;
@@ -183,7 +183,7 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
     /**
      * TestCase for Creating Adverse Event in caAERS when endDate of the Course is Invalid
      */
-    // @Test
+    @Test
     public void createAEEndDateOfThisCourse() {
         final String adverseEventXMLStr = getAEInvalidEndDateOfThisCourse();
         try {
@@ -199,7 +199,7 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
     /**
      * TestCase for Creating Adverse Event in caAERS when startDate is greater than the endDate of the Course
      */
-    // @Test
+    @Test
     public void createAEStartDateGreaterThanEndDateOfThisCourse() {
         final String adverseEventXMLStr = getAEStartDateGreaterEndDateofThisCourse();
         try {
@@ -215,7 +215,7 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
     /**
      * TestCase for Creating Adverse Event in caAERS when OutComeEnumType is Invalid
      */
-    // @Test
+    @Test
     public void createAEInvalidOutComeEnumType() {
         final String adverseEventXMLStr = getAEInvalidOutComeEnumType();
         CreateOrUpdateAdverseEventResponse response = null;
@@ -232,7 +232,7 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
     /**
      * TestCase for Creating Adverse Event in caAERS when AttributionType is Invalid
      */
-    // @Test
+    @Test
     public void createAEInvalidAttributionType() {
         final String adverseEventXMLStr = getAEInvalidArrtibutionType();
         CreateOrUpdateAdverseEventResponse response = null;
@@ -243,208 +243,14 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
         } catch (SOAPFaultException e) {
             LOG.debug("SOAPFaultException occured while calling CreateAEInvalidAttributionType. ", e);
         }
-        assertNull(response);
-    }
-
-    /**
-     * TestCase for Updating the Adverse Event in caAERS
-     */
-//     @Test
-    public void updateAdverseEvent() {
-        try {
-            final CreateOrUpdateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
-                    .updateAdverseEvent(getAdverseEventXMLStr());
-            assertEquals("Response code is NOT proper for updateAdverseEvent.", "PROCESSED", response
-                    .getCaaersServiceResponse().getServiceResponse().getStatus().name());
-        } catch (JAXBException e) {
-            Assert.fail("JAXBException occured while calling updateAdverseEvent. " + e);
-        }
-
-    }
-
-    /**
-     * TestCase for Updating the Adverse Event in caAERS when Study does not exist in caAERS.
-     */
- //  @Test
-    public void updateAEStudyNotExist() {
-        final String adverseEventXMLStr = getAEStudyNotExist();
-        try {
-            final CreateOrUpdateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
-                    .updateAdverseEvent(adverseEventXMLStr);
-            assertEquals("Response code is NOT proper for UpdateAEStudyNotExist.", "FAILED_TO_PROCESS", response
-                    .getCaaersServiceResponse().getServiceResponse().getStatus().name());
-        } catch (JAXBException e) {
-            Assert.fail("JAXBException occured while calling updateAEStudyNotExist. " + e);
-        }
-    }
-
-    /**
-     * TestCase for Updating the Adverse Event in caAERS when Participant does not exist in caAERS.
-     */
-    // @Test
-    public void updateAEParticipantNotExist() {
-        final String adverseEventXMLStr = getAEParticipantNotExist();
-        try {
-            final CreateOrUpdateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
-                    .updateAdverseEvent(adverseEventXMLStr);
-            assertEquals("Response code is NOT proper for UpdateAEParticipantNotExist.", "FAILED_TO_PROCESS", response
-                    .getCaaersServiceResponse().getServiceResponse().getStatus().name());
-        } catch (JAXBException e) {
-            Assert.fail("JAXBException occured while calling updateAEParticipantNotExist. " + e);
-        }
-    }
-
-    /**
-     * TestCase for Updating the Adverse Event in caAERS when Participant is NOT assigned to given Study.
-     */
-    // @Test
-    public void updateAEParticipantNotAssignedToStudy() {
-        final String adverseEventXMLStr = getAEParticipantNotAssignedToStudy();
-        try {
-            final CreateOrUpdateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
-                    .updateAdverseEvent(adverseEventXMLStr);
-            assertEquals("Response code is NOT proper for UpdateAEParticipantNotAssignedToStudy.", "FAILED_TO_PROCESS",
-                    response.getCaaersServiceResponse().getServiceResponse().getStatus().name());
-        } catch (JAXBException e) {
-            Assert.fail("JAXBException occured while calling updateAEParticipantNotAssignedToStudy. " + e);
-        }
-    }
-
-    /**
-     * TestCase for Updating the Adverse Event in caAERS when startDate of an AE is Invalid
-     */
-    // @Test
-    public void updateAEInvalidStartDateofAE() {
-        final String adverseEventXMLStr = getAEInvalidAEStartDate();
-        try {
-            final CreateOrUpdateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
-                    .updateAdverseEvent(adverseEventXMLStr);
-            assertEquals("Response code is NOT proper for UpdateAEInvalidStartDateofAE.", "FAILED_TO_PROCESS", response
-                    .getCaaersServiceResponse().getServiceResponse().getStatus().name());
-        } catch (JAXBException e) {
-            Assert.fail("JAXBException occured while calling updateAEInvalidStartDateofAE. " + e);
-        }
-    }
-
-    /**
-     * TestCase for Updating the Adverse Event in caAERS when endDate of an AE is Invalid.
-     */
-    // @Test
-    public void updateAEInvalidEndDateofAE() {
-        final String adverseEventXMLStr = getAEInvalidAEEndDate();
-        try {
-            final CreateOrUpdateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
-                    .updateAdverseEvent(adverseEventXMLStr);
-            assertEquals("Response code is NOT proper for UpdateAEInvalidEndDateofAE.", "FAILED_TO_PROCESS", response
-                    .getCaaersServiceResponse().getServiceResponse().getStatus().name());
-        } catch (JAXBException e) {
-            Assert.fail("JAXBException occured while calling updateAEInvalidEndDateofAE. " + e);
-        }
-    }
-
-    /**
-     * TestCase for Updating the Adverse Event in caAERS when startDate on AE is greater than endDate
-     */
-    // @Test
-    public void updateAEInvalidStartEndDateCombinationofAE() {
-        final String adverseEventXMLStr = getAEStartDateGreaterThanEndDate();
-        try {
-            final CreateOrUpdateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
-                    .updateAdverseEvent(adverseEventXMLStr);
-            assertEquals("Response code is NOT proper for UpdateAEInvalidStartEndDateCombinationofAE.",
-                    "FAILED_TO_PROCESS", response.getCaaersServiceResponse().getServiceResponse().getStatus().name());
-        } catch (JAXBException e) {
-            Assert.fail("JAXBException occured while calling updateAEInvalidStartEndDateCombinationofAE. " + e);
-        }
-    }
-
-    /**
-     * TestCase for Updating the Adverse Event in caAERS when startDate of the Course is Invalid
-     */
-    // @Test
-    public void updateAEStartDateOfThisCourse() {
-        final String adverseEventXMLStr = getAEInvalidStartDateOfThisCourse();
-        CreateOrUpdateAdverseEventResponse response = null;
-        try {
-            response = caAERSAdverseEventServiceWSClient.updateAdverseEvent(adverseEventXMLStr);
-        } catch (JAXBException e) {
-            Assert.fail("JAXBException occured while calling updateAEStartDateOfThisCourse. " + e);
-        } catch (SOAPFaultException e) {
-            LOG.debug("SOAPFaultException occured while calling updateAEStartDateOfThisCourse. ", e);
-        }
-        assertNull(response);
-    }
-
-    /**
-     * TestCase for Updating the Adverse Event in caAERS when endDate of the Course is Invalid
-     */
-    // @Test
-    public void updateAEEndDateOfThisCourse() {
-        final String adverseEventXMLStr = getAEInvalidEndDateOfThisCourse();
-        try {
-            final CreateOrUpdateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
-                    .updateAdverseEvent(adverseEventXMLStr);
-            assertEquals("Response code is NOT proper for UpdateAEEndDateOfThisCourse.", "FAILED_TO_PROCESS", response
-                    .getCaaersServiceResponse().getServiceResponse().getStatus().name());
-        } catch (JAXBException e) {
-            Assert.fail("JAXBException occured while calling updateAEEndDateOfThisCourse. " + e);
-        }
-    }
-
-    /**
-     * TestCase for Updating the Adverse Event in caAERS when startDate is greater than the endDate of the Course
-     */
-    // @Test
-    public void updateAEStartDateGreaterThanEndDateOfThisCourse() {
-        final String adverseEventXMLStr = getAEStartDateGreaterEndDateofThisCourse();
-        try {
-            final CreateOrUpdateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
-                    .updateAdverseEvent(adverseEventXMLStr);
-            assertEquals("Response code is NOT proper for updateAEStartDateGreaterThanEndDateOfThisCourse.",
-                    "FAILED_TO_PROCESS", response.getCaaersServiceResponse().getServiceResponse().getStatus().name());
-        } catch (JAXBException e) {
-            Assert.fail("JAXBException occured while calling updateAEStartDateGreaterThanEndDateOfThisCourse. " + e);
-        }
-    }
-
-    /**
-     * TestCase for Updating the Adverse Event in caAERS when OutComeEnumType is Invalid
-     */
-    // @Test
-    public void updateAEInvalidOutComeEnumType() {
-        final String adverseEventXMLStr = getAEInvalidOutComeEnumType();
-        CreateOrUpdateAdverseEventResponse response = null;
-        try {
-            response = caAERSAdverseEventServiceWSClient.updateAdverseEvent(adverseEventXMLStr);
-        } catch (JAXBException e) {
-            Assert.fail("JAXBException occured while calling updateAEInvalidOutComeEnumType. " + e);
-        } catch (SOAPFaultException e) {
-            LOG.debug("SOAPFaultException occured while calling updateAEInvalidOutComeEnumType. ", e);
-        }
-        assertNull(response);
-    }
-
-    /**
-     * TestCase for Updating the Adverse Event in caAERS when AttributionType is Invalid
-     */
-    // @Test
-    public void updateAEInvalidAttributionType() {
-        final String adverseEventXMLStr = getAEInvalidArrtibutionType();
-        CreateOrUpdateAdverseEventResponse response = null;
-        try {
-            response = caAERSAdverseEventServiceWSClient.updateAdverseEvent(adverseEventXMLStr);
-        } catch (JAXBException e) {
-            Assert.fail("JAXBException occured while calling updateAEInvalidAttributionType. " + e);
-        } catch (SOAPFaultException e) {
-            LOG.debug("SOAPFaultException occured while calling updateAEInvalidAttributionType. ", e);
-        }
-        assertNull(response);
+        assertEquals("Response code is NOT proper for createAEInvalidAttributionType.", "FAILED_TO_PROCESS", response
+                .getCaaersServiceResponse().getServiceResponse().getStatus().name());
     }
 
     /**
      * TestCase for Deleting/Rollbacking the Adverse Event in caAERS
      */
-//    @Test
+    // @Test
     public void deleteAdverseEvent() {
         try {
             final DeleteAdverseEventResponse response = caAERSAdverseEventServiceWSClient
@@ -512,8 +318,8 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
 
     private String getXMLString(String fileName) {
         String contents = null;
-        final InputStream is = CaAERSAdverseEventServiceClientIntegrationTest.class.getClassLoader().getResourceAsStream(
-                "payloads_adverseevent/" + fileName);
+        final InputStream is = CaAERSAdverseEventServiceClientIntegrationTest.class.getClassLoader()
+                .getResourceAsStream("payloads_adverseevent/" + fileName);
         try {
             contents = org.apache.cxf.helpers.IOUtils.toString(is);
         } catch (IOException e) {
