@@ -684,10 +684,11 @@
 <xs:element ref="criteria">
 <xs:annotation>
 <xs:documentation>Adverse Event Creation Criteria .
-				            	Required Criteria : Participant Identifier , Stuy Identifier , course/cycle information.
-				            	Conditions enforced in servive implementation.
+				            	Required Criteria : StudySubject Identifier, Study Identifier, course/cycle information.
+				            	Conditions enforced in service implementation.
 				            	1. Participant and Study should be existing in caAERS.
-				            	2. Adverse Event Management Service creates course if course is not present in caAERS System.   	
+				            	2. Participant should be registered in that study.
+				            	3. Adverse Event Management Service creates course if course is not present in caAERS System.   	
 				            </xs:documentation>
 </xs:annotation>
 </xs:element>
@@ -697,7 +698,7 @@
 <xs:element name="criteria" type="Criteria"></xs:element>
 <xs:complexType name="Criteria">
 <xs:sequence>
-<xs:element name="participantIdentifier" type="cct:CustomStringType"></xs:element>
+<xs:element name="studySubjectIdentifier" type="cct:CustomStringType"></xs:element>
 <xs:element name="studyIdentifier" type="cct:CustomStringType"></xs:element>
 <xs:element name="course" type="CourseType"></xs:element>
 </xs:sequence>

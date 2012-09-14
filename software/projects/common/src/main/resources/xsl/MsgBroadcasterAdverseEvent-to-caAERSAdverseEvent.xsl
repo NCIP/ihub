@@ -44,10 +44,10 @@
 				</xsl:for-each>
 			</ns22:adverseEvents>
 			<ns22:criteria>
-				<participantIdentifier>
+				<studySubjectIdentifier>
 					<xsl:value-of
-						select="ns2:caxchangerequest/a:adverseeventinput/a:criteria/a:participantIdentifier" />
-				</participantIdentifier>
+						select="ns2:caxchangerequest/a:adverseeventinput/a:criteria/a:studySubjectIdentifier" />
+				</studySubjectIdentifier>
 				<studyIdentifier>
 					<xsl:value-of
 						select="ns2:caxchangerequest/a:adverseeventinput/a:criteria/a:studyIdentifier" />
