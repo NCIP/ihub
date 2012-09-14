@@ -60,9 +60,10 @@
 					select="$clinicalDocument/ns1:recordTarget/ns1:patientRole" />
 				<criteria>
 					<participantIdentifier>
+						<!-- setting MRN here -->
 						<xsl:call-template name="show-id">
 							<xsl:with-param name="id"
-								select="$patientRole/ns1:id[@assigningAuthorityName='iSpy2 Study']" />
+								select="$patientRole/ns1:id[@assigningAuthorityName!='iSpy2 Study']" />
 						</xsl:call-template>
 					</participantIdentifier>
 					<studyIdentifier>
@@ -73,6 +74,7 @@
 					</studyIdentifier>
 					<course>
 						<startDateOfThisCourse>
+							<!-- Reporting Period Start date -->
 							<xsl:call-template name="show-dateTime">
 								<xsl:with-param name="dateTime"
 									select="//ns1:act[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.30']/ns1:effectiveTime/ns1:low/@value" />
@@ -85,12 +87,14 @@
 							</xsl:call-template>
 						</endDateOfThisCourse>
 						<treatmentType>
+							<!-- Period Type -->
 							<xsl:call-template name="show-period-type">
 								<xsl:with-param name="periodType"
 									select="//ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='272117007'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:value/ns1:originalText" />
 							</xsl:call-template>
 						</treatmentType>
 						<treatmentAssignmentCode>
+							<!-- Assigned Treatment -->
 							<xsl:value-of
 								select="//ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.13'][ns1:code[@code='225334002'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:value/ns1:originalText" />
 						</treatmentAssignmentCode>
@@ -115,6 +119,7 @@
 					select="$observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.9']/ns1:value" />
 			</verbatim>
 			<ctepCode>
+				<!-- adverse event coded term -->
 				<xsl:value-of
 					select="$observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.9']/ns1:value/@code" />
 			</ctepCode>
@@ -125,12 +130,14 @@
 				</xsl:call-template>
 			</grade>
 			<startDate>
+				<!-- Onset Date -->
 				<xsl:call-template name="show-dateTime">
 					<xsl:with-param name="dateTime"
 						select="$observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.7']/ns1:effectiveTime/ns1:low/@value" />
 				</xsl:call-template>
 			</startDate>
 			<endDate>
+				<!-- Resolution Date -->
 				<xsl:call-template name="show-dateTime">
 					<xsl:with-param name="dateTime"
 						select="$observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.7']/ns1:effectiveTime/ns1:high/@value" />
@@ -143,6 +150,7 @@
 				</xsl:call-template>
 			</expected>
 			<attributionSummary>
+				<!-- Attribution -->
 				<xsl:call-template name="show-attribution">
 					<xsl:with-param name="attributionValue"
 						select="$observation/ns1:entryRelationship/ns1:observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@nullFlavor='OTH']/ns1:originalText='Attribution']/ns1:value" />

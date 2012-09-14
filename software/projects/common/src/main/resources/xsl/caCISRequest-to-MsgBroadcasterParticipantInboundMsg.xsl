@@ -102,6 +102,7 @@
 								id="1" version="1">
 								<p:type>MRN</p:type>
 								<p:value>
+									<!-- patient MRN -->
 									<xsl:call-template name="show-id">
 										<xsl:with-param name="id"
 											select="$patientRole/ns1:id[@assigningAuthorityName !='iSpy2 Study']" />
@@ -110,6 +111,7 @@
 								<p:primaryIndicator>true</p:primaryIndicator>
 								<p:organization id="1" version="1">
 									<p:name>
+										<!-- site identifier -->
 										<xsl:call-template name="show-id">
 											<xsl:with-param name="id"
 												select="$clinicalDocument/ns1:documentationOf/ns1:serviceEvent/ns1:id[../ns1:code/ns1:originalText='site-specific component of clinical trial']" />
@@ -139,6 +141,7 @@
 						<p:assignments>
 							<p:assignment id="1" version="1">
 								<p:studySubjectIdentifier>
+									<!-- study subject identifier -->
 									<xsl:call-template name="show-id">
 										<xsl:with-param name="id"
 											select="$patientRole/ns1:id[@assigningAuthorityName='iSpy2 Study']" />
@@ -150,6 +153,7 @@
 											<p:identifier id="1" version="1">
 												<p:type>Other</p:type>
 												<p:value>
+													<!-- study identifier -->
 													<xsl:call-template name="show-id">
 														<xsl:with-param name="id"
 															select="$clinicalDocument/ns1:documentationOf/ns1:serviceEvent/ns1:id[../ns1:code/ns1:originalText='clinical trial']" />
@@ -160,6 +164,7 @@
 									</p:study>
 									<p:organization id="1" version="1">
 										<p:name>
+											<!-- site identifier -->
 											<xsl:call-template name="show-id">
 												<xsl:with-param name="id"
 													select="$clinicalDocument/ns1:documentationOf/ns1:serviceEvent/ns1:id[../ns1:code/ns1:originalText='site-specific component of clinical trial']" />

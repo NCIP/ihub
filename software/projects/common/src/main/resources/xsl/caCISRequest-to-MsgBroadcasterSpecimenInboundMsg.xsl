@@ -67,6 +67,7 @@
 					<specimens>
 						<participant>
 							<cdmsSubjectId>
+								<!-- study subject identifier -->
 								<xsl:call-template name="show-id">
 									<xsl:with-param name="id"
 										select="//ns1:ClinicalDocument/ns1:recordTarget/ns1:patientRole/ns1:id[@assigningAuthorityName='iSpy2 Study']" />
@@ -86,14 +87,17 @@
 	<xsl:template
 		match="//ns1:ClinicalDocument/ns1:component/ns1:structuredBody/ns1:component">
 		<xsl:variable name="component" select="." />
-		<xsl:variable name="observation" select="$component/ns1:section/ns1:entry/ns1:procedure/ns1:entryRelationship/ns1:observation" />
+		<xsl:variable name="observation"
+			select="$component/ns1:section/ns1:entry/ns1:procedure/ns1:entryRelationship/ns1:observation" />
 		<specimenDetail>
 			<collectionProtocolEvent>
+				<!-- Study Calendar Event Point -->
 				<xsl:value-of
 					select="$observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code/ns1:originalText='Study Calendar Event Time Point']/ns1:value/@value" />
 			</collectionProtocolEvent>
 			<specimen>
 				<cdmsSpecimenId>
+					<!-- CDMS Specimen ID -->
 					<xsl:call-template name="show-id">
 						<xsl:with-param name="id"
 							select="$observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='123038009'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:specimen/ns1:specimenRole/ns1:id" />
