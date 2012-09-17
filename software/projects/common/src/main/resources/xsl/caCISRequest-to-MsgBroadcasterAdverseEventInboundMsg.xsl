@@ -60,10 +60,10 @@
 					select="$clinicalDocument/ns1:recordTarget/ns1:patientRole" />
 				<criteria>
 					<studySubjectIdentifier>
-						<!-- setting MRN here -->
+						<!-- study subject identifier -->
 						<xsl:call-template name="show-id">
 							<xsl:with-param name="id"
-								select="$patientRole/ns1:id[@assigningAuthorityName!='iSpy2 Study']" />
+								select="$patientRole/ns1:id[@assigningAuthorityName='iSpy2 Study']" />
 						</xsl:call-template>
 					</studySubjectIdentifier>
 					<studyIdentifier>
