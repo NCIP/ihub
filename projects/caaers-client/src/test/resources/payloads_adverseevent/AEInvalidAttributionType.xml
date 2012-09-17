@@ -37,7 +37,7 @@
 		</ns22:adverseEvent>
 	</ns22:adverseEvents>
 	<ns22:criteria>
-		<participantIdentifier>PM-113</participantIdentifier>
+		<studySubjectIdentifier>PM-113</studySubjectIdentifier>
 		<studyIdentifier>7216</studyIdentifier>
 		<course>
 			<startDateOfThisCourse>2012-07-12-04:00</startDateOfThisCourse>
