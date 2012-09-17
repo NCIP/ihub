@@ -160,35 +160,6 @@ public class AdverseEventIntegrationTest {
     }
 
     /**
-     * TestCase for Creating Adverse Event in caAERS when startDate of an AE is Invalid
-     */
-    @Test
-    public void createAEInvalidStartDateofAE() {
-        try {
-            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            final StringEntity reqentity = new StringEntity(getCreateAEInvalidAEStartDate());
-            httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
-
-            final HttpResponse response = httpclient.execute(httppost);
-            final HttpEntity entity = response.getEntity();
-
-            String createdXML = null;
-
-            if (entity != null) {
-                createdXML = EntityUtils.toString(entity);
-                Assert.assertEquals(true, createdXML.contains("<responseStatus>SUCCESS</responseStatus>"));
-            }
-        } catch (ClientProtocolException e) {
-            Assert.fail(e.getMessage());
-        } catch (IllegalStateException e) {
-            Assert.fail(e.getMessage());
-        } catch (IOException e) {
-            Assert.fail(e.getMessage());
-        }
-    }
-
-    /**
      * TestCase for Creating Adverse Event in caAERS when startDate on AE is greater than endDate
      */
     @Test
@@ -231,10 +202,6 @@ public class AdverseEventIntegrationTest {
 
     private String getCreateAEParticipantNotAssignedToStudy() {
         return getXMLString("CreateAEParticipantNotAssignedToStudy.xml");
-    }
-
-    private String getCreateAEInvalidAEStartDate() {
-        return getXMLString("CreateAEInvalidAEStartDate.xml");
     }
 
     private String getCreateAEStartDateGreaterThanEndDate() {

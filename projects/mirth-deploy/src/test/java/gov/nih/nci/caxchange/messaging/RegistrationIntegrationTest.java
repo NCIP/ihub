@@ -135,33 +135,6 @@ public class RegistrationIntegrationTest {
     }
 
     /**
-     * Testcase for Update Participant for Off Study Flow
-     */
-    @Test
-    public void sendUpdateRegistrationMessageOffStudy() {
-        try {
-            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            final StringEntity reqentity = new StringEntity(getUpdateMsgForOffStudy());
-            httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
-
-            final HttpResponse response = httpclient.execute(httppost);
-            final HttpEntity entity = response.getEntity();
-            if (entity != null) {
-                final String output = EntityUtils.toString(entity);
-                Assert.assertNotNull(output);
-                Assert.assertEquals(getSuccessUpdateMsg(), removeCaXchangeIdentifier(output));
-            }
-        } catch (ClientProtocolException e) {
-            Assert.fail(e.getMessage());
-        } catch (IllegalStateException e) {
-            Assert.fail(e.getMessage());
-        } catch (IOException e) {
-            Assert.fail(e.getMessage());
-        }
-    }
-
-    /**
      * Testcase for sending duplicate message for participant registration
      */
     @Test
@@ -226,39 +199,6 @@ public class RegistrationIntegrationTest {
         }
     }
 
-    /**
-     * Testcase for sending invalid Institution during Participant Registration
-     */
-    @Test
-    public void sendInvalidInstitutionRegistrationMessage() {
-        try {
-            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            String msg = getCreateMsg();
-            msg = msg.replaceAll("DCP", "XYZ");
-            final StringEntity reqentity = new StringEntity(msg);
-            httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
-
-            final HttpResponse response = httpclient.execute(httppost);
-            final HttpEntity entity = response.getEntity();
-            if (entity != null) {
-                final String output = EntityUtils.toString(entity);
-                Assert.assertNotNull(output);
-                Assert.assertEquals(
-                        true,
-                        output.contains("<errorCode>1012</errorCode>")
-                                || output.contains("<errorCode>1032</errorCode>")
-                                || output.contains("<responseStatus>FAILURE</responseStatus>"));
-            }
-        } catch (ClientProtocolException e) {
-            Assert.fail(e.getMessage());
-        } catch (IllegalStateException e) {
-            Assert.fail(e.getMessage());
-        } catch (IOException e) {
-            Assert.fail(e.getMessage());
-        }
-    }
-
     private String getCreateMsg() {
         return getMsg();
     }
@@ -267,13 +207,6 @@ public class RegistrationIntegrationTest {
         String msg = getMsg();
         msg = msg.replaceFirst("Create Participant Registration", "Update Participant Registration");
         msg = msg.replaceAll("FirstName", "updFirstName");
-        return msg;
-    }
-
-    private String getUpdateMsgForOffStudy() {
-        String msg = getMsg();
-        msg = msg.replaceFirst("Create Participant Registration", "Update Participant Registration");
-        msg = msg.replaceAll("55561003", "73425007");
         return msg;
     }
 
