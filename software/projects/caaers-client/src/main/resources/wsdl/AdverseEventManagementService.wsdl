@@ -746,6 +746,7 @@
 <xs:element maxOccurs="unbounded" minOccurs="0" name="outcome" type="OutcomeType"></xs:element>
 <xs:element minOccurs="0" name="eventApproximateTime" type="TimeType"></xs:element>
 <xs:element minOccurs="0" name="eventLocation" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="externalId" type="xs:string"></xs:element>
 </xs:sequence>
 </xs:extension>
 </xs:complexContent>
