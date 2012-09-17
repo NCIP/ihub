@@ -46,10 +46,10 @@
 						<recordTarget>
 							<patientRole>
 								<!--study subject identifier -->
-								<id root="1.2.1.173000" extension="echr:patient-18234108"
+								<id root="1.2.1.173000" extension="echr:patient-18234112"
 									assigningAuthorityName="iSpy2 Study" />
 								<!--patient MRN -->
-								<id root="1.2.1.173000" extension="21318234108"
+								<id root="1.2.1.173000" extension="21318234112"
 									assigningAuthorityName="ABC Cancer Institute" />
 								<addr nullFlavor="NI" />
 								<telecom nullFlavor="NI" />
@@ -179,9 +179,7 @@
 																<value xsi:type="CD" code="10001367" displayName="Abdominal pain"
 																	codeSystem="2.16.840.1.113883.3.26.1.6" codeSystemName="CTCAE">
 																	<!--verbatim -->
-																	<originalText>theee patient has sporadic mild to severe
-																		abdominal
-																		pain</originalText>
+																	<originalText>The Patient has sporadic mild to severe abdominal pain</originalText>
 																</value>
 																<!--grade of adverse event -->
 																<entryRelationship typeCode="SUBJ"

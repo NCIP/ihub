@@ -47,10 +47,10 @@
 						<recordTarget>
 							<patientRole>
 								<!--study subject identifier -->
-								<id root="1.2.1.173000" extension="ct8d23431"
+								<id root="1.2.1.173000" extension="echr:patient-18234112"
 									assigningAuthorityName="iSpy2 Study" />
 								<!--patient MRN -->
-								<id root="1.2.1.173000" extension="2131823431"
+								<id root="1.2.1.173000" extension="21318234112"
 									assigningAuthorityName="ABC Cancer Institute" />
 								<addr nullFlavor="NI" />
 								<telecom nullFlavor="NI" />
@@ -132,7 +132,7 @@
 															<specimenRole>
 																<!--CDMS Specimen ID, assigned by the TRANSCEND CDMS -->
 																<id root="fbfe4b85-2bdc-4305-88be-3e1b763d8caa"
-																	extension="135_123_abc" />
+																	extension="112_abc" />
 															</specimenRole>
 														</specimen>
 													</observation>
