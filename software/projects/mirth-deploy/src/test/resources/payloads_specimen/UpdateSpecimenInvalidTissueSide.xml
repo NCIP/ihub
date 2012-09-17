@@ -46,11 +46,9 @@
 						<recordTarget>
 							<patientRole>
 								<!--study subject identifier -->
-								<id root="1.2.1.173000" extension="ct8d23431"
-									assigningAuthorityName="iSpy2 Study" />
-								<!--patient MRN -->
-								<id root="1.2.1.173000" extension="2131823431"
-									assigningAuthorityName="ABC Cancer Institute" />
+								<id root="1.2.1.173000" extension="echr:patient-18234112" assigningAuthorityName="iSpy2 Study"/>
+		                        <!--patient MRN-->
+		                        <id root="1.2.1.173000" extension="21318234112" assigningAuthorityName="ABC Cancer Institute"/>
 								<addr nullFlavor="NI" />
 								<telecom nullFlavor="NI" />
 								<patient>
@@ -156,9 +154,9 @@
 															<originalText>Guidance for Breast Core Biopsy</originalText>
 														</code>
 														<statusCode code="completed" />
-														<value xsi:type="CD" code="16310003" codeSystem="2.16.840.1.113883.6.96"
-															displayName="Ultrasound">
-															<originalText>Diagnostic ultrasonography</originalText>
+														<value xsi:type="CD" code="241615005" codeSystem="2.16.840.1.113883.6.96"
+															displayName="241615005">
+															<originalText>Diagnostic MRI</originalText>
 														</value>
 													</observation>
 												</entryRelationship>
@@ -179,7 +177,7 @@
 															<specimenRole>
 																<!--CDMS Specimen ID, assigned by the TRANSCEND CDMS -->
 																<id root="fbfe4b85-2bdc-4305-88be-3e1b763d8caa"
-																	extension="102" />
+																	extension="112" />
 																<!--Specimen Class -->
 																<specimenPlayingEntity>
 																	<code code="119376003" codeSystem="2.16.840.1.113883.6.96"
@@ -194,7 +192,7 @@
 																<templateId root="2.16.840.1.113883.10.20.22.4.37"
 																	assigningAuthorityName="HL7 CCDA" />
 																<!--Barcode (Unique Device Identification (UDI)) -->
-																<id root="123456" extension="102"/>
+																<id root="123456" extension="112"/>
 																<playingDevice>
 																	<!--Code to identify the specimen Container -->
 																	<code nullFlavor="NA">
@@ -288,8 +286,6 @@
 										</entry>
 									</section>
 								</component>
-
-								
 							</structuredBody>
 						</component>
 					</ClinicalDocument>

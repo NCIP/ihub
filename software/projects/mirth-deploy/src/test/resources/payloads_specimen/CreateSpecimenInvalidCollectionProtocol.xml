@@ -47,11 +47,9 @@
 						<recordTarget>
 							<patientRole>
 								<!--study subject identifier -->
-								<id root="1.2.1.173000" extension="ct8d23431"
-									assigningAuthorityName="iSpy2 Study" />
-								<!--patient MRN -->
-								<id root="1.2.1.173000" extension="2131823431"
-									assigningAuthorityName="ABC Cancer Institute" />
+								<id root="1.2.1.173000" extension="echr:patient-18234112" assigningAuthorityName="iSpy2 Study"/>
+		                        <!--patient MRN-->
+		                        <id root="1.2.1.173000" extension="21318234112" assigningAuthorityName="ABC Cancer Institute"/>
 								<addr nullFlavor="NI" />
 								<telecom nullFlavor="NI" />
 								<patient>
@@ -104,7 +102,7 @@
 						<!--study id -->
 						<documentationOf>
 							<serviceEvent classCode="CLNTRL">
-								<id root="6482_45" extension="6482_123" />
+								<id root="6482_123" extension="6482_123" />
 								<code nullFlavor="OTH">
 									<originalText>clinical trial</originalText>
 								</code>
