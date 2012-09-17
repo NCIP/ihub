@@ -71,96 +71,6 @@ public class SpecimenIntegrationTest {
     }
 
     /**
-     * Testcase for Create Specimen when Available Quantity is greater than Initial Quantity
-     */
-    @Test
-    public void createSpecimenForInvalidAvailableQuantity() {
-        try {
-            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            final StringEntity reqentity = new StringEntity(getInsertInvalidAvailableQuantityXMLStr());
-            httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
-
-            final HttpResponse response = httpclient.execute(httppost);
-            final HttpEntity entity = response.getEntity();
-
-            String createdXML = null;
-
-            if (entity != null) {
-                createdXML = EntityUtils.toString(entity);
-                Assert.assertEquals(true, createdXML.contains("<errorCode>1085</errorCode>"));
-            }
-        } catch (ClientProtocolException e) {
-            Assert.fail(e.getMessage());
-        } catch (IllegalStateException e) {
-            Assert.fail(e.getMessage());
-        } catch (IOException e) {
-            Assert.fail(e.getMessage());
-        }
-    }
-
-    /**
-     * Testcase for Create Specimen when SpecimenType is invalid
-     */
-    @Test
-    public void createSpecimenForInvalidSpecimenType() {
-        try {
-            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            final StringEntity reqentity = new StringEntity(getInsertInvalidSpecimenTypeXMLStr());
-            httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
-
-            final HttpResponse response = httpclient.execute(httppost);
-            final HttpEntity entity = response.getEntity();
-
-            String createdXML = null;
-
-            if (entity != null) {
-                createdXML = EntityUtils.toString(entity);
-                Assert.assertEquals(
-                        true,
-                        createdXML.contains("<errorCode>1081</errorCode>")
-                                || createdXML.contains("<errorCode>1051</errorCode>"));
-            }
-        } catch (ClientProtocolException e) {
-            Assert.fail(e.getMessage());
-        } catch (IllegalStateException e) {
-            Assert.fail(e.getMessage());
-        } catch (IOException e) {
-            Assert.fail(e.getMessage());
-        }
-    }
-
-    /**
-     * Testcase for Create Specimen when TissueSide is invalid
-     */
-    @Test
-    public void createSpecimenForInvalidTissueSide() {
-        try {
-            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            final StringEntity reqentity = new StringEntity(getInsertInvalidTissueSideXMLStr());
-            httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
-
-            final HttpResponse response = httpclient.execute(httppost);
-            final HttpEntity entity = response.getEntity();
-
-            String createdXML = null;
-
-            if (entity != null) {
-                createdXML = EntityUtils.toString(entity);
-                Assert.assertEquals(true, createdXML.contains("<errorCode>1082</errorCode>"));
-            }
-        } catch (ClientProtocolException e) {
-            Assert.fail(e.getMessage());
-        } catch (IllegalStateException e) {
-            Assert.fail(e.getMessage());
-        } catch (IOException e) {
-            Assert.fail(e.getMessage());
-        }
-    }
-
-    /**
      * Testcase for Create Specimen when TissueSite is invalid
      */
     @Test
@@ -306,35 +216,6 @@ public class SpecimenIntegrationTest {
     }
 
     /**
-     * Testcase for Update Specimen when Specimen doesn't exist
-     */
-    @Test
-    public void updateSpecimensSpecimenNotExist() {
-        try {
-            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            final StringEntity reqentity = new StringEntity(getUpdateSpecimenNotExistXMLStr());
-            httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
-
-            final HttpResponse response = httpclient.execute(httppost);
-            final HttpEntity entity = response.getEntity();
-
-            String updatedXML = null;
-
-            if (entity != null) {
-                updatedXML = EntityUtils.toString(entity);
-                Assert.assertEquals(true, updatedXML.contains("<errorCode>1090</errorCode>"));
-            }
-        } catch (ClientProtocolException e) {
-            Assert.fail(e.getMessage());
-        } catch (IllegalStateException e) {
-            Assert.fail(e.getMessage());
-        } catch (IOException e) {
-            Assert.fail(e.getMessage());
-        }
-    }
-
-    /**
      * Testcase for Update Specimen when Available quantity is greater than Initial Quantity
      */
     @Test
@@ -392,168 +273,8 @@ public class SpecimenIntegrationTest {
         }
     }
 
-    /**
-     * Testcase for Update Specimen when CollectionProtocolEvent is changed during updateSpecimen
-     */
-    @Test
-    public void updateSpecimensCollectionEventProtocolChangeXMLStr() {
-        try {
-            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            final StringEntity reqentity = new StringEntity(getUpdateSpecimenCollectionProtocolEventChangeXMLStr());
-            httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
-
-            final HttpResponse response = httpclient.execute(httppost);
-            final HttpEntity entity = response.getEntity();
-
-            String updatedXML = null;
-
-            if (entity != null) {
-                updatedXML = EntityUtils.toString(entity);
-                Assert.assertEquals(true, updatedXML.contains("<errorCode>1087</errorCode>"));
-            }
-        } catch (ClientProtocolException e) {
-            Assert.fail(e.getMessage());
-        } catch (IllegalStateException e) {
-            Assert.fail(e.getMessage());
-        } catch (IOException e) {
-            Assert.fail(e.getMessage());
-        }
-    }
-
-    /**
-     * Testcase for Update Specimen when SpecimenClass is changed during updateSpecimen
-     */
-    @Test
-    public void updateSpecimensSpecimenClassChange() {
-        try {
-            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            final StringEntity reqentity = new StringEntity(getUpdateSpecimenClassChangeXMLStr());
-            httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
-
-            final HttpResponse response = httpclient.execute(httppost);
-            final HttpEntity entity = response.getEntity();
-
-            String updatedXML = null;
-
-            if (entity != null) {
-                updatedXML = EntityUtils.toString(entity);
-                Assert.assertEquals(true, updatedXML.contains("<responseStatus>FAILURE</responseStatus>"));
-            }
-        } catch (ClientProtocolException e) {
-            Assert.fail(e.getMessage());
-        } catch (IllegalStateException e) {
-            Assert.fail(e.getMessage());
-        } catch (IOException e) {
-            Assert.fail(e.getMessage());
-        }
-    }
-
-    /**
-     * Testcase for Update Specimen when specimenType is invalid
-     */
-    @Test
-    public void updateSpecimensInvalidSpecimenType() {
-        try {
-            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            final StringEntity reqentity = new StringEntity(getUpdateSpecimenInvalidSpecimenTypeXMLStr());
-            httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
-
-            final HttpResponse response = httpclient.execute(httppost);
-            final HttpEntity entity = response.getEntity();
-
-            String updatedXML = null;
-
-            if (entity != null) {
-                updatedXML = EntityUtils.toString(entity);
-                Assert.assertEquals(
-                        true,
-                        updatedXML.contains("<errorCode>1081</errorCode>")
-                                || updatedXML.contains("<errorCode>1051</errorCode>"));
-            }
-        } catch (ClientProtocolException e) {
-            Assert.fail(e.getMessage());
-        } catch (IllegalStateException e) {
-            Assert.fail(e.getMessage());
-        } catch (IOException e) {
-            Assert.fail(e.getMessage());
-        }
-    }
-
-    /**
-     * Testcase for Update Specimen when TissueSide is invalid
-     */
-    @Test
-    public void updateSpecimensInvalidTissueSide() {
-        try {
-            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            final StringEntity reqentity = new StringEntity(getUpdateSpecimenInvalidTissueSideXMLStr());
-            httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
-
-            final HttpResponse response = httpclient.execute(httppost);
-            final HttpEntity entity = response.getEntity();
-
-            String updatedXML = null;
-
-            if (entity != null) {
-                updatedXML = EntityUtils.toString(entity);
-                Assert.assertEquals(true, updatedXML.contains("<errorCode>1082</errorCode>"));
-            }
-        } catch (ClientProtocolException e) {
-            Assert.fail(e.getMessage());
-        } catch (IllegalStateException e) {
-            Assert.fail(e.getMessage());
-        } catch (IOException e) {
-            Assert.fail(e.getMessage());
-        }
-    }
-
-    /**
-     * Testcase for Update Specimen when TissueSite is invalid
-     */
-    @Test
-    public void updateSpecimensInvalidTissueSite() {
-        try {
-            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            final StringEntity reqentity = new StringEntity(getUpdateSpecimenInvalidTissueSiteXMLStr());
-            httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
-
-            final HttpResponse response = httpclient.execute(httppost);
-            final HttpEntity entity = response.getEntity();
-
-            String updatedXML = null;
-
-            if (entity != null) {
-                updatedXML = EntityUtils.toString(entity);
-                Assert.assertEquals(true, updatedXML.contains("<errorCode>1083</errorCode>"));
-            }
-        } catch (ClientProtocolException e) {
-            Assert.fail(e.getMessage());
-        } catch (IllegalStateException e) {
-            Assert.fail(e.getMessage());
-        } catch (IOException e) {
-            Assert.fail(e.getMessage());
-        }
-    }
-
     private String getInsertInvalidCollectionProtocolXMLStr() {
         return getXMLString("CreateSpecimenInvalidCollectionProtocol.xml");
-    }
-
-    private String getInsertInvalidAvailableQuantityXMLStr() {
-        return getXMLString("CreateSpecimenInvalidAvailableQuantity.xml");
-    }
-
-    private String getInsertInvalidSpecimenTypeXMLStr() {
-        return getXMLString("CreateSpecimenInvalidSpecimenType.xml");
-    }
-
-    private String getInsertInvalidTissueSideXMLStr() {
-        return getXMLString("CreateSpecimenInvalidTissueSide.xml");
     }
 
     private String getInsertInvalidTissueSiteXMLStr() {
@@ -576,36 +297,12 @@ public class SpecimenIntegrationTest {
         return getXMLString("UpdateSpecimen.xml");
     }
 
-    private String getUpdateSpecimenNotExistXMLStr() {
-        return getXMLString("UpdateSpecimenNotExist.xml");
-    }
-
     private String getUpdateSpecimenInvalidAvailableQtyXMLStr() {
         return getXMLString("UpdateSpecimenInvalidAvailableQty.xml");
     }
 
     private String getUpdateSpecimenCollectionProtocolChangeXMLStr() {
         return getXMLString("UpdateSpecimenCollectionProtocolChange.xml");
-    }
-
-    private String getUpdateSpecimenCollectionProtocolEventChangeXMLStr() {
-        return getXMLString("UpdateSpecimenCollectionProtocolEventChange.xml");
-    }
-
-    private String getUpdateSpecimenClassChangeXMLStr() {
-        return getXMLString("UpdateSpecimenClassChange.xml");
-    }
-
-    private String getUpdateSpecimenInvalidSpecimenTypeXMLStr() {
-        return getXMLString("UpdateSpecimenInvalidSpecimenType.xml");
-    }
-
-    private String getUpdateSpecimenInvalidTissueSideXMLStr() {
-        return getXMLString("UpdateSpecimenInvalidTissueSide.xml");
-    }
-
-    private String getUpdateSpecimenInvalidTissueSiteXMLStr() {
-        return getXMLString("UpdateSpecimenInvalidTissueSite.xml");
     }
 
     private String getXMLString(String fileName) {
