@@ -52,7 +52,7 @@ public class XSLTTransformerAdverseEventTest {
     }
 
     private String getAEInterimMessage() {
-        return getXMLString("AEInterim.xml");
+        return getXMLString("AE_MBC.xml");
     }
 
     private String transformXML(String message) throws IntegrationException {

@@ -47,7 +47,7 @@ public class XSLTTransformerSpecimenTest {
     @Test
     public void transformWrapperToInterimXMLTest() throws IntegrationException {
         xsltTransformer.initTransformer("caCISRequest-to-MsgBroadcasterSpecimenInboundMsg.xsl", baseXSLPath);
-        final String trnsfrmdMsg = transformXML(getSpecimenWrapperXML());
+        final String trnsfrmdMsg = transformXML(getSpecimenWrapperXML());        
         Assert.assertNotNull(trnsfrmdMsg);
     }
 
@@ -94,11 +94,11 @@ public class XSLTTransformerSpecimenTest {
     }
 
     private String getSpecimenWrapperXML() {
-        return getXMLString("SpecimenWrapper.xml");
+        return getXMLString("Specimen_TSA.xml");
     }
 
     private String getInterimSpecimenXML() {
-        return getXMLString("SpecimenInterim.xml");
+        return getXMLString("Specimen_MBC.xml");
     }
 
     private String getXMLString(String fileName) {

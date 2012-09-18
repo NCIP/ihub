@@ -40,18 +40,6 @@ public class XSLTTransformerConsentTest {
     private static final Logger LOG = LoggerFactory.getLogger(XSLTTransformerConsentTest.class);
 
     /**
-     * Testcase for transforming incoming XML to Wrapper XML
-     * 
-     * @throws IntegrationException - IntegrationException
-     */
-    @Test
-    public void transformIncomingToWrapperXMLTest() throws IntegrationException {
-        xsltTransformer.initTransformer("TranscendInboundMsg-to-caCISRequest.xsl", baseXSLPath);
-        final String trnsfrmdMsg = transformXML(getConsentIncomingRequestMessage());
-        Assert.assertNotNull(trnsfrmdMsg);
-    }
-
-    /**
      * Testcase for transforming Wrapper XML to Interim XML
      * 
      * @throws IntegrationException - IntegrationException
@@ -75,16 +63,12 @@ public class XSLTTransformerConsentTest {
         Assert.assertNotNull(trnsfrmdMsg);
     }
 
-    private String getConsentIncomingRequestMessage() {
-        return getXMLString("ConsentIncoming.xml");
-    }
-
     private String getConsentWrapperMessage() {
-        return getXMLString("ConsentWrapper.xml");
+        return getXMLString("Consent_TSA.xml");
     }
 
     private String getConsentInterimMessage() {
-        return getXMLString("ConsentInterim.xml");
+        return getXMLString("Consent_MBC.xml");
     }
 
     private String transformXML(String message) throws IntegrationException {
