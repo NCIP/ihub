@@ -431,7 +431,7 @@ public class CaTissueSpecimenIntegrationTest {
     private String getXMLString(String fileName) {
         final StringBuffer fileContents = new StringBuffer();
         final InputStream is = CaTissueSpecimenIntegrationTest.class.getClassLoader().getResourceAsStream(
-                "payloads_specimen/" + fileName);
+                "payloads/specimen/" + fileName);
         final BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String strLine;
         try {

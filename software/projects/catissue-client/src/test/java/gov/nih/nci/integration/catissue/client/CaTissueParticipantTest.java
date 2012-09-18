@@ -346,7 +346,7 @@ public class CaTissueParticipantTest {
     private String getXMLString(String fileName) {
         final StringBuffer fileContents = new StringBuffer();
         final InputStream is = CaTissueConsentIntegrationTest.class.getClassLoader().getResourceAsStream(
-                "payloads_participant/" + fileName);
+                "payloads/participant/" + fileName);
         final BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String strLine;
         try {
