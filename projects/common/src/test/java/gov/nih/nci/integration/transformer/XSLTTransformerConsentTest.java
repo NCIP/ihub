@@ -120,7 +120,7 @@ public class XSLTTransformerConsentTest {
     private String getXMLString(String fileName) {
         String contents = null;
         final InputStream is = XSLTTransformerConsentTest.class.getClassLoader().getResourceAsStream(
-                "payloads_consent/" + fileName);
+                "payloads/consent/" + fileName);
         try {
             contents = org.apache.cxf.helpers.IOUtils.toString(is);
         } catch (IOException e) {
