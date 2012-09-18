@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specimens xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest"
+	xmlns:ns0="http://caXchange.nci.nih.gov/messaging" xmlns:a="http://cacis.nci.nih.gov">
+	<participant>
+		<lastName>1.2.1.173000:ct8d23431</lastName>
+		<activityStatus />
+	</participant>
+	<specimenDetail>
+		<collectionProtocolEvent>5</collectionProtocolEvent>
+		<specimen class="TissueSpecimen">
+			<initialQuantity>177</initialQuantity>
+			<pathologicalStatus>Not Specified</pathologicalStatus>
+			<specimenClass>Tissue</specimenClass>
+			<specimenType>Fresh Tissue</specimenType>
+			<specimenCharacteristics>
+				<tissueSide>Right</tissueSide>
+				<tissueSite>SKIN</tissueSite>
+			</specimenCharacteristics>
+			<activityStatus>Active</activityStatus>
+			<availableQuantity>155</availableQuantity>
+			<barcode>12345:013</barcode>
+			<label>fbfe4b85-2bdc-4305-88be-3e1b763d8caa:013</label>
+			<isAvailable>true</isAvailable>
+			<collectionStatus>Collected</collectionStatus>
+		</specimen>
+		<collectionProtocol>
+			<title />
+			<shortTitle>6482:6482_xyz</shortTitle>
+		</collectionProtocol>
+		<guidanceForBreastCoreBiopsy>
+			<guidanceForBreastCoreBiopsyType>ULTRASOUND</guidanceForBreastCoreBiopsyType>
+			<otherText />
+		</guidanceForBreastCoreBiopsy>
+	</specimenDetail>
+</specimens>
