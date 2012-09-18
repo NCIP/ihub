@@ -240,7 +240,7 @@ public class CaTissueParticipantIntegrationTest {
     }
 
     private String getParticipantXMLStr() {
-        return getXMLString("Participant.xml");
+        return getXMLString("Participant_catissue.xml");
     }
 
     private String getXMLString(String fileName) {

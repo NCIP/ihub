@@ -588,31 +588,31 @@ public class CaTissueSpecimenTest {
     }
 
     private String getInsertSpecimenXMLStr() {
-        return getXMLString("CreateSpecimen_Mock.xml");
+        return getXMLString("CreateSpecimen_Mock_catissue.xml");
     }
 
     private String getInsertExistingSpecimenXMLStr() {
-        return getXMLString("CreateExistingSpecimen_Mock.xml");
+        return getXMLString("CreateExistingSpecimen_Mock_catissue.xml");
     }
 
     private String getInsertSpecimenBlankBiopsyXMLStr() {
-        return getXMLString("CreateSpecimen_BiopsyBlank_Mock.xml");
+        return getXMLString("CreateSpecimen_BiopsyBlank_Mock_catissue.xml");
     }
 
     private String getInsertSpecimenInvalidBiopsyOtherTextXMLStr() {
-        return getXMLString("CreateSpecimen_BiopsyInvalidOtherText_Mock.xml");
+        return getXMLString("CreateSpecimen_BiopsyInvalidOtherText_Mock_catissue.xml");
     }
 
     private String getUpdateSpecimenXMLStr() {
-        return getXMLString("UpdateSpecimen_Mock.xml");
+        return getXMLString("UpdateSpecimen_Mock_catissue.xml");
     }
 
     private String getUpdateSpecimenInvalidBiopsyOtherTextXMLStr() {
-        return getXMLString("UpdateSpecimen_BiopsyInvalidOtherText_Mock.xml");
+        return getXMLString("UpdateSpecimen_BiopsyInvalidOtherText_Mock_catissue.xml");
     }
 
     private String getRollbackSpecimenXMLStr() {
-        return getXMLString("RollbackSpecimen_Mock.xml");
+        return getXMLString("RollbackSpecimen_Mock_catissue.xml");
     }
 
     private String getXMLString(String fileName) {

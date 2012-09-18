@@ -337,15 +337,15 @@ public class CaTissueConsentTest {
     }
 
     private String getRegisterConsentXMLStr() {
-        return getXMLString("RegisterConsent_Mock.xml");
+        return getXMLString("RegisterConsent_Mock_catissue.xml");
     }
 
     private String getRegisterConsentSpecimenNotExistXMLStr() {
-        return getXMLString("RegisterConsentSpecimenNotExist_Mock.xml");
+        return getXMLString("RegisterConsentSpecimenNotExist_Mock_catissue.xml");
     }
 
     private String getRollbackConsentXMLStr() {
-        return getXMLString("RollbackSpecimen_Mock.xml");
+        return getXMLString("RollbackSpecimen_Mock_catissue.xml");
     }
 
     private String getXMLString(String fileName) {
