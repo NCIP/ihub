@@ -256,11 +256,11 @@ public class CaAERSAdverseEventStrategyTest {
     }
 
     private String getAEInterimMessage() {
-        return getXMLString("AEInterimXML.xml");
+        return getXMLString("AEInterimXML_caaers.xml");
     }
 
     private String getAEXMLString() {
-        return getXMLString("AdverseEvent.xml");
+        return getXMLString("AdverseEvent_caaers.xml");
     }
 
     private ServiceInvocationMessage prepareServiceInvocationMessage(Long referenceMessageId, String message,

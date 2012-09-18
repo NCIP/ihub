@@ -60,7 +60,7 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
         try {
             final CreateOrUpdateAdverseEventResponse response = caAERSAdverseEventServiceWSClient
                     .createAdverseEvent(adverseEventXMLStr);
-            assertEquals("Response code is NOT proper for CreateAdverseEvent.", "FAILED_TO_PROCESS", response
+            assertEquals("Response code is NOT proper for CreateAdverseEvent.", "PROCESSED", response
                     .getCaaersServiceResponse().getServiceResponse().getStatus().name());
         } catch (JAXBException e) {
             Assert.fail("JAXBException occured while calling createAdverseEvent. " + e);
@@ -269,51 +269,51 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
     }
 
     private String getAdverseEventXMLStr() {
-        return getXMLString("AdverseEvent.xml");
+        return getXMLString("AdverseEvent_caaers.xml");
     }
 
     private String getAEStudyNotExist() {
-        return getXMLString("AEStudyNotExist.xml");
+        return getXMLString("AEStudyNotExist_caaers.xml");
     }
 
     private String getAEParticipantNotExist() {
-        return getXMLString("AEParticipantNotExist.xml");
+        return getXMLString("AEParticipantNotExist_caaers.xml");
     }
 
     private String getAEParticipantNotAssignedToStudy() {
-        return getXMLString("AEParticipantNotAssignedToStudy.xml");
+        return getXMLString("AEParticipantNotAssignedToStudy_caaers.xml");
     }
 
     private String getAEInvalidAEStartDate() {
-        return getXMLString("AEInvalidAEStartDate.xml");
+        return getXMLString("AEInvalidAEStartDate_caaers.xml");
     }
 
     private String getAEInvalidAEEndDate() {
-        return getXMLString("AEInvalidAEEndDate.xml");
+        return getXMLString("AEInvalidAEEndDate_caaers.xml");
     }
 
     private String getAEStartDateGreaterThanEndDate() {
-        return getXMLString("AEStartDateGreaterThanEndDate.xml");
+        return getXMLString("AEStartDateGreaterThanEndDate_caaers.xml");
     }
 
     private String getAEInvalidStartDateOfThisCourse() {
-        return getXMLString("AEInvalidStartDateOfThisCourse.xml");
+        return getXMLString("AEInvalidStartDateOfThisCourse_caaers.xml");
     }
 
     private String getAEInvalidEndDateOfThisCourse() {
-        return getXMLString("AEInvalidEndDateOfThisCourse.xml");
+        return getXMLString("AEInvalidEndDateOfThisCourse_caaers.xml");
     }
 
     private String getAEStartDateGreaterEndDateofThisCourse() {
-        return getXMLString("AEStartDateGreaterEndDateofThisCourse.xml");
+        return getXMLString("AEStartDateGreaterEndDateofThisCourse_caaers.xml");
     }
 
     private String getAEInvalidOutComeEnumType() {
-        return getXMLString("AEInvalidOutComeEnumType.xml");
+        return getXMLString("AEInvalidOutComeEnumType_caaers.xml");
     }
 
     private String getAEInvalidArrtibutionType() {
-        return getXMLString("AEInvalidAttributionType.xml");
+        return getXMLString("AEInvalidAttributionType_caaers.xml");
     }
 
     private String getXMLString(String fileName) {

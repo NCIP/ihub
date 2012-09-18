@@ -103,7 +103,7 @@ public class CaAERSRegistrationServiceInvocationStrategyIntegrationTest {
     }
 
     private String getInvalidPStr() {
-        return getXMLString("Participant.xml");
+        return getXMLString("Participant_caaers.xml");
     }
 
     private String getXMLString(String fileName) {

@@ -106,7 +106,7 @@ public class CaAERSAdverseEventTest {
     }
 
     private String getAdverseEventXMLStr() {
-        return getXMLString("AdverseEvent.xml");
+        return getXMLString("AdverseEvent_caaers.xml");
     }
 
     private String getXMLString(String fileName) {
