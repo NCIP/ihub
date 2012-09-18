@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns22:adverseevent
+	xmlns:ns22="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent"
+	xmlns:ns33="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+	xmlns:ns0="http://caXchange.nci.nih.gov/messaging" xmlns:a="http://cacis.nci.nih.gov"
+	xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest">
+	<ns22:adverseEvents>
+		<ns22:adverseEvent>
+			<verbatim>The Patient has sporadic mild to severe abdominal pain
+			</verbatim>
+			<grade>2</grade>
+			<expected>true</expected>
+			<attributionSummary>POSSIBLE</attributionSummary>
+			<startDate>2011-07-05-04:00</startDate>
+			<endDate>2011-07-09-04:00</endDate>
+			<ctepCode>10001367</ctepCode>
+		</ns22:adverseEvent>
+	</ns22:adverseEvents>
+	<ns22:criteria>
+		<studySubjectIdentifier>1.2.1.173000:echr:patient-1823467</studySubjectIdentifier>
+		<studyIdentifier>6482:6482</studyIdentifier>
+		<course>
+			<startDateOfThisCourse>2011-07-01-04:00</startDateOfThisCourse>
+			<endDateOfThisCourse>2011-07-21-04:00</endDateOfThisCourse>
+			<treatmentType>Treatment</treatmentType>
+			<treatmentAssignmentCode>TAC1</treatmentAssignmentCode>
+		</course>
+	</ns22:criteria>
+</ns22:adverseevent>
