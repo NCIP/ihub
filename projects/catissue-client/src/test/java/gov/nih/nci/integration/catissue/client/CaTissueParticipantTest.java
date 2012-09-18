@@ -336,11 +336,11 @@ public class CaTissueParticipantTest {
     }
 
     private String getParticipantXMLStr() {
-        return getXMLString("Participant_Mock.xml");
+        return getXMLString("Participant_Mock_catissue.xml");
     }
 
     private String getParticipantXMLStrForLastNameNULL() {
-        return getXMLString("Participant_LastNameNull_Mock.xml");
+        return getXMLString("Participant_LastNameNull_Mock_catissue.xml");
     }
 
     private String getXMLString(String fileName) {

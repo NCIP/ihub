@@ -357,75 +357,75 @@ public class CaTissueSpecimenIntegrationTest {
     }
 
     private String getInsertSpecimenXMLStr() {
-        return getXMLString("CreateSpecimen.xml");
+        return getXMLString("CreateSpecimen_catissue.xml");
     }
 
     private String getInsertExistingSpecimenXMLStr() {
-        return getXMLString("CreateExistingSpecimen.xml");
+        return getXMLString("CreateExistingSpecimen_catissue.xml");
     }
 
     private String getInsertInvalidCollectionProtocolXMLStr() {
-        return getXMLString("CreateSpecimenInvalidCollectionProtocol.xml");
+        return getXMLString("CreateSpecimenInvalidCollectionProtocol_catissue.xml");
     }
 
     private String getInsertInvalidSpecimenClassXMLStr() {
-        return getXMLString("CreateSpecimenInvalidSpecimenClass.xml");
+        return getXMLString("CreateSpecimenInvalidSpecimenClass_catissue.xml");
     }
 
     private String getInsertInvalidAvailableQuantityXMLStr() {
-        return getXMLString("CreateSpecimenInvalidAvailableQuantity.xml");
+        return getXMLString("CreateSpecimenInvalidAvailableQuantity_catissue.xml");
     }
 
     private String getInsertInvalidSpecimenTypeXMLStr() {
-        return getXMLString("CreateSpecimenInvalidSpecimenType.xml");
+        return getXMLString("CreateSpecimenInvalidSpecimenType_catissue.xml");
     }
 
     private String getInsertInvalidTissueSideXMLStr() {
-        return getXMLString("CreateSpecimenInvalidTissueSide.xml");
+        return getXMLString("CreateSpecimenInvalidTissueSide_catissue.xml");
     }
 
     private String getInsertInvalidTissueSiteXMLStr() {
-        return getXMLString("CreateSpecimenInvalidTissueSite.xml");
+        return getXMLString("CreateSpecimenInvalidTissueSite_catissue.xml");
     }
 
     private String getUpdateSpecimenXMLStr() {
-        return getXMLString("UpdateSpecimen.xml");
+        return getXMLString("UpdateSpecimen_catissue.xml");
     }
 
     private String getUpdateSpecimenNotExistXMLStr() {
-        return getXMLString("UpdateSpecimenNotExist.xml");
+        return getXMLString("UpdateSpecimenNotExist_catissue.xml");
     }
 
     private String getUpdateSpecimenInvalidAvailableQtyXMLStr() {
-        return getXMLString("UpdateSpecimenInvalidAvailableQty.xml");
+        return getXMLString("UpdateSpecimenInvalidAvailableQty_catissue.xml");
     }
 
     private String getUpdateSpecimenCollectionProtocolChangeXMLStr() {
-        return getXMLString("UpdateSpecimenCollectionProtocolChange.xml");
+        return getXMLString("UpdateSpecimenCollectionProtocolChange_catissue.xml");
     }
 
     private String getUpdateSpecimenCollectionProtocolEventChangeXMLStr() {
-        return getXMLString("UpdateSpecimenCollectionProtocolEventChange.xml");
+        return getXMLString("UpdateSpecimenCollectionProtocolEventChange_catissue.xml");
     }
 
     private String getUpdateSpecimenClassChangeXMLStr() {
-        return getXMLString("UpdateSpecimenClassChange.xml");
+        return getXMLString("UpdateSpecimenClassChange_catissue.xml");
     }
 
     private String getUpdateSpecimenInvalidSpecimenTypeXMLStr() {
-        return getXMLString("UpdateSpecimenInvalidSpecimenType.xml");
+        return getXMLString("UpdateSpecimenInvalidSpecimenType_catissue.xml");
     }
 
     private String getUpdateSpecimenInvalidTissueSideXMLStr() {
-        return getXMLString("UpdateSpecimenInvalidTissueSide.xml");
+        return getXMLString("UpdateSpecimenInvalidTissueSide_catissue.xml");
     }
 
     private String getUpdateSpecimenInvalidTissueSiteXMLStr() {
-        return getXMLString("UpdateSpecimenInvalidTissueSite.xml");
+        return getXMLString("UpdateSpecimenInvalidTissueSite_catissue.xml");
     }
 
     private String getRollbackSpecimenXMLStr() {
-        return getXMLString("RollbackSpecimen.xml");
+        return getXMLString("RollbackSpecimen_catissue.xml");
     }
 
     private String getXMLString(String fileName) {

@@ -118,19 +118,19 @@ public class CaTissueConsentIntegrationTest {
     }
 
     private String getRegisterConsentXMLStr() {
-        return getXMLString("RegisterConsent.xml");
+        return getXMLString("RegisterConsent_catissue.xml");
     }
 
     private String getRegisterConsentSpecimenNotExistXMLStr() {
-        return getXMLString("RegisterConsentSpecimenNotExist.xml");
+        return getXMLString("RegisterConsentSpecimenNotExist_catissue.xml");
     }
 
     private String getRegisterConsentStatementNotExistXMLStr() {
-        return getXMLString("RegisterConsentStatementNotExist.xml");
+        return getXMLString("RegisterConsentStatementNotExist_catissue.xml");
     }
 
     private String getRollbackConsentXMLStr() {
-        return getXMLString("RollbackSpecimen.xml");
+        return getXMLString("RollbackSpecimen_catissue.xml");
     }
 
     private String getXMLString(String fileName) {
