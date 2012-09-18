@@ -187,7 +187,7 @@ public class CaAERSParticipantTest {
     private String getXMLString(String fileName) {
         String contents = null;
         final InputStream is = CaAERSAdverseEventServiceClientIntegrationTest.class.getClassLoader()
-                .getResourceAsStream("payloads_participant/" + fileName);
+                .getResourceAsStream("payloads/participant/" + fileName);
         try {
             contents = org.apache.cxf.helpers.IOUtils.toString(is);
         } catch (IOException e) {

@@ -112,7 +112,7 @@ public class CaAERSAdverseEventTest {
     private String getXMLString(String fileName) {
         String contents = null;
         final InputStream is = CaAERSAdverseEventTest.class.getClassLoader().getResourceAsStream(
-                "payloads_adverseevent/" + fileName);
+                "payloads/adverseevent/" + fileName);
         try {
             contents = org.apache.cxf.helpers.IOUtils.toString(is);
         } catch (IOException e) {
