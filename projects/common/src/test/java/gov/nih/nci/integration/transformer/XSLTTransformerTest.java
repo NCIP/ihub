@@ -107,11 +107,11 @@ public class XSLTTransformerTest {
     }
 
     private String getParticipantWrapperXML() {
-        return getXMLString("ParticipantWrapper.xml");
+        return getXMLString("Participant_TSA.xml");
     }
 
     private String getParticipantInterimXML() {
-        return getXMLString("ParticipantInterim.xml");
+        return getXMLString("Participant_MBC.xml");
     }
 
     private String getXMLString(String fileName) {
