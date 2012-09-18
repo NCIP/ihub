@@ -64,7 +64,7 @@ public class CaAERSAdverseEventServiceInvocationStrategyIntegrationTest {
     }
 
     private String getAEInterimMessage() {
-        return getXMLString("AEInterimXML.xml");
+        return getXMLString("AEInterimXML_caaers.xml");
     }
 
     private String getXMLString(String fileName) {

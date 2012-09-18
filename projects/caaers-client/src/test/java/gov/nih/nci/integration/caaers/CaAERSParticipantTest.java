@@ -177,11 +177,11 @@ public class CaAERSParticipantTest {
     }
 
     private String getPStr() {
-        return getXMLString("Participant.xml");
+        return getXMLString("Participant_caaers.xml");
     }
 
     private String getParticipantOffStudyString() {
-        return getXMLString("Participant_OffStudy.xml");
+        return getXMLString("Participant_OffStudy_caaers.xml");
     }
 
     private String getXMLString(String fileName) {

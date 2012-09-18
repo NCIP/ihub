@@ -434,11 +434,11 @@ public class CaAERSParticipantStrategyTest {
     }
 
     private String getParticipantInterimMessage() {
-        return getXMLString("ParticipantInterim.xml");
+        return getXMLString("ParticipantInterim_caaers.xml");
     }
 
     private String getParticipantXMLString() {
-        return getXMLString("Participant.xml");
+        return getXMLString("Participant_caaers.xml");
     }
 
     private ServiceInvocationMessage prepareServiceInvocationMessage(Long referenceMessageId, String message,
