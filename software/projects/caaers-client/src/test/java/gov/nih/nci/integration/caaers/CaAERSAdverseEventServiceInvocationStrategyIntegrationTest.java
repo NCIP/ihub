@@ -70,7 +70,7 @@ public class CaAERSAdverseEventServiceInvocationStrategyIntegrationTest {
     private String getXMLString(String fileName) {
         String contents = null;
         final InputStream is = CaAERSAdverseEventServiceClientIntegrationTest.class.getClassLoader()
-                .getResourceAsStream("payloads_adverseevent/" + fileName);
+                .getResourceAsStream("payloads/adverseevent/" + fileName);
         try {
             contents = org.apache.cxf.helpers.IOUtils.toString(is);
         } catch (IOException e) {

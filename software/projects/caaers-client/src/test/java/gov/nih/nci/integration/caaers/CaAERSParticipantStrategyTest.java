@@ -539,7 +539,7 @@ public class CaAERSParticipantStrategyTest {
     private String getXMLString(String fileName) {
         String contents = null;
         final InputStream is = CaAERSParticipantStrategyTest.class.getClassLoader().getResourceAsStream(
-                "payloads_participant/" + fileName);
+                "payloads/participant/" + fileName);
         try {
             contents = org.apache.cxf.helpers.IOUtils.toString(is);
         } catch (IOException e) {
