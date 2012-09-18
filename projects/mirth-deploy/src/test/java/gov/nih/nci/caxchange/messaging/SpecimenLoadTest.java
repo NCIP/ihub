@@ -143,7 +143,7 @@ public class SpecimenLoadTest {
     private String getXMLString(String fileName) {
         String contents = null;
         final InputStream is = CaTissueParticipantClientIntegrationTest.class.getClassLoader().getResourceAsStream(
-                "payloads_specimen/" + fileName);
+                "payloads/specimen/" + fileName);
         try {
             contents = org.apache.cxf.helpers.IOUtils.toString(is);
         } catch (IOException e) {
