@@ -121,7 +121,7 @@ public class RegistrationLoadTest {
     }
 
     private String getMsg(int sfx) {
-        String message = getXMLString("Participant.xml");
+        String message = getXMLString("Participant_inbound.xml");
         message = message.replaceAll("XXXXXX", SDF.format(currDt) + sfx);
         message = message.replaceAll("XX-XXXX", SSNSDF.format(currDt));
         return message;

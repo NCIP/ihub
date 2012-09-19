@@ -229,7 +229,7 @@ public class RegistrationIntegrationTest {
     }
 
     private String getMsg() {
-        String message = getXMLString("Participant.xml");
+        String message = getXMLString("Participant_inbound.xml");
         message = message.replaceAll("XXXXXX", sdf.format(currDt));
         message = message.replaceAll("XX-XXXX", ssnsdf.format(currDt));
         return message;

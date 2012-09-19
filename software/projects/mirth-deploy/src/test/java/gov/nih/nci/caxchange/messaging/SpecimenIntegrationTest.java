@@ -274,35 +274,35 @@ public class SpecimenIntegrationTest {
     }
 
     private String getInsertInvalidCollectionProtocolXMLStr() {
-        return getXMLString("CreateSpecimenInvalidCollectionProtocol.xml");
+        return getXMLString("CreateSpecimenInvalidCollectionProtocol_inbound.xml");
     }
 
     private String getInsertInvalidTissueSiteXMLStr() {
-        return getXMLString("CreateSpecimenInvalidTissueSite.xml");
+        return getXMLString("CreateSpecimenInvalidTissueSite_inbound.xml");
     }
 
     private String getInsertInvalidSpecimenClassXMLStr() {
-        return getXMLString("CreateSpecimenInvalidSpecimenClass.xml");
+        return getXMLString("CreateSpecimenInvalidSpecimenClass_inbound.xml");
     }
 
     private String getInsertSpecimenXMLStr() {
-        return getXMLString("CreateSpecimen.xml");
+        return getXMLString("CreateSpecimen_inbound.xml");
     }
 
     private String getInsertExistingSpecimenXMLStr() {
-        return getXMLString("CreateExistingSpecimen.xml");
+        return getXMLString("CreateExistingSpecimen_inbound.xml");
     }
 
     private String getUpdateSpecimenXMLStr() {
-        return getXMLString("UpdateSpecimen.xml");
+        return getXMLString("UpdateSpecimen_inbound.xml");
     }
 
     private String getUpdateSpecimenInvalidAvailableQtyXMLStr() {
-        return getXMLString("UpdateSpecimenInvalidAvailableQty.xml");
+        return getXMLString("UpdateSpecimenInvalidAvailableQty_inbound.xml");
     }
 
     private String getUpdateSpecimenCollectionProtocolChangeXMLStr() {
-        return getXMLString("UpdateSpecimenCollectionProtocolChange.xml");
+        return getXMLString("UpdateSpecimenCollectionProtocolChange_inbound.xml");
     }
 
     private String getXMLString(String fileName) {

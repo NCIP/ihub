@@ -117,7 +117,7 @@ public class SpecimenLoadTest {
     }
 
     private String getInsertInvalidAvailableQuantityXMLStr() {
-        return getXMLString("CreateSpecimenInvalidAvailableQuantity.xml");
+        return getXMLString("CreateSpecimenInvalidAvailableQuantity_inbound.xml");
     }
 
     private Runnable getRunnable() {

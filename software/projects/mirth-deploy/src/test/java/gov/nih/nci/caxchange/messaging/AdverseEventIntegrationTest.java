@@ -189,23 +189,23 @@ public class AdverseEventIntegrationTest {
     }
 
     private String getCreateAdverseEventXMLStr() {
-        return getXMLString("CreateAdverseEvent.xml");
+        return getXMLString("CreateAdverseEvent_inbound.xml");
     }
 
     private String getCreateAEStudyNotExist() {
-        return getXMLString("CreateAEStudyNotExist.xml");
+        return getXMLString("CreateAEStudyNotExist_inbound.xml");
     }
 
     private String getCreateAEParticipantNotExist() {
-        return getXMLString("CreateAEParticipantNotExist.xml");
+        return getXMLString("CreateAEParticipantNotExist_inbound.xml");
     }
 
     private String getCreateAEParticipantNotAssignedToStudy() {
-        return getXMLString("CreateAEParticipantNotAssignedToStudy.xml");
+        return getXMLString("CreateAEParticipantNotAssignedToStudy_inbound.xml");
     }
 
     private String getCreateAEStartDateGreaterThanEndDate() {
-        return getXMLString("CreateAEStartDateGreaterThanEndDate.xml");
+        return getXMLString("CreateAEStartDateGreaterThanEndDate_inbound.xml");
     }
 
     private String getXMLString(String fileName) {
