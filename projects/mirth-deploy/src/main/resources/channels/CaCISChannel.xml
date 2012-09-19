@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>2.1.1.5490</version>
   <lastModified>
-    <time>1340292169272</time>
+    <time>1348064935869</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>4</revision>
+  <revision>2</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -263,7 +263,7 @@ return;</string>
         <rules>
           <rule>
             <sequenceNumber>0</sequenceNumber>
-            <name>Accept message if &quot;$(&apos;msgTyp&apos;)&quot; equals globalMap.get(&apos;AE&apos;) or globalMap.get(&apos;UPDTAE&apos;)</name>
+            <name>Accept message if &quot;$(&apos;msgTyp&apos;)&quot; equals globalMap.get(&apos;AE&apos;)</name>
             <data class="map">
               <entry>
                 <string>Name</string>
@@ -273,7 +273,6 @@ return;</string>
                 <string>Values</string>
                 <list>
                   <string>globalMap.get(&apos;AE&apos;)</string>
-                  <string>globalMap.get(&apos;UPDTAE&apos;)</string>
                 </list>
               </entry>
               <entry>
@@ -290,7 +289,7 @@ return;</string>
               </entry>
             </data>
             <type>Rule Builder</type>
-            <script>if($(&apos;msgTyp&apos;) == globalMap.get(&apos;AE&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTAE&apos;))
+            <script>if($(&apos;msgTyp&apos;) == globalMap.get(&apos;AE&apos;))
 {
 return true;
 }

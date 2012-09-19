@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>2.1.1.5490</version>
   <lastModified>
-    <time>1340291846328</time>
+    <time>1348065116747</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>5</revision>
+  <revision>4</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -165,10 +165,6 @@ if ($(&apos;operationName&apos;) == &apos;Create Or Update Adverse Event&apos;) 
 	caaersSvcInvStrtgy = globalMap.get(&quot;caAERSAdverseEventServiceInvocationStrategy&quot;);
 } 
 
-if ($(&apos;operationName&apos;) == &apos;Update Adverse Event&apos;) {
-	caaersSvcInvStrtgy = globalMap.get(&quot;caAERSUpdateAdverseEventServiceInvocationStrategy&quot;);
-}
-
 var refMsgIdStr = $(&apos;referenceMsgId&apos;);
 var refMsgId = Packages.java.lang.Long.parseLong(refMsgIdStr);
 
@@ -231,6 +227,7 @@ SW5zdGl0dXRlQ29kZT4KCQkJCQkJCTwvcDpvcmdhbml6YXRpb24+CgkJCQkJCTwvcDpzdHVkeVNp
 dGU+CgkJCQkJPC9wOmFzc2lnbm1lbnQ+CgkJCQk8L3A6YXNzaWdubWVudHM+CgkJCTwvcDpwYXJ0
 aWNpcGFudD4KCQk8L25zMTpidXNpbmVzc01lc3NhZ2VQYXlsb2FkPgoJPC9uczE6cmVxdWVzdD4K
 PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
+        <outboundTemplate encoding="base64"></outboundTemplate>
         <inboundProtocol>XML</inboundProtocol>
         <outboundProtocol>XML</outboundProtocol>
         <inboundProperties>
@@ -244,7 +241,7 @@ PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
         <rules>
           <rule>
             <sequenceNumber>0</sequenceNumber>
-            <name>Accept message if &quot;$(&apos;operationName&apos;)&quot; equals globalMap.get(&apos;AE&apos;) or globalMap.get(&apos;UPDTAE&apos;)</name>
+            <name>Accept message if &quot;$(&apos;operationName&apos;)&quot; equals globalMap.get(&apos;AE&apos;)</name>
             <data class="map">
               <entry>
                 <string>Name</string>
@@ -254,7 +251,6 @@ PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
                 <string>Values</string>
                 <list>
                   <string>globalMap.get(&apos;AE&apos;)</string>
-                  <string>globalMap.get(&apos;UPDTAE&apos;)</string>
                 </list>
               </entry>
               <entry>
@@ -271,7 +267,7 @@ PC9uczE6TWVzc2FnZUJyb2FkY2FzdGVyUmVxdWVzdE1lc3NhZ2U+</inboundTemplate>
               </entry>
             </data>
             <type>Rule Builder</type>
-            <script>if($(&apos;operationName&apos;) == globalMap.get(&apos;AE&apos;) || $(&apos;operationName&apos;) == globalMap.get(&apos;UPDTAE&apos;))
+            <script>if($(&apos;operationName&apos;) == globalMap.get(&apos;AE&apos;))
 {
 return true;
 }
@@ -991,14 +987,6 @@ if(caAERSAdverseEventServiceInvocationStrategy == null) {
 	caAERSAdverseEventServiceInvocationStrategy = Packages.gov.nih.nci.integration.caaers.invoker.CaAERSServiceInvocationStrategyFactory.createCaAERSAdverseEventServiceInvocationStrategy(caaersCustomLibLocations, &quot;classpath*:applicationContext-caaers-client.xml&quot;);
 }
 globalMap.put(&quot;caAERSAdverseEventServiceInvocationStrategy&quot;, caAERSAdverseEventServiceInvocationStrategy);
-
-//initialize caaers update adverse event  service invocation strategy
-var caAERSUpdateAdverseEventServiceInvocationStrategy = globalMap.get(&quot;caAERSUpdateAdverseEventServiceInvocationStrategy&quot;);
-
-if(caAERSUpdateAdverseEventServiceInvocationStrategy == null) {
-	caAERSUpdateAdverseEventServiceInvocationStrategy = Packages.gov.nih.nci.integration.caaers.invoker.CaAERSServiceInvocationStrategyFactory.createCaAERSUpdateAdverseEventServiceInvocationStrategy(caaersCustomLibLocations, &quot;classpath*:applicationContext-caaers-client.xml&quot;);
-}
-globalMap.put(&quot;caAERSUpdateAdverseEventServiceInvocationStrategy&quot;, caAERSUpdateAdverseEventServiceInvocationStrategy);
 
 return;</deployScript>
   <shutdownScript>// This script executes once when the channel is undeployed
