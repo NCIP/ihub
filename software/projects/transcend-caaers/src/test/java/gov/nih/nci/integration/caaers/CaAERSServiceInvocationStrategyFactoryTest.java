@@ -111,7 +111,7 @@ public class CaAERSServiceInvocationStrategyFactoryTest {
     }
 
     private String getPStr() {
-        return getXMLString("RegistrationInterim.xml");
+        return getXMLString("Registration_MBC.xml");
     }
 
     private String getXMLString(String fileName) {
