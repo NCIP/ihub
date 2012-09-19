@@ -4,7 +4,6 @@ import gov.nih.nci.integration.caaers.invoker.CaAERSServiceInvocationStrategyFac
 import gov.nih.nci.integration.domain.IHubMessage;
 import gov.nih.nci.integration.domain.ServiceInvocationMessage;
 import gov.nih.nci.integration.domain.StrategyIdentifier;
-import gov.nih.nci.integration.invoker.ServiceInvocationResult;
 import gov.nih.nci.integration.invoker.ServiceInvocationStrategy;
 
 import java.io.File;
@@ -27,19 +26,6 @@ public class CaAERSServiceInvocationStrategyFactoryTest {
     private static final Logger LOG = LoggerFactory.getLogger(CaAERSServiceInvocationStrategyFactoryTest.class);
 
     /**
-     * Testcase for createCaAERSUpdateAdverseEventServiceInvocationStrategy
-     */
-    @Test
-    public void createCaAERSUpdateAdverseEventServiceInvocationStrategyFailure() {
-        final File customLibLoc = new File("..\\caaers-client\\build\\caaers-client-lib-123\\");
-        final File distLoc = new File("..\\caaers-client\\build\\dist\\");
-        final ServiceInvocationStrategy suaeis = CaAERSServiceInvocationStrategyFactory
-                .createCaAERSUpdateAdverseEventServiceInvocationStrategy(new String[] { customLibLoc.getAbsolutePath(),
-                        distLoc.getAbsolutePath() }, "classpath*:applicationContext-caaers-client-test.xml");
-//        assertNull(suaeis);
-    }
-
-    /**
      * Testcase for createCaAERSServiceInvocationStrategy
      */
     @Test
@@ -53,8 +39,8 @@ public class CaAERSServiceInvocationStrategyFactoryTest {
                 .createCaAERSUpdateRegistrationServiceInvocationStrategy(new String[] { customLibLoc.getAbsolutePath(),
                         distLoc.getAbsolutePath() }, "classpath*:applicationContext-caaers-client-test.xml");
 
-//        assertNotNull(sris);
-//        assertNotNull(suris);
+        // assertNotNull(sris);
+        // assertNotNull(suris);
 
         final ServiceInvocationMessage msg = new ServiceInvocationMessage();
         msg.setStrategyIdentifier(StrategyIdentifier.CAEERS_CREATE_REGISTRATION);
@@ -64,10 +50,10 @@ public class CaAERSServiceInvocationStrategyFactoryTest {
         iHubMessage.setStartTime(stTime);
         msg.setMessage(iHubMessage);
 
-//        final ServiceInvocationResult res = sris.invoke(msg);
-//        assertNotNull(res);
-//        assertTrue(res.isFault());
-//        assertNotNull(res.getInvocationException());
+        // final ServiceInvocationResult res = sris.invoke(msg);
+        // assertNotNull(res);
+        // assertTrue(res.isFault());
+        // assertNotNull(res.getInvocationException());
     }
 
     /**
@@ -80,20 +66,7 @@ public class CaAERSServiceInvocationStrategyFactoryTest {
         final ServiceInvocationStrategy saeis = CaAERSServiceInvocationStrategyFactory
                 .createCaAERSAdverseEventServiceInvocationStrategy(new String[] { customLibLoc.getAbsolutePath(),
                         distLoc.getAbsolutePath() }, "classpath*:applicationContext-caaers-client-test.xml");
-//        assertNotNull(saeis);
-    }
-
-    /**
-     * Testcase for createCaAERSUpdateAdverseEventServiceInvocationStrategy
-     */
-    @Test
-    public void createCaAERSUpdateAdverseEventServiceInvocationStrategy() {
-        final File customLibLoc = new File("..\\caaers-client\\caaers-client-lib\\");
-        final File distLoc = new File("..\\caaers-client\\build\\dist\\");
-        final ServiceInvocationStrategy suaeis = CaAERSServiceInvocationStrategyFactory
-                .createCaAERSUpdateAdverseEventServiceInvocationStrategy(new String[] { customLibLoc.getAbsolutePath(),
-                        distLoc.getAbsolutePath() }, "classpath*:applicationContext-caaers-client-test.xml");
-//        assertNotNull(suaeis);
+        // assertNotNull(saeis);
     }
 
     /**
@@ -107,7 +80,7 @@ public class CaAERSServiceInvocationStrategyFactoryTest {
         final ServiceInvocationStrategy saeis = CaAERSServiceInvocationStrategyFactory
                 .createCaAERSAdverseEventServiceInvocationStrategy(new String[] { customLibLoc.getAbsolutePath(),
                         distLoc.getAbsolutePath() }, "classpath*:applicationContext-caaers-client-test.xml");
-//        assertNull(saeis);
+        // assertNull(saeis);
     }
 
     private String getPStr() {
