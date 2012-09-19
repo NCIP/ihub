@@ -77,7 +77,7 @@ public class CaTissueConsentTest {
     }
 
     private String getConsentXMLStr() {
-        return getXMLString("RegisterConsent.xml");
+        return getXMLString("RegisterConsent_catissue.xml");
     }
 
     private String getXMLString(String fileName) {

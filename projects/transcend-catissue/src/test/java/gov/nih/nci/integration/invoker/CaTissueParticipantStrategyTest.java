@@ -270,7 +270,7 @@ public class CaTissueParticipantStrategyTest {
     }
 
     private String getSpecimenXMLStr() {
-        return getXMLString("Participant.xml");
+        return getXMLString("Participant_catissue.xml");
     }
 
     private String getXMLString(String fileName) {

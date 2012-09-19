@@ -133,11 +133,11 @@ public class CaTissueParticipantTest {
     }
 
     private String getParticipantXMLStr() {
-        return getXMLString("Participant.xml");
+        return getXMLString("Participant_catissue.xml");
     }
 
     private String getParticipantXMLStrFailure() {
-        return getXMLString("ParticipantFailure.xml");
+        return getXMLString("ParticipantFailure_catissue.xml");
     }
 
     private String getXMLString(String fileName) {
