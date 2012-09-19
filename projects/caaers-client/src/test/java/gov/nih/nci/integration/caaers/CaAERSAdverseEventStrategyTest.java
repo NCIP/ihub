@@ -5,7 +5,6 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.Status;
 import gov.nih.nci.integration.caaers.invoker.CaAERSAdverseEventServiceInvocationStrategy;
-import gov.nih.nci.integration.caaers.invoker.CaAERSUpdateAdverseEventServiceInvocationStrategy;
 import gov.nih.nci.integration.domain.IHubMessage;
 import gov.nih.nci.integration.domain.ServiceInvocationMessage;
 import gov.nih.nci.integration.domain.StrategyIdentifier;
@@ -42,7 +41,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class CaAERSAdverseEventStrategyTest {
 
     private CaAERSAdverseEventServiceInvocationStrategy caAERSAdverseEventServiceInvocationStrategy;
-    private CaAERSUpdateAdverseEventServiceInvocationStrategy caAERSUpdateAdverseEventServiceInvocationStrategy;
     private CaAERSAdverseEventServiceWSClient wsClient;
     private XSLTTransformer xsltTransformer;
     private static final int RETRY_COUNT = 1;
@@ -64,8 +62,6 @@ public class CaAERSAdverseEventStrategyTest {
         xsltTransformer = EasyMock.createMock(XSLTTransformer.class);
         caAERSAdverseEventServiceInvocationStrategy = new CaAERSAdverseEventServiceInvocationStrategy(xsltTransformer,
                 wsClient, RETRY_COUNT);
-        caAERSUpdateAdverseEventServiceInvocationStrategy = new CaAERSUpdateAdverseEventServiceInvocationStrategy(
-                xsltTransformer, wsClient, RETRY_COUNT);
     }
 
     /**
@@ -183,76 +179,6 @@ public class CaAERSAdverseEventStrategyTest {
         EasyMock.expect(wsClient.updateAdverseEvent((String) EasyMock.anyObject())).andReturn(caaersresponse);
         EasyMock.replay(wsClient);
 
-        final ServiceInvocationMessage serviceInvocationMessage = prepareServiceInvocationMessage(REFMSGID,
-                getAEInterimMessage(), stTime,
-                caAERSUpdateAdverseEventServiceInvocationStrategy.getStrategyIdentifier());
-
-        final ServiceInvocationResult result = caAERSUpdateAdverseEventServiceInvocationStrategy
-                .invoke(serviceInvocationMessage);
-
-        Assert.assertNotNull(result);
-    }
-
-    /**
-     * Tests updateAdverseEvent using the ServiceInvocationStrategy class for the success scenario
-     * 
-     * @throws IntegrationException - IntegrationException
-     * @throws JAXBException - JAXBException
-     */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Test
-    public void updateAdverseEventFailure() throws IntegrationException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime());
-
-        xsltTransformer.transform(null, null, null);
-        EasyMock.expectLastCall().andAnswer(new IAnswer() {
-
-            public Object answer() {
-                // return the value to be returned by the method (null for void)
-                return getAEXMLString();
-            }
-        }).anyTimes();
-
-        final CreateOrUpdateAdverseEventResponse caaersresponse = getWSResponse(FAILURE);
-        EasyMock.expect(wsClient.updateAdverseEvent((String) EasyMock.anyObject())).andReturn(caaersresponse);
-        EasyMock.replay(wsClient);
-
-        final ServiceInvocationMessage serviceInvocationMessage = prepareServiceInvocationMessage(REFMSGID,
-                getAEInterimMessage(), stTime,
-                caAERSUpdateAdverseEventServiceInvocationStrategy.getStrategyIdentifier());
-
-        final ServiceInvocationResult result = caAERSUpdateAdverseEventServiceInvocationStrategy
-                .invoke(serviceInvocationMessage);
-
-        Assert.assertNotNull(result);
-    }
-
-    /**
-     * Tests Rollback for createAdverseEvent using the ServiceInvocationStrategy class
-     * 
-     * @throws IntegrationException - IntegrationException
-     * @throws JAXBException - JAXBException
-     */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Test
-    public void updateAERollback() throws IntegrationException, JAXBException {
-        final Date stTime = new Date(new java.util.Date().getTime());
-
-        xsltTransformer.transform(null, null, null);
-        EasyMock.expectLastCall().andAnswer(new IAnswer() {
-
-            public Object answer() {
-                // return the value to be returned by the method (null for void)
-                return getAEXMLString();
-            }
-        });
-
-        final ServiceInvocationMessage serviceInvocationMessage = prepareServiceInvocationMessage(REFMSGID,
-                getAEInterimMessage(), stTime,
-                caAERSUpdateAdverseEventServiceInvocationStrategy.getStrategyIdentifier());
-        final ServiceInvocationResult result = caAERSUpdateAdverseEventServiceInvocationStrategy
-                .rollback(serviceInvocationMessage);
-        Assert.assertNotNull(result);
     }
 
     private String getAEInterimMessage() {
@@ -296,8 +222,8 @@ public class CaAERSAdverseEventStrategyTest {
 
     private String getXMLString(String fileName) {
         String contents = null;
-        final InputStream is = CaAERSAdverseEventServiceClientIntegrationTest.class.getClassLoader().getResourceAsStream(
-                "payloads/adverseevent/" + fileName);
+        final InputStream is = CaAERSAdverseEventServiceClientIntegrationTest.class.getClassLoader()
+                .getResourceAsStream("payloads/adverseevent/" + fileName);
         try {
             contents = org.apache.cxf.helpers.IOUtils.toString(is);
         } catch (IOException e) {
