@@ -101,11 +101,11 @@ public class RegisterConsentIntegrationTest {
     }
 
     private String getRegisterConsentXMLStr() {
-        return getXMLString("RegisterConsent.xml");
+        return getXMLString("RegisterConsent_inbound.xml");
     }
 
     private String getRegisterConsentSpecimenNotExistXMLStr() {
-        return getXMLString("RegisterConsentSpecimenNotExist.xml");
+        return getXMLString("RegisterConsentSpecimenNotExist_inbound.xml");
     }
 
     private String getXMLString(String fileName) {

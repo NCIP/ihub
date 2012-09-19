@@ -117,7 +117,7 @@ public class AdverseEventLoadTest {
     }
 
     private String getCreateAdverseEventXMLStr() {
-        return getXMLString("CreateAdverseEvent.xml");
+        return getXMLString("CreateAdverseEvent_inbound.xml");
     }
 
     private Runnable getRunnable() {
