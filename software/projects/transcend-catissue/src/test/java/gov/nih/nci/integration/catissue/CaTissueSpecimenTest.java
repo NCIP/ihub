@@ -110,7 +110,7 @@ public class CaTissueSpecimenTest {
     }
 
     private String getSpecimenXMLStr() {
-        return getXMLString("CreateSpecimen.xml");
+        return getXMLString("CreateSpecimen_catissue.xml");
     }
 
     private String getXMLString(String fileName) {

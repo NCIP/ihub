@@ -69,19 +69,19 @@ public class CaTissueSpecimenClientIntegrationTest {
     }
 
     private String getCreateExistingSpecimenXMLStr() {
-        return getXMLString("CreateExistingSpecimen.xml");
+        return getXMLString("CreateExistingSpecimen_catissue.xml");
     }
 
     private String getCreateSpecimenXMLStr() {
-        return getXMLString("CreateSpecimen.xml");
+        return getXMLString("CreateSpecimen_catissue.xml");
     }
 
     private String getUpdateSpecimenNotExistXMLStr() {
-        return getXMLString("UpdateSpecimenNotExist.xml");
+        return getXMLString("UpdateSpecimenNotExist_catissue.xml");
     }
 
     private String getUpdateSpecimenXMLStr() {
-        return getXMLString("UpdateSpecimen.xml");
+        return getXMLString("UpdateSpecimen_catissue.xml");
     }
 
     private String getXMLString(String fileName) {
