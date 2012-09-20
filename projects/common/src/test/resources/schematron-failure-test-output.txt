@@ -1,0 +1,8 @@
+
+			Failed Schematron Validation.
+			
+		  Failed rule 
+					The administrativeGenderCode must be 'M' or 'F' or must have nullFlavor as 'UNK' with originalText value 'unknown' or must have nullFlavor as 'NI' with originalText value 'not reported'
+				
+		  Expression: @code='M' or @code='F' or (@nullFlavor='UNK' and originalText/text()='unknown') or (@nullFlavor='NI' and originalText/text()='not reported') '
+		  Location of failure: /*:ClinicalDocument[namespace-uri()='urn:hl7-org:v3'][1]/*:recordTarget[namespace-uri()='urn:hl7-org:v3'][1]/*:patientRole[namespace-uri()='urn:hl7-org:v3'][1]/*:patient[namespace-uri()='urn:hl7-org:v3'][1]/*:administrativeGenderCode[namespace-uri()='urn:hl7-org:v3'][1]

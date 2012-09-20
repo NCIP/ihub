@@ -116,4 +116,38 @@ function convertMsgBCErrorToCaCISError(msgBCErrorStr) {
     <scope>3</scope>
     <version>2.1.1.5490</version>
   </codeTemplate>
+  <codeTemplate>
+    <id>5f8f8fae-bc27-418f-8020-08a5790db0ce</id>
+    <name>schematronValidateIncomingCDA</name>
+    <tooltip>schematron validate incoming cda message</tooltip>
+    <code>// modify function_name and parameters as you wish.
+// one function per template is recommended. i.e.) create a new code template for each new function.
+function schematronValidateIncomingCDA(messageToValidate, validatorName) {
+	
+	try {
+		var validator = globalMap.get(validatorName);
+
+		var results = validator.validate(messageToValidate);
+		
+		if(results != &quot;&quot;) {
+			var iHubMsgDao = globalMap.get(&quot;iHubMessageDao&quot;);
+			var referenceMessageId = channelMap.get(&quot;referenceMessageId&quot;);
+
+			iHubMsgDao.updateIHubResponse(Packages.java.lang.Long.parseLong(referenceMessageId), results);
+			
+			var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1101);
+			channelMap.put(&apos;CACIS_ERROR&apos;, intgExcp);
+		}
+
+	} catch(err) {
+		var intgExcp = new Packages.gov.nih.nci.integration.exception.IntegrationException(Packages.gov.nih.nci.integration.exception.IntegrationError._1100, err, err.message);
+		channelMap.put(&apos;CACIS_ERROR&apos;, err);
+	}
+
+	return;
+}</code>
+    <type>FUNCTION</type>
+    <scope>0</scope>
+    <version>2.1.1.5490</version>
+  </codeTemplate>
 </list>

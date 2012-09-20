@@ -27,6 +27,14 @@ public interface Dao<T extends AbstractIdentity> {
      * @return id of the saved entity
      */
     Long save(T entity);
+    
+    /**
+     * update the given entity in the persistent store.
+     * 
+     * @param entity entity to update.
+     * @return id of the saved entity
+     */
+    Long update(T entity);
 
     /**
      * Entity Id is the identifier of the Entity within the persistence layer (database).

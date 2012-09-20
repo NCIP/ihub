@@ -3,8 +3,8 @@ package gov.nih.nci.integration.exception;
 import gov.nih.nci.integration.util.ErrorMessagesUtil;
 
 /**
- * This class contains different errorcodes which will be used within Transcend-iHub integration module. It loads
- * corresponding error messages from the properties file.
+ * This class contains different errorcodes which will be used within Transcend-iHub integration module.
+ * It loads corresponding error messages from the properties file.
  * 
  * @author Vinodh
  * 
@@ -49,7 +49,7 @@ public enum IntegrationError {
     _1033(1033, ErrorType.VALIDATION),
     _1034(1034, ErrorType.VALIDATION),
     _1035(1035, ErrorType.VALIDATION),
-
+    
     _1041(1041, ErrorType.TRANSFORMATION),
     _1042(1042, ErrorType.TRANSMISSION),
     _1043(1043, ErrorType.TRANSMISSION),
@@ -96,7 +96,9 @@ public enum IntegrationError {
     _1096(1096, ErrorType.VALIDATION),
     _1097(1097, ErrorType.VALIDATION),
     _1098(1098, ErrorType.VALIDATION),
-    _1099(1099, ErrorType.VALIDATION);
+    _1099(1099, ErrorType.VALIDATION),
+    _1100(1100, ErrorType.VALIDATION),
+    _1101(1101, ErrorType.VALIDATION);
 
     private int errorCode;
 
@@ -119,7 +121,7 @@ public enum IntegrationError {
     }
 
     public String getMessage(Object... objects) {
-        if (objects == null) { // NOPMD
+        if (objects == null) { //NOPMD
             return msgTemplate;
         }
         return String.format(msgTemplate, objects);

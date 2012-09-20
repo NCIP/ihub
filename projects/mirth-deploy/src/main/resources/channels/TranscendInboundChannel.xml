@@ -8,10 +8,10 @@
   <enabled>true</enabled>
   <version>2.1.1.5490</version>
   <lastModified>
-    <time>1348064859416</time>
+    <time>1348152221378</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>3</revision>
+  <revision>6</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -1239,7 +1239,7 @@ Y2FDSVNSZXF1ZXN0Pgo=</inboundTemplate>
         <rules>
           <rule>
             <sequenceNumber>0</sequenceNumber>
-            <name>Accept message if &quot;$(&apos;msgTyp&apos;)&quot; equals globalMap.get(&apos;AE&apos;) or globalMap.get(&apos;REGN&apos;) or globalMap.get(&apos;UPDTREGN&apos;) or globalMap.get(&apos;SPMN&apos;) or globalMap.get(&apos;UPDTSPMN&apos;) or globalMap.get(&apos;REGTCNST&apos;)</name>
+            <name>Accept message if &quot;$(&apos;msgTyp&apos;)&quot; equals globalMap.get(&apos;AE&apos;) or globalMap.get(&apos;REGN&apos;) or globalMap.get(&apos;UPDTREGN&apos;) or globalMap.get(&apos;SPMN&apos;) or globalMap.get(&apos;UPDTSPMN&apos;) or globalMap.get(&apos;REGTCNST&apos;) or globalMap.get(&apos;UPDTAE&apos;)</name>
             <data class="map">
               <entry>
                 <string>Name</string>
@@ -1254,6 +1254,7 @@ Y2FDSVNSZXF1ZXN0Pgo=</inboundTemplate>
                   <string>globalMap.get(&apos;SPMN&apos;)</string>
                   <string>globalMap.get(&apos;UPDTSPMN&apos;)</string>
                   <string>globalMap.get(&apos;REGTCNST&apos;)</string>
+                  <string>globalMap.get(&apos;UPDTAE&apos;)</string>
                 </list>
               </entry>
               <entry>
@@ -1270,7 +1271,7 @@ Y2FDSVNSZXF1ZXN0Pgo=</inboundTemplate>
               </entry>
             </data>
             <type>Rule Builder</type>
-            <script>if($(&apos;msgTyp&apos;) == globalMap.get(&apos;AE&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;REGN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTREGN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;SPMN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTSPMN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;REGTCNST&apos;))
+            <script>if($(&apos;msgTyp&apos;) == globalMap.get(&apos;AE&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;REGN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTREGN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;SPMN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTSPMN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;REGTCNST&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTAE&apos;))
 {
 return true;
 }
@@ -1642,7 +1643,7 @@ Y2FDSVNSZXF1ZXN0Pgo=</inboundTemplate>
         <rules>
           <rule>
             <sequenceNumber>0</sequenceNumber>
-            <name>Accept message if &quot;$(&apos;msgTyp&apos;)&quot; equals globalMap.get(&apos;AE&apos;) or globalMap.get(&apos;REGN&apos;) or globalMap.get(&apos;UPDTREGN&apos;) or globalMap.get(&apos;SPMN&apos;) or globalMap.get(&apos;UPDTSPMN&apos;) or globalMap.get(&apos;REGTCNST&apos;)</name>
+            <name>Accept message if &quot;$(&apos;msgTyp&apos;)&quot; equals globalMap.get(&apos;AE&apos;) or globalMap.get(&apos;REGN&apos;) or globalMap.get(&apos;UPDTREGN&apos;) or globalMap.get(&apos;SPMN&apos;) or globalMap.get(&apos;UPDTSPMN&apos;) or globalMap.get(&apos;REGTCNST&apos;) or globalMap.get(&apos;UPDTAE&apos;)</name>
             <data class="map">
               <entry>
                 <string>Name</string>
@@ -1657,6 +1658,7 @@ Y2FDSVNSZXF1ZXN0Pgo=</inboundTemplate>
                   <string>globalMap.get(&apos;SPMN&apos;)</string>
                   <string>globalMap.get(&apos;UPDTSPMN&apos;)</string>
                   <string>globalMap.get(&apos;REGTCNST&apos;)</string>
+                  <string>globalMap.get(&apos;UPDTAE&apos;)</string>
                 </list>
               </entry>
               <entry>
@@ -1673,7 +1675,7 @@ Y2FDSVNSZXF1ZXN0Pgo=</inboundTemplate>
               </entry>
             </data>
             <type>Rule Builder</type>
-            <script>if($(&apos;msgTyp&apos;) == globalMap.get(&apos;AE&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;REGN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTREGN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;SPMN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTSPMN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;REGTCNST&apos;))
+            <script>if($(&apos;msgTyp&apos;) == globalMap.get(&apos;AE&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;REGN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTREGN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;SPMN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTSPMN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;REGTCNST&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTAE&apos;))
 {
 return true;
 }
@@ -1733,6 +1735,7 @@ var msgTyp = $(&apos;msgTyp&apos;);
 logger.info(&quot;inbound rw msgTyp=&quot;+ msgTyp);
 
 if(	msgTyp != globalMap.get(&apos;AE&apos;) 
+	&amp;&amp; msgTyp != globalMap.get(&apos;UPDTAE&apos;)
 	&amp;&amp; msgTyp != globalMap.get(&apos;REGN&apos;)
 	&amp;&amp; msgTyp != globalMap.get(&apos;UPDTREGN&apos;)
 	&amp;&amp; msgTyp != globalMap.get(&apos;SPMN&apos;)
@@ -1828,6 +1831,7 @@ globalMap.put(&quot;transcend.ihub.client.password&quot;,&quot;@{ihub.password}&
 
 // #########  FILTER Related Constants ##########
 globalMap.put(&quot;AE&quot;,&quot;Create Or Update Adverse Event&quot;);
+globalMap.put(&quot;UPDTAE&quot;,&quot;Update Adverse Event&quot;);
 globalMap.put(&quot;REGN&quot;,&quot;Create Participant Registration&quot;);
 globalMap.put(&quot;UPDTREGN&quot;,&quot;Update Participant Registration&quot;);
 globalMap.put(&quot;SPMN&quot;,&quot;Create Biospecimen&quot;);
