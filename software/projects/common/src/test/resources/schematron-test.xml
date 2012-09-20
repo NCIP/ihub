@@ -1,0 +1,107 @@
+<ClinicalDocument	xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<realmCode code="US" />
+	<typeId extension="POCD_HD000040" root="2.16.840.1.113883.1.3" />
+	<templateId assigningAuthorityName="HL7 CCDA"	root="2.16.840.1.113883.10.20.22.1.1" />
+	<id extension="echr:patient-1823431:clinicalNote-1833300" root="1.2.1.173000" />
+	<code nullFlavor="OTH">
+		<originalText>Registration report</originalText>
+	</code>
+	<title>Registration report</title>
+	<effectiveTime value="20110722085054-0700" />
+	<confidentialityCode code="N" />
+	<languageCode code="en-US" />
+	<recordTarget>
+		<patientRole>
+			<id assigningAuthorityName="iSpy2 Study" extension="echr:patient-1823462"	root="1.2.1.173000" />
+			<id assigningAuthorityName="ABC Cancer Institute" extension="2131823462"	root="1.2.1.173000" />
+			<addr nullFlavor="NI" />
+			<telecom nullFlavor="NI" />
+			<patient>
+				<name use="L">
+					<given>FirstName62</given>
+					<given />
+					<family>LastName62</family>
+				</name>
+				<administrativeGenderCode code="F"	codeSystem="2.16.840.1.113883.5.1" displayName="Female" />
+				<birthTime value="19670131" />
+				<maritalStatusCode code="M"	codeSystem="2.16.840.1.113883.5.2" codeSystemName="HL7 MaritalStatus"	displayName="Married">
+					<originalText>Now married</originalText>
+				</maritalStatusCode>
+				<raceCode code="2106-3" codeSystem="2.16.840.1.113883.6.238"	codeSystemName="Race &amp; Ethnicity - CDC" displayName="White" />
+				<ethnicGroupCode code="2186-5" codeSystem="2.16.840.1.113883.6.238"	codeSystemName="Race &amp; Ethnicity - CDC" displayName="Not Hispanic or Latino" />
+			</patient>
+		</patientRole>
+	</recordTarget>
+	<author>
+		<time nullFlavor="NI" />
+		<assignedAuthor>
+			<id extension="matthew.salesi@ucsfmedctr.org" root="1.2.1.173000" />
+			<addr nullFlavor="NI" />
+			<telecom nullFlavor="NI" />
+			<assignedPerson>
+				<name nullFlavor="NI" />
+			</assignedPerson>
+		</assignedAuthor>
+	</author>
+	<custodian>
+		<assignedCustodian>
+			<representedCustodianOrganization>
+				<id extension="TranscendTolven" root="2.16.840.1.113883.3.26.1.7" />
+				<name nullFlavor="NI" />
+				<telecom nullFlavor="NI" />
+				<addr nullFlavor="NI" />
+			</representedCustodianOrganization>
+		</assignedCustodian>
+	</custodian>
+	<documentationOf>
+		<serviceEvent classCode="CLNTRL">
+			<id extension="echsite87" root="2.16.840.1.113883.3.26.1.7" />
+			<code nullFlavor="OTH">
+				<originalText>site-specific component of clinical trial</originalText>
+			</code>
+		</serviceEvent>
+	</documentationOf>
+	<documentationOf>
+		<serviceEvent classCode="CLNTRL">
+			<id extension="6482" root="6482" />
+			<code nullFlavor="OTH">
+				<originalText>clinical trial</originalText>
+			</code>
+		</serviceEvent>
+	</documentationOf>
+	<component>
+		<structuredBody>
+			<component>
+				<section>
+					<title>Registration</title>
+					<text>
+						<content>Activity status:</content>active</text>
+					<entry typeCode="DRIV">
+						<observation classCode="OBS" moodCode="EVN">
+							<templateId assigningAuthorityName="HL7 CCDA"	root="2.16.840.1.113883.10.20.22.4.2" />
+							<id nullFlavor="NI" />
+							<code code="263490005" codeSystem="2.16.840.1.113883.6.96"	codeSystemName="SNOMED-CT" displayName="Activity status" />
+							<value code="55561003" codeSystem="2.16.840.1.113883.6.96"	codeSystemName="SNOMED-CT" displayName="active" xsi:type="CD" />
+						</observation>
+					</entry>
+				</section>
+			</component>
+			<component>
+				<section>
+					<templateId assigningAuthorityName="HL7 CCDA"	root="2.16.840.1.113883.10.20.22.2.17" />
+					<code code="29762-2" codeSystem="2.16.840.1.113883.6.1"	displayName="social history" />
+					<title />
+					<text />
+					<entry typeCode="DRIV">
+						<observation classCode="OBS" moodCode="EVN">
+							<templateId assigningAuthorityName="HL7 CCDA"	root="2.16.840.1.113883.10.20.22.4.2" />
+							<id root="0b1f04da-983c-4438-a093-31011a5f9758" />
+							<code code="103579009" codeSystem="2.16.840.1.113883.6.96"	codeSystemName="SNOMED-CT" displayName="race" />
+							<value code="1002-5" codeSystem="2.16.840.1.113883.6.238"	codeSystemName="Race &amp; Ethnicity - CDC" displayName="American Indian or Alaska Native"	xsi:type="CD" />
+						</observation>
+					</entry>
+				</section>
+			</component>
+		</structuredBody>
+	</component>
+</ClinicalDocument>

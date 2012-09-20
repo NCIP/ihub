@@ -87,6 +87,22 @@ public abstract class AbstractDao<T extends AbstractIdentity> implements Dao<T> 
          */
         return entity.getId();
     }
+    
+    /**
+     * update
+     * 
+     * @param entity - Entity
+     * @return Id
+     */
+    public Long update(final T entity) {
+        em.merge(entity);
+        /*
+         * Commenting out the flush after save. It will be executed at the time of commit. This is done because this
+         * flush causes embeddable Collections to be inserted first at this flush and then later deleted and inserted at
+         * the commit flush.
+         */
+        return entity.getId();
+    }
 
     /**
      * getEm

@@ -80,6 +80,7 @@ public class IHubMessage extends AbstractIdentity {
      * 
      * @return response
      */
+    @Column(length = 50000)
     public String getResponse() {
         return response;
     }

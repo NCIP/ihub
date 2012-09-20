@@ -6,7 +6,6 @@
                 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
                 xmlns:schold="http://www.ascc.net/xml/schematron"
                 xmlns:iso="http://purl.oclc.org/dsdl/schematron"
-                xmlns:ns1="http://cacis.nci.nih.gov"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xmlns:cda="urn:hl7-org:v3"
                 version="2.0"><!--Implementers: please note that overriding process-prolog or process-root is 
@@ -165,15 +164,14 @@
    <!--SCHEMA SETUP-->
 <xsl:template match="/">
       <svrl:schematron-output xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-                              title="Schematron Schema for Cacis Request for SA"
+                              title="Schematron Schema for iHub manage specimens CDA request"
                               schemaVersion="">
          <xsl:comment>
-            <xsl:value-of select="$archiveDirParameter"/>   
+         <xsl:value-of select="$archiveDirParameter"/>   
 		 <xsl:value-of select="$archiveNameParameter"/>  
 		 <xsl:value-of select="$fileNameParameter"/>  
 		 <xsl:value-of select="$fileDirParameter"/>
          </xsl:comment>
-         <svrl:ns-prefix-in-attribute-values uri="http://cacis.nci.nih.gov" prefix="ns1"/>
          <svrl:ns-prefix-in-attribute-values uri="http://www.w3.org/2001/XMLSchema-instance" prefix="xsi"/>
          <svrl:ns-prefix-in-attribute-values uri="urn:hl7-org:v3" prefix="cda"/>
          <svrl:active-pattern>
@@ -189,34 +187,38 @@
    </xsl:template>
 
    <!--SCHEMATRON PATTERNS-->
-<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">Schematron Schema for Cacis Request for SA</svrl:text>
+<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">Schematron Schema for iHub manage specimens CDA request</svrl:text>
 
-   <!--PATTERN exchangeFormat-->
+   <!--PATTERN Guidance For BreastCoreBiopsy Type-->
 
 
 	<!--RULE -->
-<xsl:template match="//ns1:routingInstructions/ns1:exchangeDocument" priority="1000"
+	<xsl:template match="//cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.22.4.13'][cda:code/cda:originalText='Guidance for Breast Core Biopsy']/cda:value" priority="1000"
                  mode="M4">
       <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-                       context="//ns1:routingInstructions/ns1:exchangeDocument"/>
+                       context="//cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.22.4.13'][cda:code/cda:originalText='Guidance for Breast Core Biopsy']/cda:value"/>
 
-		    <!--ASSERT -->
-<xsl:choose>
-         <xsl:when test="@exchangeFormat='HL7_V2_CLINICAL_NOTE' or @exchangeFormat='CCD' or @exchangeFormat='RIMITS'"/>
-         <xsl:otherwise>
-            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-                                test="@exchangeFormat='HL7_V2_CLINICAL_NOTE' or @exchangeFormat='CCD' or @exchangeFormat='RIMITS'">
-               <xsl:attribute name="flag">error</xsl:attribute>
-               <xsl:attribute name="location">
-                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
-               </xsl:attribute>
-               <svrl:text>
-				Exchange document format must be HL7_V2_CLINICAL_NOTE or CCD or RIMITS
-			</svrl:text>
-            </svrl:failed-assert>
-         </xsl:otherwise>
-      </xsl:choose>
-      <xsl:apply-templates select="*|comment()|processing-instruction()" mode="M4"/>
+		<!--ASSERT -->
+		
+		<xsl:choose>
+	         <xsl:when test="@code='16310003' or @code='241615005' or @code='258172002' 
+	         or @code='71651007' or @code='113011001' 
+	         or (@nullFlavor='OTH' and cda:originalText/text()='Other free text')"/>
+	         <xsl:otherwise>
+	            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+	                                test="@code='16310003' or @code='241615005' or @code='258172002' or @code='71651007' or @code='113011001' or (@nullFlavor='OTH' and cda:originalText/text()='Other free text')">
+	               <xsl:attribute name="flag">error</xsl:attribute>
+	               <xsl:attribute name="location">
+	                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+	               </xsl:attribute>
+	               <svrl:text>
+					The Guidance for Breast Core Biopsy value code must be '16310003' or '241615005' or '258172002' or '71651007' or '113011001' or must have nullFlavor as 'OTH' with originalText value 'Other free text'
+				</svrl:text>
+	            </svrl:failed-assert>
+	         </xsl:otherwise>
+	      </xsl:choose>
+	      
+		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M4"/>
    </xsl:template>
    <xsl:template match="text()" priority="-1" mode="M4"/>
    <xsl:template match="@*|node()" priority="-2" mode="M4">

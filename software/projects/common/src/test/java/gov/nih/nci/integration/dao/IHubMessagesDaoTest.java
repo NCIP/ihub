@@ -2,6 +2,7 @@ package gov.nih.nci.integration.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import gov.nih.nci.integration.domain.IHubMessage;
 import gov.nih.nci.integration.domain.Status;
 
@@ -66,9 +67,32 @@ public class IHubMessagesDaoTest {
         final IHubMessage savedIHubMessage = iHubMessageDao.getById(id);
         assertNotNull(savedIHubMessage);
     }
+    
+    /**
+     * Tests updating response to iHubMessage
+     */
+    @Test
+    public void updateResponse() {
+        final int sizeBefore = iHubMessageDao.getAll().size();
+
+        final Long id = iHubMessageDao.saveMessage(12345L, "request string");
+        assertNotNull(id);
+        assertEquals(sizeBefore + 1, iHubMessageDao.getAll().size());
+
+        final IHubMessage savedIHubMessage = iHubMessageDao.getById(id);        
+        assertNotNull(savedIHubMessage);
+        assertNull(savedIHubMessage.getResponse());
+        
+        iHubMessageDao.updateIHubResponse(12345L, "response string");
+        
+        final IHubMessage savedIHubMessage2 = iHubMessageDao.getById(id);
+        assertNotNull(savedIHubMessage2);
+        assertNotNull(savedIHubMessage2.getResponse());
+        assertEquals("response string", savedIHubMessage2.getResponse());
+    }
 
     private IHubMessage createIHubMessage() {
-        IHubMessage iHubMessage = new IHubMessage();
+        final IHubMessage iHubMessage = new IHubMessage();
         iHubMessage.setRequest("request string");
         iHubMessage.setStartTime(new Date(new java.util.Date().getTime()));
         iHubMessage.setStatus(Status.PROCESS);
