@@ -45,11 +45,7 @@
 			</catissue:lastName>
 			<catissue:vitalStatus>Alive</catissue:vitalStatus>			
 			<catissue:collectionProtocolRegistrationCollection
-				class="set">
-				<!-- Set the values in CPR only for Create Participant Flow and don't set it for 
-				UpdateParticipant -->
-				<xsl:if
-					test="//ns2:caxchangerequest/ns0:metadata/ns0:operationName='Create Participant Registration'">
+				class="set">						
 					<catissue:collectionProtocolRegistration>
 						<catissue:activityStatus>
 							<xsl:value-of select="//p:participant/p:activityStatus" />
@@ -111,10 +107,8 @@
 								<catissue:response>Not Specified</catissue:response>
 							</catissue:consentTierResponse>
 						</catissue:consentTierResponseCollection>
-					</catissue:collectionProtocolRegistration>
-				</xsl:if>
+					</catissue:collectionProtocolRegistration>				
 			</catissue:collectionProtocolRegistrationCollection>
-
 			<catissue:raceCollection class="set">
 				<catissue:race>
 					<catissue:raceName>
