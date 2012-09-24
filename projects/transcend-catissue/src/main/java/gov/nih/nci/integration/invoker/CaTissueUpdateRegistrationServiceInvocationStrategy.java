@@ -63,6 +63,7 @@ public class CaTissueUpdateRegistrationServiceInvocationStrategy implements Serv
         msgToErrMapBase.put(
                 "Either Title is not selected or Date format is not correct in Collection Protocol Registration",
                 IntegrationError._1098);
+        msgToErrMapBase.put("Study can't be changed while updating the Participant.", IntegrationError._1106);       
 
         msgToErrMap = Collections.synchronizedMap(msgToErrMapBase);
     }
