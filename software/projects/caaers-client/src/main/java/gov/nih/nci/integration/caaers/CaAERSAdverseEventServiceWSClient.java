@@ -112,29 +112,7 @@ public class CaAERSAdverseEventServiceWSClient {
      * @return CreateAdverseEventResponse - response from the webservice call
      * @throws JAXBException - JAXBException
      */
-    public CreateOrUpdateAdverseEventResponse createAdverseEvent(String adverseEventXMLStr) throws JAXBException {
-
-        // parse the incoming XML String
-        final AdverseEventsInputMessage inputMessage = parseAdverseEventXMLStr(adverseEventXMLStr);
-
-        final CreateOrUpdateAdverseEvent adverseEvent = new CreateOrUpdateAdverseEvent();
-        adverseEvent.setAdverseEventsInputMessage(inputMessage);
-
-        CreateOrUpdateAdverseEventResponse serviceResponse = null;
-
-        serviceResponse = client.createOrUpdateAdverseEvent(adverseEvent);
-
-        return serviceResponse;
-    }
-
-    /**
-     * This method is used to create Adverse Event in caAERS
-     * 
-     * @param adverseEventXMLStr - XMLString containing the list of adverse event to be created
-     * @return CreateOrUpdateAdverseEventResponse - response from the webservice call
-     * @throws JAXBException - JAXBException
-     */
-    public CreateOrUpdateAdverseEventResponse updateAdverseEvent(String adverseEventXMLStr) throws JAXBException {
+    public CreateOrUpdateAdverseEventResponse createOrUpdateAdverseEvent(String adverseEventXMLStr) throws JAXBException {
 
         // parse the incoming XML String
         final AdverseEventsInputMessage inputMessage = parseAdverseEventXMLStr(adverseEventXMLStr);
