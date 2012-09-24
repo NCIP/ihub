@@ -122,9 +122,19 @@ public class CaAERSParticipantTest {
         serviceResponse.setResponsecode("0");
         caaersServiceResponse.setServiceResponse(serviceResponse);
         response.setCaaersServiceResponse(caaersServiceResponse);
+
+        final GetParticipantResponse gpr = new GetParticipantResponse();
+        final CaaersServiceResponse csr = new CaaersServiceResponse();
+        final ServiceResponse sr = new ServiceResponse();
+        sr.setStatus(Status.PROCESSED);
+        sr.setResponsecode("0");
+        caaersServiceResponse.setServiceResponse(sr);
+        gpr.setCaaersServiceResponse(csr);
+
         try {
             EasyMock.expect(client.updateParticipant((UpdateParticipant) org.easymock.EasyMock.anyObject())).andReturn(
                     response);
+            EasyMock.expect(client.getParticipant((GetParticipant) org.easymock.EasyMock.anyObject())).andReturn(gpr);
             EasyMock.replay(client);
 
             caAERSParticipantServiceClient.updateParticipant(participantXMLStr);
@@ -169,7 +179,6 @@ public class CaAERSParticipantTest {
             EasyMock.expect(client.deleteParticipant((DeleteParticipant) org.easymock.EasyMock.anyObject())).andReturn(
                     response);
             EasyMock.replay(client);
-
             caAERSParticipantServiceClient.deleteParticipant(participantXMLStr);
         } catch (Exception e) {
             LOG.error("Exception occured : " + e);
