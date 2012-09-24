@@ -85,7 +85,7 @@ public class CaAERSAdverseEventStrategyTest {
         }).anyTimes();
 
         final CreateOrUpdateAdverseEventResponse caaersresponse = getWSResponse(SUCCESS);
-        EasyMock.expect(wsClient.createAdverseEvent((String) EasyMock.anyObject())).andReturn(caaersresponse);
+        EasyMock.expect(wsClient.createOrUpdateAdverseEvent((String) EasyMock.anyObject())).andReturn(caaersresponse);
         EasyMock.replay(wsClient);
 
         final ServiceInvocationMessage serviceInvocationMessage = prepareServiceInvocationMessage(REFMSGID,
@@ -118,7 +118,7 @@ public class CaAERSAdverseEventStrategyTest {
         });
 
         final CreateOrUpdateAdverseEventResponse caaersresponse = getWSResponse(FAILURE);
-        EasyMock.expect(wsClient.createAdverseEvent((String) EasyMock.anyObject())).andReturn(caaersresponse);
+        EasyMock.expect(wsClient.createOrUpdateAdverseEvent((String) EasyMock.anyObject())).andReturn(caaersresponse);
         EasyMock.replay(wsClient);
 
         final ServiceInvocationMessage serviceInvocationMessage = prepareServiceInvocationMessage(REFMSGID,
@@ -176,7 +176,7 @@ public class CaAERSAdverseEventStrategyTest {
         }).anyTimes();
 
         final CreateOrUpdateAdverseEventResponse caaersresponse = getWSResponse(SUCCESS);
-        EasyMock.expect(wsClient.updateAdverseEvent((String) EasyMock.anyObject())).andReturn(caaersresponse);
+        EasyMock.expect(wsClient.createOrUpdateAdverseEvent((String) EasyMock.anyObject())).andReturn(caaersresponse);
         EasyMock.replay(wsClient);
 
     }

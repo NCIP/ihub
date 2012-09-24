@@ -61,7 +61,7 @@ public class CaAERSAdverseEventTest {
                     .andReturn(response);
             EasyMock.replay(client);
 
-            caAERSAdverseEventServiceWSClient.createAdverseEvent(adverseEventXMLStr);
+            caAERSAdverseEventServiceWSClient.createOrUpdateAdverseEvent(adverseEventXMLStr);
 
         } catch (Exception e) {
             Assert.fail("Exception occured while calling createAdverseEvent. " + e);
@@ -81,7 +81,7 @@ public class CaAERSAdverseEventTest {
                     .andReturn(response);
             EasyMock.replay(client);
 
-            caAERSAdverseEventServiceWSClient.updateAdverseEvent(getAdverseEventXMLStr());
+            caAERSAdverseEventServiceWSClient.createOrUpdateAdverseEvent(getAdverseEventXMLStr());
         } catch (JAXBException e) {
             Assert.fail("JAXBException occured while calling updateAdverseEvent. " + e);
         }

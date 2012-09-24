@@ -88,7 +88,7 @@ public class CaAERSAdverseEventServiceInvocationStrategy implements ServiceInvoc
         try {
             final String adverseEventXMLStr = transformToAdverseEventXML(msg.getMessage().getRequest());
 
-            final CreateOrUpdateAdverseEventResponse caaersresponse = client.createAdverseEvent(adverseEventXMLStr);
+            final CreateOrUpdateAdverseEventResponse caaersresponse = client.createOrUpdateAdverseEvent(adverseEventXMLStr);
             final ServiceResponse response = caaersresponse.getCaaersServiceResponse().getServiceResponse();            
 
             if ("FAILED_TO_PROCESS".equalsIgnoreCase(response.getStatus().name())) {
