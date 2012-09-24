@@ -50,18 +50,17 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements Servic
 
     private static final Logger LOG = LoggerFactory.getLogger(CaAERSUpdateRegistrationServiceInvocationStrategy.class);
 
-    private static QName qname = new QName("http://schema.integration.caaers.cabig.nci.nih.gov/participant",
-            "participant");;
-
     private final CaAERSParticipantServiceWSClient client;
 
     private final int retryCount;
 
     private final XSLTTransformer xsltTransformer;
 
-    private Marshaller marshaller = null;
-
     private final Map<String, IntegrationError> msgToErrMap;
+
+    private static QName qname = new QName("http://schema.integration.caaers.cabig.nci.nih.gov/participant",
+            "participant");
+    private Marshaller marshaller = null;
 
     /**
      * Constructor
@@ -85,6 +84,7 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements Servic
         msgToErrMapBase.put("User is not authorized on this Organization", IntegrationError._1012);
         msgToErrMapBase.put("could not be created in caAERS", IntegrationError._1014);
         msgToErrMapBase.put("Could not send Message", IntegrationError._1020);
+        msgToErrMapBase.put("Study can't be changed while updating the Participant.", IntegrationError._1106);
 
         msgToErrMap = Collections.synchronizedMap(msgToErrMapBase);
     }
@@ -105,30 +105,13 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements Servic
         final ServiceInvocationResult result = new ServiceInvocationResult();
         IntegrationException ie = null;
         try {
-
             final String participantXMLStr = transformToParticipantXML(msg.getMessage().getRequest());
-
-            final CaaersServiceResponse caaersGetResponse = client.getParticipant(participantXMLStr);
-            ServiceResponse response = caaersGetResponse.getServiceResponse();
-            ParticipantType existingPrtcpnt = null;
-            if ("0".equals(response.getResponsecode())) {
-                result.setResult(response.getResponsecode() + " : " + response.getMessage());
-                final Participants prtcpnts = (Participants) response.getResponseData().getAny();
-                existingPrtcpnt = prtcpnts.getParticipant().get(0);
-            } else {
-                handleErrorResponse(response, result);
-                handleException(result);
-                return result;
-            }
-
-            final String originalData = marshalParticipantType(existingPrtcpnt);
-
             final CaaersServiceResponse caaersresponse = client.updateParticipant(participantXMLStr);
-            response = caaersresponse.getServiceResponse();
+            final ServiceResponse response = caaersresponse.getServiceResponse();
             if ("0".equals(response.getResponsecode())) {
                 result.setResult(response.getResponsecode() + " : " + response.getMessage());
                 result.setDataChanged(true);
-                result.setOriginalData(originalData);
+                result.setOriginalData(getOriginalData(response));
             } else {
                 handleErrorResponse(response, result);
             }
@@ -145,6 +128,12 @@ public class CaAERSUpdateRegistrationServiceInvocationStrategy implements Servic
 
         handleException(result);
         return result;
+    }
+
+    private String getOriginalData(ServiceResponse response) throws IntegrationException {
+        final Participants prtcpnts = (Participants) response.getResponseData().getAny();
+        final ParticipantType existingPrtcpnt = prtcpnts.getParticipant().get(0);
+        return marshalParticipantType(existingPrtcpnt);
     }
 
     @Override

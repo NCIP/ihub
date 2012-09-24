@@ -48,13 +48,9 @@ import org.slf4j.LoggerFactory;
 public class CaAERSParticipantServiceWSClient {
 
     private Unmarshaller unmarshaller = null;
-
     private ParticipantServiceInterface client;
-
     private String userName;
-
     private ClientPasswordCallback clientPasswordCallback;
-
     private static final Logger LOG = LoggerFactory.getLogger(CaAERSParticipantServiceWSClient.class);
 
     /**
@@ -213,12 +209,24 @@ public class CaAERSParticipantServiceWSClient {
      */
     public CaaersServiceResponse updateParticipant(String participantXMLStr) throws JAXBException,
             MalformedURLException, SOAPFaultException, IntegrationException {
-        // check if the activity status is "Not Active", then don't need to call updateParticipant
-        if (!participantXMLStr.contains("<activityStatus>Active</activityStatus>")) {
+        // check if the activity status is "Closed", then don't need to call updateParticipant
+        if (participantXMLStr.contains("<activityStatus>Closed</activityStatus>")) {
             return getNonActiveParticipantResponse();
         }
 
+        // get the existing participant
+        final CaaersServiceResponse caaersGetResponse = getParticipant(participantXMLStr);
+        // check if responseCode is NOT 0
+        if (!"0".equals(caaersGetResponse.getServiceResponse().getResponsecode())) {
+            return caaersGetResponse;
+        }
+
         final ParticipantType participant = parseParticipant(participantXMLStr);
+
+        // check if the StudyId is changed..
+        if (isParticipantStudyChanged(participant, caaersGetResponse)) {
+            return getStudyChangedResponse();
+        }
 
         final UpdateParticipant updateParticipant = new UpdateParticipant();
         final Participants participants = new Participants();
@@ -228,10 +236,13 @@ public class CaAERSParticipantServiceWSClient {
         UpdateParticipantResponse retValue = null;
         try {
             retValue = client.updateParticipant(updateParticipant);
+            retValue.getCaaersServiceResponse().getServiceResponse()
+                    .setResponseData(caaersGetResponse.getServiceResponse().getResponseData());
         } catch (SOAPFaultException e) {
             LOG.error("CaAERSParticipantServiceWSClient..SOAPFaultException while calling updateParticipant. ", e);
             throw e;
         }
+
         return retValue.getCaaersServiceResponse();
     }
 
@@ -276,6 +287,24 @@ public class CaAERSParticipantServiceWSClient {
         serviceResponse.setMessage("caAERS doesnt support off-study.");
         serviceResponse.setStatus(Status.PROCESSED);
         serviceResponse.setResponsecode("0");
+        caaersServiceResponse.setServiceResponse(serviceResponse);
+        return caaersServiceResponse;
+    }
+
+    private boolean isParticipantStudyChanged(ParticipantType participant, CaaersServiceResponse caaersGetResponse) {
+        final boolean isStudyChanged = false;
+        System.out.println(participant);// NOPMD
+        System.out.println(caaersGetResponse);// NOPMD
+
+        return isStudyChanged;
+    }
+
+    private CaaersServiceResponse getStudyChangedResponse() {
+        final CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
+        final ServiceResponse serviceResponse = new ServiceResponse();
+        serviceResponse.setMessage("Study can't be changed while updating the Participant.");
+        serviceResponse.setStatus(Status.PROCESSED);
+        serviceResponse.setResponsecode("1");
         caaersServiceResponse.setServiceResponse(serviceResponse);
         return caaersServiceResponse;
     }
