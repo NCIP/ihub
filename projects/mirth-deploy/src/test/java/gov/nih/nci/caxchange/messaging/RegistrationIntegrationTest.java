@@ -108,33 +108,6 @@ public class RegistrationIntegrationTest {
     }
 
     /**
-     * Testcase for Update Participant
-     */
-    @Test
-    public void sendUpdateRegistrationMessage() {
-        try {
-            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            final StringEntity reqentity = new StringEntity(getUpdateMsg());
-            httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
-
-            final HttpResponse response = httpclient.execute(httppost);
-            final HttpEntity entity = response.getEntity();
-            if (entity != null) {
-                final String output = EntityUtils.toString(entity);
-                Assert.assertNotNull(output);
-                Assert.assertEquals(getSuccessUpdateMsg(), removeCaXchangeIdentifier(output));
-            }
-        } catch (ClientProtocolException e) {
-            Assert.fail(e.getMessage());
-        } catch (IllegalStateException e) {
-            Assert.fail(e.getMessage());
-        } catch (IOException e) {
-            Assert.fail(e.getMessage());
-        }
-    }
-
-    /**
      * Testcase for sending duplicate message for participant registration
      */
     @Test
@@ -167,14 +140,16 @@ public class RegistrationIntegrationTest {
     }
 
     /**
-     * Testcase for sending invalid Study during Participant registration
+     * Testcase for sending invalid Study (Study Not Present) during Participant registration
      */
     @Test
     public void sendInvalidStudyRegistrationMessage() {
         try {
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             String msg = getCreateMsg();
-            msg = msg.replaceAll("6482:6482", "CP-01-02");
+            msg = msg.replaceAll("6482", "6482_123");
+            msg = msg.replaceAll("1823467", "1823467_123456");
+
             final StringEntity reqentity = new StringEntity(msg);
             httppost.setEntity(reqentity);
             httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
@@ -187,8 +162,63 @@ public class RegistrationIntegrationTest {
                 Assert.assertEquals(
                         true,
                         output.contains("<errorCode>1009</errorCode>")
-                                || output.contains("<errorCode>1051</errorCode>")
-                                || output.contains("<responseStatus>FAILURE</responseStatus>"));
+                                || output.contains("<errorCode>1098</errorCode>"));
+            }
+        } catch (ClientProtocolException e) {
+            Assert.fail(e.getMessage());
+        } catch (IllegalStateException e) {
+            Assert.fail(e.getMessage());
+        } catch (IOException e) {
+            Assert.fail(e.getMessage());
+        }
+    }
+
+    /**
+     * Testcase for Update Participant
+     */
+    @Test
+    public void sendUpdateRegistrationMessage() {
+        try {
+            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
+            final StringEntity reqentity = new StringEntity(getUpdateMsg());
+            httppost.setEntity(reqentity);
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
+
+            final HttpResponse response = httpclient.execute(httppost);
+            final HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                final String output = EntityUtils.toString(entity);
+                Assert.assertNotNull(output);
+                Assert.assertEquals(getSuccessUpdateMsg(), removeCaXchangeIdentifier(output));
+            }
+        } catch (ClientProtocolException e) {
+            Assert.fail(e.getMessage());
+        } catch (IllegalStateException e) {
+            Assert.fail(e.getMessage());
+        } catch (IOException e) {
+            Assert.fail(e.getMessage());
+        }
+    }
+
+    /**
+     * Testcase for Update Participant
+     */
+    @Test
+    public void sendUpdateRegistrationToDifferentStudyMessage() {
+        try {
+            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
+            String messageStr = getUpdateMsg();
+            messageStr = messageStr.replace("6482", "7216");
+            final StringEntity reqentity = new StringEntity(getUpdateMsg());
+            httppost.setEntity(reqentity);
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
+
+            final HttpResponse response = httpclient.execute(httppost);
+            final HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                final String output = EntityUtils.toString(entity);
+                Assert.assertNotNull(output);
+                Assert.assertEquals(getSuccessUpdateMsg(), removeCaXchangeIdentifier(output));
             }
         } catch (ClientProtocolException e) {
             Assert.fail(e.getMessage());

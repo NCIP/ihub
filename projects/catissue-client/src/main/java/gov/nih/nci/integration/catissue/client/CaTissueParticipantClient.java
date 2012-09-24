@@ -25,6 +25,8 @@ import edu.wustl.catissuecore.domain.ConsentTierResponse;
 import edu.wustl.catissuecore.domain.Participant;
 import edu.wustl.catissuecore.domain.ParticipantMedicalIdentifier;
 import edu.wustl.catissuecore.domain.Race;
+import edu.wustl.catissuecore.factory.CollectionProtocolFactory;
+import edu.wustl.catissuecore.factory.CollectionProtocolRegistrationFactory;
 import edu.wustl.catissuecore.factory.ParticipantFactory;
 import edu.wustl.catissuecore.factory.RaceFactory;
 import gov.nih.nci.system.applicationservice.ApplicationException;
@@ -211,14 +213,52 @@ public class CaTissueParticipantClient {
                     + participant.getLastName());
         }
 
+        // check if the collection protocol is different, if different then throw exception
+        if (isCollectionProtocolChanged(participant, existingParticipant)) {
+            LOG.error("Update Participant Registration failed for " + participant.getLastName()
+                    + "and exception is Study can't be changed while updating the Participant.");
+            throw new ApplicationException("Update Participant Registration failed for " + participant.getLastName()
+                    + "and exception is Study can't be changed while updating the Participant.");
+        }
+
         participant.setId(existingParticipant.getId());
+
+        // Set the values in CPR only for Create Participant Flow and don't set it for UpdateParticipant
+        participant.setCollectionProtocolRegistrationCollection(new HashSet<CollectionProtocolRegistration>());
 
         // code to handle the existing/new race collection
         updateParticipantRaceCollection(existingParticipant, participant);
 
-        caTissueAPIClient.update(participant);
+        try {
+            caTissueAPIClient.update(participant);
+        } catch (ApplicationException ae) {
+            LOG.error("Update Registration Failed for Participant with Subject ID " + participant.getLastName(), ae);
+            throw new ApplicationException(ae);
+        }
 
         return copyFrom(existingParticipant);
+    }
+
+    /**
+     * This method is used to check if the CollectionProtocol of incoming participant is different from
+     * existingParticipant
+     * 
+     * @return true if the CP is different
+     */
+    private boolean isCollectionProtocolChanged(Participant participant, Participant existingParticipant) {
+        boolean isCPChanged = false;
+        final List<CollectionProtocolRegistration> existCPRList = new ArrayList<CollectionProtocolRegistration>(
+                existingParticipant.getCollectionProtocolRegistrationCollection());
+        final CollectionProtocolRegistration existCPR = (CollectionProtocolRegistration) existCPRList.get(0);
+        final String existShortTitle = existCPR.getCollectionProtocol().getShortTitle();
+
+        final ArrayList<CollectionProtocolRegistration> cprColl = new ArrayList<CollectionProtocolRegistration>(
+                participant.getCollectionProtocolRegistrationCollection());
+        final String shortTitle = cprColl.get(0).getCollectionProtocol().getShortTitle();
+        if (!shortTitle.equals(existShortTitle)) {
+            isCPChanged = true;
+        }
+        return isCPChanged;
     }
 
     /**
@@ -425,6 +465,28 @@ public class CaTissueParticipantClient {
             p.getRaceCollection().add(r);
         }
 
+        final Iterator<CollectionProtocolRegistration> cprIter = participant
+                .getCollectionProtocolRegistrationCollection().iterator();
+        while (cprIter.hasNext()) {
+            final CollectionProtocolRegistration collectionProtocolRegistration = (CollectionProtocolRegistration) cprIter
+                    .next();
+
+            final CollectionProtocol collectionProtocol = collectionProtocolRegistration.getCollectionProtocol();
+            final CollectionProtocol cp = CollectionProtocolFactory.getInstance().createObject();
+            cp.setActivityStatus(collectionProtocol.getActivityStatus());
+            cp.setTitle(collectionProtocol.getTitle());
+            cp.setShortTitle(collectionProtocol.getShortTitle());
+
+            final CollectionProtocolRegistration cpr = CollectionProtocolRegistrationFactory.getInstance()
+                    .createObject();
+            cpr.setParticipant(p);
+            cpr.setConsentSignatureDate(collectionProtocolRegistration.getConsentSignatureDate());
+            cpr.setRegistrationDate(collectionProtocolRegistration.getRegistrationDate());
+            cpr.setProtocolParticipantIdentifier(collectionProtocolRegistration.getProtocolParticipantIdentifier());
+
+            cpr.setCollectionProtocol(cp);
+            p.getCollectionProtocolRegistrationCollection().add(cpr);
+        }
         return p;
     }
 
