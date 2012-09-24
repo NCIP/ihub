@@ -1,28 +1,12 @@
 package gov.nih.nci.integration.catissue;
 
 import static org.junit.Assert.assertNotNull;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-
-import org.easymock.classextension.EasyMock;
-import org.junit.Before;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-
 import edu.wustl.catissuecore.cacore.CaTissueWritableAppService;
 import edu.wustl.catissuecore.domain.CollectionProtocol;
 import edu.wustl.catissuecore.domain.CollectionProtocolEvent;
 import edu.wustl.catissuecore.domain.CollectionProtocolRegistration;
+import edu.wustl.catissuecore.domain.ConsentTier;
+import edu.wustl.catissuecore.domain.ConsentTierStatus;
 import edu.wustl.catissuecore.domain.DisposalEventParameters;
 import edu.wustl.catissuecore.domain.Participant;
 import edu.wustl.catissuecore.domain.Specimen;
@@ -35,6 +19,25 @@ import gov.nih.nci.integration.catissue.client.CaTissueAPIClientWithRegularAuthe
 import gov.nih.nci.integration.catissue.client.CaTissueSpecimenClient;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.query.cql.CQLQuery;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.easymock.classextension.EasyMock;
+import org.junit.Before;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 
 /**
  * This is the TestClass for Specimen flow.
@@ -82,7 +85,7 @@ public class CaTissueSpecimenTest {
         final CollectionProtocolRegistration cpr = new CollectionProtocolRegistration();
         cpr.setCollectionProtocol(cp);
         cpr.setParticipant(participant);
-        scg.setCollectionProtocolRegistration(cpr);        
+        scg.setCollectionProtocolRegistration(cpr);
         final List<Object> scgList = new ArrayList<Object>();
         scgList.add(scg);
 
@@ -363,6 +366,17 @@ public class CaTissueSpecimenTest {
         chars.setTissueSite("SKIN");
         specimen.setSpecimenCharacteristics(chars);
 
+        final Set<ConsentTierStatus> consentTierStatusCollection = new LinkedHashSet<ConsentTierStatus>();
+        final ConsentTier consentTier = new ConsentTier();
+        consentTier.setId(1L);
+        consentTier.setStatement("Statement");
+        final ConsentTierStatus consentTierStatus = new ConsentTierStatus();
+        consentTierStatus.setId(2L);
+        consentTierStatus.setStatus("Yes");
+        consentTierStatus.setConsentTier(consentTier);
+        consentTierStatusCollection.add(consentTierStatus);
+        specimen.setConsentTierStatusCollection(consentTierStatusCollection);
+
         try {
             EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
             EasyMock.expect(
@@ -402,6 +416,17 @@ public class CaTissueSpecimenTest {
         sc.setTissueSide("Right");
         sc.setTissueSite("Placenta");
         specimen.setSpecimenCharacteristics(sc);
+
+        final Set<ConsentTierStatus> consentTierStatusCollection = new LinkedHashSet<ConsentTierStatus>();
+        final ConsentTier consentTier = new ConsentTier();
+        consentTier.setId(1L);
+        consentTier.setStatement("Statement");
+        final ConsentTierStatus consentTierStatus = new ConsentTierStatus();
+        consentTierStatus.setId(2L);
+        consentTierStatus.setStatus("Yes");
+        consentTierStatus.setConsentTier(consentTier);
+        consentTierStatusCollection.add(consentTierStatus);
+        specimen.setConsentTierStatusCollection(consentTierStatusCollection);
 
         final SpecimenRecordEntry sre = new SpecimenRecordEntry();
         final GuidanceForBreastCoreBiopsy gfbcb = new GuidanceForBreastCoreBiopsy();
@@ -458,6 +483,17 @@ public class CaTissueSpecimenTest {
         sc.setTissueSide("Right");
         sc.setTissueSite("Placenta");
         specimen.setSpecimenCharacteristics(sc);
+        
+        final Set<ConsentTierStatus> consentTierStatusCollection = new LinkedHashSet<ConsentTierStatus>();
+        final ConsentTier consentTier = new ConsentTier();
+        consentTier.setId(1L);
+        consentTier.setStatement("Statement");
+        final ConsentTierStatus consentTierStatus = new ConsentTierStatus();
+        consentTierStatus.setId(2L);
+        consentTierStatus.setStatus("Yes");
+        consentTierStatus.setConsentTier(consentTier);
+        consentTierStatusCollection.add(consentTierStatus);
+        specimen.setConsentTierStatusCollection(consentTierStatusCollection);
 
         final SpecimenRecordEntry sre = new SpecimenRecordEntry();
         final GuidanceForBreastCoreBiopsy gfbcb = new GuidanceForBreastCoreBiopsy();

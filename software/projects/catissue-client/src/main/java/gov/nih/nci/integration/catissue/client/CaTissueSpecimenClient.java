@@ -2,6 +2,8 @@ package gov.nih.nci.integration.catissue.client;
 
 import edu.wustl.catissuecore.domain.CellSpecimen;
 import edu.wustl.catissuecore.domain.CollectionProtocol;
+import edu.wustl.catissuecore.domain.ConsentTier;
+import edu.wustl.catissuecore.domain.ConsentTierStatus;
 import edu.wustl.catissuecore.domain.DisposalEventParameters;
 import edu.wustl.catissuecore.domain.FluidSpecimen;
 import edu.wustl.catissuecore.domain.MolecularSpecimen;
@@ -26,8 +28,10 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -444,8 +448,13 @@ public class CaTissueSpecimenClient {
                 incomingSpecimen.setSpecimenCollectionGroup(existingSpecimen.getSpecimenCollectionGroup());
                 // Lineage should not be changed while updating the specimen
                 incomingSpecimen.setLineage(existingSpecimen.getLineage());
-                incomingSpecimen.getSpecimenCharacteristics().setId(
-                        existingSpecimen.getSpecimenCharacteristics().getId());
+
+                final SpecimenCharacteristics chars = new SpecimenCharacteristics();
+                chars.setId(existingSpecimen.getSpecimenCharacteristics().getId());
+                chars.setTissueSide(incomingSpecimen.getSpecimenCharacteristics().getTissueSide());
+                chars.setTissueSite(incomingSpecimen.getSpecimenCharacteristics().getTissueSite());
+                incomingSpecimen.setSpecimenCharacteristics(chars);
+
                 incomingSpecimen.setConsentTierStatusCollection(existingSpecimen.getConsentTierStatusCollection());
                 // update GuidanceForBreastCoreBiopsy in caTissue
                 updateGuidanceForBreastCoreBiopsy(existingSpecimen, specimenDetail);
@@ -639,7 +648,6 @@ public class CaTissueSpecimenClient {
     }
 
     private Specimens copyFromExistingSpecimen(List<Specimen> existingSpecimenList) {
-
         final Specimens existingSpecimens = new Specimens();
         Iterator<Specimen> specimenItr = null;
         for (specimenItr = existingSpecimenList.iterator(); specimenItr.hasNext();) {
@@ -665,12 +673,35 @@ public class CaTissueSpecimenClient {
             specimen.setLineage(existingSpecimen.getLineage());
             specimen.setIsAvailable(existingSpecimen.getIsAvailable());
             specimen.setCollectionStatus(existingSpecimen.getCollectionStatus());
+            // copy the ConsetTierStatusCollection
+            copyConsetTierStatusCollection(specimen, existingSpecimen);
             final SpecimenDetail specimenDetail = new SpecimenDetail();
             specimenDetail.setSpecimen(specimen);
             existingSpecimens.add(specimenDetail);
         }
 
         return existingSpecimens;
+    }
+
+    /**
+     * This method is used to copy the ConsetTierStatusCollection from 'existingSpecimen' to 'specimen'
+     */
+    private void copyConsetTierStatusCollection(Specimen specimen, Specimen existingSpecimen) {
+        final Collection<ConsentTierStatus> ctsColl = existingSpecimen.getConsentTierStatusCollection();
+        final Set<ConsentTierStatus> consentTierStatusCollection = new LinkedHashSet<ConsentTierStatus>();
+        for (final Iterator<ConsentTierStatus> iterator = ctsColl.iterator(); iterator.hasNext();) {
+            final ConsentTierStatus cts = (ConsentTierStatus) iterator.next();
+            final ConsentTier ct = cts.getConsentTier();
+            final ConsentTier consentTier = new ConsentTier();
+            consentTier.setId(ct.getId());
+            consentTier.setStatement(ct.getStatement());
+            final ConsentTierStatus consentTierStatus = new ConsentTierStatus();
+            consentTierStatus.setId(cts.getId());
+            consentTierStatus.setStatus(cts.getStatus());
+            consentTierStatus.setConsentTier(consentTier);
+            consentTierStatusCollection.add(consentTierStatus);
+        }
+        specimen.setConsentTierStatusCollection(consentTierStatusCollection);
     }
 
     /**

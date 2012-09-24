@@ -1,6 +1,19 @@
 package gov.nih.nci.integration.catissue;
 
 import static org.junit.Assert.assertNotNull;
+import edu.wustl.catissuecore.cacore.CaTissueWritableAppService;
+import edu.wustl.catissuecore.domain.CollectionProtocol;
+import edu.wustl.catissuecore.domain.CollectionProtocolRegistration;
+import edu.wustl.catissuecore.domain.Participant;
+import edu.wustl.catissuecore.domain.Race;
+import edu.wustl.catissuecore.factory.CollectionProtocolFactory;
+import edu.wustl.catissuecore.factory.CollectionProtocolRegistrationFactory;
+import edu.wustl.catissuecore.factory.ParticipantFactory;
+import edu.wustl.catissuecore.factory.RaceFactory;
+import gov.nih.nci.integration.catissue.client.CaTissueAPIClientWithRegularAuthentication;
+import gov.nih.nci.integration.catissue.client.CaTissueParticipantClient;
+import gov.nih.nci.system.applicationservice.ApplicationException;
+import gov.nih.nci.system.query.cql.CQLQuery;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,20 +33,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
-
-import edu.wustl.catissuecore.cacore.CaTissueWritableAppService;
-import edu.wustl.catissuecore.domain.CollectionProtocol;
-import edu.wustl.catissuecore.domain.CollectionProtocolRegistration;
-import edu.wustl.catissuecore.domain.Participant;
-import edu.wustl.catissuecore.domain.Race;
-import edu.wustl.catissuecore.factory.CollectionProtocolFactory;
-import edu.wustl.catissuecore.factory.CollectionProtocolRegistrationFactory;
-import edu.wustl.catissuecore.factory.ParticipantFactory;
-import edu.wustl.catissuecore.factory.RaceFactory;
-import gov.nih.nci.integration.catissue.client.CaTissueAPIClientWithRegularAuthentication;
-import gov.nih.nci.integration.catissue.client.CaTissueParticipantClient;
-import gov.nih.nci.system.applicationservice.ApplicationException;
-import gov.nih.nci.system.query.cql.CQLQuery;
 
 /**
  * This is the TestClass for Participant Registration flow.
@@ -213,50 +212,6 @@ public class CaTissueParticipantTest {
     }
 
     /**
-     * Mock Testcase for Update Participant Registration when SSN is blank is incoming request
-     * 
-     * @throws ParseException - ParseException
-     */
-    @SuppressWarnings("unchecked")
-    @Test
-    public void updateParticipantRegistrationForBlankSSN() throws ParseException {
-        String retXMLString = "";
-        final CollectionProtocol collectionProtocol = new CollectionProtocol();
-        collectionProtocol.setTitle("6482:6482");
-        collectionProtocol.setShortTitle("6482:6482");
-
-        final Participant participant = getParticipant();
-        participant.setSocialSecurityNumber("");
-
-        final String participantXML = caTissueParticipantClient.getxStream().toXML(participant);
-
-        final List<Object> participantList = new ArrayList<Object>();
-        participantList.add(participant);
-
-        try {
-            EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
-            EasyMock.expect(
-                    caTissueAPIClient.searchById((Class<CollectionProtocol>) EasyMock.anyObject(),
-                            (CollectionProtocol) org.easymock.EasyMock.anyObject())).andReturn(collectionProtocol);
-            EasyMock.expect(caTissueAPIClient.update((Participant) org.easymock.EasyMock.anyObject())).andReturn(
-                    participant);
-            EasyMock.expect(writableAppService.query((CQLQuery) org.easymock.EasyMock.anyObject())).andReturn(
-                    participantList);
-
-            EasyMock.replay(caTissueAPIClient);
-            EasyMock.replay(writableAppService);
-
-            caTissueParticipantClient.updateParticipantRegistrationFromXML(participantXML);
-
-            retXMLString = "UPDATE_PARTICIPANT_REGISTRATION";
-        } catch (ApplicationException e) {
-            LOG.error("CaTissueParticipantTest-ApplicationException inside registerParticipant() ", e);
-            retXMLString = "UPDATE_PARTICIPANT_REGISTRATION_FAILED";
-        }
-        assertNotNull(retXMLString);
-    }
-
-    /**
      * Mock Testcase for deleteParticipant
      * 
      * @throws ParseException - ParseException
@@ -324,6 +279,7 @@ public class CaTissueParticipantTest {
         final CollectionProtocol cp = cpFact.createObject();
         final String cpTitle = "CP-01";
         cp.setTitle(cpTitle);
+        cp.setShortTitle(cpTitle);
 
         final CollectionProtocolRegistrationFactory cprFact = CollectionProtocolRegistrationFactory.getInstance();
         final CollectionProtocolRegistration collectionProtocolRegistration = cprFact.createObject();
