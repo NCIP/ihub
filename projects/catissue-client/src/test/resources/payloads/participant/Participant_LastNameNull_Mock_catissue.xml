@@ -13,10 +13,8 @@
 		class="set">
 		<catissue:collectionProtocolRegistration>
 			<catissue:activityStatus>Active</catissue:activityStatus>
-			<catissue:consentSignatureDate>2012-08-20
-			</catissue:consentSignatureDate>
-			<catissue:protocolParticipantIdentifier>1.2.1.173000:echr:patient-1823462
-			</catissue:protocolParticipantIdentifier>
+			<catissue:consentSignatureDate>2012-08-20</catissue:consentSignatureDate>
+			<catissue:protocolParticipantIdentifier>1.2.1.173000:echr:patient-1823462</catissue:protocolParticipantIdentifier>
 			<catissue:registrationDate>2011-07-22</catissue:registrationDate>
 			<catissue:specimenCollectionGroupCollection
 				class="set" />
@@ -42,8 +40,7 @@
 				<catissue:gridGrouperPrivileges />
 			</catissue:collectionProtocol>
 			<catissue:participant reference="../../.." />
-			<catissue:isToInsertAnticipatorySCGs>true
-			</catissue:isToInsertAnticipatorySCGs>
+			<catissue:isToInsertAnticipatorySCGs>true</catissue:isToInsertAnticipatorySCGs>
 		</catissue:collectionProtocolRegistration>
 	</catissue:collectionProtocolRegistrationCollection>
 	<catissue:raceCollection class="set">
@@ -52,8 +49,7 @@
 			<catissue:participant reference="../../.." />
 		</catissue:race>
 		<catissue:race>
-			<catissue:raceName>American Indian or Alaska Native
-			</catissue:raceName>
+			<catissue:raceName>American Indian or Alaska Native</catissue:raceName>
 			<catissue:participant reference="../../.." />
 		</catissue:race>
 	</catissue:raceCollection>

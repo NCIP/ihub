@@ -19,8 +19,7 @@
 			<primaryIndicator>true</primaryIndicator>
 			<caaers:organization id="1" version="1">
 				<name>2.16.840.1.113883.3.26.1.7:echsite87</name>
-				<nciInstituteCode>2.16.840.1.113883.3.26.1.7:echsite87
-				</nciInstituteCode>
+				<nciInstituteCode>2.16.840.1.113883.3.26.1.7:echsite87</nciInstituteCode>
 			</caaers:organization>
 		</caaers:organizationAssignedIdentifier>
 		<caaers:systemAssignedIdentifier id="1"
@@ -33,8 +32,7 @@
 	</identifiers>
 	<assignments>
 		<caaers:assignment id="1" version="1">
-			<studySubjectIdentifier>1.2.1.173000:echr:patient-1823470
-			</studySubjectIdentifier>
+			<studySubjectIdentifier>1.2.1.173000:echr:patient-1823470</studySubjectIdentifier>
 			<caaers:studySite id="1" version="1">
 				<caaers:study id="1" version="1">
 					<identifiers>
@@ -46,8 +44,7 @@
 				</caaers:study>
 				<caaers:organization id="1" version="1">
 					<name>2.16.840.1.113883.3.26.1.7:echsite87</name>
-					<nciInstituteCode>2.16.840.1.113883.3.26.1.7:echsite87
-					</nciInstituteCode>
+					<nciInstituteCode>2.16.840.1.113883.3.26.1.7:echsite87</nciInstituteCode>
 				</caaers:organization>
 			</caaers:studySite>
 		</caaers:assignment>
