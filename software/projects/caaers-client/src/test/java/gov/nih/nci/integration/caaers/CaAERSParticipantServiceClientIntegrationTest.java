@@ -1,5 +1,6 @@
 package gov.nih.nci.integration.caaers;
 
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ParticipantIdentifierType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.StudyIdentifierType;
@@ -45,11 +46,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * This client test code only tests the client communication and does code coverage. So, if there is proper service, it
- * will fail with SOAPFaultException because of schema validation. If not will fail with IntegrationException because of
- * Connection Refused.
+ * This is a test class for Participant webservice client (for caAERS).
  * 
  * @author chandrasekaravr
+ * @author Rohit Gupta
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContext-caaers-client-test.xml")
@@ -139,13 +139,68 @@ public class CaAERSParticipantServiceClientIntegrationTest {
     @Test
     public void createParticipant() throws MalformedURLException, JAXBException {
         final String participantXMLStr = getPStr();
+        CaaersServiceResponse caaersServiceResponse = null;
         try {
-            caAERSParticipantServiceClient.createParticipant(participantXMLStr);
+            caaersServiceResponse = caAERSParticipantServiceClient.createParticipant(participantXMLStr);
         } catch (SOAPFaultException e) {
             Assert.assertEquals(getXMLString("ParticipantSOAPFaultExceptionMsg.txt"), e.getMessage());
         } catch (IntegrationException e) {
             Assert.assertEquals(IntegrationError._1053.getErrorCode(), e.getErrorCode());
         }
+
+        final String status = caaersServiceResponse.getServiceResponse().getStatus().value();
+        final String responseCode = caaersServiceResponse.getServiceResponse().getResponsecode();
+        Assert.assertEquals("Processed", status);
+        Assert.assertEquals("0", responseCode);
+    }
+
+    /**
+     * Testcase for createParticipant when Study is not present in caAERS
+     * 
+     * @throws JAXBException - JAXBException
+     * @throws MalformedURLException - MalformedURLException
+     */
+    @Test
+    public void createParticipantStudyNotPresent() throws MalformedURLException, JAXBException {
+        String participantXMLStr = getPStr();
+        participantXMLStr = participantXMLStr.replace("6482:6482", "6482_123:6482_123");
+        CaaersServiceResponse caaersServiceResponse = null;
+        try {
+            caaersServiceResponse = caAERSParticipantServiceClient.createParticipant(participantXMLStr);
+        } catch (SOAPFaultException e) {
+            Assert.assertEquals(getXMLString("ParticipantSOAPFaultExceptionMsg.txt"), e.getMessage());
+        } catch (IntegrationException e) {
+            Assert.assertEquals(IntegrationError._1053.getErrorCode(), e.getErrorCode());
+        }
+
+        final String status = caaersServiceResponse.getServiceResponse().getStatus().value();
+        final String responseCode = caaersServiceResponse.getServiceResponse().getResponsecode();
+        Assert.assertEquals("Failed to Process", status);
+        Assert.assertEquals("1", responseCode);
+    }
+
+    /**
+     * Testcase for createParticipant when Participant already exist in caAERS.
+     * 
+     * @throws JAXBException - JAXBException
+     * @throws MalformedURLException - MalformedURLException
+     */
+    @Test
+    public void createParticipantAlreadyExists() throws MalformedURLException, JAXBException {
+        final String participantXMLStr = getPStr();
+        CaaersServiceResponse caaersServiceResponse = null;
+        try {
+            caaersServiceResponse = caAERSParticipantServiceClient.createParticipant(participantXMLStr);
+        } catch (SOAPFaultException e) {
+            Assert.assertEquals(getXMLString("ParticipantSOAPFaultExceptionMsg.txt"), e.getMessage());
+        } catch (IntegrationException e) {
+            Assert.assertEquals(IntegrationError._1053.getErrorCode(), e.getErrorCode());
+        }
+
+        final String status = caaersServiceResponse.getServiceResponse().getStatus().value();
+        final String responseCode = caaersServiceResponse.getServiceResponse().getResponsecode();
+        Assert.assertEquals("Failed to Process", status);
+        Assert.assertEquals("1", responseCode);
     }
 
     /**
@@ -157,13 +212,19 @@ public class CaAERSParticipantServiceClientIntegrationTest {
     @Test
     public void getParticipant() throws MalformedURLException, JAXBException {
         final String participantXMLStr = getPStr();
+        CaaersServiceResponse caaersServiceResponse = null;
         try {
-            caAERSParticipantServiceClient.getParticipant(participantXMLStr);
+            caaersServiceResponse = caAERSParticipantServiceClient.getParticipant(participantXMLStr);
         } catch (SOAPFaultException e) {
             Assert.assertEquals(getXMLString("ParticipantSOAPFaultExceptionMsg.txt"), e.getMessage());
         } catch (IntegrationException e) {
             Assert.assertEquals(IntegrationError._1053.getErrorCode(), e.getErrorCode());
         }
+
+        final String status = caaersServiceResponse.getServiceResponse().getStatus().value();
+        final String responseCode = caaersServiceResponse.getServiceResponse().getResponsecode();
+        Assert.assertEquals("Processed", status);
+        Assert.assertEquals("0", responseCode);
     }
 
     /**
@@ -174,14 +235,46 @@ public class CaAERSParticipantServiceClientIntegrationTest {
      */
     @Test
     public void updateParticipant() throws MalformedURLException, JAXBException {
-        final String participantXMLStr = getPStr();
+        String participantXMLStr = getPStr();
+        participantXMLStr = participantXMLStr.replace("1967-01-31", "1969-03-25");
+        CaaersServiceResponse caaersServiceResponse = null;
         try {
-            caAERSParticipantServiceClient.updateParticipant(participantXMLStr);
+            caaersServiceResponse = caAERSParticipantServiceClient.updateParticipant(participantXMLStr);
         } catch (SOAPFaultException e) {
             Assert.assertEquals(getXMLString("ParticipantSOAPFaultExceptionMsg.txt"), e.getMessage());
         } catch (IntegrationException e) {
             Assert.assertEquals(IntegrationError._1053.getErrorCode(), e.getErrorCode());
         }
+        final String status = caaersServiceResponse.getServiceResponse().getStatus().value();
+        final String responseCode = caaersServiceResponse.getServiceResponse().getResponsecode();
+        Assert.assertEquals("Processed", status);
+        Assert.assertEquals("0", responseCode);
+
+    }
+
+    /**
+     * Testcase for updateParticipant to different study
+     * 
+     * @throws JAXBException - JAXBException
+     * @throws MalformedURLException - MalformedURLException
+     */
+    @Test
+    public void updateParticipantToDifferentStudy() throws MalformedURLException, JAXBException {
+        String participantXMLStr = getPStr();
+        participantXMLStr = participantXMLStr.replace("7216:7216", "7216:7216");
+        CaaersServiceResponse caaersServiceResponse = null;
+        try {
+            caaersServiceResponse = caAERSParticipantServiceClient.updateParticipant(participantXMLStr);
+        } catch (SOAPFaultException e) {
+            Assert.assertEquals(getXMLString("ParticipantSOAPFaultExceptionMsg.txt"), e.getMessage());
+        } catch (IntegrationException e) {
+            Assert.assertEquals(IntegrationError._1053.getErrorCode(), e.getErrorCode());
+        }
+        final String status = caaersServiceResponse.getServiceResponse().getStatus().value();
+        final String responseCode = caaersServiceResponse.getServiceResponse().getResponsecode();
+        Assert.assertEquals("Processed", status);
+        Assert.assertEquals("0", responseCode);
+
     }
 
     /**
@@ -193,13 +286,18 @@ public class CaAERSParticipantServiceClientIntegrationTest {
     @Test
     public void updateParticipantOffStudy() throws MalformedURLException, JAXBException {
         final String participantXMLStr = getParticipantOffStudyString();
+        CaaersServiceResponse caaersServiceResponse = null;
         try {
-            caAERSParticipantServiceClient.updateParticipant(participantXMLStr);
+            caaersServiceResponse = caAERSParticipantServiceClient.updateParticipant(participantXMLStr);
         } catch (SOAPFaultException e) {
             Assert.assertEquals(getXMLString("ParticipantSOAPFaultExceptionMsg.txt"), e.getMessage());
         } catch (IntegrationException e) {
             Assert.assertEquals(IntegrationError._1053.getErrorCode(), e.getErrorCode());
         }
+        final String status = caaersServiceResponse.getServiceResponse().getStatus().value();
+        final String responseCode = caaersServiceResponse.getServiceResponse().getResponsecode();
+        Assert.assertEquals("Processed", status);
+        Assert.assertEquals("0", responseCode);
     }
 
     /**
@@ -211,13 +309,19 @@ public class CaAERSParticipantServiceClientIntegrationTest {
     @Test
     public void deleteParticipant() throws MalformedURLException, JAXBException {
         final String participantXMLStr = getPStr();
+        CaaersServiceResponse caaersServiceResponse = null;
         try {
-            caAERSParticipantServiceClient.deleteParticipant(participantXMLStr);
+            caaersServiceResponse = caAERSParticipantServiceClient.deleteParticipant(participantXMLStr);
         } catch (SOAPFaultException e) {
             Assert.assertEquals(getXMLString("ParticipantSOAPFaultExceptionMsg.txt"), e.getMessage());
         } catch (IntegrationException e) {
             Assert.assertEquals(IntegrationError._1053.getErrorCode(), e.getErrorCode());
         }
+
+        final String status = caaersServiceResponse.getServiceResponse().getStatus().value();
+        final String responseCode = caaersServiceResponse.getServiceResponse().getResponsecode();
+        Assert.assertEquals("Processed", status);
+        Assert.assertEquals("0", responseCode);
     }
 
     private Marshaller getMarshaller() throws JAXBException {
@@ -240,8 +344,8 @@ public class CaAERSParticipantServiceClientIntegrationTest {
 
     private String getXMLString(String fileName) {
         String contents = null;
-        final InputStream is = CaAERSAdverseEventServiceClientIntegrationTest.class.getClassLoader().getResourceAsStream(
-                "payloads/participant/" + fileName);
+        final InputStream is = CaAERSAdverseEventServiceClientIntegrationTest.class.getClassLoader()
+                .getResourceAsStream("payloads/participant/" + fileName);
         try {
             contents = org.apache.cxf.helpers.IOUtils.toString(is);
         } catch (IOException e) {
