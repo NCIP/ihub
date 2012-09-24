@@ -51,7 +51,7 @@ run.review.reports=true
 run.cobertura.check=true
 cobertura.branchrate=50
 cobertura.totalbranchrate=50
-cobertura.totallinerate=70
+cobertura.totallinerate=66
 
 ## Mostly required by the Integration and Load tests
 
