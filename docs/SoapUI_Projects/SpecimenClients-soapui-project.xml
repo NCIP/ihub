@@ -148,7 +148,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Biospecimen</mes:operationName>
@@ -556,7 +556,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Biospecimen</mes:operationName>
@@ -964,7 +964,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Biospecimen</mes:operationName>
@@ -1372,7 +1372,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Update Biospecimen</mes:operationName>
@@ -1586,7 +1586,7 @@
                                                    <originalText>Available Quantity</originalText>
                                                 </code>
                                                 <!--The Quanity value goes here, @unit uses UCUM code: 155 gram-->
-                                                <value xsi:type="PQ" value="156" unit="g"/>
+                                                <value xsi:type="PQ" value="256" unit="g"/>
                                              </observation>
                                           </entryRelationship>
                                           <!--Study Calendar Event Time Point-->
@@ -1780,7 +1780,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Biospecimen</mes:operationName>
@@ -2291,7 +2291,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Biospecimen</mes:operationName>
@@ -2699,7 +2699,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Biospecimen</mes:operationName>
@@ -3107,7 +3107,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Biospecimen</mes:operationName>
@@ -3515,7 +3515,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Update Biospecimen</mes:operationName>
@@ -3923,7 +3923,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Update Biospecimen</mes:operationName>
@@ -4331,7 +4331,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Update Biospecimen</mes:operationName>
@@ -4739,7 +4739,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Update Biospecimen</mes:operationName>
@@ -5147,7 +5147,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Update Biospecimen</mes:operationName>
@@ -5555,7 +5555,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Update Biospecimen</mes:operationName>
@@ -5963,7 +5963,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Update Biospecimen</mes:operationName>
@@ -6371,7 +6371,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Biospecimen</mes:operationName>
@@ -6779,7 +6779,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Update Biospecimen</mes:operationName>
@@ -7187,7 +7187,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Biospecimen</mes:operationName>
@@ -7226,9 +7226,9 @@
                   <recordTarget>
                      <patientRole>                       
                          <!--study subject identifier-->
-                        <id root="1.2.1.173000" extension="echr:patient-18234103" assigningAuthorityName="iSpy2 Study"/>
+                        <id root="1.2.1.173000" extension="echr:patient-18234145" assigningAuthorityName="iSpy2 Study"/>
                         <!--patient MRN-->
-                        <id root="1.2.1.173000" extension="21318234103" assigningAuthorityName="ABC Cancer Institute"/>
+                        <id root="1.2.1.173000" extension="21318234145" assigningAuthorityName="ABC Cancer Institute"/>
                         
                         <addr nullFlavor="NI"/>
                         <telecom nullFlavor="NI"/>
@@ -7339,7 +7339,7 @@
                                           <specimen>
                                              <specimenRole>
                                                 <!--CDMS Specimen ID, assigned by the TRANSCEND CDMS-->
-                                                <id root="fbfe4b85-2bdc-4305-88be-3e1b763d8caa" extension="108"/>
+                                                <id root="fbfe4b85-2bdc-4305-88be-3e1b763d8caa" extension="145"/>
                                                 <!--Specimen Class-->
                                                 <specimenPlayingEntity>
                                                    <code code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="tissue specimen"/>
@@ -7352,7 +7352,7 @@
                                                 <!--Product Instance template-->
                                                 <templateId root="2.16.840.1.113883.10.20.22.4.37" assigningAuthorityName="HL7 CCDA"/>
                                                 <!--Barcode (Unique Device Identification (UDI))-->
-                                                <id root="123456" extension="108"/>
+                                                <id root="123456" extension="145"/>
                                                 <playingDevice>
                                                    <!--Code to identify the specimen Container-->
                                                    <code nullFlavor="NA">
@@ -7446,7 +7446,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Biospecimen</mes:operationName>
@@ -7579,7 +7579,7 @@
                                           </code>
                                           <statusCode code="completed"/>
                                           <value xsi:type="CD" nullFlavor="OTH">
-                                             <originalText>Other free text</originalText>
+                                             <originalText>Other free textdvdfvdf</originalText>
                                           </value>
                                        </observation>
                                     </entryRelationship>
@@ -7704,7 +7704,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Biospecimen</mes:operationName>
@@ -8112,7 +8112,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Update Biospecimen</mes:operationName>
@@ -8151,9 +8151,9 @@
                   <recordTarget>
                      <patientRole>
                         <!--study subject identifier-->
-                        <id root="1.2.1.173000" extension="ct8d23431" assigningAuthorityName="iSpy2 Study"/>
+                        <id root="1.2.1.173000" extension="echr:patient-18234145" assigningAuthorityName="iSpy2 Study"/>
                         <!--patient MRN-->
-                        <id root="1.2.1.173000" extension="2131823431" assigningAuthorityName="ABC Cancer Institute"/>
+                        <id root="1.2.1.173000" extension="21318234145" assigningAuthorityName="ABC Cancer Institute"/>
                         <addr nullFlavor="NI"/>
                         <telecom nullFlavor="NI"/>
                         <patient>
@@ -8263,7 +8263,7 @@
                                           <specimen>
                                              <specimenRole>
                                                 <!--CDMS Specimen ID, assigned by the TRANSCEND CDMS-->
-                                                <id root="fbfe4b85-2bdc-4305-88be-3e1b763d8caa" extension="013"/>
+                                                <id root="fbfe4b85-2bdc-4305-88be-3e1b763d8caa" extension="145"/>
                                                 <!--Specimen Class-->
                                                 <specimenPlayingEntity>
                                                    <code code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="tissue specimen"/>
@@ -8276,7 +8276,7 @@
                                                 <!--Product Instance template-->
                                                 <templateId root="2.16.840.1.113883.10.20.22.4.37" assigningAuthorityName="HL7 CCDA"/>
                                                 <!--Barcode (Unique Device Identification (UDI))-->
-                                                <id root="12345" extension="013"/>
+                                                <id root="12345" extension="145"/>
                                                 <playingDevice>
                                                    <!--Code to identify the specimen Container-->
                                                    <code nullFlavor="NA">
@@ -8326,7 +8326,7 @@
                                                    <originalText>Available Quantity</originalText>
                                                 </code>
                                                 <!--The Quanity value goes here, @unit uses UCUM code: 155 gram-->
-                                                <value xsi:type="PQ" value="155" unit="g"/>
+                                                <value xsi:type="PQ" value="150" unit="g"/>
                                              </observation>
                                           </entryRelationship>
                                           <!--Study Calendar Event Time Point-->
@@ -8370,7 +8370,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Update Biospecimen</mes:operationName>
@@ -8778,7 +8778,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Biospecimen</mes:operationName>
@@ -9036,7 +9036,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Biospecimen</mes:operationName>
@@ -9294,7 +9294,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Update Biospecimen</mes:operationName>
@@ -9702,7 +9702,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Update Biospecimen</mes:operationName>
@@ -10080,6 +10080,783 @@
                                                 </code>
                                                 <!--The Quanity value goes here, @unit uses UCUM code: 5 days-->
                                                 <value xsi:type="PQ" value="55555" unit="d"/>
+                                             </observation>
+                                          </entryRelationship>
+                                          <!--Activity Status-->
+                                          <entryRelationship typeCode="SUBJ">
+                                             <observation classCode="OBS" moodCode="EVN">
+                                                <!--Result observation template-->
+                                                <templateId root="2.16.840.1.113883.10.20.22.4.2" assigningAuthorityName="HL7 CCDA"/>
+                                                <id nullFlavor="NI"/>
+                                                <code code="263490005" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Activity status"/>
+                                                <value xsi:type="CD" code="55561003" codeSystem="2.16.840.1.113883.6.96" displayName="active" codeSystemName="SNOMED-CT"/>
+                                             </observation>
+                                          </entryRelationship>
+                                       </observation>
+                                    </entryRelationship>
+                                 </procedure>
+                              </entry>
+                           </section>
+                        </component>
+                     </structuredBody>
+                  </component>
+               </ClinicalDocument>
+            </mes:businessMessagePayload>
+         </mes:request>
+      </mes:caXchangeRequestMessage>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://caXchange.nci.nih.gov/caxchangerequest/CaXchangeRequestPortType/ProcessRequestRequest"/><con:wsrmConfig version="1.2"/></con:call><con:call name="02 A UpdateSpecimen_TissueSideSite"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:12090/services/CaXchangeRequestService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:mes="http://caXchange.nci.nih.gov/messaging">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <mes:caXchangeRequestMessage>
+         <mes:metadata>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
+            <mes:serviceType>iHub</mes:serviceType>
+            <!--Optional:-->
+            <mes:operationName>Update Biospecimen</mes:operationName>
+            <mes:externalIdentifier>32225879</mes:externalIdentifier>
+            <!--Optional:-->
+            <mes:caXchangeIdentifier/>
+            <!--Optional:-->
+            <mes:credentials>
+               <!--You have a CHOICE of the next 3 items at this level-->
+               <mes:userName>tolvenuser</mes:userName>
+               <mes:groupName>nogrid</mes:groupName>
+               <mes:gridIdentifier>nogrid</mes:gridIdentifier>
+               <!--Optional:-->
+               <mes:password>changeme</mes:password>
+               <!--Optional:-->
+               <mes:delegatedCredentialReference>nocredentials</mes:delegatedCredentialReference>
+            </mes:credentials>
+         </mes:metadata>
+         <mes:request>
+            <mes:businessMessagePayload>
+               <mes:xmlSchemaDefinition>urn:hl7-org:v3</mes:xmlSchemaDefinition>
+               <ClinicalDocument xsi:schemaLocation="urn:hl7-org:v3 ../cdaXSD/infrastructure/cda/CDA.xsd" xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                  <realmCode code="US"/>
+                  <typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
+                  <!--US Realm Header, consolidated CDA header template-->
+                  <templateId root="2.16.840.1.113883.10.20.22.1.1" assigningAuthorityName="HL7 CCDA"/>
+                  <id root="1.2.1.173000" extension="echr:patient-1823431:clinicalNote-1833315"/>
+                  <!--There is no existing LOINC code for Biospecimen report.-->
+                  <code nullFlavor="OTH">
+                     <originalText>Biospecimen report</originalText>
+                  </code>
+                  <title>Bio Specimen</title>
+                  <effectiveTime value="20110722104303-0700"/>
+                  <confidentialityCode code="N"/>
+                  <languageCode code="en-US"/>
+                  <recordTarget>
+                     <patientRole>                       
+                         <!--study subject identifier-->
+                        <id root="1.2.1.173000" extension="echr:patient-18234145" assigningAuthorityName="iSpy2 Study"/>
+                        <!--patient MRN-->
+                        <id root="1.2.1.173000" extension="21318234145" assigningAuthorityName="ABC Cancer Institute"/>
+                        
+                        <addr nullFlavor="NI"/>
+                        <telecom nullFlavor="NI"/>
+                        <patient>
+                           <name use="L">
+                              <given>TestOne</given>
+                              <given/>
+                              <family>Patient</family>
+                           </name>
+                           <!--gender-->
+                           <administrativeGenderCode code="F" codeSystem="2.16.840.1.113883.5.1" displayName="Female"/>
+                           <!--birth date-->
+                           <birthTime value="19670131"/>
+                           <!--marital status-->
+                           <maritalStatusCode code="M" codeSystem="2.16.840.1.113883.5.2" codeSystemName="HL7 MaritalStatus" displayName="Married">
+                              <originalText>Now married</originalText>
+                           </maritalStatusCode>
+                           <!--race-->
+                           <raceCode code="2106-3" displayName="White" codeSystem="2.16.840.1.113883.6.238" codeSystemName="Race &amp; Ethnicity - CDC"></raceCode>
+                           <!--ethnicity-->
+                           <ethnicGroupCode code="2186-5" displayName="Not Hispanic or Latino" codeSystem="2.16.840.1.113883.6.238" codeSystemName="Race &amp; Ethnicity - CDC"/>
+                        </patient>
+                     </patientRole>
+                  </recordTarget>
+                  <author>
+                     <time nullFlavor="NI"/>
+                     <assignedAuthor>
+                        <id root="1.2.1.173000" extension="sarah.davis@ucsfmedctr.org"/>
+                        <addr nullFlavor="NI"/>
+                        <telecom nullFlavor="NI"/>
+                        <assignedPerson>
+                           <name nullFlavor="NI"/>
+                        </assignedPerson>
+                     </assignedAuthor>
+                  </author>
+                  <custodian>
+                     <assignedCustodian>
+                        <representedCustodianOrganization>
+                           <id root="2.16.840.1.113883.3.26.1.7" extension="TranscendTolven"/>
+                           <name nullFlavor="NI"/>
+                           <telecom nullFlavor="NI"/>
+                           <addr nullFlavor="NI"/>
+                        </representedCustodianOrganization>
+                     </assignedCustodian>
+                  </custodian>
+                  <!--study id-->
+                  <documentationOf>
+                     <serviceEvent classCode="CLNTRL">                        
+                        <id root="6482" extension="6482"/>
+                        <code nullFlavor="OTH">
+                           <originalText>clinical trial</originalText>
+                        </code>
+                     </serviceEvent>
+                  </documentationOf>
+                  <component>
+                     <structuredBody>
+                        <component>
+                           <!--Procedure Specimens Taken Section 59773-2-->
+                           <section>
+                              <templateId root="2.16.840.1.113883.10.20.22.2.31" assigningAuthorityName="HL7 CCDA"/>
+                              <code code="59773-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="PROCEDURE SPECIMENS TAKEN"/>
+                              <title>BioSpecimen</title>
+                              <entry typeCode="DRIV">
+                                 <procedure classCode="PROC" moodCode="EVN">
+                                    <!--Procedure activity procedure template-->
+                                    <templateId root="2.16.840.1.113883.10.20.22.4.14" assigningAuthorityName="HL7 CCDA"/>
+                                    <code nullFlavor="OTH">
+                                       <!--Collection Protocol Title and Collection Protocol Short Title in the format of Collection Protocol Title (Collection Protocol Short Title)-->
+                                       <originalText>Breast Core Needle Biopsy: side=Right (rigth breast stereotactic needle biopsy )</originalText>
+                                    </code>
+                                    <statusCode code="completed"/>
+                                    <effectiveTime value="20110706"/>
+                                    <!--Specimen Characteristics Site-->
+                                    <targetSiteCode code="76752010" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="brain">
+                                       <originalText>brain</originalText>
+                                       <!--Specimen Characteristics Side-->
+                                       <qualifier>
+                                          <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
+                                          <value code="7771000" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="left"></value>
+                                       </qualifier>
+                                    </targetSiteCode>
+                                    <!--Guidance for Breast Core Biopsy-->
+                                    <entryRelationship typeCode="COMP">
+                                       <observation classCode="OBS" moodCode="EVN">
+                                          <!--Procedure Activity Observation-->
+                                          <templateId root="2.16.840.1.113883.10.20.22.4.13" assigningAuthorityName="HL7 CCDA"/>
+                                          <id nullFlavor="NI"/>
+                                          <code nullFlavor="OTH">
+                                             <originalText>Guidance for Breast Core Biopsy</originalText>
+                                          </code>
+                                          <statusCode code="completed"/>
+                                          <value xsi:type="CD" code="16310003" codeSystem="2.16.840.1.113883.6.96" displayName="Ultrasound">
+                                             <originalText>Diagnostic ultrasonography</originalText>
+                                          </value>
+                                       </observation>
+                                    </entryRelationship>
+                                    <!--Biospecimen-->
+                                    <entryRelationship typeCode="COMP">
+                                       <!--no existing biospecimen CDA template, 
+                           use result observation template to record specimen detail-->
+                                       <observation classCode="OBS" moodCode="EVN">
+                                          <!--Result observation template-->
+                                          <templateId root="2.16.840.1.113883.10.20.22.4.2" assigningAuthorityName="HL7 CCDA"/>
+                                          <id root="80f662f4-29d0-474c-b0e0-7108223835dc"/>
+                                          <code code="123038009" codeSystem="2.16.840.1.113883.6.96" displayName="specimen">
+                                             <originalText>Biospecimen</originalText>
+                                          </code>
+                                          <specimen>
+                                             <specimenRole>
+                                                <!--CDMS Specimen ID, assigned by the TRANSCEND CDMS-->
+                                                <id root="fbfe4b85-2bdc-4305-88be-3e1b763d8caa" extension="145"/>
+                                                <!--Specimen Class-->
+                                                <specimenPlayingEntity>
+                                                   <code code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="tissue specimen"/>
+                                                </specimenPlayingEntity>
+                                             </specimenRole>
+                                          </specimen>
+                                          <!--Specimen container (e.g. tube)-->
+                                          <participant typeCode="DEV">
+                                             <participantRole classCode="MANU">
+                                                <!--Product Instance template-->
+                                                <templateId root="2.16.840.1.113883.10.20.22.4.37" assigningAuthorityName="HL7 CCDA"/>
+                                                <!--Barcode (Unique Device Identification (UDI))-->
+                                                <id root="123456" extension="145"/>
+                                                <playingDevice>
+                                                   <!--Code to identify the specimen Container-->
+                                                   <code nullFlavor="NA">
+                                                      <originalText>tissue specimen tube</originalText>
+                                                   </code>
+                                                </playingDevice>
+                                                <!--who manages the specimen container-->
+                                                <scopingEntity>
+                                                   <id nullFlavor="NA"/>
+                                                </scopingEntity>
+                                             </participantRole>
+                                          </participant>
+                                          <!--Specimen Type-->
+                                          <entryRelationship typeCode="SUBJ">
+                                             <observation classCode="OBS" moodCode="EVN">
+                                                <!--Result observation template-->
+                                                <templateId root="2.16.840.1.113883.10.20.22.4.2" assigningAuthorityName="HL7 CCDA"/>
+                                                <id nullFlavor="NI"/>
+                                                <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
+                                                <statusCode code="completed"/>
+                                                <!--Specimen Type-->
+                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
+                                                   <originalText>fresh tissue</originalText>
+                                                </value>
+                                             </observation>
+                                          </entryRelationship>
+                                          <!--Initial Quantity-->
+                                          <entryRelationship typeCode="SUBJ">
+                                             <observation classCode="OBS" moodCode="EVN">
+                                                <!--Result observation template-->
+                                                <templateId root="2.16.840.1.113883.10.20.22.4.2" assigningAuthorityName="HL7 CCDA"/>
+                                                <id root="5b009181-5f0e-4304-a1cb-20b5c03a3868"/>
+                                                <code nullFlavor="OTH">
+                                                   <originalText>Initial Quantity</originalText>
+                                                </code>
+                                                <!--The Quanity value goes here, @unit uses UCUM code: 177 gram-->
+                                                <value xsi:type="PQ" value="177" unit="g"/>
+                                             </observation>
+                                          </entryRelationship>
+                                          <!--Available Quantity-->
+                                          <entryRelationship typeCode="SUBJ">
+                                             <observation classCode="OBS" moodCode="EVN">
+                                                <!--Result observation template-->
+                                                <templateId root="2.16.840.1.113883.10.20.22.4.2" assigningAuthorityName="HL7 CCDA"/>
+                                                <id root="b470f6a6-455c-4185-b6f6-b2b90e1c8f68"/>
+                                                <code nullFlavor="OTH">
+                                                   <originalText>Available Quantity</originalText>
+                                                </code>
+                                                <!--The Quanity value goes here, @unit uses UCUM code: 155 gram-->
+                                                <value xsi:type="PQ" value="165" unit="g"/>
+                                             </observation>
+                                          </entryRelationship>
+                                          <!--Study Calendar Event Time Point-->
+                                          <entryRelationship typeCode="SUBJ">
+                                             <observation classCode="OBS" moodCode="EVN">
+                                                <!--Result observation template-->
+                                                <templateId root="2.16.840.1.113883.10.20.22.4.2" assigningAuthorityName="HL7 CCDA"/>
+                                                <id root="b470f6a6-455c-4185-b6f6-b2b90e1c8f68"/>
+                                                <code nullFlavor="OTH">
+                                                   <originalText>Study Calendar Event Time Point</originalText>
+                                                </code>
+                                                <!--The Quanity value goes here, @unit uses UCUM code: 5 days-->
+                                                <value xsi:type="PQ" value="5" unit="d"/>
+                                             </observation>
+                                          </entryRelationship>
+                                          <!--Activity Status-->
+                                          <entryRelationship typeCode="SUBJ">
+                                             <observation classCode="OBS" moodCode="EVN">
+                                                <!--Result observation template-->
+                                                <templateId root="2.16.840.1.113883.10.20.22.4.2" assigningAuthorityName="HL7 CCDA"/>
+                                                <id nullFlavor="NI"/>
+                                                <code code="263490005" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Activity status"/>
+                                                <value xsi:type="CD" code="55561003" codeSystem="2.16.840.1.113883.6.96" displayName="active" codeSystemName="SNOMED-CT"/>
+                                             </observation>
+                                          </entryRelationship>
+                                       </observation>
+                                    </entryRelationship>
+                                 </procedure>
+                              </entry>
+                           </section>
+                        </component>
+                     </structuredBody>
+                  </component>
+               </ClinicalDocument>
+            </mes:businessMessagePayload>
+         </mes:request>
+      </mes:caXchangeRequestMessage>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://caXchange.nci.nih.gov/caxchangerequest/CaXchangeRequestPortType/ProcessRequestRequest"/><con:wsrmConfig version="1.2"/></con:call><con:call name="CreateSpecimen_7216"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:12090/services/CaXchangeRequestService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:mes="http://caXchange.nci.nih.gov/messaging">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <mes:caXchangeRequestMessage>
+         <mes:metadata>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
+            <mes:serviceType>iHub</mes:serviceType>
+            <!--Optional:-->
+            <mes:operationName>Create Biospecimen</mes:operationName>
+            <mes:externalIdentifier>32225879</mes:externalIdentifier>
+            <!--Optional:-->
+            <mes:caXchangeIdentifier/>
+            <!--Optional:-->
+            <mes:credentials>
+               <!--You have a CHOICE of the next 3 items at this level-->
+               <mes:userName>tolvenuser</mes:userName>
+               <mes:groupName>nogrid</mes:groupName>
+               <mes:gridIdentifier>nogrid</mes:gridIdentifier>
+               <!--Optional:-->
+               <mes:password>changeme</mes:password>
+               <!--Optional:-->
+               <mes:delegatedCredentialReference>nocredentials</mes:delegatedCredentialReference>
+            </mes:credentials>
+         </mes:metadata>
+         <mes:request>
+            <mes:businessMessagePayload>
+               <mes:xmlSchemaDefinition>urn:hl7-org:v3</mes:xmlSchemaDefinition>
+               <ClinicalDocument xsi:schemaLocation="urn:hl7-org:v3 ../cdaXSD/infrastructure/cda/CDA.xsd" xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                  <realmCode code="US"/>
+                  <typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
+                  <!--US Realm Header, consolidated CDA header template-->
+                  <templateId root="2.16.840.1.113883.10.20.22.1.1" assigningAuthorityName="HL7 CCDA"/>
+                  <id root="1.2.1.173000" extension="echr:patient-1823431:clinicalNote-1833315"/>
+                  <!--There is no existing LOINC code for Biospecimen report.-->
+                  <code nullFlavor="OTH">
+                     <originalText>Biospecimen report</originalText>
+                  </code>
+                  <title>Bio Specimen</title>
+                  <effectiveTime value="20110722104303-0700"/>
+                  <confidentialityCode code="N"/>
+                  <languageCode code="en-US"/>
+                  <recordTarget>
+                     <patientRole>                       
+                         <!--study subject identifier-->
+                        <id root="1.2.1.173000" extension="echr:patient-18234173" assigningAuthorityName="iSpy2 Study"/>
+                        <!--patient MRN-->
+                        <id root="1.2.1.173000" extension="21318234173" assigningAuthorityName="ABC Cancer Institute"/>
+                        
+                        <addr nullFlavor="NI"/>
+                        <telecom nullFlavor="NI"/>
+                        <patient>
+                           <name use="L">
+                              <given>TestOne</given>
+                              <given/>
+                              <family>Patient</family>
+                           </name>
+                           <!--gender-->
+                           <administrativeGenderCode code="F" codeSystem="2.16.840.1.113883.5.1" displayName="Female"/>
+                           <!--birth date-->
+                           <birthTime value="19670131"/>
+                           <!--marital status-->
+                           <maritalStatusCode code="M" codeSystem="2.16.840.1.113883.5.2" codeSystemName="HL7 MaritalStatus" displayName="Married">
+                              <originalText>Now married</originalText>
+                           </maritalStatusCode>
+                           <!--race-->
+                           <raceCode code="2106-3" displayName="White" codeSystem="2.16.840.1.113883.6.238" codeSystemName="Race &amp; Ethnicity - CDC"></raceCode>
+                           <!--ethnicity-->
+                           <ethnicGroupCode code="2186-5" displayName="Not Hispanic or Latino" codeSystem="2.16.840.1.113883.6.238" codeSystemName="Race &amp; Ethnicity - CDC"/>
+                        </patient>
+                     </patientRole>
+                  </recordTarget>
+                  <author>
+                     <time nullFlavor="NI"/>
+                     <assignedAuthor>
+                        <id root="1.2.1.173000" extension="sarah.davis@ucsfmedctr.org"/>
+                        <addr nullFlavor="NI"/>
+                        <telecom nullFlavor="NI"/>
+                        <assignedPerson>
+                           <name nullFlavor="NI"/>
+                        </assignedPerson>
+                     </assignedAuthor>
+                  </author>
+                  <custodian>
+                     <assignedCustodian>
+                        <representedCustodianOrganization>
+                           <id root="2.16.840.1.113883.3.26.1.7" extension="TranscendTolven"/>
+                           <name nullFlavor="NI"/>
+                           <telecom nullFlavor="NI"/>
+                           <addr nullFlavor="NI"/>
+                        </representedCustodianOrganization>
+                     </assignedCustodian>
+                  </custodian>
+                  <!--study id-->
+                  <documentationOf>
+                     <serviceEvent classCode="CLNTRL">                        
+                        <id root="7216" extension="7216"/>
+                        <code nullFlavor="OTH">
+                           <originalText>clinical trial</originalText>
+                        </code>
+                     </serviceEvent>
+                  </documentationOf>
+                  <component>
+                     <structuredBody>
+                        <component>
+                           <!--Procedure Specimens Taken Section 59773-2-->
+                           <section>
+                              <templateId root="2.16.840.1.113883.10.20.22.2.31" assigningAuthorityName="HL7 CCDA"/>
+                              <code code="59773-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="PROCEDURE SPECIMENS TAKEN"/>
+                              <title>BioSpecimen</title>
+                              <entry typeCode="DRIV">
+                                 <procedure classCode="PROC" moodCode="EVN">
+                                    <!--Procedure activity procedure template-->
+                                    <templateId root="2.16.840.1.113883.10.20.22.4.14" assigningAuthorityName="HL7 CCDA"/>
+                                    <code nullFlavor="OTH">
+                                       <!--Collection Protocol Title and Collection Protocol Short Title in the format of Collection Protocol Title (Collection Protocol Short Title)-->
+                                       <originalText>Breast Core Needle Biopsy: side=Right (rigth breast stereotactic needle biopsy )</originalText>
+                                    </code>
+                                    <statusCode code="completed"/>
+                                    <effectiveTime value="20110706"/>
+                                    <!--Specimen Characteristics Site-->
+                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                       <originalText>right breast</originalText>
+                                       <!--Specimen Characteristics Side-->
+                                       <qualifier>
+                                          <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
+                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                       </qualifier>
+                                    </targetSiteCode>
+                                    <!--Guidance for Breast Core Biopsy-->
+                                    <entryRelationship typeCode="COMP">
+                                       <observation classCode="OBS" moodCode="EVN">
+                                          <!--Procedure Activity Observation-->
+                                          <templateId root="2.16.840.1.113883.10.20.22.4.13" assigningAuthorityName="HL7 CCDA"/>
+                                          <id nullFlavor="NI"/>
+                                          <code nullFlavor="OTH">
+                                             <originalText>Guidance for Breast Core Biopsy</originalText>
+                                          </code>
+                                          <statusCode code="completed"/>
+                                          <value xsi:type="CD" code="16310003" codeSystem="2.16.840.1.113883.6.96" displayName="Ultrasound">
+                                             <originalText>Diagnostic ultrasonography</originalText>
+                                          </value>
+                                       </observation>
+                                    </entryRelationship>
+                                    <!--Biospecimen-->
+                                    <entryRelationship typeCode="COMP">
+                                       <!--no existing biospecimen CDA template, 
+                           use result observation template to record specimen detail-->
+                                       <observation classCode="OBS" moodCode="EVN">
+                                          <!--Result observation template-->
+                                          <templateId root="2.16.840.1.113883.10.20.22.4.2" assigningAuthorityName="HL7 CCDA"/>
+                                          <id root="80f662f4-29d0-474c-b0e0-7108223835dc"/>
+                                          <code code="123038009" codeSystem="2.16.840.1.113883.6.96" displayName="specimen">
+                                             <originalText>Biospecimen</originalText>
+                                          </code>
+                                          <specimen>
+                                             <specimenRole>
+                                                <!--CDMS Specimen ID, assigned by the TRANSCEND CDMS-->
+                                                <id root="fbfe4b85-2bdc-4305-88be-3e1b763d8caa" extension="173"/>
+                                                <!--Specimen Class-->
+                                                <specimenPlayingEntity>
+                                                   <code code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="tissue specimen"/>
+                                                </specimenPlayingEntity>
+                                             </specimenRole>
+                                          </specimen>
+                                          <!--Specimen container (e.g. tube)-->
+                                          <participant typeCode="DEV">
+                                             <participantRole classCode="MANU">
+                                                <!--Product Instance template-->
+                                                <templateId root="2.16.840.1.113883.10.20.22.4.37" assigningAuthorityName="HL7 CCDA"/>
+                                                <!--Barcode (Unique Device Identification (UDI))-->
+                                                <id root="123456" extension="173"/>
+                                                <playingDevice>
+                                                   <!--Code to identify the specimen Container-->
+                                                   <code nullFlavor="NA">
+                                                      <originalText>tissue specimen tube</originalText>
+                                                   </code>
+                                                </playingDevice>
+                                                <!--who manages the specimen container-->
+                                                <scopingEntity>
+                                                   <id nullFlavor="NA"/>
+                                                </scopingEntity>
+                                             </participantRole>
+                                          </participant>
+                                          <!--Specimen Type-->
+                                          <entryRelationship typeCode="SUBJ">
+                                             <observation classCode="OBS" moodCode="EVN">
+                                                <!--Result observation template-->
+                                                <templateId root="2.16.840.1.113883.10.20.22.4.2" assigningAuthorityName="HL7 CCDA"/>
+                                                <id nullFlavor="NI"/>
+                                                <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
+                                                <statusCode code="completed"/>
+                                                <!--Specimen Type-->
+                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
+                                                   <originalText>fresh tissue</originalText>
+                                                </value>
+                                             </observation>
+                                          </entryRelationship>
+                                          <!--Initial Quantity-->
+                                          <entryRelationship typeCode="SUBJ">
+                                             <observation classCode="OBS" moodCode="EVN">
+                                                <!--Result observation template-->
+                                                <templateId root="2.16.840.1.113883.10.20.22.4.2" assigningAuthorityName="HL7 CCDA"/>
+                                                <id root="5b009181-5f0e-4304-a1cb-20b5c03a3868"/>
+                                                <code nullFlavor="OTH">
+                                                   <originalText>Initial Quantity</originalText>
+                                                </code>
+                                                <!--The Quanity value goes here, @unit uses UCUM code: 177 gram-->
+                                                <value xsi:type="PQ" value="177" unit="g"/>
+                                             </observation>
+                                          </entryRelationship>
+                                          <!--Available Quantity-->
+                                          <entryRelationship typeCode="SUBJ">
+                                             <observation classCode="OBS" moodCode="EVN">
+                                                <!--Result observation template-->
+                                                <templateId root="2.16.840.1.113883.10.20.22.4.2" assigningAuthorityName="HL7 CCDA"/>
+                                                <id root="b470f6a6-455c-4185-b6f6-b2b90e1c8f68"/>
+                                                <code nullFlavor="OTH">
+                                                   <originalText>Available Quantity</originalText>
+                                                </code>
+                                                <!--The Quanity value goes here, @unit uses UCUM code: 155 gram-->
+                                                <value xsi:type="PQ" value="155" unit="g"/>
+                                             </observation>
+                                          </entryRelationship>
+                                          <!--Study Calendar Event Time Point-->
+                                          <entryRelationship typeCode="SUBJ">
+                                             <observation classCode="OBS" moodCode="EVN">
+                                                <!--Result observation template-->
+                                                <templateId root="2.16.840.1.113883.10.20.22.4.2" assigningAuthorityName="HL7 CCDA"/>
+                                                <id root="b470f6a6-455c-4185-b6f6-b2b90e1c8f68"/>
+                                                <code nullFlavor="OTH">
+                                                   <originalText>Study Calendar Event Time Point</originalText>
+                                                </code>
+                                                <!--The Quanity value goes here, @unit uses UCUM code: 5 days-->
+                                                <value xsi:type="PQ" value="5" unit="d"/>
+                                             </observation>
+                                          </entryRelationship>
+                                          <!--Activity Status-->
+                                          <entryRelationship typeCode="SUBJ">
+                                             <observation classCode="OBS" moodCode="EVN">
+                                                <!--Result observation template-->
+                                                <templateId root="2.16.840.1.113883.10.20.22.4.2" assigningAuthorityName="HL7 CCDA"/>
+                                                <id nullFlavor="NI"/>
+                                                <code code="263490005" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Activity status"/>
+                                                <value xsi:type="CD" code="55561003" codeSystem="2.16.840.1.113883.6.96" displayName="active" codeSystemName="SNOMED-CT"/>
+                                             </observation>
+                                          </entryRelationship>
+                                       </observation>
+                                    </entryRelationship>
+                                 </procedure>
+                              </entry>
+                           </section>
+                        </component>
+                     </structuredBody>
+                  </component>
+               </ClinicalDocument>
+            </mes:businessMessagePayload>
+         </mes:request>
+      </mes:caXchangeRequestMessage>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://caXchange.nci.nih.gov/caxchangerequest/CaXchangeRequestPortType/ProcessRequestRequest"/><con:wsrmConfig version="1.2"/></con:call><con:call name="CreateSpecimenRequest_7351"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:12090/services/CaXchangeRequestService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:mes="http://caXchange.nci.nih.gov/messaging">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <mes:caXchangeRequestMessage>
+         <mes:metadata>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
+            <mes:serviceType>iHub</mes:serviceType>
+            <!--Optional:-->
+            <mes:operationName>Create Biospecimen</mes:operationName>
+            <mes:externalIdentifier>32225879</mes:externalIdentifier>
+            <!--Optional:-->
+            <mes:caXchangeIdentifier/>
+            <!--Optional:-->
+            <mes:credentials>
+               <!--You have a CHOICE of the next 3 items at this level-->
+               <mes:userName>tolvenuser</mes:userName>
+               <mes:groupName>nogrid</mes:groupName>
+               <mes:gridIdentifier>nogrid</mes:gridIdentifier>
+               <!--Optional:-->
+               <mes:password>changeme</mes:password>
+               <!--Optional:-->
+               <mes:delegatedCredentialReference>nocredentials</mes:delegatedCredentialReference>
+            </mes:credentials>
+         </mes:metadata>
+         <mes:request>
+            <mes:businessMessagePayload>
+               <mes:xmlSchemaDefinition>urn:hl7-org:v3</mes:xmlSchemaDefinition>
+               <ClinicalDocument xsi:schemaLocation="urn:hl7-org:v3 ../cdaXSD/infrastructure/cda/CDA.xsd" xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                  <realmCode code="US"/>
+                  <typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
+                  <!--US Realm Header, consolidated CDA header template-->
+                  <templateId root="2.16.840.1.113883.10.20.22.1.1" assigningAuthorityName="HL7 CCDA"/>
+                  <id root="1.2.1.173000" extension="echr:patient-1823431:clinicalNote-1833315"/>
+                  <!--There is no existing LOINC code for Biospecimen report.-->
+                  <code nullFlavor="OTH">
+                     <originalText>Biospecimen report</originalText>
+                  </code>
+                  <title>Bio Specimen</title>
+                  <effectiveTime value="20110722104303-0700"/>
+                  <confidentialityCode code="N"/>
+                  <languageCode code="en-US"/>
+                  <recordTarget>
+                     <patientRole>                       
+                         <!--study subject identifier-->
+                        <id root="1.2.1.173000" extension="echr:patient-18234181" assigningAuthorityName="iSpy2 Study"/>
+                        <!--patient MRN-->
+                        <id root="1.2.1.173000" extension="21318234181" assigningAuthorityName="ABC Cancer Institute"/>
+                        
+                        <addr nullFlavor="NI"/>
+                        <telecom nullFlavor="NI"/>
+                        <patient>
+                           <name use="L">
+                              <given>TestOne</given>
+                              <given/>
+                              <family>Patient</family>
+                           </name>
+                           <!--gender-->
+                           <administrativeGenderCode code="F" codeSystem="2.16.840.1.113883.5.1" displayName="Female"/>
+                           <!--birth date-->
+                           <birthTime value="19670131"/>
+                           <!--marital status-->
+                           <maritalStatusCode code="M" codeSystem="2.16.840.1.113883.5.2" codeSystemName="HL7 MaritalStatus" displayName="Married">
+                              <originalText>Now married</originalText>
+                           </maritalStatusCode>
+                           <!--race-->
+                           <raceCode code="2106-3" displayName="White" codeSystem="2.16.840.1.113883.6.238" codeSystemName="Race &amp; Ethnicity - CDC"></raceCode>
+                           <!--ethnicity-->
+                           <ethnicGroupCode code="2186-5" displayName="Not Hispanic or Latino" codeSystem="2.16.840.1.113883.6.238" codeSystemName="Race &amp; Ethnicity - CDC"/>
+                        </patient>
+                     </patientRole>
+                  </recordTarget>
+                  <author>
+                     <time nullFlavor="NI"/>
+                     <assignedAuthor>
+                        <id root="1.2.1.173000" extension="sarah.davis@ucsfmedctr.org"/>
+                        <addr nullFlavor="NI"/>
+                        <telecom nullFlavor="NI"/>
+                        <assignedPerson>
+                           <name nullFlavor="NI"/>
+                        </assignedPerson>
+                     </assignedAuthor>
+                  </author>
+                  <custodian>
+                     <assignedCustodian>
+                        <representedCustodianOrganization>
+                           <id root="2.16.840.1.113883.3.26.1.7" extension="TranscendTolven"/>
+                           <name nullFlavor="NI"/>
+                           <telecom nullFlavor="NI"/>
+                           <addr nullFlavor="NI"/>
+                        </representedCustodianOrganization>
+                     </assignedCustodian>
+                  </custodian>
+                  <!--study id-->
+                  <documentationOf>
+                     <serviceEvent classCode="CLNTRL">                        
+                        <id root="7351" extension="7351"/>
+                        <code nullFlavor="OTH">
+                           <originalText>clinical trial</originalText>
+                        </code>
+                     </serviceEvent>
+                  </documentationOf>
+                  <component>
+                     <structuredBody>
+                        <component>
+                           <!--Procedure Specimens Taken Section 59773-2-->
+                           <section>
+                              <templateId root="2.16.840.1.113883.10.20.22.2.31" assigningAuthorityName="HL7 CCDA"/>
+                              <code code="59773-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="PROCEDURE SPECIMENS TAKEN"/>
+                              <title>BioSpecimen</title>
+                              <entry typeCode="DRIV">
+                                 <procedure classCode="PROC" moodCode="EVN">
+                                    <!--Procedure activity procedure template-->
+                                    <templateId root="2.16.840.1.113883.10.20.22.4.14" assigningAuthorityName="HL7 CCDA"/>
+                                    <code nullFlavor="OTH">
+                                       <!--Collection Protocol Title and Collection Protocol Short Title in the format of Collection Protocol Title (Collection Protocol Short Title)-->
+                                       <originalText>Breast Core Needle Biopsy: side=Right (rigth breast stereotactic needle biopsy )</originalText>
+                                    </code>
+                                    <statusCode code="completed"/>
+                                    <effectiveTime value="20110706"/>
+                                    <!--Specimen Characteristics Site-->
+                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                       <originalText>right breast</originalText>
+                                       <!--Specimen Characteristics Side-->
+                                       <qualifier>
+                                          <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
+                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                       </qualifier>
+                                    </targetSiteCode>
+                                    <!--Guidance for Breast Core Biopsy-->
+                                    <entryRelationship typeCode="COMP">
+                                       <observation classCode="OBS" moodCode="EVN">
+                                          <!--Procedure Activity Observation-->
+                                          <templateId root="2.16.840.1.113883.10.20.22.4.13" assigningAuthorityName="HL7 CCDA"/>
+                                          <id nullFlavor="NI"/>
+                                          <code nullFlavor="OTH">
+                                             <originalText>Guidance for Breast Core Biopsy</originalText>
+                                          </code>
+                                          <statusCode code="completed"/>
+                                          <value xsi:type="CD" code="16310003" codeSystem="2.16.840.1.113883.6.96" displayName="Ultrasound">
+                                             <originalText>Diagnostic ultrasonography</originalText>
+                                          </value>
+                                       </observation>
+                                    </entryRelationship>
+                                    <!--Biospecimen-->
+                                    <entryRelationship typeCode="COMP">
+                                       <!--no existing biospecimen CDA template, 
+                           use result observation template to record specimen detail-->
+                                       <observation classCode="OBS" moodCode="EVN">
+                                          <!--Result observation template-->
+                                          <templateId root="2.16.840.1.113883.10.20.22.4.2" assigningAuthorityName="HL7 CCDA"/>
+                                          <id root="80f662f4-29d0-474c-b0e0-7108223835dc"/>
+                                          <code code="123038009" codeSystem="2.16.840.1.113883.6.96" displayName="specimen">
+                                             <originalText>Biospecimen</originalText>
+                                          </code>
+                                          <specimen>
+                                             <specimenRole>
+                                                <!--CDMS Specimen ID, assigned by the TRANSCEND CDMS-->
+                                                <id root="fbfe4b85-2bdc-4305-88be-3e1b763d8caa" extension="181"/>
+                                                <!--Specimen Class-->
+                                                <specimenPlayingEntity>
+                                                   <code code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="tissue specimen"/>
+                                                </specimenPlayingEntity>
+                                             </specimenRole>
+                                          </specimen>
+                                          <!--Specimen container (e.g. tube)-->
+                                          <participant typeCode="DEV">
+                                             <participantRole classCode="MANU">
+                                                <!--Product Instance template-->
+                                                <templateId root="2.16.840.1.113883.10.20.22.4.37" assigningAuthorityName="HL7 CCDA"/>
+                                                <!--Barcode (Unique Device Identification (UDI))-->
+                                                <id root="123456" extension="181"/>
+                                                <playingDevice>
+                                                   <!--Code to identify the specimen Container-->
+                                                   <code nullFlavor="NA">
+                                                      <originalText>tissue specimen tube</originalText>
+                                                   </code>
+                                                </playingDevice>
+                                                <!--who manages the specimen container-->
+                                                <scopingEntity>
+                                                   <id nullFlavor="NA"/>
+                                                </scopingEntity>
+                                             </participantRole>
+                                          </participant>
+                                          <!--Specimen Type-->
+                                          <entryRelationship typeCode="SUBJ">
+                                             <observation classCode="OBS" moodCode="EVN">
+                                                <!--Result observation template-->
+                                                <templateId root="2.16.840.1.113883.10.20.22.4.2" assigningAuthorityName="HL7 CCDA"/>
+                                                <id nullFlavor="NI"/>
+                                                <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
+                                                <statusCode code="completed"/>
+                                                <!--Specimen Type-->
+                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
+                                                   <originalText>fresh tissue</originalText>
+                                                </value>
+                                             </observation>
+                                          </entryRelationship>
+                                          <!--Initial Quantity-->
+                                          <entryRelationship typeCode="SUBJ">
+                                             <observation classCode="OBS" moodCode="EVN">
+                                                <!--Result observation template-->
+                                                <templateId root="2.16.840.1.113883.10.20.22.4.2" assigningAuthorityName="HL7 CCDA"/>
+                                                <id root="5b009181-5f0e-4304-a1cb-20b5c03a3868"/>
+                                                <code nullFlavor="OTH">
+                                                   <originalText>Initial Quantity</originalText>
+                                                </code>
+                                                <!--The Quanity value goes here, @unit uses UCUM code: 177 gram-->
+                                                <value xsi:type="PQ" value="177" unit="g"/>
+                                             </observation>
+                                          </entryRelationship>
+                                          <!--Available Quantity-->
+                                          <entryRelationship typeCode="SUBJ">
+                                             <observation classCode="OBS" moodCode="EVN">
+                                                <!--Result observation template-->
+                                                <templateId root="2.16.840.1.113883.10.20.22.4.2" assigningAuthorityName="HL7 CCDA"/>
+                                                <id root="b470f6a6-455c-4185-b6f6-b2b90e1c8f68"/>
+                                                <code nullFlavor="OTH">
+                                                   <originalText>Available Quantity</originalText>
+                                                </code>
+                                                <!--The Quanity value goes here, @unit uses UCUM code: 155 gram-->
+                                                <value xsi:type="PQ" value="155" unit="g"/>
+                                             </observation>
+                                          </entryRelationship>
+                                          <!--Study Calendar Event Time Point-->
+                                          <entryRelationship typeCode="SUBJ">
+                                             <observation classCode="OBS" moodCode="EVN">
+                                                <!--Result observation template-->
+                                                <templateId root="2.16.840.1.113883.10.20.22.4.2" assigningAuthorityName="HL7 CCDA"/>
+                                                <id root="b470f6a6-455c-4185-b6f6-b2b90e1c8f68"/>
+                                                <code nullFlavor="OTH">
+                                                   <originalText>Study Calendar Event Time Point</originalText>
+                                                </code>
+                                                <!--The Quanity value goes here, @unit uses UCUM code: 5 days-->
+                                                <value xsi:type="PQ" value="5" unit="d"/>
                                              </observation>
                                           </entryRelationship>
                                           <!--Activity Status-->

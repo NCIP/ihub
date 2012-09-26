@@ -148,7 +148,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Or Update Adverse Event</mes:operationName>
@@ -397,7 +397,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Or Update Adverse Event</mes:operationName>
@@ -646,7 +646,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Or Update Adverse Event</mes:operationName>
@@ -895,7 +895,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Or Update Adverse Event</mes:operationName>
@@ -1144,7 +1144,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Or Update Adverse Event</mes:operationName>
@@ -1393,7 +1393,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Or Update Adverse Event</mes:operationName>
@@ -1642,7 +1642,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Or Update Adverse Event</mes:operationName>
@@ -1891,7 +1891,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Or Update Adverse Event</mes:operationName>
@@ -2140,7 +2140,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Or Update Adverse Event</mes:operationName>
@@ -2389,7 +2389,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Or Update Adverse Event</mes:operationName>
@@ -2638,7 +2638,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Or Update Adverse Event</mes:operationName>
@@ -2887,7 +2887,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Or Update Adverse Event</mes:operationName>
@@ -3000,36 +3000,7 @@
                               <templateId root="2.16.840.1.113883.10.20.22.2.6.1" assigningAuthorityName="HL7 CCDA"/>
                               <code code="48765-2" displayName="Allergies, adverse reactions, alerts" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"/>
                               <title>Allergies and Adverse Reactions</title>
-                              <text>
-                                 <table border="1" width="100%">
-                                    <caption>AE Reporting (2011-07-01 to 2011-07-21)</caption>
-                                    <tbody>
-                                       <tr>
-                                          <td>Adverse Event</td>
-                                          <td>Date</td>
-                                       </tr>
-                                       <tr>
-                                          <td>
-                                             The patient has sporadic mild to severe abdominal painAbdominal
-                              pain
-                                             <br/>
-                                             --Grade: 2 - Moderate pain; limiting instrumental ADL
-                                             <br/>
-                                             --Assigned treatment arm: group number 2
-                                             <br/>
-                                             --Attribution: 3 - possible
-                                             <br/>
-                                             --Period Type: treatment
-                                             <br/>
-                                             --Expected outcome: yes
-                                             <br/>
-                                             --Serious Reason: Results in persistent or significant incapacity or substantial disruption of the ability to conduct normal life functions
-                                          </td>
-                                          <td>From 2011-07-05 to 2011-07-09</td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </text>
+                              
                               <entry typeCode="DRIV">
                                  <act classCode="ACT" moodCode="EVN">
                                     <!--Allergy Problem Act Template-->
@@ -3180,7 +3151,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Or Update Adverse Event</mes:operationName>
@@ -3587,7 +3558,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Or Update Adverse Event</mes:operationName>
@@ -3626,9 +3597,9 @@
                   <recordTarget>
                      <patientRole>
                         <!--study subject identifier-->
-                        <id root="1.2.1.173000" extension="echr:patient-18234109" assigningAuthorityName="iSpy2 Study"/>
+                        <id root="1.2.1.173000" extension="echr:patient-18234108" assigningAuthorityName="iSpy2 Study"/>
                         <!--patient MRN-->
-                        <id root="1.2.1.173000" extension="21318234109" assigningAuthorityName="ABC Cancer Institute"/>
+                        <id root="1.2.1.173000" extension="21318234108" assigningAuthorityName="ABC Cancer Institute"/>
                         <addr nullFlavor="NI"/>
                         <telecom nullFlavor="NI"/>
                         <patient>
@@ -3994,7 +3965,7 @@
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
          <mes:metadata>
-            <mes:transactionControl>?</mes:transactionControl>
+            <mes:transactionControl>PROCESS</mes:transactionControl>
             <mes:serviceType>iHub</mes:serviceType>
             <!--Optional:-->
             <mes:operationName>Create Or Update Adverse Event</mes:operationName>
