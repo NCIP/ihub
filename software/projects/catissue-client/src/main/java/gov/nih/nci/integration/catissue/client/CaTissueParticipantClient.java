@@ -3,6 +3,7 @@ package gov.nih.nci.integration.catissue.client;
 import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -27,6 +28,7 @@ import edu.wustl.catissuecore.domain.ParticipantMedicalIdentifier;
 import edu.wustl.catissuecore.domain.Race;
 import edu.wustl.catissuecore.factory.CollectionProtocolFactory;
 import edu.wustl.catissuecore.factory.CollectionProtocolRegistrationFactory;
+import edu.wustl.catissuecore.factory.ConsentTierResponseFactory;
 import edu.wustl.catissuecore.factory.ParticipantFactory;
 import edu.wustl.catissuecore.factory.RaceFactory;
 import gov.nih.nci.system.applicationservice.ApplicationException;
@@ -35,15 +37,14 @@ import gov.nih.nci.system.applicationservice.ApplicationException;
  * This is the Client class for create Registration and update Registration
  * 
  * @author Vinodh
+ * @author Rohit Gupta
  */
 public class CaTissueParticipantClient {
 
+    private static final String NOT_SPECIFIED = "Not Specified";
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueParticipantClient.class);
-
     private CaTissueAPIClientWithRegularAuthentication caTissueAPIClient;
-
     private static final String DISABLED = "Disabled";
-
     private final XStream xStream = new XStream(new StaxDriver());
 
     /**
@@ -155,8 +156,9 @@ public class CaTissueParticipantClient {
             throw new ApplicationException("Participant does not contain the unique medical identifier");
         }
 
-        // populate the CP-Title inside Participant-CPR-CP-Title. We are getting 'shortTitle' in the request
-        populateCPTitle(participant);
+        // populate the CP-Title inside Participant-CPR-CP-Title. Also call populateConsentTierResponse()
+        populateCP(participant);
+
         Participant returnParticipant = null;
         try {
             returnParticipant = caTissueAPIClient.insert(participant);
@@ -360,27 +362,50 @@ public class CaTissueParticipantClient {
     }
 
     /**
-     * This method is used to populate the CP-title inside Participant object for given CP-shortTitle
+     * This method is used to populate the CP-title inside Participant object for given CP-shortTitle. Also it will call
+     * method to populate the default ConsentTierResponse
      * 
      * @param participant
      * @return Participant with Title populated
      * @throws ApplicationException - ApplicationException
      */
-    private Participant populateCPTitle(Participant participant) throws ApplicationException {
+    private Participant populateCP(Participant participant) throws ApplicationException {
         final ArrayList<CollectionProtocolRegistration> cprColl = new ArrayList<CollectionProtocolRegistration>(
                 participant.getCollectionProtocolRegistrationCollection());
-        if (cprColl != null) {
+        if (!cprColl.isEmpty()) {
             // We are expecting only ONE CPR here
-            final String shortTitle = cprColl.get(0).getCollectionProtocol().getShortTitle();
+            final CollectionProtocolRegistration incomingCPR = cprColl.get(0);
+            final CollectionProtocol incomingCP = incomingCPR.getCollectionProtocol();
 
             // get the existing CollectionProtocol for given shortTitle
-            final CollectionProtocol fetchedCP = getExistingCollectionProtocol(shortTitle);
+            final CollectionProtocol fetchedCP = getExistingCollectionProtocol(incomingCP.getShortTitle());
+
             if (fetchedCP != null) {
                 // set the fetched CP_Title into the Participant-CPR-CP-title
-                cprColl.get(0).getCollectionProtocol().setTitle(fetchedCP.getTitle());
+                incomingCP.setTitle(fetchedCP.getTitle());
+
+                populateConsentTierResponse(incomingCPR, fetchedCP);
             }
         }
         return participant;
+    }
+
+    private void populateConsentTierResponse(final CollectionProtocolRegistration incomingCPR,
+            final CollectionProtocol fetchedCP) throws ApplicationException {
+        final Collection<ConsentTier> consentTierCollection = fetchedCP.getConsentTierCollection();
+        if (consentTierCollection == null || consentTierCollection.isEmpty()) {
+            LOG.error("Collection Protocol's consent tier statements list is empty.");
+            throw new ApplicationException("Collection Protocol's consent tier statements list is empty.");
+        }
+        final Iterator<ConsentTier> it = consentTierCollection.iterator();
+
+        while (it.hasNext()) {
+            final ConsentTier consentTier = (ConsentTier) it.next();
+            final ConsentTierResponse ctResp = ConsentTierResponseFactory.getInstance().createObject();
+            ctResp.setConsentTier(consentTier);
+            ctResp.setResponse(NOT_SPECIFIED);
+            incomingCPR.getConsentTierResponseCollection().add(ctResp);
+        }
     }
 
     /**
