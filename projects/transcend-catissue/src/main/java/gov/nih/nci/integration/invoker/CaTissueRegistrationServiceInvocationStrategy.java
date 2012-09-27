@@ -68,6 +68,7 @@ public class CaTissueRegistrationServiceInvocationStrategy implements ServiceInv
         msgToErrMapBase.put(
                 "Either Title is not selected or Date format is not correct in Collection Protocol Registration",
                 IntegrationError._1098);
+        msgToErrMapBase.put("Collection Protocol's consent tier statements list is empty.", IntegrationError._1107);
 
         msgToErrMap = Collections.synchronizedMap(msgToErrMapBase);
     }
