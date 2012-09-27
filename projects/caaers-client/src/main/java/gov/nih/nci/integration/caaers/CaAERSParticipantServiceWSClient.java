@@ -209,16 +209,17 @@ public class CaAERSParticipantServiceWSClient {
      */
     public CaaersServiceResponse updateParticipant(String participantXMLStr) throws JAXBException,
             MalformedURLException, SOAPFaultException, IntegrationException {
-        // check if the activity status is "Closed", then don't need to call updateParticipant
-        if (participantXMLStr.contains("<activityStatus>Closed</activityStatus>")) {
-            return getNonActiveParticipantResponse();
-        }
 
         // get the existing participant
         final CaaersServiceResponse caaersGetResponse = getParticipant(participantXMLStr);
         // check if responseCode is NOT 0
         if (!"0".equals(caaersGetResponse.getServiceResponse().getResponsecode())) {
             return caaersGetResponse;
+        }
+
+        // check if the activity status is "Closed", then don't need to call updateParticipant
+        if (participantXMLStr.contains("<activityStatus>Closed</activityStatus>")) {
+            return getNonActiveParticipantResponse(caaersGetResponse);
         }
 
         final ParticipantType participant = parseParticipant(participantXMLStr);
@@ -281,17 +282,27 @@ public class CaAERSParticipantServiceWSClient {
         return retValue.getCaaersServiceResponse();
     }
 
-    private CaaersServiceResponse getNonActiveParticipantResponse() {
+    private CaaersServiceResponse getNonActiveParticipantResponse(CaaersServiceResponse caaersGetResponse) {
         final CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
         final ServiceResponse serviceResponse = new ServiceResponse();
         serviceResponse.setMessage("caAERS doesnt support off-study.");
         serviceResponse.setStatus(Status.PROCESSED);
         serviceResponse.setResponsecode("0");
+        serviceResponse.setResponseData(caaersGetResponse.getServiceResponse().getResponseData());
         caaersServiceResponse.setServiceResponse(serviceResponse);
         return caaersServiceResponse;
     }
 
+    /**
+     * This method is used to check if the Study is changed during Update Registration
+     * 
+     * @param participant
+     * @param caaersGetResponse
+     * @return
+     */
     private boolean isParticipantStudyChanged(ParticipantType participant, CaaersServiceResponse caaersGetResponse) {
+
+        // TODO :: Update the logic as per WebService implementation. Hardcoded till then.
         final boolean isStudyChanged = false;
         System.out.println(participant);// NOPMD
         System.out.println(caaersGetResponse);// NOPMD
