@@ -3,7 +3,7 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:p="http://integration.nci.nih.gov/participant"
 	xmlns:catissue="http://domain.catissuecore.wustl.edu/participant"
 	xmlns:ns0="http://caXchange.nci.nih.gov/messaging" xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest"
-	xmlns:g="http://catissue/gender/data">
+	xmlns:g="http://catissue/gender/data" xmlns:r="http://catissue/race/data">
 	<xsl:output method="xml" indent="yes" />
 
 	<xsl:key name="gender-lookup" match="g:gender" use="g:vockey" />
@@ -12,6 +12,14 @@
 	<xsl:template match="g:genders">
 		<xsl:param name="curr-key" />
 		<xsl:value-of select="key('gender-lookup', $curr-key)/g:vocvalue" />
+	</xsl:template>
+
+	<xsl:key name="race-lookup" match="r:race" use="r:vockey" />
+	<xsl:variable name="races-top"
+		select="document('catissue-race-lookup.xml')/*" />
+	<xsl:template match="r:races">
+		<xsl:param name="curr-key" />
+		<xsl:value-of select="key('race-lookup', $curr-key)/r:vocvalue" />
 	</xsl:template>
 
 	<!-- Main -->
@@ -43,83 +51,72 @@
 			<catissue:lastName>
 				<xsl:value-of select="$studySubjectIdentifier" />
 			</catissue:lastName>
-			<catissue:vitalStatus>Alive</catissue:vitalStatus>			
+			<catissue:vitalStatus>Alive</catissue:vitalStatus>
 			<catissue:collectionProtocolRegistrationCollection
-				class="set">						
-					<catissue:collectionProtocolRegistration>
-						<catissue:activityStatus>
-							<xsl:value-of select="//p:participant/p:activityStatus" />
-						</catissue:activityStatus>
-						<catissue:consentSignatureDate>
-							<xsl:value-of select="substring-before(current-dateTime(),'T')" />
-						</catissue:consentSignatureDate>
-						<catissue:protocolParticipantIdentifier>
-							<xsl:value-of select="$studySubjectIdentifier" />
-						</catissue:protocolParticipantIdentifier>
-						<catissue:registrationDate>
-							<xsl:call-template name="show-dateTime">
-								<xsl:with-param name="dateValue"
-									select="//p:participant/p:registrationDate" />
-							</xsl:call-template>
-						</catissue:registrationDate>
-						<catissue:specimenCollectionGroupCollection
+				class="set">
+				<catissue:collectionProtocolRegistration>
+					<catissue:activityStatus>
+						<xsl:value-of select="//p:participant/p:activityStatus" />
+					</catissue:activityStatus>
+					<catissue:consentSignatureDate>
+						<xsl:value-of select="substring-before(current-dateTime(),'T')" />
+					</catissue:consentSignatureDate>
+					<catissue:protocolParticipantIdentifier>
+						<xsl:value-of select="$studySubjectIdentifier" />
+					</catissue:protocolParticipantIdentifier>
+					<catissue:registrationDate>
+						<xsl:call-template name="show-dateTime">
+							<xsl:with-param name="dateValue"
+								select="//p:participant/p:registrationDate" />
+						</xsl:call-template>
+					</catissue:registrationDate>
+					<catissue:specimenCollectionGroupCollection
+						class="set" />
+					<catissue:collectionProtocol>
+						<catissue:shortTitle>
+							<xsl:value-of
+								select="//p:participant/p:assignments/p:assignment/p:studySite/p:study/p:identifiers/p:identifier[p:type/text()='Other']/p:value" />
+						</catissue:shortTitle>
+						<catissue:collectionProtocolEventCollection
+							class="linked-hash-set" />
+						<catissue:childCollectionProtocolCollection
+							class="linked-hash-set" />
+						<catissue:studyFormContextCollection
 							class="set" />
-						<catissue:collectionProtocol>
-							<catissue:shortTitle>
-								<xsl:value-of
-									select="//p:participant/p:assignments/p:assignment/p:studySite/p:study/p:identifiers/p:identifier[p:type/text()='Other']/p:value" />
-							</catissue:shortTitle>
-							<catissue:collectionProtocolEventCollection
-								class="linked-hash-set" />
-							<catissue:childCollectionProtocolCollection
-								class="linked-hash-set" />
-							<catissue:studyFormContextCollection
-								class="set" />
-							<catissue:collectionProtocolRegistrationCollection
-								class="set" />
-							<catissue:siteCollection class="set" />
-							<catissue:clinicalDiagnosisCollection
-								class="linked-hash-set" />
-							<catissue:distributionProtocolCollection
-								class="linked-hash-set" />
-							<catissue:coordinatorCollection
-								class="linked-hash-set" />
-							<catissue:assignedProtocolUserCollection
-								class="set" />
-							<catissue:gridGrouperPrivileges />
-						</catissue:collectionProtocol>
-						<catissue:participant reference="../../.." />
-						<catissue:isToInsertAnticipatorySCGs>true</catissue:isToInsertAnticipatorySCGs>
-						<catissue:consentTierResponseCollection
-							class="set">
-							<catissue:consentTierResponse>
-								<catissue:consentTier>
-									<catissue:id>1</catissue:id>
-									<catissue:statement>Tier 1 consent response</catissue:statement>
-								</catissue:consentTier>
-								<catissue:response>Not Specified</catissue:response>
-							</catissue:consentTierResponse>
-							<catissue:consentTierResponse>
-								<catissue:consentTier>
-									<catissue:id>2</catissue:id>
-									<catissue:statement>Tier 2 consent response</catissue:statement>
-								</catissue:consentTier>
-								<catissue:response>Not Specified</catissue:response>
-							</catissue:consentTierResponse>
-						</catissue:consentTierResponseCollection>
-					</catissue:collectionProtocolRegistration>				
+						<catissue:collectionProtocolRegistrationCollection
+							class="set" />
+						<catissue:siteCollection class="set" />
+						<catissue:clinicalDiagnosisCollection
+							class="linked-hash-set" />
+						<catissue:distributionProtocolCollection
+							class="linked-hash-set" />
+						<catissue:coordinatorCollection
+							class="linked-hash-set" />
+						<catissue:assignedProtocolUserCollection
+							class="set" />
+						<catissue:gridGrouperPrivileges />
+					</catissue:collectionProtocol>
+					<catissue:participant reference="../../.." />
+					<catissue:isToInsertAnticipatorySCGs>true</catissue:isToInsertAnticipatorySCGs>
+					<catissue:consentTierResponseCollection
+						class="set" />
+				</catissue:collectionProtocolRegistration>
 			</catissue:collectionProtocolRegistrationCollection>
 			<catissue:raceCollection class="set">
 				<catissue:race>
 					<catissue:raceName>
-						<xsl:value-of select="//p:participant/p:race" />
+						<xsl:apply-templates select="$races-top">
+							<xsl:with-param name="curr-key" select="//p:participant/p:race" />
+						</xsl:apply-templates>
 					</catissue:raceName>
 					<catissue:participant reference="../../.." />
 				</catissue:race>
 				<xsl:for-each select="//p:participant/p:raceCollection/p:race">
 					<catissue:race>
 						<catissue:raceName>
-							<xsl:value-of select="." />
+							<xsl:apply-templates select="$races-top">
+								<xsl:with-param name="curr-key" select="." />
+							</xsl:apply-templates>
 						</catissue:raceName>
 						<catissue:participant reference="../../.." />
 					</catissue:race>

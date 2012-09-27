@@ -52,7 +52,7 @@
 			</specimen>
 			<consentTierResponses>
 				<tier>
-					<statement>Tier 1 consent response</statement>
+					<statement><xsl:value-of select="$entry/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='309370004'][@codeSystem='2.16.840.1.113883.6.96'][ns1:originalText='Tier 1 consent response']]/ns1:code/ns1:originalText" /></statement>
 					<response>
 						<xsl:call-template name="show-consent-response">
 							<xsl:with-param name="responseCode"
@@ -61,7 +61,7 @@
 					</response>
 				</tier>
 				<tier>
-					<statement>Tier 2 consent response</statement>
+					<statement><xsl:value-of select="$entry/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='309370004'][@codeSystem='2.16.840.1.113883.6.96'][ns1:originalText='Tier 2 consent response']]/ns1:code/ns1:originalText" /></statement>
 					<response>
 						<xsl:call-template name="show-consent-response">
 							<xsl:with-param name="responseCode"
