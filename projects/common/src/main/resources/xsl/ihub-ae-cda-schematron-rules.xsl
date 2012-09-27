@@ -193,10 +193,10 @@
 
 
 	<!--RULE -->
-	<xsl:template match="//cda:observation/cda:entryRelationship/cda:observation/cda:code[@code='SEV'][@codeSystem='2.16.840.1.113883.5.4']/cda:originalText" priority="1000"
+	<xsl:template match="//cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.22.4.8'][cda:code/cda:originalText='Grade']/cda:value/cda:originalText" priority="1000"
                  mode="M4">
       <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-                       context="//cda:observation/cda:entryRelationship/cda:observation/cda:code[@code='SEV'][@codeSystem='2.16.840.1.113883.5.4']/cda:originalText"/>
+                       context="//cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.22.4.8'][cda:code/cda:originalText='Grade']/cda:value/cda:originalText"/>
 
 		<!--ASSERT -->
 		
