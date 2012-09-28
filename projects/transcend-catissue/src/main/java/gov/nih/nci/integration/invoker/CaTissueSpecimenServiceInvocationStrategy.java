@@ -54,6 +54,7 @@ public class CaTissueSpecimenServiceInvocationStrategy implements ServiceInvocat
 
         final HashMap<String, IntegrationError> msgToErrMapBase = new LinkedHashMap<String, IntegrationError>();
 
+        msgToErrMapBase.put("Type is required", IntegrationError._1079);
         msgToErrMapBase.put("Specimen with the same LABEL already exists", IntegrationError._1080);
         msgToErrMapBase.put("Specimen Type is invalid", IntegrationError._1081);
         msgToErrMapBase.put("Tissue Side is invalid", IntegrationError._1082);

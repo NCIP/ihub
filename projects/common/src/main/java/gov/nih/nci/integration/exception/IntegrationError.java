@@ -77,6 +77,7 @@ public enum IntegrationError {
     _1074(1074, ErrorType.VALIDATION),
     _1075(1075, ErrorType.VALIDATION),
 
+    _1079(1079, ErrorType.VALIDATION),
     _1080(1080, ErrorType.VALIDATION),
     _1081(1081, ErrorType.VALIDATION),
     _1082(1082, ErrorType.VALIDATION),
