@@ -202,17 +202,16 @@
 		
 		<xsl:choose>
 	         <xsl:when test="@code='16310003' or @code='241615005' or @code='258172002' 
-	         or @code='71651007' or @code='113011001' 
-	         or (@nullFlavor='OTH' and cda:originalText/text()='Other free text')"/>
+	         or @code='71651007' or @code='113011001' or @nullFlavor='OTH'"/>
 	         <xsl:otherwise>
 	            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-	                                test="@code='16310003' or @code='241615005' or @code='258172002' or @code='71651007' or @code='113011001' or (@nullFlavor='OTH' and cda:originalText/text()='Other free text')">
+	                                test="@code='16310003' or @code='241615005' or @code='258172002' or @code='71651007' or @code='113011001' or @nullFlavor='OTH'">
 	               <xsl:attribute name="flag">error</xsl:attribute>
 	               <xsl:attribute name="location">
 	                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
 	               </xsl:attribute>
 	               <svrl:text>
-					The Guidance for Breast Core Biopsy value code must be '16310003' or '241615005' or '258172002' or '71651007' or '113011001' or must have nullFlavor as 'OTH' with originalText value 'Other free text'
+					The Guidance for Breast Core Biopsy value code must be '16310003' or '241615005' or '258172002' or '71651007' or '113011001' or nullFlavor as 'OTH'
 				</svrl:text>
 	            </svrl:failed-assert>
 	         </xsl:otherwise>
