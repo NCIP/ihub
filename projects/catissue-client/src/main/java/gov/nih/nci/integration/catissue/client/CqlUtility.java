@@ -24,6 +24,9 @@ import gov.nih.nci.system.query.cql.CQLQuery;
  */
 public final class CqlUtility {
 
+    private static final String SHORT_TITLE = "shortTitle";
+    private static final String COLLECTION_PROTOCOL = "collectionProtocol";
+
     private CqlUtility() {
 
     }
@@ -35,8 +38,8 @@ public final class CqlUtility {
      * @return CQLQuery object
      */
     public static CQLQuery getParticipantsForCP(String shortTitle) {
-        final CQLAttribute association2Attribute = createAttribute("shortTitle", shortTitle, CQLPredicate.EQUAL_TO);
-        final CQLAssociation association2 = createAssociation(CollectionProtocol.class, "collectionProtocol");
+        final CQLAttribute association2Attribute = createAttribute(SHORT_TITLE, shortTitle, CQLPredicate.EQUAL_TO);
+        final CQLAssociation association2 = createAssociation(CollectionProtocol.class, COLLECTION_PROTOCOL);
         association2.setAttribute(association2Attribute);
 
         final CQLAttribute association1Attribute = createAttribute("id", null, CQLPredicate.IS_NOT_NULL);
@@ -55,16 +58,28 @@ public final class CqlUtility {
     /**
      * Get the CQLQuery for the participant for given patientId
      * 
-     * @param mrn patientId
+     * @param patientId patientId
+     * @param cpShortTitle - short Title of CP
      * @return CQLQuery object
      */
-    public static CQLQuery getParticipantForPatientId(String mrn) {
-        final CQLAttribute targetAttribute2 = createAttribute("lastName", mrn, CQLPredicate.EQUAL_TO);
+    public static CQLQuery getParticipantForPatientId(String patientId, String cpShortTitle) {
 
-        final CQLAttribute targetAttribute = createAttribute("id", null, CQLPredicate.IS_NOT_NULL);
-        final CQLGroup group2 = createGroup(CQLLogicalOperator.AND, targetAttribute, targetAttribute2);
+        final CQLAttribute cpStAtt = createAttribute(SHORT_TITLE, cpShortTitle, CQLPredicate.EQUAL_TO);
+        final CQLAssociation cpAssoc = createAssociation(CollectionProtocol.class, COLLECTION_PROTOCOL);
+        cpAssoc.setAttribute(cpStAtt);
 
-        return createTargetQuery(Participant.class, group2);
+        final CQLAttribute cprIdAtt = createAttribute("id", null, CQLPredicate.IS_NOT_NULL);
+        final CQLGroup cprAndCpGrp = createGroup(CQLLogicalOperator.AND, cprIdAtt, cpAssoc);
+
+        final CQLAssociation cprAssoc = createAssociation(CollectionProtocolRegistration.class,
+                "collectionProtocolRegistrationCollection");
+        cprAssoc.setGroup(cprAndCpGrp);
+
+        final CQLAttribute patientLnAtt = createAttribute("lastName", patientId, CQLPredicate.EQUAL_TO);
+
+        final CQLGroup prtcpntAndCprGroup = createGroup(CQLLogicalOperator.AND, patientLnAtt, cprAssoc);
+
+        return createTargetQuery(Participant.class, prtcpntAndCprGroup);
     }
 
     /**
@@ -214,7 +229,7 @@ public final class CqlUtility {
     }
 
     private static CQLAssociation createCPAssociationWithIDandTitle(String shortTitle) {
-        return createAssociationWithIDNotNullandOtherAttribute("collectionProtocol", "shortTitle", shortTitle,
+        return createAssociationWithIDNotNullandOtherAttribute(COLLECTION_PROTOCOL, SHORT_TITLE, shortTitle,
                 CQLPredicate.EQUAL_TO, CQLLogicalOperator.AND);
     }
 
@@ -249,8 +264,8 @@ public final class CqlUtility {
      * @return CQLQuery object
      */
     public static CQLQuery getSpecimenCollectionGroupListQuery(String shortTitle, String cpLabel) {
-        final CQLAttribute association2Attribute = createAttribute("shortTitle", shortTitle, CQLPredicate.EQUAL_TO);
-        final CQLAssociation association2 = createAssociation(CollectionProtocol.class, "collectionProtocol");
+        final CQLAttribute association2Attribute = createAttribute(SHORT_TITLE, shortTitle, CQLPredicate.EQUAL_TO);
+        final CQLAssociation association2 = createAssociation(CollectionProtocol.class, COLLECTION_PROTOCOL);
         association2.setAttribute(association2Attribute);
 
         final CQLAttribute association11Attribute = createAttribute("id", null, CQLPredicate.IS_NOT_NULL);

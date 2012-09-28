@@ -357,28 +357,12 @@ public class CaTissueParticipantClient {
      */
     public Participant getParticipantForPatientId(String participantId, String shortTitle) throws ApplicationException {
         final List<Participant> prtcpntLst = caTissueAPIClient.getApplicationService().query(
-                CqlUtility.getParticipantForPatientId(participantId));
+                CqlUtility.getParticipantForPatientId(participantId, shortTitle));
         if (prtcpntLst == null || prtcpntLst.isEmpty()) {
             return null;
         }
-        
-        // Iterate thru loop and apply filter for "shortTitle"
-        for (final Iterator<Participant> itr = prtcpntLst.iterator(); itr.hasNext();) {
-            final Participant participant = (Participant) itr.next();
-            final Collection<CollectionProtocolRegistration> cprColl = participant
-                    .getCollectionProtocolRegistrationCollection();
-            if (cprColl.isEmpty()) {
-                return null;
-            }
-            for (final Iterator<CollectionProtocolRegistration> itr2 = cprColl.iterator(); itr2.hasNext();) {
-                final CollectionProtocolRegistration cpr = (CollectionProtocolRegistration) itr2.next();
-                if (shortTitle.equalsIgnoreCase(cpr.getCollectionProtocol().getShortTitle())) {
-                    return participant;
-                }
-            }
-        }
-        return null;
 
+        return prtcpntLst.get(0);
     }
 
     /**
