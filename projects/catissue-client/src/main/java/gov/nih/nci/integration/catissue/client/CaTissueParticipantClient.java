@@ -207,7 +207,8 @@ public class CaTissueParticipantClient {
             throw new ApplicationException("Participant does not contain the unique medical identifier");
         }
 
-        final Participant existingParticipant = getParticipantForPatientId(participant.getLastName());
+        final Participant existingParticipant = getParticipantForPatientId(participant.getLastName(),
+                getShortTitleForParticipant(participant));
         if (existingParticipant == null) {
             LOG.error("CaTissue does not contain a participant with the unique identifier, "
                     + participant.getLastName());
@@ -302,7 +303,8 @@ public class CaTissueParticipantClient {
      * @throws ApplicationException - ApplicationException
      */
     public Participant deleteParticipant(Participant participant) throws ApplicationException {
-        final Participant persistedParticipant = getParticipantForPatientId(participant.getLastName());
+        final Participant persistedParticipant = getParticipantForPatientId(participant.getLastName(),
+                getShortTitleForParticipant(participant));
         if (persistedParticipant == null) {
             return null;
         }
@@ -349,16 +351,34 @@ public class CaTissueParticipantClient {
      * Retrieve the participant for given PatientId
      * 
      * @param participantId - PatientId for which participant has to be fetched
+     * @param shortTitle - ShortTitle of the CollectionProtocol
      * @return Participant
      * @throws ApplicationException - ApplicationException
      */
-    public Participant getParticipantForPatientId(String participantId) throws ApplicationException {
+    public Participant getParticipantForPatientId(String participantId, String shortTitle) throws ApplicationException {
         final List<Participant> prtcpntLst = caTissueAPIClient.getApplicationService().query(
                 CqlUtility.getParticipantForPatientId(participantId));
         if (prtcpntLst == null || prtcpntLst.isEmpty()) {
             return null;
         }
-        return prtcpntLst.get(0);
+        
+        // Iterate thru loop and apply filter for "shortTitle"
+        for (final Iterator<Participant> itr = prtcpntLst.iterator(); itr.hasNext();) {
+            final Participant participant = (Participant) itr.next();
+            final Collection<CollectionProtocolRegistration> cprColl = participant
+                    .getCollectionProtocolRegistrationCollection();
+            if (cprColl.isEmpty()) {
+                return null;
+            }
+            for (final Iterator<CollectionProtocolRegistration> itr2 = cprColl.iterator(); itr2.hasNext();) {
+                final CollectionProtocolRegistration cpr = (CollectionProtocolRegistration) itr2.next();
+                if (shortTitle.equalsIgnoreCase(cpr.getCollectionProtocol().getShortTitle())) {
+                    return participant;
+                }
+            }
+        }
+        return null;
+
     }
 
     /**
@@ -406,6 +426,19 @@ public class CaTissueParticipantClient {
             ctResp.setResponse(NOT_SPECIFIED);
             incomingCPR.getConsentTierResponseCollection().add(ctResp);
         }
+    }
+
+    private String getShortTitleForParticipant(Participant participant) {
+        String shortTitle = "";
+        final ArrayList<CollectionProtocolRegistration> cprColl = new ArrayList<CollectionProtocolRegistration>(
+                participant.getCollectionProtocolRegistrationCollection());
+        if (!cprColl.isEmpty()) {
+            // We are expecting only ONE CPR here
+            final CollectionProtocolRegistration cpr = cprColl.get(0);
+            final CollectionProtocol collectionProtocol = cpr.getCollectionProtocol();
+            shortTitle = collectionProtocol.getShortTitle();
+        }
+        return shortTitle;
     }
 
     /**
