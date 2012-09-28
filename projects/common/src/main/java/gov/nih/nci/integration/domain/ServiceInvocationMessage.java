@@ -30,6 +30,7 @@ public class ServiceInvocationMessage extends AbstractIdentity {
      * 
      * @return invocationException
      */
+    @Column(length = 50000)
     public String getInvocationException() {
         return invocationException;
     }
