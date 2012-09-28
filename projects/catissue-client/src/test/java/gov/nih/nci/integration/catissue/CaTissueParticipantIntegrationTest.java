@@ -68,14 +68,14 @@ public class CaTissueParticipantIntegrationTest {
         caTissueParticipantClient.registerParticipant(getParticipantXMLStr());
 
         final Participant registeredParticipant = caTissueParticipantClient
-                .getParticipantForPatientId("1.2.1.173000:echr:patient-1823462");
+                .getParticipantForPatientId("1.2.1.173000:echr:patient-1823462", "6482:6482");
 
         assertNotNull(registeredParticipant);
         assertNotNull(registeredParticipant.getObjectId());
 
         caTissueParticipantClient.deleteParticipant(getParticipantXMLStr());
         final Participant result2 = caTissueParticipantClient
-                .getParticipantForPatientId("1.2.1.173000:echr:patient-1823462");
+                .getParticipantForPatientId("1.2.1.173000:echr:patient-1823462","6482:6482");
         assertNull(result2);
     }
 
@@ -140,7 +140,7 @@ public class CaTissueParticipantIntegrationTest {
         // assertEquals(false, partcpnts.isEmpty());
 
         // retrieve participant by MRN
-        Participant existParticipant = caTissueParticipantClient.getParticipantForPatientId(participant.getLastName());
+        Participant existParticipant = caTissueParticipantClient.getParticipantForPatientId(participant.getLastName(),cpTitle);
         assertNotNull(existParticipant);
 
         // update participant
@@ -169,7 +169,7 @@ public class CaTissueParticipantIntegrationTest {
         // simulate rollback update, by deleting the update participant registration
         caTissueParticipantClient.deleteParticipant(participant);
         // assert deletion
-        final Participant afterDel = caTissueParticipantClient.getParticipantForPatientId(participant.getLastName());
+        final Participant afterDel = caTissueParticipantClient.getParticipantForPatientId(participant.getLastName(), cpTitle);
         assertNull(afterDel);
 
         // re-register with the original participant retrieved before update
@@ -177,7 +177,7 @@ public class CaTissueParticipantIntegrationTest {
 
         // assert presence by retreival
         final Participant afterReinsert = caTissueParticipantClient.getParticipantForPatientId(participant
-                .getLastName());
+                .getLastName(), cpTitle);
 
         assertNotNull(afterReinsert);
 
