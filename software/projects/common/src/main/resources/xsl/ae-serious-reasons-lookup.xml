@@ -12,7 +12,7 @@
 		<r:vocvalue>HOSPITALIZATION</r:vocvalue>
 	</r:reason>
 	<r:reason>
-		<r:vockey>Results in persistent or significant incapacity or substantial disruption of the ability to conduct normal life functions</r:vockey>
+		<r:vockey>405532008</r:vockey>
 		<r:vocvalue>DISABILITY</r:vocvalue>
 	</r:reason>
 	<r:reason>
@@ -20,7 +20,7 @@
 		<r:vocvalue>CONGENITAL_ANOMALY</r:vocvalue>
 	</r:reason>
 	<r:reason>
-		<r:vockey>Other - Specific Reason</r:vockey>
+		<r:vockey>OTH</r:vockey>
 		<r:vocvalue>OTHER_SERIOUS</r:vocvalue>
 	</r:reason>
 </r:reasons>
