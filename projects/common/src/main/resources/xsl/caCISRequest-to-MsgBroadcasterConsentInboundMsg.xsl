@@ -6,7 +6,7 @@
 
 	<xsl:key name="response-lookup" match="r:response" use="r:vockey" />
 	<xsl:variable name="response-top"
-		select="document('consent-response-lookup.xml')/*" />
+		select="document('catissue-consent-response-lookup.xml')/*" />
 	<xsl:template match="r:consentresponse">
 		<xsl:param name="curr-key" />
 		<xsl:value-of select="key('response-lookup', $curr-key)/r:vocvalue" />
