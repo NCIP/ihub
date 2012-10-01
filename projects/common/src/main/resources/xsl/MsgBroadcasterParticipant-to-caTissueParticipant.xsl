@@ -3,12 +3,21 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:p="http://integration.nci.nih.gov/participant"
 	xmlns:catissue="http://domain.catissuecore.wustl.edu/participant"
 	xmlns:ns0="http://caXchange.nci.nih.gov/messaging" xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest"
-	xmlns:g="http://catissue/gender/data" xmlns:r="http://catissue/race/data">
+	xmlns:g="http://catissue/gender/data" xmlns:r="http://catissue/race/data"
+	xmlns:e="http://catissue/ethnicity/data" xmlns:s="http://catissue/activitystatus/data">
 	<xsl:output method="xml" indent="yes" />
+
+	<xsl:key name="status-lookup" match="s:status" use="s:vockey" />
+	<xsl:variable name="statuses-top"
+		select="document('catissue-participant-activitystatus-lookup.xml')/*" />
+	<xsl:template match="s:activitystatus">
+		<xsl:param name="curr-key" />
+		<xsl:value-of select="key('status-lookup', $curr-key)/s:vocvalue" />
+	</xsl:template>
 
 	<xsl:key name="gender-lookup" match="g:gender" use="g:vockey" />
 	<xsl:variable name="genders-top"
-		select="document('catissue-genders-lookup.xml')/*" />
+		select="document('catissue-participant-genders-lookup.xml')/*" />
 	<xsl:template match="g:genders">
 		<xsl:param name="curr-key" />
 		<xsl:value-of select="key('gender-lookup', $curr-key)/g:vocvalue" />
@@ -16,10 +25,18 @@
 
 	<xsl:key name="race-lookup" match="r:race" use="r:vockey" />
 	<xsl:variable name="races-top"
-		select="document('catissue-race-lookup.xml')/*" />
+		select="document('catissue-participant-race-lookup.xml')/*" />
 	<xsl:template match="r:races">
 		<xsl:param name="curr-key" />
 		<xsl:value-of select="key('race-lookup', $curr-key)/r:vocvalue" />
+	</xsl:template>
+
+	<xsl:key name="ethnicity-lookup" match="e:ethnicity" use="e:vockey" />
+	<xsl:variable name="ethnicities-top"
+		select="document('catissue-participant-ethnicity-lookup.xml')/*" />
+	<xsl:template match="e:ethnicities">
+		<xsl:param name="curr-key" />
+		<xsl:value-of select="key('ethnicity-lookup', $curr-key)/e:vocvalue" />
 	</xsl:template>
 
 	<!-- Main -->
@@ -30,7 +47,10 @@
 		<catissue:participant
 			xmlns:catissue="http://domain.catissuecore.wustl.edu/participant">
 			<catissue:activityStatus>
-				<xsl:value-of select="//p:participant/p:activityStatus" />
+				<xsl:call-template name="show-activityStatus">
+					<xsl:with-param name="asValue"
+						select="//p:participant/p:activityStatus" />
+				</xsl:call-template>
 			</catissue:activityStatus>
 			<catissue:birthDate>
 				<xsl:call-template name="show-dateTime">
@@ -38,7 +58,9 @@
 				</xsl:call-template>
 			</catissue:birthDate>
 			<catissue:ethnicity>
-				<xsl:value-of select="//p:participant/p:ethnicity" />
+				<xsl:apply-templates select="$ethnicities-top">
+					<xsl:with-param name="curr-key" select="//p:participant/p:ethnicity" />
+				</xsl:apply-templates>
 			</catissue:ethnicity>
 			<catissue:firstName>TRANSCEND</catissue:firstName> <!-- Hardcode the FirstName -->
 			<catissue:gender>
@@ -135,6 +157,15 @@
 		<xsl:value-of select="substring($dateValue,1,4)" />
 		<xsl:value-of select="substring($dateValue,6,2)" />
 		<xsl:value-of select="substring($dateValue,9,2)" />
+	</xsl:template>
+
+
+	<!-- show-activityStatus -->
+	<xsl:template name="show-activityStatus">
+		<xsl:param name="asValue" />
+		<xsl:apply-templates select="$statuses-top">
+			<xsl:with-param name="curr-key" select="$asValue" />
+		</xsl:apply-templates>
 	</xsl:template>
 
 </xsl:stylesheet>
