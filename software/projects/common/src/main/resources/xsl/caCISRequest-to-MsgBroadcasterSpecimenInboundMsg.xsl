@@ -11,7 +11,7 @@
 
 	<xsl:key name="activitystatus-lookup" match="s:status" use="s:vockey" />
 	<xsl:variable name="statuses-top"
-		select="document('activitystatus-lookup.xml')/*" />
+		select="document('catissue-participant-activitystatus-lookup.xml')/*" />
 	<xsl:template match="s:activitystatus">
 		<xsl:param name="curr-key" />
 		<xsl:value-of select="key('activitystatus-lookup', $curr-key)/s:vocvalue" />
@@ -19,7 +19,7 @@
 
 	<xsl:key name="specimensite-lookup" match="st:site" use="st:vockey" />
 	<xsl:variable name="specimensite-top"
-		select="document('specimen-char-site-lookup.xml')/*" />
+		select="document('catissue-biospecimen-char-site-lookup.xml')/*" />
 	<xsl:template match="st:specimensite">
 		<xsl:param name="curr-key" />
 		<xsl:value-of select="key('specimensite-lookup', $curr-key)/st:vocvalue" />
@@ -27,7 +27,7 @@
 
 	<xsl:key name="specimenside-lookup" match="d:side" use="d:vockey" />
 	<xsl:variable name="specimenside-top"
-		select="document('specimen-char-side-lookup.xml')/*" />
+		select="document('catissue-biospecimen-char-side-lookup.xml')/*" />
 	<xsl:template match="d:specimenside">
 		<xsl:param name="curr-key" />
 		<xsl:value-of select="key('specimenside-lookup', $curr-key)/d:vocvalue" />
@@ -35,7 +35,7 @@
 
 	<xsl:key name="specimenclass-lookup" match="c:class" use="c:vockey" />
 	<xsl:variable name="specimenclass-top"
-		select="document('specimen-class-lookup.xml')/*" />
+		select="document('catissue-biospecimen-class-lookup.xml')/*" />
 	<xsl:template match="c:specimenclass">
 		<xsl:param name="curr-key" />
 		<xsl:value-of select="key('specimenclass-lookup', $curr-key)/c:vocvalue" />
@@ -43,7 +43,7 @@
 
 	<xsl:key name="specimentype-lookup" match="t:type" use="t:vockey" />
 	<xsl:variable name="specimentype-top"
-		select="document('specimen-type-lookup.xml')/*" />
+		select="document('catissue-biospecimen-type-lookup.xml')/*" />
 	<xsl:template match="t:specimentype">
 		<xsl:param name="curr-key" />
 		<xsl:value-of select="key('specimentype-lookup', $curr-key)/t:vocvalue" />
@@ -51,7 +51,7 @@
 
 	<xsl:key name="specimenbiopsy-lookup" match="b:biopsy" use="b:vockey" />
 	<xsl:variable name="specimenbiopsy-top"
-		select="document('specimen-biopsy-lookup.xml')/*" />
+		select="document('catissue-biospecimen-biopsy-lookup.xml')/*" />
 	<xsl:template match="b:breastCoreBiopsy">
 		<xsl:param name="curr-key" />
 		<xsl:value-of select="key('specimenbiopsy-lookup', $curr-key)/b:vocvalue" />

@@ -10,7 +10,8 @@
 	<xsl:output method="xml" encoding="UTF-8" indent="yes" />
 
 	<xsl:key name="grade-lookup" match="g:grade" use="g:vockey" />
-	<xsl:variable name="grades-top" select="document('ae-grade-lookup.xml')/*" />
+	<xsl:variable name="grades-top"
+		select="document('caaers-ae-grade-lookup.xml')/*" />
 	<xsl:template match="g:grades">
 		<xsl:param name="curr-key" />
 		<xsl:value-of select="key('grade-lookup', $curr-key)/g:vocvalue" />
@@ -18,7 +19,7 @@
 
 	<xsl:key name="period-type-lookup" match="p:type" use="p:vockey" />
 	<xsl:variable name="period-type-top"
-		select="document('ae-period-type-lookup.xml')/*" />
+		select="document('caaers-ae-period-type-lookup.xml')/*" />
 	<xsl:template match="p:periodtype">
 		<xsl:param name="curr-key" />
 		<xsl:value-of select="key('period-type-lookup', $curr-key)/p:vocvalue" />
@@ -26,7 +27,7 @@
 
 	<xsl:key name="serious-reason-lookup" match="r:reason" use="r:vockey" />
 	<xsl:variable name="serious-reason-top"
-		select="document('ae-serious-reasons-lookup.xml')/*" />
+		select="document('caaers-ae-serious-reasons-lookup.xml')/*" />
 	<xsl:template match="r:reasons">
 		<xsl:param name="curr-key" />
 		<xsl:value-of select="key('serious-reason-lookup', $curr-key)/r:vocvalue" />
@@ -34,7 +35,7 @@
 
 	<xsl:key name="attribution-lookup" match="a:attribution" use="a:vockey" />
 	<xsl:variable name="attribution-top"
-		select="document('ae-attribution-lookup.xml')/*" />
+		select="document('caaers-ae-attribution-lookup.xml')/*" />
 	<xsl:template match="a:attributiontype">
 		<xsl:param name="curr-key" />
 		<xsl:value-of select="key('attribution-lookup', $curr-key)/a:vocvalue" />
@@ -42,7 +43,8 @@
 
 
 	<xsl:key name="expected-lookup" match="e:expect" use="e:vockey" />
-	<xsl:variable name="expected-top" select="document('ae-expected-lookup.xml')/*" />
+	<xsl:variable name="expected-top"
+		select="document('caaers-ae-expected-lookup.xml')/*" />
 	<xsl:template match="e:expected">
 		<xsl:param name="curr-key" />
 		<xsl:value-of select="key('expected-lookup', $curr-key)/e:vocvalue" />
