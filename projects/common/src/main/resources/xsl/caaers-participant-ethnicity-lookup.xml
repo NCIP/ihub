@@ -1,0 +1,18 @@
+<e:ethnicities xmlns:e="http://caaers/ethnicity/data">
+	<e:ethnicity>
+		<e:vockey>2186-5</e:vockey>
+		<e:vocvalue>Not Hispanic or Latino</e:vocvalue>
+	</e:ethnicity>
+	<e:ethnicity>
+		<e:vockey>2135-2</e:vockey>
+		<e:vocvalue>Hispanic or Latino</e:vocvalue>
+	</e:ethnicity>
+	<e:ethnicity>
+		<e:vockey>UNK</e:vockey>
+		<e:vocvalue>Unknown</e:vocvalue>
+	</e:ethnicity>
+	<e:ethnicity>
+		<e:vockey>NI</e:vockey>
+		<e:vocvalue>Not Reported</e:vocvalue>
+	</e:ethnicity>
+</e:ethnicities>

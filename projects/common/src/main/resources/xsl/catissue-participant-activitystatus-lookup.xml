@@ -1,0 +1,10 @@
+<s:activitystatus xmlns:s="http://catissue/activitystatus/data">
+	<s:status>
+		<s:vockey>55561003</s:vockey>
+		<s:vocvalue>Active</s:vocvalue>
+	</s:status>
+	<s:status>
+		<s:vockey>73425007</s:vockey>
+		<s:vocvalue>Closed</s:vocvalue>
+	</s:status>
+</s:activitystatus>
