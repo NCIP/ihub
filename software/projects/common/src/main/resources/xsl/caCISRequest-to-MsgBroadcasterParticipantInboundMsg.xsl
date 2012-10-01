@@ -3,41 +3,8 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	xmlns:p="http://integration.nci.nih.gov/participant" xmlns:ns0="http://caXchange.nci.nih.gov/messaging"
 	xmlns:ns1="urn:hl7-org:v3" xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest"
-	xmlns:ns3="http://cacis.nci.nih.gov" xmlns:r="http://catissue/race/data"
-	xmlns:e="http://catissue/ethnicity/data" xmlns:g="http://catissue/gender/data"
-	xmlns:s="http://catissue/activitystatus/data" exclude-result-prefixes="
-	ns0 xs ns1 ns2 ns3 ">
+	xmlns:ns3="http://cacis.nci.nih.gov" exclude-result-prefixes="ns0 xs ns1 ns2 ns3 ">
 	<xsl:output method="xml" indent="yes" />
-
-	<xsl:key name="race-lookup" match="r:race" use="r:vockey" />
-	<xsl:variable name="races-top" select="document('race-lookup.xml')/*" />
-	<xsl:template match="r:races">
-		<xsl:param name="curr-key" />
-		<xsl:value-of select="key('race-lookup', $curr-key)/r:vocvalue" />
-	</xsl:template>
-
-	<xsl:key name="ethnicity-lookup" match="e:ethnicity" use="e:vockey" />
-	<xsl:variable name="ethnicities-top" select="document('ethnicity-lookup.xml')/*" />
-	<xsl:template match="e:ethnicities">
-		<xsl:param name="curr-key" />
-		<xsl:value-of select="key('ethnicity-lookup', $curr-key)/e:vocvalue" />
-	</xsl:template>
-
-	<xsl:key name="gender-lookup" match="g:gender" use="g:vockey" />
-	<xsl:variable name="genders-top" select="document('genders-lookup.xml')/*" />
-	<xsl:template match="g:genders">
-		<xsl:param name="curr-key" />
-		<xsl:value-of select="key('gender-lookup', $curr-key)/g:vocvalue" />
-	</xsl:template>
-
-
-	<xsl:key name="status-lookup" match="s:status" use="s:vockey" />
-	<xsl:variable name="statuses-top"
-		select="document('activitystatus-lookup.xml')/*" />
-	<xsl:template match="s:activitystatus">
-		<xsl:param name="curr-key" />
-		<xsl:value-of select="key('status-lookup', $curr-key)/s:vocvalue" />
-	</xsl:template>
 
 	<xsl:template match="/">
 		<ns2:caxchangerequest>
@@ -68,28 +35,26 @@
 							</xsl:call-template>
 						</p:birthDate>
 						<p:gender>
-							<xsl:call-template name="show-gender">
-								<xsl:with-param name="adminGenderCode"
+							<xsl:call-template name="get-gender-code">
+								<xsl:with-param name="genderTag"
 									select="$patientRole/ns1:patient/ns1:administrativeGenderCode" />
 							</xsl:call-template>
 						</p:gender>
 						<p:race>
-							<xsl:call-template name="show-race">
-								<xsl:with-param name="raceValue"
+							<xsl:call-template name="get-race-code">
+								<xsl:with-param name="raceTag"
 									select="$patientRole/ns1:patient/ns1:raceCode" />
 							</xsl:call-template>
 						</p:race>
 						<p:ethnicity>
-							<xsl:call-template name="show-ethnicity">
-								<xsl:with-param name="ethnicGroupCode"
+							<xsl:call-template name="get-ethnicity-code">
+								<xsl:with-param name="ethnicityTag"
 									select="$patientRole/ns1:patient/ns1:ethnicGroupCode" />
 							</xsl:call-template>
 						</p:ethnicity>
 						<p:activityStatus>
-							<xsl:call-template name="show-activityStatus">
-								<xsl:with-param name="asValue"
-									select="//ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='263490005'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:value/@code" />
-							</xsl:call-template>
+							<xsl:value-of
+								select="//ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='263490005'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:value/@code" />
 						</p:activityStatus>
 						<p:registrationDate>
 							<xsl:call-template name="show-dateTime">
@@ -200,70 +165,49 @@
 	<xsl:template
 		match="//ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='103579009'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:value">
 		<p:race>
-			<xsl:call-template name="show-race">
-				<xsl:with-param name="raceValue" select="." />
+			<xsl:call-template name="get-race-code">
+				<xsl:with-param name="raceTag" select="." />
 			</xsl:call-template>
 		</p:race>
 	</xsl:template>
 
-	<!-- show-race -->
-	<xsl:template name="show-race">
-		<xsl:param name="raceValue" />
+	<!-- get-race-code -->
+	<xsl:template name="get-race-code">
+		<xsl:param name="raceTag" />
 		<xsl:choose>
-			<xsl:when test="$raceValue/@code !=''">
-				<xsl:apply-templates select="$races-top">
-					<xsl:with-param name="curr-key" select="$raceValue/@code" />
-				</xsl:apply-templates>
+			<xsl:when test="$raceTag/@code !=''">
+				<xsl:value-of select="$raceTag/@code" />
 			</xsl:when>
-			<xsl:when test="$raceValue/@nullFlavor !=''">
-				<xsl:apply-templates select="$races-top">
-					<xsl:with-param name="curr-key" select="$raceValue/@nullFlavor" />
-				</xsl:apply-templates>
+			<xsl:when test="$raceTag/@nullFlavor !=''">
+				<xsl:value-of select="$raceTag/@nullFlavor" />
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
 
-	<!-- show-gender -->
-	<xsl:template name="show-gender">
-		<xsl:param name="adminGenderCode" />
+	<!-- get-ethnicity-code -->
+	<xsl:template name="get-ethnicity-code">
+		<xsl:param name="ethnicityTag" />
 		<xsl:choose>
-			<xsl:when test="$adminGenderCode/@code !=''">
-				<xsl:apply-templates select="$genders-top">
-					<xsl:with-param name="curr-key" select="$adminGenderCode/@code" />
-				</xsl:apply-templates>
+			<xsl:when test="$ethnicityTag/@code !=''">
+				<xsl:value-of select="$ethnicityTag/@code" />
 			</xsl:when>
-			<xsl:when test="$adminGenderCode/@nullFlavor !=''">
-				<xsl:apply-templates select="$genders-top">
-					<xsl:with-param name="curr-key" select="$adminGenderCode/@nullFlavor" />
-				</xsl:apply-templates>
+			<xsl:when test="$ethnicityTag/@nullFlavor !=''">
+				<xsl:value-of select="$ethnicityTag/@nullFlavor" />
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
 
-
-	<!-- show-ethnicity -->
-	<xsl:template name="show-ethnicity">
-		<xsl:param name="ethnicGroupCode" />
+	<!-- get-gender-code -->
+	<xsl:template name="get-gender-code">
+		<xsl:param name="genderTag" />
 		<xsl:choose>
-			<xsl:when test="$ethnicGroupCode/@code !=''">
-				<xsl:apply-templates select="$ethnicities-top">
-					<xsl:with-param name="curr-key" select="$ethnicGroupCode/@code" />
-				</xsl:apply-templates>
+			<xsl:when test="$genderTag/@code !=''">
+				<xsl:value-of select="$genderTag/@code" />
 			</xsl:when>
-			<xsl:when test="$ethnicGroupCode/@nullFlavor !=''">
-				<xsl:apply-templates select="$ethnicities-top">
-					<xsl:with-param name="curr-key" select="$ethnicGroupCode/@nullFlavor" />
-				</xsl:apply-templates>
+			<xsl:when test="$genderTag/@nullFlavor !=''">
+				<xsl:value-of select="$genderTag/@nullFlavor" />
 			</xsl:when>
 		</xsl:choose>
-	</xsl:template>
-
-	<!-- show-activityStatus -->
-	<xsl:template name="show-activityStatus">
-		<xsl:param name="asValue" />
-		<xsl:apply-templates select="$statuses-top">
-			<xsl:with-param name="curr-key" select="$asValue" />
-		</xsl:apply-templates>
 	</xsl:template>
 
 
