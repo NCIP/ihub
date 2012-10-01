@@ -161,7 +161,7 @@
 				<outcome>
 					<outComeEnumType>
 						<xsl:call-template name="show-serious-reasons">
-							<xsl:with-param name="reason" select="./ns1:originalText" />
+							<xsl:with-param name="reason" select="." />
 						</xsl:call-template>
 					</outComeEnumType>
 				</outcome>
@@ -196,9 +196,18 @@
 	<!-- show-serious-reasons -->
 	<xsl:template name="show-serious-reasons">
 		<xsl:param name="reason" />
-		<xsl:apply-templates select="$serious-reason-top">
-			<xsl:with-param name="curr-key" select="$reason" />
-		</xsl:apply-templates>
+		<xsl:choose>
+			<xsl:when test="$reason/@code !=''">
+				<xsl:apply-templates select="$serious-reason-top">
+					<xsl:with-param name="curr-key" select="$reason/@code" />
+				</xsl:apply-templates>
+			</xsl:when>
+			<xsl:when test="$reason/@nullFlavor !=''">
+				<xsl:apply-templates select="$serious-reason-top">
+					<xsl:with-param name="curr-key" select="$reason/@nullFlavor" />
+				</xsl:apply-templates>
+			</xsl:when>
+		</xsl:choose>
 	</xsl:template>
 
 	<!-- show-attribution -->
