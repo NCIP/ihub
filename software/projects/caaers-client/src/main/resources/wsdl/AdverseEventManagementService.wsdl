@@ -714,6 +714,7 @@
 <xs:element name="treatmentAssignmentCode" type="xs:string"></xs:element>
 <xs:element name="otherTreatmentAssignmentDescription" type="xs:string"></xs:element>
 </xs:choice>
+<xs:element minOccurs="0" name="externalId" type="xs:string"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:element name="adverseEvents">
@@ -850,6 +851,18 @@
 <xs:element minOccurs="0" ref="cct:CaaersServiceResponse"></xs:element>
 </xs:sequence>
 </xs:complexType>
+<xs:element name="createProvisionalAdverseEvents" type="createProvisionalAdverseEvents"></xs:element>
+<xs:complexType name="createProvisionalAdverseEvents">
+<xs:sequence>
+<xs:element minOccurs="0" ref="AdverseEventsInputMessage"></xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="createProvisionalAdverseEventsResponse" type="createProvisionalAdverseEventsResponse"></xs:element>
+<xs:complexType name="createProvisionalAdverseEventsResponse">
+<xs:sequence>
+<xs:element minOccurs="0" ref="cct:CaaersServiceResponse"></xs:element>
+</xs:sequence>
+</xs:complexType>
 <xs:element name="createOrUpdateAdverseEvent" type="createOrUpdateAdverseEvent"></xs:element>
 <xs:complexType name="createOrUpdateAdverseEvent">
 <xs:sequence>
@@ -900,11 +913,25 @@
     <wsdl:part element="tns:createAdverseEvent" name="parameters">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="createProvisionalAdverseEventsResponse">
+    <wsdl:part element="tns:createProvisionalAdverseEventsResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createProvisionalAdverseEvents">
+    <wsdl:part element="tns:createProvisionalAdverseEvents" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:portType name="AdverseEventManagementServiceInterface">
     <wsdl:operation name="deleteAdverseEvent">
       <wsdl:input message="tns:deleteAdverseEvent" name="deleteAdverseEvent">
     </wsdl:input>
       <wsdl:output message="tns:deleteAdverseEventResponse" name="deleteAdverseEventResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="createProvisionalAdverseEvents">
+      <wsdl:input message="tns:createProvisionalAdverseEvents" name="createProvisionalAdverseEvents">
+    </wsdl:input>
+      <wsdl:output message="tns:createProvisionalAdverseEventsResponse" name="createProvisionalAdverseEventsResponse">
     </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="createOrUpdateAdverseEvent">
@@ -928,6 +955,15 @@
         <soap:body use="literal"></soap:body>
       </wsdl:input>
       <wsdl:output name="deleteAdverseEventResponse">
+        <soap:body use="literal"></soap:body>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="createProvisionalAdverseEvents">
+      <soap:operation soapAction="" style="document"></soap:operation>
+      <wsdl:input name="createProvisionalAdverseEvents">
+        <soap:body use="literal"></soap:body>
+      </wsdl:input>
+      <wsdl:output name="createProvisionalAdverseEventsResponse">
         <soap:body use="literal"></soap:body>
       </wsdl:output>
     </wsdl:operation>

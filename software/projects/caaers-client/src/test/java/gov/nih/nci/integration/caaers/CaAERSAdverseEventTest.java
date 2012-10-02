@@ -1,8 +1,8 @@
 package gov.nih.nci.integration.caaers;
 
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventManagementServiceInterface;
-import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CreateOrUpdateAdverseEvent;
-import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CreateOrUpdateAdverseEventResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CreateProvisionalAdverseEvents;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CreateProvisionalAdverseEventsResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.DeleteAdverseEvent;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.DeleteAdverseEventResponse;
 import gov.nih.nci.integration.exception.IntegrationException;
@@ -55,13 +55,13 @@ public class CaAERSAdverseEventTest {
     public void createAdverseEvent() {
         final String adverseEventXMLStr = getAdverseEventXMLStr();
         try {
-            final CreateOrUpdateAdverseEventResponse response = new CreateOrUpdateAdverseEventResponse();
+            final CreateProvisionalAdverseEventsResponse response = new CreateProvisionalAdverseEventsResponse();
             EasyMock.expect(
-                    client.createOrUpdateAdverseEvent((CreateOrUpdateAdverseEvent) org.easymock.EasyMock.anyObject()))
-                    .andReturn(response);
+                    client.createProvisionalAdverseEvents((CreateProvisionalAdverseEvents) org.easymock.EasyMock
+                            .anyObject())).andReturn(response);
             EasyMock.replay(client);
 
-            caAERSAdverseEventServiceWSClient.createOrUpdateAdverseEvent(adverseEventXMLStr);
+            caAERSAdverseEventServiceWSClient.createProvisionalAdverseEvents(adverseEventXMLStr);
 
         } catch (Exception e) {
             Assert.fail("Exception occured while calling createAdverseEvent. " + e);
@@ -75,13 +75,13 @@ public class CaAERSAdverseEventTest {
     public void updateAdverseEvent() {
         try {
 
-            final CreateOrUpdateAdverseEventResponse response = new CreateOrUpdateAdverseEventResponse();
+            final CreateProvisionalAdverseEventsResponse response = new CreateProvisionalAdverseEventsResponse();
             EasyMock.expect(
-                    client.createOrUpdateAdverseEvent((CreateOrUpdateAdverseEvent) org.easymock.EasyMock.anyObject()))
-                    .andReturn(response);
+                    client.createProvisionalAdverseEvents((CreateProvisionalAdverseEvents) org.easymock.EasyMock
+                            .anyObject())).andReturn(response);
             EasyMock.replay(client);
 
-            caAERSAdverseEventServiceWSClient.createOrUpdateAdverseEvent(getAdverseEventXMLStr());
+            caAERSAdverseEventServiceWSClient.createProvisionalAdverseEvents(getAdverseEventXMLStr());
         } catch (JAXBException e) {
             Assert.fail("JAXBException occured while calling updateAdverseEvent. " + e);
         }
