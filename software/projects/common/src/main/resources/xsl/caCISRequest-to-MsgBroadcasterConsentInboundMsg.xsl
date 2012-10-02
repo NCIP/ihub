@@ -2,15 +2,7 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns0="http://caXchange.nci.nih.gov/messaging"
 	xmlns:ns1="urn:hl7-org:v3" xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest"
-	xmlns:ns3="http://cacis.nci.nih.gov" xmlns:r="http://catissue/consent/response">
-
-	<xsl:key name="response-lookup" match="r:response" use="r:vockey" />
-	<xsl:variable name="response-top"
-		select="document('catissue-consent-response-lookup.xml')/*" />
-	<xsl:template match="r:consentresponse">
-		<xsl:param name="curr-key" />
-		<xsl:value-of select="key('response-lookup', $curr-key)/r:vocvalue" />
-	</xsl:template>
+	xmlns:ns3="http://cacis.nci.nih.gov">
 
 	<xsl:template match="/">
 		<ns2:caxchangerequest>
@@ -52,21 +44,23 @@
 			</specimen>
 			<consentTierResponses>
 				<tier>
-					<statement><xsl:value-of select="$entry/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='309370004'][@codeSystem='2.16.840.1.113883.6.96'][ns1:originalText='Tier 1 consent response']]/ns1:code/ns1:originalText" /></statement>
+					<statement>
+						<xsl:value-of
+							select="$entry/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='309370004'][@codeSystem='2.16.840.1.113883.6.96'][ns1:originalText='Tier 1 consent response']]/ns1:code/ns1:originalText" />
+					</statement>
 					<response>
-						<xsl:call-template name="show-consent-response">
-							<xsl:with-param name="responseCode"
-								select="$entry/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='309370004'][@codeSystem='2.16.840.1.113883.6.96'][ns1:originalText='Tier 1 consent response']]/ns1:value/@code" />
-						</xsl:call-template>
+						<xsl:value-of
+							select="$entry/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='309370004'][@codeSystem='2.16.840.1.113883.6.96'][ns1:originalText='Tier 1 consent response']]/ns1:value/@code"></xsl:value-of>
 					</response>
 				</tier>
 				<tier>
-					<statement><xsl:value-of select="$entry/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='309370004'][@codeSystem='2.16.840.1.113883.6.96'][ns1:originalText='Tier 2 consent response']]/ns1:code/ns1:originalText" /></statement>
+					<statement>
+						<xsl:value-of
+							select="$entry/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='309370004'][@codeSystem='2.16.840.1.113883.6.96'][ns1:originalText='Tier 2 consent response']]/ns1:code/ns1:originalText" />
+					</statement>
 					<response>
-						<xsl:call-template name="show-consent-response">
-							<xsl:with-param name="responseCode"
-								select="$entry/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='309370004'][@codeSystem='2.16.840.1.113883.6.96'][ns1:originalText='Tier 2 consent response']]/ns1:value/@code" />
-						</xsl:call-template>
+						<xsl:value-of
+							select="$entry/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='309370004'][@codeSystem='2.16.840.1.113883.6.96'][ns1:originalText='Tier 2 consent response']]/ns1:value/@code"></xsl:value-of>
 					</response>
 				</tier>
 			</consentTierResponses>
@@ -79,14 +73,6 @@
 		<xsl:value-of select="$id/@root" />
 		<xsl:text>:</xsl:text>
 		<xsl:value-of select="$id/@extension" />
-	</xsl:template>
-
-	<!-- show-consent-response -->
-	<xsl:template name="show-consent-response">
-		<xsl:param name="responseCode" />
-		<xsl:apply-templates select="$response-top">
-			<xsl:with-param name="curr-key" select="$responseCode" />
-		</xsl:apply-templates>
 	</xsl:template>
 
 </xsl:stylesheet>
