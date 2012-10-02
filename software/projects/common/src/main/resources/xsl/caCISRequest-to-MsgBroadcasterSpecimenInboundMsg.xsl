@@ -164,13 +164,13 @@
 				<guidanceForBreastCoreBiopsyType>
 					<xsl:call-template name="show-specimen-biopsy">
 						<xsl:with-param name="value"
-							select="$observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.13'][ns1:code/ns1:originalText='Guidance for Breast Core Biopsy']/ns1:value" />
+							select="$observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.13'][ns1:code[@code='30651-4']]/ns1:value" />
 					</xsl:call-template>
 				</guidanceForBreastCoreBiopsyType>
 				<otherText>
 					<xsl:call-template name="show-specimen-biopsy-otherText">
 						<xsl:with-param name="value"
-							select="$observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.13'][ns1:code/ns1:originalText='Guidance for Breast Core Biopsy']/ns1:value" />
+							select="$observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.13'][ns1:code[@code='30651-4']]/ns1:value" />
 					</xsl:call-template>
 				</otherText>
 			</guidanceForBreastCoreBiopsy>
