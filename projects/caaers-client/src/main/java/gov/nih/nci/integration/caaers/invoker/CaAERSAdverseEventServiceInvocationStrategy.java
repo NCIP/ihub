@@ -1,6 +1,6 @@
 package gov.nih.nci.integration.caaers.invoker;
 
-import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CreateOrUpdateAdverseEventResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CreateProvisionalAdverseEventsResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
 import gov.nih.nci.integration.caaers.CaAERSAdverseEventServiceWSClient;
@@ -88,8 +88,12 @@ public class CaAERSAdverseEventServiceInvocationStrategy implements ServiceInvoc
         try {
             final String adverseEventXMLStr = transformToAdverseEventXML(msg.getMessage().getRequest());
 
-            final CreateOrUpdateAdverseEventResponse caaersresponse = client.createOrUpdateAdverseEvent(adverseEventXMLStr);
-            final ServiceResponse response = caaersresponse.getCaaersServiceResponse().getServiceResponse();            
+            // final CreateOrUpdateAdverseEventResponse caaersresponse =
+            // client.createOrUpdateAdverseEvent(adverseEventXMLStr);
+            // final ServiceResponse response = caaersresponse.getCaaersServiceResponse().getServiceResponse();
+            final CreateProvisionalAdverseEventsResponse caaersresponse = client
+                    .createProvisionalAdverseEvents(adverseEventXMLStr);
+            final ServiceResponse response = caaersresponse.getCaaersServiceResponse().getServiceResponse();
 
             if ("FAILED_TO_PROCESS".equalsIgnoreCase(response.getStatus().name())) {
                 handleErrorResponse(response, result);
@@ -98,16 +102,16 @@ public class CaAERSAdverseEventServiceInvocationStrategy implements ServiceInvoc
                 result.setDataChanged(true);
             }
         } catch (SOAPFaultException e) {
-            LOG.error("SOAPFaultException while calling createAdverseEvent.", e);
+            LOG.error("SOAPFaultException while calling createProvisionalAdverseEvents.", e);
             ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
         } catch (JAXBException e) {
-            LOG.error("JAXBException while calling createAdverseEvent.", e);
+            LOG.error("JAXBException while calling createProvisionalAdverseEvents.", e);
             ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
         } catch (WebServiceException e) {
-            LOG.error("WebServiceException while calling createAdverseEvent.", e);
+            LOG.error("WebServiceException while calling createProvisionalAdverseEvents.", e);
             ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
         } catch (IntegrationException e) {
-            LOG.error("IntegrationException while calling createAdverseEvent.", e);
+            LOG.error("IntegrationException while calling createProvisionalAdverseEvents.", e);
             ie = e;
         }
         if (!result.isFault()) {
@@ -120,20 +124,39 @@ public class CaAERSAdverseEventServiceInvocationStrategy implements ServiceInvoc
     @Override
     public ServiceInvocationResult rollback(ServiceInvocationMessage msg) {
         final ServiceInvocationResult result = new ServiceInvocationResult();
+        // As per the latest discussion, we are NOT calling the delete method.
+        
         /*
-         * // As per the latest discussion, we are NOT calling the delete method. IntegrationException ie = null; try {
-         * final String adverseEventXMLStr = transformToAdverseEventXML(msg.getMessage().getRequest()); final
-         * DeleteAdverseEventResponse caaersresponse = client.deleteAdverseEvent(adverseEventXMLStr); final
-         * ServiceResponse response = caaersresponse.getCaaersServiceResponse().getServiceResponse(); if
-         * ("0".equals(response.getResponsecode())) { result.setResult(response.getResponsecode() + " : " +
-         * response.getMessage()); } else { handleErrorResponse(response, result); }
-         * 
-         * } catch (SOAPFaultException e) { LOG.error("SOAPFaultException while rollback of createAdverseEvent.", e); ie
-         * = new IntegrationException(IntegrationError._1053, e, e.getMessage()); } catch (WebServiceException e) {
-         * LOG.error("WebServiceException while rollback of createAdverseEvent.", e); ie = new
-         * IntegrationException(IntegrationError._1053, e, e.getMessage()); } if (!result.isFault()) {
-         * result.setInvocationException(ie); } handleException(result);
-         */
+        IntegrationException ie = null;
+        try {
+            final String adverseEventXMLStr = transformToAdverseEventXML(msg.getMessage().getRequest());
+            final DeleteAdverseEventResponse caaersresponse = client.deleteAdverseEvent(adverseEventXMLStr);
+            final ServiceResponse response = caaersresponse.getCaaersServiceResponse().getServiceResponse();
+            if ("0".equals(response.getResponsecode())) {
+                result.setResult(response.getResponsecode() + " : " + response.getMessage());
+            } else {
+                handleErrorResponse(response, result);
+            }
+        } catch (SOAPFaultException e) {
+            LOG.error("SOAPFaultException while rollback of createProvisionalAdverseEvents.", e);
+            ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
+        } catch (WebServiceException e) {
+            LOG.error("WebServiceException while rollback of createProvisionalAdverseEvents.", e);
+            ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
+        } catch (JAXBException e) {
+            LOG.error("JAXBException while rollback of createProvisionalAdverseEvents.", e);
+            ie = new IntegrationException(IntegrationError._1053, e, e.getMessage());
+        } catch (IntegrationException e) {
+            ie = e;
+        }
+
+        if (!result.isFault()) {
+            result.setInvocationException(ie);
+        }
+        handleException(result);
+        
+        */
+        
         return result;
     }
 

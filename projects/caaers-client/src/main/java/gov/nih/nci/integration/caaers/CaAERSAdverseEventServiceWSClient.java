@@ -2,8 +2,8 @@ package gov.nih.nci.integration.caaers;
 
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventManagementServiceInterface;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventsInputMessage;
-import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CreateOrUpdateAdverseEvent;
-import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CreateOrUpdateAdverseEventResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CreateProvisionalAdverseEvents;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CreateProvisionalAdverseEventsResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.DeleteAdverseEvent;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.DeleteAdverseEventResponse;
 import gov.nih.nci.integration.exception.IntegrationError;
@@ -109,20 +109,19 @@ public class CaAERSAdverseEventServiceWSClient {
      * This method is used to create Adverse Event in caAERS
      * 
      * @param adverseEventXMLStr - XMLString containing the list of adverse event to be created
-     * @return CreateAdverseEventResponse - response from the webservice call
+     * @return CreateProvisionalAdverseEventsResponse - response from the webservice call
      * @throws JAXBException - JAXBException
      */
-    public CreateOrUpdateAdverseEventResponse createOrUpdateAdverseEvent(String adverseEventXMLStr) throws JAXBException {
+    public CreateProvisionalAdverseEventsResponse createProvisionalAdverseEvents(String adverseEventXMLStr)
+            throws JAXBException {
 
         // parse the incoming XML String
         final AdverseEventsInputMessage inputMessage = parseAdverseEventXMLStr(adverseEventXMLStr);
 
-        final CreateOrUpdateAdverseEvent adverseEvent = new CreateOrUpdateAdverseEvent();
+        final CreateProvisionalAdverseEvents adverseEvent = new CreateProvisionalAdverseEvents();
         adverseEvent.setAdverseEventsInputMessage(inputMessage);
-
-        CreateOrUpdateAdverseEventResponse serviceResponse = null;
-
-        serviceResponse = client.createOrUpdateAdverseEvent(adverseEvent);
+        CreateProvisionalAdverseEventsResponse serviceResponse = null;
+        serviceResponse = client.createProvisionalAdverseEvents(adverseEvent);
 
         return serviceResponse;
     }
