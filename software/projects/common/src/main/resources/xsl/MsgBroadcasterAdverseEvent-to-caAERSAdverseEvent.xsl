@@ -18,9 +18,6 @@
 						<grade>
 							<xsl:value-of select="a:grade" />
 						</grade>
-						<expected>
-							<xsl:value-of select="a:expected" />
-						</expected>
 						<attributionSummary>
 							<xsl:value-of select="a:attributionSummary" />
 						</attributionSummary>
@@ -33,6 +30,9 @@
 						<ctepCode>
 							<xsl:value-of select="a:ctepCode" />
 						</ctepCode>
+						<externalId>
+							<xsl:value-of select="a:externalId"></xsl:value-of>
+						</externalId>
 						<xsl:for-each select="a:outcome">
 							<outcome>
 								<outComeEnumType>
@@ -61,10 +61,6 @@
 						<xsl:value-of
 							select="ns2:caxchangerequest/a:adverseeventinput/a:criteria/a:course/a:endDateOfThisCourse" />
 					</endDateOfThisCourse>
-					<treatmentType>
-						<xsl:value-of
-							select="ns2:caxchangerequest/a:adverseeventinput/a:criteria/a:course/a:treatmentType" />
-					</treatmentType>
 					<treatmentAssignmentCode>
 						<xsl:value-of
 							select="ns2:caxchangerequest/a:adverseeventinput/a:criteria/a:course/a:treatmentAssignmentCode" />
