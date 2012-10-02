@@ -3,7 +3,6 @@
 	xmlns:ns0="http://caXchange.nci.nih.gov/messaging" xmlns:ns1="urn:hl7-org:v3"
 	xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest" xmlns:ns3="http://cacis.nci.nih.gov"
 	xmlns:g="http://caaers/adverseevent/grade/data" xmlns:a="http://caaers/adverseevent/attribution/data"
-	xmlns:e="http://caaers/adverseevent/expected/data" xmlns:p="http://caaers/adverseevent/periodtype/data"
 	xmlns:r="http://caaers/adverseevent/seriousreasons/data"
 	exclude-result-prefixes="ns0 xs ns1 ns2 ns3">
 
@@ -17,13 +16,6 @@
 		<xsl:value-of select="key('grade-lookup', $curr-key)/g:vocvalue" />
 	</xsl:template>
 
-	<xsl:key name="period-type-lookup" match="p:type" use="p:vockey" />
-	<xsl:variable name="period-type-top"
-		select="document('caaers-ae-period-type-lookup.xml')/*" />
-	<xsl:template match="p:periodtype">
-		<xsl:param name="curr-key" />
-		<xsl:value-of select="key('period-type-lookup', $curr-key)/p:vocvalue" />
-	</xsl:template>
 
 	<xsl:key name="serious-reason-lookup" match="r:reason" use="r:vockey" />
 	<xsl:variable name="serious-reason-top"
@@ -41,14 +33,6 @@
 		<xsl:value-of select="key('attribution-lookup', $curr-key)/a:vocvalue" />
 	</xsl:template>
 
-
-	<xsl:key name="expected-lookup" match="e:expect" use="e:vockey" />
-	<xsl:variable name="expected-top"
-		select="document('caaers-ae-expected-lookup.xml')/*" />
-	<xsl:template match="e:expected">
-		<xsl:param name="curr-key" />
-		<xsl:value-of select="key('expected-lookup', $curr-key)/e:vocvalue" />
-	</xsl:template>
 
 	<xsl:template match="/">
 		<ns2:caxchangerequest>
@@ -88,13 +72,6 @@
 									select="//ns1:act[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.30']/ns1:effectiveTime/ns1:high/@value" />
 							</xsl:call-template>
 						</endDateOfThisCourse>
-						<treatmentType>
-							<!-- Period Type -->
-							<xsl:call-template name="show-period-type">
-								<xsl:with-param name="periodType"
-									select="//ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='272117007'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:value/ns1:originalText" />
-							</xsl:call-template>
-						</treatmentType>
 						<treatmentAssignmentCode>
 							<!-- Assigned Treatment -->
 							<xsl:value-of
@@ -145,12 +122,6 @@
 						select="$observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.7']/ns1:effectiveTime/ns1:high/@value" />
 				</xsl:call-template>
 			</endDate>
-			<expected>
-				<xsl:call-template name="show-expected">
-					<xsl:with-param name="expectValue"
-						select="$observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='410596003'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:value/@code" />
-				</xsl:call-template>
-			</expected>
 			<attributionSummary>
 				<!-- Attribution -->
 				<xsl:call-template name="show-attribution">
@@ -158,6 +129,12 @@
 						select="$observation/ns1:entryRelationship/ns1:observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@nullFlavor='OTH']/ns1:originalText='Attribution']/ns1:value" />
 				</xsl:call-template>
 			</attributionSummary>
+			<!-- Adverse event unique identifier -->
+			<externalId>
+				<xsl:value-of
+					select="$observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.7']/ns1:id/@root"></xsl:value-of>
+			</externalId>
+			<!-- Serious Reason(s) -->
 			<xsl:for-each
 				select="$observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code/ns1:originalText='serious reason(s)']/ns1:value">
 				<outcome>
@@ -184,14 +161,6 @@
 		<xsl:param name="gradeValue" />
 		<xsl:apply-templates select="$grades-top">
 			<xsl:with-param name="curr-key" select="$gradeValue" />
-		</xsl:apply-templates>
-	</xsl:template>
-
-	<!-- show-period-type -->
-	<xsl:template name="show-period-type">
-		<xsl:param name="periodType" />
-		<xsl:apply-templates select="$period-type-top">
-			<xsl:with-param name="curr-key" select="$periodType" />
 		</xsl:apply-templates>
 	</xsl:template>
 
@@ -229,13 +198,6 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<!-- show-expected -->
-	<xsl:template name="show-expected">
-		<xsl:param name="expectValue" />
-		<xsl:apply-templates select="$expected-top">
-			<xsl:with-param name="curr-key" select="$expectValue" />
-		</xsl:apply-templates>
-	</xsl:template>
 
 	<!-- format the date 20110701 to 2011-07-01-04:00 -->
 	<xsl:template name="show-dateTime">
