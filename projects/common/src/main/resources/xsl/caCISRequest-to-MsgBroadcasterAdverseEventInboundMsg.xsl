@@ -8,32 +8,6 @@
 
 	<xsl:output method="xml" encoding="UTF-8" indent="yes" />
 
-	<xsl:key name="grade-lookup" match="g:grade" use="g:vockey" />
-	<xsl:variable name="grades-top"
-		select="document('caaers-ae-grade-lookup.xml')/*" />
-	<xsl:template match="g:grades">
-		<xsl:param name="curr-key" />
-		<xsl:value-of select="key('grade-lookup', $curr-key)/g:vocvalue" />
-	</xsl:template>
-
-
-	<xsl:key name="serious-reason-lookup" match="r:reason" use="r:vockey" />
-	<xsl:variable name="serious-reason-top"
-		select="document('caaers-ae-serious-reasons-lookup.xml')/*" />
-	<xsl:template match="r:reasons">
-		<xsl:param name="curr-key" />
-		<xsl:value-of select="key('serious-reason-lookup', $curr-key)/r:vocvalue" />
-	</xsl:template>
-
-	<xsl:key name="attribution-lookup" match="a:attribution" use="a:vockey" />
-	<xsl:variable name="attribution-top"
-		select="document('caaers-ae-attribution-lookup.xml')/*" />
-	<xsl:template match="a:attributiontype">
-		<xsl:param name="curr-key" />
-		<xsl:value-of select="key('attribution-lookup', $curr-key)/a:vocvalue" />
-	</xsl:template>
-
-
 	<xsl:template match="/">
 		<ns2:caxchangerequest>
 			<ns0:metadata>
@@ -103,10 +77,8 @@
 					select="$observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.9']/ns1:value/@code" />
 			</ctepCode>
 			<grade>
-				<xsl:call-template name="show-grade">
-					<xsl:with-param name="gradeValue"
-						select="$observation/ns1:entryRelationship/ns1:observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.8'][ns1:code/ns1:originalText='Grade']/ns1:value/ns1:originalText" />
-				</xsl:call-template>
+				<xsl:value-of
+					select="$observation/ns1:entryRelationship/ns1:observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.8'][ns1:code/ns1:originalText='Grade']/ns1:value/ns1:originalText"></xsl:value-of>
 			</grade>
 			<startDate>
 				<!-- Onset Date -->
@@ -124,7 +96,7 @@
 			</endDate>
 			<attributionSummary>
 				<!-- Attribution -->
-				<xsl:call-template name="show-attribution">
+				<xsl:call-template name="get-attribution-code">
 					<xsl:with-param name="attributionValue"
 						select="$observation/ns1:entryRelationship/ns1:observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@nullFlavor='OTH']/ns1:originalText='Attribution']/ns1:value" />
 				</xsl:call-template>
@@ -139,7 +111,7 @@
 				select="$observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code/ns1:originalText='serious reason(s)']/ns1:value">
 				<outcome>
 					<outComeEnumType>
-						<xsl:call-template name="show-serious-reasons">
+						<xsl:call-template name="get-serious-reason-code">
 							<xsl:with-param name="reason" select="." />
 						</xsl:call-template>
 					</outComeEnumType>
@@ -156,44 +128,30 @@
 		<xsl:value-of select="$id/@extension" />
 	</xsl:template>
 
-	<!-- show-grade -->
-	<xsl:template name="show-grade">
-		<xsl:param name="gradeValue" />
-		<xsl:apply-templates select="$grades-top">
-			<xsl:with-param name="curr-key" select="$gradeValue" />
-		</xsl:apply-templates>
-	</xsl:template>
 
-	<!-- show-serious-reasons -->
-	<xsl:template name="show-serious-reasons">
+
+	<!-- get-serious-reason-code -->
+	<xsl:template name="get-serious-reason-code">
 		<xsl:param name="reason" />
 		<xsl:choose>
 			<xsl:when test="$reason/@code !=''">
-				<xsl:apply-templates select="$serious-reason-top">
-					<xsl:with-param name="curr-key" select="$reason/@code" />
-				</xsl:apply-templates>
+				<xsl:value-of select="$reason/@code"></xsl:value-of>
 			</xsl:when>
 			<xsl:when test="$reason/@nullFlavor !=''">
-				<xsl:apply-templates select="$serious-reason-top">
-					<xsl:with-param name="curr-key" select="$reason/@nullFlavor" />
-				</xsl:apply-templates>
+				<xsl:value-of select="$reason/@nullFlavor"></xsl:value-of>
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
 
-	<!-- show-attribution -->
-	<xsl:template name="show-attribution">
+	<!-- get-attribution-code -->
+	<xsl:template name="get-attribution-code">
 		<xsl:param name="attributionValue" />
 		<xsl:choose>
 			<xsl:when test="$attributionValue/@code !=''">
-				<xsl:apply-templates select="$attribution-top">
-					<xsl:with-param name="curr-key" select="$attributionValue/@code" />
-				</xsl:apply-templates>
+				<xsl:value-of select="$attributionValue/@code"></xsl:value-of>
 			</xsl:when>
 			<xsl:when test="$attributionValue/@nullFlavor !=''">
-				<xsl:apply-templates select="$attribution-top">
-					<xsl:with-param name="curr-key" select="$attributionValue/@nullFlavor" />
-				</xsl:apply-templates>
+				<xsl:value-of select="$attributionValue/@nullFlavor"></xsl:value-of>
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
