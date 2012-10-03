@@ -1,0 +1,18 @@
+<ca:specimenclassattribute xmlns:ca="http://catissue/specimen/class/attribute/data">
+	<ca:class>
+		<ca:vockey>48469005</ca:vockey>
+		<ca:vocvalue>CellSpecimen</ca:vocvalue>
+	</ca:class>
+	<ca:class>
+		<ca:vockey>258442002</ca:vockey>
+		<ca:vocvalue>FluidSpecimen</ca:vocvalue>
+	</ca:class>
+	<ca:class>
+		<ca:vockey>258562007</ca:vockey>
+		<ca:vocvalue>MolecularSpecimen</ca:vocvalue>
+	</ca:class>
+	<ca:class>
+		<ca:vockey>119376003</ca:vockey>
+		<ca:vocvalue>TissueSpecimen</ca:vocvalue>
+	</ca:class>
+</ca:specimenclassattribute>
