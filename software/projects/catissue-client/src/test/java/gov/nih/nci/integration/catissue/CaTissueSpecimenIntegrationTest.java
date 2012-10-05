@@ -30,7 +30,6 @@ public class CaTissueSpecimenIntegrationTest {
     /**
      * To initialize the things
      */
-    @Test
     @Before
     public void initialize() {
         try {
@@ -40,8 +39,6 @@ public class CaTissueSpecimenIntegrationTest {
         } catch (MalformedURLException e) {
             LOG.error("CaTissueConsentIntegrationTest-ApplicationException inside initialize() ", e);
         }
-
-        assertNotNull(caTissueSpecimenClient);
     }
 
     /**

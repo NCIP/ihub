@@ -47,7 +47,6 @@ public class CaAERSParticipantTest {
      * 
      * @throws IntegrationException - IntegrationException
      */
-    @Test
     @Before
     public void initialize() throws IntegrationException {
         client = EasyMock.createMock(ParticipantServiceInterface.class);

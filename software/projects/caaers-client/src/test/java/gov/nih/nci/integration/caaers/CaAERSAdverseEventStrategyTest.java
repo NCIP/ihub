@@ -54,8 +54,7 @@ public class CaAERSAdverseEventStrategyTest {
      * 
      * @throws MalformedURLException - MalformedURLException
      * @throws BeansException - BeansException
-     */
-    @Test
+     */    
     @Before
     public void initialize() throws BeansException, MalformedURLException {
         wsClient = EasyMock.createMock(CaAERSAdverseEventServiceWSClient.class);

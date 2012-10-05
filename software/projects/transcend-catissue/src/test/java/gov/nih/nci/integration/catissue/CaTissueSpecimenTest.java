@@ -47,7 +47,7 @@ public class CaTissueSpecimenTest {
      * 
      * @throws IntegrationException - IntegrationException
      */
-    @Test
+    
     @Before
     public void initialize() throws IntegrationException {
         caTissueSpecimenClient = new CaTissueSpecimenClient(caTissueLibLocation, catissueApiLoginName,

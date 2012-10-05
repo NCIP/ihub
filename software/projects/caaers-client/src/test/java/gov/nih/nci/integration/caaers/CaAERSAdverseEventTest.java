@@ -41,7 +41,6 @@ public class CaAERSAdverseEventTest {
      * 
      * @throws IntegrationException - IntegrationException
      */
-    @Test
     @Before
     public void initialize() throws IntegrationException {
         client = EasyMock.createMock(AdverseEventManagementServiceInterface.class);
