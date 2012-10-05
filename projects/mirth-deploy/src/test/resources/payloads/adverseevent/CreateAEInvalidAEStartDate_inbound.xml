@@ -20,7 +20,8 @@
 					<!--Optional: -->
 					<mes:password>changeme</mes:password>
 					<!--Optional: -->
-					<mes:delegatedCredentialReference>nocredentials</mes:delegatedCredentialReference>
+					<mes:delegatedCredentialReference>nocredentials
+					</mes:delegatedCredentialReference>
 				</mes:credentials>
 			</mes:metadata>
 			<mes:request>
@@ -105,7 +106,8 @@
 							<serviceEvent classCode="CLNTRL">
 								<id root="2.16.840.1.113883.3.26.1.7" extension="echsite87" />
 								<code nullFlavor="OTH">
-									<originalText>site-specific component of clinical trial</originalText>
+									<originalText>site-specific component of clinical trial
+									</originalText>
 								</code>
 							</serviceEvent>
 						</documentationOf>
@@ -134,6 +136,7 @@
 												<!--Allergy Problem Act Template -->
 												<templateId root="2.16.840.1.113883.10.20.22.4.30"
 													assigningAuthorityName="HL7 CCDA" />
+												<!--Adverse event group identifier -->
 												<id root="36e3e930-7b14-11db-9fe1-0800200c9a66" />
 												<code code="48765-2" codeSystem="2.16.840.1.113883.6.1"
 													codeSystemName="LOINC" displayName="Allergies, adverse reactions, alerts" />
@@ -141,24 +144,25 @@
 												<!--Reporting Period Start and End Date -->
 												<effectiveTime>
 													<!--Reporting Period Start date -->
-													<low value="20110701" />
+													<low value="20110703" />
 													<!--Reporting Period End date -->
-													<high value="20110721" />
+													<high value="20110726" />
 												</effectiveTime>
 												<entryRelationship typeCode="SUBJ">
 													<observation classCode="OBS" moodCode="EVN">
 														<!--Allergy Observation Template -->
 														<templateId root="2.16.840.1.113883.10.20.22.4.7"
 															assigningAuthorityName="HL7 CCDA" />
+														<!--Adverse event unique identifier -->
 														<id root="4adc1020-7b14-11db-9fe1-0800200c9a66" />
 														<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
 															codeSystemName="HL7 ActCode" />
 														<statusCode code="completed" />
 														<effectiveTime>
 															<!--Onset Date -->
-															<low value="20110755" />
+															<low value="20110747" />
 															<!--Resolution Date -->
-															<high value="20110709" />
+															<high value="20110712" />
 														</effectiveTime>
 														<!--Adverse Event Type -->
 														<value xsi:type="CD" code="59037007" codeSystem="2.16.840.1.113883.6.96"
@@ -179,7 +183,7 @@
 																<value xsi:type="CD" code="10001367" displayName="Abdominal pain"
 																	codeSystem="2.16.840.1.113883.3.26.1.6" codeSystemName="CTCAE">
 																	<!--verbatim -->
-																	<originalText>The Patient has sporadic mild to severe abdominal pain</originalText>
+																	<originalText>the patient has sporadic mild to severe abdominal pain</originalText>
 																</value>
 																<!--grade of adverse event -->
 																<entryRelationship typeCode="SUBJ"
@@ -193,9 +197,15 @@
 																			<originalText>Grade</originalText>
 																		</code>
 																		<statusCode code="completed" />
-																		<!--adverse event grade -->
+																		<!--value of adverse event grade -->
+																		<!--no standard SNOMED CT or LOINC code. If NCI has locally 
+																			defined code, then the code can be conveyed in translation element as demoed 
+																			below. -->
 																		<value xsi:type="CD" nullFlavor="OTH">
 																			<originalText>CTCAE Grade 2</originalText>
+																			<translation code="C1513374"
+																				codeSystem="2.16.840.1.113883.3.26.1.1"
+																				codeSystemName="NCI Thesaurus" displayName="Moderate Adverse Event" />
 																		</value>
 																	</observation>
 																</entryRelationship>
@@ -227,45 +237,38 @@
 																		</code>
 																		<statusCode code="completed" />
 																		<effectiveTime nullFlavor="UNK" />
+																		<!--no standard SNOMED CT or LOINC code. If NCI has locally 
+																			defined code, then the code can be conveyed in translation element as demoed 
+																			below. -->
 																		<value xsi:type="CD" code="371930009"
 																			codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT"
 																			displayName="possible">
 																			<originalText>3 - Possible</originalText>
+																			<translation code="C1705910"
+																				codeSystem="2.16.840.1.113883.3.26.1.1"
+																				codeSystemName="NCI Thesaurus" displayName="Possibly Related to Intervention" />
 																		</value>
 																	</observation>
 																</entryRelationship>
 															</observation>
 														</entryRelationship>
-														<!--Period Type -->
-														<entryRelationship typeCode="REFR">
-															<observation classCode="OBS" moodCode="EVN">
-																<!--Result observation template -->
-																<templateId root="2.16.840.1.113883.10.20.22.4.2"
-																	assigningAuthorityName="HL7 CCDA" />
-																<id root="107c2dc0-67a5-11db-bd13-0800200c9a66" />
-																<code code="272117007" codeSystem="2.16.840.1.113883.6.96"
-																	codeSystemName="SNOMED-CT" displayName="time periods">
-																	<originalText>Period Type</originalText>
-																</code>
-																<value xsi:type="CD" nullFlavor="OTH">
-																	<originalText>Treatment Period</originalText>
-																</value>
-															</observation>
-														</entryRelationship>
-														<!--Expected -->
+														<!--Serious Reason(s) -->
 														<entryRelationship typeCode="SUBJ">
 															<observation classCode="OBS" moodCode="EVN">
-																<!--Result observation template -->
+																<!--result observation template -->
 																<templateId root="2.16.840.1.113883.10.20.22.4.2"
 																	assigningAuthorityName="HL7 CCDA" />
-																<id root="107c2dc0-67a5-11db-bd13-0800200c9a66" />
-																<code code="410596003" codeSystem="2.16.840.1.113883.6.96"
-																	codeSystemName="SNOMED-CT" displayName="likely outcome">
-																	<originalText>expected outcome</originalText>
+																<code nullFlavor="OTH">
+																	<originalText>serious reason(s)</originalText>
 																</code>
-																<!--yes -->
-																<value xsi:type="CD" code="373066001" displayName="yes"
-																	codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" />
+																<!--Serious Reason Value as code -->
+																<value xsi:type="CD" code="405532008" codeSystem="2.16.840.1.113883.6.96"
+																	codeSystemName="SNOMED-CT"
+																	displayName="adverse incident resulting in potentially permanent disabling damage">
+																	<originalText>Results in persistent or significant
+																		incapacity or substantial disruption of the ability to
+																		conduct normal life functions</originalText>
+																</value>
 															</observation>
 														</entryRelationship>
 													</observation>

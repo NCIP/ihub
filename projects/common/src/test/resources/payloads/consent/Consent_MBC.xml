@@ -43,11 +43,11 @@
 						<consentTierResponses>
 							<tier>
 								<statement>Tier 1 consent response</statement>
-								<response>Yes</response>
+								<response>373066001</response>
 							</tier>
 							<tier>
 								<statement>Tier 2 consent response</statement>
-								<response>No</response>
+								<response>373067005</response>
 							</tier>
 						</consentTierResponses>
 					</consentDetails>

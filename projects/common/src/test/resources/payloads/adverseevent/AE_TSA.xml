@@ -5,10 +5,11 @@
 			xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1trim="urn:tolven-org:trim:4.0"
 			xmlns:cda="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<mes:metadata>
+				<mes:transactionControl>PROCESS</mes:transactionControl>
 				<mes:serviceType>iHub</mes:serviceType>
-				<mes:operationName>Create Adverse Event</mes:operationName>
+				<mes:operationName>Create Or Update Adverse Event</mes:operationName>
 				<mes:externalIdentifier>32225879</mes:externalIdentifier>
-				<mes:caXchangeIdentifier>1342552540029</mes:caXchangeIdentifier>
+				<mes:caXchangeIdentifier>1349457856714</mes:caXchangeIdentifier>
 				<mes:credentials>
 					<mes:userName>tolvenuser</mes:userName>
 					<mes:groupName>nogrid</mes:groupName>
@@ -20,55 +21,222 @@
 			</mes:metadata>
 			<mes:request>
 				<mes:businessMessagePayload>
-					<mes:xmlSchemaDefinition>urn:tolven-org:trim:4.0
-					</mes:xmlSchemaDefinition>
-					<trim:trim xmlns:trim="urn:tolven-org:trim:4.0" xmlns="urn:tolven-org:trim:4.0"
-						xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-						<adverseeventinput>
-							<criteria>
-								<participantIdentifier>PM-113</participantIdentifier>
-								<studyIdentifier>7216</studyIdentifier>
-								<course>
-									<startDateOfThisCourse>2012-07-12-04:00</startDateOfThisCourse>
-									<endDateOfThisCourse>2012-07-15-04:00</endDateOfThisCourse>
-									<treatmentType>Treatment</treatmentType>
-									<treatmentAssignmentCode>TAC</treatmentAssignmentCode>
-								</course>
-							</criteria>
-							<adverseEventsList>
-								<adverseEvent>
-									<verbatim>Event1 Verbatim</verbatim>
-									<ctepCode>Adrenal insufficiency</ctepCode>
-									<grade>3</grade>
-									<startDate>2012-07-10-04:00</startDate>
-									<endDate>2012-07-11-04:00</endDate>
-									<expected>true</expected>
-									<attributionSummary>POSSIBLE</attributionSummary>
-									<outcome>
-										<outComeEnumType>LIFE_THREATENING</outComeEnumType>
-									</outcome>
-									<outcome>
-										<outComeEnumType>HOSPITALIZATION</outComeEnumType>
-									</outcome>
-								</adverseEvent>
-								<adverseEvent>
-									<verbatim>Event2 Verbatim</verbatim>
-									<ctepCode>Aspartateamino transferase increased</ctepCode>
-									<grade>4</grade>
-									<startDate>2012-07-10-04:00</startDate>
-									<endDate>2012-07-11-04:00</endDate>
-									<expected>true</expected>
-									<attributionSummary>DEFINITE</attributionSummary>
-									<outcome>
-										<outComeEnumType>CONGENITAL_ANOMALY</outComeEnumType>
-									</outcome>
-									<outcome>
-										<outComeEnumType>OTHER_SERIOUS</outComeEnumType>
-									</outcome>
-								</adverseEvent>
-							</adverseEventsList>
-						</adverseeventinput>
-					</trim:trim>
+					<mes:xmlSchemaDefinition>urn:hl7-org:v3</mes:xmlSchemaDefinition>
+					<ClinicalDocument:ClinicalDocument
+						xmlns:ClinicalDocument="urn:hl7-org:v3" xmlns="urn:hl7-org:v3"
+						xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+						xsi:schemaLocation="urn:hl7-org:v3 ../cdaXSD/infrastructure/cda/CDA.xsd">
+						<realmCode code="US" />
+						<typeId extension="POCD_HD000040" root="2.16.840.1.113883.1.3" />
+						<templateId assigningAuthorityName="HL7 CCDA"
+							root="2.16.840.1.113883.10.20.22.1.1" />
+						<id extension="echr:patient-1823431:clinicalNote-1830018" root="1.2.1.173000" />
+						<code nullFlavor="NA">
+							<originalText>Adverse Event Report</originalText>
+							<translation code="C1521800" codeSystem="2.16.840.1.113883.3.26.1.1"
+								codeSystemName="NCI Thesaurus" displayName="Adverse Drug Experience Report" />
+						</code>
+						<title>Adverse Event Report</title>
+						<effectiveTime value="20110721151621-0700" />
+						<confidentialityCode code="N" />
+						<languageCode code="en-US" />
+						<recordTarget>
+							<patientRole>
+								<id assigningAuthorityName="iSpy2 Study" extension="echr:patient-18234163"
+									root="1.2.1.173000" />
+								<id assigningAuthorityName="ABC Cancer Institute" extension="21318234163"
+									root="1.2.1.173000" />
+								<addr nullFlavor="NI" />
+								<telecom nullFlavor="NI" />
+								<patient>
+									<name use="L">
+										<given>TestOne</given>
+										<given />
+										<family>Patient</family>
+									</name>
+									<administrativeGenderCode code="F"
+										codeSystem="2.16.840.1.113883.5.1" displayName="Female" />
+									<birthTime value="19670131" />
+									<maritalStatusCode code="M"
+										codeSystem="2.16.840.1.113883.5.2" codeSystemName="HL7 MaritalStatus"
+										displayName="Married">
+										<originalText>Now married</originalText>
+									</maritalStatusCode>
+									<raceCode code="2106-3" codeSystem="2.16.840.1.113883.6.238"
+										codeSystemName="Race &amp; Ethnicity - CDC" displayName="White" />
+									<ethnicGroupCode code="2186-5" codeSystem="2.16.840.1.113883.6.238"
+										codeSystemName="Race &amp; Ethnicity - CDC" displayName="Not Hispanic or Latino" />
+								</patient>
+							</patientRole>
+						</recordTarget>
+						<author>
+							<time nullFlavor="NI" />
+							<assignedAuthor>
+								<id extension="matthew.salesi@ucsfmedctr.org" root="1.2.1.173000" />
+								<addr nullFlavor="NI" />
+								<telecom nullFlavor="NI" />
+								<assignedPerson>
+									<name nullFlavor="NI" />
+								</assignedPerson>
+							</assignedAuthor>
+						</author>
+						<custodian>
+							<assignedCustodian>
+								<representedCustodianOrganization>
+									<id extension="TranscendTolven" root="2.16.840.1.113883.3.26.1.7" />
+									<name nullFlavor="NI" />
+									<telecom nullFlavor="NI" />
+									<addr nullFlavor="NI" />
+								</representedCustodianOrganization>
+							</assignedCustodian>
+						</custodian>
+						<documentationOf>
+							<serviceEvent classCode="CLNTRL">
+								<id extension="echsite87" root="2.16.840.1.113883.3.26.1.7" />
+								<code nullFlavor="OTH">
+									<originalText>site-specific component of clinical trial</originalText>
+								</code>
+							</serviceEvent>
+						</documentationOf>
+						<documentationOf>
+							<serviceEvent classCode="CLNTRL">
+								<id extension="6482" root="6482" />
+								<code nullFlavor="OTH">
+									<originalText>clinical trial</originalText>
+								</code>
+							</serviceEvent>
+						</documentationOf>
+						<component>
+							<structuredBody>
+								<component>
+									<section>
+										<templateId assigningAuthorityName="HL7 CCDA"
+											root="2.16.840.1.113883.10.20.22.2.6.1" />
+										<code code="48765-2" codeSystem="2.16.840.1.113883.6.1"
+											codeSystemName="LOINC" displayName="Allergies, adverse reactions, alerts" />
+										<title>Allergies and Adverse Reactions</title>
+										<entry typeCode="DRIV">
+											<act classCode="ACT" moodCode="EVN">
+												<templateId assigningAuthorityName="HL7 CCDA"
+													root="2.16.840.1.113883.10.20.22.4.30" />
+												<id root="36e3e930-7b14-11db-9fe1-0800200c9a66" />
+												<code code="48765-2" codeSystem="2.16.840.1.113883.6.1"
+													codeSystemName="LOINC" displayName="Allergies, adverse reactions, alerts" />
+												<statusCode code="active" />
+												<effectiveTime>
+													<low value="20110603" />
+													<high value="20110826" />
+												</effectiveTime>
+												<entryRelationship typeCode="SUBJ">
+													<observation classCode="OBS" moodCode="EVN">
+														<templateId assigningAuthorityName="HL7 CCDA"
+															root="2.16.840.1.113883.10.20.22.4.7" />
+														<id root="4adc1020-7b14-11db-9fe1-0800200c9a62" />
+														<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+															codeSystemName="HL7 ActCode" />
+														<statusCode code="completed" />
+														<effectiveTime>
+															<low value="20110707" />
+															<high value="20110712" />
+														</effectiveTime>
+														<value code="59037007" codeSystem="2.16.840.1.113883.6.96"
+															displayName="drug intolerance" xsi:type="CD" />
+														<entryRelationship typeCode="MFST">
+															<observation classCode="OBS" moodCode="EVN">
+																<templateId assigningAuthorityName="HL7 CCDA"
+																	root="2.16.840.1.113883.10.20.22.4.9" />
+																<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
+																	codeSystemName="HL7 ActCode" />
+																<statusCode code="completed" />
+																<effectiveTime>
+																	<low value="20110705" />
+																</effectiveTime>
+																<value code="10001367" codeSystem="2.16.840.1.113883.3.26.1.6"
+																	codeSystemName="CTCAE" displayName="Abdominal pain"
+																	xsi:type="CD">
+																	<originalText>The patient has sporadic mild to severe
+																		abdominal pain</originalText>
+																</value>
+																<entryRelationship inversionInd="true"
+																	typeCode="SUBJ">
+																	<observation classCode="OBS" moodCode="EVN">
+																		<templateId assigningAuthorityName="HL7 CCDA"
+																			root="2.16.840.1.113883.10.20.22.4.8" />
+																		<code code="SEV" codeSystem="2.16.840.1.113883.5.4"
+																			codeSystemName="HL7 ActCode" displayName="severity">
+																			<originalText>Grade</originalText>
+																		</code>
+																		<statusCode code="completed" />
+																		<value nullFlavor="OTH" xsi:type="CD">
+																			<originalText>CTCAE Grade 2</originalText>
+																			<translation code="C1513374"
+																				codeSystem="2.16.840.1.113883.3.26.1.1"
+																				codeSystemName="NCI Thesaurus" displayName="Moderate Adverse Event" />
+																		</value>
+																	</observation>
+																</entryRelationship>
+															</observation>
+														</entryRelationship>
+														<entryRelationship inversionInd="true"
+															typeCode="REFR">
+															<observation classCode="OBS" moodCode="EVN">
+																<templateId assigningAuthorityName="HL7 CCDA"
+																	root="2.16.840.1.113883.10.20.22.4.13" />
+																<id root="107c2dc0-67a5-11db-bd13-0800200c9a66" />
+																<code code="225334002" codeSystem="2.16.840.1.113883.6.96"
+																	codeSystemName="SNOMED-CT" displayName="intervention regimes" />
+																<statusCode code="completed" />
+																<value nullFlavor="OTH" xsi:type="CD">
+																	<originalText>TAC1</originalText>
+																</value>
+																<entryRelationship typeCode="SUBJ">
+																	<observation classCode="OBS" moodCode="EVN">
+																		<templateId assigningAuthorityName="HL7 CCDA"
+																			root="2.16.840.1.113883.10.20.22.4.2" />
+																		<id root="107c2dc0-67a5-11db-bd13-0800200c9a9a" />
+																		<code nullFlavor="OTH">
+																			<originalText>Attribution</originalText>
+																		</code>
+																		<statusCode code="completed" />
+																		<effectiveTime nullFlavor="UNK" />
+																		<value code="371930009" codeSystem="2.16.840.1.113883.6.96"
+																			codeSystemName="SNOMED-CT" displayName="possible"
+																			xsi:type="CD">
+																			<originalText>3 - Possible</originalText>
+																			<translation code="C1705910"
+																				codeSystem="2.16.840.1.113883.3.26.1.1"
+																				codeSystemName="NCI Thesaurus" displayName="Possibly Related to Intervention" />
+																		</value>
+																	</observation>
+																</entryRelationship>
+															</observation>
+														</entryRelationship>
+														<entryRelationship typeCode="SUBJ">
+															<observation classCode="OBS" moodCode="EVN">
+																<templateId assigningAuthorityName="HL7 CCDA"
+																	root="2.16.840.1.113883.10.20.22.4.2" />
+																<code nullFlavor="OTH">
+																	<originalText>serious reason(s)</originalText>
+																</code>
+																<value code="405532008" codeSystem="2.16.840.1.113883.6.96"
+																	codeSystemName="SNOMED-CT"
+																	displayName="adverse incident resulting in potentially permanent disabling damage"
+																	xsi:type="CD">
+																	<originalText>Results in persistent or significant
+																		incapacity or substantial disruption of the ability to
+																		conduct normal life functions</originalText>
+																</value>
+															</observation>
+														</entryRelationship>
+													</observation>
+												</entryRelationship>
+											</act>
+										</entry>
+									</section>
+								</component>
+							</structuredBody>
+						</component>
+					</ClinicalDocument:ClinicalDocument>
 				</mes:businessMessagePayload>
 			</mes:request>
 		</ns2:caxchangerequest>
