@@ -6,14 +6,13 @@
 	xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest">
 	<ns22:adverseEvents>
 		<ns22:adverseEvent>
-			<verbatim>The Patient has sporadic mild to severe abdominal pain
-			</verbatim>
-			<grade>2</grade>
-			<expected>true</expected>
+			<verbatim>The Patient has sporadic mild to severe abdominal pain</verbatim>
+			<grade>2</grade>			
 			<attributionSummary>POSSIBLE</attributionSummary>
 			<startDate>2011-07-05-04:00</startDate>
 			<endDate>2011-07-09-04:00</endDate>
 			<ctepCode>10001367</ctepCode>
+			<externalId>4adc1020-7b14-11db-9fe1-0800200c9a62</externalId>
 		</ns22:adverseEvent>
 	</ns22:adverseEvents>
 	<ns22:criteria>
@@ -22,7 +21,6 @@
 		<course>
 			<startDateOfThisCourse>2011-07-01-04:00</startDateOfThisCourse>
 			<endDateOfThisCourse>2011-07-21-04:00</endDateOfThisCourse>
-			<treatmentType>Treatment</treatmentType>
 			<treatmentAssignmentCode>TAC1</treatmentAssignmentCode>
 		</course>
 	</ns22:criteria>
