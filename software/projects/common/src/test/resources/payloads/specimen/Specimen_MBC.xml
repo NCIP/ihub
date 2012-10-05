@@ -43,7 +43,7 @@
 							<cdmsSpecimenId>fbfe4b85-2bdc-4305-88be-3e1b763d8caa:011</cdmsSpecimenId>
 							<barcode>12345:011</barcode>
 							<activityStatus>Active</activityStatus>
-							<specimenClass>Tissue</specimenClass>
+							<specimenClass>119376003</specimenClass>
 							<specimenType>Fresh Tissue</specimenType>
 							<initialQuantity>177</initialQuantity>
 							<availableQuantity>155</availableQuantity>
