@@ -24,19 +24,17 @@
 			<mes:groupName>nogrid</mes:groupName>
 			<mes:gridIdentifier>nogrid</mes:gridIdentifier>
 			<mes:password>changeme</mes:password>
-			<mes:delegatedCredentialReference>nocredentials
-			</mes:delegatedCredentialReference>
+			<mes:delegatedCredentialReference>nocredentials</mes:delegatedCredentialReference>
 		</mes:credentials>
 	</ns0:metadata>
 	<adverseeventinput xmlns="http://cacis.nci.nih.gov">
 		<criteria>
-			<studySubjectIdentifier>PM-113</studySubjectIdentifier>
-			<studyIdentifier>7216</studyIdentifier>
+			<studySubjectIdentifier>1.2.1.173000:echr:patient-1823467</studySubjectIdentifier>
+			<studyIdentifier>6482:6482</studyIdentifier>
 			<course>
-				<startDateOfThisCourse>2012-07-12-04:00</startDateOfThisCourse>
-				<endDateOfThisCourse>2012-07-15-04:00</endDateOfThisCourse>
-				<treatmentType>Treatment</treatmentType>
-				<treatmentAssignmentCode>TAC</treatmentAssignmentCode>
+				<startDateOfThisCourse>2011-07-01-04:00</startDateOfThisCourse>
+				<endDateOfThisCourse>2011-07-21-04:00</endDateOfThisCourse>
+				<treatmentAssignmentCode>TAC1</treatmentAssignmentCode>
 			</course>
 		</criteria>
 		<adverseEventsList>
@@ -46,13 +44,13 @@
 				<grade>3</grade>
 				<startDate>2012-07-10-04:00</startDate>
 				<endDate>2012-07-11-04:00</endDate>
-				<expected>true</expected>
-				<attributionSummary>POSSIBLE</attributionSummary>
+				<attributionSummary>371930009</attributionSummary>
+				<externalId>4adc1020-7b14-11db-9fe1-0800200c9a62</externalId>
 				<outcome>
-					<outComeEnumType>LIFE_THREATENING</outComeEnumType>
+					<outComeEnumType>440181000</outComeEnumType>
 				</outcome>
 				<outcome>
-					<outComeEnumType>HOSPITALIZATION</outComeEnumType>
+					<outComeEnumType>308540004</outComeEnumType>
 				</outcome>
 			</adverseEvent>
 			<adverseEvent>
@@ -61,10 +59,10 @@
 				<grade>4</grade>
 				<startDate>2012-07-10-04:00</startDate>
 				<endDate>2012-07-11-04:00</endDate>
-				<expected>true</expected>
-				<attributionSummary>DEFINITE</attributionSummary>
+				<externalId>4adc1020-7b14-11db-9fe1-0800200c9a64</externalId>
+				<attributionSummary>371930009</attributionSummary>
 				<outcome>
-					<outComeEnumType>CONGENITAL_ANOMALY</outComeEnumType>
+					<outComeEnumType>440181000</outComeEnumType>
 				</outcome>
 				<outcome>
 					<outComeEnumType>OTHER_SERIOUS</outComeEnumType>

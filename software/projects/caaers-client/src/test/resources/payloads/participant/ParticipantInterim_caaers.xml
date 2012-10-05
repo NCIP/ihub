@@ -37,10 +37,10 @@
 				<p:maidenName />
 				<p:middleName />
 				<p:birthDate>1967-01-31</p:birthDate>
-				<p:gender>Female</p:gender>
-				<p:race>White</p:race>
-				<p:ethnicity>Not Hispanic or Latino</p:ethnicity>
-				<p:activityStatus>Active</p:activityStatus>
+				<p:gender>F</p:gender>
+				<p:race>2106-3</p:race>
+				<p:ethnicity>2186-5</p:ethnicity>
+				<p:activityStatus>55561003</p:activityStatus>
 				<p:registrationDate>2011-07-22</p:registrationDate>
 				<p:identifiers>
 					<p:organizationAssignedIdentifier
@@ -81,7 +81,7 @@
 					</p:assignment>
 				</p:assignments>
 				<p:raceCollection>
-					<p:race>American Indian or Alaska Native</p:race>
+					<p:race>1002-5</p:race>
 				</p:raceCollection>
 			</p:participant>
 		</ns0:businessMessagePayload>
