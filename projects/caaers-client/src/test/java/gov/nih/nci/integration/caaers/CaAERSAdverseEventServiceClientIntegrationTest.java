@@ -124,7 +124,7 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
         try {
             final CreateProvisionalAdverseEventsResponse response = caAERSAdverseEventServiceWSClient
                     .createProvisionalAdverseEvents(adverseEventXMLStr);
-            assertEquals("Response code is NOT proper for CreateAEInvalidStartDateofAE.", "FAILED_TO_PROCESS", response
+            assertEquals("Response code is NOT proper for CreateAEInvalidStartDateofAE.", "PROCESSED", response
                     .getCaaersServiceResponse().getServiceResponse().getStatus().name());
         } catch (JAXBException e) {
             Assert.fail("JAXBException occured while calling createAEInvalidStartDateofAE. " + e);
@@ -140,7 +140,7 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
         try {
             final CreateProvisionalAdverseEventsResponse response = caAERSAdverseEventServiceWSClient
                     .createProvisionalAdverseEvents(adverseEventXMLStr);
-            assertEquals("Response code is NOT proper for CreateAEInvalidEndDateofAE.", "FAILED_TO_PROCESS", response
+            assertEquals("Response code is NOT proper for CreateAEInvalidEndDateofAE.", "PROCESSED", response
                     .getCaaersServiceResponse().getServiceResponse().getStatus().name());
         } catch (JAXBException e) {
             Assert.fail("JAXBException occured while calling createAEInvalidEndDateofAE. " + e);
@@ -157,7 +157,7 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
             final CreateProvisionalAdverseEventsResponse response = caAERSAdverseEventServiceWSClient
                     .createProvisionalAdverseEvents(adverseEventXMLStr);
             assertEquals("Response code is NOT proper for CreateAEInvalidStartEndDateCombinationofAE.",
-                    "FAILED_TO_PROCESS", response.getCaaersServiceResponse().getServiceResponse().getStatus().name());
+                    "PROCESSED", response.getCaaersServiceResponse().getServiceResponse().getStatus().name());
         } catch (JAXBException e) {
             Assert.fail("JAXBException occured while calling createAEInvalidStartEndDateCombinationofAE. " + e);
         }
@@ -167,32 +167,33 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
      * TestCase for Creating Adverse Event in caAERS when startDate of the Course is Invalid
      */
     @Test
-    public void createAEStartDateOfThisCourse() {
+    public void createAEInvalidStartDateOfThisCourse() {
         final String adverseEventXMLStr = getAEInvalidStartDateOfThisCourse();
         CreateProvisionalAdverseEventsResponse response = null;
         try {
             response = caAERSAdverseEventServiceWSClient.createProvisionalAdverseEvents(adverseEventXMLStr);
+            assertEquals("Response code is NOT proper for createAEInvalidEndDateOfThisCourse.", "PROCESSED", response
+                    .getCaaersServiceResponse().getServiceResponse().getStatus().name());
         } catch (JAXBException e) {
-            Assert.fail("JAXBException occured while calling createAEStartDateOfThisCourse. " + e);
+            Assert.fail("JAXBException occured while calling createAEInvalidStartDateOfThisCourse. " + e);
         } catch (SOAPFaultException e) {
-            LOG.debug("SOAPFaultException occured while calling createAEStartDateOfThisCourse. ", e);
-        }
-        assertNull(response);
+            LOG.debug("SOAPFaultException occured while calling createAEInvalidStartDateOfThisCourse. ", e);
+        }        
     }
 
     /**
      * TestCase for Creating Adverse Event in caAERS when endDate of the Course is Invalid
      */
     @Test
-    public void createAEEndDateOfThisCourse() {
+    public void createAEInvalidEndDateOfThisCourse() {
         final String adverseEventXMLStr = getAEInvalidEndDateOfThisCourse();
         try {
             final CreateProvisionalAdverseEventsResponse response = caAERSAdverseEventServiceWSClient
                     .createProvisionalAdverseEvents(adverseEventXMLStr);
-            assertEquals("Response code is NOT proper for CreateAEEndDateOfThisCourse.", "FAILED_TO_PROCESS", response
+            assertEquals("Response code is NOT proper for createAEInvalidEndDateOfThisCourse.", "PROCESSED", response
                     .getCaaersServiceResponse().getServiceResponse().getStatus().name());
         } catch (JAXBException e) {
-            Assert.fail("JAXBException occured while calling createAEEndDateOfThisCourse. " + e);
+            Assert.fail("JAXBException occured while calling createAEInvalidEndDateOfThisCourse. " + e);
         }
     }
 
@@ -206,7 +207,7 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
             final CreateProvisionalAdverseEventsResponse response = caAERSAdverseEventServiceWSClient
                     .createProvisionalAdverseEvents(adverseEventXMLStr);
             assertEquals("Response code is NOT proper for CreateAEStartDateGreaterThanEndDateOfThisCourse.",
-                    "FAILED_TO_PROCESS", response.getCaaersServiceResponse().getServiceResponse().getStatus().name());
+                    "PROCESSED", response.getCaaersServiceResponse().getServiceResponse().getStatus().name());
         } catch (JAXBException e) {
             Assert.fail("JAXBException occured while calling createAEStartDateGreaterThanEndDateOfThisCourse. " + e);
         }
@@ -243,7 +244,7 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
         } catch (SOAPFaultException e) {
             LOG.debug("SOAPFaultException occured while calling CreateAEInvalidAttributionType. ", e);
         }
-        assertEquals("Response code is NOT proper for createAEInvalidAttributionType.", "FAILED_TO_PROCESS", response
+        assertEquals("Response code is NOT proper for createAEInvalidAttributionType.", "PROCESSED", response
                 .getCaaersServiceResponse().getServiceResponse().getStatus().name());
     }
 

@@ -51,8 +51,7 @@ public class CaTissueParticipantStrategyTest {
      * 
      * @throws MalformedURLException - MalformedURLException
      * @throws BeansException - BeansException
-     */
-    @Test
+     */    
     @Before
     public void initialize() throws BeansException, MalformedURLException {
         caTissueParticipantClient = EasyMock.createMock(CaTissueParticipantClient.class);

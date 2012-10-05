@@ -59,7 +59,6 @@ public class CaTissueSpecimenTest {
      * @throws MalformedURLException - MalformedURLException
      * @throws BeansException - BeansException
      */
-    @Test
     @Before
     public void initialize() throws BeansException, MalformedURLException {
         writableAppService = org.easymock.EasyMock.createMock(CaTissueWritableAppService.class);

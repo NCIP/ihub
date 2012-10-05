@@ -46,8 +46,7 @@ public class CaTissueConsentTest {
      * To initialize the things
      * 
      * @throws IntegrationException - IntegrationException
-     */
-    @Test
+     */    
     @Before
     public void initialize() throws IntegrationException {
         caTissueConsentClient = new CaTissueConsentClient(caTissueLibLocation, catissueApiLoginName,

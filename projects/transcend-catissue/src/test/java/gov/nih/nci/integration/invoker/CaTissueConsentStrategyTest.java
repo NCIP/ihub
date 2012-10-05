@@ -51,8 +51,7 @@ public class CaTissueConsentStrategyTest {
      * 
      * @throws MalformedURLException - MalformedURLException
      * @throws BeansException - BeansException
-     */
-    @Test
+     */    
     @Before
     public void initialize() throws BeansException, MalformedURLException {
         caTissueConsentClient = EasyMock.createMock(CaTissueConsentClient.class);

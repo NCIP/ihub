@@ -43,8 +43,7 @@ public class XSLTTransformerTest {
      * Before Setup
      * 
      * @throws IntegrationException - IntegrationException
-     */
-    @Test
+     */    
     @Before
     public void intialize() throws IntegrationException {
         xsltTransformer.initTransformer(catissueParticipantXsl, baseXSLPath);
