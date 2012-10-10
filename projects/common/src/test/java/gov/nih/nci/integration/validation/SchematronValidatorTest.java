@@ -81,6 +81,28 @@ public class SchematronValidatorTest {
         closeStream(expOutputFileStream);
     }
 
+    /**
+     * Run the test when schematron xsl name is blank
+     * 
+     * @throws IOException - exception thrown if any
+     * @throws IntegrationException - exception thrown if any
+     */
+    @Test
+    public void invalidXslFileName() throws IOException {
+        final InputStream validXmlFileStream = getClass().getClassLoader().getResourceAsStream("schematron-test.xml");
+        final String xmlString = IOUtils.toString(validXmlFileStream);
+        Assert.assertNotNull(xmlString);
+        String output = null;
+        try {
+            validator.initTransformer("", xslBaseClassPath);
+            output = validator.validate(xmlString);
+        } catch (IntegrationException e) {
+        }
+
+        Assert.assertNull(output);
+        closeStream(validXmlFileStream);
+    }
+
     private void closeStream(Closeable s) {
         try {
             if (s != null) {

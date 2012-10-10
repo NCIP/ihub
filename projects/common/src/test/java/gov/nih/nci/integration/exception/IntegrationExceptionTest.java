@@ -19,4 +19,14 @@ public class IntegrationExceptionTest {
         IntegrationException ie = new IntegrationException(IntegrationError._1013, t, "P-id", "CP-id");
         assertEquals("Insufficient privileges to deregister participant P-id to study CP-id.", ie.getMessage());
     }
+    
+    /**
+     * msgFormat
+     */
+    @Test
+    public void msgTemplate() {
+        Throwable t = new Throwable("test throwable");// NOPMD
+        IntegrationException ie = new IntegrationException(IntegrationError._1013, t, null);
+        assertEquals("Insufficient privileges to deregister participant %1$s to study %2$s.", ie.getMessage());
+    }
 }

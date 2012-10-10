@@ -127,13 +127,13 @@ public class CaAERSParticipantTest {
         final ServiceResponse sr = new ServiceResponse();
         sr.setStatus(Status.PROCESSED);
         sr.setResponsecode("0");
-        caaersServiceResponse.setServiceResponse(sr);
+        csr.setServiceResponse(sr);
         gpr.setCaaersServiceResponse(csr);
 
         try {
+            EasyMock.expect(client.getParticipant((GetParticipant) org.easymock.EasyMock.anyObject())).andReturn(gpr);
             EasyMock.expect(client.updateParticipant((UpdateParticipant) org.easymock.EasyMock.anyObject())).andReturn(
                     response);
-            EasyMock.expect(client.getParticipant((GetParticipant) org.easymock.EasyMock.anyObject())).andReturn(gpr);
             EasyMock.replay(client);
 
             caAERSParticipantServiceClient.updateParticipant(participantXMLStr);
@@ -151,7 +151,16 @@ public class CaAERSParticipantTest {
     @Test
     public void updateParticipantOffStudy() throws MalformedURLException, JAXBException {
         final String participantXMLStr = getParticipantOffStudyString();
+        final GetParticipantResponse gpr = new GetParticipantResponse();
+        final CaaersServiceResponse csr = new CaaersServiceResponse();
+        final ServiceResponse sr = new ServiceResponse();
+        sr.setStatus(Status.PROCESSED);
+        sr.setResponsecode("0");
+        csr.setServiceResponse(sr);
+        gpr.setCaaersServiceResponse(csr);
         try {
+            EasyMock.expect(client.getParticipant((GetParticipant) org.easymock.EasyMock.anyObject())).andReturn(gpr);
+            EasyMock.replay(client);
             caAERSParticipantServiceClient.updateParticipant(participantXMLStr);
         } catch (Exception e) {
             LOG.error("Exception occured : " + e);
@@ -164,7 +173,7 @@ public class CaAERSParticipantTest {
      * @throws JAXBException - JAXBException
      * @throws MalformedURLException - MalformedURLException
      */
-    // @Test
+    @Test
     public void deleteParticipant() throws MalformedURLException, JAXBException {
         final String participantXMLStr = getPStr();
         final DeleteParticipantResponse response = new DeleteParticipantResponse();

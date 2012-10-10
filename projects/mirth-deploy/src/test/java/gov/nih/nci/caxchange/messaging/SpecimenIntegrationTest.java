@@ -157,34 +157,6 @@ public class SpecimenIntegrationTest {
         }
     }
 
-    /**
-     * Testcase for Create Specimen when specimen already exists in caTissue
-     */
-    @Test
-    public void createExistingSpecimens() {
-        try {
-            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            final StringEntity reqentity = new StringEntity(getInsertExistingSpecimenXMLStr());
-            httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
-
-            final HttpResponse response = httpclient.execute(httppost);
-            final HttpEntity entity = response.getEntity();
-
-            String createdXML = null;
-
-            if (entity != null) {
-                createdXML = EntityUtils.toString(entity);
-                Assert.assertEquals(true, createdXML.contains("<errorCode>1080</errorCode>"));
-            }
-        } catch (ClientProtocolException e) {
-            Assert.fail(e.getMessage());
-        } catch (IllegalStateException e) {
-            Assert.fail(e.getMessage());
-        } catch (IOException e) {
-            Assert.fail(e.getMessage());
-        }
-    }
 
     /**
      * Testcase for Update Specimen
@@ -273,6 +245,36 @@ public class SpecimenIntegrationTest {
         }
     }
 
+    /**
+     * Testcase for Rollback Created Specimen
+     */
+    @Test
+    public void rollbackCreatedSpecimen() {
+        try {
+            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
+            final String xmlString = getRollbackCreatedSpecimenXMLStr();
+            final StringEntity reqentity = new StringEntity(xmlString);
+            httppost.setEntity(reqentity);
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
+
+            final HttpResponse response = httpclient.execute(httppost);
+            final HttpEntity entity = response.getEntity();
+
+            String createdXML = null;
+
+            if (entity != null) {
+                createdXML = EntityUtils.toString(entity);
+                Assert.assertEquals(true, createdXML.contains("<responseStatus>FAILURE</responseStatus>"));
+            }
+        } catch (ClientProtocolException e) {
+            Assert.fail(e.getMessage());
+        } catch (IllegalStateException e) {
+            Assert.fail(e.getMessage());
+        } catch (IOException e) {
+            Assert.fail(e.getMessage());
+        }
+    }
+
     private String getInsertInvalidCollectionProtocolXMLStr() {
         return getXMLString("CreateSpecimenInvalidCollectionProtocol_inbound.xml");
     }
@@ -289,10 +291,7 @@ public class SpecimenIntegrationTest {
         return getXMLString("CreateSpecimen_inbound.xml");
     }
 
-    private String getInsertExistingSpecimenXMLStr() {
-        return getXMLString("CreateExistingSpecimen_inbound.xml");
-    }
-
+ 
     private String getUpdateSpecimenXMLStr() {
         return getXMLString("UpdateSpecimen_inbound.xml");
     }
@@ -303,6 +302,10 @@ public class SpecimenIntegrationTest {
 
     private String getUpdateSpecimenCollectionProtocolChangeXMLStr() {
         return getXMLString("UpdateSpecimenCollectionProtocolChange_inbound.xml");
+    }
+
+    private String getRollbackCreatedSpecimenXMLStr() {
+        return getXMLString("RollbackCreatedSpecimen_inbound.xml");
     }
 
     private String getXMLString(String fileName) {
