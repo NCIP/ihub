@@ -214,11 +214,19 @@
 	<!-- format the date 19670131 (or 20110722085054 ) to 1967-01-31 -->
 	<xsl:template name="show-dateTime">
 		<xsl:param name="dateTime" />
-		<xsl:value-of select="substring($dateTime,1,4)" />
-		<xsl:value-of select="'-'" />
-		<xsl:value-of select="substring($dateTime,5,2)" />
-		<xsl:value-of select="'-'" />
-		<xsl:value-of select="substring($dateTime,7,2)" />
+		<xsl:choose>
+			<xsl:when test="string-length($dateTime)=0">
+				<xsl:text></xsl:text>
+			</xsl:when>
+			<xsl:when test="string-length($dateTime)!=0">
+				<xsl:value-of select="substring($dateTime,1,4)" />
+				<xsl:value-of select="'-'" />
+				<xsl:value-of select="substring($dateTime,5,2)" />
+				<xsl:value-of select="'-'" />
+				<xsl:value-of select="substring($dateTime,7,2)" />
+			</xsl:when>
+		</xsl:choose>
+
 	</xsl:template>
 
 	<!-- show-id -->
