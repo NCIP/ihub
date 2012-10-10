@@ -74,6 +74,8 @@ public class CaTissueSpecimenClient {
     private static final String INVALID_BIOPSY_TYPE = "The value for \'Guidance for breast core biopsy\' is invalid.";
     private static final String BIOPSY_REQUIRED = "Guidance for breast core biopsy is required.";
 
+    private static final String XLS_TRANSFORMATION_EXP = "Exception occurred while XSL transformation.";
+
     /**
      * Constructor
      * 
@@ -217,8 +219,18 @@ public class CaTissueSpecimenClient {
      * @param specimenListXMLStr
      * @return
      */
-    private Specimens parseSpecimenListXML(String specimenListXMLStr) {
-        return (Specimens) xStream.fromXML(new StringReader(specimenListXMLStr));
+    private Specimens parseSpecimenListXML(String specimenListXMLStr) throws ApplicationException {
+        Specimens specimens = null;
+        try {
+            specimens = (Specimens) xStream.fromXML(new StringReader(specimenListXMLStr));
+            // CHECKSTYLE:OFF
+        } catch (Exception e) { // NOPMD
+            // CHECKSTYLE:ON
+            LOG.error(XLS_TRANSFORMATION_EXP + e.getCause(), e);
+            throw new ApplicationException(XLS_TRANSFORMATION_EXP + e.getCause(), e);
+        }
+
+        return specimens;
     }
 
     /**
