@@ -183,7 +183,7 @@
 															<specimenRole>
 																<!--CDMS Specimen ID, assigned by the TRANSCEND CDMS -->
 																<id root="fbfe4b85-2bdc-4305-88be-3e1b763d8caa"
-																	extension="017" />
+																	extension="019" />
 																<!--Specimen Class -->
 																<specimenPlayingEntity>
 																	<code code="119376003" codeSystem="2.16.840.1.113883.6.96"
@@ -198,7 +198,7 @@
 																<templateId root="2.16.840.1.113883.10.20.22.4.37"
 																	assigningAuthorityName="HL7 CCDA" />
 																<!--Barcode (Unique Device Identification (UDI)) -->
-																<id root="12345" extension="017" />
+																<id root="12345" extension="019" />
 																<playingDevice>
 																	<!--Code to identify the specimen Container -->
 																	<code nullFlavor="NA">
