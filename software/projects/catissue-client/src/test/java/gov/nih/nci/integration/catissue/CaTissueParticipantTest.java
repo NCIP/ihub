@@ -1,9 +1,12 @@
 package gov.nih.nci.integration.catissue;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import edu.wustl.catissuecore.cacore.CaTissueWritableAppService;
 import edu.wustl.catissuecore.domain.CollectionProtocol;
 import edu.wustl.catissuecore.domain.CollectionProtocolRegistration;
+import edu.wustl.catissuecore.domain.ConsentTier;
+import edu.wustl.catissuecore.domain.ConsentTierResponse;
 import edu.wustl.catissuecore.domain.Participant;
 import edu.wustl.catissuecore.domain.Race;
 import edu.wustl.catissuecore.factory.CollectionProtocolFactory;
@@ -23,7 +26,9 @@ import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
@@ -54,7 +59,7 @@ public class CaTissueParticipantTest {
      * 
      * @throws MalformedURLException - MalformedURLException
      * @throws BeansException - BeansException
-     */    
+     */
     @Before
     public void initialize() throws BeansException, MalformedURLException {
         writableAppService = org.easymock.EasyMock.createMock(CaTissueWritableAppService.class);
@@ -65,15 +70,27 @@ public class CaTissueParticipantTest {
 
     /**
      * Mock Testcase for Register Participant
+     * 
+     * @throws ParseException
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void registerParticipant() {
+    public void registerParticipant() throws ParseException {
         String retXMLString = "";
         final CollectionProtocol collectionProtocol = new CollectionProtocol();
         collectionProtocol.setTitle("6482:6482");
         collectionProtocol.setShortTitle("6482:6482");
-        final Participant participant = new Participant();
+        final ConsentTier consentTier = new ConsentTier();
+        consentTier.setId(1L);
+        consentTier.setStatement("Statement");
+        final Collection<ConsentTier> consentTierCollection = new HashSet<ConsentTier>();
+        consentTierCollection.add(consentTier);
+        collectionProtocol.setConsentTierCollection(consentTierCollection);
+
+        // final Participant participant = new Participant();
+
+        final Participant participant = getParticipant();
+        final String participantXML = caTissueParticipantClient.getxStream().toXML(participant);
 
         try {
             EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
@@ -84,7 +101,7 @@ public class CaTissueParticipantTest {
                     participant);
             EasyMock.replay(caTissueAPIClient);
 
-            caTissueParticipantClient.registerParticipantFromXML(getParticipantXMLStr());
+            caTissueParticipantClient.registerParticipantFromXML(participantXML);
 
             retXMLString = "REGISTER_PARTICIPANT";
         } catch (ApplicationException e) {
@@ -92,6 +109,7 @@ public class CaTissueParticipantTest {
             retXMLString = "REGISTER_PARTICIPANT_FAILED";
         }
         assertNotNull(retXMLString);
+        assertEquals(retXMLString, "REGISTER_PARTICIPANT");
     }
 
     /**
@@ -101,16 +119,9 @@ public class CaTissueParticipantTest {
     @Test
     public void registerParticipantForLastNameNULL() {
         String retXMLString = "";
-        final CollectionProtocol collectionProtocol = new CollectionProtocol();
-        collectionProtocol.setTitle("6482:6482");
-        collectionProtocol.setShortTitle("6482:6482");
         final Participant participant = new Participant();
-
         try {
             EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
-            EasyMock.expect(
-                    caTissueAPIClient.searchById((Class<CollectionProtocol>) EasyMock.anyObject(),
-                            (CollectionProtocol) org.easymock.EasyMock.anyObject())).andReturn(collectionProtocol);
             EasyMock.expect(caTissueAPIClient.insert((Participant) org.easymock.EasyMock.anyObject())).andReturn(
                     participant);
             EasyMock.replay(caTissueAPIClient);
@@ -119,10 +130,12 @@ public class CaTissueParticipantTest {
 
             retXMLString = "REGISTER_PARTICIPANT";
         } catch (ApplicationException e) {
-            LOG.error("CaTissueParticipantTest-ApplicationException inside registerParticipantForBlankSSN() ", e);
+            LOG.error("CaTissueParticipantTest-ApplicationException inside registerParticipantForLastNameNULL() ", e);
             retXMLString = "REGISTER_PARTICIPANT_FAILED";
         }
-        assertNotNull(retXMLString);
+
+        assertEquals(retXMLString, "REGISTER_PARTICIPANT_FAILED");
+
     }
 
     /**
@@ -134,12 +147,7 @@ public class CaTissueParticipantTest {
     @Test
     public void updateParticipantRegistration() throws ParseException {
         String retXMLString = "";
-        final CollectionProtocol collectionProtocol = new CollectionProtocol();
-        collectionProtocol.setTitle("6482:6482");
-        collectionProtocol.setShortTitle("6482:6482");
-
         final Participant participant = getParticipant();
-
         final String participantXML = caTissueParticipantClient.getxStream().toXML(participant);
 
         final List<Object> participantList = new ArrayList<Object>();
@@ -147,25 +155,21 @@ public class CaTissueParticipantTest {
 
         try {
             EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
-            EasyMock.expect(
-                    caTissueAPIClient.searchById((Class<CollectionProtocol>) EasyMock.anyObject(),
-                            (CollectionProtocol) org.easymock.EasyMock.anyObject())).andReturn(collectionProtocol);
             EasyMock.expect(caTissueAPIClient.update((Participant) org.easymock.EasyMock.anyObject())).andReturn(
                     participant);
             EasyMock.expect(writableAppService.query((CQLQuery) org.easymock.EasyMock.anyObject())).andReturn(
                     participantList);
-
             EasyMock.replay(caTissueAPIClient);
             EasyMock.replay(writableAppService);
 
             caTissueParticipantClient.updateParticipantRegistrationFromXML(participantXML);
-
             retXMLString = "UPDATE_PARTICIPANT_REGISTRATION";
         } catch (ApplicationException e) {
-            LOG.error("CaTissueParticipantTest-ApplicationException inside registerParticipant() ", e);
+            LOG.error("CaTissueParticipantTest-ApplicationException inside updateParticipantRegistration() ", e);
             retXMLString = "UPDATE_PARTICIPANT_REGISTRATION_FAILED";
         }
-        assertNotNull(retXMLString);
+
+        assertEquals(retXMLString, "UPDATE_PARTICIPANT_REGISTRATION");
     }
 
     /**
@@ -175,28 +179,17 @@ public class CaTissueParticipantTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void updateParticipantRegistrationParticipantNotFound() throws ParseException {
+    public void updateRegistrationParticipantNotFound() throws ParseException {
         String retXMLString = "";
-        final CollectionProtocol collectionProtocol = new CollectionProtocol();
-        collectionProtocol.setTitle("6482:6482");
-        collectionProtocol.setShortTitle("6482:6482");
-
         final Participant participant = getParticipant();
-
         final String participantXML = caTissueParticipantClient.getxStream().toXML(participant);
-
         final List<Object> participantList = null; // to replicate the scenario of participant not found
-
         try {
             EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
-            EasyMock.expect(
-                    caTissueAPIClient.searchById((Class<CollectionProtocol>) EasyMock.anyObject(),
-                            (CollectionProtocol) org.easymock.EasyMock.anyObject())).andReturn(collectionProtocol);
             EasyMock.expect(caTissueAPIClient.update((Participant) org.easymock.EasyMock.anyObject())).andReturn(
                     participant);
             EasyMock.expect(writableAppService.query((CQLQuery) org.easymock.EasyMock.anyObject())).andReturn(
                     participantList);
-
             EasyMock.replay(caTissueAPIClient);
             EasyMock.replay(writableAppService);
 
@@ -204,10 +197,70 @@ public class CaTissueParticipantTest {
 
             retXMLString = "UPDATE_PARTICIPANT_REGISTRATION";
         } catch (ApplicationException e) {
-            LOG.error("CaTissueParticipantTest-ApplicationException inside registerParticipant() ", e);
+            LOG.error("CaTissueParticipantTest-ApplicationException inside updateRegistrationParticipantNotFound() ", e);
             retXMLString = "UPDATE_PARTICIPANT_REGISTRATION_FAILED";
         }
         assertNotNull(retXMLString);
+        assertEquals(retXMLString, "UPDATE_PARTICIPANT_REGISTRATION_FAILED");
+    }
+
+    /**
+     * Mock Testcase for Update Participant Registration when LastName is NULL
+     * 
+     * @throws ParseException - ParseException
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void updateRegistrationLastNameNULL() throws ParseException {
+        String retXMLString = "";
+        final String participantXML = getParticipantXMLStrForLastNameNULL();
+        try {
+            EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
+            EasyMock.replay(caTissueAPIClient);
+            EasyMock.replay(writableAppService);
+
+            caTissueParticipantClient.updateParticipantRegistrationFromXML(participantXML);
+            retXMLString = "UPDATE_PARTICIPANT_REGISTRATION";
+        } catch (ApplicationException e) {
+            LOG.error("CaTissueParticipantTest-ApplicationException inside updateRegistrationLastNameNULL() ", e);
+            retXMLString = "UPDATE_PARTICIPANT_REGISTRATION_FAILED";
+        }
+
+        assertEquals(retXMLString, "UPDATE_PARTICIPANT_REGISTRATION_FAILED");
+    }
+
+    /**
+     * Mock Testcase for Update Participant Registration when the Study is changed
+     * 
+     * @throws ParseException - ParseException
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void updateRegistrationStudyChanged() throws ParseException {
+        String retXMLString = "";
+        final Participant participant = getParticipant();
+        String participantXML = caTissueParticipantClient.getxStream().toXML(participant);
+        participantXML = participantXML.replaceAll("6482:6482", "6482_123:6482_123");
+
+        final List<Object> participantList = new ArrayList<Object>();
+        participantList.add(participant);
+        try {
+            EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
+            EasyMock.expect(caTissueAPIClient.update((Participant) org.easymock.EasyMock.anyObject())).andReturn(
+                    participant);
+            EasyMock.expect(writableAppService.query((CQLQuery) org.easymock.EasyMock.anyObject())).andReturn(
+                    participantList);
+            EasyMock.replay(caTissueAPIClient);
+            EasyMock.replay(writableAppService);
+
+            caTissueParticipantClient.updateParticipantRegistrationFromXML(participantXML);
+            retXMLString = "UPDATE_PARTICIPANT_REGISTRATION";
+        } catch (ApplicationException e) {
+            LOG.error("CaTissueParticipantTest-ApplicationException inside updateRegistrationStudyChanged() ", e);
+            retXMLString = "UPDATE_PARTICIPANT_REGISTRATION_FAILED";
+        }
+
+        assertEquals(retXMLString, "UPDATE_PARTICIPANT_REGISTRATION_FAILED");
     }
 
     /**
@@ -225,7 +278,6 @@ public class CaTissueParticipantTest {
         participantList.add(participant);
 
         final CollectionProtocolRegistration cpr = new CollectionProtocolRegistration();
-
         try {
             EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
             EasyMock.expect(
@@ -235,7 +287,6 @@ public class CaTissueParticipantTest {
                     participant);
             EasyMock.expect(writableAppService.query((CQLQuery) org.easymock.EasyMock.anyObject())).andReturn(
                     participantList);
-
             EasyMock.replay(caTissueAPIClient);
             EasyMock.replay(writableAppService);
 
@@ -243,7 +294,7 @@ public class CaTissueParticipantTest {
 
             retXMLString = "DELETE_PARTICIPANT_REGISTRATION";
         } catch (ApplicationException e) {
-            LOG.error("CaTissueParticipantTest-ApplicationException inside registerParticipant() ", e);
+            LOG.error("CaTissueParticipantTest-ApplicationException inside deleteParticipant() ", e);
             retXMLString = "DELETE_PARTICIPANT_REGISTRATION_FAILED";
         }
         assertNotNull(retXMLString);
@@ -269,14 +320,14 @@ public class CaTissueParticipantTest {
         race.setRaceName("White");
         participant.getRaceCollection().add(race);
         participant.getCollectionProtocolRegistrationCollection().add(initCollectionProtocolRegistration(participant));
+
         return participant;
     }
 
     private CollectionProtocolRegistration initCollectionProtocolRegistration(Participant participant) {
-
         final CollectionProtocolFactory cpFact = CollectionProtocolFactory.getInstance();
         final CollectionProtocol cp = cpFact.createObject();
-        final String cpTitle = "CP-01";
+        final String cpTitle = "6482:6482";
         cp.setTitle(cpTitle);
         cp.setShortTitle(cpTitle);
 
@@ -289,7 +340,14 @@ public class CaTissueParticipantTest {
         collectionProtocolRegistration.setRegistrationDate(new Date());
         collectionProtocolRegistration.setConsentSignatureDate(new Date());
         collectionProtocolRegistration.setProtocolParticipantIdentifier("123050608");
+
+        collectionProtocolRegistration.setConsentTierResponseCollection(getConsentTierResponseCollection());
         return collectionProtocolRegistration;
+    }
+
+    private Collection<ConsentTierResponse> getConsentTierResponseCollection() {
+        final Collection<ConsentTierResponse> ctrColl = new HashSet<ConsentTierResponse>();
+        return ctrColl;
     }
 
     private String getParticipantXMLStr() {

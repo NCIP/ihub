@@ -107,37 +107,6 @@ public class RegistrationIntegrationTest {
         }
     }
 
-    /**
-     * Testcase for sending duplicate message for participant registration
-     */
-    @Test
-    public void sendDuplicateRegistrationMessage() {
-        try {
-            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            final StringEntity reqentity = new StringEntity(getCreateMsg());
-            httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
-
-            final HttpResponse response = httpclient.execute(httppost);
-            final HttpEntity entity = response.getEntity();
-            if (entity != null) {
-                final String output = EntityUtils.toString(entity);
-                Assert.assertNotNull(output);
-
-                Assert.assertEquals(
-                        true,
-                        output.contains("<errorCode>1014</errorCode>")
-                                || output.contains("<errorCode>1032</errorCode>")
-                                || output.contains("<responseStatus>FAILURE</responseStatus>"));
-            }
-        } catch (ClientProtocolException e) {
-            Assert.fail(e.getMessage());
-        } catch (IllegalStateException e) {
-            Assert.fail(e.getMessage());
-        } catch (IOException e) {
-            Assert.fail(e.getMessage());
-        }
-    }
 
     /**
      * Testcase for sending invalid Study (Study Not Present) during Participant registration
