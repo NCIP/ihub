@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.ConversionException;
 import com.thoughtworks.xstream.converters.basic.DateConverter;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
@@ -46,6 +47,8 @@ public class CaTissueParticipantClient {
     private CaTissueAPIClientWithRegularAuthentication caTissueAPIClient;
     private static final String DISABLED = "Disabled";
     private final XStream xStream = new XStream(new StaxDriver());
+
+    private static final String XLS_TRANSFORMATION_EXP = "Exception occurred while XSL transformation.";
 
     /**
      * Constructor
@@ -112,10 +115,30 @@ public class CaTissueParticipantClient {
      * Parses Participant from xml
      * 
      * @param participantXMLStr - Participant as XML String
+     * @throws ApplicationException - ApplicationException
      * @return instance of Participant
      */
-    public Participant parseParticipant(String participantXMLStr) {
-        return (Participant) xStream.fromXML(new StringReader(participantXMLStr));
+    public Participant parseParticipant(String participantXMLStr) throws ApplicationException {
+        Participant participant = null;
+        try {
+            participant = (Participant) xStream.fromXML(new StringReader(participantXMLStr));
+        } catch (ConversionException ce) {
+            if (ce.getMessage().contains("Cannot parse date")) {
+                LOG.error("Exception occurred while performing XSL transformation on Date field.", ce);
+                throw new ApplicationException("Exception occurred while performing XSL transformation on Date field.",
+                        ce);
+            } else {
+                LOG.error(XLS_TRANSFORMATION_EXP + ce.getCause(), ce);
+                throw new ApplicationException(XLS_TRANSFORMATION_EXP + ce.getCause(), ce);
+            }
+            // CHECKSTYLE:OFF
+        } catch (Exception e) { // NOPMD
+            // CHECKSTYLE:ON
+            LOG.error(XLS_TRANSFORMATION_EXP + e.getCause(), e);
+            throw new ApplicationException(XLS_TRANSFORMATION_EXP + e.getCause(), e);
+        }
+
+        return participant;
     }
 
     /**

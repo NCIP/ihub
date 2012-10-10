@@ -38,6 +38,7 @@ public class CaTissueConsentClient {
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueConsentClient.class);
     private CaTissueAPIClientWithRegularAuthentication caTissueAPIClient;
     private final XStream xStream = new XStream(new StaxDriver());
+    private static final String XLS_TRANSFORMATION_EXP = "Exception occurred while XSL transformation.";
 
     /**
      * Constructor
@@ -285,8 +286,17 @@ public class CaTissueConsentClient {
      * @param specimenListXMLStr
      * @return
      */
-    private Consents parseConsentsListXML(String consentsListXMLStr) {
-        return (Consents) xStream.fromXML(new StringReader(consentsListXMLStr));
+    private Consents parseConsentsListXML(String consentsListXMLStr) throws ApplicationException {
+        Consents consents = null;
+        try {
+            consents = (Consents) xStream.fromXML(new StringReader(consentsListXMLStr));
+            // CHECKSTYLE:OFF
+        } catch (Exception e) { // NOPMD
+            // CHECKSTYLE:ON
+            LOG.error(XLS_TRANSFORMATION_EXP + e.getCause(), e);
+            throw new ApplicationException(XLS_TRANSFORMATION_EXP + e.getCause(), e);
+        }
+        return consents;
     }
 
     /**
