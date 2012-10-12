@@ -54,8 +54,8 @@
     </target>
 	
 	<target name="deploy-mc" description="Will deploy to mirth connect." depends="resolve-client-lib">		
-		<delete dir="${mirth.home}/caaers-client-lib" includes="*.jar"/>
 		<mkdir dir="${mirth.home}/caaers-client-lib"/>
+		<delete dir="${mirth.home}/caaers-client-lib" includes="*.jar"/>		
 		<copy todir="${mirth.home}/caaers-client-lib" includeemptydirs="true">
 			<fileset dir="${build.dir}/caaers-client-lib/" includes="*.jar"></fileset>
 			<fileset dir="${dist.dir}" includes="*.jar"></fileset>
