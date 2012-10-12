@@ -18,7 +18,7 @@ public class CustomUrlClassloaderTest {
      */
     @Test
     public void emptyCustomFolder() throws MalformedURLException, ClassNotFoundException {
-        CustomUrlClassLoader ccl = new CustomUrlClassLoader("common-lib/");
+        CustomUrlClassLoader ccl = new CustomUrlClassLoader("./build/test-classes/custom-dir/");
         Assert.assertTrue(ccl.getURLs().length > 0);
 
         Assert.assertEquals(CustomUrlClassLoader.class, ccl
