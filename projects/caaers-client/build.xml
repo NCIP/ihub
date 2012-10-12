@@ -27,15 +27,21 @@
 		<generateWsdlSources genSrcDir="${generated.src.dir}" package="" wsdlLocation="${main.src.resources}/wsdl/AdverseEventManagementService.wsdl"/>
 	</target>
 	
+	<!-- overwrite etc libs to resolve client lib jars reqd by caaers client -->
+	<target name="resolve-etc-libs" unless="already.etc.libs.resolved" description="resolves extra libs needed for that project">	
+		<antcall target="resolve-client-lib"/>
+	</target>
+	
 	<!-- ======================================================== 
 	          target: resolve-client-lib     
 	    	============================================================ -->
-	<target name="resolve-client-lib" depends="init, load-ivy" 
+	<target name="resolve-client-lib" depends="init, load-ivy" unless="already.client.lib.resolved"
 		description="--> resolve and retrieve 'client' dependencies with ivy">
 		<echo message="Executing ${ant.project.name} : resolve-client-lib" />
 		<delete dir="${build.dir}/caaers-client-lib" includes="*.jar"/>
 		<mkdir dir="${build.dir}/caaers-client-lib"/>
 		<ivyResolve confs="client" libdir="${build.dir}/caaers-client-lib" resolveid="[org]-[module]"/>
+		<property name="already.client.lib.resolved" value="true"/>
 	</target>
 	
 	<target name="deploy.resources" description="Will deploy supporting resources">
@@ -47,9 +53,9 @@
 		</copy>
     </target>
 	
-	<target name="deploy-mc" description="Will deploy to mirth connect." depends="resolve-client-lib">
-		<mkdir dir="${mirth.home}/caaers-client-lib"/>
+	<target name="deploy-mc" description="Will deploy to mirth connect." depends="resolve-client-lib">		
 		<delete dir="${mirth.home}/caaers-client-lib" includes="*.jar"/>
+		<mkdir dir="${mirth.home}/caaers-client-lib"/>
 		<copy todir="${mirth.home}/caaers-client-lib" includeemptydirs="true">
 			<fileset dir="${build.dir}/caaers-client-lib/" includes="*.jar"></fileset>
 			<fileset dir="${dist.dir}" includes="*.jar"></fileset>
