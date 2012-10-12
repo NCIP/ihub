@@ -106,6 +106,9 @@ function convertIntegrationExceptionToMsgBCError(intgExcptn) {
 // one function per template is recommended. i.e.) create a new code template for each new function.
 function convertMsgBCErrorToCaCISError(msgBCErrorStr) {
 	var cacisError = msgBCErrorStr.replace(&quot;MessageBroadcasterError&quot;, &quot;caCISError&quot;);
+	// changing to  match the caCIS error types.
+	cacisError = cacisError.replace(&quot;UNKNOWN&quot;, &quot;TRANSMISSION&quot;);
+	cacisError = cacisError.replace(&quot;TRANSFORMATION&quot;, &quot;TRANSMISSION&quot;);
 
 	cacisError = &quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot; standalone=\&quot;yes\&quot;?&gt;&quot; +
 		&quot;&lt;caCISFault xmlns=\&quot;http://cacis.nci.nih.gov\&quot;&gt;&quot; + cacisError + &quot;&lt;/caCISFault&gt;&quot;;
