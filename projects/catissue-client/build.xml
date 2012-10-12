@@ -22,9 +22,9 @@
         <echo message="================================================================================" />
     </target>
 	
-	<target name="deploy-mc" description="Will deploy to mirth connect.">		
+	<target name="deploy-mc" description="Will deploy to mirth connect.">	
+		<mkdir dir="${mirth.home}/catissue-client-lib"/>	
 		<delete dir="${mirth.home}/catissue-client-lib" includes="*.jar"/>
-		<mkdir dir="${mirth.home}/catissue-client-lib"/>
 		<copy todir="${mirth.home}/catissue-client-lib" includeemptydirs="true">
 			<fileset dir="${basedir}/catissue-client-lib/" includes="*.jar"></fileset>
 			<fileset dir="${dist.dir}" includes="*.jar"></fileset>
