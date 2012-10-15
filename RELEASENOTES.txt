@@ -1,9 +1,11 @@
 Release Notes:
 
-Version: CDA_RC1_M1
-Release Date: Aug 21st 2012
-SVN Tag: https://ncisvn.nci.nih.gov/svn/iHub/tags/CDA_RC1_M1
-Deployment Guide: https://wiki.nci.nih.gov/display/Suite/Transcend-IHub+deployment+guide
+Version: CDA_RC1_M4
+Release Date: Oct 15th 2012
+SVN Tag: https://ncisvn.nci.nih.gov/svn/iHub/tags/CDA_RC1_M4
+Deployment Guide: 
+	1) https://wiki.nci.nih.gov/display/Suite/Transcend-iHub+deployment+guide+%28with+cacis%29
+	2) https://wiki.nci.nih.gov/display/Suite/Transcend-iHub+deployment+guide+%28standalone%29
 
 Release Notes:
-https://wiki.nci.nih.gov/display/Suite/Transcend-iHub+-+CDA_RC1_M1+Release+Notes
+https://wiki.nci.nih.gov/display/Suite/Transcend-iHub+-+CDA_RC1_M4+Release+Notes
