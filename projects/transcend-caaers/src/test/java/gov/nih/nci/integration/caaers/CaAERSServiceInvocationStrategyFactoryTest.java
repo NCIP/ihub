@@ -31,8 +31,8 @@ public class CaAERSServiceInvocationStrategyFactoryTest {
 
     @Test
     public void createCaAERSServiceInvocationStrategy() {
-        final File customLibLoc = new File("..\\caaers-client\\build\\caaers-client-lib\\");
-        final File distLoc = new File("..\\caaers-client\\build\\dist\\");
+        final File customLibLoc = new File("../caaers-client/caaers-client-lib/");
+        final File distLoc = new File("../caaers-client/build/dist/");
         final ServiceInvocationStrategy sris = CaAERSServiceInvocationStrategyFactory
                 .createCaAERSRegistrationServiceInvocationStrategy(new String[] { customLibLoc.getAbsolutePath(),
                         distLoc.getAbsolutePath() }, "classpath*:applicationContext-caaers-client-test.xml");
@@ -62,8 +62,8 @@ public class CaAERSServiceInvocationStrategyFactoryTest {
      */
     @Test
     public void createCaAERSAdverseEventServiceInvocationStrategy() {
-        final File customLibLoc = new File("..\\caaers-client\\build\\caaers-client-lib\\");
-        final File distLoc = new File("..\\caaers-client\\build\\dist\\");
+        final File customLibLoc = new File("../caaers-client/caaers-client-lib/");
+        final File distLoc = new File("../caaers-client/build/dist/");
         final ServiceInvocationStrategy saeis = CaAERSServiceInvocationStrategyFactory
                 .createCaAERSAdverseEventServiceInvocationStrategy(new String[] { customLibLoc.getAbsolutePath(),
                         distLoc.getAbsolutePath() }, "classpath*:applicationContext-caaers-client-test.xml");
@@ -75,8 +75,8 @@ public class CaAERSServiceInvocationStrategyFactoryTest {
      */
     @Test
     public void createCaAERSAdverseEventServiceInvocationStrategyFailure() {
-        final File customLibLoc = new File("..\\caaers-client\\caaers-client-lib\\");// This Path doesn't exist
-        final File distLoc = new File("..\\caaers-client\\build\\dist\\");
+        final File customLibLoc = new File("../caaers-client/caaers-client-lib-123/");// This Path doesn't exist
+        final File distLoc = new File("../caaers-client/build/dist/");
         CaAERSServiceInvocationStrategyFactory.setInitStatus(null);
         final ServiceInvocationStrategy saeis = CaAERSServiceInvocationStrategyFactory
                 .createCaAERSAdverseEventServiceInvocationStrategy(new String[] { customLibLoc.getAbsolutePath(),
