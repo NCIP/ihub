@@ -780,7 +780,10 @@
 				target: cobertura-check                                            
 		============================================================== -->
 	<condition property="skip.cobertura.check" value="true">
-		<isfalse value="${run.cobertura.check}"/>
+		<or>
+			<isfalse value="${run.cobertura.check}"/>
+			<istrue value="${skip.test}"/>
+		</or>
 	</condition>
 	<target name="cobertura-check" unless="skip.cobertura.check" description="-> Will check the corbetura coverage rate">
 			<taskdef resource="tasks.properties" classpathref="test.lib.classpath" />
