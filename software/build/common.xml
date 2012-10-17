@@ -164,7 +164,7 @@
 			<mkdir dir="${test.results.dir}" />
 			
 			<junit printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" 
-				showoutput="false" outputtoformatters="false" fork="true" forkmode="once" timeout="600000" 
+				showoutput="false" outputtoformatters="true" fork="true" forkmode="once" timeout="600000" 
 				dir="${basedir}">
 							
 				<classpath location="${instrumented.classes.dir}" />
@@ -740,7 +740,7 @@
 		<mkdir dir="${test.results.dir}" />
 				
 		<junit printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" 
-			showoutput="false" outputtoformatters="false" fork="true" forkmode="once" timeout="600000" 
+			showoutput="false" outputtoformatters="true" fork="true" forkmode="once" timeout="600000" 
 			dir="${basedir}">
 						
 			<classpath location="${instrumented.classes.dir}" />
