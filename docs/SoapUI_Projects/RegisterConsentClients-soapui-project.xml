@@ -159,12 +159,7 @@
             <mes:credentials>
                <!--You have a CHOICE of the next 3 items at this level-->
                <mes:userName>tolvenuser</mes:userName>
-               <mes:groupName>nogrid</mes:groupName>
-               <mes:gridIdentifier>nogrid</mes:gridIdentifier>
-               <!--Optional:-->
                <mes:password>changeme</mes:password>
-               <!--Optional:-->
-               <mes:delegatedCredentialReference>nocredentials</mes:delegatedCredentialReference>
             </mes:credentials>
          </mes:metadata>
          <mes:request>
@@ -321,12 +316,7 @@
             <mes:credentials>
                <!--You have a CHOICE of the next 3 items at this level-->
                <mes:userName>tolvenuser</mes:userName>
-               <mes:groupName>nogrid</mes:groupName>
-               <mes:gridIdentifier>nogrid</mes:gridIdentifier>
-               <!--Optional:-->
                <mes:password>changeme</mes:password>
-               <!--Optional:-->
-               <mes:delegatedCredentialReference>nocredentials</mes:delegatedCredentialReference>
             </mes:credentials>
          </mes:metadata>
          <mes:request>
@@ -546,12 +536,7 @@
             <mes:credentials>
                <!--You have a CHOICE of the next 3 items at this level-->
                <mes:userName>tolvenuser</mes:userName>
-               <mes:groupName>nogrid</mes:groupName>
-               <mes:gridIdentifier>nogrid</mes:gridIdentifier>
-               <!--Optional:-->
                <mes:password>changeme</mes:password>
-               <!--Optional:-->
-               <mes:delegatedCredentialReference>nocredentials</mes:delegatedCredentialReference>
             </mes:credentials>
          </mes:metadata>
          <mes:request>
@@ -708,12 +693,7 @@
             <mes:credentials>
                <!--You have a CHOICE of the next 3 items at this level-->
                <mes:userName>tolvenuser</mes:userName>
-               <mes:groupName>nogrid</mes:groupName>
-               <mes:gridIdentifier>nogrid</mes:gridIdentifier>
-               <!--Optional:-->
                <mes:password>changeme</mes:password>
-               <!--Optional:-->
-               <mes:delegatedCredentialReference>nocredentials</mes:delegatedCredentialReference>
             </mes:credentials>
          </mes:metadata>
          <mes:request>
@@ -870,12 +850,7 @@
             <mes:credentials>
                <!--You have a CHOICE of the next 3 items at this level-->
                <mes:userName>tolvenuser</mes:userName>
-               <mes:groupName>nogrid</mes:groupName>
-               <mes:gridIdentifier>nogrid</mes:gridIdentifier>
-               <!--Optional:-->
                <mes:password>changeme</mes:password>
-               <!--Optional:-->
-               <mes:delegatedCredentialReference>nocredentials</mes:delegatedCredentialReference>
             </mes:credentials>
          </mes:metadata>
          <mes:request>
