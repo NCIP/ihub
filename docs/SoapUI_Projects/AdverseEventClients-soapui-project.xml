@@ -6274,7 +6274,7 @@
                                           <!--Allergy Observation Template-->
                                           <templateId root="2.16.840.1.113883.10.20.22.4.7" assigningAuthorityName="HL7 CCDA"/>
                                           <!--Adverse event unique identifier-->
-                                          <id root="4adc1020-7b14-11db-9fe1-0800200c9a27" extension="9a27"/>
+                                          <id root="4adc1020-7b14-11db-9fe1-0800200c9a29" extension="9a29"/>
                                           <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="HL7 ActCode"/>
                                           <statusCode code="completed"/>
                                           <effectiveTime>
@@ -6296,10 +6296,8 @@
                                                    <low value="20110705"/>
                                                 </effectiveTime>
                                                 <!--adverse event coded term-->
-                                                <!--adverse event coded term Missing-->
-                                                   <!--verbatim-->
-                                                   <originalText>The patient has sporadic mild to severe abdominal pain</originalText>
-                                                </value>
+                                                <!--adverse event coded term missing-->
+                                               
                                                 <!--grade of adverse event-->
                                                 <entryRelationship typeCode="SUBJ" inversionInd="true">
                                                    <observation classCode="OBS" moodCode="EVN">
@@ -6377,8 +6375,7 @@
          </mes:request>
       </mes:caXchangeRequestMessage>
    </soapenv:Body>
-</soapenv:Envelope>
-]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://caXchange.nci.nih.gov/caxchangerequest/CaXchangeRequestPortType/ProcessRequestRequest"/><con:wsrmConfig version="1.2"/></con:call><con:call name="14CreateAE_MissingGrade"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:12090/services/CaXchangeRequestService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:mes="http://caXchange.nci.nih.gov/messaging">
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://caXchange.nci.nih.gov/caxchangerequest/CaXchangeRequestPortType/ProcessRequestRequest"/><con:wsrmConfig version="1.2"/></con:call><con:call name="14CreateAE_MissingGrade"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:12090/services/CaXchangeRequestService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:mes="http://caXchange.nci.nih.gov/messaging">
    <soapenv:Header/>
    <soapenv:Body>
       <mes:caXchangeRequestMessage>
