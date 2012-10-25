@@ -7,7 +7,7 @@
 			<mes:metadata>
 				<mes:transactionControl>PROCESS</mes:transactionControl>
 				<mes:serviceType>iHub</mes:serviceType>
-				<mes:operationName>Create Or Update Adverse Event</mes:operationName>
+				<mes:operationName>Create Or Update Adverse Events</mes:operationName>
 				<mes:externalIdentifier>32225879</mes:externalIdentifier>
 				<mes:caXchangeIdentifier>1349457856714</mes:caXchangeIdentifier>
 				<mes:credentials>

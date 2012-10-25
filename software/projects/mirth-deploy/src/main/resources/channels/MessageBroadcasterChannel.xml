@@ -161,7 +161,7 @@ var srvcInvcAndAgg = $(&apos;serviceInvocatorAndAggregator&apos;);
 
 var caaersSvcInvStrtgy = null;
 
-if ($(&apos;operationName&apos;) == &apos;Create Or Update Adverse Event&apos;) {
+if ($(&apos;operationName&apos;) == &apos;Create Or Update Adverse Events&apos;) {
 	caaersSvcInvStrtgy = globalMap.get(&quot;caAERSAdverseEventServiceInvocationStrategy&quot;);
 } 
 
@@ -829,7 +829,7 @@ var svcTyp = msg[&apos;metadata&apos;][&apos;operationName&apos;].toString();
 logger.debug(&quot;svcTyp in MBC-RAC = &quot; + svcTyp);
 
 if(	svcTyp != globalMap.get(&apos;AE&apos;) 
-	&amp;&amp; svcTyp != globalMap.get(&apos;UPDTAE&apos;)
+	
 	&amp;&amp; svcTyp != globalMap.get(&apos;REGN&apos;)
 	&amp;&amp; svcTyp != globalMap.get(&apos;UPDTREGN&apos;)
 	&amp;&amp; svcTyp != globalMap.get(&apos;SPMN&apos;)

@@ -7,7 +7,7 @@
 				<mes:transactionControl>?</mes:transactionControl>
 				<mes:serviceType>iHub</mes:serviceType>
 				<!--Optional: -->
-				<mes:operationName>Create Or Update Adverse Event</mes:operationName>
+				<mes:operationName>Create Or Update Adverse Events</mes:operationName>
 				<mes:externalIdentifier>32225879</mes:externalIdentifier>
 				<!--Optional: -->
 				<mes:caXchangeIdentifier />
@@ -147,7 +147,7 @@
                                           <!--Allergy Observation Template-->
                                           <templateId root="2.16.840.1.113883.10.20.22.4.7" assigningAuthorityName="HL7 CCDA"/>
                                           <!--Adverse event unique identifier-->
-                                          <id root="4adc1020-7b14-11db-9fe1-0800200c9a66"/>
+                                          <id root="4adc1020-7b14-11db-9fe1-0800200c9a66" extension="9a01"/>
                                           <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" codeSystemName="HL7 ActCode"/>
                                           <statusCode code="completed"/>
                                           <effectiveTime>
