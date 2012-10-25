@@ -387,7 +387,8 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
         final XMLGregorianCalendar xgcal1 = DatatypeFactory.newInstance().newXMLGregorianCalendar(gcal1);
         final AdverseEventType event1 = new AdverseEventType();
         event1.setVerbatim("Event1 Verbatim");
-        event1.setCtepCode("10001367");// code for 'Adrenal insufficiency'
+//        event1.setCtepCode("10001367");// code for 'Adrenal insufficiency'
+        event1.getAdverseEventCtepTerm().setCtepCode("10001367");
         event1.setGrade(3);
         event1.setStartDate(xgcal0);
         event1.setEndDate(xgcal1);
@@ -409,7 +410,8 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
         final XMLGregorianCalendar xgcal1 = DatatypeFactory.newInstance().newXMLGregorianCalendar(gcal1);
         final AdverseEventType event2 = new AdverseEventType();
         event2.setVerbatim("Event2 Verbatim");
-        event2.setCtepCode("10014004");// code for 'Ear disorder'
+//        event2.setCtepCode("10014004");// code for 'Ear disorder'
+        event2.getAdverseEventCtepTerm().setCtepCode("10014004");
         event2.setGrade(4);
         event2.setStartDate(xgcal0);
         event2.setEndDate(xgcal1);
