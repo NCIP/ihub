@@ -7,7 +7,7 @@
 				<mes:transactionControl>?</mes:transactionControl>
 				<mes:serviceType>iHub</mes:serviceType>
 				<!--Optional: -->
-				<mes:operationName>Create Or Update Adverse Event</mes:operationName>
+				<mes:operationName>Create Or Update Adverse Events</mes:operationName>
 				<mes:externalIdentifier>32225879</mes:externalIdentifier>
 				<!--Optional: -->
 				<mes:caXchangeIdentifier />
@@ -154,7 +154,7 @@
 														<templateId root="2.16.840.1.113883.10.20.22.4.7"
 															assigningAuthorityName="HL7 CCDA" />
 														<!--Adverse event unique identifier -->
-														<id root="4adc1020-7b14-11db-9fe1-0800200c9a66" />
+														<id root="4adc1020-7b14-11db-9fe1-0800200c9a66" extension="9a01"/>
 														<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"
 															codeSystemName="HL7 ActCode" />
 														<statusCode code="completed" />
@@ -183,8 +183,7 @@
 																<value xsi:type="CD" code="10001367" displayName="Abdominal pain"
 																	codeSystem="2.16.840.1.113883.3.26.1.6" codeSystemName="CTCAE">
 																	<!--verbatim -->
-																	<originalText>the patient has sporadic mild to severe
-																		abdominal pain</originalText>
+																	<originalText>The Patient has sporadic mild to severe abdominal pain</originalText>
 																</value>
 																<!--grade of adverse event -->
 																<entryRelationship typeCode="SUBJ"
@@ -266,9 +265,7 @@
 																<value xsi:type="CD" code="405532008" codeSystem="2.16.840.1.113883.6.96"
 																	codeSystemName="SNOMED-CT"
 																	displayName="adverse incident resulting in potentially permanent disabling damage">
-																	<originalText>Results in persistent or significant
-																		incapacity or substantial disruption of the ability to
-																		conduct normal life functions</originalText>
+																	<originalText>Results in persistent or significant incapacity or substantial disruption of the ability to conduct normal life functions</originalText>
 																</value>
 															</observation>
 														</entryRelationship>

@@ -211,7 +211,7 @@ return;</string>
         <rules>
           <rule>
             <sequenceNumber>0</sequenceNumber>
-            <name>Accept message if &quot;$(&apos;msgTyp&apos;)&quot; equals globalMap.get(&apos;AE&apos;) or globalMap.get(&apos;UPDTAE&apos;)</name>
+            <name>Accept message if &quot;$(&apos;msgTyp&apos;)&quot; equals globalMap.get(&apos;AE&apos;)</name>
             <data class="map">
               <entry>
                 <string>Name</string>
@@ -221,7 +221,7 @@ return;</string>
                 <string>Values</string>
                 <list>
                   <string>globalMap.get(&apos;AE&apos;)</string>
-                  <string>globalMap.get(&apos;UPDTAE&apos;)</string>
+                  
                 </list>
               </entry>
               <entry>
@@ -238,7 +238,7 @@ return;</string>
               </entry>
             </data>
             <type>Rule Builder</type>
-            <script>if($(&apos;msgTyp&apos;) == globalMap.get(&apos;AE&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTAE&apos;))
+            <script>if($(&apos;msgTyp&apos;) == globalMap.get(&apos;AE&apos;))
 {
 return true;
 }
@@ -588,7 +588,7 @@ return;</string>
         <rules>
           <rule>
             <sequenceNumber>0</sequenceNumber>
-            <name>Accept message if &quot;$(&apos;msgTyp&apos;)&quot; equals globalMap.get(&apos;AE&apos;) or globalMap.get(&apos;UPDTAE&apos;)</name>
+            <name>Accept message if &quot;$(&apos;msgTyp&apos;)&quot; equals globalMap.get(&apos;AE&apos;)</name>
             <data class="map">
               <entry>
                 <string>Name</string>
@@ -598,7 +598,7 @@ return;</string>
                 <string>Values</string>
                 <list>
                   <string>globalMap.get(&apos;AE&apos;)</string>
-                  <string>globalMap.get(&apos;UPDTAE&apos;)</string>
+                  
                 </list>
               </entry>
               <entry>
@@ -615,7 +615,7 @@ return;</string>
               </entry>
             </data>
             <type>Rule Builder</type>
-            <script>if($(&apos;msgTyp&apos;) == globalMap.get(&apos;AE&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTAE&apos;))
+            <script>if($(&apos;msgTyp&apos;) == globalMap.get(&apos;AE&apos;))
 {
 return true;
 }
@@ -867,7 +867,7 @@ return false;</script>
         <rules>
           <rule>
             <sequenceNumber>0</sequenceNumber>
-            <name>Accept message if &quot;$(&apos;msgTyp&apos;)&quot; equals globalMap.get(&apos;REGN&apos;) or globalMap.get(&apos;AE&apos;) or globalMap.get(&apos;UPDTREGN&apos;) or globalMap.get(&apos;SPMN&apos;) or globalMap.get(&apos;UPDTSPMN&apos;) or globalMap.get(&apos;REGTCNST&apos;) or globalMap.get(&apos;UPDTAE&apos;)</name>
+            <name>Accept message if &quot;$(&apos;msgTyp&apos;)&quot; equals globalMap.get(&apos;REGN&apos;) or globalMap.get(&apos;AE&apos;) or globalMap.get(&apos;UPDTREGN&apos;) or globalMap.get(&apos;SPMN&apos;) or globalMap.get(&apos;UPDTSPMN&apos;) or globalMap.get(&apos;REGTCNST&apos;)</name>
             <data class="map">
               <entry>
                 <string>Name</string>
@@ -882,7 +882,7 @@ return false;</script>
                   <string>globalMap.get(&apos;SPMN&apos;)</string>
                   <string>globalMap.get(&apos;UPDTSPMN&apos;)</string>
                   <string>globalMap.get(&apos;REGTCNST&apos;)</string>
-                  <string>globalMap.get(&apos;UPDTAE&apos;)</string>
+                  
                 </list>
               </entry>
               <entry>
@@ -899,7 +899,7 @@ return false;</script>
               </entry>
             </data>
             <type>Rule Builder</type>
-            <script>if($(&apos;msgTyp&apos;) == globalMap.get(&apos;REGN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;AE&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTREGN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;SPMN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTSPMN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;REGTCNST&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTAE&apos;))
+            <script>if($(&apos;msgTyp&apos;) == globalMap.get(&apos;REGN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;AE&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTREGN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;SPMN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;UPDTSPMN&apos;) || $(&apos;msgTyp&apos;) == globalMap.get(&apos;REGTCNST&apos;))
 {
 return true;
 }
@@ -958,7 +958,7 @@ var msgTyp = $(&apos;msgTyp&apos;);
 logger.info(&quot;msgTyp=&quot;+ msgTyp);
 
 if(	msgTyp != globalMap.get(&apos;AE&apos;) 
-	&amp;&amp; msgTyp != globalMap.get(&apos;UPDTAE&apos;)
+	
 	&amp;&amp; msgTyp != globalMap.get(&apos;REGN&apos;)
 	&amp;&amp; msgTyp != globalMap.get(&apos;UPDTREGN&apos;)
 	&amp;&amp; msgTyp != globalMap.get(&apos;SPMN&apos;)

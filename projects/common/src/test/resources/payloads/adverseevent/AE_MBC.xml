@@ -13,7 +13,7 @@
 		<mes:operationName xmlns:mes="http://caXchange.nci.nih.gov/messaging"
 			xmlns="http://caXchange.nci.nih.gov/messaging" xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"
 			xmlns:ns1trim="urn:tolven-org:trim:4.0" xmlns:cda="urn:hl7-org:v3"
-			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Create Or Update Adverse Event</mes:operationName>
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Create Or Update Adverse Events</mes:operationName>
 		<mes:externalIdentifier xmlns:mes="http://caXchange.nci.nih.gov/messaging"
 			xmlns="http://caXchange.nci.nih.gov/messaging" xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"
 			xmlns:ns1trim="urn:tolven-org:trim:4.0" xmlns:cda="urn:hl7-org:v3"
