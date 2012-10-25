@@ -63,7 +63,7 @@ public class IHubMessage extends AbstractIdentity {
      * @return request
      */
     @NotNull
-    @Column(length = 50000)
+    @Column(length = 150000)
     public String getRequest() {
         return request;
     }
