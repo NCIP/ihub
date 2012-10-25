@@ -71,11 +71,14 @@
 				<xsl:value-of
 					select="$observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.9']/ns1:value" />
 			</verbatim>
-			<ctepCode>
+			<adverseEventCtepTerm>
+				<ctepCode>
 				<!-- adverse event coded term -->
 				<xsl:value-of
 					select="$observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.9']/ns1:value/@code" />
-			</ctepCode>
+				</ctepCode>
+				<otherSpecify></otherSpecify>
+			</adverseEventCtepTerm>			
 			<grade>
 				<xsl:value-of
 					select="$observation/ns1:entryRelationship/ns1:observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.8'][ns1:code/ns1:originalText='Grade']/ns1:value/ns1:originalText"></xsl:value-of>
@@ -102,9 +105,11 @@
 				</xsl:call-template>
 			</attributionSummary>
 			<!-- Adverse event unique identifier -->
-			<externalId>
-				<xsl:value-of
-					select="$observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.7']/ns1:id/@root"></xsl:value-of>
+			<externalId>				
+				<xsl:call-template name="show-id">
+							<xsl:with-param name="id"
+								select="$observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.7']/ns1:id" />
+						</xsl:call-template>
 			</externalId>
 			<!-- Serious Reason(s) -->
 			<xsl:for-each
