@@ -100,35 +100,6 @@ public class SpecimenIntegrationTest {
     }
 
     /**
-     * Testcase for Create Specimen when SpecimenClass is invalid
-     */
-    @Test
-    public void createInvalidSpecimenClass() {
-        try {
-            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            final StringEntity reqentity = new StringEntity(getInsertInvalidSpecimenClassXMLStr());
-            httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
-
-            final HttpResponse response = httpclient.execute(httppost);
-            final HttpEntity entity = response.getEntity();
-
-            String createdXML = null;
-
-            if (entity != null) {
-                createdXML = EntityUtils.toString(entity);
-                Assert.assertEquals(true, createdXML.contains("<responseStatus>FAILURE</responseStatus>"));
-            }
-        } catch (ClientProtocolException e) {
-            Assert.fail(e.getMessage());
-        } catch (IllegalStateException e) {
-            Assert.fail(e.getMessage());
-        } catch (IOException e) {
-            Assert.fail(e.getMessage());
-        }
-    }
-
-    /**
      * Testcase for Create Specimen
      */
     @Test
@@ -157,13 +128,15 @@ public class SpecimenIntegrationTest {
         }
     }
 
-
     /**
      * Testcase for Update Specimen
      */
     @Test
     public void updateSpecimen() {
         try {
+            // Create the Specimen for which has to be updated.
+            createSpecimenForUpdation();
+
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             final StringEntity reqentity = new StringEntity(getUpdateSpecimenXMLStr());
             httppost.setEntity(reqentity);
@@ -193,6 +166,8 @@ public class SpecimenIntegrationTest {
     @Test
     public void updateSpecimensInvalidAvailableQtyXMLStr() {
         try {
+            createSpecimenForUpdationOfInvalidQty();
+            
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             final StringEntity reqentity = new StringEntity(getUpdateSpecimenInvalidAvailableQtyXMLStr());
             httppost.setEntity(reqentity);
@@ -205,66 +180,7 @@ public class SpecimenIntegrationTest {
 
             if (entity != null) {
                 updatedXML = EntityUtils.toString(entity);
-                Assert.assertEquals(true, updatedXML.contains("<errorCode>1085</errorCode>"));
-            }
-        } catch (ClientProtocolException e) {
-            Assert.fail(e.getMessage());
-        } catch (IllegalStateException e) {
-            Assert.fail(e.getMessage());
-        } catch (IOException e) {
-            Assert.fail(e.getMessage());
-        }
-    }
-
-    /**
-     * Testcase for Update Specimen when CollectionProtocol is changed during updateSpecimen
-     */
-    @Test
-    public void updateSpecimensCollectionProtocolChangeXMLStr() {
-        try {
-            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            final StringEntity reqentity = new StringEntity(getUpdateSpecimenCollectionProtocolChangeXMLStr());
-            httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
-
-            final HttpResponse response = httpclient.execute(httppost);
-            final HttpEntity entity = response.getEntity();
-
-            String updatedXML = null;
-
-            if (entity != null) {
-                updatedXML = EntityUtils.toString(entity);
-                Assert.assertEquals(true, updatedXML.contains("<errorCode>1088</errorCode>"));
-            }
-        } catch (ClientProtocolException e) {
-            Assert.fail(e.getMessage());
-        } catch (IllegalStateException e) {
-            Assert.fail(e.getMessage());
-        } catch (IOException e) {
-            Assert.fail(e.getMessage());
-        }
-    }
-
-    /**
-     * Testcase for Rollback Created Specimen
-     */
-    @Test
-    public void rollbackCreatedSpecimen() {
-        try {
-            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            final String xmlString = getRollbackCreatedSpecimenXMLStr();
-            final StringEntity reqentity = new StringEntity(xmlString);
-            httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
-
-            final HttpResponse response = httpclient.execute(httppost);
-            final HttpEntity entity = response.getEntity();
-
-            String createdXML = null;
-
-            if (entity != null) {
-                createdXML = EntityUtils.toString(entity);
-                Assert.assertEquals(true, createdXML.contains("<responseStatus>FAILURE</responseStatus>"));
+                Assert.assertEquals(true, updatedXML.contains("FAILURE"));
             }
         } catch (ClientProtocolException e) {
             Assert.fail(e.getMessage());
@@ -283,29 +199,16 @@ public class SpecimenIntegrationTest {
         return getXMLString("CreateSpecimenInvalidTissueSite_inbound.xml");
     }
 
-    private String getInsertInvalidSpecimenClassXMLStr() {
-        return getXMLString("CreateSpecimenInvalidSpecimenClass_inbound.xml");
-    }
-
     private String getInsertSpecimenXMLStr() {
         return getXMLString("CreateSpecimen_inbound.xml");
     }
 
- 
     private String getUpdateSpecimenXMLStr() {
         return getXMLString("UpdateSpecimen_inbound.xml");
     }
 
     private String getUpdateSpecimenInvalidAvailableQtyXMLStr() {
         return getXMLString("UpdateSpecimenInvalidAvailableQty_inbound.xml");
-    }
-
-    private String getUpdateSpecimenCollectionProtocolChangeXMLStr() {
-        return getXMLString("UpdateSpecimenCollectionProtocolChange_inbound.xml");
-    }
-
-    private String getRollbackCreatedSpecimenXMLStr() {
-        return getXMLString("RollbackCreatedSpecimen_inbound.xml");
     }
 
     private String getXMLString(String fileName) {
@@ -318,5 +221,59 @@ public class SpecimenIntegrationTest {
             LOG.error("Error while reading contents of file : " + fileName + ". " + e);
         }
         return contents;
+    }
+
+    private void createSpecimenForUpdation() {
+        try {
+            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
+            String xmlString = getInsertSpecimenXMLStr();
+            xmlString = xmlString.replaceAll("102", "102_UPDT");
+            final StringEntity reqentity = new StringEntity(xmlString);
+            httppost.setEntity(reqentity);
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
+
+            final HttpResponse response = httpclient.execute(httppost);
+            final HttpEntity entity = response.getEntity();
+
+            String createdXML = null;
+
+            if (entity != null) {
+                createdXML = EntityUtils.toString(entity);
+                Assert.assertEquals(true, createdXML.contains("<responseStatus>SUCCESS</responseStatus>"));
+            }
+        } catch (ClientProtocolException e) {
+            Assert.fail(e.getMessage());
+        } catch (IllegalStateException e) {
+            Assert.fail(e.getMessage());
+        } catch (IOException e) {
+            Assert.fail(e.getMessage());
+        }
+    }
+
+    private void createSpecimenForUpdationOfInvalidQty() {
+        try {
+            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
+            String xmlString = getInsertSpecimenXMLStr();
+            xmlString = xmlString.replaceAll("102", "102_INV_QTY");
+            final StringEntity reqentity = new StringEntity(xmlString);
+            httppost.setEntity(reqentity);
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
+
+            final HttpResponse response = httpclient.execute(httppost);
+            final HttpEntity entity = response.getEntity();
+
+            String createdXML = null;
+
+            if (entity != null) {
+                createdXML = EntityUtils.toString(entity);
+                Assert.assertEquals(true, createdXML.contains("<responseStatus>SUCCESS</responseStatus>"));
+            }
+        } catch (ClientProtocolException e) {
+            Assert.fail(e.getMessage());
+        } catch (IllegalStateException e) {
+            Assert.fail(e.getMessage());
+        } catch (IOException e) {
+            Assert.fail(e.getMessage());
+        }
     }
 }
