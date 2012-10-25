@@ -58,9 +58,10 @@
 						<endDate>
 							<xsl:value-of select="na:endDate" />
 						</endDate>
-						<ctepCode>
-							<xsl:value-of select="na:ctepCode" />
-						</ctepCode>
+						<adverseEventCtepTerm>
+							<ctepCode><xsl:value-of select="na:adverseEventCtepTerm/na:ctepCode" /></ctepCode>
+							<otherSpecify><xsl:value-of select="na:otherSpecify" /></otherSpecify>
+						</adverseEventCtepTerm>						
 						<externalId>
 							<xsl:value-of select="na:externalId"></xsl:value-of>
 						</externalId>
