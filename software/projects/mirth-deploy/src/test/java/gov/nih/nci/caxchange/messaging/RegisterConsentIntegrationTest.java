@@ -48,6 +48,9 @@ public class RegisterConsentIntegrationTest {
     @Test
     public void registerConsents() {
         try {
+            // Create the Specimen for which Consent has to be registered.
+            createSpecimen();
+
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             final StringEntity reqentity = new StringEntity(getRegisterConsentXMLStr());
             httppost.setEntity(reqentity);
@@ -100,12 +103,43 @@ public class RegisterConsentIntegrationTest {
         }
     }
 
+    private void createSpecimen() {
+        try {
+            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
+            String xmlString = getInsertSpecimenXMLStr();
+            xmlString = xmlString.replaceAll("102", "102_Consent");
+            final StringEntity reqentity = new StringEntity(xmlString);
+            httppost.setEntity(reqentity);
+            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
+
+            final HttpResponse response = httpclient.execute(httppost);
+            final HttpEntity entity = response.getEntity();
+
+            String createdXML = null;
+
+            if (entity != null) {
+                createdXML = EntityUtils.toString(entity);
+                Assert.assertEquals(true, createdXML.contains("<responseStatus>SUCCESS</responseStatus>"));
+            }
+        } catch (ClientProtocolException e) {
+            Assert.fail(e.getMessage());
+        } catch (IllegalStateException e) {
+            Assert.fail(e.getMessage());
+        } catch (IOException e) {
+            Assert.fail(e.getMessage());
+        }
+    }
+
     private String getRegisterConsentXMLStr() {
         return getXMLString("RegisterConsent_inbound.xml");
     }
 
     private String getRegisterConsentSpecimenNotExistXMLStr() {
         return getXMLString("RegisterConsentSpecimenNotExist_inbound.xml");
+    }
+
+    private String getInsertSpecimenXMLStr() {
+        return getXMLString("CreateSpecimen_inbound.xml");
     }
 
     private String getXMLString(String fileName) {

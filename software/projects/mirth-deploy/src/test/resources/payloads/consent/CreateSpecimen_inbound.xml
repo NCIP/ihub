@@ -7,7 +7,7 @@
 				<mes:transactionControl>?</mes:transactionControl>
 				<mes:serviceType>iHub</mes:serviceType>
 				<!--Optional: -->
-				<mes:operationName>Update Biospecimen</mes:operationName>
+				<mes:operationName>Create Biospecimen</mes:operationName>
 				<mes:externalIdentifier>32225879</mes:externalIdentifier>
 				<!--Optional: -->
 				<mes:caXchangeIdentifier />
@@ -104,7 +104,7 @@
 						<!--study id -->
 						<documentationOf>
 							<serviceEvent classCode="CLNTRL">
-								<id root="6482" extension="6482_123" />
+								<id root="6482" extension="6482" />
 								<code nullFlavor="OTH">
 									<originalText>clinical trial</originalText>
 								</code>
@@ -159,9 +159,9 @@
 															<originalText>Guidance for Breast Core Biopsy</originalText>
 														</code>
 														<statusCode code="completed" />
-														<value xsi:type="CD" code="241615005" codeSystem="2.16.840.1.113883.6.96"
-															displayName="241615005">
-															<originalText>Diagnostic MRI</originalText>
+														<value xsi:type="CD" code="16310003" codeSystem="2.16.840.1.113883.6.96"
+															displayName="Ultrasound">
+															<originalText>Diagnostic ultrasonography</originalText>
 														</value>
 													</observation>
 												</entryRelationship>
@@ -182,7 +182,7 @@
 															<specimenRole>
 																<!--CDMS Specimen ID, assigned by the TRANSCEND CDMS -->
 																<id root="fbfe4b85-2bdc-4305-88be-3e1b763d8caa"
-																	extension="102_UPDT" />
+																	extension="102" />
 																<!--Specimen Class -->
 																<specimenPlayingEntity>
 																	<code code="119376003" codeSystem="2.16.840.1.113883.6.96"
@@ -197,7 +197,7 @@
 																<templateId root="2.16.840.1.113883.10.20.22.4.37"
 																	assigningAuthorityName="HL7 CCDA" />
 																<!--Barcode (Unique Device Identification (UDI)) -->
-																<id root="123456" extension="102_UPDT" />
+																<id root="123456" extension="102" />
 																<playingDevice>
 																	<!--Code to identify the specimen Container -->
 																	<code nullFlavor="NA">
