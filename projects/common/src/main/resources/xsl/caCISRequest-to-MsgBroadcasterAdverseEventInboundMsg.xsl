@@ -33,19 +33,6 @@
 						</xsl:call-template>
 					</studyIdentifier>
 					<course>
-						<startDateOfThisCourse>
-							<!-- Reporting Period Start date -->
-							<xsl:call-template name="show-dateTime">
-								<xsl:with-param name="dateTime"
-									select="//ns1:act[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.30']/ns1:effectiveTime/ns1:low/@value" />
-							</xsl:call-template>
-						</startDateOfThisCourse>
-						<endDateOfThisCourse>
-							<xsl:call-template name="show-dateTime">
-								<xsl:with-param name="dateTime"
-									select="//ns1:act[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.30']/ns1:effectiveTime/ns1:high/@value" />
-							</xsl:call-template>
-						</endDateOfThisCourse>
 						<treatmentAssignmentCode>
 							<!-- Assigned Treatment -->
 							<xsl:value-of

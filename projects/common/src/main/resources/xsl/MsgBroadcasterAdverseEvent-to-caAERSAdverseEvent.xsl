@@ -86,15 +86,7 @@
 					<xsl:value-of
 						select="ns2:caxchangerequest/na:adverseeventinput/na:criteria/na:studyIdentifier" />
 				</studyIdentifier>
-				<course>
-					<startDateOfThisCourse>
-						<xsl:value-of
-							select="ns2:caxchangerequest/na:adverseeventinput/na:criteria/na:course/na:startDateOfThisCourse" />
-					</startDateOfThisCourse>
-					<endDateOfThisCourse>
-						<xsl:value-of
-							select="ns2:caxchangerequest/na:adverseeventinput/na:criteria/na:course/na:endDateOfThisCourse" />
-					</endDateOfThisCourse>
+				<course>					
 					<treatmentAssignmentCode>
 						<xsl:value-of
 							select="ns2:caxchangerequest/na:adverseeventinput/na:criteria/na:course/na:treatmentAssignmentCode" />
