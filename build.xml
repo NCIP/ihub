@@ -63,6 +63,10 @@
 		<iterate target="publish"/>
 	</target>
 	
+	<target name="clean">
+		<iterate target="clean"/>
+	</target>
+	
 	<target name="debug-info">
 		<iterate target="debug-info"/>
 	</target>

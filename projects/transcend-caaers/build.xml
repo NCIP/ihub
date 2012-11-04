@@ -21,9 +21,10 @@
         <echo message="|    Type 'ant -f ivy-build.xml all' To build all.                             |" />
         <echo message="================================================================================" />
     </target>
-
+	
+	<!--
 	<target name="generate-wsdl" depends="clean-generated-src, init, resolve" description="This target will generate java code from WSDL available in ${main.src.resources}/wsdl or url">
 		<generateWsdlSources genSrcDir="${generated.src.dir}" package="gov.nih.nci.cabig.caaers.webservice" wsdlLocation="${main.src.resources}/wsdl/ParticipantService.wsdl"/>		
 	</target>
-
+	-->
 </project>
