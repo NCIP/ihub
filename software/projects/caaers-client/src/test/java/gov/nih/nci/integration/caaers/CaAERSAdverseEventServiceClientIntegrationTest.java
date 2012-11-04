@@ -156,60 +156,10 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
         try {
             final CreateProvisionalAdverseEventsResponse response = caAERSAdverseEventServiceWSClient
                     .createProvisionalAdverseEvents(adverseEventXMLStr);
-            assertEquals("Response code is NOT proper for CreateAEInvalidStartEndDateCombinationofAE.",
-                    "PROCESSED", response.getCaaersServiceResponse().getServiceResponse().getStatus().name());
+            assertEquals("Response code is NOT proper for CreateAEInvalidStartEndDateCombinationofAE.", "PROCESSED",
+                    response.getCaaersServiceResponse().getServiceResponse().getStatus().name());
         } catch (JAXBException e) {
             Assert.fail("JAXBException occured while calling createAEInvalidStartEndDateCombinationofAE. " + e);
-        }
-    }
-
-    /**
-     * TestCase for Creating Adverse Event in caAERS when startDate of the Course is Invalid
-     */
-    @Test
-    public void createAEInvalidStartDateOfThisCourse() {
-        final String adverseEventXMLStr = getAEInvalidStartDateOfThisCourse();
-        CreateProvisionalAdverseEventsResponse response = null;
-        try {
-            response = caAERSAdverseEventServiceWSClient.createProvisionalAdverseEvents(adverseEventXMLStr);
-            assertEquals("Response code is NOT proper for createAEInvalidEndDateOfThisCourse.", "PROCESSED", response
-                    .getCaaersServiceResponse().getServiceResponse().getStatus().name());
-        } catch (JAXBException e) {
-            Assert.fail("JAXBException occured while calling createAEInvalidStartDateOfThisCourse. " + e);
-        } catch (SOAPFaultException e) {
-            LOG.debug("SOAPFaultException occured while calling createAEInvalidStartDateOfThisCourse. ", e);
-        }        
-    }
-
-    /**
-     * TestCase for Creating Adverse Event in caAERS when endDate of the Course is Invalid
-     */
-    @Test
-    public void createAEInvalidEndDateOfThisCourse() {
-        final String adverseEventXMLStr = getAEInvalidEndDateOfThisCourse();
-        try {
-            final CreateProvisionalAdverseEventsResponse response = caAERSAdverseEventServiceWSClient
-                    .createProvisionalAdverseEvents(adverseEventXMLStr);
-            assertEquals("Response code is NOT proper for createAEInvalidEndDateOfThisCourse.", "PROCESSED", response
-                    .getCaaersServiceResponse().getServiceResponse().getStatus().name());
-        } catch (JAXBException e) {
-            Assert.fail("JAXBException occured while calling createAEInvalidEndDateOfThisCourse. " + e);
-        }
-    }
-
-    /**
-     * TestCase for Creating Adverse Event in caAERS when startDate is greater than the endDate of the Course
-     */
-    @Test
-    public void createAEStartDateGreaterThanEndDateOfThisCourse() {
-        final String adverseEventXMLStr = getAEStartDateGreaterEndDateofThisCourse();
-        try {
-            final CreateProvisionalAdverseEventsResponse response = caAERSAdverseEventServiceWSClient
-                    .createProvisionalAdverseEvents(adverseEventXMLStr);
-            assertEquals("Response code is NOT proper for CreateAEStartDateGreaterThanEndDateOfThisCourse.",
-                    "PROCESSED", response.getCaaersServiceResponse().getServiceResponse().getStatus().name());
-        } catch (JAXBException e) {
-            Assert.fail("JAXBException occured while calling createAEStartDateGreaterThanEndDateOfThisCourse. " + e);
         }
     }
 
@@ -297,17 +247,6 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
         return getXMLString("AEStartDateGreaterThanEndDate_caaers.xml");
     }
 
-    private String getAEInvalidStartDateOfThisCourse() {
-        return getXMLString("AEInvalidStartDateOfThisCourse_caaers.xml");
-    }
-
-    private String getAEInvalidEndDateOfThisCourse() {
-        return getXMLString("AEInvalidEndDateOfThisCourse_caaers.xml");
-    }
-
-    private String getAEStartDateGreaterEndDateofThisCourse() {
-        return getXMLString("AEStartDateGreaterEndDateofThisCourse_caaers.xml");
-    }
 
     private String getAEInvalidOutComeEnumType() {
         return getXMLString("AEInvalidOutComeEnumType_caaers.xml");
@@ -387,7 +326,7 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
         final XMLGregorianCalendar xgcal1 = DatatypeFactory.newInstance().newXMLGregorianCalendar(gcal1);
         final AdverseEventType event1 = new AdverseEventType();
         event1.setVerbatim("Event1 Verbatim");
-//        event1.setCtepCode("10001367");// code for 'Adrenal insufficiency'
+        // event1.setCtepCode("10001367");// code for 'Adrenal insufficiency'
         event1.getAdverseEventCtepTerm().setCtepCode("10001367");
         event1.setGrade(3);
         event1.setStartDate(xgcal0);
@@ -410,7 +349,7 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
         final XMLGregorianCalendar xgcal1 = DatatypeFactory.newInstance().newXMLGregorianCalendar(gcal1);
         final AdverseEventType event2 = new AdverseEventType();
         event2.setVerbatim("Event2 Verbatim");
-//        event2.setCtepCode("10014004");// code for 'Ear disorder'
+        // event2.setCtepCode("10014004");// code for 'Ear disorder'
         event2.getAdverseEventCtepTerm().setCtepCode("10014004");
         event2.setGrade(4);
         event2.setStartDate(xgcal0);
