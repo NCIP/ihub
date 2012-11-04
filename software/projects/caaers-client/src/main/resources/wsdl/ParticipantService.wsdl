@@ -838,6 +838,7 @@
 <xs:element name="participantRef">
 <xs:complexType>
 <xs:sequence>
+<xs:choice>
 <xs:element name="identifiers">
 <xs:complexType>
 <xs:sequence>
@@ -846,6 +847,15 @@
 </xs:sequence>
 </xs:complexType>
 </xs:element>
+<xs:element name="participantAssignment">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="studySubjectIdentifier" type="xs:string"></xs:element>
+<xs:element name="studyIdentifier" type="ReducedIdentifierType"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:choice>
 </xs:sequence>
 </xs:complexType>
 </xs:element>

@@ -3,6 +3,7 @@ package gov.nih.nci.integration.caaers;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.Status;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.AssignmentType;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.CreateParticipant;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.CreateParticipantResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.DeleteParticipant;
@@ -13,13 +14,16 @@ import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantRef;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantServiceInterface;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.Participants;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.ReducedIdentifierType;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.UpdateParticipant;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.UpdateParticipantResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.StudyType.Identifiers;
 import gov.nih.nci.integration.exception.IntegrationError;
 import gov.nih.nci.integration.exception.IntegrationException;
 
 import java.io.StringReader;
 import java.net.MalformedURLException;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.bind.JAXBContext;
@@ -29,6 +33,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.ws.soap.SOAPFaultException;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
@@ -113,7 +118,7 @@ public class CaAERSParticipantServiceWSClient {
             getUnmarshaller();
             this.client = client;
         } catch (JAXBException e) {
-            LOG.error("CaAERSParticipantServiceWSClient()..JAXBException while unmarshlling", e);
+            LOG.error("CaAERSParticipantServiceWSClient()..JAXBException while initialising unmarshaller", e);
             throw new IntegrationException(IntegrationError._1054, e.getMessage());// NOPMD
         }
     }
@@ -153,6 +158,11 @@ public class CaAERSParticipantServiceWSClient {
             MalformedURLException, SOAPFaultException, IntegrationException {
         final ParticipantType participant = parseParticipant(participantXMLStr);
 
+        final CaaersServiceResponse response = validateAssignment(participant);
+        if (response != null) {
+            return response;
+        }
+
         final CreateParticipant createParticipant = new CreateParticipant();
         final Participants participants = new Participants();
         participants.getParticipant().add(participant);
@@ -181,6 +191,11 @@ public class CaAERSParticipantServiceWSClient {
     public CaaersServiceResponse deleteParticipant(String participantXMLStr) throws JAXBException,
             MalformedURLException, SOAPFaultException, IntegrationException {
         final ParticipantType participant = parseParticipant(participantXMLStr);
+
+        final CaaersServiceResponse response = validateAssignment(participant);
+        if (response != null) {
+            return response;
+        }
 
         final DeleteParticipant deleteParticipant = new DeleteParticipant();
         final Participants participants = new Participants();
@@ -219,13 +234,14 @@ public class CaAERSParticipantServiceWSClient {
 
         // check if the activity status is "Closed", then don't need to call updateParticipant
         if (participantXMLStr.contains("<activityStatus>Closed</activityStatus>")) {
-            return getNonActiveParticipantResponse(caaersGetResponse);
+            return getNonActiveParticipantResponse();
         }
 
         final ParticipantType participant = parseParticipant(participantXMLStr);
 
         // check if the StudyId is changed..
-        if (isParticipantStudyChanged(participant, caaersGetResponse)) {
+        //if (isParticipantStudyChanged(participant, caaersGetResponse)) {
+        if (isParticipantStudyChanged()) {
             return getStudyChangedResponse();
         }
 
@@ -237,8 +253,8 @@ public class CaAERSParticipantServiceWSClient {
         UpdateParticipantResponse retValue = null;
         try {
             retValue = client.updateParticipant(updateParticipant);
-            retValue.getCaaersServiceResponse().getServiceResponse()
-                    .setResponseData(caaersGetResponse.getServiceResponse().getResponseData());
+            retValue.getCaaersServiceResponse().getServiceResponse().setResponseData(
+                    caaersGetResponse.getServiceResponse().getResponseData());
         } catch (SOAPFaultException e) {
             LOG.error("CaAERSParticipantServiceWSClient..SOAPFaultException while calling updateParticipant. ", e);
             throw e;
@@ -261,14 +277,28 @@ public class CaAERSParticipantServiceWSClient {
             SOAPFaultException, IntegrationException {
         final ParticipantType participant = parseParticipant(participantXMLStr);
 
+        final CaaersServiceResponse response = validateAssignment(participant);
+        if (response != null) {
+            return response;
+        }
+
         final GetParticipant getParticipant = new GetParticipant();
         final ParticipantRef participantRef = new ParticipantRef();
-        final ParticipantRef.Identifiers refIds = new ParticipantRef.Identifiers();
-        participantRef.setIdentifiers(refIds);
-        final ParticipantType.Identifiers prtcpntIds = participant.getIdentifiers();
+        final ParticipantRef.ParticipantAssignment assgmntRef = new ParticipantRef.ParticipantAssignment();
+        participantRef.setParticipantAssignment(assgmntRef);
 
-        refIds.getOrganizationAssignedIdentifier().addAll(prtcpntIds.getOrganizationAssignedIdentifier());
-        refIds.getSystemAssignedIdentifier().addAll(prtcpntIds.getSystemAssignedIdentifier());
+        final ParticipantType.Assignments prtcpntAssgmnts = participant.getAssignments();
+        final List<AssignmentType> assignments = prtcpntAssgmnts.getAssignment();
+        String studySubjectId = null;
+        ReducedIdentifierType studyId = null;
+        for (AssignmentType assignmentType : assignments) {
+            studySubjectId = assignmentType.getStudySubjectIdentifier();
+            final Identifiers studyIds = assignmentType.getStudySite().getStudy().getIdentifiers();
+            studyId = studyIds.getIdentifier();
+        }
+
+        assgmntRef.setStudyIdentifier(studyId);
+        assgmntRef.setStudySubjectIdentifier(studySubjectId);
 
         getParticipant.setParticipantRef(participantRef);
 
@@ -282,15 +312,32 @@ public class CaAERSParticipantServiceWSClient {
         return retValue.getCaaersServiceResponse();
     }
 
-    private CaaersServiceResponse getNonActiveParticipantResponse(CaaersServiceResponse caaersGetResponse) {
-        final CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
-        final ServiceResponse serviceResponse = new ServiceResponse();
-        serviceResponse.setMessage("caAERS doesnt support off-study.");
-        serviceResponse.setStatus(Status.PROCESSED);
-        serviceResponse.setResponsecode("0");
-        serviceResponse.setResponseData(caaersGetResponse.getServiceResponse().getResponseData());
-        caaersServiceResponse.setServiceResponse(serviceResponse);
-        return caaersServiceResponse;
+    private CaaersServiceResponse validateAssignment(ParticipantType participant) {
+        final ParticipantType.Assignments prtcpntAssgmnts = participant.getAssignments();
+        final List<AssignmentType> assignments = prtcpntAssgmnts.getAssignment();
+        String studySubjectId = null;
+        String studySiteId = null;
+        String studyId = null;
+        for (AssignmentType assignmentType : assignments) {
+            studySubjectId = assignmentType.getStudySubjectIdentifier();
+            studySiteId = assignmentType.getStudySite().getOrganization().getNciInstituteCode();
+            final Identifiers studyIds = assignmentType.getStudySite().getStudy().getIdentifiers();
+            studyId = studyIds.getIdentifier().getValue();
+        }
+
+        if (StringUtils.isEmpty(studySubjectId)) {
+            return getCaaersServiceResponse("StudySubjectIdentifier cannot be empty", "1", Status.FAILED_TO_PROCESS);
+        } else if (StringUtils.isEmpty(studySiteId)) {
+            return getCaaersServiceResponse("Site Identifier cannot be empty", "1", Status.FAILED_TO_PROCESS);
+        } else if (StringUtils.isEmpty(studyId)) {
+            return getCaaersServiceResponse("Study Identifier cannot be empty", "1", Status.FAILED_TO_PROCESS);
+        } else {
+            return null;
+        }
+    }
+
+    private CaaersServiceResponse getNonActiveParticipantResponse() {
+        return getCaaersServiceResponse("caAERS doesnt support off-study.", "0", Status.PROCESSED);
     }
 
     /**
@@ -300,22 +347,25 @@ public class CaAERSParticipantServiceWSClient {
      * @param caaersGetResponse
      * @return
      */
-    private boolean isParticipantStudyChanged(ParticipantType participant, CaaersServiceResponse caaersGetResponse) {
+    private boolean isParticipantStudyChanged() {
 
         // TODO :: Update the logic as per WebService implementation. Hardcoded till then.
         final boolean isStudyChanged = false;
-        System.out.println(participant);// NOPMD
-        System.out.println(caaersGetResponse);// NOPMD
 
         return isStudyChanged;
     }
 
     private CaaersServiceResponse getStudyChangedResponse() {
+        return getCaaersServiceResponse("Study can't be changed while updating the Participant.", "1",
+                Status.FAILED_TO_PROCESS);
+    }
+
+    private CaaersServiceResponse getCaaersServiceResponse(String msg, String responseCode, Status status) {
         final CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
         final ServiceResponse serviceResponse = new ServiceResponse();
-        serviceResponse.setMessage("Study can't be changed while updating the Participant.");
-        serviceResponse.setStatus(Status.PROCESSED);
-        serviceResponse.setResponsecode("1");
+        serviceResponse.setMessage(msg);
+        serviceResponse.setStatus(status);
+        serviceResponse.setResponsecode(responseCode);
         caaersServiceResponse.setServiceResponse(serviceResponse);
         return caaersServiceResponse;
     }
