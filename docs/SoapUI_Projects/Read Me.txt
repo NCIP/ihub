@@ -1,0 +1,5 @@
+
+These are the SoapUI project to test the Transcend-iHub flows. 
+
+All the requests are pointing to the CaXchangeWebService deployed on "localhost". Please update the URLs as applicable.
+
