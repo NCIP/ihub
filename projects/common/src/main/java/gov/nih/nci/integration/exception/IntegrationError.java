@@ -38,8 +38,8 @@ public enum IntegrationError {
     _1021(1021, ErrorType.TRANSMISSION),
     _1022(1022, ErrorType.SECURITY),
 
-    _1023(1017, ErrorType.TRANSFORMATION),
-    _1024(1018, ErrorType.TRANSFORMATION),
+    _1023(1023, ErrorType.TRANSFORMATION),
+    _1024(1024, ErrorType.TRANSFORMATION),
     _1025(1025, ErrorType.TRANSFORMATION),
     _1026(1026, ErrorType.TRANSFORMATION),
     _1027(1027, ErrorType.TRANSFORMATION),
