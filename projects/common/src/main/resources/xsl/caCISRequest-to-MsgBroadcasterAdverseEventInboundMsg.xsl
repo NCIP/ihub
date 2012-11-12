@@ -56,7 +56,7 @@
 		<adverseEvent>
 			<verbatim>
 				<xsl:value-of
-					select="$observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.9']/ns1:value" />
+					select="$observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.9']/ns1:value/ns1:originalText" />
 			</verbatim>
 			<adverseEventCtepTerm>
 				<ctepCode>
@@ -156,8 +156,7 @@
 		<xsl:value-of select="'-'" />
 		<xsl:value-of select="substring($dateTime,5,2)" />
 		<xsl:value-of select="'-'" />
-		<xsl:value-of select="substring($dateTime,7,2)" />
-		<xsl:value-of select="'-04:00'" />
+		<xsl:value-of select="substring($dateTime,7,2)" />		
 	</xsl:template>
 
 </xsl:stylesheet>
