@@ -143,7 +143,7 @@
 				<xsl:value-of select="$attributionValue/@code"></xsl:value-of>
 			</xsl:when>
 			<xsl:when test="$attributionValue/@nullFlavor !=''">
-				<xsl:value-of select="$attributionValue/@nullFlavor"></xsl:value-of>
+				<xsl:value-of select="$attributionValue/ns1:originalText"></xsl:value-of>
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
