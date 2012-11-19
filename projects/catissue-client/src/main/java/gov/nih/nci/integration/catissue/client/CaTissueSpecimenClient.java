@@ -306,11 +306,9 @@ public class CaTissueSpecimenClient {
                 // populate GuidanceForBreastCoreBiopsy inside specimen object
                 populateGuidanceForBreastCoreBiopsy(specimen, specimenDetail);
 
-                // populate specimen characteristics site from specimen requirements
-                populateSpecimenSite(specimen);
-
                 // method call to createSpecimen in caTissue
-                createSpecimen(specimen);
+                //createSpecimen(specimen);
+                updateSpecimen(specimen);
             } catch (ApplicationException e) {
                 LOG.error("CreateSpecimen Failed for Label " + specimen.getLabel(), e);
                 throw new ApplicationException("CreateSpecimen Failed for Label "
@@ -318,29 +316,7 @@ public class CaTissueSpecimenClient {
             }
         }
     }
-
-    /**
-     * This populate specimen characteristics site from the specimen requirements
-     * 
-     * @param specimen
-     */
-    private void populateSpecimenSite(Specimen specimen) throws ApplicationException {
-        if (specimen.getSpecimenCollectionGroup() == null) {
-            throw new ApplicationException("Specimen collection group not found for specimen");
-        }
-
-        final Collection<SpecimenRequirement> spmnRqrmnts = specimen.getSpecimenCollectionGroup()
-                .getCollectionProtocolEvent().getSpecimenRequirementCollection();
-        SpecimenRequirement specimenRequirement = null;
-        for (final Iterator<SpecimenRequirement> iterator = spmnRqrmnts.iterator(); iterator.hasNext();) {
-            specimenRequirement = (SpecimenRequirement) iterator.next();
-            if (specimenRequirement.getSpecimenType().equals(specimen.getSpecimenType())) {
-                specimen.getSpecimenCharacteristics().setTissueSite(
-                        specimenRequirement.getSpecimenCharacteristics().getTissueSite());
-                break;
-            }
-        }
-    }
+    
 
     /**
      * This method is used to perform the validation check while creating the specimen
