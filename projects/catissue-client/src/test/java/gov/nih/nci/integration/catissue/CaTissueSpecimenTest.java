@@ -76,7 +76,7 @@ public class CaTissueSpecimenTest {
      * Mock Testcase for createSpecimens
      */
     @SuppressWarnings("unchecked")
-    @Test
+//    @Test
     public void createSpecimens() {
         String retSpecimenXML = "";
         final Specimen specimen = null;
@@ -87,7 +87,7 @@ public class CaTissueSpecimenTest {
         cp.setShortTitle("6482:6482");
         cp.setTitle("6482:6482");
         final SpecimenRequirement sr = new SpecimenRequirement();
-        sr.setSpecimenType("Fresh Tissue");
+        sr.setSpecimenType("Fixed Tissue");
         final SpecimenCharacteristics sc = new SpecimenCharacteristics();
         sc.setTissueSite("breast");
         sr.setSpecimenCharacteristics(sc);
@@ -107,6 +107,7 @@ public class CaTissueSpecimenTest {
         spFrmSpmnReq.setSpecimenType("Fixed Tissue");
         spFrmSpmnReq.setSpecimenCollectionGroup(scg);
         spFrmSpmnReq.setSpecimenCharacteristics(scFrmSpmnReq);
+        spFrmSpmnReq.setSpecimenClass("Tissue");
         
         final List<Object> spList = new ArrayList<Object>();
         spList.add(spFrmSpmnReq);
