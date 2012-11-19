@@ -306,7 +306,7 @@ public class CaTissueSpecimenClient {
                 populateGuidanceForBreastCoreBiopsy(specimen, specimenDetail);
 
                 // method call to createSpecimen in caTissue
-                //createSpecimen(specimen);
+                // createSpecimen(specimen);
                 updateSpecimen(specimen);
             } catch (ApplicationException e) {
                 LOG.error("CreateSpecimen Failed for Label " + specimen.getLabel(), e);
@@ -315,7 +315,6 @@ public class CaTissueSpecimenClient {
             }
         }
     }
-    
 
     /**
      * This method is used to perform the validation check while creating the specimen
@@ -380,12 +379,61 @@ public class CaTissueSpecimenClient {
     private boolean isCollectionProtocolPresent(SpecimenDetail specimenDetail, String lastName)
             throws ApplicationException {
         final Specimen specimen = specimenDetail.getSpecimen();
-        /*
-        final CollectionProtocol cp = specimenDetail.getCollectionProtocol();
-                
+
+        final boolean scgFound = isSCGFound(specimenDetail, lastName);
+        if (!scgFound) { // throw exception
+            LOG.error("Specimen Collection Group was not found in caTissue for Label " + specimen.getLabel());
+            throw new ApplicationException("Specimen Collection Group not found in caTissue");
+        }
+
+        final boolean spFound = isSpecimenMatched(specimenDetail, specimen);
+        if (!spFound) {
+            // throw exception
+            LOG.error("Specimen does not match the specimen requirements in caTissue for Collection Point Label "
+                    + specimen.getLabel() + " for participant " + lastName);
+            throw new ApplicationException("Specimen does not match the specimen requirements in caTissue");
+        }
+
+        return spFound;
+    }
+
+    private boolean isSpecimenMatched(SpecimenDetail specimenDetail, final Specimen specimen)
+            throws ApplicationException {
+        boolean spFound = false;
+        final List<Specimen> spList = getSpecimenCollectionFromSCG(specimen.getSpecimenCollectionGroup());
+
+        if (spList != null && !spList.isEmpty()) {
+            for (Specimen sp : spList) {
+
+                if (sp.getSpecimenType().equals(specimenDetail.getSpecimen().getSpecimenType())
+                        && sp.getSpecimenClass().equals(specimenDetail.getSpecimen().getSpecimenClass())
+                        && sp.getSpecimenCharacteristics().getTissueSide()
+                                .equals(specimenDetail.getSpecimen().getSpecimenCharacteristics().getTissueSide())
+                        && StringUtils.isEmpty(sp.getLabel())) {
+                    spFound = true;
+                    // Participant has a SpecimenCollectionGroup under the given protocol
+                    specimen.setId(sp.getId());
+                    specimen.setSpecimenCollectionGroup(sp.getSpecimenCollectionGroup());
+                    specimen.setLineage(sp.getLineage());
+                    specimen.getSpecimenCharacteristics()
+                            .setTissueSite(sp.getSpecimenCharacteristics().getTissueSite());
+                    specimen.getSpecimenCharacteristics().setId(sp.getSpecimenCharacteristics().getId());
+
+                    specimen.setConsentTierStatusCollection(sp.getConsentTierStatusCollection());
+                    break;
+                }
+            }
+        }
+        return spFound;
+    }
+
+    private boolean isSCGFound(SpecimenDetail specimenDetail, String lastName) throws ApplicationException {
         boolean scgFound = false;
-        
-        final List<SpecimenCollectionGroup> scgList = getSpecimenCollectionGroupList(specimenDetail);        
+        final List<SpecimenCollectionGroup> scgList = getSpecimenCollectionGroupList(specimenDetail);
+        final Specimen specimen = specimenDetail.getSpecimen();
+
+        final CollectionProtocol cp = specimenDetail.getCollectionProtocol();
+
         if (scgList != null && !scgList.isEmpty()) {
             for (SpecimenCollectionGroup scg : scgList) {
                 final CollectionProtocol cpObj = scg.getCollectionProtocolRegistration().getCollectionProtocol();
@@ -398,43 +446,13 @@ public class CaTissueSpecimenClient {
                 }
             }
         }
-        
-        if (!scgFound) {
-            // throw exception
-            LOG.error("Specimen Collection Group was not found in caTissue for Label " + specimen.getLabel());
-            throw new ApplicationException("Specimen Collection Group not found in caTissue");
-        }
-        */
-        final List<Specimen> spList = getSpecimenCollection(specimenDetail, lastName);
-        boolean spFound = false;
-        if (spList != null && !spList.isEmpty()) {
-            for (Specimen sp : spList) {
-                
-                if (sp.getSpecimenType().equals(specimenDetail.getSpecimen().getSpecimenType())) {
-                    spFound = true;
-                    // Participant has a SpecimenCollectionGroup under the given protocol
-                    specimen.setSpecimenCollectionGroup(sp.getSpecimenCollectionGroup());
-                    specimen.setId(sp.getId());
-                    specimen.getSpecimenCharacteristics().setTissueSite(sp.getSpecimenCharacteristics().getTissueSite());
-                    break;
-                }
-            }
-        }
-        
-        if (!spFound) {
-            // throw exception
-            LOG.error("Specimen was not found in caTissue for Collection Point Label " 
-            + specimen.getLabel() + " for participant " + lastName);
-            throw new ApplicationException("Specimen as per requirements not found in caTissue");
-        }
-        return spFound;
+        return scgFound;
     }
 
-/*
-    private Specimen createSpecimen(Specimen specimen) throws ApplicationException {
-        return caTissueAPIClient.insert(specimen);
-    }
-*/
+    /*
+     * private Specimen createSpecimen(Specimen specimen) throws ApplicationException { return
+     * caTissueAPIClient.insert(specimen); }
+     */
 
     /**
      * This method is used to populate 'GuidanceForBreastCoreBiopsy object' inside 'Specimen object'
@@ -494,7 +512,7 @@ public class CaTissueSpecimenClient {
                 final SpecimenCharacteristics chars = new SpecimenCharacteristics();
                 chars.setId(existingSpecimen.getSpecimenCharacteristics().getId());
                 chars.setTissueSide(incomingSpecimen.getSpecimenCharacteristics().getTissueSide());
-                chars.setTissueSite(incomingSpecimen.getSpecimenCharacteristics().getTissueSite());
+                chars.setTissueSite(existingSpecimen.getSpecimenCharacteristics().getTissueSite());
                 incomingSpecimen.setSpecimenCharacteristics(chars);
 
                 incomingSpecimen.setConsentTierStatusCollection(existingSpecimen.getConsentTierStatusCollection());
@@ -847,21 +865,26 @@ public class CaTissueSpecimenClient {
         return user;
     }
 
-    /*private List<SpecimenCollectionGroup> getSpecimenCollectionGroupList(SpecimenDetail specimenDetail)
+    private List<SpecimenCollectionGroup> getSpecimenCollectionGroupList(SpecimenDetail specimenDetail)
             throws ApplicationException {
         final String shortTitle = specimenDetail.getCollectionProtocol().getShortTitle();
         final String collectionPointLabel = specimenDetail.getCollectionProtocolEvent();
         return caTissueAPIClient.getApplicationService().query(
                 CqlUtility.getSpecimenCollectionGroupListQuery(shortTitle, collectionPointLabel));
-    }*/
-    
-    private List<Specimen> getSpecimenCollection(SpecimenDetail specimenDetail, String patientId)
-            throws ApplicationException {
-        final String shortTitle = specimenDetail.getCollectionProtocol().getShortTitle();
-        final String collectionPointLabel = specimenDetail.getCollectionProtocolEvent();
-        return caTissueAPIClient.getApplicationService().query(
-                CqlUtility.getSpecimenCollectionForAPatientAndSCG(shortTitle, collectionPointLabel, patientId));
     }
+
+    private List<Specimen> getSpecimenCollectionFromSCG(SpecimenCollectionGroup scg) throws ApplicationException {
+
+        return caTissueAPIClient.getApplicationService().query(CqlUtility.getSpecimenCollectionFromSCG(scg.getId()));
+    }
+
+    /*
+     * private List<Specimen> getSpecimenCollection(SpecimenDetail specimenDetail, String patientId) throws
+     * ApplicationException { final String shortTitle = specimenDetail.getCollectionProtocol().getShortTitle(); final
+     * String collectionPointLabel = specimenDetail.getCollectionProtocolEvent(); return
+     * caTissueAPIClient.getApplicationService().query( CqlUtility.getSpecimenCollectionForAPatientAndSCG(shortTitle,
+     * collectionPointLabel, patientId)); }
+     */
 
     /**
      * 
