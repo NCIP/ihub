@@ -14,7 +14,7 @@
 			<specimenType>Fresh Tissue</specimenType>
 			<specimenCharacteristics>
 				<tissueSide>Right</tissueSide>
-				<tissueSite>SKIN</tissueSite>
+				
 			</specimenCharacteristics>
 			<activityStatus>Active</activityStatus>
 			<availableQuantity>155</availableQuantity>
@@ -41,7 +41,7 @@
 			<specimenType>Fresh Tissue</specimenType>
 			<specimenCharacteristics>
 				<tissueSide>Right</tissueSide>
-				<tissueSite>SKIN</tissueSite>
+				
 			</specimenCharacteristics>
 			<activityStatus>Active</activityStatus>
 			<availableQuantity>165</availableQuantity>

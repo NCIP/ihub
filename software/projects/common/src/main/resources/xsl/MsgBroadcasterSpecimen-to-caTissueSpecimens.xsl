@@ -107,12 +107,7 @@
 										select="a:specimen/a:specimenCharacteristics/a:tissueSide" />
 								</xsl:apply-templates>
 							</tissueSide>
-							<tissueSite>
-								<xsl:apply-templates select="$specimensite-top">
-									<xsl:with-param name="curr-key"
-										select="a:specimen/a:specimenCharacteristics/a:tissueSite" />
-								</xsl:apply-templates>
-							</tissueSite>
+							<tissueSite/>
 						</specimenCharacteristics>
 						<activityStatus>
 							<xsl:apply-templates select="$statuses-top">

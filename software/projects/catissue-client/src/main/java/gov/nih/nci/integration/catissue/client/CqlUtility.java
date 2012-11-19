@@ -281,5 +281,38 @@ public final class CqlUtility {
 
         return createTargetQuery(SpecimenCollectionGroup.class, group0);
     }
+    
+    /**
+     * Get the CQLQuery for the SpecimenCollectionGroup for given shortTitle & label
+     * 
+     * @param shortTitle - shortTitle of CollectionProtocol
+     * @param cpLabel - CollectionPointLabel of CollectionProtocolEvent
+     * @param patientId - patient Id for the participant
+     * @return CQLQuery object
+     */
+    public static CQLQuery getSpecimenCollectionForAPatientAndSCG(String shortTitle, String cpLabel, String patientId) {
+        final CQLAttribute association2Attribute = createAttribute(SHORT_TITLE, shortTitle, CQLPredicate.EQUAL_TO);
+        final CQLAssociation association2 = createAssociation(CollectionProtocol.class, COLLECTION_PROTOCOL);
+        association2.setAttribute(association2Attribute);
+
+        final CQLAttribute association11Attribute = createAttribute("id", null, CQLPredicate.IS_NOT_NULL);
+        final CQLAttribute association12Attribute = createAttribute("collectionPointLabel", cpLabel,
+                CQLPredicate.EQUAL_TO);
+        final CQLGroup group1 = createGroup(CQLLogicalOperator.AND, association11Attribute, association12Attribute,
+                association2);
+        final CQLAssociation association1 = createAssociation(CollectionProtocolEvent.class, "collectionProtocolEvent");
+        association1.setGroup(group1);
+
+        final CQLAttribute association3Attribute = createAttribute("id", null, CQLPredicate.IS_NOT_NULL);
+        final CQLGroup group3 = createGroup(CQLLogicalOperator.AND, association3Attribute, association1);
+        
+        final CQLAssociation association3 = createAssociation(SpecimenCollectionGroup.class, "specimenCollectionGroup");
+        association1.setGroup(group3);
+        
+        final CQLAttribute association4Attribute = createAttribute("id", null, CQLPredicate.IS_NOT_NULL);
+        final CQLGroup group4 = createGroup(CQLLogicalOperator.AND, association4Attribute, association3);
+
+        return createTargetQuery(Specimen.class, group4);
+    }
 
 }

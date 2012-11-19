@@ -163,7 +163,7 @@ public class CaTissueConsentClient {
                 existingSpecimen = getExistingSpecimen(consentDetail.getConsentData().getSpecimenLabel().trim());
 
                 // populate the tierId for given 'statement' inside consentDetail
-                consentDetail = populateConsentTierId(consentDetail, existingSpecimen);
+                consentDetail = populateConsentInfo(consentDetail, existingSpecimen);
                 // set the ConsentTierStatusCollection to main/parent specimen
                 existingSpecimen.setConsentTierStatusCollection(consentDetail.getConsentData()
                         .getConsentTierStatusSet());
@@ -208,33 +208,28 @@ public class CaTissueConsentClient {
      * @return
      * @throws ApplicationException
      */
-    private ConsentDetail populateConsentTierId(ConsentDetail consentDetail, Specimen existingSpecimen)
+    private ConsentDetail populateConsentInfo(ConsentDetail consentDetail, Specimen existingSpecimen)
             throws ApplicationException {
         final Set<ConsentTierStatus> conTierStatusSet = consentDetail.getConsentData().getConsentTierStatusSet();
         final Iterator<ConsentTierStatus> itrTierStatus = conTierStatusSet.iterator();
+        
+        final Collection<ConsentTier> consentTierCollection = existingSpecimen.getSpecimenCollectionGroup()
+                .getCollectionProtocolEvent().getCollectionProtocol().getConsentTierCollection();
+        final Collection<ConsentTierStatus> existingSpcmnCTSCol = existingSpecimen.getConsentTierStatusCollection();
+        
+        if (consentTierCollection == null || consentTierCollection.isEmpty()) {            
+            LOG.error("populateConsentTierId failed as ConsentTier Statement was not found for given CollectionProtocol "
+                    + consentDetail.getCollectionProtocol().getShortTitle() + "in caTissue.");
+            throw new ApplicationException(
+                    "ConsentTier Statement was not found for given CollectionProtocol in caTissue");
+        }
+        
         // iterate thru all the consentTierStatus's statement
-        while (itrTierStatus.hasNext()) {
-            boolean isTierIdFound = false;
-            final ConsentTierStatus tierStatus = itrTierStatus.next();
-            final String stmt = tierStatus.getConsentTier().getStatement();
-            final CollectionProtocol cp = existingSpecimen.getSpecimenCollectionGroup().getCollectionProtocolEvent()
-                    .getCollectionProtocol();
-            final Collection<ConsentTier> consentTierCollection = cp.getConsentTierCollection();
-            if (consentTierCollection != null) {
-                final Iterator<ConsentTier> itrConsentTier = consentTierCollection.iterator();
-                // iterate thru each consentTier and compare for the statement..
-                // if it matches- get its corresponding Id
-                while (itrConsentTier.hasNext()) {
-                    final ConsentTier consentTier = itrConsentTier.next();
-                    if (stmt.equalsIgnoreCase(consentTier.getStatement())) {
-                        tierStatus.getConsentTier().setId(consentTier.getId());
-                        isTierIdFound = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!isTierIdFound) {
+        while (itrTierStatus.hasNext()) {      
+            
+            final ConsentTierStatus tierStatus = itrTierStatus.next();          
+            
+            if (!handleConsentTierStatusForStatement(consentTierCollection, tierStatus, existingSpcmnCTSCol)) {
                 // i.e tierId not found for given CollectionProtocol & Statement
                 // combination
                 LOG.error("populateConsentTierId failed as ConsentTier Statement was not found for given CollectionProtocol "
@@ -242,10 +237,45 @@ public class CaTissueConsentClient {
                 throw new ApplicationException(
                         "ConsentTier Statement was not found for given CollectionProtocol in caTissue");
             }
-        }
+            
+        } //end of outer while        
 
         return consentDetail;
     }
+
+    private boolean handleConsentTierStatusForStatement(final Collection<ConsentTier> consentTierCollection,
+            final ConsentTierStatus tierStatus, Collection<ConsentTierStatus> existingSpcmnCTSCol) {
+        final Iterator<ConsentTier> itrConsentTier = consentTierCollection.iterator();
+        // iterate thru each consentTier and compare for the statement..
+        // if it matches- get its corresponding Id
+        boolean isTierIdFound = false;
+        while (itrConsentTier.hasNext()) {
+            final ConsentTier consentTier = itrConsentTier.next();
+            if (tierStatus.getConsentTier().getStatement().equalsIgnoreCase(consentTier.getStatement())) {
+                tierStatus.getConsentTier().setId(consentTier.getId());
+                
+                populateStatus(tierStatus, existingSpcmnCTSCol);
+                
+                isTierIdFound = true;
+                break;
+            }
+        }
+        return isTierIdFound;
+    }
+
+    private void populateStatus(final ConsentTierStatus tierStatus, Collection<ConsentTierStatus> existingSpcmnCTSCol) {
+        //Setting status as 'Withdrawn' only if incoming status is 'No'
+        //and the existing status is 'Yes'
+        for (ConsentTierStatus existingCTS : existingSpcmnCTSCol) {
+          if (tierStatus.getConsentTier().getId() == existingCTS.getConsentTier().getId()
+                  && "No".equals(tierStatus.getStatus())
+                  &&  "Yes".equals(existingCTS.getStatus()) ) {                              
+              tierStatus.setStatus("Withdrawn");
+          }
+        }
+    }
+    
+    
 
     /**
      * This method will rollback the Consents

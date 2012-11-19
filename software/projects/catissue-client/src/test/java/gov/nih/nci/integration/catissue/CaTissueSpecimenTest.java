@@ -12,8 +12,13 @@ import edu.wustl.catissuecore.domain.Participant;
 import edu.wustl.catissuecore.domain.Specimen;
 import edu.wustl.catissuecore.domain.SpecimenCharacteristics;
 import edu.wustl.catissuecore.domain.SpecimenCollectionGroup;
+import edu.wustl.catissuecore.domain.SpecimenRequirement;
+import edu.wustl.catissuecore.domain.TissueSpecimen;
 import edu.wustl.catissuecore.domain.User;
 import edu.wustl.catissuecore.domain.deintegration.SpecimenRecordEntry;
+import edu.wustl.catissuecore.factory.CollectionProtocolEventFactory;
+import edu.wustl.catissuecore.factory.SpecimenFactory;
+import edu.wustl.catissuecore.factory.TissueSpecimenFactory;
 import gov.nih.nci.dynext.guidance_for_breast_core_biopsy.GuidanceForBreastCoreBiopsy;
 import gov.nih.nci.integration.catissue.client.CaTissueAPIClientWithRegularAuthentication;
 import gov.nih.nci.integration.catissue.client.CaTissueSpecimenClient;
@@ -81,12 +86,30 @@ public class CaTissueSpecimenTest {
         final CollectionProtocol cp = new CollectionProtocol();
         cp.setShortTitle("6482:6482");
         cp.setTitle("6482:6482");
+        final SpecimenRequirement sr = new SpecimenRequirement();
+        sr.setSpecimenType("Fresh Tissue");
+        final SpecimenCharacteristics sc = new SpecimenCharacteristics();
+        sc.setTissueSite("breast");
+        sr.setSpecimenCharacteristics(sc);
+        final CollectionProtocolEvent cpe = CollectionProtocolEventFactory.getInstance().createObject();
+        cpe.getSpecimenRequirementCollection().add(sr);
+        scg.setCollectionProtocolEvent(cpe);
         final CollectionProtocolRegistration cpr = new CollectionProtocolRegistration();
         cpr.setCollectionProtocol(cp);
         cpr.setParticipant(participant);
         scg.setCollectionProtocolRegistration(cpr);
-        final List<Object> scgList = new ArrayList<Object>();
-        scgList.add(scg);
+        
+        final SpecimenCharacteristics scFrmSpmnReq = new SpecimenCharacteristics();
+        scFrmSpmnReq.setTissueSite("breast");
+        scFrmSpmnReq.setTissueSide("Left");
+        
+        final Specimen spFrmSpmnReq = TissueSpecimenFactory.getInstance().createObject();
+        spFrmSpmnReq.setSpecimenType("Fixed Tissue");
+        spFrmSpmnReq.setSpecimenCollectionGroup(scg);
+        spFrmSpmnReq.setSpecimenCharacteristics(scFrmSpmnReq);
+        
+        final List<Object> spList = new ArrayList<Object>();
+        spList.add(spFrmSpmnReq);
 
         try {
             EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
@@ -94,7 +117,7 @@ public class CaTissueSpecimenTest {
                     caTissueAPIClient.searchById((Class<Specimen>) EasyMock.anyObject(),
                             (Specimen) org.easymock.EasyMock.anyObject())).andReturn(specimen);
 
-            EasyMock.expect(writableAppService.query((CQLQuery) org.easymock.EasyMock.anyObject())).andReturn(scgList);
+            EasyMock.expect(writableAppService.query((CQLQuery) org.easymock.EasyMock.anyObject())).andReturn(spList);
 
             EasyMock.expect(caTissueAPIClient.insert((Specimen) org.easymock.EasyMock.anyObject())).andReturn(specimen);
             EasyMock.replay(caTissueAPIClient);
