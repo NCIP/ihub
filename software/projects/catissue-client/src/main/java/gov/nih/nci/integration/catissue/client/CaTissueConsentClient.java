@@ -267,7 +267,7 @@ public class CaTissueConsentClient {
         //Setting status as 'Withdrawn' only if incoming status is 'No'
         //and the existing status is 'Yes'
         for (ConsentTierStatus existingCTS : existingSpcmnCTSCol) {
-          if (tierStatus.getConsentTier().getId() == existingCTS.getConsentTier().getId()
+          if (tierStatus.getConsentTier().getId().equals(existingCTS.getConsentTier().getId())
                   && "No".equals(tierStatus.getStatus())
                   &&  "Yes".equals(existingCTS.getStatus()) ) {                              
               tierStatus.setStatus("Withdrawn");
