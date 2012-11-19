@@ -48,7 +48,7 @@
 							<initialQuantity>177</initialQuantity>
 							<availableQuantity>155</availableQuantity>
 							<specimenCharacteristics>
-								<tissueSite>SKIN</tissueSite>
+								
 								<tissueSide>Right</tissueSide>
 							</specimenCharacteristics>
 						</specimen>
@@ -72,7 +72,7 @@
 							<initialQuantity>187</initialQuantity>
 							<availableQuantity>165</availableQuantity>
 							<specimenCharacteristics>
-								<tissueSite>SKIN</tissueSite>
+								
 								<tissueSide>Right</tissueSide>
 							</specimenCharacteristics>
 						</specimen>
