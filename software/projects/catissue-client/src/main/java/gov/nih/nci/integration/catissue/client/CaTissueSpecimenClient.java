@@ -430,9 +430,11 @@ public class CaTissueSpecimenClient {
         return spFound;
     }
 
+/*
     private Specimen createSpecimen(Specimen specimen) throws ApplicationException {
         return caTissueAPIClient.insert(specimen);
     }
+*/
 
     /**
      * This method is used to populate 'GuidanceForBreastCoreBiopsy object' inside 'Specimen object'
