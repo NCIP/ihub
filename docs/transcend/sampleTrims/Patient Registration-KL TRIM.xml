@@ -1,0 +1,997 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<trim xmlns="urn:tolven-org:trim:4.0">
+    <extends>patientAct</extends>
+    <name>obs/evn/registration</name>
+    <description>Registration</description>
+    <page>registration.xhtml</page>
+    <drilldown>registrationDD.xhtml</drilldown>
+    <menu>global:caseReportFormMenu</menu>
+    <tolvenEventId timestamp="20100424012215+0000" principal="julia.lyandres@ucsfmedctr.org" application="echr" path="echr:patient-1082199:caseReportForm-1082215" id="1082215" accountId="47003"/>
+    <reference>http://wikihit.org/wiki/index.php</reference>
+    <application signatureRequired="true" name="echr">
+        <instance>echr:patient:caseReportForm</instance>
+        <wip>echr:activity:all</wip>
+    </application>
+    <act moodCode="EVN" classCode="OBS">
+        <label>Registration</label>
+        <bind phase="create" application="echr">
+            <placeholder bindAction="merge">
+                <path>echr:patient:caseReportForm</path>
+            </placeholder>
+        </bind>
+        <id>
+            <II>
+                <root>1.2.1.47003</root>
+                <extension>echr:patient-1082199:caseReportForm-1082212</extension>
+            </II>
+        </id>
+        <code>
+            <CD>
+                <code>OINT</code>
+                <codeSystemName>HL7</codeSystemName>
+                <codeSystemVersion>3.0</codeSystemVersion>
+            </CD>
+        </code>
+        <statusCode>active</statusCode>
+        <title>
+            <ST>Registration</ST>
+        </title>
+        <effectiveTime>
+            <label>Date</label>
+            <new function="now" datatype="TS"/>
+            <TS>
+                <value>20100423182215-0700</value>
+            </TS>
+        </effectiveTime>
+        <participation typeCode="SBJ" name="subject">
+            <role classCode="PAT">
+                <bind application="echr">
+                    <placeholder>
+                        <path>echr:patient</path>
+                    </placeholder>
+                </bind>
+                <bind application="ephr">
+                    <placeholder>
+                        <path>ephr:patient</path>
+                    </placeholder>
+                </bind>
+                <id>
+                    <II>
+                        <root>1.2.1.47003</root>
+                        <extension>echr:patient-1082199</extension>
+                    </II>
+                </id>
+                <player determinerCode="INSTANCE" classCode="PSN">
+                    <name>
+                        <label>Patient Name</label>
+                        <EN>
+                            <label>Legal Name</label>
+                            <use>L</use>
+                            <part>
+<label>First Name</label>
+<type>GIV</type>
+<ST>Kristmas</ST>
+                            </part>
+                            <part>
+<label>Middle Name</label>
+<type>GIV</type>
+<ST></ST>
+                            </part>
+                            <part>
+<label>Last Name</label>
+<type>FAM</type>
+<ST>Lights</ST>
+                            </part>
+                        </EN>
+                    </name>
+                </player>
+            </role>
+        </participation>
+        <participation typeCode="ENT" name="dataEnterer">
+            <role classCode="ROL">
+                <id>
+                    <II>
+                        <root>1.2.1.47003</root>
+                        <extension>julia.lyandres@ucsfmedctr.org</extension>
+                    </II>
+                </id>
+            </role>
+        </participation>
+        <relationship typeCode="NAME" direction="IN" name="RandomPatientID" enabled="true">
+            <act moodCode="EVN" classCode="OBS">
+                <bind phase="create" application="echr">
+                    <placeholder bindAction="create">
+                        <path>echr:patient:trial</path>
+                    </placeholder>
+                </bind>
+                <id>
+                    <II>
+                        <root>1.2.1.47003</root>
+                        <extension>echr:patient-1082199:trial-1082213</extension>
+                    </II>
+                </id>
+                <title>
+                    <ST>I-SPY 2 Subject ID</ST>
+                </title>
+                <observation>
+                    <value>
+                        <label>Patient ID</label>
+                        <ST>98765</ST>
+                    </value>
+                    <value>
+                        <label>Study ID</label>
+                        <ST>I-SPY 2 TRIAL</ST>
+                    </value>
+                    <value>
+                        <label>Patient Name</label>
+                        <ST>1082199</ST>
+                    </value>
+                </observation>
+            </act>
+        </relationship>
+        <relationship typeCode="NAME" direction="IN" name="patientName">
+            <act moodCode="EVN" classCode="ENTRY">
+                <title>
+                    <ST>Patient Name</ST>
+                </title>
+                <relationship typeCode="NAME" direction="IN" name="firstName" enabled="false">
+                    <act moodCode="EVN" classCode="ENTRY">
+                        <code>
+                            <CD>
+<code>184095009</code>
+<codeSystem>2.16.840.1.113883.6.5</codeSystem>
+<codeSystemName>SNOMED CT</codeSystemName>
+<codeSystemVersion>January 2009</codeSystemVersion>
+<translation>
+    <code>TBD</code>
+    <codeSystem>2.16.840.1.113883.3.26.2</codeSystem>
+    <codeSystemName>caDSR</codeSystemName>
+    <codeSystemVersion>2.1</codeSystemVersion>
+</translation>
+                            </CD>
+                        </code>
+                        <observation>
+                            <value>
+<label>First</label>
+<ST>Kristmas</ST>
+                            </value>
+                        </observation>
+                    </act>
+                </relationship>
+                <relationship typeCode="NAME" direction="IN" name="middleName">
+                    <act moodCode="EVN" classCode="ENTRY">
+                        <code>
+                            <CD>
+<code>405622006</code>
+<codeSystem>2.16.840.1.113883.6.5</codeSystem>
+<codeSystemName>SNOMED CT</codeSystemName>
+<codeSystemVersion>January 2009</codeSystemVersion>
+<translation>
+    <code>TBD</code>
+    <codeSystem>2.16.840.1.113883.3.26.2</codeSystem>
+    <codeSystemName>caDSR</codeSystemName>
+    <codeSystemVersion>2.1</codeSystemVersion>
+</translation>
+                            </CD>
+                        </code>
+                        <observation>
+                            <value>
+<label>Middle</label>
+<ST></ST>
+                            </value>
+                        </observation>
+                    </act>
+                </relationship>
+                <relationship typeCode="NAME" direction="IN" name="lastName" enabled="false">
+                    <act moodCode="EVN" classCode="ENTRY">
+                        <code>
+                            <CD>
+<code>397678008</code>
+<codeSystem>2.16.840.1.113883.6.5</codeSystem>
+<codeSystemName>SNOMED CT</codeSystemName>
+<codeSystemVersion>January 2009</codeSystemVersion>
+<translation>
+    <code>TBD</code>
+    <codeSystem>2.16.840.1.113883.3.26.2</codeSystem>
+    <codeSystemName>caDSR</codeSystemName>
+    <codeSystemVersion>2.1</codeSystemVersion>
+</translation>
+                            </CD>
+                        </code>
+                        <observation>
+                            <value>
+<label>Last</label>
+<ST>Lights</ST>
+                            </value>
+                        </observation>
+                    </act>
+                </relationship>
+                <relationship typeCode="NAME" direction="IN" name="initials" enabled="false">
+                    <act moodCode="EVN" classCode="ENTRY">
+                        <code>
+                            <CD>
+<code>TBD</code>
+<codeSystem>2.16.840.1.113883.6.5</codeSystem>
+<codeSystemName>SNOMED CT</codeSystemName>
+<codeSystemVersion>January 2009</codeSystemVersion>
+<translation>
+    <code>TBD</code>
+    <codeSystem>2.16.840.1.113883.3.26.2</codeSystem>
+    <codeSystemName>caDSR</codeSystemName>
+    <codeSystemVersion>2.1</codeSystemVersion>
+</translation>
+                            </CD>
+                        </code>
+                        <observation>
+                            <value>
+<label>Initials</label>
+<ST>KL</ST>
+                            </value>
+                        </observation>
+                    </act>
+                </relationship>
+            </act>
+        </relationship>
+        <relationship typeCode="NAME" direction="IN" name="otherInfo">
+            <act moodCode="EVN" classCode="ENTRY">
+                <title>
+                    <ST>Other Information</ST>
+                </title>
+                <observation>
+                    <value>
+                        <label>Race</label>
+                        <valueSet>race</valueSet>
+                        <SETCE>
+                            <displayName>White</displayName>
+                            <code>2567335</code>
+                            <codeSystem>2.16.840.1.113883.3.26.2</codeSystem>
+                            <codeSystemName>CADSR</codeSystemName>
+                            <codeSystemVersion>2.1</codeSystemVersion>
+                        </SETCE>
+                        <CD>
+                            <code>103579009 | race |</code>
+                            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+                            <codeSystemName>SNOMED CT</codeSystemName>
+                            <codeSystemVersion>January 2009</codeSystemVersion>
+                            <translation>
+<code>TBD</code>
+<codeSystem>2.16.840.1.113883.3.26.2</codeSystem>
+<codeSystemName>caDSR</codeSystemName>
+<codeSystemVersion>2.1</codeSystemVersion>
+                            </translation>
+                        </CD>
+                    </value>
+                    <value>
+                        <label>Ethnicity</label>
+                        <valueSet>ethnicity</valueSet>
+                        <CE>
+                            <displayName>Not Hispanic or Latino</displayName>
+                            <code>TBD</code>
+                            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+                            <codeSystemName>SNOMED CT</codeSystemName>
+                            <codeSystemVersion>January 2009</codeSystemVersion>
+                        </CE>
+                        <CD>
+                            <code>364699009</code>
+                            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+                            <codeSystemName>SNOMED CT</codeSystemName>
+                            <codeSystemVersion>January 2009</codeSystemVersion>
+                            <translation>
+<code>2002440</code>
+<codeSystem>2.16.840.1.113883.3.26.2</codeSystem>
+<codeSystemName>caDSR</codeSystemName>
+<codeSystemVersion>2.1</codeSystemVersion>
+                            </translation>
+                        </CD>
+                    </value>
+                    <value>
+                        <label>SSN</label>
+                        <ST>0000</ST>
+                        <CD>
+                            <code>398093005</code>
+                            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+                            <codeSystemName>SNOMED CT</codeSystemName>
+                            <codeSystemVersion>January 2009</codeSystemVersion>
+                            <translation>
+<code>TBD</code>
+<codeSystem>2.16.840.1.113883.3.26.2</codeSystem>
+<codeSystemName>caDSR</codeSystemName>
+<codeSystemVersion>2.1</codeSystemVersion>
+                            </translation>
+                        </CD>
+                    </value>
+                    <value>
+                        <label>Institution</label>
+                        <valueSet>institution</valueSet>
+                        <CE>
+                            <displayName>University of California San Francisco (UCSF)</displayName>
+                            <code>C0024582</code>
+                            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+                            <codeSystemVersion>2007AA</codeSystemVersion>
+                        </CE>
+                        <CD>
+                            <code>398321007 | institution name |</code>
+                            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+                            <codeSystemName>SNOMED CT</codeSystemName>
+                            <codeSystemVersion>January 2009</codeSystemVersion>
+                            <translation>
+<code>TBD</code>
+<codeSystem>2.16.840.1.113883.3.26.2</codeSystem>
+<codeSystemName>caDSR</codeSystemName>
+<codeSystemVersion>2.1</codeSystemVersion>
+                            </translation>
+                        </CD>
+                    </value>
+                </observation>
+                <relationship typeCode="NAME" direction="IN" name="gender" enabled="false">
+                    <act moodCode="EVN" classCode="ENTRY">
+                        <code>
+                            <CD>
+<code>263495000</code>
+<codeSystem>2.16.840.1.113883.6.5</codeSystem>
+<codeSystemName>SNOMED CT</codeSystemName>
+<codeSystemVersion>January 2009</codeSystemVersion>
+<translation>
+    <code>TBD</code>
+    <codeSystem>2.16.840.1.113883.3.26.2</codeSystem>
+    <codeSystemName>caDSR</codeSystemName>
+    <codeSystemVersion>2.1</codeSystemVersion>
+</translation>
+                            </CD>
+                        </code>
+                        <title>
+                            <ST>Gender</ST>
+                        </title>
+                        <relationship typeCode="NAME" direction="IN" name="genderStatus" enabled="true">
+                            <act moodCode="EVN" classCode="ENTRY"/>
+                        </relationship>
+                    </act>
+                </relationship>
+                <relationship typeCode="NAME" direction="IN" name="mrn" enabled="false">
+                    <act moodCode="EVN" classCode="ENTRY">
+                        <code>
+                            <CD>
+<code>398225001</code>
+<codeSystem>2.16.840.1.113883.6.5</codeSystem>
+<codeSystemName>SNOMED CT</codeSystemName>
+<codeSystemVersion>January 2009</codeSystemVersion>
+<translation>
+    <code>TBD</code>
+    <codeSystem>2.16.840.1.113883.3.26.2</codeSystem>
+    <codeSystemName>caDSR</codeSystemName>
+    <codeSystemVersion>2.1</codeSystemVersion>
+</translation>
+                            </CD>
+                        </code>
+                        <observation>
+                            <value>
+<label>MRN</label>
+<ST>999000</ST>
+                            </value>
+                        </observation>
+                    </act>
+                </relationship>
+                <relationship typeCode="NAME" direction="IN" name="country">
+                    <act moodCode="EVN" classCode="ENTRY">
+                        <observation>
+                            <value>
+<label>Country of birth</label>
+<ST></ST>
+                            </value>
+                        </observation>
+                    </act>
+                </relationship>
+            </act>
+        </relationship>
+        <relationship typeCode="NAME" direction="IN" name="address">
+            <act moodCode="EVN" classCode="ENTRY">
+                <title>
+                    <ST>Patient Address</ST>
+                </title>
+                <observation>
+                    <value>
+                        <label>Zip</label>
+                        <ST>12345</ST>
+                    </value>
+                </observation>
+            </act>
+        </relationship>
+        <relationship typeCode="NAME" direction="IN" name="registration">
+            <act moodCode="EVN" classCode="ENTRY">
+                <title>
+                    <ST>Registration</ST>
+                </title>
+                <observation>
+                    <value>
+                        <label>Registration Date</label>
+                        <TS>
+                            <value>20100423</value>
+                        </TS>
+                    </value>
+                    <value>
+                        <label>Study Coordinator</label>
+                        <valueSet>studyCoordinator</valueSet>
+                        <CE>
+                            <displayName>Lyandres, Julia </displayName>
+                            <code>TBD1</code>
+                            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+                        </CE>
+                        <CD>
+                            <code>TBD</code>
+                            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+                            <codeSystemName>SNOMED CT</codeSystemName>
+                            <codeSystemVersion>January 2009</codeSystemVersion>
+                            <translation>
+<code>TBD</code>
+<codeSystem>2.16.840.1.113883.3.26.2</codeSystem>
+<codeSystemName>caDSR</codeSystemName>
+<codeSystemVersion>2.1</codeSystemVersion>
+                            </translation>
+                        </CD>
+                    </value>
+                </observation>
+            </act>
+        </relationship>
+        <relationship typeCode="NAME" direction="IN" name="studyStaff">
+            <act moodCode="EVN" classCode="ENTRY">
+                <title>
+                    <ST>Study Staff</ST>
+                </title>
+                <observation>
+                    <value>
+                        <label>Oncologist</label>
+                        <valueSet>oncologist</valueSet>
+                        <CE>
+                            <displayName>Rugo, Hope </displayName>
+                            <code>3092950001</code>
+                            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+                        </CE>
+                        <CD>
+                            <code>309295000</code>
+                            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+                            <codeSystemName>SNOMED CT</codeSystemName>
+                            <codeSystemVersion>January 2009</codeSystemVersion>
+                            <translation>
+<code>TBD</code>
+<codeSystem>2.16.840.1.113883.3.26.2</codeSystem>
+<codeSystemName>caDSR</codeSystemName>
+<codeSystemVersion>2.1</codeSystemVersion>
+                            </translation>
+                        </CD>
+                    </value>
+                    <value>
+                        <label>Surgeon</label>
+                        <valueSet>surgeon</valueSet>
+                        <CE>
+                            <displayName>Esserman , Laura </displayName>
+                            <code>3042920045</code>
+                            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+                        </CE>
+                        <CD>
+                            <code>304292004</code>
+                            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+                            <codeSystemName>SNOMED CT</codeSystemName>
+                            <codeSystemVersion>January 2009</codeSystemVersion>
+                            <translation>
+<code>TBD</code>
+<codeSystem>2.16.840.1.113883.3.26.2</codeSystem>
+<codeSystemName>caDSR</codeSystemName>
+<codeSystemVersion>2.1</codeSystemVersion>
+                            </translation>
+                        </CD>
+                    </value>
+                </observation>
+                <relationship typeCode="NAME" direction="IN" name="clinicalCoordinator">
+                    <act moodCode="EVN" classCode="ENTRY">
+                        <observation>
+                            <value>
+<label>Clinical Coordinator</label>
+<valueSet>clinicalCoordinator</valueSet>
+<CE>
+    <displayName>Lyandres, Julia </displayName>
+    <code>TBD1</code>
+    <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+</CE>
+<CD>
+    <code>TBD</code>
+    <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+    <codeSystemName>SNOMED CT</codeSystemName>
+    <codeSystemVersion>January 2009</codeSystemVersion>
+    <translation>
+        <code>TBD</code>
+        <codeSystem>2.16.840.1.113883.3.26.2</codeSystem>
+        <codeSystemName>caDSR</codeSystemName>
+        <codeSystemVersion>2.1</codeSystemVersion>
+    </translation>
+</CD>
+                            </value>
+                            <value>
+<label>Phone</label>
+<ST></ST>
+                            </value>
+                            <value>
+<label>Fax</label>
+<ST></ST>
+                            </value>
+                            <value>
+<label>Email</label>
+<ST></ST>
+                            </value>
+                        </observation>
+                    </act>
+                </relationship>
+                <relationship typeCode="NAME" direction="IN" name="radiologyCoordinator">
+                    <act moodCode="EVN" classCode="ENTRY">
+                        <observation>
+                            <value>
+<label>Radiology Coordinator</label>
+<valueSet>radiologyCoordinator</valueSet>
+<CE>
+    <displayName> Watkins, Margarita </displayName>
+    <code>TBD0</code>
+    <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+</CE>
+<CD>
+    <code>TBD</code>
+    <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+    <codeSystemName>SNOMED CT</codeSystemName>
+    <codeSystemVersion>January 2009</codeSystemVersion>
+    <translation>
+        <code>TBD</code>
+        <codeSystem>2.16.840.1.113883.3.26.2</codeSystem>
+        <codeSystemName>caDSR</codeSystemName>
+        <codeSystemVersion>2.1</codeSystemVersion>
+    </translation>
+</CD>
+                            </value>
+                            <value>
+<label>Phone</label>
+<ST></ST>
+                            </value>
+                            <value>
+<label>Fax</label>
+<ST></ST>
+                            </value>
+                            <value>
+<label>Email</label>
+<ST></ST>
+                            </value>
+                        </observation>
+                    </act>
+                </relationship>
+            </act>
+        </relationship>
+        <relationship typeCode="NAME" direction="IN" name="legalDates">
+            <act moodCode="EVN" classCode="ENTRY">
+                <title>
+                    <ST>Legal / Dates</ST>
+                </title>
+                <observation>
+                    <value>
+                        <label>IRB Approval Date</label>
+                        <TS>
+                            <value>20100209</value>
+                        </TS>
+                    </value>
+                    <value>
+                        <label>Screening Informed Consent Date</label>
+                        <TS>
+                            <value>20100421</value>
+                        </TS>
+                    </value>
+                    <value>
+                        <label>HIPAA Consent Date</label>
+                        <TS>
+                            <value>20100421</value>
+                        </TS>
+                    </value>
+                </observation>
+            </act>
+        </relationship>
+        <relationship typeCode="NAME" direction="IN" name="caTissueStatus">
+            <act moodCode="EVN" classCode="ENTRY">
+                <bind phase="create" application="echr">
+                    <placeholder bindAction="create">
+                        <path>echr:patient:caseReportForm:caTissueValues</path>
+                    </placeholder>
+                </bind>
+                <id>
+                    <II>
+                        <root>1.2.1.47003</root>
+                        <extension>echr:patient-1082199:caseReportForm-1082212:caTissueValues-1082214</extension>
+                    </II>
+                </id>
+                <title>
+                    <ST>caTissueStatus</ST>
+                </title>
+                <observation>
+                    <value>
+                        <INT>
+                            <label>Participant creation successful</label>
+                            <value>1</value>
+                        </INT>
+                    </value>
+                </observation>
+            </act>
+        </relationship>
+        <relationship typeCode="NAME" direction="IN" name="patientDOB">
+            <act moodCode="EVN" classCode="ENTRY">
+                <title>
+                    <ST>Patient DOB</ST>
+                </title>
+                <observation>
+                    <value>
+                        <label>Patient DOB: </label>
+                        <TS>
+                            <value>19730929</value>
+                        </TS>
+                    </value>
+                </observation>
+            </act>
+        </relationship>
+        <compute>
+            <type>org.tolven.process.RandomIDGenerator</type>
+            <property name="enabled">
+                <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:boolean">false</value>
+            </property>
+            <property name="path">
+                <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">echr:patients:trials</value>
+            </property>
+        </compute>
+        <compute>
+            <type>org.tolven.process.CRFPrior</type>
+            <property name="enabled">
+                <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:boolean">false</value>
+            </property>
+            <property name="action">
+                <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">registration</value>
+            </property>
+            <property name="path">
+                <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">echr:patients:all</value>
+            </property>
+        </compute>
+        <compute>
+            <type>org.tolven.process.CRFPrior</type>
+            <property name="computeEnabled">
+                <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:boolean">true</value>
+            </property>
+            <property name="action">
+                <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">caTissue</value>
+            </property>
+            <property name="path">
+                <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">echr:patient:caseReportForms:caTissueValueList</value>
+            </property>
+        </compute>
+    </act>
+    <valueSet name="race">
+        <CE>
+            <displayName>American Indian or Alaska Native</displayName>
+            <code>2561140</code>
+            <codeSystem>2.16.840.1.113883.3.26.2</codeSystem>
+            <codeSystemName>caDSR</codeSystemName>
+            <codeSystemVersion>2.1</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>Asian</displayName>
+            <code>2567338</code>
+            <codeSystem>2.16.840.1.113883.3.26.2</codeSystem>
+            <codeSystemName>caDSR</codeSystemName>
+            <codeSystemVersion>2.1</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>Black or African American</displayName>
+            <code>2561248</code>
+            <codeSystem>2.16.840.1.113883.3.26.2</codeSystem>
+            <codeSystemName>caDSR</codeSystemName>
+            <codeSystemVersion>2.1</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>Native Hawaiian or Other Pacific Islander</displayName>
+            <code>20140003 | Hawaiians |</code>
+            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+            <codeSystemName>SNOMED CT</codeSystemName>
+            <codeSystemVersion>January 2009</codeSystemVersion>
+            <translation>
+                <code>2567339</code>
+                <codeSystem>2.16.840.1.113883.3.26.2</codeSystem>
+                <codeSystemName>caDSR</codeSystemName>
+                <codeSystemVersion>2.1</codeSystemVersion>
+            </translation>
+        </CE>
+        <CE>
+            <displayName>White</displayName>
+            <code>2567335</code>
+            <codeSystem>2.16.840.1.113883.3.26.2</codeSystem>
+            <codeSystemName>CADSR</codeSystemName>
+            <codeSystemVersion>2.1</codeSystemVersion>
+        </CE>
+    </valueSet>
+    <valueSet name="ethnicity">
+        <CE>
+            <displayName>Hispanic or Latino</displayName>
+            <code>414408004</code>
+            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+            <codeSystemName>SNOMED CT</codeSystemName>
+            <codeSystemVersion>January 2009</codeSystemVersion>
+            <translation>
+                <code>2581176</code>
+                <codeSystem>2.16.840.1.113883.3.26.2</codeSystem>
+                <codeSystemName>caDSR</codeSystemName>
+                <codeSystemVersion>2.1</codeSystemVersion>
+            </translation>
+        </CE>
+        <CE>
+            <displayName>Not Hispanic or Latino</displayName>
+            <code>TBD</code>
+            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+            <codeSystemName>SNOMED CT</codeSystemName>
+            <codeSystemVersion>January 2009</codeSystemVersion>
+            <translation>
+                <code>2567110</code>
+                <codeSystem>2.16.840.1.113883.3.26.2</codeSystem>
+                <codeSystemName>caDSR</codeSystemName>
+                <codeSystemVersion>2.1</codeSystemVersion>
+            </translation>
+        </CE>
+    </valueSet>
+    <valueSet name="institution">
+        <CE>
+            <displayName>University of Arizona (UAZ)</displayName>
+            <code>C0024579</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>University of California San Diego (UCSD)</displayName>
+            <code>C0024580</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>University of Southern California (USC)</displayName>
+            <code>C0024581</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>University of California San Francisco (UCSF)</displayName>
+            <code>C0024582</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>University of Colorado Denver (UCDenver)</displayName>
+            <code>C0024583</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>Emory University (Emory)</displayName>
+            <code>C0024584</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>University of Chicago (UChi)</displayName>
+            <code>C0024585</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>University of Kansas (UK)</displayName>
+            <code>C0024586</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>University of Minnesota (UMinn)</displayName>
+            <code>C0024587</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>Mayo Clinic Rochester (Mayo Rochester)</displayName>
+            <code>C0024588</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>Oregon Heath and Science University (OHSU)</displayName>
+            <code>C0024589</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>University of Pennsylvania (UPenn)</displayName>
+            <code>C0024590</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>University of Texas Southwestern (UTSW)</displayName>
+            <code>C0024591</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>University of Texas MD Anderson (MDACC)</displayName>
+            <code>C0024592</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>Inova Health System (Inova)</displayName>
+            <code>C0024593</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>Mayo Clinic Scottsdale (Mayo Scottsdale)</displayName>
+            <code>C0024594</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>Wilshire Oncology Medical Group, Inc (WOMGI)</displayName>
+            <code>C0024595</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>Georgetown University with Washington Hospital Center (Gtown)</displayName>
+            <code>C0024596</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>Swedish Cancer Institute (Swedish)</displayName>
+            <code>C0024597</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>University of Alabama (UAB)</displayName>
+            <code>C0024598</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>University of British Columbia (UBC)</displayName>
+            <code>C0024599</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>Albert Einstein (Einstein)</displayName>
+            <code>C0024600</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>University of Washington (UWash)</displayName>
+            <code>C0024601</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+    </valueSet>
+    <valueSet name="staff">
+        <CE>
+            <displayName>Staff 1</displayName>
+            <code>C0024579</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>Staff 2</displayName>
+            <code>C0024580</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+        <CE>
+            <displayName>Staff 3</displayName>
+            <code>C0024581</code>
+            <codeSystem>2.16.840.1.113883.6.56</codeSystem>
+            <codeSystemVersion>2007AA</codeSystemVersion>
+        </CE>
+    </valueSet>
+    <valueSet name="oncologist">
+        <CE>
+            <displayName> Melisko, Michelle </displayName>
+            <code>3092950000</code>
+            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+        </CE>
+        <CE>
+            <displayName>Rugo, Hope </displayName>
+            <code>3092950001</code>
+            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+        </CE>
+        <CE>
+            <displayName>Hwang, Shelley </displayName>
+            <code>3092950002</code>
+            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+        </CE>
+        <CE>
+            <displayName>Ewing, Cheryl </displayName>
+            <code>3092950003</code>
+            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+        </CE>
+        <CE>
+            <displayName>Alvarado, Michael </displayName>
+            <code>3092950004</code>
+            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+        </CE>
+        <CE>
+            <displayName>Esserman , Laura </displayName>
+            <code>3092950005</code>
+            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+        </CE>
+    </valueSet>
+    <valueSet name="surgeon">
+        <CE>
+            <displayName> Melisko, Michelle </displayName>
+            <code>3042920040</code>
+            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+        </CE>
+        <CE>
+            <displayName>Rugo, Hope </displayName>
+            <code>3042920041</code>
+            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+        </CE>
+        <CE>
+            <displayName>Hwang, Shelley </displayName>
+            <code>3042920042</code>
+            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+        </CE>
+        <CE>
+            <displayName>Ewing, Cheryl </displayName>
+            <code>3042920043</code>
+            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+        </CE>
+        <CE>
+            <displayName>Alvarado, Michael </displayName>
+            <code>3042920044</code>
+            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+        </CE>
+        <CE>
+            <displayName>Esserman , Laura </displayName>
+            <code>3042920045</code>
+            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+        </CE>
+    </valueSet>
+    <valueSet name="clinicalCoordinator">
+        <CE>
+            <displayName> Watkins, Margarita </displayName>
+            <code>TBD0</code>
+            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+        </CE>
+        <CE>
+            <displayName>Lyandres, Julia </displayName>
+            <code>TBD1</code>
+            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+        </CE>
+    </valueSet>
+    <valueSet name="radiologyCoordinator">
+        <CE>
+            <displayName> Watkins, Margarita </displayName>
+            <code>TBD0</code>
+            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+        </CE>
+        <CE>
+            <displayName>Lyandres, Julia </displayName>
+            <code>TBD1</code>
+            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+        </CE>
+    </valueSet>
+    <valueSet name="studyCoordinator">
+        <CE>
+            <displayName> Watkins, Margarita </displayName>
+            <code>TBD0</code>
+            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+        </CE>
+        <CE>
+            <displayName>Lyandres, Julia </displayName>
+            <code>TBD1</code>
+            <codeSystem>2.16.840.1.113883.6.5</codeSystem>
+        </CE>
+    </valueSet>
+</trim>
