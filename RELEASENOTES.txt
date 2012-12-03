@@ -1,11 +1,11 @@
 Release Notes:
 
-Version: iHub_CDA_1.0_RC3
-Release Date: Nov 20th 2012
-SVN Tag: https://ncisvn.nci.nih.gov/svn/iHub/tags/iHub_CDA_1.0_RC3
+Version: iHub_CDA_1.0_RC4
+Release Date: Dec 3rd 2012
+SVN Tag: https://ncisvn.nci.nih.gov/svn/iHub/tags/iHub_CDA_1.0_RC4
 Deployment Guide: 
 	1) https://wiki.nci.nih.gov/display/Suite/Transcend-iHub+deployment+guide+%28with+cacis%29
 	2) https://wiki.nci.nih.gov/display/Suite/Transcend-iHub+deployment+guide+%28standalone%29
 
 Release Notes:
-https://wiki.nci.nih.gov/display/Suite/Transcend-iHub+-+iHub_CDA_1.0_RC3+Release+Notes
+https://wiki.nci.nih.gov/display/Suite/Transcend-iHub+-+iHub_CDA_1.0_RC4+Release+Notes
