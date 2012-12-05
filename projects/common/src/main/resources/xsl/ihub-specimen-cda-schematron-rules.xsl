@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<xsl:stylesheet xmlns:xhtml="http://www.w3.org/1999/xhtml"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:saxon="http://saxon.sf.net/"
-                xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:schold="http://www.ascc.net/xml/schematron"
                 xmlns:iso="http://purl.oclc.org/dsdl/schematron"
+                xmlns:xhtml="http://www.w3.org/1999/xhtml"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                xmlns:hl7="urn:hl7-org:v3"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xmlns:cda="urn:hl7-org:v3"
-                version="2.0"><!--Implementers: please note that overriding process-prolog or process-root is 
+                version="1.0"><!--Implementers: please note that overriding process-prolog or process-root is 
     the preferred method for meta-stylesheets to use where possible. -->
 <xsl:param name="archiveDirParameter"/>
    <xsl:param name="archiveNameParameter"/>
@@ -22,7 +20,8 @@
 
 
 <!--PROLOG-->
-<xsl:output xmlns:svrl="http://purl.oclc.org/dsdl/svrl" method="xml"
+<xsl:output xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+               method="xml"
                omit-xml-declaration="no"
                standalone="yes"
                indent="yes"/>
@@ -50,23 +49,21 @@
       <xsl:choose>
          <xsl:when test="namespace-uri()=''">
             <xsl:value-of select="name()"/>
+            <xsl:variable name="p_1"
+                          select="1+    count(preceding-sibling::*[name()=name(current())])"/>
+            <xsl:if test="$p_1&gt;1 or following-sibling::*[name()=name(current())]">[<xsl:value-of select="$p_1"/>]</xsl:if>
          </xsl:when>
          <xsl:otherwise>
-            <xsl:text>*:</xsl:text>
+            <xsl:text>*[local-name()='</xsl:text>
             <xsl:value-of select="local-name()"/>
-            <xsl:text>[namespace-uri()='</xsl:text>
-            <xsl:value-of select="namespace-uri()"/>
             <xsl:text>']</xsl:text>
+            <xsl:variable name="p_2"
+                          select="1+   count(preceding-sibling::*[local-name()=local-name(current())])"/>
+            <xsl:if test="$p_2&gt;1 or following-sibling::*[local-name()=local-name(current())]">[<xsl:value-of select="$p_2"/>]</xsl:if>
          </xsl:otherwise>
       </xsl:choose>
-      <xsl:variable name="preceding"
-                    select="count(preceding-sibling::*[local-name()=local-name(current())                                   and namespace-uri() = namespace-uri(current())])"/>
-      <xsl:text>[</xsl:text>
-      <xsl:value-of select="1+ $preceding"/>
-      <xsl:text>]</xsl:text>
    </xsl:template>
    <xsl:template match="@*" mode="schematron-get-full-path">
-      <xsl:apply-templates select="parent::*" mode="schematron-get-full-path"/>
       <xsl:text>/</xsl:text>
       <xsl:choose>
          <xsl:when test="namespace-uri()=''">@<xsl:value-of select="name()"/>
@@ -164,63 +161,670 @@
    <!--SCHEMA SETUP-->
 <xsl:template match="/">
       <svrl:schematron-output xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-                              title="Schematron Schema for iHub manage specimens CDA request"
-                              schemaVersion="">
+                              title="iHUB_Data_Exchange_CDA_Mapping Biospecimen Data"
+                              schemaVersion="1.0">
          <xsl:comment>
-         <xsl:value-of select="$archiveDirParameter"/>   
+            <xsl:value-of select="$archiveDirParameter"/>   
 		 <xsl:value-of select="$archiveNameParameter"/>  
 		 <xsl:value-of select="$fileNameParameter"/>  
 		 <xsl:value-of select="$fileDirParameter"/>
          </xsl:comment>
+         <svrl:text>Validates a 2TRANSCEND Biospecimen event message</svrl:text>
+         <svrl:text>2012-Dec-04 Tom Bechtold</svrl:text>
+         <svrl:text>(c) Regents of the University of California. All Rights Reserved</svrl:text>
+         <svrl:ns-prefix-in-attribute-values uri="urn:hl7-org:v3" prefix="hl7"/>
          <svrl:ns-prefix-in-attribute-values uri="http://www.w3.org/2001/XMLSchema-instance" prefix="xsi"/>
-         <svrl:ns-prefix-in-attribute-values uri="urn:hl7-org:v3" prefix="cda"/>
          <svrl:active-pattern>
             <xsl:attribute name="document">
                <xsl:value-of select="document-uri(/)"/>
             </xsl:attribute>
-            <xsl:attribute name="id">exchangeFormat</xsl:attribute>
-            <xsl:attribute name="name">exchangeFormat</xsl:attribute>
+            <xsl:attribute name="id">header</xsl:attribute>
+            <xsl:attribute name="name">CDA header: birthdate, ethnicity, gender, race and identifiers (MRN, subject, site, study)</xsl:attribute>
             <xsl:apply-templates/>
          </svrl:active-pattern>
-         <xsl:apply-templates select="/" mode="M4"/>
+         <xsl:apply-templates select="/" mode="M6"/>
+         <svrl:active-pattern>
+            <xsl:attribute name="document">
+               <xsl:value-of select="document-uri(/)"/>
+            </xsl:attribute>
+            <xsl:attribute name="id">activity_status</xsl:attribute>
+            <xsl:attribute name="name">CDA Body: actitity status</xsl:attribute>
+            <xsl:apply-templates/>
+         </svrl:active-pattern>
+         <xsl:apply-templates select="/" mode="M7"/>
+         <svrl:active-pattern>
+            <xsl:attribute name="document">
+               <xsl:value-of select="document-uri(/)"/>
+            </xsl:attribute>
+            <xsl:attribute name="id">biospecimen_id_timepoint</xsl:attribute>
+            <xsl:attribute name="name">CDA body (biospecimen id/timepoint): CDMS Specimen ID, Study Calendar Event Time Point</xsl:attribute>
+            <xsl:apply-templates/>
+         </svrl:active-pattern>
+         <xsl:apply-templates select="/" mode="M8"/>
+         <svrl:active-pattern>
+            <xsl:attribute name="document">
+               <xsl:value-of select="document-uri(/)"/>
+            </xsl:attribute>
+            <xsl:attribute name="id">biospecimen</xsl:attribute>
+            <xsl:attribute name="name">CDA body (biospecimen): Available Quantity, Initial Quantity, Barcode, Collection Protocol Short Title, Collection Protocol Title, Specimen Characteristics Side, Specimen Characteristics Site, Specimen Class, Specimen Type, Guidance for Breast Core Biopsy</xsl:attribute>
+            <xsl:apply-templates/>
+         </svrl:active-pattern>
+         <xsl:apply-templates select="/" mode="M9"/>
       </svrl:schematron-output>
    </xsl:template>
 
    <!--SCHEMATRON PATTERNS-->
-<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">Schematron Schema for iHub manage specimens CDA request</svrl:text>
+<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">iHUB_Data_Exchange_CDA_Mapping Biospecimen Data</svrl:text>
 
-   <!--PATTERN Guidance For BreastCoreBiopsy Type-->
+   <!--PATTERN headerCDA header: birthdate, ethnicity, gender, race and identifiers (MRN, subject, site, study)-->
+<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">CDA header: birthdate, ethnicity, gender, race and identifiers (MRN, subject, site, study)</svrl:text>
 
+	  <!--RULE -->
+<xsl:template match="/hl7:ClinicalDocument" priority="1002" mode="M6">
+      <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/hl7:ClinicalDocument"/>
 
-	<!--RULE -->
-	<xsl:template match="//cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.22.4.13'][cda:code/cda:originalText='Guidance for Breast Core Biopsy']/cda:value" priority="1000"
-                 mode="M4">
-      <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-                       context="//cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.22.4.13'][cda:code/cda:originalText='Guidance for Breast Core Biopsy']/cda:value"/>
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(hl7:recordTarget/hl7:patientRole)=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="count(hl7:recordTarget/hl7:patientRole)=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable patient role</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
 
-		<!--ASSERT -->
-		
-		<xsl:choose>
-	         <xsl:when test="@code='16310003' or @code='241615005' or @code='258172002' 
-	         or @code='71651007' or @code='113011001' or @nullFlavor='OTH'"/>
-	         <xsl:otherwise>
-	            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-	                                test="@code='16310003' or @code='241615005' or @code='258172002' or @code='71651007' or @code='113011001' or @nullFlavor='OTH'">
-	               <xsl:attribute name="flag">error</xsl:attribute>
-	               <xsl:attribute name="location">
-	                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
-	               </xsl:attribute>
-	               <svrl:text>
-					The Guidance for Breast Core Biopsy value code must be '16310003' or '241615005' or '258172002' or '71651007' or '113011001' or nullFlavor as 'OTH'
-				</svrl:text>
-	            </svrl:failed-assert>
-	         </xsl:otherwise>
-	      </xsl:choose>
-	      
-		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M4"/>
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(hl7:recordTarget/hl7:patientRole/hl7:patient)=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="count(hl7:recordTarget/hl7:patientRole/hl7:patient)=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable patient</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(hl7:documentationOf/hl7:serviceEvent[@classCode='CLNTRL']/hl7:id[@root='2.16.840.1.113883.3.26.1.7'][@extension]/../hl7:code[@nullFlavor='OTH'][hl7:originalText='site-specific component of clinical trial'])=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="count(hl7:documentationOf/hl7:serviceEvent[@classCode='CLNTRL']/hl7:id[@root='2.16.840.1.113883.3.26.1.7'][@extension]/../hl7:code[@nullFlavor='OTH'][hl7:originalText='site-specific component of clinical trial'])=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable site identifier</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(hl7:documentationOf/hl7:serviceEvent[@classCode='CLNTRL']/hl7:id[@root='2.16.840.1.113883.3.26.1.7'][@extension]/../hl7:code[@nullFlavor='OTH'][hl7:originalText='clinical trial'])=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="count(hl7:documentationOf/hl7:serviceEvent[@classCode='CLNTRL']/hl7:id[@root='2.16.840.1.113883.3.26.1.7'][@extension]/../hl7:code[@nullFlavor='OTH'][hl7:originalText='clinical trial'])=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable study identifier</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+      <xsl:apply-templates select="*|comment()|processing-instruction()" mode="M6"/>
    </xsl:template>
-   <xsl:template match="text()" priority="-1" mode="M4"/>
-   <xsl:template match="@*|node()" priority="-2" mode="M4">
-      <xsl:apply-templates select="*|comment()|processing-instruction()" mode="M4"/>
+
+	  <!--RULE -->
+<xsl:template match="/hl7:ClinicalDocument/hl7:recordTarget/hl7:patientRole/hl7:patient"
+                 priority="1001"
+                 mode="M6">
+      <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                       context="/hl7:ClinicalDocument/hl7:recordTarget/hl7:patientRole/hl7:patient"/>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(hl7:birthTime)=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl" test="count(hl7:birthTime)=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable birth date</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="hl7:birthTime[matches(@value, '^[0-9]{1,8}|([0-9]{9,14}|[0-9]{14,14}\.[0-9]+)([+\-][0-9]{1,4})?$')]"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="hl7:birthTime[matches(@value, '^[0-9]{1,8}|([0-9]{9,14}|[0-9]{14,14}\.[0-9]+)([+\-][0-9]{1,4})?$')]">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Invalid birth date</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(hl7:ethnicGroupCode)=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="count(hl7:ethnicGroupCode)=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable ethnicity</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="hl7:ethnicGroupCode[not(@codeSystem and @nullFlavor)]"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="hl7:ethnicGroupCode[not(@codeSystem and @nullFlavor)]">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Conflicting ethnicity</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="hl7:ethnicGroupCode[(@codeSystem='2.16.840.1.113883.6.238' and matches(@code, '^(2186-5)|(2135-2)$')) or (@nullFlavor='UNK' and hl7:originalText='unknown') or (@nullFlavor='NI' and hl7:originalText='not reported')]"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="hl7:ethnicGroupCode[(@codeSystem='2.16.840.1.113883.6.238' and matches(@code, '^(2186-5)|(2135-2)$')) or (@nullFlavor='UNK' and hl7:originalText='unknown') or (@nullFlavor='NI' and hl7:originalText='not reported')]">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Invalid ethnicity</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(hl7:administrativeGenderCode)=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="count(hl7:administrativeGenderCode)=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable gender</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="hl7:administrativeGenderCode[not(@codeSystem and @nullFlavor)]"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="hl7:administrativeGenderCode[not(@codeSystem and @nullFlavor)]">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Conflicting gender</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="hl7:administrativeGenderCode[(@codeSystem='2.16.840.1.113883.5.1' and matches(@code, '^F|M$')) or (@nullFlavor='UNK' and hl7:originalText='unknown') or (@nullFlavor='NI' and hl7:originalText='not reported')]"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="hl7:administrativeGenderCode[(@codeSystem='2.16.840.1.113883.5.1' and matches(@code, '^F|M$')) or (@nullFlavor='UNK' and hl7:originalText='unknown') or (@nullFlavor='NI' and hl7:originalText='not reported')]">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Invalid gender</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(hl7:raceCode)=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl" test="count(hl7:raceCode)=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable race</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="hl7:raceCode[not(@codeSystem and @nullFlavor)]"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="hl7:raceCode[not(@codeSystem and @nullFlavor)]">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Conflicting race</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="hl7:raceCode[(@codeSystem='2.16.840.1.113883.6.238' and matches(@code, '^(2106-3)|(2054-5)|(1002-5)|(2028-9)|(2076-8)$')) or (@nullFlavor='UNK' and hl7:originalText='unknown') or (@nullFlavor='NI' and hl7:originalText='not reported')]"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="hl7:raceCode[(@codeSystem='2.16.840.1.113883.6.238' and matches(@code, '^(2106-3)|(2054-5)|(1002-5)|(2028-9)|(2076-8)$')) or (@nullFlavor='UNK' and hl7:originalText='unknown') or (@nullFlavor='NI' and hl7:originalText='not reported')]">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Invalid race</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+      <xsl:apply-templates select="*|comment()|processing-instruction()" mode="M6"/>
+   </xsl:template>
+
+	  <!--RULE -->
+<xsl:template match="/hl7:ClinicalDocument/hl7:recordTarget/hl7:patientRole"
+                 priority="1000"
+                 mode="M6">
+      <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                       context="/hl7:ClinicalDocument/hl7:recordTarget/hl7:patientRole"/>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(hl7:id[@root][@extension][@assigningAuthorityName='iSpy2 Study'])=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="count(hl7:id[@root][@extension][@assigningAuthorityName='iSpy2 Study'])=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable Study subject identifier</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(hl7:id[@root][@extension][not(@assigningAuthorityName='iSpy2 Study')])=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="count(hl7:id[@root][@extension][not(@assigningAuthorityName='iSpy2 Study')])=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable Medical Record Number (MRN)</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+      <xsl:apply-templates select="*|comment()|processing-instruction()" mode="M6"/>
+   </xsl:template>
+   <xsl:template match="text()" priority="-1" mode="M6"/>
+   <xsl:template match="@*|node()" priority="-2" mode="M6">
+      <xsl:apply-templates select="*|comment()|processing-instruction()" mode="M6"/>
+   </xsl:template>
+
+   <!--PATTERN activity_statusCDA Body: actitity status-->
+<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">CDA Body: actitity status</svrl:text>
+
+	  <!--RULE -->
+<xsl:template match="/" priority="1001" mode="M7">
+      <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/"/>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(//hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2']][hl7:id[@nullFlavor='NI']][hl7:code[@code='263490005'][@codeSystem='2.16.840.1.113883.6.96']])=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="count(//hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2']][hl7:id[@nullFlavor='NI']][hl7:code[@code='263490005'][@codeSystem='2.16.840.1.113883.6.96']])=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable activity status observation</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+      <xsl:apply-templates select="*|comment()|processing-instruction()" mode="M7"/>
+   </xsl:template>
+
+	  <!--RULE -->
+<xsl:template match="//hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2']][hl7:id[@nullFlavor='NI']][hl7:code[@code='263490005'][@codeSystem='2.16.840.1.113883.6.96']]"
+                 priority="1000"
+                 mode="M7">
+      <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                       context="//hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2']][hl7:id[@nullFlavor='NI']][hl7:code[@code='263490005'][@codeSystem='2.16.840.1.113883.6.96']]"/>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(hl7:value[@xsi:type='CD'][@codeSystem='2.16.840.1.113883.6.96'])=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="count(hl7:value[@xsi:type='CD'][@codeSystem='2.16.840.1.113883.6.96'])=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable activity status value</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="hl7:value[@xsi:type='CD'][@codeSystem='2.16.840.1.113883.6.96'][matches(@code, '^(55561003)|(73425007)$')]"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="hl7:value[@xsi:type='CD'][@codeSystem='2.16.840.1.113883.6.96'][matches(@code, '^(55561003)|(73425007)$')]">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Invalid activity status value</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+      <xsl:apply-templates select="*|comment()|processing-instruction()" mode="M7"/>
+   </xsl:template>
+   <xsl:template match="text()" priority="-1" mode="M7"/>
+   <xsl:template match="@*|node()" priority="-2" mode="M7">
+      <xsl:apply-templates select="*|comment()|processing-instruction()" mode="M7"/>
+   </xsl:template>
+
+   <!--PATTERN biospecimen_id_timepointCDA body (biospecimen id/timepoint): CDMS Specimen ID, Study Calendar Event Time Point-->
+<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">CDA body (biospecimen id/timepoint): CDMS Specimen ID, Study Calendar Event Time Point</svrl:text>
+
+	  <!--RULE -->
+<xsl:template match="/hl7:ClinicalDocument" priority="1000" mode="M8">
+      <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/hl7:ClinicalDocument"/>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(//hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2']][hl7:code[@code='123038009'][@codeSystem='2.16.840.1.113883.6.96']])=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="count(//hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2']][hl7:code[@code='123038009'][@codeSystem='2.16.840.1.113883.6.96']])=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable biospecimen result</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(//hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2']][hl7:code[@nullFlavor='OTH'][hl7:originalText='Study Calendar Event Time Point']][hl7:value[@xsi:type='PQ'][@value][@unit]])=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="count(//hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2']][hl7:code[@nullFlavor='OTH'][hl7:originalText='Study Calendar Event Time Point']][hl7:value[@xsi:type='PQ'][@value][@unit]])=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable biospecimen Study Calendar Event Time Point</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+      <xsl:apply-templates select="*|comment()|processing-instruction()" mode="M8"/>
+   </xsl:template>
+   <xsl:template match="text()" priority="-1" mode="M8"/>
+   <xsl:template match="@*|node()" priority="-2" mode="M8">
+      <xsl:apply-templates select="*|comment()|processing-instruction()" mode="M8"/>
+   </xsl:template>
+
+   <!--PATTERN biospecimenCDA body (biospecimen): Available Quantity, Initial Quantity, Barcode, Collection Protocol Short Title, Collection Protocol Title, Specimen Characteristics Side, Specimen Characteristics Site, Specimen Class, Specimen Type, Guidance for Breast Core Biopsy-->
+<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">CDA body (biospecimen): Available Quantity, Initial Quantity, Barcode, Collection Protocol Short Title, Collection Protocol Title, Specimen Characteristics Side, Specimen Characteristics Site, Specimen Class, Specimen Type, Guidance for Breast Core Biopsy</svrl:text>
+
+	  <!--RULE -->
+<xsl:template match="/hl7:ClinicalDocument" priority="1002" mode="M9">
+      <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/hl7:ClinicalDocument"/>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(hl7:component/hl7:structuredBody/hl7:component/hl7:section[hl7:templateId[@root='2.16.840.1.113883.10.20.22.2.31'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@code='59773-2'][@codeSystem='2.16.840.1.113883.6.1']]/hl7:entry[@typeCode='DRIV']/hl7:procedure[@classCode='PROC'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.14'][@assigningAuthorityName='HL7 CCDA']])=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="count(hl7:component/hl7:structuredBody/hl7:component/hl7:section[hl7:templateId[@root='2.16.840.1.113883.10.20.22.2.31'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@code='59773-2'][@codeSystem='2.16.840.1.113883.6.1']]/hl7:entry[@typeCode='DRIV']/hl7:procedure[@classCode='PROC'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.14'][@assigningAuthorityName='HL7 CCDA']])=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable biospecimen procedure</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(hl7:component/hl7:structuredBody/hl7:component/hl7:section[hl7:templateId[@root='2.16.840.1.113883.10.20.22.2.31'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@code='59773-2'][@codeSystem='2.16.840.1.113883.6.1']]/hl7:entry[@typeCode='DRIV']/hl7:procedure[@classCode='PROC'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.14'][@assigningAuthorityName='HL7 CCDA']]/hl7:entryRelationship[@typeCode='COMP']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2']][hl7:code[@code='123038009'][@codeSystem='2.16.840.1.113883.6.96']])=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="count(hl7:component/hl7:structuredBody/hl7:component/hl7:section[hl7:templateId[@root='2.16.840.1.113883.10.20.22.2.31'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@code='59773-2'][@codeSystem='2.16.840.1.113883.6.1']]/hl7:entry[@typeCode='DRIV']/hl7:procedure[@classCode='PROC'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.14'][@assigningAuthorityName='HL7 CCDA']]/hl7:entryRelationship[@typeCode='COMP']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2']][hl7:code[@code='123038009'][@codeSystem='2.16.840.1.113883.6.96']])=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable biospecimen result</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+      <xsl:apply-templates select="*|comment()|processing-instruction()" mode="M9"/>
+   </xsl:template>
+
+	  <!--RULE -->
+<xsl:template match="/hl7:ClinicalDocument/hl7:component/hl7:structuredBody/hl7:component/hl7:section[hl7:templateId[@root='2.16.840.1.113883.10.20.22.2.31'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@code='59773-2'][@codeSystem='2.16.840.1.113883.6.1']]/hl7:entry[@typeCode='DRIV']/hl7:procedure[@classCode='PROC'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.14'][@assigningAuthorityName='HL7 CCDA']]"
+                 priority="1001"
+                 mode="M9">
+      <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                       context="/hl7:ClinicalDocument/hl7:component/hl7:structuredBody/hl7:component/hl7:section[hl7:templateId[@root='2.16.840.1.113883.10.20.22.2.31'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@code='59773-2'][@codeSystem='2.16.840.1.113883.6.1']]/hl7:entry[@typeCode='DRIV']/hl7:procedure[@classCode='PROC'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.14'][@assigningAuthorityName='HL7 CCDA']]"/>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(hl7:targetSiteCode)=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="count(hl7:targetSiteCode)=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable biospecimen target site</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(hl7:targetSiteCode/hl7:qualifier[hl7:name[@code='272741003'][@codeSystem='2.16.840.1.113883.6.96']][hl7:value[@code][@codeSystem='2.16.840.1.113883.6.96']])=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="count(hl7:targetSiteCode/hl7:qualifier[hl7:name[@code='272741003'][@codeSystem='2.16.840.1.113883.6.96']][hl7:value[@code][@codeSystem='2.16.840.1.113883.6.96']])=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable biospecimen target side</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(hl7:entryRelationship[@typeCode='COMP']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.13'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@code='30651-4'][@codeSystem='2.16.840.1.113883.6.1']][hl7:statusCode[@code='completed']][hl7:value[@xsi:type='CD']])=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="count(hl7:entryRelationship[@typeCode='COMP']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.13'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@code='30651-4'][@codeSystem='2.16.840.1.113883.6.1']][hl7:statusCode[@code='completed']][hl7:value[@xsi:type='CD']])=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable biospecimen guidance for core needle biopsy</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="hl7:entryRelationship[@typeCode='COMP']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.13'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@code='30651-4'][@codeSystem='2.16.840.1.113883.6.1']][hl7:statusCode[@code='completed']][hl7:value[@xsi:type='CD'][(@codeSystem='2.16.840.1.113883.6.96' and matches(@code,'^(16310003)|(241615005)|(258172002)|(71651007)|(113011001)$')) or (@nullFlavor='OTH')]]"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="hl7:entryRelationship[@typeCode='COMP']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.13'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@code='30651-4'][@codeSystem='2.16.840.1.113883.6.1']][hl7:statusCode[@code='completed']][hl7:value[@xsi:type='CD'][(@codeSystem='2.16.840.1.113883.6.96' and matches(@code,'^(16310003)|(241615005)|(258172002)|(71651007)|(113011001)$')) or (@nullFlavor='OTH')]]">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Invalid biospecimen guidance for core needle biopsy</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(hl7:code)=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl" test="count(hl7:code)=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable biospecimen collection protocol short title</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="hl7:code[@nullFlavor='OTH'][hl7:originalText]"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="hl7:code[@nullFlavor='OTH'][hl7:originalText]">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable biospecimen collection protocol titles</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+      <xsl:apply-templates select="*|comment()|processing-instruction()" mode="M9"/>
+   </xsl:template>
+
+	  <!--RULE -->
+<xsl:template match="hl7:component/hl7:structuredBody/hl7:component/hl7:section[hl7:templateId[@root='2.16.840.1.113883.10.20.22.2.31'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@code='59773-2'][@codeSystem='2.16.840.1.113883.6.1']]/hl7:entry[@typeCode='DRIV']/hl7:procedure[@classCode='PROC'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.14'][@assigningAuthorityName='HL7 CCDA']]/hl7:entryRelationship[@typeCode='COMP']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2']][hl7:code[@code='123038009'][@codeSystem='2.16.840.1.113883.6.96']]"
+                 priority="1000"
+                 mode="M9">
+      <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                       context="hl7:component/hl7:structuredBody/hl7:component/hl7:section[hl7:templateId[@root='2.16.840.1.113883.10.20.22.2.31'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@code='59773-2'][@codeSystem='2.16.840.1.113883.6.1']]/hl7:entry[@typeCode='DRIV']/hl7:procedure[@classCode='PROC'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.14'][@assigningAuthorityName='HL7 CCDA']]/hl7:entryRelationship[@typeCode='COMP']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2']][hl7:code[@code='123038009'][@codeSystem='2.16.840.1.113883.6.96']]"/>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@nullFlavor='OTH'][hl7:originalText='Available Quantity']][hl7:value[@xsi:type='PQ'][@value][@unit]])=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="count(hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@nullFlavor='OTH'][hl7:originalText='Available Quantity']][hl7:value[@xsi:type='PQ'][@value][@unit]])=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable biospecimen Available Quantity</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@nullFlavor='OTH'][hl7:originalText='Initial Quantity']][hl7:value[@xsi:type='PQ'][@value][@unit]])=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="count(hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@nullFlavor='OTH'][hl7:originalText='Initial Quantity']][hl7:value[@xsi:type='PQ'][@value][@unit]])=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable biospecimen Initial Quantity</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(hl7:participant[@typeCode='DEV']/hl7:participantRole[@classCode='MANU'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.37']][hl7:id[@extension]])=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="count(hl7:participant[@typeCode='DEV']/hl7:participantRole[@classCode='MANU'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.37']][hl7:id[@extension]])=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable biospecimen barcode</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(hl7:specimen/hl7:specimenRole/hl7:specimenPlayingEntity/hl7:code)=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="count(hl7:specimen/hl7:specimenRole/hl7:specimenPlayingEntity/hl7:code)=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable biospecimen class</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(hl7:specimen/hl7:specimenRole/hl7:specimenPlayingEntity/hl7:code[@codeSystem='2.16.840.1.113883.6.96'][matches(@code,'^(48469005)|(258442002)|(258562007)|(119376003)$')])=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="count(hl7:specimen/hl7:specimenRole/hl7:specimenPlayingEntity/hl7:code[@codeSystem='2.16.840.1.113883.6.96'][matches(@code,'^(48469005)|(258442002)|(258562007)|(119376003)$')])=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Invalid biospecimen class</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="count(hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@code='371439000'][@codeSystem='2.16.840.1.113883.6.96']][hl7:value[@xsi:type='CD'][@codeSystem='2.16.840.1.113883.6.96']])=1"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="count(hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@code='371439000'][@codeSystem='2.16.840.1.113883.6.96']][hl7:value[@xsi:type='CD'][@codeSystem='2.16.840.1.113883.6.96']])=1">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Unavailable biospecimen type</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@code='371439000'][@codeSystem='2.16.840.1.113883.6.96']][hl7:value[@xsi:type='CD'][@codeSystem='2.16.840.1.113883.6.96'][matches(@code,'^(119376003)|(441479001)|(119373006)|(119341000)|(309051001)|(119359002)|(258450006)|(119339001)|(258459007)|(440674008)|(119321005)|(122571007)|(119361006)|(119342007)|(119364003)|(119334006)|(122569007)|(119332005)|(122575003)|(258438000)|(258580003)|(48469005)|(258661006)|(258566005)|(441673008)|(448789008)|(258562007)|(88878007)$')]]"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@code='371439000'][@codeSystem='2.16.840.1.113883.6.96']][hl7:value[@xsi:type='CD'][@codeSystem='2.16.840.1.113883.6.96'][matches(@code,'^(119376003)|(441479001)|(119373006)|(119341000)|(309051001)|(119359002)|(258450006)|(119339001)|(258459007)|(440674008)|(119321005)|(122571007)|(119361006)|(119342007)|(119364003)|(119334006)|(122569007)|(119332005)|(122575003)|(258438000)|(258580003)|(48469005)|(258661006)|(258566005)|(441673008)|(448789008)|(258562007)|(88878007)$')]]">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Invalid biospecimen type</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+      <xsl:apply-templates select="*|comment()|processing-instruction()" mode="M9"/>
+   </xsl:template>
+   <xsl:template match="text()" priority="-1" mode="M9"/>
+   <xsl:template match="@*|node()" priority="-2" mode="M9">
+      <xsl:apply-templates select="*|comment()|processing-instruction()" mode="M9"/>
    </xsl:template>
 </xsl:stylesheet>
