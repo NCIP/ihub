@@ -5,10 +5,10 @@
   <enabled>true</enabled>
   <version>2.1.1.5490</version>
   <lastModified>
-    <time>1348154891753</time>
+    <time>1354739965030</time>
     <timezone>America/New_York</timezone>
   </lastModified>
-  <revision>11</revision>
+  <revision>12</revision>
   <sourceConnector>
     <name>sourceConnector</name>
     <properties>
@@ -40,11 +40,18 @@ var msgTyp = caxchangeMsg[&apos;metadata&apos;][&apos;operationName&apos;].toStr
 
 var referenceMessageId = caxchangeMsg[&apos;metadata&apos;][&apos;caXchangeIdentifier&apos;].toString();
 
+var busMsgPayload = caxchangeMsg[&apos;request&apos;][&apos;businessMessagePayload&apos;];
+
+default xml namespace = busMsgPayload[&apos;xmlSchemaDefinition&apos;].toString();
+
+var payload = busMsgPayload[&apos;ClinicalDocument&apos;];
+
 logger.debug(&apos;inside CaCISChannel-extracted msgtyp = &apos;+ msgTyp.toString());
 
 channelMap.put(&apos;caxchangeMsg&apos;, caxchangeMsg);
 channelMap.put(&apos;msgTyp&apos;, msgTyp);
-channelMap.put(&apos;referenceMessageId&apos;, referenceMessageId);</script>
+channelMap.put(&apos;referenceMessageId&apos;, referenceMessageId);
+channelMap.put(&apos;payload&apos;, payload);</script>
           <type>JavaScript</type>
           <data class="map">
             <entry>
@@ -63,11 +70,18 @@ var msgTyp = caxchangeMsg[&apos;metadata&apos;][&apos;operationName&apos;].toStr
 
 var referenceMessageId = caxchangeMsg[&apos;metadata&apos;][&apos;caXchangeIdentifier&apos;].toString();
 
+var busMsgPayload = caxchangeMsg[&apos;request&apos;][&apos;businessMessagePayload&apos;];
+
+default xml namespace = busMsgPayload[&apos;xmlSchemaDefinition&apos;].toString();
+
+var payload = busMsgPayload[&apos;ClinicalDocument&apos;];
+
 logger.debug(&apos;inside CaCISChannel-extracted msgtyp = &apos;+ msgTyp.toString());
 
 channelMap.put(&apos;caxchangeMsg&apos;, caxchangeMsg);
 channelMap.put(&apos;msgTyp&apos;, msgTyp);
-channelMap.put(&apos;referenceMessageId&apos;, referenceMessageId);</string>
+channelMap.put(&apos;referenceMessageId&apos;, referenceMessageId);
+channelMap.put(&apos;payload&apos;, payload);</string>
             </entry>
           </data>
         </step>
@@ -104,13 +118,13 @@ channelMap.put(&apos;referenceMessageId&apos;, referenceMessageId);</string>
           <step>
             <sequenceNumber>0</sequenceNumber>
             <name>RegistrationValidation</name>
-            <script>schematronValidateIncomingCDA(msg, &quot;prtcpntRegnSchVal&quot;);
+            <script>schematronValidateIncomingCDA($(&apos;payload&apos;), &quot;prtcpntRegnSchVal&quot;);
 return;</script>
             <type>JavaScript</type>
             <data class="map">
               <entry>
                 <string>Script</string>
-                <string>schematronValidateIncomingCDA(msg, &quot;prtcpntRegnSchVal&quot;);
+                <string>schematronValidateIncomingCDA($(&apos;payload&apos;), &quot;prtcpntRegnSchVal&quot;);
 return;</string>
               </entry>
             </data>
@@ -184,13 +198,13 @@ return false;</script>
           <step>
             <sequenceNumber>0</sequenceNumber>
             <name>AdverseEventValidation</name>
-            <script>schematronValidateIncomingCDA(msg, &quot;aeSchVal&quot;);
+            <script>schematronValidateIncomingCDA($(&apos;payload&apos;), &quot;aeSchVal&quot;);
 return;</script>
             <type>JavaScript</type>
             <data class="map">
               <entry>
                 <string>Script</string>
-                <string>schematronValidateIncomingCDA(msg, &quot;aeSchVal&quot;);
+                <string>schematronValidateIncomingCDA($(&apos;payload&apos;), &quot;aeSchVal&quot;);
 return;</string>
               </entry>
             </data>
@@ -221,7 +235,6 @@ return;</string>
                 <string>Values</string>
                 <list>
                   <string>globalMap.get(&apos;AE&apos;)</string>
-                  
                 </list>
               </entry>
               <entry>
@@ -264,13 +277,13 @@ return false;</script>
           <step>
             <sequenceNumber>0</sequenceNumber>
             <name>SpecimenValidation</name>
-            <script>schematronValidateIncomingCDA(msg, &quot;specimenSchVal&quot;);
+            <script>schematronValidateIncomingCDA($(&apos;payload&apos;), &quot;specimenSchVal&quot;);
 return;</script>
             <type>JavaScript</type>
             <data class="map">
               <entry>
                 <string>Script</string>
-                <string>schematronValidateIncomingCDA(msg, &quot;specimenSchVal&quot;);
+                <string>schematronValidateIncomingCDA($(&apos;payload&apos;), &quot;specimenSchVal&quot;);
 return;</string>
               </entry>
             </data>
@@ -344,13 +357,13 @@ return false;</script>
           <step>
             <sequenceNumber>0</sequenceNumber>
             <name>ConsentValidation</name>
-            <script>schematronValidateIncomingCDA(msg, &quot;consentsSchVal&quot;);
+            <script>schematronValidateIncomingCDA($(&apos;payload&apos;), &quot;consentsSchVal&quot;);
 return;</script>
             <type>JavaScript</type>
             <data class="map">
               <entry>
                 <string>Script</string>
-                <string>schematronValidateIncomingCDA(msg, &quot;consentsSchVal&quot;);
+                <string>schematronValidateIncomingCDA($(&apos;payload&apos;), &quot;consentsSchVal&quot;);
 return;</string>
               </entry>
             </data>
@@ -511,6 +524,39 @@ return true;
 return false;</script>
             <operator>NONE</operator>
           </rule>
+          <rule>
+            <sequenceNumber>1</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;CACIS_ERROR&apos;)&quot; does not exist</name>
+            <data class="map">
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;CACIS_ERROR&apos;)</string>
+              </entry>
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>3</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;CACIS_ERROR&apos;).length == 0)
+{
+return true;
+}
+return false;</script>
+            <operator>AND</operator>
+          </rule>
         </rules>
       </filter>
       <transportName>JavaScript Writer</transportName>
@@ -598,7 +644,6 @@ return;</string>
                 <string>Values</string>
                 <list>
                   <string>globalMap.get(&apos;AE&apos;)</string>
-                  
                 </list>
               </entry>
               <entry>
@@ -621,6 +666,39 @@ return true;
 }
 return false;</script>
             <operator>NONE</operator>
+          </rule>
+          <rule>
+            <sequenceNumber>1</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;CACIS_ERROR&apos;)&quot; does not exist</name>
+            <data class="map">
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;CACIS_ERROR&apos;)</string>
+              </entry>
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>3</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;CACIS_ERROR&apos;).length == 0)
+{
+return true;
+}
+return false;</script>
+            <operator>AND</operator>
           </rule>
         </rules>
       </filter>
@@ -729,6 +807,39 @@ return true;
 return false;</script>
             <operator>NONE</operator>
           </rule>
+          <rule>
+            <sequenceNumber>1</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;CACIS_ERROR&apos;)&quot; does not exist</name>
+            <data class="map">
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;CACIS_ERROR&apos;)</string>
+              </entry>
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>3</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;CACIS_ERROR&apos;).length == 0)
+{
+return true;
+}
+return false;</script>
+            <operator>AND</operator>
+          </rule>
         </rules>
       </filter>
       <transportName>JavaScript Writer</transportName>
@@ -835,6 +946,39 @@ return true;
 return false;</script>
             <operator>NONE</operator>
           </rule>
+          <rule>
+            <sequenceNumber>1</sequenceNumber>
+            <name>Accept message if &quot;$(&apos;CACIS_ERROR&apos;)&quot; does not exist</name>
+            <data class="map">
+              <entry>
+                <string>Name</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Values</string>
+                <list/>
+              </entry>
+              <entry>
+                <string>Field</string>
+                <string>$(&apos;CACIS_ERROR&apos;)</string>
+              </entry>
+              <entry>
+                <string>OriginalField</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Equals</string>
+                <string>3</string>
+              </entry>
+            </data>
+            <type>Rule Builder</type>
+            <script>if($(&apos;CACIS_ERROR&apos;).length == 0)
+{
+return true;
+}
+return false;</script>
+            <operator>AND</operator>
+          </rule>
         </rules>
       </filter>
       <transportName>JavaScript Writer</transportName>
@@ -882,7 +1026,6 @@ return false;</script>
                   <string>globalMap.get(&apos;SPMN&apos;)</string>
                   <string>globalMap.get(&apos;UPDTSPMN&apos;)</string>
                   <string>globalMap.get(&apos;REGTCNST&apos;)</string>
-                  
                 </list>
               </entry>
               <entry>
@@ -906,7 +1049,7 @@ return true;
 return false;</script>
             <operator>NONE</operator>
           </rule>
-		  <rule>
+          <rule>
             <sequenceNumber>1</sequenceNumber>
             <name>Accept message if &quot;$(&apos;CACIS_ERROR&apos;)&quot; does not exist</name>
             <data class="map">

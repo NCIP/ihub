@@ -1,8 +1,6 @@
 
 			Failed Schematron Validation.
-			
-		  Failed rule 
-					The administrativeGenderCode must be 'M' or 'F' or must have nullFlavor as 'UNK' with originalText value 'unknown' or must have nullFlavor as 'NI' with originalText value 'not reported'
-				
-		  Expression: @code='M' or @code='F' or (@nullFlavor='UNK' and originalText/text()='unknown') or (@nullFlavor='NI' and originalText/text()='not reported') '
-		  Location of failure: /*:ClinicalDocument[namespace-uri()='urn:hl7-org:v3'][1]/*:recordTarget[namespace-uri()='urn:hl7-org:v3'][1]/*:patientRole[namespace-uri()='urn:hl7-org:v3'][1]/*:patient[namespace-uri()='urn:hl7-org:v3'][1]/*:administrativeGenderCode[namespace-uri()='urn:hl7-org:v3'][1]
+			Validates a 2TRANSCEND Registration event message2012-Dec-04 Tom Bechtold(c) Regents of the University of California. All Rights Reserved
+		  Failed rule Invalid gender
+		  Expression: hl7:administrativeGenderCode[(@codeSystem='2.16.840.1.113883.5.1' and matches(@code, '^F|M$')) or (@nullFlavor='UNK' and hl7:originalText='unknown') or (@nullFlavor='NI' and hl7:originalText='not reported')]
+		  Location of failure: /*[local-name()='ClinicalDocument']/*[local-name()='recordTarget']/*[local-name()='patientRole']/*[local-name()='patient']
