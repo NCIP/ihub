@@ -181,9 +181,9 @@
                   <recordTarget>
                      <patientRole>
                         <!--study subject identifier-->
-                        <id root="1.2.1.173000" extension="echr:patient-18234145" assigningAuthorityName="iSpy2 Study"/>
+                        <id root="1.2.1.173000" extension="1002" assigningAuthorityName="iSpy2 Study"/>
                         <!--patient MRN-->
-                        <id root="1.2.1.173000" extension="21318234145" assigningAuthorityName="ABC Cancer Institute"/>
+                        <id root="1.2.1.173000" extension="1002" assigningAuthorityName="ABC Cancer Institute"/>
                         <addr nullFlavor="NI"/>
                         <telecom nullFlavor="NI"/>
                         <patient>
@@ -254,7 +254,7 @@
                                           <specimen>
                                              <specimenRole>
                                                 <!--CDMS Specimen ID, assigned by the TRANSCEND CDMS-->
-                                                <id root="fbfe4b85-2bdc-4305-88be-3e1b763d8caa" extension="145"/>
+                                                <id root="fbfe4b85-2bdc-4305-88be-3e1b763d8caa" extension="1002_1"/>
                                              </specimenRole>
                                           </specimen>
                                        </observation>
@@ -338,9 +338,9 @@
                   <recordTarget>
                      <patientRole>
                         <!--study subject identifier-->
-                        <id root="1.2.1.173000" extension="echr:patient-18234135" assigningAuthorityName="iSpy2 Study"/>
+                        <id root="1.2.1.173000" extension="1002" assigningAuthorityName="iSpy2 Study"/>
                         <!--patient MRN-->
-                        <id root="1.2.1.173000" extension="21318234135" assigningAuthorityName="ABC Cancer Institute"/>
+                        <id root="1.2.1.173000" extension="1002" assigningAuthorityName="ABC Cancer Institute"/>
                         <addr nullFlavor="NI"/>
                         <telecom nullFlavor="NI"/>
                         <patient>
