@@ -204,7 +204,7 @@
 													<!--no standard SNOMED CT or LOINC code. If NCI has locally 
 														defined code, then the code can be conveyed in translation element as demoed 
 														below. -->
-													<value xsi:type="CD" code="371930009" codeSystem="2.16.840.1.113883.6.96"
+													<value xsi:type="CD" code="371930009-xxx" codeSystem="2.16.840.1.113883.6.96"
 														codeSystemName="SNOMED-CT" displayName="possible">
 														<originalText>3 - Possible</originalText>
 														<translation code="C1705910" codeSystem="2.16.840.1.113883.3.26.1.1"
