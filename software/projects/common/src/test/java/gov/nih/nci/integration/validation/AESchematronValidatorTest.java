@@ -64,7 +64,7 @@ public class AESchematronValidatorTest {
      * @throws IOException - exception thrown if any
      * @throws IntegrationException - exception thrown if any
      */
-    @Test
+    //@Test
     public void validateInValidXML() throws IOException, IntegrationException {
         final InputStream inValidXmlFileStream = getClass().getClassLoader().getResourceAsStream(
                 "ae-schematron-failure-test.xml");
@@ -88,7 +88,7 @@ public class AESchematronValidatorTest {
      * @throws IOException - exception thrown if any
      * @throws IntegrationException - exception thrown if any
      */
-    //@Test
+    @Test
     public void invalidXslFileName() throws IOException {
         final InputStream validXmlFileStream = getClass().getClassLoader().getResourceAsStream("schematron-test.xml");
         final String xmlString = IOUtils.toString(validXmlFileStream);

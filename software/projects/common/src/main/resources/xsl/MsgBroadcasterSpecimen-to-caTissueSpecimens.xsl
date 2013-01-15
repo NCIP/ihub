@@ -31,14 +31,6 @@
 		<xsl:value-of select="key('specimenside-lookup', $curr-key)/d:vocvalue" />
 	</xsl:template>
 
-	<xsl:key name="specimentype-lookup" match="t:type" use="t:vockey" />
-	<xsl:variable name="specimentype-top"
-		select="document('catissue-biospecimen-type-lookup.xml')/*" />
-	<xsl:template match="t:specimentype">
-		<xsl:param name="curr-key" />
-		<xsl:value-of select="key('specimentype-lookup', $curr-key)/t:vocvalue" />
-	</xsl:template>
-
 	<xsl:key name="specimenbiopsy-lookup" match="b:biopsy" use="b:vockey" />
 	<xsl:variable name="specimenbiopsy-top"
 		select="document('catissue-biospecimen-biopsy-lookup.xml')/*" />
@@ -96,9 +88,7 @@
 							</xsl:apply-templates>
 						</specimenClass>
 						<specimenType>
-							<xsl:apply-templates select="$specimentype-top">
-								<xsl:with-param name="curr-key" select="a:specimen/a:specimenType" />
-							</xsl:apply-templates>
+								<xsl:value-of select="a:specimen/a:specimenType" />							
 						</specimenType>
 						<specimenCharacteristics>
 							<tissueSide>
@@ -107,7 +97,9 @@
 										select="a:specimen/a:specimenCharacteristics/a:tissueSide" />
 								</xsl:apply-templates>
 							</tissueSide>
-							<tissueSite/>
+							<tissueSite>
+								<xsl:value-of select="a:specimen/a:specimenCharacteristics/a:tissueSite" />							
+							</tissueSite>
 						</specimenCharacteristics>
 						<activityStatus>
 							<xsl:apply-templates select="$statuses-top">

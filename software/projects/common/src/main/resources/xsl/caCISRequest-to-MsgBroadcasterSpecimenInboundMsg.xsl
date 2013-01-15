@@ -68,7 +68,7 @@
 				</specimenClass>
 				<specimenType>
 					<xsl:value-of
-						select="$observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='371439000'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:value/@code"></xsl:value-of>
+						select="$observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code[@code='371439000'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:value/ns1:originalText"></xsl:value-of>
 				</specimenType>
 				<initialQuantity>
 					<xsl:value-of
@@ -79,6 +79,7 @@
 						select="$observation/ns1:entryRelationship/ns1:observation[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.2'][ns1:code/ns1:originalText='Available Quantity']/ns1:value/@value" />
 				</availableQuantity>
 				<specimenCharacteristics>
+					<tissueSite>Not Specified</tissueSite>
 					<tissueSide>
 						<xsl:value-of
 							select="$component/ns1:section/ns1:entry/ns1:procedure[ns1:templateId/@root='2.16.840.1.113883.10.20.22.4.14']/ns1:targetSiteCode/ns1:qualifier[ns1:name[@code='272741003'][@codeSystem='2.16.840.1.113883.6.96']]/ns1:value/@code"></xsl:value-of>
