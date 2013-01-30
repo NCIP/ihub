@@ -1,6 +1,6 @@
 
 			Failed Schematron Validation.
-			Validates a 2TRANSCEND Registration event message2012-Dec-04 Tom Bechtold(c) Regents of the University of California. All Rights Reserved
-		   Failed rule Invalid attribution
-		   Expression: hl7:administrativeGenderCode[(@codeSystem='2.16.840.1.113883.5.1' and matches(@code, '^F|M$')) or (@nullFlavor='UNK' and hl7:originalText='unknown') or (@nullFlavor='NI' and hl7:originalText='not reported')] 
-		   Location of failure: /*[local-name()='ClinicalDocument']/*[local-name()='recordTarget']/*[local-name()='patientRole']/*[local-name()='patient']
+			Validates a 2TRANSCEND Adverse Event message2013-Jan-29 Tom Bechtold(c) Regents of the University of California. All Rights Reserved
+		  Failed rule Invalid attribution
+		  Expression: hl7:entryRelationship[@typeCode='REFR'][@inversionInd='true']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.13']]/hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2']][hl7:code[@nullFlavor='OTH'][hl7:originalText='Attribution']]/hl7:value[@xsi:type='CD'][(@codeSystem='2.16.840.1.113883.6.96' and matches(@code,'(^371930009$)|(^255545003$)')) or (@nullFlavor='OTH' and matches(hl7:originalText,'(^Unrelated$)|(^Unlikely$)|(^Probable$)'))]
+		  Location of failure: /*[local-name()='ClinicalDocument']/*[local-name()='component']/*[local-name()='structuredBody']/*[local-name()='component'][1]/*[local-name()='section']/*[local-name()='entry']/*[local-name()='act']/*[local-name()='entryRelationship']/*[local-name()='observation']
