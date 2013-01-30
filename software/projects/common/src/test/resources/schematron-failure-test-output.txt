@@ -1,6 +1,6 @@
 
 			Failed Schematron Validation.
-			Validates a 2TRANSCEND Registration event message2012-Dec-04 Tom Bechtold(c) Regents of the University of California. All Rights Reserved
+			Validates a 2TRANSCEND Registration event message2013-Jan-22 Tom Bechtold(c) Regents of the University of California. All Rights Reserved
 		  Failed rule Invalid gender
-		  Expression: hl7:administrativeGenderCode[(@codeSystem='2.16.840.1.113883.5.1' and matches(@code, '^F|M$')) or (@nullFlavor='UNK' and hl7:originalText='unknown') or (@nullFlavor='NI' and hl7:originalText='not reported')]
+		  Expression: hl7:administrativeGenderCode[(@codeSystem='2.16.840.1.113883.5.1' and matches(@code, '(^F$)|(^M$)')) or (@nullFlavor='UNK' and hl7:originalText='unknown') or (@nullFlavor='NI' and hl7:originalText='not reported')]
 		  Location of failure: /*[local-name()='ClinicalDocument']/*[local-name()='recordTarget']/*[local-name()='patientRole']/*[local-name()='patient']

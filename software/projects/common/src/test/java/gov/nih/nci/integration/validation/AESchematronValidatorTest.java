@@ -46,9 +46,9 @@ public class AESchematronValidatorTest {
      * @throws IOException - exception thrown if any
      * @throws IntegrationException - exception thrown if any
      */
-    //@Test
+    @Test
     public void validateValidXML() throws IOException, IntegrationException {
-        final InputStream validXmlFileStream = getClass().getClassLoader().getResourceAsStream("schematron-test.xml");
+        final InputStream validXmlFileStream = getClass().getClassLoader().getResourceAsStream("ae-schematron-test.xml");
         final String xmlString = IOUtils.toString(validXmlFileStream);
         Assert.assertNotNull(xmlString);
         final String output = validator.validate(xmlString);
@@ -64,14 +64,13 @@ public class AESchematronValidatorTest {
      * @throws IOException - exception thrown if any
      * @throws IntegrationException - exception thrown if any
      */
-    //@Test
+    @Test
     public void validateInValidXML() throws IOException, IntegrationException {
         final InputStream inValidXmlFileStream = getClass().getClassLoader().getResourceAsStream(
                 "ae-schematron-failure-test.xml");
         final String xmlString = IOUtils.toString(inValidXmlFileStream);
         Assert.assertNotNull(xmlString);
         final String output = validator.validate(xmlString);
-        System.out.println("output="+output); //NOPMD
         Assert.assertNotNull(output);
         final InputStream expOutputFileStream = getClass().getClassLoader().getResourceAsStream(
                 "ae-schematron-failure-test-output.txt");
