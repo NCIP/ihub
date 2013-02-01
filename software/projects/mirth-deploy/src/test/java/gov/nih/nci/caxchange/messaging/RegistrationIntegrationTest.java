@@ -116,7 +116,7 @@ public class RegistrationIntegrationTest {
         try {
             final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
             String msg = getCreateMsg();
-            msg = msg.replaceAll("6482", "6482_123");
+            msg = msg.replaceAll("ISPY2", "ISPY2_123");
             msg = msg.replaceAll("1823467", "1823467_123456");
 
             final StringEntity reqentity = new StringEntity(msg);

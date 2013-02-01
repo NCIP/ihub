@@ -145,10 +145,6 @@ public class AdverseEventIntegrationTest {
         return getXMLString("CreateAEParticipantNotExist_inbound.xml");
     }
 
-    private String getCreateAEParticipantNotAssignedToStudy() {
-        return getXMLString("CreateAEParticipantNotAssignedToStudy_inbound.xml");
-    }
-
     private String getXMLString(String fileName) {
         String contents = null;
         final InputStream is = CaTissueParticipantClientIntegrationTest.class.getClassLoader().getResourceAsStream(
