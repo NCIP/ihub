@@ -18,7 +18,7 @@
 		</sequential>
 	</macrodef>
 	
-	<target name="deploy">
+	<target name="deploy" description="Deploys the iHub application as per the configuration">
 		<antcall target="stopMirth"/>
 		<iterate target="deploy.resources"/>
 		<iterate target="prepare.mirth"/>
@@ -27,11 +27,11 @@
 		<antcall target="run.mirth.script"/>
 	</target>
 	
-	<target name="startMirth">		
+	<target name="startMirth" description="Starts the MirthConnect specified in the configuration">		
 		<subant target="start.mirth.connect" buildpath="./projects/mirth-deploy/" antfile="build.xml"/>
 	</target>
 	
-	<target name="stopMirth">		
+	<target name="stopMirth" description="Stops the MirthConnect specified in the configuration">		
 		<subant target="stop.mirth.connect" buildpath="./projects/mirth-deploy/" antfile="build.xml"/>
 	</target>
 	
@@ -39,15 +39,15 @@
 		<subant target="run.mirth.script" buildpath="./projects/mirth-deploy/" antfile="build.xml"/>
 	</target>
 
-	<target name="all">
+	<target name="all" description="Builds the iHub application">
 		<iterate target="all"/>
 	</target>
 	
-	<target name="test-integration">
+	<target name="test-integration" >
 		<iterate target="test-integration-report"/>
 	</target>
 	
-	<target name="smoke-test">
+	<target name="smoke-test" description="Runs all the smoke tests">
 		<subant target="smoke-test" buildpath="./projects/mirth-deploy/" antfile="build.xml"/>
 	</target>
 	
@@ -55,7 +55,7 @@
 		<iterate target="prepare.mirth"/>
 	</target>
 	
-	<target name="publish-local">
+	<target name="publish-local" >
 		<iterate target="publish-local"/>
 	</target>
 	
@@ -63,7 +63,7 @@
 		<iterate target="publish"/>
 	</target>
 	
-	<target name="clean">
+	<target name="clean" description="Cleans the build generated content for each of the sub project">
 		<iterate target="clean"/>
 	</target>
 	

@@ -40,6 +40,8 @@ public class AdverseEventIntegrationTest {
     private static final String XMLTEXT = "text/xml";
 
     private static final String ERRORCODE1053 = "<errorCode>1053</errorCode>";
+    
+    private static final String ERRORCODE1101 = "<errorCode>1101</errorCode>";
 
     private static final Logger LOG = LoggerFactory.getLogger(AdverseEventIntegrationTest.class);
 
@@ -90,7 +92,7 @@ public class AdverseEventIntegrationTest {
 
             if (entity != null) {
                 createdXML = EntityUtils.toString(entity);
-                Assert.assertEquals(true, createdXML.contains(ERRORCODE1053));
+                Assert.assertEquals(true, createdXML.contains(ERRORCODE1101));
             }
         } catch (ClientProtocolException e) {
             Assert.fail(e.getMessage());
@@ -129,35 +131,7 @@ public class AdverseEventIntegrationTest {
             Assert.fail(e.getMessage());
         }
     }
-
-    /**
-     * TestCase for Creating Adverse Event in caAERS when Participant is NOT assigned to given Study.
-     */
-    @Test
-    public void createAEParticipantNotAssignedToStudy() {
-        try {
-            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            final StringEntity reqentity = new StringEntity(getCreateAEParticipantNotAssignedToStudy());
-            httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
-
-            final HttpResponse response = httpclient.execute(httppost);
-            final HttpEntity entity = response.getEntity();
-
-            String createdXML = null;
-
-            if (entity != null) {
-                createdXML = EntityUtils.toString(entity);
-                Assert.assertEquals(true, createdXML.contains(ERRORCODE1053));
-            }
-        } catch (ClientProtocolException e) {
-            Assert.fail(e.getMessage());
-        } catch (IllegalStateException e) {
-            Assert.fail(e.getMessage());
-        } catch (IOException e) {
-            Assert.fail(e.getMessage());
-        }
-    }
+   
 
     private String getCreateAdverseEventXMLStr() {
         return getXMLString("CreateAdverseEvent_inbound.xml");
