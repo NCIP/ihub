@@ -18,4 +18,4 @@ Setting properties
 Installation
 ===============
 
-Please refere to the following deployment guide for instructions, https://wiki.nci.nih.gov/display/Suite/Transcend-IHub+deployment+guide
+Please refer to the following deployment guide for instructions in the page TRANSCEND iHub Documentation, https://wiki.nci.nih.gov/display/TRANSCENDiHub/TRANSCEND+iHub
