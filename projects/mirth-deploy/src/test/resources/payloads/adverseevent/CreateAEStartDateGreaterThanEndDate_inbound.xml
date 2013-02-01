@@ -112,7 +112,7 @@
 						<!--study id -->
 						<documentationOf>
 							<serviceEvent classCode="CLNTRL">
-								<id root="6482" extension="6482" />
+								<id root="2.16.840.1.113883.3.26.1.7" extension="ISPY2" />
 								<code nullFlavor="OTH">
 									<originalText>clinical trial</originalText>
 								</code>

@@ -104,7 +104,7 @@
 						<!--study id -->
 						<documentationOf>
 							<serviceEvent classCode="CLNTRL">
-								<id root="6482" extension="6482" />
+								<id root="2.16.840.1.113883.3.26.1.7" extension="ISPY2" />
 								<code nullFlavor="OTH">
 									<originalText>clinical trial</originalText>
 								</code>
@@ -222,8 +222,8 @@
 																<statusCode code="completed" />
 																<!--Specimen Type -->
 																<value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96"
-																	codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
-																	<originalText>fresh tissue</originalText>
+																	codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+																	<originalText>Fresh Tissue</originalText>
 																</value>
 															</observation>
 														</entryRelationship>

@@ -130,8 +130,7 @@ public class RegistrationIntegrationTest {
                 Assert.assertNotNull(output);
                 Assert.assertEquals(
                         true,
-                        output.contains("<errorCode>1009</errorCode>")
-                                || output.contains("<errorCode>1098</errorCode>"));
+                        output.contains("<errorCode>1101</errorCode>"));
             }
         } catch (ClientProtocolException e) {
             Assert.fail(e.getMessage());
