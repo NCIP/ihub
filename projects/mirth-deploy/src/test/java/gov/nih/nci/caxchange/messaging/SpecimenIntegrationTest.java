@@ -59,7 +59,7 @@ public class SpecimenIntegrationTest {
 
             if (entity != null) {
                 createdXML = EntityUtils.toString(entity);
-                Assert.assertEquals(true, createdXML.contains("<errorCode>1084</errorCode>"));
+                Assert.assertEquals(true, createdXML.contains("<errorCode>1101</errorCode>"));
             }
         } catch (ClientProtocolException e) {
             Assert.fail(e.getMessage());
@@ -69,35 +69,7 @@ public class SpecimenIntegrationTest {
             Assert.fail(e.getMessage());
         }
     }
-
-    /**
-     * Testcase for Create Specimen when TissueSite is invalid
-     */
-    @Test
-    public void createSpecimenForInvalidTissueSite() {
-        try {
-            final HttpPost httppost = new HttpPost(transcendCaxchangeServiceUrl);
-            final StringEntity reqentity = new StringEntity(getInsertInvalidTissueSiteXMLStr());
-            httppost.setEntity(reqentity);
-            httppost.setHeader(HttpHeaders.CONTENT_TYPE, XMLTEXT);
-
-            final HttpResponse response = httpclient.execute(httppost);
-            final HttpEntity entity = response.getEntity();
-
-            String createdXML = null;
-
-            if (entity != null) {
-                createdXML = EntityUtils.toString(entity);
-                Assert.assertEquals(true, createdXML.contains("<errorCode>1083</errorCode>"));
-            }
-        } catch (ClientProtocolException e) {
-            Assert.fail(e.getMessage());
-        } catch (IllegalStateException e) {
-            Assert.fail(e.getMessage());
-        } catch (IOException e) {
-            Assert.fail(e.getMessage());
-        }
-    }
+ 
 
     /**
      * Testcase for Create Specimen
