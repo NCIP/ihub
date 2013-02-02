@@ -463,8 +463,8 @@ public class CaTissueSpecimenClient {
 
                 final SpecimenCharacteristics chars = new SpecimenCharacteristics();
                 chars.setId(existingSpecimen.getSpecimenCharacteristics().getId());
-                chars.setTissueSide(incomingSpecimen.getSpecimenCharacteristics().getTissueSide());
-                chars.setTissueSite(incomingSpecimen.getSpecimenCharacteristics().getTissueSite());
+                chars.setTissueSide(existingSpecimen.getSpecimenCharacteristics().getTissueSide());
+                chars.setTissueSite(existingSpecimen.getSpecimenCharacteristics().getTissueSite());
                 incomingSpecimen.setSpecimenCharacteristics(chars);
 
                 incomingSpecimen.setConsentTierStatusCollection(existingSpecimen.getConsentTierStatusCollection());
