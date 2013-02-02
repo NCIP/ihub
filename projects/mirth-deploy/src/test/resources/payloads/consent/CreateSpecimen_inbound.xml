@@ -223,7 +223,7 @@
 																<!--Specimen Type -->
 																<value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96"
 																	codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
-																	<originalText>fresh tissue</originalText>
+																	<originalText>Fresh Tissue</originalText>
 																</value>
 															</observation>
 														</entryRelationship>
