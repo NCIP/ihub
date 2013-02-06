@@ -32,13 +32,13 @@
 	</identifiers>
 	<assignments>
 		<caaers:assignment id="1" version="1">
-			<studySubjectIdentifier>1.2.1.173000:echr:patient-1823470</studySubjectIdentifier>
+			<studySubjectIdentifier>1.2.1.173000:echr:patient-forAE-101</studySubjectIdentifier>
 			<caaers:studySite id="1" version="1">
 				<caaers:study id="1" version="1">
 					<identifiers>
 						<identifier id="1" version="1">
 							<type>Other</type>
-							<value>6482:6482</value>
+							<value>2.16.840.1.113883.3.26.1.7:ISPY2</value>
 						</identifier>
 					</identifiers>
 				</caaers:study>

@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -548,6 +549,8 @@ public class CaTissueParticipantClient {
             cpr.setConsentSignatureDate(collectionProtocolRegistration.getConsentSignatureDate());
             cpr.setRegistrationDate(collectionProtocolRegistration.getRegistrationDate());
             cpr.setProtocolParticipantIdentifier(collectionProtocolRegistration.getProtocolParticipantIdentifier());
+            //setting empty consenttier status collection, as update flow will not update consent tier
+            cpr.setConsentTierResponseCollection((Collection<ConsentTierResponse>)new LinkedHashSet<ConsentTierResponse>());
 
             cpr.setCollectionProtocol(cp);
             p.getCollectionProtocolRegistrationCollection().add(cpr);

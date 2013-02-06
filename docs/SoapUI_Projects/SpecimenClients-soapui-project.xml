@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project activeEnvironment="Default" name="SpecimenClients" soapui-version="4.5.0" abortOnError="false" runType="SEQUENTIAL" resourceRoot="" xmlns:con="http://eviware.com/soapui/config">
+<con:soapui-project activeEnvironment="Default" name="SpecimenClients" soapui-version="4.5.1" abortOnError="false" runType="SEQUENTIAL" resourceRoot="" xmlns:con="http://eviware.com/soapui/config">
 	<con:settings/>
 	<con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="soapBinding" type="wsdl" bindingName="{http://caXchange.nci.nih.gov/caxchangerequest}soapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:12090/services/CaXchangeRequestService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 		<con:settings/>
@@ -361,8 +361,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fixed tissue specimen">
-                                                   <originalText>fixed tissue</originalText>
+                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                   <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -429,7 +429,7 @@
       </mes:caXchangeRequestMessage>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request>
-				<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+				<con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
 				<con:jmsPropertyConfig/>
 				<con:wsaConfig mustUnderstand="NONE" version="200508" action="http://caXchange.nci.nih.gov/caxchangerequest/CaXchangeRequestPortType/ProcessRequestRequest"/>
 				<con:wsrmConfig version="1.2"/>
@@ -628,8 +628,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fixed tissue specimen">
-                                                   <originalText>fixed tissue</originalText>
+                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                   <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -696,7 +696,7 @@
       </mes:caXchangeRequestMessage>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request>
-				<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+				<con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
 				<con:jmsPropertyConfig/>
 				<con:wsaConfig mustUnderstand="NONE" version="200508" action="http://caXchange.nci.nih.gov/caxchangerequest/CaXchangeRequestPortType/ProcessRequestRequest"/>
 				<con:wsrmConfig version="1.2"/>
@@ -895,8 +895,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fixed tissue specimen">
-                                                   <originalText>fixed tissue</originalText>
+                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                   <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -963,7 +963,7 @@
       </mes:caXchangeRequestMessage>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request>
-				<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+				<con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
 				<con:jmsPropertyConfig/>
 				<con:wsaConfig mustUnderstand="NONE" version="200508" action="http://caXchange.nci.nih.gov/caxchangerequest/CaXchangeRequestPortType/ProcessRequestRequest"/>
 				<con:wsrmConfig version="1.2"/>
@@ -1162,8 +1162,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fixed tissue specimen">
-                                                   <originalText>fixed tissue</originalText>
+                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                   <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -1230,7 +1230,7 @@
       </mes:caXchangeRequestMessage>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request>
-				<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+				<con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
 				<con:jmsPropertyConfig/>
 				<con:wsaConfig mustUnderstand="NONE" version="200508" action="http://caXchange.nci.nih.gov/caxchangerequest/CaXchangeRequestPortType/ProcessRequestRequest"/>
 				<con:wsrmConfig version="1.2"/>
@@ -1281,9 +1281,9 @@
                   <recordTarget>
                      <patientRole>                       
                          <!--study subject identifier-->
-                        <id root="1.2.1.173000" extension="1001" assigningAuthorityName="iSpy2 Study"/>
+                        <id root="1.2.1.173000" extension="1007" assigningAuthorityName="iSpy2 Study"/>
                         <!--patient MRN-->
-                        <id root="1.2.1.173000" extension="1001" assigningAuthorityName="ABC Cancer Institute"/>
+                        <id root="1.2.1.173000" extension="1007" assigningAuthorityName="ABC Cancer Institute"/>
                         
                         <addr nullFlavor="NI"/>
                         <telecom nullFlavor="NI"/>
@@ -1429,8 +1429,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fixed tissue specimen">
-                                                   <originalText>fixed tissue</originalText>
+                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                   <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -1497,7 +1497,7 @@
       </mes:caXchangeRequestMessage>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request>
-				<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+				<con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
 				<con:jmsPropertyConfig/>
 				<con:wsaConfig mustUnderstand="NONE" version="200508" action="http://caXchange.nci.nih.gov/caxchangerequest/CaXchangeRequestPortType/ProcessRequestRequest"/>
 				<con:wsrmConfig version="1.2"/>
@@ -1764,7 +1764,7 @@
       </mes:caXchangeRequestMessage>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request>
-				<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+				<con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
 				<con:jmsPropertyConfig/>
 				<con:wsaConfig mustUnderstand="NONE" version="200508" action="http://caXchange.nci.nih.gov/caxchangerequest/CaXchangeRequestPortType/ProcessRequestRequest"/>
 				<con:wsrmConfig version="1.2"/>
@@ -1963,8 +1963,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fixed tissue specimen">
-                                                   <originalText>fixed tissue</originalText>
+                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                   <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -2031,7 +2031,7 @@
       </mes:caXchangeRequestMessage>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request>
-				<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+				<con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
 				<con:jmsPropertyConfig/>
 				<con:wsaConfig mustUnderstand="NONE" version="200508" action="http://caXchange.nci.nih.gov/caxchangerequest/CaXchangeRequestPortType/ProcessRequestRequest"/>
 				<con:wsrmConfig version="1.2"/>
@@ -2232,8 +2232,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fixed tissue specimen">
-                                                   <originalText>fixed tissue</originalText>
+                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                   <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -2300,7 +2300,7 @@
       </mes:caXchangeRequestMessage>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request>
-				<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+				<con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
 				<con:jmsPropertyConfig/>
 				<con:wsaConfig mustUnderstand="NONE" version="200508" action="http://caXchange.nci.nih.gov/caxchangerequest/CaXchangeRequestPortType/ProcessRequestRequest"/>
 				<con:wsrmConfig version="1.2"/>
@@ -2499,8 +2499,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fixed tissue specimen">
-                                                   <originalText>fixed tissue</originalText>
+                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                   <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -2766,8 +2766,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fixed tissue specimen">
-                                                   <originalText>fixed tissue</originalText>
+                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                   <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -3033,8 +3033,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fixed tissue specimen">
-                                                   <originalText>fixed tissue</originalText>
+                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                   <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -3300,8 +3300,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fixed tissue specimen">
-                                                   <originalText>fixed tissue</originalText>
+                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                   <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -3567,8 +3567,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fixed tissue specimen">
-                                                   <originalText>fixed tissue</originalText>
+                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                   <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -3834,8 +3834,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
-                                                   <originalText>fresh tissue</originalText>
+                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                   <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -3902,7 +3902,7 @@
       </mes:caXchangeRequestMessage>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request>
-				<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+				<con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
 				<con:jmsPropertyConfig/>
 				<con:wsaConfig mustUnderstand="NONE" version="200508" action="http://caXchange.nci.nih.gov/caxchangerequest/CaXchangeRequestPortType/ProcessRequestRequest"/>
 				<con:wsrmConfig version="1.2"/>
@@ -4100,8 +4100,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
-                                                   <originalText>fresh tissue</originalText>
+                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                   <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -4250,8 +4250,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
-                                                   <originalText>fresh tissue</originalText>
+                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                   <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -4517,8 +4517,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fixed tissue specimen">
-                                                   <originalText>fixed tissue</originalText>
+                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                   <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -4585,7 +4585,7 @@
       </mes:caXchangeRequestMessage>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request>
-				<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+				<con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
 				<con:jmsPropertyConfig/>
 				<con:wsaConfig mustUnderstand="NONE" version="200508" action="http://caXchange.nci.nih.gov/caxchangerequest/CaXchangeRequestPortType/ProcessRequestRequest"/>
 				<con:wsrmConfig version="1.2"/>
@@ -4783,8 +4783,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
-                                                   <originalText>fresh tissue</originalText>
+                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                   <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -5049,8 +5049,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
-                                                   <originalText>fresh tissue</originalText>
+                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                   <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -5199,8 +5199,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
-                                                   <originalText>fresh tissue</originalText>
+                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                   <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -5267,7 +5267,7 @@
       </mes:caXchangeRequestMessage>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request>
-				<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+				<con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
 				<con:jmsPropertyConfig/>
 				<con:wsaConfig mustUnderstand="NONE" version="200508" action="http://caXchange.nci.nih.gov/caxchangerequest/CaXchangeRequestPortType/ProcessRequestRequest"/>
 				<con:wsrmConfig version="1.2"/>
@@ -5318,9 +5318,9 @@
                   <recordTarget>
                      <patientRole>                       
                          <!--study subject identifier-->
-                        <id root="1.2.1.173000" extension="1001" assigningAuthorityName="iSpy2 Study"/>
+                        <id root="1.2.1.173000" extension="1007" assigningAuthorityName="iSpy2 Study"/>
                         <!--patient MRN-->
-                        <id root="1.2.1.173000" extension="1001" assigningAuthorityName="ABC Cancer Institute"/>
+                        <id root="1.2.1.173000" extension="1007" assigningAuthorityName="ABC Cancer Institute"/>
                         
                         <addr nullFlavor="NI"/>
                         <telecom nullFlavor="NI"/>
@@ -5466,8 +5466,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fixed tissue specimen">
-                                                   <originalText>fixed tissue</originalText>
+                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                   <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -5534,7 +5534,7 @@
       </mes:caXchangeRequestMessage>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request>
-				<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+				<con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
 				<con:jmsPropertyConfig/>
 				<con:wsaConfig mustUnderstand="NONE" version="200508" action="http://caXchange.nci.nih.gov/caxchangerequest/CaXchangeRequestPortType/ProcessRequestRequest"/>
 				<con:wsrmConfig version="1.2"/>
@@ -5733,8 +5733,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fixed tissue specimen">
-                                                   <originalText>fixed tissue</originalText>
+                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                   <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -6532,8 +6532,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
-                                                   <originalText>fresh tissue</originalText>
+                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                   <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -6681,8 +6681,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
-                                                   <originalText>fresh tissue</originalText>
+                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                   <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -6948,8 +6948,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
-                                                   <originalText>fresh tissue</originalText>
+                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                   <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -7097,8 +7097,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
-                                                   <originalText>fresh tissue</originalText>
+                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                   <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -7331,7 +7331,7 @@
                                           <specimen>
                                              <specimenRole>
                                                 <!--CDMS Specimen ID, assigned by the TRANSCEND CDMS-->
-                                                <id root="fbfe4b85-2bdc-4305-88be-3e1b763d8caa" extension="132"/>
+                                                <id root="fbfe4b85-2bdc-4305-88be-3e1b763d8caa" extension="151"/>
                                                 <!--Specimen Class-->
                                                 <specimenPlayingEntity>
                                                    <code code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="tissue specimen"/>
@@ -7344,7 +7344,7 @@
                                                 <!--Product Instance template-->
                                                 <templateId root="2.16.840.1.113883.10.20.22.4.37" assigningAuthorityName="HL7 CCDA"/>
                                                 <!--Barcode (Unique Device Identification (UDI))-->
-                                                <id root="123456" extension="132"/>
+                                                <id root="123456" extension="151"/>
                                                 <playingDevice>
                                                    <!--Code to identify the specimen Container-->
                                                    <code nullFlavor="NA">
@@ -7366,8 +7366,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
-                                                   <originalText>fresh tissue</originalText>
+                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                   <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -7434,7 +7434,7 @@
       </mes:caXchangeRequestMessage>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request>
-				<con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+				<con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
 				<con:jmsPropertyConfig/>
 				<con:wsaConfig mustUnderstand="NONE" version="200508" action="http://caXchange.nci.nih.gov/caxchangerequest/CaXchangeRequestPortType/ProcessRequestRequest"/>
 				<con:wsrmConfig version="1.2"/>
@@ -7633,8 +7633,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
-                                                   <originalText>fresh tissue</originalText>
+                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                   <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -7900,8 +7900,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
-                                                   <originalText>fresh tissue</originalText>
+                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                   <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -8167,8 +8167,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
-                                                   <originalText>fresh tissue</originalText>
+                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                   <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -8434,8 +8434,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
-                                                   <originalText>fresh tissue</originalText>
+                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                   <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -8701,8 +8701,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
-                                                   <originalText>fresh tissue</originalText>
+                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                   <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -9235,8 +9235,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
-                                                   <originalText>fresh tissue</originalText>
+                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                   <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -9501,8 +9501,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
-                                                   <originalText>fresh tissue</originalText>
+                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                   <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -9767,8 +9767,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
-                                                   <originalText>fresh tissue</originalText>
+                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                   <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -10033,8 +10033,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
-                                                   <originalText>fresh tissue</originalText>
+                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                   <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -10295,8 +10295,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fixed tissue specimen">
-                                                   <originalText>fixed tissue</originalText>
+                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                   <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -10549,8 +10549,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
-                                                   <originalText>fresh tissue</originalText>
+                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                   <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -10803,8 +10803,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fixed tissue specimen">
-                                                   <originalText>fixed tissue</originalText>
+                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                   <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -10870,7 +10870,7 @@
          </mes:request>
       </mes:caXchangeRequestMessage>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://caXchange.nci.nih.gov/caxchangerequest/CaXchangeRequestPortType/ProcessRequestRequest"/><con:wsrmConfig version="1.2"/></con:call><con:call name="01D CreateSpecimenRequest_MissingAvailbleQty"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:12090/services/CaXchangeRequestService
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://caXchange.nci.nih.gov/caxchangerequest/CaXchangeRequestPortType/ProcessRequestRequest"/><con:wsrmConfig version="1.2"/></con:call><con:call name="01D CreateSpecimenRequest_MissingAvailbleQty"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:12090/services/CaXchangeRequestService
 				</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:mes="http://caXchange.nci.nih.gov/messaging">
    <soapenv:Header/>
    <soapenv:Body>
@@ -11058,8 +11058,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fixed tissue specimen">
-                                                   <originalText>fixed tissue</originalText>
+                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                   <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -11115,7 +11115,7 @@
          </mes:request>
       </mes:caXchangeRequestMessage>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:call><con:call name="01D CreateSpecimenRequest_MissingInitialQty"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:12090/services/CaXchangeRequestService
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:call><con:call name="01D CreateSpecimenRequest_MissingInitialQty"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:12090/services/CaXchangeRequestService
 				</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:mes="http://caXchange.nci.nih.gov/messaging">
    <soapenv:Header/>
    <soapenv:Body>
@@ -11303,8 +11303,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fixed tissue specimen">
-                                                   <originalText>fixed tissue</originalText>
+                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                   <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -11360,7 +11360,7 @@
          </mes:request>
       </mes:caXchangeRequestMessage>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:call><con:call name="01H CreateSpecimenRequest_MissingSpecimenType"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:12090/services/CaXchangeRequestService
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:call><con:call name="01H CreateSpecimenRequest_MissingSpecimenType"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:12090/services/CaXchangeRequestService
 				</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:mes="http://caXchange.nci.nih.gov/messaging">
    <soapenv:Header/>
    <soapenv:Body>
@@ -11604,7 +11604,7 @@
          </mes:request>
       </mes:caXchangeRequestMessage>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:call><con:call name="01I CreateSpecimenRequest_MissingTissueSide"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:12090/services/CaXchangeRequestService
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:call><con:call name="01I CreateSpecimenRequest_MissingTissueSide"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:12090/services/CaXchangeRequestService
 				</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:mes="http://caXchange.nci.nih.gov/messaging">
    <soapenv:Header/>
    <soapenv:Body>
@@ -11790,8 +11790,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fixed tissue specimen">
-                                                   <originalText>fixed tissue</originalText>
+                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                   <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -11857,7 +11857,7 @@
          </mes:request>
       </mes:caXchangeRequestMessage>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:call><con:call name="01K CreateSpecimenRequest_MissingBiopsy"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:12090/services/CaXchangeRequestService
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:call><con:call name="01K CreateSpecimenRequest_MissingBiopsy"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:12090/services/CaXchangeRequestService
 				</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:mes="http://caXchange.nci.nih.gov/messaging">
    <soapenv:Header/>
    <soapenv:Body>
@@ -12033,8 +12033,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fresh tissue specimen">
-                                                   <originalText>fresh tissue</originalText>
+                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                   <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -12100,7 +12100,7 @@
          </mes:request>
       </mes:caXchangeRequestMessage>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:call><con:call name="02B UpdateSpecimenRequest_MissingAvailQty"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:12090/services/CaXchangeRequestService
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:call><con:call name="02B UpdateSpecimenRequest_MissingAvailQty"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:12090/services/CaXchangeRequestService
 				</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:mes="http://caXchange.nci.nih.gov/messaging">
    <soapenv:Header/>
    <soapenv:Body>
@@ -12288,8 +12288,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fixed tissue specimen">
-                                                   <originalText>fixed tissue</originalText>
+                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                   <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>
@@ -12345,7 +12345,7 @@
          </mes:request>
       </mes:caXchangeRequestMessage>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:call><con:call name="02D UpdateSpecimenRequest_MissingTissueSide"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:12090/services/CaXchangeRequestService
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:call><con:call name="02D UpdateSpecimenRequest_MissingTissueSide"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:12090/services/CaXchangeRequestService
 				</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:mes="http://caXchange.nci.nih.gov/messaging">
    <soapenv:Header/>
    <soapenv:Body>
@@ -12531,8 +12531,8 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fixed tissue specimen">
-                                                   <originalText>fixed tissue</originalText>
+                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                   <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
                                           </entryRelationship>

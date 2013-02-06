@@ -3,6 +3,8 @@ package gov.nih.nci.integration.catissue;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import gov.nih.nci.integration.catissue.client.CaTissueConsentClient;
+import gov.nih.nci.integration.catissue.client.CaTissueParticipantClient;
+import gov.nih.nci.integration.catissue.client.CaTissueSpecimenClient;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 
 import java.io.BufferedReader;
@@ -10,8 +12,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.util.Properties;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,19 +25,30 @@ import org.springframework.beans.BeansException;
  * 
  * @author Rohit Gupta
  */
-
 public class CaTissueConsentIntegrationTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueConsentIntegrationTest.class);
-    private CaTissueConsentClient caTissueConsentClient;
-
+    private static CaTissueParticipantClient caTissueParticipantClient;
+    private static CaTissueSpecimenClient caTissueSpecimenClient;
+    private static CaTissueConsentClient caTissueConsentClient;
+    
+   
     /**
      * To initialize the things
+     * @throws IOException 
      */
-    @Before
-    public void initialize() {
-        try {
-            caTissueConsentClient = new CaTissueConsentClient("admin@admin.com", "caTissue20");
+    @BeforeClass
+    public static void initialize() throws IOException {
+        try {            
+            Properties props = new Properties();
+            props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("transcend-ihub-test.properties"));
+            
+            String catissueUserName = props.getProperty("catissue.api.login.username");
+            String catissuePassword = props.getProperty("catissue.api.login.password");
+            
+            caTissueParticipantClient = new CaTissueParticipantClient(catissueUserName, catissuePassword);
+            caTissueSpecimenClient = new CaTissueSpecimenClient(catissueUserName, catissuePassword);
+            caTissueConsentClient = new CaTissueConsentClient(catissueUserName, catissuePassword);
         } catch (BeansException e) {
             LOG.error("CaTissueConsentIntegrationTest-BeansException inside initialize() ", e);
         } catch (MalformedURLException e) {
@@ -46,10 +60,12 @@ public class CaTissueConsentIntegrationTest {
     /**
      * Testcase for registerConsents flow
      */
-    @Test
+   @Test
     public void registerConsents() {
         String retConsentXML = null;
         try {
+            caTissueParticipantClient.registerParticipant(getParticipantXMLStr());
+            caTissueSpecimenClient.createSpecimens(getSpecimenXMLStr());
             caTissueConsentClient.registerConsents(getRegisterConsentXMLStr());
             retConsentXML = "REGISTER_CONSENT";
         } catch (ApplicationException e) {
@@ -99,7 +115,7 @@ public class CaTissueConsentIntegrationTest {
     /**
      * Testcase for rollback of registerConsents
      */
-    // @Test
+    @Test
     public void rollbackConsents() {
         String existXML = null;
         String retXML = null;
@@ -115,7 +131,15 @@ public class CaTissueConsentIntegrationTest {
         assertNotNull(existXML);
         assertNotNull(retXML);
     }
-
+    
+    private String getParticipantXMLStr() {
+        return getXMLString("CreateParticipantForConsent_catissue.xml");
+    }
+    
+    private String getSpecimenXMLStr() {
+        return getXMLString("CreateSpecimenForConsent_catissue.xml");
+    }
+    
     private String getRegisterConsentXMLStr() {
         return getXMLString("RegisterConsent_catissue.xml");
     }

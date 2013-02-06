@@ -1,6 +1,6 @@
 package gov.nih.nci.integration.catissue;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import gov.nih.nci.integration.invoker.ServiceInvocationResult;
 
 import java.io.IOException;
@@ -22,12 +22,26 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:applicationContext-transcend-catissue.xml")
 public class CaTissueSpecimenClientIntegrationTest {
-
+    
+    @Autowired
+    private CaTissueParticipantClient caTissueParticipantClient;
+    
     @Autowired
     private CaTissueSpecimenClient caTissueSpecimenClient;
 
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueSpecimenClientIntegrationTest.class);
 
+    /**
+     * Testcase for createSpecimen
+     */
+    @Test
+    public void createSpecimen() {
+        ServiceInvocationResult svca = caTissueParticipantClient.registerParticipant(getParticipantXMLStr());
+        ServiceInvocationResult svc = caTissueSpecimenClient.createSpecimens(getCreateSpecimenXMLStr());
+        assertNotNull(svc);
+        assertFalse(svc.isFault());
+    }
+    
     /**
      * Test case when trying to create existing Specimen
      */
@@ -35,18 +49,9 @@ public class CaTissueSpecimenClientIntegrationTest {
     public void createExistingSpecimen() {
         final ServiceInvocationResult svc = caTissueSpecimenClient.createSpecimens(getCreateExistingSpecimenXMLStr());
         assertNotNull(svc);
-
+        assertTrue(svc.isFault());
     }
-
-    /**
-     * Testcase for createSpecimen
-     */
-    @Test
-    public void createSpecimen() {
-        final ServiceInvocationResult svc = caTissueSpecimenClient.createSpecimens(getCreateSpecimenXMLStr());
-        assertNotNull(svc);
-
-    }
+    
 
     /**
      * Testcase for updateSpecimen
@@ -55,7 +60,7 @@ public class CaTissueSpecimenClientIntegrationTest {
     public void updateSpecimen() {
         final ServiceInvocationResult svc = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenXMLStr());
         assertNotNull(svc);
-
+        assertFalse(svc.isFault());
     }
 
     /**
@@ -65,7 +70,11 @@ public class CaTissueSpecimenClientIntegrationTest {
     public void updateSpecimenNotExist() {
         final ServiceInvocationResult svc = caTissueSpecimenClient.updateSpecimens(getUpdateSpecimenNotExistXMLStr());
         assertNotNull(svc);
-
+        assertTrue(svc.isFault());
+    }
+    
+    private String getParticipantXMLStr() {
+        return getXMLString("CreateParticipantForSpecimen_catissue.xml");
     }
 
     private String getCreateExistingSpecimenXMLStr() {

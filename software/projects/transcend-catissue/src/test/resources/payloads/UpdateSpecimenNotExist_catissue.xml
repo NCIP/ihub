@@ -2,7 +2,7 @@
 <specimens xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest"
 	xmlns:ns0="http://caXchange.nci.nih.gov/messaging" xmlns:a="http://cacis.nci.nih.gov">
 	<participant>
-		<lastName>1.2.1.173000:ct8d23431</lastName>
+		<lastName>1.2.1.173000:echr:patient-forspecimen-111</lastName>
 		<activityStatus />
 	</participant>
 	<specimenDetail>
@@ -19,13 +19,13 @@
 			<activityStatus>Active</activityStatus>
 			<availableQuantity>155</availableQuantity>
 			<barcode>12345:011_123</barcode>
-			<label>fbfe4b85-2bdc-4305-88be-3e1b763d8caa:011_123</label>
+			<label>fbfe4b85-2bdc-4305-88be-3e1b763d8caa:031_123</label>
 			<isAvailable>true</isAvailable>
 			<collectionStatus>Collected</collectionStatus>
 		</specimen>
 		<collectionProtocol>
 			<title />
-			<shortTitle>6482:6482</shortTitle>
+			<shortTitle>2.16.840.1.113883.3.26.1.7:ISPY2</shortTitle>
 		</collectionProtocol>
 		<guidanceForBreastCoreBiopsy>
 			<guidanceForBreastCoreBiopsyType>ULTRASOUND</guidanceForBreastCoreBiopsyType>
@@ -52,7 +52,7 @@
 		</specimen>
 		<collectionProtocol>
 			<title />
-			<shortTitle>6482:6482</shortTitle>
+			<shortTitle>2.16.840.1.113883.3.26.1.7:ISPY2</shortTitle>
 		</collectionProtocol>
 		<guidanceForBreastCoreBiopsy>
 			<guidanceForBreastCoreBiopsyType>ULTRASOUND</guidanceForBreastCoreBiopsyType>

@@ -59,7 +59,6 @@ public class CaAERSAdverseEventServiceInvocationStrategyIntegrationTest {
         final ServiceInvocationMessage resultMsg = msgsMap.get(caAERSAdverseEventServiceInvocationStrategy
                 .getStrategyIdentifier());
         Assert.assertNotNull(resultMsg);
-        Assert.assertNotNull(resultMsg.getInvocationException());
 
     }
 

@@ -7,7 +7,7 @@
 	<catissue:ethnicity>Not Hispanic or Latino</catissue:ethnicity>
 	<catissue:firstName>TRANSCEND</catissue:firstName>
 	<catissue:gender>Female Gender</catissue:gender>
-	<catissue:lastName>1.2.1.173000:echr:patient-1823462
+	<catissue:lastName>1.2.1.173000:echr:patient-forpart-106
 	</catissue:lastName>
 	<catissue:vitalStatus>Alive</catissue:vitalStatus>
 	<catissue:collectionProtocolRegistrationCollection
@@ -16,13 +16,13 @@
 			<catissue:activityStatus>Active</catissue:activityStatus>
 			<catissue:consentSignatureDate>2012-08-20
 			</catissue:consentSignatureDate>
-			<catissue:protocolParticipantIdentifier>1.2.1.173000:echr:patient-1823462
+			<catissue:protocolParticipantIdentifier>1.2.1.173000:echr:forpart-106
 			</catissue:protocolParticipantIdentifier>
 			<catissue:registrationDate>2011-07-22</catissue:registrationDate>
 			<catissue:specimenCollectionGroupCollection
 				class="set" />
 			<catissue:collectionProtocol>
-				<catissue:shortTitle>6482:6482</catissue:shortTitle>
+				<catissue:shortTitle>2.16.840.1.113883.3.26.1.7:ISPY2</catissue:shortTitle>
 				<catissue:collectionProtocolEventCollection
 					class="linked-hash-set" />
 				<catissue:childCollectionProtocolCollection

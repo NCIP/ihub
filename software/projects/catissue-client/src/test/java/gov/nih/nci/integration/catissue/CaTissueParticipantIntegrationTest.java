@@ -7,6 +7,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import edu.wustl.catissuecore.domain.CollectionProtocol;
 import edu.wustl.catissuecore.domain.CollectionProtocolRegistration;
+import edu.wustl.catissuecore.domain.ConsentTierResponse;
 import edu.wustl.catissuecore.domain.Participant;
 import edu.wustl.catissuecore.domain.Race;
 import edu.wustl.catissuecore.factory.CollectionProtocolFactory;
@@ -21,18 +22,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Properties;
 
 import javax.xml.bind.JAXBException;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -45,16 +52,29 @@ import com.thoughtworks.xstream.XStream;
 public class CaTissueParticipantIntegrationTest {
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.US);
-    private final CaTissueParticipantClient caTissueParticipantClient;
+    private static CaTissueParticipantClient caTissueParticipantClient;
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueParticipantIntegrationTest.class);
-
+    
     /**
-     * Constructor
-     * 
-     * @throws Exception - Exception
+     * To initialize the things
+     * @throws IOException 
      */
-    public CaTissueParticipantIntegrationTest() throws Exception {
-        caTissueParticipantClient = new CaTissueParticipantClient("admin@admin.com", "caTissue20");
+    @BeforeClass
+    public static void initialize() throws IOException {
+        try {            
+            Properties props = new Properties();
+            props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("transcend-ihub-test.properties"));
+            
+            String catissueUserName = props.getProperty("catissue.api.login.username");
+            String catissuePassword = props.getProperty("catissue.api.login.password");
+            
+            caTissueParticipantClient = new CaTissueParticipantClient(catissueUserName, catissuePassword);
+        } catch (BeansException e) {
+            LOG.error("CaTissueParticipantIntegrationTest-BeansException inside initialize() ", e);
+        } catch (MalformedURLException e) {
+            LOG.error("CaTissueParticipantIntegrationTest-ApplicationException inside initialize() ", e);
+        }
+      
     }
 
     /**
@@ -68,14 +88,14 @@ public class CaTissueParticipantIntegrationTest {
         caTissueParticipantClient.registerParticipant(getParticipantXMLStr());
 
         final Participant registeredParticipant = caTissueParticipantClient
-                .getParticipantForPatientId("1.2.1.173000:echr:patient-1823462", "6482:6482");
+                .getParticipantForPatientId("1.2.1.173000:echr:patient-forregn-101", "2.16.840.1.113883.3.26.1.7:ISPY2");
 
         assertNotNull(registeredParticipant);
         assertNotNull(registeredParticipant.getObjectId());
 
         caTissueParticipantClient.deleteParticipant(getParticipantXMLStr());
         final Participant result2 = caTissueParticipantClient
-                .getParticipantForPatientId("1.2.1.173000:echr:patient-1823462","6482:6482");
+                .getParticipantForPatientId("1.2.1.173000:echr:patient-forregn-101","2.16.840.1.113883.3.26.1.7:ISPY2");
         assertNull(result2);
     }
 
@@ -85,11 +105,13 @@ public class CaTissueParticipantIntegrationTest {
     @Test
     public void registerParticipantToDifferentStudy() {
         String xmlString = getParticipantXMLStr();
-        xmlString = xmlString.replace("6482:6482", "7216:7216");
+        
         try {
+            caTissueParticipantClient.registerParticipant(xmlString);
+            xmlString = xmlString.replace("2.16.840.1.113883.3.26.1.7:ISPY2", "7216:7216");
             caTissueParticipantClient.updateParticipantRegistrationFromXML(xmlString);
         } catch (ApplicationException e) {
-            assertTrue(e.getMessage().contains("Study can't be changed while updating the Participant"));
+            assertTrue(e.getMessage().contains("CaTissue does not contain a participant with the unique identifier"));
         }
     }
 
@@ -99,8 +121,8 @@ public class CaTissueParticipantIntegrationTest {
     @Test
     public void registerParticipantStudyNotFound() {
         String xmlString = getParticipantXMLStr();
-        xmlString = xmlString.replace("6482:6482", "6482_123:6482_123");
-        xmlString = xmlString.replace("1823469", "1823469_123");
+        xmlString = xmlString.replace("2.16.840.1.113883.3.26.1.7:ISPY2", "6482_123:6482_123");
+        xmlString = xmlString.replace("echr:patient-forregn-101", "echr:patient-forregn-101_123");
         try {
             caTissueParticipantClient.registerParticipantFromXML(xmlString);
         } catch (ApplicationException e) {
@@ -118,7 +140,7 @@ public class CaTissueParticipantIntegrationTest {
     @Test
     public void handleParticipantRegistration() throws Exception {
         // create sample participant registration
-        final String cpTitle = "6482:6482";
+        final String cpTitle = "2.16.840.1.113883.3.26.1.7:ISPY2";
 
         final CollectionProtocolFactory cpFact = CollectionProtocolFactory.getInstance();
         final CollectionProtocol cp = cpFact.createObject();
@@ -139,7 +161,7 @@ public class CaTissueParticipantIntegrationTest {
         assertNotNull(partcpnts);
         // assertEquals(false, partcpnts.isEmpty());
 
-        // retrieve participant by MRN
+        // retrieve participant by patient study subject id
         Participant existParticipant = caTissueParticipantClient.getParticipantForPatientId(participant.getLastName(),cpTitle);
         assertNotNull(existParticipant);
 
@@ -161,12 +183,15 @@ public class CaTissueParticipantIntegrationTest {
         // update with original incoming msg - equivalent to update msg
         final ArrayList<CollectionProtocolRegistration> cprList = new ArrayList<CollectionProtocolRegistration>(
                 participant.getCollectionProtocolRegistrationCollection());
-        cprList.get(0).getCollectionProtocol().setTitle("6482:6482");
+        cprList.get(0).getCollectionProtocol().setTitle("2.16.840.1.113883.3.26.1.7:ISPY2");
         existParticipant = caTissueParticipantClient.updateParticipantRegistration(participant);
         assertNotNull(existParticipant);
         assertTrue(!existParticipant.getFirstName().endsWith("updated"));
 
         // simulate rollback update, by deleting the update participant registration
+        //as update is clearing the cp on this object
+        participant.getCollectionProtocolRegistrationCollection().add(
+                initCollectionProtocolRegistration(participant, cp));
         caTissueParticipantClient.deleteParticipant(participant);
         // assert deletion
         final Participant afterDel = caTissueParticipantClient.getParticipantForPatientId(participant.getLastName(), cpTitle);
@@ -259,6 +284,7 @@ public class CaTissueParticipantIntegrationTest {
         collectionProtocolRegistration.setRegistrationDate(new Date());
         collectionProtocolRegistration.setConsentSignatureDate(new Date());
         collectionProtocolRegistration.setProtocolParticipantIdentifier("123092101");
+        collectionProtocolRegistration.setConsentTierResponseCollection((Collection<ConsentTierResponse>)new LinkedHashSet<ConsentTierResponse>());
         return collectionProtocolRegistration;
     }
 
