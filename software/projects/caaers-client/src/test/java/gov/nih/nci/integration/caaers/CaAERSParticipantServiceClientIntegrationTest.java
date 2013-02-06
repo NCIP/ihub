@@ -163,7 +163,7 @@ public class CaAERSParticipantServiceClientIntegrationTest {
     @Test
     public void createParticipantStudyNotPresent() throws MalformedURLException, JAXBException {
         String participantXMLStr = getPStr();
-        participantXMLStr = participantXMLStr.replace("6482:6482", "6482_123:6482_123");
+        participantXMLStr = participantXMLStr.replace("2.16.840.1.113883.3.26.1.7:ISPY2", "2.16.840.1.113883.3.26.1.7:ISPY2_123");
         CaaersServiceResponse caaersServiceResponse = null;
         try {
             caaersServiceResponse = caAERSParticipantServiceClient.createParticipant(participantXMLStr);
@@ -261,7 +261,7 @@ public class CaAERSParticipantServiceClientIntegrationTest {
     @Test
     public void updateParticipantToDifferentStudy() throws MalformedURLException, JAXBException {
         String participantXMLStr = getPStr();
-        participantXMLStr = participantXMLStr.replace("7216:7216", "7216:7216");
+        participantXMLStr = participantXMLStr.replace("2.16.840.1.113883.3.26.1.7:ISPY2", "7216:7216");
         CaaersServiceResponse caaersServiceResponse = null;
         try {
             caaersServiceResponse = caAERSParticipantServiceClient.updateParticipant(participantXMLStr);
@@ -272,8 +272,8 @@ public class CaAERSParticipantServiceClientIntegrationTest {
         }
         final String status = caaersServiceResponse.getServiceResponse().getStatus().value();
         final String responseCode = caaersServiceResponse.getServiceResponse().getResponsecode();
-        Assert.assertEquals("Processed", status);
-        Assert.assertEquals("0", responseCode);
+        Assert.assertEquals("Failed to Process", status);
+        Assert.assertEquals("1", responseCode);       
 
     }
 

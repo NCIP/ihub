@@ -2,7 +2,7 @@
 <specimens xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest"
 	xmlns:ns0="http://caXchange.nci.nih.gov/messaging" xmlns:a="http://cacis.nci.nih.gov">
 	<participant>
-		<lastName>1.2.1.173000:echr:patient-182101</lastName>
+		<lastName>1.2.1.173000:echr:patient-forconsent-101</lastName>
 		<activityStatus />
 	</participant>
 	<specimenDetail>
@@ -13,13 +13,13 @@
 			<specimenClass>Tissue</specimenClass>
 			<specimenType>Fresh Tissue</specimenType>
 			<specimenCharacteristics>
-				<tissueSite>Not Specified_123</tissueSite>
+				<tissueSite>Not Specified</tissueSite>
 				<tissueSide>Right</tissueSide>				
 			</specimenCharacteristics>
 			<activityStatus>Active</activityStatus>
 			<availableQuantity>155</availableQuantity>
-			<barcode>12345:013</barcode>
-			<label>fbfe4b85-2bdc-4305-88be-3e1b763d8caa:013</label>
+			<barcode>12345:forconsent-101</barcode>
+			<label>fbfe4b85-2bdc-4305-88be-3e1b763d8caa:forconsent-101</label>
 			<isAvailable>true</isAvailable>
 			<collectionStatus>Collected</collectionStatus>
 		</specimen>

@@ -7,14 +7,14 @@
 	<catissue:ethnicity>Not Hispanic or Latino</catissue:ethnicity>
 	<catissue:firstName>TRANSCEND</catissue:firstName>
 	<catissue:gender>Female Gender</catissue:gender>
-	<catissue:lastName>1.2.1.173000:echr:patient-forregn-101</catissue:lastName>
+	<catissue:lastName>1.2.1.173000:echr:patient-4c-101</catissue:lastName>
 	<catissue:vitalStatus>Alive</catissue:vitalStatus>
 	<catissue:collectionProtocolRegistrationCollection
 		class="linked-hash-set">
 		<catissue:collectionProtocolRegistration>
 			<catissue:activityStatus>Active</catissue:activityStatus>
 			<catissue:consentSignatureDate>2012-08-20</catissue:consentSignatureDate>
-			<catissue:protocolParticipantIdentifier>1.2.1.173000:echr:patient-forregn-101</catissue:protocolParticipantIdentifier>
+			<catissue:protocolParticipantIdentifier>1.2.1.173000:echr:patient-4c-101</catissue:protocolParticipantIdentifier>
 			<catissue:registrationDate>2011-07-22</catissue:registrationDate>
 			<catissue:specimenCollectionGroupCollection
 				class="linked-hash-set" />

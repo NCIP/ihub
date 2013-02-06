@@ -1,6 +1,6 @@
 package gov.nih.nci.integration.catissue;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import gov.nih.nci.integration.invoker.ServiceInvocationResult;
 
 import java.io.IOException;
@@ -34,16 +34,17 @@ public class CaTissueParticipantClientIntegrationTest {
      */
     @Test
     public void registerParticipant() {
-        ServiceInvocationResult svc = caTissueParticipantClient.registerParticipant(getParticipantXMLStr());
+        String xmlStr = getParticipantXMLStr();
+        ServiceInvocationResult svc = caTissueParticipantClient.registerParticipant(xmlStr);
         assertNotNull(svc);
-        // assertFalse(svc.isFault());
-        // svc = caTissueParticipantClient.deleteParticipant(getParticipantXMLStr());
-        // assertNotNull(svc);
-        // assertFalse(svc.isFault());
+        assertFalse(svc.isFault());
+        svc = caTissueParticipantClient.deleteParticipant(xmlStr);
+        assertNotNull(svc);
+        assertFalse(svc.isFault());
     }
 
     private String getParticipantXMLStr() {
-        return getXMLString("Participant_catissue.xml");
+        return getXMLString("ParticipantIntg_catissue.xml");
     }
 
     private String getXMLString(String fileName) {

@@ -29,8 +29,8 @@
 	</ns0:metadata>
 	<adverseeventinput xmlns="http://cacis.nci.nih.gov">
 		<criteria>
-			<studySubjectIdentifier>1.2.1.173000:echr:patient-1823467</studySubjectIdentifier>
-			<studyIdentifier>6482:6482</studyIdentifier>
+			<studySubjectIdentifier>1.2.1.173000:echr:patient-forAE-101</studySubjectIdentifier>
+			<studyIdentifier>2.16.840.1.113883.3.26.1.7:ISPY2</studyIdentifier>
 			<course>
 				<treatmentAssignmentCode>TAC1</treatmentAssignmentCode>
 			</course>
@@ -63,7 +63,7 @@
 					<outComeEnumType>440181000</outComeEnumType>
 				</outcome>
 				<outcome>
-					<outComeEnumType>OTHER_SERIOUS</outComeEnumType>
+					<outComeEnumType>OTH</outComeEnumType>
 				</outcome>
 			</adverseEvent>
 		</adverseEventsList>

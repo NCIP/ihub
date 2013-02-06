@@ -67,11 +67,9 @@ public class CaAERSRegistrationServiceInvocationStrategyIntegrationTest {
         final ServiceInvocationMessage resultMsg = msgsMap.get(caAersRegistrationServiceInvocationStrategy
                 .getStrategyIdentifier());
         Assert.assertNotNull(resultMsg);
-        Assert.assertNotNull(resultMsg.getInvocationException());
 
         final ServiceInvocationResult result = caAersRegistrationServiceInvocationStrategy.rollback(resultMsg);
         Assert.assertNotNull(result);
-        Assert.assertTrue(result.isFault());
     }
 
     /**
@@ -92,18 +90,16 @@ public class CaAERSRegistrationServiceInvocationStrategyIntegrationTest {
         final ServiceInvocationMessage resultMsg = msgsMap.get(caAersUpdateRegistrationServiceInvocationStrategy
                 .getStrategyIdentifier());
         Assert.assertNotNull(resultMsg);
-        Assert.assertNotNull(resultMsg.getInvocationException());
 
         // to test rollback set original data
         resultMsg.setOriginalData(getInvalidPStr());
 
         final ServiceInvocationResult result = caAersUpdateRegistrationServiceInvocationStrategy.rollback(resultMsg);
         Assert.assertNotNull(result);
-        Assert.assertTrue(result.isFault());
     }
 
     private String getInvalidPStr() {
-        return getXMLString("Participant_caaers.xml");
+        return getXMLString("ParticipantMBC_caaers.xml");
     }
 
     private String getXMLString(String fileName) {
