@@ -2,6 +2,7 @@ package gov.nih.nci.integration.catissue;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import gov.nih.nci.integration.catissue.client.CaTissueParticipantClient;
 import gov.nih.nci.integration.catissue.client.CaTissueSpecimenClient;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 
@@ -10,8 +11,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.util.Properties;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,20 +27,30 @@ import org.springframework.beans.BeansException;
 public class CaTissueSpecimenIntegrationTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(CaTissueSpecimenIntegrationTest.class);
-    private CaTissueSpecimenClient caTissueSpecimenClient;
+    private static CaTissueParticipantClient caTissueParticipantClient;
+    private static CaTissueSpecimenClient caTissueSpecimenClient;
 
     /**
      * To initialize the things
+     * @throws IOException 
      */
-    @Before
-    public void initialize() {
-        try {
-            caTissueSpecimenClient = new CaTissueSpecimenClient("admin@admin.com", "caTissue20");
+    @BeforeClass
+    public static void initialize() throws IOException {
+        try {            
+            Properties props = new Properties();
+            props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("transcend-ihub-test.properties"));
+            
+            String catissueUserName = props.getProperty("catissue.api.login.username");
+            String catissuePassword = props.getProperty("catissue.api.login.password");
+            
+            caTissueParticipantClient = new CaTissueParticipantClient(catissueUserName, catissuePassword);
+            caTissueSpecimenClient = new CaTissueSpecimenClient(catissueUserName, catissuePassword);
         } catch (BeansException e) {
             LOG.error("CaTissueConsentIntegrationTest-BeansException inside initialize() ", e);
         } catch (MalformedURLException e) {
             LOG.error("CaTissueConsentIntegrationTest-ApplicationException inside initialize() ", e);
         }
+      
     }
 
     /**
@@ -159,6 +171,7 @@ public class CaTissueSpecimenIntegrationTest {
         String existXML = null;
         String createdXML = "CREATED";
         try {
+            caTissueParticipantClient.registerParticipant(getParticipantXMLStr());
             existXML = caTissueSpecimenClient.isSpecimensExist(getInsertSpecimenXMLStr());
             caTissueSpecimenClient.createSpecimens(getInsertSpecimenXMLStr());
         } catch (ApplicationException e) {
@@ -343,7 +356,7 @@ public class CaTissueSpecimenIntegrationTest {
     /**
      * Testcase for rollback created specimen
      */
-    // @Test
+    @Test
     public void rollbackSpecimens() {
         String retXML = "DELETE_SPECIMEN";
         try {
@@ -352,6 +365,10 @@ public class CaTissueSpecimenIntegrationTest {
             retXML = null;
         }
         assertNotNull(retXML);
+    }
+    
+    private String getParticipantXMLStr() {
+        return getXMLString("CreateParticipantForSpecimen_catissue.xml");
     }
 
     private String getInsertSpecimenXMLStr() {

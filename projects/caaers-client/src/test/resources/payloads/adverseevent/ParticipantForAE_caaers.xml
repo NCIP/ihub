@@ -32,7 +32,7 @@
 	</identifiers>
 	<assignments>
 		<caaers:assignment id="1" version="1">
-			<studySubjectIdentifier>1.2.1.173000:echr:patient-forpart-101</studySubjectIdentifier>
+			<studySubjectIdentifier>1.2.1.173000:echr:patient-forAE-101</studySubjectIdentifier>
 			<caaers:studySite id="1" version="1">
 				<caaers:study id="1" version="1">
 					<identifiers>

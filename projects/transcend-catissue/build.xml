@@ -30,6 +30,12 @@
 				<exclude name="**/.svn"/>
 			</fileset>
 		</copy>
+		<!-- copy latest buildt catissue-client jars into this projects catissue-client-lib for integration tests -->
+		<copy todir="catissue-client-lib">
+			<fileset dir="../catissue-client/build/dist/">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
 	</target>
 	
 </project>

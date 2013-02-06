@@ -49,6 +49,10 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
 
     @Autowired
     private CaAERSAdverseEventServiceWSClient caAERSAdverseEventServiceWSClient;
+    
+    @Autowired
+    private CaAERSParticipantServiceWSClient caAERSParticipantServiceWSClient;
+    
     private static final Logger LOG = LoggerFactory.getLogger(CaAERSAdverseEventServiceClientIntegrationTest.class);
 
     /**
@@ -58,12 +62,13 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
     public void createAdverseEvent() {
         final String adverseEventXMLStr = getAdverseEventXMLStr();
         try {
+            caAERSParticipantServiceWSClient.createParticipant(getParticipantXMLStr());
             final CreateProvisionalAdverseEventsResponse response = caAERSAdverseEventServiceWSClient
                     .createProvisionalAdverseEvents(adverseEventXMLStr);
             assertEquals("Response code is NOT proper for CreateAdverseEvent.", "PROCESSED", response
                     .getCaaersServiceResponse().getServiceResponse().getStatus().name());
-        } catch (JAXBException e) {
-            Assert.fail("JAXBException occured while calling createAdverseEvent. " + e);
+        } catch (Exception e) {
+            Assert.fail("Exception occured while testing createAdverseEvent. " + e);
         }
     }
 
@@ -218,7 +223,11 @@ public class CaAERSAdverseEventServiceClientIntegrationTest {
         final JAXBContext jc = JAXBContext.newInstance(AdverseEventsInputMessage.class);
         return jc.createMarshaller();
     }
-
+    
+    private String getParticipantXMLStr() {
+        return getXMLString("ParticipantForAE_caaers.xml");
+    }
+    
     private String getAdverseEventXMLStr() {
         return getXMLString("AdverseEvent_caaers.xml");
     }

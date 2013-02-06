@@ -178,8 +178,8 @@ public class CaTissueConsentClient {
                 // known issue. The issue like is https://tracker.nci.nih.gov/browse/IHUB-221
             }
         } catch (ApplicationException ae) {
-            LOG.error("Register Consent Failed for Specimen" + existingSpecimen.getLabel(), ae);
-            throw new ApplicationException("Register Consent Failed for Specimen" + existingSpecimen.getLabel()
+            LOG.error("Register Consent Failed for Specimen", ae);
+            throw new ApplicationException("Register Consent Failed for Specimen"
                     + " and exception is " + ae.getCause() + ae.getMessage(), ae);
         }
     }
@@ -292,6 +292,9 @@ public class CaTissueConsentClient {
             for (consentDetailItr = consentDetailList.iterator(); consentDetailItr.hasNext();) {
                 consentDetail = consentDetailItr.next();
                 existingSpecimen = getExistingSpecimen(consentDetail.getConsentData().getSpecimenLabel());
+                // populate the tierId for given 'statement' inside consentDetail
+                consentDetail = populateConsentInfo(consentDetail, existingSpecimen);
+                // set the ConsentTierStatusCollection to main/parent specimen
                 existingSpecimen.setConsentTierStatusCollection(consentDetail.getConsentData()
                         .getConsentTierStatusSet());
 

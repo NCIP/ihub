@@ -28,6 +28,9 @@ import edu.wustl.catissuecore.domain.ConsentTier;
 import edu.wustl.catissuecore.domain.ConsentTierStatus;
 import edu.wustl.catissuecore.domain.Specimen;
 import edu.wustl.catissuecore.domain.SpecimenCollectionGroup;
+import edu.wustl.catissuecore.factory.CollectionProtocolEventFactory;
+import edu.wustl.catissuecore.factory.CollectionProtocolFactory;
+import edu.wustl.catissuecore.factory.SpecimenCollectionGroupFactory;
 import gov.nih.nci.integration.catissue.client.CaTissueAPIClientWithRegularAuthentication;
 import gov.nih.nci.integration.catissue.client.CaTissueConsentClient;
 import gov.nih.nci.system.applicationservice.ApplicationException;
@@ -317,7 +320,38 @@ public class CaTissueConsentTest {
     public void rollbackConsents() throws BeansException, MalformedURLException {
         String retConsentXML = "";
         final Specimen specimen = new Specimen();
-        specimen.setLabel("fbfe4b85-2bdc-4305-88be-3e1b763d8caa:135");
+        specimen.setLabel("fbfe4b85-2bdc-4305-88be-3e1b763d8caa:137");
+        final SpecimenCollectionGroup scg = SpecimenCollectionGroupFactory.getInstance().createObject();
+        final CollectionProtocolEvent cpe = CollectionProtocolEventFactory.getInstance().createObject();
+        final CollectionProtocol cp = CollectionProtocolFactory.getInstance().createObject();
+        
+        final ConsentTier ct1 = new ConsentTier();
+        ct1.setId(1L);
+        ct1.setStatement("Tier 1 consent response");
+        final ConsentTier ct2 = new ConsentTier();
+        ct2.setId(2L);
+        ct2.setStatement("Tier 2 consent response");
+        Collection<ConsentTier> ctCol = new LinkedHashSet<ConsentTier>();
+        ctCol.add(ct1);
+        ctCol.add(ct2);
+        
+        Collection<ConsentTierStatus> ctsCol = new LinkedHashSet<ConsentTierStatus>();
+        final ConsentTierStatus cts1 = new ConsentTierStatus();
+        cts1.setConsentTier(ct1);
+        cts1.setStatus("yes");
+        final ConsentTierStatus cts2 = new ConsentTierStatus();
+        cts2.setConsentTier(ct2);
+        cts2.setStatus("yes");        
+       
+        ctsCol.add(cts1);
+        ctsCol.add(cts2);
+        
+        cp.setConsentTierCollection(ctCol);
+        cpe.setCollectionProtocol(cp);
+        scg.setCollectionProtocolEvent(cpe);
+        specimen.setSpecimenCollectionGroup(scg);
+        specimen.setConsentTierStatusCollection(ctsCol);
+        
         try {
             EasyMock.expect(caTissueAPIClient.getApplicationService()).andReturn(writableAppService);
             EasyMock.expect(

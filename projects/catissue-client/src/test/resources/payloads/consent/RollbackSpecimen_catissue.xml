@@ -2,12 +2,12 @@
 <consents xmlns:a="http://cacis.nci.nih.gov" xmlns:ns0="http://caXchange.nci.nih.gov/messaging"
 	xmlns:ns2="http://caXchange.nci.nih.gov/caxchangerequest">
 	<participant>
-		<lastName>1.2.1.173000:echr:patient-18234137</lastName>
+		<lastName>1.2.1.173000:echr:patient-forconsent-101</lastName>
 	</participant>
 	<consentDetails>
 		<collectionProtocolEvent />
 		<consentData>
-			<specimenLabel>fbfe4b85-2bdc-4305-88be-3e1b763d8caa:137</specimenLabel>
+			<specimenLabel>fbfe4b85-2bdc-4305-88be-3e1b763d8caa:forconsent-101</specimenLabel>
 			<consentTierStatus>
 				<consentTier>
 					<statement>Tier 1 consent response</statement>

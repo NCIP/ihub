@@ -63,13 +63,13 @@
 				</p:identifiers>
 				<p:assignments>
 					<p:assignment id="1" version="1">
-						<p:studySubjectIdentifier>1.2.1.173000:echr:patient-1823462</p:studySubjectIdentifier>
+						<p:studySubjectIdentifier>1.2.1.173000:echr:patient-forinterimpart-102</p:studySubjectIdentifier>
 						<p:studySite id="1" version="1">
 							<p:study id="1" version="1">
 								<p:identifiers>
 									<p:identifier id="1" version="1">
 										<p:type>Other</p:type>
-										<p:value>6482:6482</p:value>
+										<p:value>2.16.840.1.113883.3.26.1.7:ISPY2</p:value>
 									</p:identifier>
 								</p:identifiers>
 							</p:study>
