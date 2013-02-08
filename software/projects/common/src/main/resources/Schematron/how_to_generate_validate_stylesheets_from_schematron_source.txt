@@ -1,0 +1,23 @@
+How to generate "Validate_CDA_*.xsl" stylesheets from Schematron sources "Validate_CDA_*.sch"
+
+1. Download Schematron meta-stylesheets from http://www.schematron.com/implementation.html:
+   - iso-schematron-xslt1.zip for XSLT1 processors
+   - iso-schematron-xslt2.zip is for XSLT2 processors, such as SAXON 9
+   Unzip Schematron meta-stylesheets into same directory as the .sch files
+
+2. Install XSLT transformer such as Saxon (http://sourceforge.net/projects/saxon)
+
+3. Transform Validate_CDA_Registration.sch using iso_dsdl_include.xsl meta-stylesheet to Validate_CDA_Registration_included.xsl
+
+4. Transform Validate_CDA_Registration_included.xsl using iso_svrl_for_xslt2.xsl (for XSLT2; change 2 to 1 for XSLT1) meta-stylesheet to Validate_CDA_Registration.xsl
+   Validate_CDA_Registration_included.xsl is a temporary file and may now be deleted.
+
+5. Repeat steps 3 and 4 for Validate_CDA_Biospecimen.sch, Validate_CDA_Consent.sch and Validate_CDA_AdverseEvent.sch
+
+Example of Steps 3 and 4 using Linux and Saxon 9:
+
+  java -jar saxon9he.jar -s:Validate_CDA_Registration.sch -xsl:iso_dsdl_include.xsl -o:Validate_CDA_Registration_included.xsl
+
+  java -jar saxon9he.jar -s:Validate_CDA_Registration_included.xsl -xsl:iso_svrl_for_xslt2.xsl -o:Validate_CDA_Registration.xsl
+
+  rm Validate_CDA_Registration_included.xsl

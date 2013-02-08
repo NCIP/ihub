@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -138,7 +139,8 @@ public class CaAERSParticipantServiceClientIntegrationTest {
      */
     @Test
     public void createParticipant() throws MalformedURLException, JAXBException {
-        final String participantXMLStr = getPStr();
+        String participantXMLStr = getPStr();
+        participantXMLStr = participantXMLStr.replace("forpart-101", String.valueOf(Calendar.getInstance().getTimeInMillis()));
         CaaersServiceResponse caaersServiceResponse = null;
         try {
             caaersServiceResponse = caAERSParticipantServiceClient.createParticipant(participantXMLStr);
@@ -187,10 +189,12 @@ public class CaAERSParticipantServiceClientIntegrationTest {
      */
     @Test
     public void createParticipantAlreadyExists() throws MalformedURLException, JAXBException {
-        final String participantXMLStr = getPStr();
+        String participantXMLStr = getPStr();
+        participantXMLStr = participantXMLStr.replace("forpart-101", "foralrdpresentpart-101");  
         CaaersServiceResponse caaersServiceResponse = null;
         try {
-            caaersServiceResponse = caAERSParticipantServiceClient.createParticipant(participantXMLStr);
+            caaersServiceResponse = caAERSParticipantServiceClient.createParticipant(participantXMLStr);//creates it
+            caaersServiceResponse = caAERSParticipantServiceClient.createParticipant(participantXMLStr);//tests it
         } catch (SOAPFaultException e) {
             Assert.assertEquals(getXMLString("ParticipantSOAPFaultExceptionMsg.txt"), e.getMessage());
         } catch (IntegrationException e) {
@@ -211,9 +215,11 @@ public class CaAERSParticipantServiceClientIntegrationTest {
      */
     @Test
     public void getParticipant() throws MalformedURLException, JAXBException {
-        final String participantXMLStr = getPStr();
+        String participantXMLStr = getPStr();
+        participantXMLStr = participantXMLStr.replace("forpart-101", String.valueOf(Calendar.getInstance().getTimeInMillis()));  
         CaaersServiceResponse caaersServiceResponse = null;
         try {
+            caaersServiceResponse = caAERSParticipantServiceClient.createParticipant(participantXMLStr);//creates it
             caaersServiceResponse = caAERSParticipantServiceClient.getParticipant(participantXMLStr);
         } catch (SOAPFaultException e) {
             Assert.assertEquals(getXMLString("ParticipantSOAPFaultExceptionMsg.txt"), e.getMessage());
@@ -236,9 +242,11 @@ public class CaAERSParticipantServiceClientIntegrationTest {
     @Test
     public void updateParticipant() throws MalformedURLException, JAXBException {
         String participantXMLStr = getPStr();
-        participantXMLStr = participantXMLStr.replace("1967-01-31", "1969-03-25");
+        participantXMLStr = participantXMLStr.replace("forpart-101", String.valueOf(Calendar.getInstance().getTimeInMillis()));        
         CaaersServiceResponse caaersServiceResponse = null;
         try {
+            caaersServiceResponse = caAERSParticipantServiceClient.createParticipant(participantXMLStr);
+            participantXMLStr = participantXMLStr.replace("1967-01-31", "1969-03-25");
             caaersServiceResponse = caAERSParticipantServiceClient.updateParticipant(participantXMLStr);
         } catch (SOAPFaultException e) {
             Assert.assertEquals(getXMLString("ParticipantSOAPFaultExceptionMsg.txt"), e.getMessage());
@@ -308,9 +316,11 @@ public class CaAERSParticipantServiceClientIntegrationTest {
      */
     @Test
     public void deleteParticipant() throws MalformedURLException, JAXBException {
-        final String participantXMLStr = getPStr();
+        String participantXMLStr = getPStr();
+        participantXMLStr = participantXMLStr.replace("forpart-101", String.valueOf(Calendar.getInstance().getTimeInMillis()));        
         CaaersServiceResponse caaersServiceResponse = null;
         try {
+            caaersServiceResponse = caAERSParticipantServiceClient.createParticipant(participantXMLStr);
             caaersServiceResponse = caAERSParticipantServiceClient.deleteParticipant(participantXMLStr);
         } catch (SOAPFaultException e) {
             Assert.assertEquals(getXMLString("ParticipantSOAPFaultExceptionMsg.txt"), e.getMessage());
