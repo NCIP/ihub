@@ -1,7 +1,8 @@
-/**
- * Server class simulates CDMS server business logic.
+/*
+ * Copyright Ekagra and SemanticBits, LLC
  * 
- * @author John Chen
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/ihub/LICENSE.txt for details.
  */
 package gov.nih.nci.clinicalconnector;
 

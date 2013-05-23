@@ -1,9 +1,8 @@
-
-/**
- * DataCaptureServiceMessageReceiverInOut.java
- *
- * This file was auto-generated from WSDL
- * by the Apache Axis2 version: 1.5  Built on : Apr 30, 2009 (06:07:24 EDT)
+/*
+ * Copyright Ekagra and SemanticBits, LLC
+ * 
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/ihub/LICENSE.txt for details.
  */
         package gov.nih.nci.clinicalconnector;
 
