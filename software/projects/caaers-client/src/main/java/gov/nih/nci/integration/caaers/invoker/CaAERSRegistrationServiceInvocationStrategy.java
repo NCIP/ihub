@@ -1,3 +1,9 @@
+/*
+ * Copyright Ekagra and SemanticBits, LLC
+ * 
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/ihub/LICENSE.txt for details.
+ */
 package gov.nih.nci.integration.caaers.invoker;
 
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
