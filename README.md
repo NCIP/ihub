@@ -1,7 +1,7 @@
 Welcome to the iHub Project!
 =====================================
 
-iHub is a web-based application that allows users to view laboratory data stored in the Clinical Trials Object Data System (CTODS) Lab Domain database.
+iHub provides TRANSCEND data integration between an external system and other clinical applications, such as caTissue and caBIG Adverse Event Reporting System (caAERS).
 
 iHub is distributed under the BSD 3-Clause License. 
 
