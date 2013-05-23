@@ -1,79 +1,8 @@
-/* ***** BEGIN LICENSE BLOCK *****
- * Version: MPL 1.1
- *
- * The contents of this file are subject to the Mozilla Public License Version
- * 1.1 (the "License"); you may not use this file except in compliance with
- * the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
- * for the specific language governing rights and limitations under the
- * License.
- *
- * The Original Code is Mirth.
- *
- * The Initial Developer of the Original Code is
- * WebReach, Inc.
- * Portions created by the Initial Developer are Copyright (C) 2006
- * the Initial Developer. All Rights Reserved.
- *
- * Contributor(s):
- *   Gerald Bortis <geraldb@webreachinc.com>
- *
- * ***** END LICENSE BLOCK ***** */
-
-package com.webreach.mirth.server;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.nio.charset.Charset;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
-
-import org.apache.log4j.Logger;
-import org.apache.velocity.app.Velocity;
-import org.apache.velocity.runtime.RuntimeConstants;
-import org.mortbay.jetty.bio.SocketConnector;
-import org.mortbay.jetty.handler.ContextHandler;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.handler.ResourceHandler;
-import org.mortbay.jetty.security.SslSocketConnector;
-import org.mortbay.jetty.servlet.Context;
-import org.mortbay.jetty.servlet.HashSessionManager;
-import org.mortbay.jetty.servlet.ServletHandler;
-import org.mortbay.jetty.servlet.ServletHolder;
-import org.mortbay.jetty.servlet.SessionHandler;
-import org.mule.MuleManager;
-import org.mule.config.builders.MuleXmlConfigurationBuilder;
-import org.mule.providers.ssl.SslConnector;
-
-import com.webreach.mirth.model.Channel;
-import com.webreach.mirth.model.SystemEvent;
-import com.webreach.mirth.server.controllers.ChannelController;
-import com.webreach.mirth.server.controllers.ChannelStatisticsController;
-import com.webreach.mirth.server.controllers.ConfigurationController;
-import com.webreach.mirth.server.controllers.ControllerFactory;
-import com.webreach.mirth.server.controllers.EventController;
-import com.webreach.mirth.server.controllers.ExtensionController;
-import com.webreach.mirth.server.controllers.MessageObjectController;
-import com.webreach.mirth.server.controllers.MigrationController;
-import com.webreach.mirth.server.controllers.MonitoringController;
-import com.webreach.mirth.server.controllers.UserController;
-import com.webreach.mirth.server.util.GlobalVariableStore;
-import com.webreach.mirth.server.util.StackTracePrinter;
-import com.webreach.mirth.server.util.VMRegistry;
-import com.webreach.mirth.util.PropertyLoader;
-
-/**
- * Instantiate a Mirth server that listens for commands from the CommandQueue.
+/*
+ * Copyright Ekagra and SemanticBits, LLC
  * 
- * @author <a href="mailto:geraldb@webreachinc.com">Gerald Bortis</a>
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/ihub/LICENSE.txt for details.
  */
 public class Mirth extends Thread {
     private Logger logger = Logger.getLogger(this.getClass());

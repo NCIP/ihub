@@ -1,11 +1,9 @@
-
-/**
- * RegisterSubjectRequest.java
- *
- * This file was auto-generated from WSDL
- * by the Apache Axis2 version: 1.4.1  Built on : Aug 13, 2008 (05:03:41 LKT)
+/*
+ * Copyright Ekagra and SemanticBits, LLC
+ * 
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/ihub/LICENSE.txt for details.
  */
-            
                 package gov.nih.nci.clinicalconnector;
             
 
