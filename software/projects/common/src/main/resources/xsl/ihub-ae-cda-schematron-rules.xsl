@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<xsl:stylesheet xmlns:xhtml="http://www.w3.org/1999/xhtml"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:schold="http://www.ascc.net/xml/schematron"
                 xmlns:iso="http://purl.oclc.org/dsdl/schematron"
-                xmlns:xhtml="http://www.w3.org/1999/xhtml"
-                xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:hl7="urn:hl7-org:v3"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 version="1.0"><!--Implementers: please note that overriding process-prolog or process-root is 
@@ -20,8 +20,7 @@
 
 
 <!--PROLOG-->
-<xsl:output xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-               method="xml"
+<xsl:output xmlns:svrl="http://purl.oclc.org/dsdl/svrl" method="xml"
                omit-xml-declaration="no"
                standalone="yes"
                indent="yes"/>
@@ -49,8 +48,7 @@
       <xsl:choose>
          <xsl:when test="namespace-uri()=''">
             <xsl:value-of select="name()"/>
-            <xsl:variable name="p_1"
-                          select="1+    count(preceding-sibling::*[name()=name(current())])"/>
+            <xsl:variable name="p_1" select="1+    count(preceding-sibling::*[name()=name(current())])"/>
             <xsl:if test="$p_1&gt;1 or following-sibling::*[name()=name(current())]">[<xsl:value-of select="$p_1"/>]</xsl:if>
          </xsl:when>
          <xsl:otherwise>
@@ -231,8 +229,7 @@
    </xsl:template>
 
 	  <!--RULE -->
-<xsl:template match="/hl7:ClinicalDocument/hl7:recordTarget/hl7:patientRole"
-                 priority="1000"
+<xsl:template match="/hl7:ClinicalDocument/hl7:recordTarget/hl7:patientRole" priority="1000"
                  mode="M6">
       <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
                        context="/hl7:ClinicalDocument/hl7:recordTarget/hl7:patientRole"/>
@@ -288,7 +285,7 @@
 <svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">CDA body (adverse event): Adverse Event unique identifier, Onset Date, Attribution, Coded Term, Verbatim, Grade, Serious Reason(s)</svrl:text>
 
 	  <!--RULE -->
-<xsl:template match="/hl7:ClinicalDocument" priority="1001" mode="M8">
+<xsl:template match="/hl7:ClinicalDocument" priority="1002" mode="M8">
       <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/hl7:ClinicalDocument"/>
 
 		    <!--ASSERT -->
@@ -323,7 +320,7 @@
 
 	  <!--RULE -->
 <xsl:template match="/hl7:ClinicalDocument/hl7:component/hl7:structuredBody/hl7:component/hl7:section[hl7:templateId[@root='2.16.840.1.113883.10.20.22.2.6.1']][hl7:code[@code='48765-2'][@codeSystem='2.16.840.1.113883.6.1']]/hl7:entry[@typeCode='DRIV']/hl7:act[@classCode='ACT'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.30']][hl7:code[@code='48765-2'][@codeSystem='2.16.840.1.113883.6.1']][hl7:statusCode[@code='active']]/hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.7']][hl7:code[@code='ASSERTION'][@codeSystem='2.16.840.1.113883.5.4']][hl7:statusCode[@code='completed']]"
-                 priority="1000"
+                 priority="1001"
                  mode="M8">
       <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
                        context="/hl7:ClinicalDocument/hl7:component/hl7:structuredBody/hl7:component/hl7:section[hl7:templateId[@root='2.16.840.1.113883.10.20.22.2.6.1']][hl7:code[@code='48765-2'][@codeSystem='2.16.840.1.113883.6.1']]/hl7:entry[@typeCode='DRIV']/hl7:act[@classCode='ACT'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.30']][hl7:code[@code='48765-2'][@codeSystem='2.16.840.1.113883.6.1']][hl7:statusCode[@code='active']]/hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.7']][hl7:code[@code='ASSERTION'][@codeSystem='2.16.840.1.113883.5.4']][hl7:statusCode[@code='completed']]"/>
@@ -365,34 +362,6 @@
                   <xsl:apply-templates select="." mode="schematron-select-full-path"/>
                </xsl:attribute>
                <svrl:text>Invalid onset date/time</svrl:text>
-            </svrl:failed-assert>
-         </xsl:otherwise>
-      </xsl:choose>
-
-		    <!--ASSERT -->
-<xsl:choose>
-         <xsl:when test="count(hl7:effectiveTime/hl7:high[@value])=1"/>
-         <xsl:otherwise>
-            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-                                test="count(hl7:effectiveTime/hl7:high[@value])=1">
-               <xsl:attribute name="location">
-                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
-               </xsl:attribute>
-               <svrl:text>Unavailable resolution date</svrl:text>
-            </svrl:failed-assert>
-         </xsl:otherwise>
-      </xsl:choose>
-
-		    <!--ASSERT -->
-<xsl:choose>
-         <xsl:when test="hl7:effectiveTime/hl7:high[matches(@value,'^(19|20)\d\d(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$')]"/>
-         <xsl:otherwise>
-            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-                                test="hl7:effectiveTime/hl7:high[matches(@value,'^(19|20)\d\d(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$')]">
-               <xsl:attribute name="location">
-                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
-               </xsl:attribute>
-               <svrl:text>Invalid resolution date/time</svrl:text>
             </svrl:failed-assert>
          </xsl:otherwise>
       </xsl:choose>
@@ -525,10 +494,10 @@
 
 		    <!--ASSERT -->
 <xsl:choose>
-         <xsl:when test="count(hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2']][hl7:code[@nullFlavor='OTH'][hl7:originalText='serious reason(s)']])=1"/>
+         <xsl:when test="count(hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2']][hl7:code[@nullFlavor='OTH'][hl7:originalText='serious reason(s)']])&gt;=1"/>
          <xsl:otherwise>
             <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-                                test="count(hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2']][hl7:code[@nullFlavor='OTH'][hl7:originalText='serious reason(s)']])=1">
+                                test="count(hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2']][hl7:code[@nullFlavor='OTH'][hl7:originalText='serious reason(s)']])&gt;=1">
                <xsl:attribute name="location">
                   <xsl:apply-templates select="." mode="schematron-select-full-path"/>
                </xsl:attribute>
@@ -547,6 +516,29 @@
                   <xsl:apply-templates select="." mode="schematron-select-full-path"/>
                </xsl:attribute>
                <svrl:text>Invalid serious reason(s)</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+      <xsl:apply-templates select="*|comment()|processing-instruction()" mode="M8"/>
+   </xsl:template>
+
+	  <!--RULE -->
+<xsl:template match="/hl7:ClinicalDocument/hl7:component/hl7:structuredBody/hl7:component/hl7:section[hl7:templateId[@root='2.16.840.1.113883.10.20.22.2.6.1']][hl7:code[@code='48765-2'][@codeSystem='2.16.840.1.113883.6.1']]/hl7:entry[@typeCode='DRIV']/hl7:act[@classCode='ACT'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.30']][hl7:code[@code='48765-2'][@codeSystem='2.16.840.1.113883.6.1']][hl7:statusCode[@code='active']]/hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.7']][hl7:code[@code='ASSERTION'][@codeSystem='2.16.840.1.113883.5.4']][hl7:statusCode[@code='completed']]/hl7:effectiveTime/hl7:high"
+                 priority="1000"
+                 mode="M8">
+      <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                       context="/hl7:ClinicalDocument/hl7:component/hl7:structuredBody/hl7:component/hl7:section[hl7:templateId[@root='2.16.840.1.113883.10.20.22.2.6.1']][hl7:code[@code='48765-2'][@codeSystem='2.16.840.1.113883.6.1']]/hl7:entry[@typeCode='DRIV']/hl7:act[@classCode='ACT'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.30']][hl7:code[@code='48765-2'][@codeSystem='2.16.840.1.113883.6.1']][hl7:statusCode[@code='active']]/hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.7']][hl7:code[@code='ASSERTION'][@codeSystem='2.16.840.1.113883.5.4']][hl7:statusCode[@code='completed']]/hl7:effectiveTime/hl7:high"/>
+
+		    <!--ASSERT -->
+<xsl:choose>
+         <xsl:when test="matches(@value,'^(19|20)\d\d(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$')"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="matches(@value,'^(19|20)\d\d(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$')">
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>Invalid resolution date/time</svrl:text>
             </svrl:failed-assert>
          </xsl:otherwise>
       </xsl:choose>

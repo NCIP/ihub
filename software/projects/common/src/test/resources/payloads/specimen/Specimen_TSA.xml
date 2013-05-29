@@ -113,14 +113,13 @@
 												</code>
 												<statusCode code="completed" />
 												<effectiveTime value="20110706" />
-												<targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96"
-													codeSystemName="SNOMED-CT" displayName="breast">
+												<targetSiteCode nullFlavor="NI">
 													<originalText>right breast</originalText>
 													<qualifier>
 														<name code="272741003" codeSystem="2.16.840.1.113883.6.96"
 															codeSystemName="SNOMED CT" displayName="laterality" />
-														<value code="24028007" codeSystem="2.16.840.1.113883.6.96"
-															codeSystemName="SNOMED-CT" displayName="right" />
+														<value code="397206002" codeSystem="2.16.840.1.113883.6.96"
+															codeSystemName="SNOMED-CT" displayName="Not Specified" />
 													</qualifier>
 												</targetSiteCode>
 												<entryRelationship typeCode="COMP">
@@ -179,10 +178,8 @@
 																<code code="371439000" codeSystem="2.16.840.1.113883.6.96"
 																	displayName="specimen type" />
 																<statusCode code="completed" />
-																<value code="441479001" codeSystem="2.16.840.1.113883.6.96"
-																	codeSystemName="SNOMED-CT" displayName="fresh tissue specimen"
-																	xsi:type="CD">
-																	<originalText>fresh tissue</originalText>
+																<value nullFlavor="OTH">
+																	<originalText>Fresh Tissue</originalText>
 																</value>
 															</observation>
 														</entryRelationship>

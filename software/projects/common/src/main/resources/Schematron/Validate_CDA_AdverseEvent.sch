@@ -27,9 +27,6 @@
       <assert test="count(hl7:effectiveTime/hl7:low[@value])=1">Unavailable onset date</assert>
       <assert test="hl7:effectiveTime/hl7:low[matches(@value,'^(19|20)\d\d(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$')]">Invalid onset date/time</assert>
 
-      <assert test="count(hl7:effectiveTime/hl7:high[@value])=1">Unavailable resolution date</assert>
-      <assert test="hl7:effectiveTime/hl7:high[matches(@value,'^(19|20)\d\d(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$')]">Invalid resolution date/time</assert>
-
       <assert test="count(hl7:entryRelationship[@typeCode='MFST']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.9']][hl7:code[@code='ASSERTION'][@codeSystem='2.16.840.1.113883.5.4']][hl7:statusCode[@code='completed']])=1">Unavailable reaction observation</assert>
       <assert test="hl7:entryRelationship[@typeCode='MFST']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.9']][hl7:code[@code='ASSERTION'][@codeSystem='2.16.840.1.113883.5.4']][hl7:statusCode[@code='completed']]/hl7:value[@xsi:type='CD']">Unavailable adverse event coded term</assert>
       <assert test="hl7:entryRelationship[@typeCode='MFST']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.9']][hl7:code[@code='ASSERTION'][@codeSystem='2.16.840.1.113883.5.4']][hl7:statusCode[@code='completed']]/hl7:value[@xsi:type='CD']/hl7:originalText">Unavailable adverse event verbatim</assert>
@@ -46,6 +43,10 @@
       <assert test="count(hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2']][hl7:code[@nullFlavor='OTH'][hl7:originalText='serious reason(s)']])&gt;=1">Unavailable serious reason(s)</assert>
       <assert test="hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2']][hl7:code[@nullFlavor='OTH'][hl7:originalText='serious reason(s)']]/hl7:value[@xsi:type='CD'][(@codeSystem='2.16.840.1.113883.6.96' and matches(@code,'(^405535005$)|(^440181000$)|(^308540004$)|(^405532008$)|(^66091009$)')) or (@nullFlavor='OTH' and hl7:originalText)]">Invalid serious reason(s)</assert>
     </rule>
-
+	
+	<rule context="/hl7:ClinicalDocument/hl7:component/hl7:structuredBody/hl7:component/hl7:section[hl7:templateId[@root='2.16.840.1.113883.10.20.22.2.6.1']][hl7:code[@code='48765-2'][@codeSystem='2.16.840.1.113883.6.1']]/hl7:entry[@typeCode='DRIV']/hl7:act[@classCode='ACT'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.30']][hl7:code[@code='48765-2'][@codeSystem='2.16.840.1.113883.6.1']][hl7:statusCode[@code='active']]/hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.7']][hl7:code[@code='ASSERTION'][@codeSystem='2.16.840.1.113883.5.4']][hl7:statusCode[@code='completed']]/hl7:effectiveTime/hl7:high">
+	  <assert test="matches(@value,'^(19|20)\d\d(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$')">Invalid resolution date/time</assert>
+	</rule>
+	
   </pattern>
 </schema>

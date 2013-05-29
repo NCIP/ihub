@@ -289,12 +289,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -361,7 +361,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -556,12 +556,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -628,7 +628,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -823,12 +823,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -895,7 +895,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -1090,12 +1090,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -1162,7 +1162,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -1357,12 +1357,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -1429,7 +1429,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -1624,12 +1624,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -1696,7 +1696,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003_1223" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="fixed_123 tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>fixed_123 tissue</originalText>
                                                 </value>
                                              </observation>
@@ -1891,12 +1891,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007_123" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right_123"></value>
+                                          <value code="397206002_123" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right_123"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -1963,7 +1963,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -2160,12 +2160,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007_123" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right_!23"></value>
+                                          <value code="397206002_123" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right_!23"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -2232,7 +2232,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -2427,12 +2427,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -2499,7 +2499,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -2694,12 +2694,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -2766,7 +2766,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -2961,12 +2961,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -3033,7 +3033,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -3228,12 +3228,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -3300,7 +3300,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -3495,12 +3495,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -3567,7 +3567,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -3762,12 +3762,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -3834,7 +3834,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -4028,12 +4028,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -4100,7 +4100,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -4178,12 +4178,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -4250,7 +4250,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -4445,12 +4445,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -4517,7 +4517,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -4711,12 +4711,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"/>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"/>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -4783,7 +4783,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -4977,12 +4977,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -5049,7 +5049,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -5127,12 +5127,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -5199,7 +5199,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -5394,12 +5394,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -5466,7 +5466,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -5661,12 +5661,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -5733,7 +5733,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -5927,7 +5927,7 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
@@ -5999,7 +5999,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="48469005" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Frozen Cell Block">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Frozen Cell Block</originalText>
                                                 </value>
                                              </observation>
@@ -6193,12 +6193,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752009" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -6265,7 +6265,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441673008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="RNA, poly-A enriched">
+                                                <value nullFlavor="OTH">
                                                    <originalText>RNA, poly-A enriched</originalText>
                                                 </value>
                                              </observation>
@@ -6460,12 +6460,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -6532,7 +6532,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -6609,12 +6609,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -6681,7 +6681,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -6876,12 +6876,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -6948,7 +6948,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -7025,12 +7025,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -7097,7 +7097,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -7294,12 +7294,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -7366,7 +7366,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -7561,12 +7561,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -7633,7 +7633,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -7828,12 +7828,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -7900,7 +7900,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -8095,12 +8095,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -8167,7 +8167,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -8362,12 +8362,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -8434,7 +8434,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -8629,12 +8629,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -8701,7 +8701,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -8896,12 +8896,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="skin">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right skin</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -8968,7 +8968,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119373006" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Amniotic Fluid">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Amniotic Fluid</originalText>
                                                 </value>
                                              </observation>
@@ -9163,12 +9163,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="skin">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right skin</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -9235,7 +9235,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -9429,12 +9429,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"/>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"/>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -9501,7 +9501,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -9695,12 +9695,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"/>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"/>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -9767,7 +9767,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -9961,12 +9961,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"/>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"/>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -10033,7 +10033,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -10223,12 +10223,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -10295,7 +10295,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -10477,12 +10477,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"/>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"/>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -10549,7 +10549,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -10732,12 +10732,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -10803,7 +10803,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -10986,12 +10986,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -11058,7 +11058,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -11231,12 +11231,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -11303,7 +11303,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -11476,12 +11476,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -11720,7 +11720,7 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <!--Specimen Characteristics Side Missing-->
@@ -11790,7 +11790,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -11973,12 +11973,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -12033,7 +12033,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="441479001" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fresh Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fresh Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -12216,12 +12216,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->
@@ -12288,7 +12288,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -12461,7 +12461,7 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <!--Specimen Characteristics Side Missing-->
@@ -12531,7 +12531,7 @@
                                                 <code code="371439000" codeSystem="2.16.840.1.113883.6.96" displayName="specimen type"/>
                                                 <statusCode code="completed"/>
                                                 <!--Specimen Type-->
-                                                <value xsi:type="CD" code="119376003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Fixed Tissue specimen">
+                                                <value nullFlavor="OTH">
                                                    <originalText>Fixed Tissue</originalText>
                                                 </value>
                                              </observation>
@@ -12714,12 +12714,12 @@
                                     <statusCode code="completed"/>
                                     <effectiveTime value="20110706"/>
                                     <!--Specimen Characteristics Site-->
-                                    <targetSiteCode code="76752008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="breast">
+                                    <targetSiteCode nullFlavor="NI">
                                        <originalText>right breast</originalText>
                                        <!--Specimen Characteristics Side-->
                                        <qualifier>
                                           <name code="272741003" displayName="laterality" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
-                                          <value code="24028007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
+                                          <value code="397206002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="right"></value>
                                        </qualifier>
                                     </targetSiteCode>
                                     <!--Guidance for Breast Core Biopsy-->

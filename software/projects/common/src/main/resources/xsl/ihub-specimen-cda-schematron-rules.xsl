@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<xsl:stylesheet xmlns:xhtml="http://www.w3.org/1999/xhtml"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:schold="http://www.ascc.net/xml/schematron"
                 xmlns:iso="http://purl.oclc.org/dsdl/schematron"
-                xmlns:xhtml="http://www.w3.org/1999/xhtml"
-                xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:hl7="urn:hl7-org:v3"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 version="1.0"><!--Implementers: please note that overriding process-prolog or process-root is 
@@ -20,8 +20,7 @@
 
 
 <!--PROLOG-->
-<xsl:output xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-               method="xml"
+<xsl:output xmlns:svrl="http://purl.oclc.org/dsdl/svrl" method="xml"
                omit-xml-declaration="no"
                standalone="yes"
                indent="yes"/>
@@ -49,8 +48,7 @@
       <xsl:choose>
          <xsl:when test="namespace-uri()=''">
             <xsl:value-of select="name()"/>
-            <xsl:variable name="p_1"
-                          select="1+    count(preceding-sibling::*[name()=name(current())])"/>
+            <xsl:variable name="p_1" select="1+    count(preceding-sibling::*[name()=name(current())])"/>
             <xsl:if test="$p_1&gt;1 or following-sibling::*[name()=name(current())]">[<xsl:value-of select="$p_1"/>]</xsl:if>
          </xsl:when>
          <xsl:otherwise>
@@ -249,8 +247,7 @@
    </xsl:template>
 
 	  <!--RULE -->
-<xsl:template match="/hl7:ClinicalDocument/hl7:recordTarget/hl7:patientRole"
-                 priority="1000"
+<xsl:template match="/hl7:ClinicalDocument/hl7:recordTarget/hl7:patientRole" priority="1000"
                  mode="M6">
       <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
                        context="/hl7:ClinicalDocument/hl7:recordTarget/hl7:patientRole"/>
@@ -601,28 +598,14 @@
 
 		    <!--ASSERT -->
 <xsl:choose>
-         <xsl:when test="count(hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@code='371439000'][@codeSystem='2.16.840.1.113883.6.96']][hl7:value[@xsi:type='CD'][@codeSystem='2.16.840.1.113883.6.96']])=1"/>
+         <xsl:when test="count(hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@code='371439000'][@codeSystem='2.16.840.1.113883.6.96']][hl7:value[hl7:originalText]])=1"/>
          <xsl:otherwise>
             <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-                                test="count(hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@code='371439000'][@codeSystem='2.16.840.1.113883.6.96']][hl7:value[@xsi:type='CD'][@codeSystem='2.16.840.1.113883.6.96']])=1">
+                                test="count(hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@code='371439000'][@codeSystem='2.16.840.1.113883.6.96']][hl7:value[hl7:originalText]])=1">
                <xsl:attribute name="location">
                   <xsl:apply-templates select="." mode="schematron-select-full-path"/>
                </xsl:attribute>
                <svrl:text>Unavailable biospecimen type</svrl:text>
-            </svrl:failed-assert>
-         </xsl:otherwise>
-      </xsl:choose>
-
-		    <!--ASSERT -->
-<xsl:choose>
-         <xsl:when test="hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@code='371439000'][@codeSystem='2.16.840.1.113883.6.96']][hl7:value[@xsi:type='CD'][@codeSystem='2.16.840.1.113883.6.96'][matches(@code,'(^119376003$)|(^441479001$)|(^119373006$)|(^119341000$)|(^309051001$)|(^119359002$)|(^258450006$)|(^119339001$)|(^258459007$)|(^440674008$)|(^119321005$)|(^122571007$)|(^119361006$)|(^119342007$)|(^119364003$)|(^119334006$)|(^122569007$)|(^119332005$)|(^122575003$)|(^258438000$)|(^258580003$)|(^48469005$)|(^258661006$)|(^258566005$)|(^441673008$)|(^448789008$)|(^258562007$)|(^88878007)$')]]"/>
-         <xsl:otherwise>
-            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-                                test="hl7:entryRelationship[@typeCode='SUBJ']/hl7:observation[@classCode='OBS'][@moodCode='EVN'][hl7:templateId[@root='2.16.840.1.113883.10.20.22.4.2'][@assigningAuthorityName='HL7 CCDA']][hl7:code[@code='371439000'][@codeSystem='2.16.840.1.113883.6.96']][hl7:value[@xsi:type='CD'][@codeSystem='2.16.840.1.113883.6.96'][matches(@code,'(^119376003$)|(^441479001$)|(^119373006$)|(^119341000$)|(^309051001$)|(^119359002$)|(^258450006$)|(^119339001$)|(^258459007$)|(^440674008$)|(^119321005$)|(^122571007$)|(^119361006$)|(^119342007$)|(^119364003$)|(^119334006$)|(^122569007$)|(^119332005$)|(^122575003$)|(^258438000$)|(^258580003$)|(^48469005$)|(^258661006$)|(^258566005$)|(^441673008$)|(^448789008$)|(^258562007$)|(^88878007)$')]]">
-               <xsl:attribute name="location">
-                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
-               </xsl:attribute>
-               <svrl:text>Invalid biospecimen type</svrl:text>
             </svrl:failed-assert>
          </xsl:otherwise>
       </xsl:choose>
