@@ -17,3 +17,16 @@ You will find more details about caAERS in the following links:
 
 
 Please join us in further developing and improving iHub.
+
+# Prerequisites
+ * [Installation guide](https://wiki.nci.nih.gov/x/7pQZBQ)
+ * JDK 1.6.0_30
+ * PostgreSQL 8.4 / 9.0
+ * Mirth Connect 2.1.1
+ * Apache Ant 1.8.2
+ * Apache Http Server 2.2.x
+
+
+# Installation
+
+Please refer to the iHub [installation guide](https://wiki.nci.nih.gov/x/7pQZBQ)
