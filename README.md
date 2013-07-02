@@ -7,7 +7,7 @@ iHub is distributed under the BSD 3-Clause License.
 
 Please see the NOTICE and LICENSE files for details.
 
-You will find more details about caAERS in the following links:
+You will find more details about iHub in the following links:
 
  * [Community wiki](https://wiki.nci.nih.gov/display/TRANSCENDiHub/TRANSCEND+iHub+Documentation)
  * [NCI OSDI Home](https://github.com/NCIP)
