@@ -9,10 +9,10 @@ Please see the NOTICE and LICENSE files for details.
 
 You will find more details about iHub in the following links:
 
- * [Community wiki](https://wiki.nci.nih.gov/display/TRANSCENDiHub/TRANSCEND+iHub+Documentation)
+ * [Community wiki](https://wiki.nci.nih.gov/x/3AAIBg)
  * [NCI OSDI Home](https://github.com/NCIP)
  * [Issue tracker](https://tracker.nci.nih.gov/browse/ihub)
- * [Documentation wiki](https://wiki.nci.nih.gov/display/TRANSCENDiHub/TRANSCEND+iHub+Documentation)
+ * [Documentation wiki](https://wiki.nci.nih.gov/x/3AAIBg)
  * [Development Git repo](https://github.com/NCIP/ihub)
 
 
